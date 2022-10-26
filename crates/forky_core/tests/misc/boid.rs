@@ -3,7 +3,7 @@ use forky_core::*;
 
 describe!("boids", |s| {
 	s.it("works", || {
-		expect(0).to_be(0)?;
+		// expect(0).to_be(1)?;
 		Ok(())
 	});
 });

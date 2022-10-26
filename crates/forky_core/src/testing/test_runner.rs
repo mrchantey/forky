@@ -1,15 +1,17 @@
-use crate::testing::*;
 use crate::*;
+use crate::testing::*;
 use colorize::*;
 use std::time::Instant;
-pub fn run() {
+
+pub fn run() -> Result<(), MatcherError> {
+	utility::Terminal::clear();
 	log!("\n🤘 lets get forky! 🤘\n");
-	// override_panic();
 
 	let start_time = Instant::now();
 
 	let mut suite_results: Vec<TestSuiteResult> = Vec::new();
-	println!("");//sacrificial println
+	
+	println!(""); //sacrificial println
 	for t in inventory::iter::<TestSuiteDesc> {
 		let mut suite = TestSuite::new(t);
 		(t.func)(&mut suite);
@@ -28,7 +30,7 @@ pub fn run() {
 				acc
 			});
 
-	if combined_suite_results.failed == 0{
+	if combined_suite_results.failed == 0 {
 		log!("All tests passed".cyan().underlined());
 	}
 
@@ -44,16 +46,11 @@ pub fn run() {
 		combined_suite_results.failed,
 		None,
 	);
+	print_time(start_time);
 
-
-	//TIME
-	let millis = Instant::now().duration_since(start_time).as_millis();
-	let prefix = "Time:\t\t".bold();
-	if millis < 100 {
-		println!("{}{} ms",prefix,millis);
-	}else{
-		println!("{}{:.2} s",prefix,millis as f32 * 0.001);
-	}
+	//TODO allow force OK execution for less noise
+	// expect(suites_failed).to_be(0)?;
+	Ok(())
 }
 
 fn print_summary(prefix: String, total: u32, failed: u32, skipped: Option<u32>) {
@@ -69,6 +66,17 @@ fn print_summary(prefix: String, total: u32, failed: u32, skipped: Option<u32>) 
 		[passed_str, total_str].join(", ")
 	};
 	log!(prefix.bold() summary);
+}
+
+
+fn print_time(start:Instant){
+	let millis = Instant::now().duration_since(start).as_millis();
+	let prefix = "Time:\t\t".bold();
+	if millis < 100 {
+		println!("{}{} ms", prefix, millis);
+	} else {
+		println!("{}{:.2} s", prefix, millis as f32 * 0.001);
+	}
 }
 
 /*

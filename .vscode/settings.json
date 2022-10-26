@@ -10,7 +10,7 @@
 		"**/Thumbs.db": true,
 		".cargo": true,
 		".vscode": true,
-		"target": true,
+		// "target": true,
 	},
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.patterns": {
