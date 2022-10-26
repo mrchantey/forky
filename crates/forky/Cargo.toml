@@ -1,0 +1,8 @@
+[package]
+name = "forky"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+notify = {workspace = true}
+# notify-debouncer-mini = {workspace = true}

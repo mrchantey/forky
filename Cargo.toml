@@ -1,0 +1,27 @@
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+# [package]
+# name = "magpie"
+# version = "0.1.0"
+# edition = "2021"
+
+[workspace]
+resolver = "2" # Important! wgpu/Bevy needs this!
+members = [
+	"crates/*"
+]
+
+# Enable a small amount of optimization in debug mode
+[profile.dev]
+opt-level = 1
+
+# Enable high optimizations for dependencies (incl. Bevy), but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
+
+# bevy = "0.8.1"
+# dynamic currently not supported on windows
+[workspace.dependencies]
+bevy = { version = "0.8.1", features = ["dynamic"] }
+bevy-inspector-egui = "0.13.0"
+inventory = "0.3.2"
+notify = "5.0.0-pre.15"

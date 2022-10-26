@@ -1,0 +1,22 @@
+{
+	// "files.autoSave": "afterDelay",
+	// "files.autoSaveDelay": 20,
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		".cargo": true,
+		".vscode": true,
+		"target": true,
+	},
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.patterns": {
+		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+		"*.jsx": "${capture}.js",
+		"tsconfig.json": "tsconfig.*.json",
+		"Cargo.toml": "Cargo.toml, Cargo.lock, rustfmt.toml, .gitignore, README.md, LICENSE"
+	},
+}

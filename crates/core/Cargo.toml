@@ -1,0 +1,22 @@
+[package]
+name = "core"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+bevy = {workspace = true}
+bevy-inspector-egui = {workspace = true}
+inventory = {workspace = true}
+colorize = "0.1.0"
+crossterm = "0.25.0"
+gag = "1.0.0"
+# magpie = {path = "../../"}
+
+[[test]]
+name = "custom"
+harness = false
+
+[[test]]
+name = "describe"
+harness = false
