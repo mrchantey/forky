@@ -45,9 +45,12 @@ pub fn run_for_crate(path: PathBuf) {
 		.for_each(run_for_crate_folder)
 }
 
+const PREFIX: &str =
+	"#![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]\n\n";
+
 pub fn create_mod(path: &PathBuf) {
 	let children = fs::read_dir(&path).unwrap();
-	let mut str = String::from("#![allow(dead_code, unused_imports, unused_variables)]\n\n");
+	let mut str = String::from(PREFIX);
 	children
 		.map(|p| p.unwrap().path())
 		.filter(|p| !filename_starts_with_underscore(&p))

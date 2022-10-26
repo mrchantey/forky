@@ -2,7 +2,12 @@ use notify::poll::PollWatcherConfig;
 use notify::*;
 use std::{path::Path, time::Duration};
 
-pub fn log_changes(path: &str, on_change: fn()) {
+// pub struct OnChange{
+// 	kind:
+// }
+
+
+pub fn log_changes(path: &str, on_change: fn(e:notify::Event)) {
 	let (tx, rx) = std::sync::mpsc::channel();
 	let config = PollWatcherConfig {
 		compare_contents: true,
@@ -14,10 +19,7 @@ pub fn log_changes(path: &str, on_change: fn()) {
 
 	loop {
 		match rx.recv() {
-			Ok(event) => {
-				// println!("{:?}", event.unwrap().kind)
-				on_change();
-			}
+			Ok(e) => on_change(e.unwrap()),
 			Err(e) => println!("watch error: {:?}", e),
 		}
 	}
