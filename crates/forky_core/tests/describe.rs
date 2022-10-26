@@ -1,6 +1,5 @@
 use forky_core::testing::*;
 use forky_core::*;
-fn main() { run(); }
 
 pub struct Vec2 {
 	pub x: f32,

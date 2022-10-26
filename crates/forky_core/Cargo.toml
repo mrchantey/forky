@@ -14,9 +14,6 @@ gag = "1.0.0"
 # magpie = {path = "../../"}
 
 [[test]]
-name = "custom"
-harness = false
-
-[[test]]
-name = "describe"
+name = "forky"
+path = "tests/main.rs"
 harness = false

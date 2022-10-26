@@ -27,6 +27,9 @@ fn filename_starts_with_underscore(p: &PathBuf) -> bool {
 		== '_'
 }
 
+fn filename_included(p:&PathBuf,arr: &[&str])->bool{
+	arr.iter().all(|f|p.file_stem().unwrap() == *f)
+}
 
 
 pub fn run_for_crate_folder(path: PathBuf) {
@@ -34,12 +37,14 @@ pub fn run_for_crate_folder(path: PathBuf) {
 	// log!(path.to_str().unwrap());
 	read_dir_recursive(path)
 		.into_iter()
-		.filter(|p| CRATE_FOLDERS.iter().all(|f|p.file_stem().unwrap() != *f))
+		.filter(|p| !filename_included(p, NO_MOD_FOLDERS))
 		.filter(|p| !filename_starts_with_underscore(p))
 		.for_each(|p| create_mod(&p));
 }
 
 const CRATE_FOLDERS:&'static [&str] = &["src", "examples", "tests"];
+const NO_MOD_FOLDERS:&'static [&str] = &["src", "examples"];
+const IGNORE_FILES:&'static [&str] = &["mod", "lib","main"];
 
 pub fn run_for_crate(path: PathBuf) {
 	CRATE_FOLDERS
@@ -57,9 +62,9 @@ pub fn create_mod(path: &PathBuf) {
 	children
 		.map(|p| p.unwrap().path())
 		.filter(|p| !filename_starts_with_underscore(&p))
+		.filter(|c| !filename_included(c, IGNORE_FILES))
 		.map(|c| c.file_stem().unwrap().to_owned())
 		.map(|c| c.to_str().unwrap().to_owned())
-		.filter(|c| c != "mod")
 		.for_each(|c| {
 			str.push_str(&["mod ", &c[..], ";\npub use ", &c[..], "::*;\n"].join("")[..])
 		});

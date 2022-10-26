@@ -1,6 +1,5 @@
 use forky_core::testing::*;
 
-fn main() { run() }
 
 test!("expect", || {
 	expect(0).to_be(0);
