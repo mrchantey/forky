@@ -1,7 +1,17 @@
-use crate::*;
 use crate::testing::*;
+use crate::utility::CliArgs;
+use crate::*;
 use colorize::*;
+use std::path::PathBuf;
+use std::slice::Iter;
 use std::time::Instant;
+
+
+fn suite_in_args(path: &str, args: &Vec<String>) -> bool { args.iter().any(|a| path.contains(a)) }
+fn vec_contains_str(path: &str, args: &Vec<String>) -> bool { args.iter().any(|a| a == path) }
+fn arr_contains_str(path: &str, arr: &[&str]) -> bool { arr.iter().any(|a| *a == path) }
+
+const FLAGS: &'static [&str] = &["--ok"];
 
 pub fn run() -> Result<(), MatcherError> {
 	utility::Terminal::clear();
@@ -10,10 +20,22 @@ pub fn run() -> Result<(), MatcherError> {
 	let start_time = Instant::now();
 
 	let mut suite_results: Vec<TestSuiteResult> = Vec::new();
-	
+
 	println!(""); //sacrificial println
+
+	let mut args = CliArgs::get();
+	let mut flags = args.clone();
+	flags.retain(|v| arr_contains_str(v, FLAGS));
+	args.retain(|v| !arr_contains_str(v, FLAGS));
+	// let a = args.iter();
+	// if(a.)
+
 	for t in inventory::iter::<TestSuiteDesc> {
+		if args.len() > 0 && !suite_in_args(t.file, &args) {
+			continue;
+		}
 		let mut suite = TestSuite::new(t);
+		suite.print_runs();
 		(t.func)(&mut suite);
 		suite_results.push(suite.results());
 	}
@@ -30,6 +52,7 @@ pub fn run() -> Result<(), MatcherError> {
 				acc
 			});
 
+	println!("");
 	if combined_suite_results.failed == 0 {
 		log!("All tests passed".cyan().underlined());
 	}
@@ -48,8 +71,10 @@ pub fn run() -> Result<(), MatcherError> {
 	);
 	print_time(start_time);
 
-	//TODO allow force OK execution for less noise
-	// expect(suites_failed).to_be(0)?;
+	if vec_contains_str("--ok", &flags) {
+		return Ok(());
+	}
+	expect(suites_failed).to_be(0)?;
 	Ok(())
 }
 
@@ -69,7 +94,7 @@ fn print_summary(prefix: String, total: u32, failed: u32, skipped: Option<u32>) 
 }
 
 
-fn print_time(start:Instant){
+fn print_time(start: Instant) {
 	let millis = Instant::now().duration_since(start).as_millis();
 	let prefix = "Time:\t\t".bold();
 	if millis < 100 {

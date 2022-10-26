@@ -28,8 +28,8 @@ pub struct Matcher<T: Matchable + cmp::PartialEq + fmt::Display> {
 }
 
 impl Matcher<bool> {
-	pub fn to_be_true(&self) { self.equality_or_panic(true); }
-	pub fn to_be_false(&self) { self.equality_or_panic(false); }
+	pub fn to_be_true(&self) -> MatcherResult { self.to_be(true) }
+	pub fn to_be_false(&self) -> MatcherResult { self.to_be(false) }
 }
 
 impl<T: Matchable> Matcher<T> {
@@ -48,22 +48,6 @@ impl<T: Matchable> Matcher<T> {
 		}
 	}
 
-	pub fn equality_or_panic(&self, other: T) {
-		if !self.equality(other) {
-			let mut expected = self.value.to_string();
-			if self.negated {
-				expected.push_str(" (not)");
-			}
-			panic!(
-				"{}{}{}{}",
-				"Expected: ".bold(),
-				expected.bold().green(),
-				"\nReceived: ".bold(),
-				other.to_string().bold().red()
-			);
-		}
-	}
-
 	pub fn not(&mut self) -> &mut Self {
 		self.negated = !self.negated;
 		self
@@ -74,10 +58,10 @@ impl<T: Matchable> Matcher<T> {
 			Err(MatcherError {
 				message: format!(
 					"{}{}{}{}",
-					"Expected: ".bold(),
-					self.value.to_string().bold().green(),
-					"\nReceived: ".bold(),
-					other.to_string().bold().red()
+					"Expected: ",
+					self.value.to_string().green(),
+					"\nReceived: ",
+					other.to_string().red()
 				),
 			})
 		} else {

@@ -6,12 +6,14 @@ use crossterm::*;
 use gag::BufferRedirect;
 use std::io::{stdout, Read, Write};
 
-pub struct TestSuite<'a> {
-	desc: &'a TestSuiteDesc,
+pub struct TestSuite {
+	desc: &'static TestSuiteDesc,
 	num_tests: u32,
 	num_failed: u32,
 	num_skipped: u32,
 	log: String,
+	skip_next_test: bool,
+	pub quiet: bool,
 	// logger: TestLogger<'a>,
 }
 
@@ -24,13 +26,15 @@ pub struct TestSuiteResult {
 
 // const myFunc: 'static dyn FnMut() = ||{};
 
-impl<'a> TestSuite<'a> {
-	pub fn new(desc: &'a TestSuiteDesc) -> Self {
+impl TestSuite {
+	pub fn new(desc: &'static TestSuiteDesc) -> Self {
 		TestSuite {
 			desc,
 			log: String::new(),
 			// logger: TestLogger::new(desc.name, desc.file),
 			num_tests: 0,
+			quiet: false,
+			skip_next_test: false,
 			num_failed: 0,
 			num_skipped: 0,
 		}
@@ -42,37 +46,49 @@ impl<'a> TestSuite<'a> {
 		let file = _file.or_default().to_string().bold();
 		let path = &splt.join("\\").faint();
 		let middle = "\\".to_string().faint();
-		["", path, &middle, &file, " > ", self.desc.name].concat()
+		["", path, &middle, &file].concat()
 	}
 
 	pub fn skip(&mut self) -> &mut Self {
-		self.num_skipped = self.num_skipped + 1;
+		self.skip_next_test = true;
 		self
 	}
 
-	pub fn it<F>(&mut self, name: &'a str, func: F)
+	pub fn it<F>(&mut self, name: &str, func: F)
 	where
 		F: FnOnce() -> MatcherResult,
 	{
 		self.test(name, func);
 	}
-	pub fn test<F>(&mut self, name: &'a str, func: F)
+	pub fn test<F>(&mut self, name: &str, func: F)
 	where
 		F: FnOnce() -> MatcherResult,
 	{
-		let location = [" ", &self.get_location()[..], " > ", name].concat();
-
 		self.num_tests = self.num_tests + 1;
+		if self.skip_next_test {
+			self.num_skipped = self.num_skipped + 1;
+			self.skip_next_test = false;
+			return;
+		}
 
-
-		let mut buf = BufferRedirect::stdout().unwrap();
+		let buf = BufferRedirect::stdout();
 		let res = func();
-		// let mut output = String::new();
-		buf.read_to_string(&mut self.log).unwrap();
-		drop(buf);
+		if buf.is_ok(){
+			let mut bb = buf.unwrap();
+			bb.read_to_string(&mut self.log).unwrap();
+			drop(bb);
+		}
+
 		if let Some(err) = res.err() {
 			self.num_failed = self.num_failed + 1;
+			self.log.push_str(
+				&["\n● ", self.desc.name, " > ", name, "\n\n"]
+					.concat()
+					.red()
+					.bold()[..],
+			);
 			self.log.push_str(&err.message[..]);
+			self.log.push_str("\n\n");
 		}
 	}
 
@@ -83,6 +99,9 @@ impl<'a> TestSuite<'a> {
 	}
 
 	pub fn print_log(&self) {
+		if self.quiet {
+			return;
+		}
 		let mut stdout = stdout();
 
 		stdout.execute(cursor::MoveUp(1)).unwrap();
@@ -93,9 +112,8 @@ impl<'a> TestSuite<'a> {
 		} else {
 			" FAIL ".black().bold().redb()
 		};
-		prefix.push_str(&self.get_location()[..]);
+		prefix.push_str(&[&" ", &self.get_location()[..], "\n", &self.log[..]].concat()[..]);
 		stdout.write(prefix.as_bytes()).unwrap();
-		stdout.write(self.log.as_bytes()).unwrap();
 	}
 
 	pub fn results(&self) -> TestSuiteResult {
