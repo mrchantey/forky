@@ -1,5 +1,5 @@
 use std::{array, fs, path::Path, path::PathBuf};
-
+use forky_core::*;
 
 pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
 	let acc: Vec<PathBuf> = Vec::new();
@@ -39,7 +39,7 @@ pub fn run_for_crate_folder(path: PathBuf) {
 pub fn run_for_crate(path: PathBuf) {
 	["src", "examples", "tests"]
 		.iter()
-		.map(|s| path.clone().join(s))
+		.map(|s| PathBuf::push_with(&path, s))
 		.for_each(run_for_crate_folder)
 }
 
@@ -59,19 +59,13 @@ pub fn create_mod(path: &PathBuf) {
 	mod_path.push("mod.rs");
 	// let mod_path = Path::from(&path.to_str());
 	// path.push("mod.rs");
-	fs::write(&mod_path, str).unwrap();
+	// fs::write(&mod_path, str).unwrap();
 	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
 
 pub fn run_auto_mod() {
-	// let paths = fs::read_dir("./crates").unwrap().map(|val|{
-	// 	val
-	// });
 	fs::read_dir("crates")
 		.unwrap()
 		.map(|e| e.unwrap().path())
 		.for_each(|p| run_for_crate(p));
-	// .filter_map(|p| p);
-	// .filter(|p| p.is_some());
-	// .map(|p| Some(p));
 }

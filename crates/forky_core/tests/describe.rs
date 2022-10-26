@@ -1,5 +1,5 @@
-use core::testing::*;
-use core::*;
+use forky_core::testing::*;
+use forky_core::*;
 fn main() { run(); }
 
 pub struct Vec2 {

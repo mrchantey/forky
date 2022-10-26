@@ -5,6 +5,6 @@ edition = "2021"
 
 
 [dependencies]
-core = {path = "../core"}
+forky_core = {path = "../forky_core"}
 bevy = {workspace = true}
 bevy-inspector-egui = {workspace = true}

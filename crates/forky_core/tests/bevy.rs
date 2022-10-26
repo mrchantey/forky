@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use core::testing::*;
+use forky_core::testing::*;
 
 
 struct Score(u32);

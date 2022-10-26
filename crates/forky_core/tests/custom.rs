@@ -1,5 +1,4 @@
-use core::testing::*;
-use core::*;
+use forky_core::testing::*;
 
 fn main() { run() }
 
