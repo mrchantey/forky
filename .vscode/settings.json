@@ -1,6 +1,6 @@
 {
-	// "files.autoSave": "afterDelay",
-	// "files.autoSaveDelay": 20,
+	"files.autoSave": "afterDelay",
+	"files.autoSaveDelay": 20,
 	"files.exclude": {
 		"**/.git": true,
 		"**/.svn": true,
