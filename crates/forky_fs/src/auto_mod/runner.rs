@@ -62,9 +62,10 @@ pub fn create_mod(path: &PathBuf) {
 	children
 		.map(|p| p.unwrap().path())
 		.filter(|p| !filename_starts_with_underscore(&p))
-		.filter(|c| !filename_included(c, IGNORE_FILES))
+		// .filter(|c| !filename_included(c, IGNORE_FILES))
 		.map(|c| c.file_stem().unwrap().to_owned())
 		.map(|c| c.to_str().unwrap().to_owned())
+		.filter(|c|c != "mod")
 		.for_each(|c| {
 			str.push_str(&["mod ", &c[..], ";\npub use ", &c[..], "::*;\n"].join("")[..])
 		});
@@ -72,7 +73,7 @@ pub fn create_mod(path: &PathBuf) {
 	mod_path.push("mod.rs");
 	// let mod_path = Path::from(&path.to_str());
 	// path.push("mod.rs");
-	fs::write(&mod_path, str).unwrap();
+	// fs::write(&mod_path, str).unwrap();
 	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
 
