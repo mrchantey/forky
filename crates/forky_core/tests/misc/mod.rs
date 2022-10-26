@@ -10,5 +10,7 @@ mod describe;
 pub use describe::*;
 mod log;
 pub use log::*;
+mod macros;
+pub use macros::*;
 mod test;
 pub use test::*;
