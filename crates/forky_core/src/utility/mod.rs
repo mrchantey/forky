@@ -1,5 +1,7 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
 
+mod cli_args;
+pub use cli_args::*;
 mod macros;
 pub use macros::*;
 mod project_root;
