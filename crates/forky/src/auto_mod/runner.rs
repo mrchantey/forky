@@ -16,37 +16,46 @@ pub fn _read_dir_recursive(mut acc: Vec<PathBuf>, path: PathBuf) -> Vec<PathBuf>
 		.fold(acc, _read_dir_recursive)
 }
 
+fn filename_starts_with_underscore(p: &PathBuf) -> bool {
+	p.file_name()
+		.unwrap()
+		.to_str()
+		.unwrap()
+		.chars()
+		.next()
+		.unwrap()
+		!= '_'
+}
 
 
 pub fn run_for_crate(path: PathBuf) {
 	let child = path.join("src");
-	let mut paths = read_dir_recursive(child)
+	read_dir_recursive(child)
 		.into_iter()
-		.filter(|p| p.file_stem().unwrap() != "src");
-	// paths.for
-	create_mod(&paths.next().unwrap());
-	// for path in paths {
-	// 	println!("Name: {}", path.display());
-	// }
+		.filter(|p| p.file_stem().unwrap() != "src")
+		.filter(|p| !filename_starts_with_underscore(p))
+		.for_each(|p| create_mod(&p));
+	// create_mod(&paths.next().unwrap());
 }
 
 pub fn create_mod(path: &PathBuf) {
 	let children = fs::read_dir(&path).unwrap();
 	let mut str = String::from("#![allow(dead_code, unused_imports, unused_variables)]\n\n");
 	children
-		.map(|c| c.unwrap().path())
+		.map(|p| p.unwrap().path())
+		.filter(|p| !filename_starts_with_underscore(&p))
 		.map(|c| c.file_stem().unwrap().to_owned())
 		.map(|c| c.to_str().unwrap().to_owned())
+		.filter(|c| c != "mod")
 		.for_each(|c| {
 			str.push_str(&["mod ", &c[..], ";\npub use ", &c[..], "::*;\n"].join("")[..])
 		});
-	// println!("{}", str);
 	let mut mod_path = path.clone();
 	mod_path.push("mod.rs");
 	// let mod_path = Path::from(&path.to_str());
 	// path.push("mod.rs");
 	fs::write(&mod_path, str).unwrap();
-	println!("wrote to {}", &path.to_str().unwrap());
+	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
 
 pub fn run_auto_mod() {
