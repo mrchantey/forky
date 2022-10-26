@@ -28,18 +28,21 @@ fn filename_starts_with_underscore(p: &PathBuf) -> bool {
 }
 
 
+
 pub fn run_for_crate_folder(path: PathBuf) {
 	// println!("{}");
 	// log!(path.to_str().unwrap());
 	read_dir_recursive(path)
 		.into_iter()
-		.filter(|p| p.file_stem().unwrap() != "src")
+		.filter(|p| CRATE_FOLDERS.iter().all(|f|p.file_stem().unwrap() != *f))
 		.filter(|p| !filename_starts_with_underscore(p))
 		.for_each(|p| create_mod(&p));
 }
 
+const CRATE_FOLDERS:&'static [&str] = &["src", "examples", "tests"];
+
 pub fn run_for_crate(path: PathBuf) {
-	["src", "examples", "tests"]
+	CRATE_FOLDERS
 		.iter()
 		.map(|s| PathBuf::push_with(&path, s))
 		.for_each(run_for_crate_folder)
@@ -67,6 +70,7 @@ pub fn create_mod(path: &PathBuf) {
 	fs::write(&mod_path, str).unwrap();
 	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
+
 
 pub fn run_auto_mod() {
 	fs::read_dir("crates")
