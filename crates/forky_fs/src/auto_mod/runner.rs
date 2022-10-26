@@ -33,17 +33,15 @@ fn filename_included(p:&PathBuf,arr: &[&str])->bool{
 
 
 pub fn run_for_crate_folder(path: PathBuf) {
-	// println!("{}");
-	// log!(path.to_str().unwrap());
 	read_dir_recursive(path)
 		.into_iter()
-		.filter(|p| !filename_included(p, NO_MOD_FOLDERS))
+		.filter(|p| !filename_included(p, CRATE_FOLDERS))
 		.filter(|p| !filename_starts_with_underscore(p))
 		.for_each(|p| create_mod(&p));
 }
 
 const CRATE_FOLDERS:&'static [&str] = &["src", "examples", "tests"];
-const NO_MOD_FOLDERS:&'static [&str] = &["src", "examples"];
+// const NO_MOD_FOLDERS:&'static [&str] = &["src", "examples"];
 const IGNORE_FILES:&'static [&str] = &["mod", "lib","main"];
 
 pub fn run_for_crate(path: PathBuf) {
@@ -73,8 +71,8 @@ pub fn create_mod(path: &PathBuf) {
 	mod_path.push("mod.rs");
 	// let mod_path = Path::from(&path.to_str());
 	// path.push("mod.rs");
-	// fs::write(&mod_path, str).unwrap();
-	println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
+	fs::write(&mod_path, str).unwrap();
+	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
 
 

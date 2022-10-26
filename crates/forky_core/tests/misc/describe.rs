@@ -29,11 +29,10 @@ describe!("test runner", |s| {
 
 	s.test("twice", || {
 		let val = long_fn();
-		log!(val);
 		let mut v = setup();
 		v.x = v.x + 1.;
-		println!("here in twice");
-		expect(v.x).to_be(0.)?;
+		// println!("here in twice");
+		expect(v.x).to_be(1.)?;
 		Ok(())
 	});
 

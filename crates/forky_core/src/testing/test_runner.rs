@@ -3,14 +3,14 @@ use crate::*;
 use colorize::*;
 use std::time::Instant;
 pub fn run() {
-	log!("\n🤘 running tests 🤘\n");
+	log!("\n🤘 lets get forky! 🤘\n");
 	// override_panic();
 
 	let start_time = Instant::now();
 
 	let mut suite_results: Vec<TestSuiteResult> = Vec::new();
+	println!("");//sacrificial println
 	for t in inventory::iter::<TestSuiteDesc> {
-		println!("");//sacrificial println
 		let mut suite = TestSuite::new(t);
 		(t.func)(&mut suite);
 		suite_results.push(suite.results());
@@ -48,8 +48,12 @@ pub fn run() {
 
 	//TIME
 	let millis = Instant::now().duration_since(start_time).as_millis();
-	let seconds = millis as f32 * 0.001;
-	log!("Time:\t\t".bold() seconds "s");
+	let prefix = "Time:\t\t".bold();
+	if millis < 100 {
+		println!("{}{} ms",prefix,millis);
+	}else{
+		println!("{}{:.2} s",prefix,millis as f32 * 0.001);
+	}
 }
 
 fn print_summary(prefix: String, total: u32, failed: u32, skipped: Option<u32>) {
