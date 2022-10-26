@@ -1,5 +1,5 @@
-use std::{array, fs, path::Path, path::PathBuf};
 use forky_core::*;
+use std::{array, fs, path::Path, path::PathBuf};
 
 pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
 	let acc: Vec<PathBuf> = Vec::new();
@@ -24,11 +24,13 @@ fn filename_starts_with_underscore(p: &PathBuf) -> bool {
 		.chars()
 		.next()
 		.unwrap()
-		!= '_'
+		== '_'
 }
 
 
 pub fn run_for_crate_folder(path: PathBuf) {
+	// println!("{}");
+	// log!(path.to_str().unwrap());
 	read_dir_recursive(path)
 		.into_iter()
 		.filter(|p| p.file_stem().unwrap() != "src")
@@ -59,7 +61,7 @@ pub fn create_mod(path: &PathBuf) {
 	mod_path.push("mod.rs");
 	// let mod_path = Path::from(&path.to_str());
 	// path.push("mod.rs");
-	// fs::write(&mod_path, str).unwrap();
+	fs::write(&mod_path, str).unwrap();
 	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
 
