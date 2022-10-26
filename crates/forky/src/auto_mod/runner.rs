@@ -1,4 +1,4 @@
-use std::{fs, path::Path, path::PathBuf};
+use std::{array, fs, path::Path, path::PathBuf};
 
 
 pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
@@ -28,14 +28,19 @@ fn filename_starts_with_underscore(p: &PathBuf) -> bool {
 }
 
 
-pub fn run_for_crate(path: PathBuf) {
-	let child = path.join("src");
-	read_dir_recursive(child)
+pub fn run_for_crate_folder(path: PathBuf) {
+	read_dir_recursive(path)
 		.into_iter()
 		.filter(|p| p.file_stem().unwrap() != "src")
 		.filter(|p| !filename_starts_with_underscore(p))
 		.for_each(|p| create_mod(&p));
-	// create_mod(&paths.next().unwrap());
+}
+
+pub fn run_for_crate(path: PathBuf) {
+	["src", "examples", "tests"]
+		.iter()
+		.map(|s| path.clone().join(s))
+		.for_each(run_for_crate_folder)
 }
 
 pub fn create_mod(path: &PathBuf) {
