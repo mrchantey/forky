@@ -1,7 +1,7 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_core forky_cli forky_test'
+crates := 'forky forky_core forky_cli forky_test forky_play'
 
 
 default:
@@ -31,7 +31,7 @@ js:
 	done
 
 publish crate:
-	cargo publish --dry-run -p {{crate}} --allow-dirty	
+	cargo publish -p {{crate}} --allow-dirty
 
 @log argument:
 	echo {{argument}}

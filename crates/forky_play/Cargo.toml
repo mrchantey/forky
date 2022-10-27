@@ -1,13 +1,16 @@
 [package]
 name = "forky_play"
-version = "0.1.0"
-edition = "2021"
-
+version = {workspace=true}
+edition = {workspace=true}
+license-file = {workspace=true}
+readme = {workspace=true}
+description = {workspace=true}
+repository = {workspace=true}
 
 [dependencies]
-forky_core = {path = "../forky_core"}
+forky_core = {workspace = true }
 bevy = {workspace = true}
 bevy-inspector-egui = {workspace = true}
 
 [dev-dependencies]
-forky_test = {path = "../forky_test"}
+forky_test = {workspace = true }

@@ -5,6 +5,13 @@ resolver = "2" # Important! wgpu/Bevy needs this!
 members = [
 	"crates/*"
 ]
+[workspace.package]
+version = "0.1.1"
+edition = "2021"
+license-file = "LICENSE"
+readme = "README.md"
+description = "Rust Utilities"
+repository = "https://github.com/mrchantey/forky"
 
 # Enable a small amount of optimization in debug mode
 [profile.dev]
@@ -17,7 +24,13 @@ opt-level = 3
 # bevy = "0.8.1"
 # dynamic currently not supported on windows
 [workspace.dependencies]
-bevy = { version = "0.8.1", features = ["dynamic"] }
+forky = {path = "./crates/forky", version = "0.1.1" }
+forky_core = {path = "./crates/forky_core", version = "0.1.1" }
+forky_cli = {path = "./crates/forky_cli", version = "0.1.1" }
+forky_esp = {path = "./crates/forky_esp", version = "0.1.1" }
+forky_test = {path = "./crates/forky_test", version = "0.1.1" }
+# bevy = { version = "0.8.1", features = ["dynamic"] }
+bevy = { version = "0.8.1" }
 bevy-inspector-egui = "0.13.0"
 inventory = "0.3.2"
 notify = "5.0.0-pre.15"

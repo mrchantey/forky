@@ -1,15 +1,21 @@
 # Forky Test
 
-*Super early beta mode warning!!!*
+> *At this stage Forky is really just a proof of concept, do not use seriously!*
 
 Basically a [jest](https://jestjs.io/) clone, the `forky_test` crate will set you up with a beautiful test harness and intuitive matchers that are easy on the eyes.
-- Features
-	- Pretty success messages
-  ![success](../../docs/images/success.png)
-	- In progress indicator
-  	![progress](../../docs/images/progress.png)
-	- Failure context logging
-  	![failure](../../docs/images/failure.png)
+## Features
+
+### Pretty success messages
+
+![success](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/success.png)
+
+### In progress indication
+
+![progress](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/progress.png)
+
+### Failure context
+
+![failure](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/failure.png)
 
 ## Getting started
 Add the following files:

@@ -1,10 +1,14 @@
 [package]
 name = "forky_test"
-version = "0.1.0"
-edition = "2021"
+version = {workspace=true}
+edition = {workspace=true}
+license-file = {workspace=true}
+readme = "README.md"
+description = {workspace=true}
+repository = {workspace=true}
 
 [dependencies]
-forky_core = {path = "../forky_core"}
+forky_core = {workspace = true}
 inventory = {workspace = true}
 crossterm = {workspace = true}
 colorize = "0.1.0"

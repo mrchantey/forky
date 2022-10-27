@@ -1,5 +1,7 @@
 # Forky CLI
 
+> *At this stage Forky is really just a proof of concept, do not use seriously!*
+
 Various utilities to ease some of the repetitious work that comes with managing crates.
 
 ```auto_mod```
