@@ -21,3 +21,4 @@ bevy = { version = "0.8.1", features = ["dynamic"] }
 bevy-inspector-egui = "0.13.0"
 inventory = "0.3.2"
 notify = "5.0.0-pre.15"
+crossterm = "0.25.0"

@@ -1,16 +1,37 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
+set positional-arguments
 
-run:
-	pwd
+crates := 'forky forky_core forky_cli forky_test'
 
-do-thing: run
-	dood
 
-test-core: 
-	RUST_BACKTRACE=full cargo watch -q -x 'test -p forky_core --test forky -- -w'
+default:
+	just --list
 
-auto-mod: 
-	cargo watch -q --ignore '**/mod.rs' -x 'run -p forky_fs'
+test crate:
+	RUST_BACKTRACE=full cargo watch -q -x 'test -p {{crate}} --test forky -- -w'
 
-clean: 
-	cargo clean -p forky_core && cargo clean -p forky_fs
+all command:
+	for file in {{crates}}; do \
+		just {{command}} $file; \
+	done
+
+mod: 
+	cargo watch -q --ignore '**/mod.rs' -x 'run -p forky_cli'
+
+clean crate:
+	cargo clean -p {{crate}}
+
+js:
+	#!/usr/bin/env node
+	console.log('Greetings from JavaScript!')
+@list-crates:
+	printf "my crates:\n\n"
+	for file in {{crates}}; do \
+		echo $file; \
+	done
+
+publish crate:
+	cargo publish --dry-run -p {{crate}} --allow-dirty	
+
+@log argument:
+	echo {{argument}}

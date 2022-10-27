@@ -1,7 +1,6 @@
 use forky_test::*;
-mod misc;
+mod test_runner;
 
 fn main() -> Result<(), MatcherError> {
-	TestRunner::run()?;
-	Ok(())
+	TestRunner::run()
 }

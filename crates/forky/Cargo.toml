@@ -1,9 +1,10 @@
 [package]
 name = "forky"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license-file = "../../LICENSE"
+readme = "../../README.md"
 description = "Rust Utilities"
-repository = "https://github.com/mrchantey/forky.git"
+repository = "https://github.com/mrchantey/forky"
 
 [dependencies]

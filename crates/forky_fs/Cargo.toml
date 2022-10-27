@@ -1,9 +1,0 @@
-[package]
-name = "forky_fs"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-forky_core = {path = "../forky_core"}
-notify = {workspace = true}
-# notify-debouncer-mini = {workspace = true}

@@ -1,5 +1,5 @@
-use forky_core::testing::*;
 use forky_core::*;
+use forky_test::*;
 
 
 describe!("macros", |s| {
@@ -7,7 +7,7 @@ describe!("macros", |s| {
 		log!(1 " is better than " 0);
 		Ok(())
 	});
-	
+
 
 	s.test("tern!", || {
 		let a = tern!(0 < 1; "foo";"bar");

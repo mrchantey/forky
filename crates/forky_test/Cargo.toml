@@ -1,0 +1,17 @@
+[package]
+name = "forky_test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+forky_core = {path = "../forky_core"}
+inventory = {workspace = true}
+crossterm = {workspace = true}
+colorize = "0.1.0"
+gag = "1.0.0"
+backtrace = "0.3.66"
+
+[[test]]
+name = "forky"
+path = "tests/main.rs"
+harness = false
