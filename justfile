@@ -30,6 +30,7 @@ js:
 		echo $file; \
 	done
 
+# publishing all will not work because of equal dependency race
 publish crate:
 	cargo publish -p {{crate}} --allow-dirty
 
