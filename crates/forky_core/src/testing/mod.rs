@@ -1,5 +1,9 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
 
+mod backtracer;
+pub use backtracer::*;
+mod backtrace_file;
+pub use backtrace_file::*;
 mod macros;
 pub use macros::*;
 mod matcher;

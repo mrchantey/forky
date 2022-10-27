@@ -1,7 +1,0 @@
-{
-	"scripts": {
-		"test-core": "cargo watch -q -x \"test -p forky_core --test forky\"",
-		"auto-mod": "cargo watch -q --ignore \"**/mod.rs\" -x \"run -p forky_fs\"",
-		"clean": "cargo clean -p forky_core && cargo clean -p forky_fs"
-	}
-}

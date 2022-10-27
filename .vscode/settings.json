@@ -17,6 +17,6 @@
 		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
 		"*.jsx": "${capture}.js",
 		"tsconfig.json": "tsconfig.*.json",
-		"Cargo.toml": "Cargo.toml, Cargo.lock, rustfmt.toml, .gitignore, README.md, LICENSE"
+		"Cargo.toml": "Cargo.toml, Cargo.lock, rustfmt.toml, .gitignore, README.md, LICENSE, justfile"
 	},
 }

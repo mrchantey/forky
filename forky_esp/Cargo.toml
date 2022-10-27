@@ -1,0 +1,7 @@
+[package]
+name = "forky_esp"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+forky_core = {path = "../forky_core"}

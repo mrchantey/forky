@@ -2,6 +2,7 @@ use colorize::*;
 use std::cmp;
 use std::fmt;
 
+use super::Backtracer;
 use super::MatcherError;
 use super::MatcherResult;
 pub trait Matchable: cmp::PartialEq + fmt::Display + std::marker::Copy {}
@@ -55,13 +56,16 @@ impl<T: Matchable> Matcher<T> {
 
 	pub fn to_be(&self, other: T) -> MatcherResult {
 		if !self.equality(other) {
+			// Backtracer::trace_all();
 			Err(MatcherError {
 				message: format!(
-					"{}{}{}{}",
+					"{}{}{}{}\n\n{}",
 					"Expected: ",
 					self.value.to_string().green(),
 					"\nReceived: ",
-					other.to_string().red()
+					other.to_string().red(),
+					Backtracer::file_context_depth(1),
+					// Backtracer::file_context_depth(2),
 				),
 			})
 		} else {

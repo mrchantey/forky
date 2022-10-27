@@ -11,86 +11,110 @@ fn suite_in_args(path: &str, args: &Vec<String>) -> bool { args.iter().any(|a| p
 fn vec_contains_str(path: &str, args: &Vec<String>) -> bool { args.iter().any(|a| a == path) }
 fn arr_contains_str(path: &str, arr: &[&str]) -> bool { arr.iter().any(|a| *a == path) }
 
-const FLAGS: &'static [&str] = &["--ok"];
+const FLAGS: &'static [&str] = &["-w"];
 
-pub fn run() -> Result<(), MatcherError> {
-	utility::Terminal::clear();
-	log!("\n🤘 lets get forky! 🤘\n");
-
-	let start_time = Instant::now();
-
-	let mut suite_results: Vec<TestSuiteResult> = Vec::new();
-
-	println!(""); //sacrificial println
-
-	let mut args = CliArgs::get();
-	let mut flags = args.clone();
-	flags.retain(|v| arr_contains_str(v, FLAGS));
-	args.retain(|v| !arr_contains_str(v, FLAGS));
-	// let a = args.iter();
-	// if(a.)
-
-	for t in inventory::iter::<TestSuiteDesc> {
-		if args.len() > 0 && !suite_in_args(t.file, &args) {
-			continue;
-		}
-		let mut suite = TestSuite::new(t);
-		suite.print_runs();
-		(t.func)(&mut suite);
-		suite_results.push(suite.results());
-	}
-	let mut suites_failed = 0;
-	let combined_suite_results =
-		suite_results
-			.iter()
-			.fold(TestSuiteResult::default(), |mut acc, item| {
-				acc.tests += item.tests;
-				acc.failed += item.failed;
-				if item.failed > 0 {
-					suites_failed = suites_failed + 1
-				}
-				acc
-			});
-
-	println!("");
-	if combined_suite_results.failed == 0 {
-		log!("All tests passed".cyan().underlined());
-	}
-
-	print_summary(
-		"Test Suites:\t".to_string(),
-		suite_results.len() as u32,
-		suites_failed,
-		None,
-	);
-	print_summary(
-		"Tests:\t\t".to_string(),
-		combined_suite_results.tests,
-		combined_suite_results.failed,
-		None,
-	);
-	print_time(start_time);
-
-	if vec_contains_str("--ok", &flags) {
-		return Ok(());
-	}
-	expect(suites_failed).to_be(0)?;
-	Ok(())
+struct Args {
+	watch: bool,
+	files: Vec<String>,
 }
 
-fn print_summary(prefix: String, total: u32, failed: u32, skipped: Option<u32>) {
-	let skipped = skipped.unwrap_or(0);
+pub struct TestRunner {}
+
+
+impl TestRunner {
+	pub fn run() -> Result<(), MatcherError> {
+		let args = parse_args();
+		if args.watch {
+			utility::Terminal::clear()
+		}
+		log!("\n🤘 lets get forky! 🤘\n");
+
+		let start_time = Instant::now();
+		let mut suite_results: Vec<TestSuiteResult> = Vec::new();
+		let mut desc_arr: Vec<&TestSuiteDesc> = Vec::new();
+		for t in inventory::iter::<TestSuiteDesc> {
+			desc_arr.push(t);
+		}
+		desc_arr.sort_by(|a, b| a.file.cmp(&b.file));
+
+		for t in desc_arr {
+			if args.files.len() > 0 && !suite_in_args(t.file, &args.files) {
+				continue;
+			}
+			let mut suite = TestSuite::new(t);
+			suite.print_runs();
+			(t.func)(&mut suite);
+			suite_results.push(suite.results());
+		}
+		let mut suites_failed = 0;
+		let combined_suite_results =
+			suite_results
+				.iter()
+				.fold(TestSuiteResult::default(), |mut acc, item| {
+					acc.tests += item.tests;
+					acc.failed += item.failed;
+					acc.skipped += item.skipped;
+					if item.failed > 0 {
+						suites_failed = suites_failed + 1
+					}
+					acc
+				});
+
+		println!("");
+		if combined_suite_results.failed == 0 {
+			log!("All tests passed\n".bold().cyan().underlined());
+		}
+
+		print_summary(
+			"Test Suites:\t".to_string(),
+			suite_results.len() as u32,
+			suites_failed,
+			0,
+		);
+		print_summary(
+			"Tests:\t\t".to_string(),
+			combined_suite_results.tests,
+			combined_suite_results.failed,
+			combined_suite_results.skipped,
+		);
+		print_time(start_time);
+
+		if args.watch {
+			return Ok(());
+		}
+		expect(suites_failed).to_be(0)?;
+		Ok(())
+	}
+}
+
+fn parse_args() -> Args {
+	let mut args = CliArgs::get();
+
+	let watch = tern!(vec_contains_str("-w", &args);true;false);
+	args.retain(|v| !arr_contains_str(v, FLAGS));
+	Args { watch, files: args }
+}
+
+
+
+fn print_summary(prefix: String, total: u32, failed: u32, skipped: u32) {
 	let passed = total - failed - skipped;
+	let mut summaries: Vec<&str> = Vec::new();
 	let passed_str = format!("{passed} passed").bold().green();
-	let summary = if failed > 0 {
-		let failed_str = format!("{failed} failed").bold().red();
-		let total_str = format!("{passed} of {total} total");
-		[failed_str, passed_str, total_str].join(", ")
-	} else {
-		let total_str = format!("{total} total");
-		[passed_str, total_str].join(", ")
-	};
-	log!(prefix.bold() summary);
+	let skipped_str = format!("{skipped} skipped").bold().yellow();
+	let failed_str = format!("{failed} failed").bold().red();
+	let total_str =
+		tern!(passed == total;format!("{total} total");format!("{passed} of {total} total"));
+	if failed > 0 {
+		summaries.push(&failed_str);
+	}
+	if skipped > 0 {
+		summaries.push(&skipped_str);
+	}
+	summaries.push(&passed_str);
+	summaries.push(&total_str);
+
+	log!(prefix.bold() summaries.join(", "));
 }
 
 

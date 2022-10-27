@@ -15,4 +15,9 @@ describe!("bevy", |s| {
 		expect(app.world.resource::<Score>().0).to_be(1)?;
 		Ok(())
 	});
+
+	// s.it("is awesome",||{
+	// 	expect(0).to_be(1)?;
+	// 	Ok(())
+	// });
 });

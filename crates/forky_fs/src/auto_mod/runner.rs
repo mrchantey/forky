@@ -1,4 +1,4 @@
-use forky_core::*;
+use forky_core::{utility::Terminal, *};
 use std::{array, fs, path::Path, path::PathBuf};
 
 pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
@@ -27,8 +27,8 @@ fn filename_starts_with_underscore(p: &PathBuf) -> bool {
 		== '_'
 }
 
-fn filename_included(p:&PathBuf,arr: &[&str])->bool{
-	arr.iter().any(|f|p.file_stem().unwrap() == *f)
+fn filename_included(p: &PathBuf, arr: &[&str]) -> bool {
+	arr.iter().any(|f| p.file_stem().unwrap() == *f)
 }
 
 
@@ -40,9 +40,9 @@ pub fn run_for_crate_folder(path: PathBuf) {
 		.for_each(|p| create_mod(&p));
 }
 
-const CRATE_FOLDERS:&'static [&str] = &["src", "examples", "tests"];
+const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests"];
 // const NO_MOD_FOLDERS:&'static [&str] = &["src", "examples"];
-const IGNORE_FILES:&'static [&str] = &["mod", "lib","main"];
+const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main"];
 
 pub fn run_for_crate(path: PathBuf) {
 	CRATE_FOLDERS
@@ -72,11 +72,14 @@ pub fn create_mod(path: &PathBuf) {
 	// let mod_path = Path::from(&path.to_str());
 	// path.push("mod.rs");
 	fs::write(&mod_path, str).unwrap();
+	println!("created mod file: {}", &mod_path.to_str().unwrap());
 	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
 
 
+
 pub fn run_auto_mod() {
+	Terminal::init();
 	fs::read_dir("crates")
 		.unwrap()
 		.map(|e| e.unwrap().path())
