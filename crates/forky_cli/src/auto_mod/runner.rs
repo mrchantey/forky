@@ -86,7 +86,7 @@ pub fn create_mod(path: &PathBuf) {
 	mod_path.push("mod.rs");
 	// let mod_path = Path::from(&path.to_str());
 	// path.push("mod.rs");
-	fs::write(&mod_path, str).unwrap();
-	println!("created mod file: {}", &mod_path.to_str().unwrap());
-	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
+	// fs::write(&mod_path, str).unwrap();
+	// println!("created mod file: {}", &mod_path.to_str().unwrap());
+	println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
