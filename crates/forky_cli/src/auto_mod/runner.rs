@@ -26,15 +26,9 @@ pub fn _read_dir_recursive(mut acc: Vec<PathBuf>, path: PathBuf) -> Vec<PathBuf>
 		.fold(acc, _read_dir_recursive)
 }
 
-fn filename_starts_with_underscore(p: &PathBuf) -> bool {
-	p.file_name()
-		.unwrap()
-		.to_str()
-		.unwrap()
-		.chars()
-		.next()
-		.unwrap()
-		== '_'
+fn filename_starts_with_underscore(p: &PathBuf) -> bool { p.file_name().str().first() == '_' }
+fn filename_starts_with_uppercase(p: &PathBuf) -> bool {
+	p.file_name().str().first().is_ascii_uppercase()
 }
 
 fn filename_included(p: &PathBuf, arr: &[&str]) -> bool {
@@ -50,7 +44,7 @@ pub fn run_for_crate_folder(path: PathBuf) {
 		.for_each(|p| create_mod(&p));
 }
 
-const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests","test"];
+const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
 // const NO_MOD_FOLDERS:&'static [&str] = &["src", "examples"];
 const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main"];
 
@@ -71,18 +65,22 @@ pub fn create_mod(path: &PathBuf) {
 		.map(|p| p.unwrap().path())
 		.filter(|p| !filename_starts_with_underscore(&p))
 		.filter(|c| !filename_included(c, IGNORE_FILES))
-		.map(|c| c.file_stem().unwrap().to_owned())
-		.map(|c| c.to_str().unwrap().to_owned())
+		// .map(|c| c.file_stem().unwrap().to_owned())
+		// .map(|c| c.to_str().unwrap().to_owned())
 		// .filter(|c|c != "mod")
-		.for_each(|c| {
-			str.push_str(&["mod ", &c[..], ";\npub use ", &c[..], "::*;\n"].join("")[..])
-		});
 		// .for_each(|c| {
-		// 	let stem = c.file_stem().unwrap();
-		// 	let name = stem.to_str().unwrap().to_owned();
-		// 	if(filename_ends_with_underscore(c)){}
-		// 	str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..])
+		// 	// if c.
+		// 	str.push_str(&["mod ", &c[..], ";\npub use ", &c[..], "::*;\n"].join("")[..])
 		// });
+		.for_each(|c| {
+			let stem = c.file_stem().unwrap();
+			let name = stem.to_str().unwrap().to_owned();
+			if filename_starts_with_uppercase(&c) {
+				str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..])
+			}else{
+				str.push_str(&["pub mod ", &name[..],"\n"].join("")[..])
+			}
+		});
 
 	let mut mod_path = path.clone();
 	mod_path.push("mod.rs");
@@ -92,4 +90,3 @@ pub fn create_mod(path: &PathBuf) {
 	println!("created mod file: {}", &mod_path.to_str().unwrap());
 	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
-
