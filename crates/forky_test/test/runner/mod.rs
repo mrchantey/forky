@@ -2,6 +2,8 @@
 
 mod backtrace_test;
 pub use backtrace_test::*;
+mod matcher;
+pub use matcher::*;
 mod slow_fn;
 pub use slow_fn::*;
 mod test_suite;

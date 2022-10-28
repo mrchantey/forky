@@ -27,6 +27,7 @@ pub fn _read_dir_recursive(mut acc: Vec<PathBuf>, path: PathBuf) -> Vec<PathBuf>
 }
 
 fn filename_starts_with_underscore(p: &PathBuf) -> bool { p.file_name().str().first() == '_' }
+fn filename_contains_double_underscore(p: &PathBuf) -> bool { p.file_name().str().contains("__") }
 fn filename_starts_with_uppercase(p: &PathBuf) -> bool {
 	p.file_name().str().first().is_ascii_uppercase()
 }
@@ -36,11 +37,11 @@ fn filename_included(p: &PathBuf, arr: &[&str]) -> bool {
 }
 
 
-pub fn run_for_crate_folder<'a>(path: PathBuf) {
+pub fn run_for_crate_folder(path: PathBuf) {
 	read_dir_recursive(path)
 		.into_iter()
 		// .filter(|p| !filename_included(p, CRATE_FOLDERS))
-		.filter(|p| !filename_starts_with_underscore(p))
+		// .filter(|p| !filename_starts_with_underscore(p))
 		.map(|p| (create_mod_text(&p), p))
 		.for_each(|(c, p)| save_to_file(&p, c))
 }
@@ -72,6 +73,8 @@ const PREFIX: &str =
 
 pub fn create_mod_text(path: &PathBuf) -> String {
 	let children = fs::read_dir(&path).unwrap();
+	let dir_is_double_underscore = filename_contains_double_underscore(&path);
+
 	let mut str = String::from(PREFIX);
 	children
 		.map(|p| p.unwrap().path())
@@ -87,11 +90,11 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 		.for_each(|c| {
 			let stem = c.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
-			// if filename_starts_with_uppercase(&c) {
-			// str.push_str(&["pub mod ", &name[..], ";\n"].join("")[..]);
-			// }else{
-			str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..]);
-			// }
+			if filename_starts_with_underscore(&c) || dir_is_double_underscore {
+				str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..]);
+			}else{
+				str.push_str(&["pub mod ", &name[..], ";\n"].join("")[..]);
+			}
 		});
 	str
 }

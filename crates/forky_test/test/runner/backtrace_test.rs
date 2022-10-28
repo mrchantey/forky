@@ -5,13 +5,8 @@ use forky_test::*;
 describe!("backtrace", |s| {
 	s.it("works", || {
 		let ctx = backtracer::file_context();
-		expect(ctx.contains("let ctx = backtracer::file_context();")).to_be_true()?;
-		// log!(ctx);
+		expect(ctx.as_str()).to_contain("let ctx = backtracer::file_context();")?;
 		Ok(())
 	});
 
-	s.skip().test("fails", || {
-		expect(true).to_be(false)?;
-		Ok(())
-	});
 });

@@ -1,8 +1,8 @@
-use colorize::*;
 use std::cmp;
 use std::fmt;
 
-use super::backtracer;
+use colorize::AnsiColor;
+
 use super::MatcherError;
 use super::MatcherResult;
 pub trait Matchable: cmp::PartialEq + fmt::Display + std::marker::Copy {}
@@ -34,7 +34,16 @@ impl Matcher<bool> {
 	pub fn to_be_false(&self) -> MatcherResult { self.assert_equal(false) }
 }
 impl Matcher<&str> {
-	// pub fn to_include(&self,other:&str) -> MatcherResult { self.assert_equal() }
+	pub fn to_contain(&self,other:&str) -> MatcherResult { self.assert_contains(other) }
+	fn assert_contains(&self,other:&str)->MatcherResult{
+		if self.value.contains(other) {
+			Ok(())
+		} else {
+			let expect = [String::from("(contains)\n").blue().as_str(),other].join("");
+			let receive = ["\n",self.value].join("");
+			Err(MatcherError::new(expect.as_str(),receive.as_str(),0))
+		}
+	}
 }
 
 impl<T: Matchable> Matcher<T> {
@@ -57,24 +66,12 @@ impl<T: Matchable> Matcher<T> {
 		self.negated = !self.negated;
 		self
 	}
-	fn assert_equal(&self,other:T)->MatcherResult{
-		self.assert_equal_depth(other, 3)
-	}
 
-	fn assert_equal_depth(&self,other:T,backtrace_depth:usize)->MatcherResult{
-		if !self.equality(other) {
-			Err(MatcherError {
-				message: format!(
-					"{}{}{}{}\n\n{}",
-					"Expected: ",
-					other.to_string().green(),
-					"\nReceived: ",
-					self.value.to_string().red(),
-					backtracer::file_context_depth(backtrace_depth),
-				),
-			})
-		} else {
+	fn assert_equal(&self,other:T)->MatcherResult{
+		if self.equality(other) {
 			Ok(())
+		} else {
+			Err(MatcherError::new(other,self.value,0))
 		}
 	}
 
