@@ -1,2 +1,3 @@
-mod constants;
-pub use constants::*;
+#![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
+
+pub mod constants;

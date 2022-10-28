@@ -40,13 +40,13 @@ fn filename_included(p: &PathBuf, arr: &[&str]) -> bool {
 pub fn run_for_crate_folder(path: PathBuf) {
 	read_dir_recursive(path)
 		.into_iter()
-		// .filter(|p| !filename_included(p, CRATE_FOLDERS))
+		.filter(|p| !filename_included(p, IGNORE_FOLDERS))
 		.map(|p| (create_mod_text(&p), p))
 		.for_each(|(c, p)| save_to_file(&p, c))
 }
 
 const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
-// const NO_MOD_FOLDERS:&'static [&str] = &["src", "examples"];
+const IGNORE_FOLDERS:&'static [&str] = &["examples"];
 const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main"];
 
 pub fn run_for_crate(path: PathBuf) {

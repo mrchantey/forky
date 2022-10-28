@@ -1,5 +1,7 @@
-mod __extensions;
-mod _utility;
+#![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
+
 pub mod math;
-pub use __extensions::*;
+mod _utility;
 pub use _utility::*;
+mod __extensions;
+pub use __extensions::*;

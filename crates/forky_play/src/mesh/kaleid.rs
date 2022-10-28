@@ -1,7 +1,8 @@
 use bevy::prelude::*;
 use forky_core::{math::*, *};
 
-use crate::CompanionCube;
+use crate::utility::*;
+
 
 pub struct Kaleid;
 

@@ -1,8 +1,6 @@
-mod app;
-pub use app::*;
-mod utility;
-pub use utility::*;
-mod mesh;
-pub use mesh::*;
-mod input;
-pub use input::*;
+#![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
+
+pub mod app;
+pub mod input;
+pub mod mesh;
+pub mod utility;

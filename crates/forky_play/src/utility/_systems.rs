@@ -2,16 +2,11 @@ use bevy::{app::AppExit, prelude::*, window::WindowCommand};
 use enigo::*;
 use std::{thread, time};
 
-// basic_plugin_::
-use super::KEY_COMMAND;
-type Sys = fn(EventWriter<AppExit>);
-
 pub fn create_exit_after_system(secs: u64) -> impl Fn(EventWriter<AppExit>, Res<Time>) {
 	move |mut exit, time| {
 		if time.seconds_since_startup() > secs as f64 {
 			exit.send(AppExit);
 		}
-		// thread::sleep(time::Duration::from_secs(secs));
 	}
 }
 

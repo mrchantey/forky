@@ -3,9 +3,9 @@ use forky_test::*;
 
 describe!("graphics", |s| {
 	s.skip().it("works", || {
-		ForkyApp::init()
-		.add_plugin(BasicPlugin)
-			.add_system(create_exit_after_system(3))
+		app::init()
+		.add_plugin(utility::basic::BasicPlugin)
+			.add_system(utility::create_exit_after_system(3))
 			.run();
 		Ok(())
 	});
