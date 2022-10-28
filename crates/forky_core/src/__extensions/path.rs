@@ -1,6 +1,8 @@
 use std::{
+	error::Error,
+	io,
 	path::Path,
-	path::{self, PathBuf}, io, error::Error,
+	path::{self, PathBuf},
 };
 
 pub trait PathBufX {
@@ -16,13 +18,19 @@ impl PathBufX for PathBuf {
 }
 
 pub trait PathX {
-	fn relative(&self) -> Result<&Path,Box<dyn Error>>;
+	fn relative(&self) -> Result<&Path, Box<dyn Error>>;
+	fn absolute(&self) -> Result<PathBuf, Box<dyn Error>>;
 }
 
-impl PathX for Path{
-	fn relative(&self) -> Result<&Path,Box<dyn Error>> {
+impl PathX for Path {
+	fn relative(&self) -> Result<&Path, Box<dyn Error>> {
 		let cwd = std::env::current_dir()?;
 		let p = self.strip_prefix(cwd)?;
-		Ok(p)		
+		Ok(p)
+	}
+	fn absolute(&self) -> Result<PathBuf, Box<dyn Error>> {
+		let cwd = std::env::current_dir()?;
+		let p = Path::join(&cwd, self);
+		Ok(p)
 	}
 }

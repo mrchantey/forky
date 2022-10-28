@@ -11,3 +11,13 @@ repository = {workspace=true}
 forky_core = {path = "../forky_core"}
 notify = {workspace = true}
 # notify-debouncer-mini = {workspace = true}
+
+[dev-dependencies]
+forky_test = {workspace = true }
+inventory = {workspace = true}
+
+
+[[test]]
+name = "forky"
+path = "test/main.rs"
+harness = false

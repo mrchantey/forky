@@ -8,16 +8,16 @@ default:
 	just --list
 
 test crate:
-	RUST_BACKTRACE=full cargo test -p {{crate}} --test forky
+	cargo test -p {{crate}} --test forky
 
 test-w crate:
 	just watch 'test -p {{crate}} --test forky -- -w'
 
 watch command:
-	RUST_BACKTRACE=full cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
+	cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
 
 watch-cmd command:
-	RUST_BACKTRACE=full cargo watch -q --ignore '**/mod.rs' -- {{command}}
+	cargo watch -q --ignore '**/mod.rs' -- {{command}}
 
 all command:
 	for file in {{crates}}; do \

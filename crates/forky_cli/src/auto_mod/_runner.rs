@@ -1,7 +1,7 @@
 use forky_core::*;
 use std::{array, fs, path::Path, path::PathBuf};
 
-pub fn run_auto_mod() {
+pub fn run() {
 	terminal::clear();
 	terminal::get_forky();
 	fs::read_dir("crates")
@@ -36,12 +36,13 @@ fn filename_included(p: &PathBuf, arr: &[&str]) -> bool {
 }
 
 
-pub fn run_for_crate_folder(path: PathBuf) {
+pub fn run_for_crate_folder<'a>(path: PathBuf) {
 	read_dir_recursive(path)
 		.into_iter()
 		// .filter(|p| !filename_included(p, CRATE_FOLDERS))
 		.filter(|p| !filename_starts_with_underscore(p))
-		.for_each(|p| create_mod(&p));
+		.map(|p| (create_mod_text(&p), p))
+		.for_each(|(c, p)| save_to_file(&p, c))
 }
 
 const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
@@ -55,10 +56,21 @@ pub fn run_for_crate(path: PathBuf) {
 		.for_each(run_for_crate_folder)
 }
 
+fn save_to_file(path: &PathBuf, content: String) {
+	let file_name = tern!(path.file_name().str() == "src" ; "lib.rs"; "mod.rs");
+	let mut mod_path = path.clone();
+	mod_path.push(file_name);
+	// let mod_path = Path::from(&path.to_str());
+	// path.push("mod.rs");
+	// fs::write(&mod_path, content).unwrap();
+	println!("created mod file: {}", &mod_path.to_str().unwrap());
+	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
+}
+
 const PREFIX: &str =
 	"#![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]\n\n";
 
-pub fn create_mod(path: &PathBuf) {
+pub fn create_mod_text(path: &PathBuf) -> String {
 	let children = fs::read_dir(&path).unwrap();
 	let mut str = String::from(PREFIX);
 	children
@@ -81,12 +93,5 @@ pub fn create_mod(path: &PathBuf) {
 			str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..]);
 			// }
 		});
-	let file_name = tern!(path.file_name().str() == "src" ; "lib.rs"; "mod.rs");
-	let mut mod_path = path.clone();
-	mod_path.push(file_name);
-	// let mod_path = Path::from(&path.to_str());
-	// path.push("mod.rs");
-	fs::write(&mod_path, str).unwrap();
-	println!("created mod file: {}", &mod_path.to_str().unwrap());
-	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
+	str
 }

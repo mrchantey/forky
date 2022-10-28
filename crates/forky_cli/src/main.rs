@@ -1,5 +1,5 @@
-use forky_cli::auto_mod::run_auto_mod;
+use forky_cli::*;
 
 fn main() {
-	run_auto_mod();
+	auto_mod::run();
 }

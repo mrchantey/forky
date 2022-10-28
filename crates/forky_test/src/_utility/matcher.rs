@@ -33,6 +33,9 @@ impl Matcher<bool> {
 	pub fn to_be_true(&self) -> MatcherResult { self.assert_equal(true) }
 	pub fn to_be_false(&self) -> MatcherResult { self.assert_equal(false) }
 }
+impl Matcher<&str> {
+	// pub fn to_include(&self,other:&str) -> MatcherResult { self.assert_equal() }
+}
 
 impl<T: Matchable> Matcher<T> {
 	pub fn new(value: T) -> Matcher<T> {
