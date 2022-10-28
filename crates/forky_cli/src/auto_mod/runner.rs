@@ -63,7 +63,7 @@ pub fn create_mod(path: &PathBuf) {
 	let mut str = String::from(PREFIX);
 	children
 		.map(|p| p.unwrap().path())
-		.filter(|p| !filename_starts_with_underscore(&p))
+		// .filter(|p| !filename_starts_with_underscore(&p))
 		.filter(|c| !filename_included(c, IGNORE_FILES))
 		// .map(|c| c.file_stem().unwrap().to_owned())
 		// .map(|c| c.to_str().unwrap().to_owned())
@@ -81,12 +81,12 @@ pub fn create_mod(path: &PathBuf) {
 			str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..]);
 			// }
 		});
-
+	// let file_name = tern!(filename_included(path, CRATE_FOLDERS); "lib.rs"; "mod.rs");
 	let mut mod_path = path.clone();
 	mod_path.push("mod.rs");
 	// let mod_path = Path::from(&path.to_str());
 	// path.push("mod.rs");
-	// fs::write(&mod_path, str).unwrap();
+	fs::write(&mod_path, str).unwrap();
 	// println!("created mod file: {}", &mod_path.to_str().unwrap());
-	println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
+	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
