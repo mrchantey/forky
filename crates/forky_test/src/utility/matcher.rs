@@ -20,6 +20,7 @@ impl Matchable for i32 {}
 impl Matchable for i64 {}
 impl Matchable for i128 {}
 impl Matchable for usize {}
+impl Matchable for char {}
 impl Matchable for &str {}
 // impl Matchable for String {}
 
