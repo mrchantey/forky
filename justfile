@@ -16,13 +16,22 @@ test-w crate:
 watch command:
 	RUST_BACKTRACE=full cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
 
+watch-cmd command:
+	RUST_BACKTRACE=full cargo watch -q --ignore '**/mod.rs' -- {{command}}
+
 all command:
 	for file in {{crates}}; do \
 		just {{command}} $file; \
 	done
 
+build crate:
+	cargo build -p crate
+
 mod: 
 	just watch 'run -p forky_cli'
+
+start crate: 
+	./target/debug/{{crate}}.exe
 
 clean crate:
 	cargo clean -p {{crate}}

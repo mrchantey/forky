@@ -8,6 +8,7 @@ pub fn run_auto_mod() {
 		.unwrap()
 		.map(|e| e.unwrap().path())
 		.for_each(|p| run_for_crate(p));
+	Terminal::show_cursor();
 }
 
 pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
