@@ -39,7 +39,7 @@ fn filename_included(p: &PathBuf, arr: &[&str]) -> bool {
 pub fn run_for_crate_folder(path: PathBuf) {
 	read_dir_recursive(path)
 		.into_iter()
-		.filter(|p| !filename_included(p, CRATE_FOLDERS))
+		// .filter(|p| !filename_included(p, CRATE_FOLDERS))
 		.filter(|p| !filename_starts_with_underscore(p))
 		.for_each(|p| create_mod(&p));
 }
@@ -81,12 +81,12 @@ pub fn create_mod(path: &PathBuf) {
 			str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..]);
 			// }
 		});
-	// let file_name = tern!(filename_included(path, CRATE_FOLDERS); "lib.rs"; "mod.rs");
+	let file_name = tern!(path.file_name().str() == "src" ; "lib.rs"; "mod.rs");
 	let mut mod_path = path.clone();
-	mod_path.push("mod.rs");
+	mod_path.push(file_name);
 	// let mod_path = Path::from(&path.to_str());
 	// path.push("mod.rs");
 	fs::write(&mod_path, str).unwrap();
-	// println!("created mod file: {}", &mod_path.to_str().unwrap());
+	println!("created mod file: {}", &mod_path.to_str().unwrap());
 	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
