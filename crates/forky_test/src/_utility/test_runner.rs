@@ -1,6 +1,5 @@
 use crate::*;
 use colorize::*;
-use crossterm::terminal as crossterm;
 use forky_core::*;
 use std::path::PathBuf;
 use std::slice::Iter;
@@ -18,79 +17,74 @@ struct Args {
 	files: Vec<String>,
 }
 
-pub struct TestRunner {}
-
-
-impl TestRunner {
-	pub fn run() -> Result<(), MatcherError> {
-		let args = parse_args();
-		if args.watch {
-			terminal::clear()
-		}
-		log!("\n🤘 lets get forky! 🤘\n");
-
-		let start_time = Instant::now();
-		let mut suite_results: Vec<TestSuiteResult> = Vec::new();
-		let mut desc_arr: Vec<&TestSuiteDesc> = Vec::new();
-		for t in inventory::iter::<TestSuiteDesc> {
-			desc_arr.push(t);
-		}
-		desc_arr.sort_by(|a, b| a.file.cmp(&b.file));
-
-		for t in desc_arr {
-			if args.files.len() > 0 && !suite_in_args(t.file, &args.files) {
-				continue;
-			}
-			let mut suite = TestSuite::new(t);
-			suite.print_runs();
-			(t.func)(&mut suite);
-			suite_results.push(suite.results());
-		}
-		let mut suites_failed = 0;
-		let combined_suite_results =
-			suite_results
-				.iter()
-				.fold(TestSuiteResult::default(), |mut acc, item| {
-					acc.tests += item.tests;
-					acc.failed += item.failed;
-					acc.skipped += item.skipped;
-					if item.failed > 0 {
-						suites_failed = suites_failed + 1
-					}
-					acc
-				});
-
-		println!("");
-		if combined_suite_results.tests == 0 {
-			log!(String::from("No Tests Found\n").red());
-			return Ok(());
-		}
-
-		if combined_suite_results.failed == 0 {
-			log!("All tests passed\n".bold().cyan().underlined());
-		}
-
-		print_summary(
-			"Test Suites:\t".to_string(),
-			suite_results.len() as u32,
-			suites_failed,
-			0,
-		);
-		print_summary(
-			"Tests:\t\t".to_string(),
-			combined_suite_results.tests,
-			combined_suite_results.failed,
-			combined_suite_results.skipped,
-		);
-		print_time(start_time);
-
-		if args.watch {
-			return Ok(());
-		}
-		terminal::show_cursor();
-		expect(suites_failed).to_be(0)?;
-		Ok(())
+pub fn run() -> Result<(), MatcherError> {
+	let args = parse_args();
+	if args.watch {
+		terminal::clear()
 	}
+	log!("\n🤘 lets get forky! 🤘\n");
+
+	let start_time = Instant::now();
+	let mut suite_results: Vec<TestSuiteResult> = Vec::new();
+	let mut desc_arr: Vec<&TestSuiteDesc> = Vec::new();
+	for t in inventory::iter::<TestSuiteDesc> {
+		desc_arr.push(t);
+	}
+	desc_arr.sort_by(|a, b| a.file.cmp(&b.file));
+
+	for t in desc_arr {
+		if args.files.len() > 0 && !suite_in_args(t.file, &args.files) {
+			continue;
+		}
+		let mut suite = TestSuite::new(t);
+		suite.print_runs();
+		(t.func)(&mut suite);
+		suite_results.push(suite.results());
+	}
+	let mut suites_failed = 0;
+	let combined_suite_results =
+		suite_results
+			.iter()
+			.fold(TestSuiteResult::default(), |mut acc, item| {
+				acc.tests += item.tests;
+				acc.failed += item.failed;
+				acc.skipped += item.skipped;
+				if item.failed > 0 {
+					suites_failed = suites_failed + 1
+				}
+				acc
+			});
+
+	println!("");
+	if combined_suite_results.tests == 0 {
+		log!(String::from("No Tests Found\n").red());
+		return Ok(());
+	}
+
+	if combined_suite_results.failed == 0 {
+		log!("All tests passed\n".bold().cyan().underlined());
+	}
+
+	print_summary(
+		"Test Suites:\t".to_string(),
+		suite_results.len() as u32,
+		suites_failed,
+		0,
+	);
+	print_summary(
+		"Tests:\t\t".to_string(),
+		combined_suite_results.tests,
+		combined_suite_results.failed,
+		combined_suite_results.skipped,
+	);
+	print_time(start_time);
+
+	if args.watch {
+		return Ok(());
+	}
+	terminal::show_cursor();
+	expect(suites_failed).to_be(0)?;
+	Ok(())
 }
 
 fn parse_args() -> Args {

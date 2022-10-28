@@ -2,7 +2,7 @@ use colorize::*;
 use std::cmp;
 use std::fmt;
 
-use super::Backtracer;
+use super::backtracer;
 use super::MatcherError;
 use super::MatcherResult;
 pub trait Matchable: cmp::PartialEq + fmt::Display + std::marker::Copy {}
@@ -67,7 +67,7 @@ impl<T: Matchable> Matcher<T> {
 					other.to_string().green(),
 					"\nReceived: ",
 					self.value.to_string().red(),
-					Backtracer::file_context_depth(backtrace_depth),
+					backtracer::file_context_depth(backtrace_depth),
 				),
 			})
 		} else {

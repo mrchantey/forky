@@ -4,6 +4,7 @@ mod math;
 mod misc;
 
 fn main() -> Result<(), MatcherError> {
-	TestRunner::run()?;
+	test_runner::run()?;
+	
 	Ok(())
 }

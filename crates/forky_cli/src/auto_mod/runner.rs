@@ -1,14 +1,14 @@
-use forky_core::{Terminal, *};
+use forky_core::*;
 use std::{array, fs, path::Path, path::PathBuf};
 
 pub fn run_auto_mod() {
-	Terminal::clear();
-	Terminal::get_forky();
+	terminal::clear();
+	terminal::get_forky();
 	fs::read_dir("crates")
 		.unwrap()
 		.map(|e| e.unwrap().path())
 		.for_each(|p| run_for_crate(p));
-	Terminal::show_cursor();
+	terminal::show_cursor();
 }
 
 pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {

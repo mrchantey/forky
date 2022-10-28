@@ -38,7 +38,7 @@ use forky_test::*;
 mod my_test;
 
 fn main() -> Result<(), MatcherError> {
-	TestRunner::run()
+	test_runner::run()
 }
 ```
 

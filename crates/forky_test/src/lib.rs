@@ -1,2 +1,2 @@
-mod utility;
-pub use utility::*;
+mod _utility;
+pub use _utility::*;
