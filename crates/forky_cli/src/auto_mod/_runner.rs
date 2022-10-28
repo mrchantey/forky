@@ -41,7 +41,6 @@ pub fn run_for_crate_folder(path: PathBuf) {
 	read_dir_recursive(path)
 		.into_iter()
 		// .filter(|p| !filename_included(p, CRATE_FOLDERS))
-		// .filter(|p| !filename_starts_with_underscore(p))
 		.map(|p| (create_mod_text(&p), p))
 		.for_each(|(c, p)| save_to_file(&p, c))
 }
@@ -61,11 +60,8 @@ fn save_to_file(path: &PathBuf, content: String) {
 	let file_name = tern!(path.file_name().str() == "src" ; "lib.rs"; "mod.rs");
 	let mut mod_path = path.clone();
 	mod_path.push(file_name);
-	// let mod_path = Path::from(&path.to_str());
-	// path.push("mod.rs");
-	// fs::write(&mod_path, content).unwrap();
+	fs::write(&mod_path, content).unwrap();
 	println!("created mod file: {}", &mod_path.to_str().unwrap());
-	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
 
 const PREFIX: &str =
@@ -78,15 +74,7 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 	let mut str = String::from(PREFIX);
 	children
 		.map(|p| p.unwrap().path())
-		// .filter(|p| !filename_starts_with_underscore(&p))
 		.filter(|c| !filename_included(c, IGNORE_FILES))
-		// .map(|c| c.file_stem().unwrap().to_owned())
-		// .map(|c| c.to_str().unwrap().to_owned())
-		// .filter(|c|c != "mod")
-		// .for_each(|c| {
-		// 	// if c.
-		// 	str.push_str(&["mod ", &c[..], ";\npub use ", &c[..], "::*;\n"].join("")[..])
-		// });
 		.for_each(|c| {
 			let stem = c.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
