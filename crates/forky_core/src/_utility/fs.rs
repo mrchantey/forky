@@ -4,7 +4,7 @@ use std::path::PathBuf;
 use std::{env, io};
 use std::io::ErrorKind;
 
-pub fn get_project_root() -> io::Result<PathBuf> {
+pub fn project_root() -> io::Result<PathBuf> {
 	let path = env::current_dir()?;
 	let mut path_ancestors = path.as_path().ancestors();
 

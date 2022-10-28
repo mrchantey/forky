@@ -1,4 +1,4 @@
-use forky_core::{utility::Terminal, *};
+use forky_core::{Terminal, *};
 use std::{array, fs, path::Path, path::PathBuf};
 
 pub fn run_auto_mod() {

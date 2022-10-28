@@ -1,5 +1,5 @@
-pub mod utility;
 mod __extensions;
+mod _utility;
+pub mod math;
 pub use __extensions::*;
-mod __math;
-pub use __math::*;
+pub use _utility::*;

@@ -1,13 +1,11 @@
 use bevy::prelude::*;
-use forky_core::*;
+use forky_core::{math::*, *};
 
 use crate::CompanionCube;
 
 pub struct Kaleid;
 
-pub struct KaleidNode{
-	
-}
+pub struct KaleidNode {}
 
 impl Plugin for Kaleid {
 	fn build(&self, app: &mut App) {
@@ -25,12 +23,14 @@ impl Kaleid {
 	) {
 		let mesh = meshes.add(Mesh::from(shape::Cube { size: 1. }));
 		let material = materials.add(Color::rgb(0., 1., 1.).into());
-		commands.spawn_bundle(PbrBundle {
-			mesh,
-			material,
-			transform: Transform::from_xyz(0., 1., 0.),
-			..default()
-		}).insert(CompanionCube);
+		commands
+			.spawn_bundle(PbrBundle {
+				mesh,
+				material,
+				transform: Transform::from_xyz(0., 1., 0.),
+				..default()
+			})
+			.insert(CompanionCube);
 	}
 	pub fn rotate_cube(time: Res<Time>, mut query: Query<&mut Transform, With<CompanionCube>>) {
 		for mut transform in &mut query {

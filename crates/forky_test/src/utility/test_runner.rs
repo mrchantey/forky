@@ -1,7 +1,7 @@
 use crate::*;
 use colorize::*;
-use crossterm::terminal;
-use forky_core::{utility, *};
+use crossterm::terminal as crossterm;
+use forky_core::*;
 use std::path::PathBuf;
 use std::slice::Iter;
 use std::time::Instant;
@@ -25,7 +25,7 @@ impl TestRunner {
 	pub fn run() -> Result<(), MatcherError> {
 		let args = parse_args();
 		if args.watch {
-			utility::Terminal::clear()
+			terminal::clear()
 		}
 		log!("\n🤘 lets get forky! 🤘\n");
 
@@ -87,14 +87,14 @@ impl TestRunner {
 		if args.watch {
 			return Ok(());
 		}
-		utility::Terminal::show_cursor();
+		terminal::show_cursor();
 		expect(suites_failed).to_be(0)?;
 		Ok(())
 	}
 }
 
 fn parse_args() -> Args {
-	let mut args = utility::CliArgs::get();
+	let mut args = cli_args::get();
 
 	let watch = tern!(vec_contains_str("-w", &args);true;false);
 	args.retain(|v| !arr_contains_str(v, FLAGS));
