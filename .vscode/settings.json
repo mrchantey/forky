@@ -19,8 +19,7 @@
 		"tsconfig.json": "tsconfig.*.json",
 		"Cargo.toml": "Cargo.toml, Cargo.lock, rustfmt.toml, .gitignore, README.md, LICENSE, justfile"
 	},
-	"rust-analyzer.files.excludeDirs": [
-		"crates\\forky_test\\src\\utility\\shoosh"
-	],
-
+	// "rust-analyzer.files.excludeDirs": [
+	// 	"crates\\forky_test\\src\\utility\\shoosh"
+	// ],
 }

@@ -1,4 +1,4 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
 
-mod ecs;
-pub use ecs::*;
+mod forky_app;
+pub use forky_app::*;

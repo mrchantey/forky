@@ -1,3 +1,4 @@
+use forky_play::*;
 fn main() {
-	println!("hello basic world!");
+	ForkyApp::run();
 }

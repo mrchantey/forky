@@ -17,5 +17,5 @@ inventory = {workspace = true}
 
 [[test]]
 name = "forky"
-path = "tests/main.rs"
+path = "test/main.rs"
 harness = false

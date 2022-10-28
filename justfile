@@ -8,7 +8,13 @@ default:
 	just --list
 
 test crate:
-	RUST_BACKTRACE=full cargo watch -q -x 'test -p {{crate}} --test forky -- -w'
+	RUST_BACKTRACE=full cargo test -p {{crate}} --test forky
+
+test-w crate:
+	just watch 'test -p {{crate}} --test forky -- -w'
+
+watch command:
+	RUST_BACKTRACE=full cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
 
 all command:
 	for file in {{crates}}; do \
@@ -16,19 +22,10 @@ all command:
 	done
 
 mod: 
-	cargo watch -q --ignore '**/mod.rs' -x 'run -p forky_cli'
+	just watch 'run -p forky_cli'
 
 clean crate:
 	cargo clean -p {{crate}}
-
-js:
-	#!/usr/bin/env node
-	console.log('Greetings from JavaScript!')
-@list-crates:
-	printf "my crates:\n\n"
-	for file in {{crates}}; do \
-		echo $file; \
-	done
 
 # publishing all will not work because of equal dependency race
 publish crate:

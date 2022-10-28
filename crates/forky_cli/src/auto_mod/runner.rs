@@ -1,6 +1,15 @@
 use forky_core::{utility::Terminal, *};
 use std::{array, fs, path::Path, path::PathBuf};
 
+pub fn run_auto_mod() {
+	Terminal::clear();
+	Terminal::get_forky();
+	fs::read_dir("crates")
+		.unwrap()
+		.map(|e| e.unwrap().path())
+		.for_each(|p| run_for_crate(p));
+}
+
 pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
 	let acc: Vec<PathBuf> = Vec::new();
 	_read_dir_recursive(acc, path)
@@ -40,7 +49,7 @@ pub fn run_for_crate_folder(path: PathBuf) {
 		.for_each(|p| create_mod(&p));
 }
 
-const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests"];
+const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests","test"];
 // const NO_MOD_FOLDERS:&'static [&str] = &["src", "examples"];
 const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main"];
 
@@ -67,6 +76,13 @@ pub fn create_mod(path: &PathBuf) {
 		.for_each(|c| {
 			str.push_str(&["mod ", &c[..], ";\npub use ", &c[..], "::*;\n"].join("")[..])
 		});
+		// .for_each(|c| {
+		// 	let stem = c.file_stem().unwrap();
+		// 	let name = stem.to_str().unwrap().to_owned();
+		// 	if(filename_ends_with_underscore(c)){}
+		// 	str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..])
+		// });
+
 	let mut mod_path = path.clone();
 	mod_path.push("mod.rs");
 	// let mod_path = Path::from(&path.to_str());
@@ -76,12 +92,3 @@ pub fn create_mod(path: &PathBuf) {
 	// println!("wrote to {}: \n {}", &path.to_str().unwrap(), str);
 }
 
-
-
-pub fn run_auto_mod() {
-	Terminal::clear();
-	fs::read_dir("crates")
-		.unwrap()
-		.map(|e| e.unwrap().path())
-		.for_each(|p| run_for_crate(p));
-}

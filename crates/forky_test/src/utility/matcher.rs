@@ -63,9 +63,9 @@ impl<T: Matchable> Matcher<T> {
 				message: format!(
 					"{}{}{}{}\n\n{}",
 					"Expected: ",
-					self.value.to_string().green(),
+					other.to_string().green(),
 					"\nReceived: ",
-					other.to_string().red(),
+					self.value.to_string().red(),
 					Backtracer::file_context_depth(backtrace_depth),
 				),
 			})

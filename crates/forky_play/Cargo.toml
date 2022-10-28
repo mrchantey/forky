@@ -11,6 +11,13 @@ repository = {workspace=true}
 forky_core = {workspace = true }
 bevy = {workspace = true}
 bevy-inspector-egui = {workspace = true}
+enigo = {path = "../../../../work-ref/enigo", version = "0.0.14"}
 
 [dev-dependencies]
 forky_test = {workspace = true }
+inventory = {workspace = true}
+
+[[test]]
+name = "forky"
+path = "test/main.rs"
+harness = false

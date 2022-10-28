@@ -5,6 +5,10 @@
 Basically a [jest](https://jestjs.io/) clone, the `forky_test` crate will set you up with a beautiful test harness and intuitive matchers that are easy on the eyes.
 ## Features
 
+### Nested Tests
+
+Create tests in nested directories without touching your `Cargo.toml`.
+
 ### Pretty success messages
 
 ![success](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/success.png)
@@ -61,3 +65,7 @@ describe!("my test", |s| {
    - Returns an exit code zero (cleaner)
 - Specify filename
    - `cargo test --test forky -- my_test`
+
+## Reference
+- [speculate](https://github.com/utkarshkukreti/speculate.rs)
+	- Nicer syntax

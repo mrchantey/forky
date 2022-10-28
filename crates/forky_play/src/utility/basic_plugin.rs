@@ -1,3 +1,4 @@
+use forky_core::*;
 use bevy::{
 	prelude::*,
 	window::{PresentMode, WindowDescriptor},
@@ -5,38 +6,38 @@ use bevy::{
 use bevy_inspector_egui::WorldInspectorPlugin;
 use std::f32::consts::PI;
 
+use crate::CompanionCube;
+
 // pub const
-pub struct DuckPlugin;
+pub struct BasicPlugin;
 
 
 const CLEAR_COLOR: Color = Color::hsl(0.3 * 360., 1., 0.8);
 
-impl Plugin for DuckPlugin {
+impl Plugin for BasicPlugin {
 	fn build(&self, app: &mut App) {
 		app.insert_resource(ClearColor(CLEAR_COLOR))
 			.add_startup_system(spawn_basic_scene)
-			.add_startup_system(spawn_camera)
+			.add_startup_system(Self::spawn_camera)
 			.add_system(rotate_cube);
 	}
 }
 
-const TAU: f32 = PI * 2.;
+impl BasicPlugin{
+	pub fn spawn_camera(mut commands: Commands) {
+		let mut transform = Transform::from_xyz(0., 1., -10.);
+		transform.rotate_local_y(TAU / 2.);
+		commands.spawn().insert_bundle(Camera3dBundle {
+			// transform::Transform
+			transform,
+			// transform: Transform::from_xyz(-2., 2.5, 5.).looking_at(Vec3::ZERO, Vec3::Y),
+			..default()
+		});
+	}
 
-fn spawn_camera(mut commands: Commands) {
-	let mut transform = Transform::from_xyz(0., 1., -10.);
-	transform.rotate_local_y(TAU / 2.);
-	commands.spawn().insert_bundle(Camera3dBundle {
-		// transform::Transform
-		transform,
-		// transform: Transform::from_xyz(-2., 2.5, 5.).looking_at(Vec3::ZERO, Vec3::Y),
-		..default()
-	});
 }
 
-#[derive(Component)]
-struct CompanionCube;
-
-fn spawn_basic_scene(
+pub fn spawn_basic_scene(
 	mut commands: Commands,
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
@@ -67,32 +68,8 @@ fn spawn_basic_scene(
 	});
 }
 
-fn rotate_cube(time: Res<Time>, mut query: Query<&mut Transform, With<CompanionCube>>) {
+pub fn rotate_cube(time: Res<Time>, mut query: Query<&mut Transform, With<CompanionCube>>) {
 	for mut transform in &mut query {
 		transform.rotate_y(TAU * 0.1 * time.delta_seconds());
 	}
-}
-
-
-pub fn say_hi() {
-	println!("hi");
-}
-
-pub fn run() {
-	App::new()
-		.insert_resource(WindowDescriptor {
-			width: 500.,
-			height: 500.,
-			title: "MagPie".to_string(),
-			decorations: true,
-			cursor_visible: true,
-			cursor_locked: false,
-			present_mode: PresentMode::AutoVsync,
-			position: WindowPosition::At(Vec2::new(-1440., 0.)),
-			..Default::default()
-		})
-		.add_plugin(DuckPlugin)
-		.add_plugins(DefaultPlugins)
-		.add_plugin(WorldInspectorPlugin::new())
-		.run();
 }
