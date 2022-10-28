@@ -74,7 +74,7 @@ pub fn create_mod(path: &PathBuf) {
 		// });
 		.for_each(|c| {
 			let stem = c.file_stem().unwrap();
-			let name = stem.to_str().unwrap().to_owned();
+			let name = stem.str().unwrap().to_owned();
 			if filename_starts_with_uppercase(&c) {
 				str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..])
 			}else{
