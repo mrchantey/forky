@@ -46,7 +46,7 @@ pub fn run_for_crate_folder(path: PathBuf) {
 }
 
 const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
-const IGNORE_FOLDERS: &'static [&str] = &["examples", "src"];
+const IGNORE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
 const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib"];
 
 pub fn run_for_crate(path: PathBuf) {
