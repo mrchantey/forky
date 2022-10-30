@@ -3,21 +3,8 @@ set positional-arguments
 
 crates := 'forky forky_core forky_cli forky_test forky_play'
 
-
 default:
 	just --list
-
-test crate:
-	cargo test -p {{crate}} --test forky
-
-test-w crate:
-	just watch 'test -p {{crate}} --test forky -- -w'
-
-watch command:
-	cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
-
-watch-cmd command:
-	cargo watch -q --ignore '**/mod.rs' -- {{command}}
 
 all command:
 	for file in {{crates}}; do \
@@ -27,18 +14,34 @@ all command:
 build crate:
 	cargo build -p crate
 
+clean crate:
+	cargo clean -p {{crate}}
+
+expand crate example:
+	just watch 'cargo expand -p {{crate}} --example {{example}}'
+
+@log argument:
+	echo {{argument}}
+
 mod: 
-	just watch 'run -p forky_cli'
+	just watch 'cargo run -p forky_cli'
+
+publish crate:
+	cargo publish -p {{crate}} --allow-dirty
+# publishing all will not work because of equal dependency race
 
 start crate: 
 	./target/debug/{{crate}}.exe
 
-clean crate:
-	cargo clean -p {{crate}}
+test crate:
+	cargo test -p {{crate}} --test forky
 
-# publishing all will not work because of equal dependency race
-publish crate:
-	cargo publish -p {{crate}} --allow-dirty
+test-w crate:
+	just watch 'cargo test -p {{crate}} --test forky -- -w'
 
-@log argument:
-	echo {{argument}}
+watch command:
+	cargo watch -q --ignore '**/mod.rs' -- {{command}}
+# cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
+#cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
+
+

@@ -46,7 +46,7 @@ pub fn run_for_crate_folder(path: PathBuf) {
 }
 
 const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
-const IGNORE_FOLDERS:&'static [&str] = &["examples"];
+const IGNORE_FOLDERS: &'static [&str] = &["examples"];
 const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main"];
 
 pub fn run_for_crate(path: PathBuf) {
@@ -57,7 +57,8 @@ pub fn run_for_crate(path: PathBuf) {
 }
 
 fn save_to_file(path: &PathBuf, content: String) {
-	let file_name = tern!(path.file_name().str() == "src" ; "lib.rs"; "mod.rs");
+	// let file_name = "mod.rs";
+	let file_name = tern!(path.file_name().str() == "src" ; "_lib.rs"; "mod.rs");
 	let mut mod_path = path.clone();
 	mod_path.push(file_name);
 	fs::write(&mod_path, content).unwrap();
@@ -80,7 +81,7 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 			let name = stem.to_str().unwrap().to_owned();
 			if filename_starts_with_underscore(&c) || dir_is_double_underscore {
 				str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..]);
-			}else{
+			} else {
 				str.push_str(&["pub mod ", &name[..], ";\n"].join("")[..]);
 			}
 		});
