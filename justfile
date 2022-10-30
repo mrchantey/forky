@@ -20,6 +20,9 @@ clean crate:
 expand crate example:
 	just watch 'cargo expand -p {{crate}} --example {{example}}'
 
+example crate example:
+	just watch 'cargo run -p {{crate}} --example {{example}}'
+
 @log argument:
 	echo {{argument}}
 
@@ -40,5 +43,6 @@ test-w crate:
 	just watch 'cargo test -p {{crate}} --test forky -- -w'
 
 watch command:
-	cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
+	cargo watch -q --ignore '**/mod.rs' -- {{command}}
+# cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
 #cargo watch -q --ignore '**/mod.rs' -x '{{command}}'

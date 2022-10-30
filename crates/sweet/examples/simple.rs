@@ -1,19 +1,15 @@
 use sweet::*;
 
-fn main() {
-	sweet! {"foobaz"
-
-		let a = 22;
-
-		// it "works"{
-
-		// }
-
-		pub struct Foo{
-
-		}
+sweet! {"banana"
+	let mut a = 1;
+	let b = 2;
+	test skip "pizza"{
+		expect(a).to_be(a)?;
 	}
+}
 
+
+fn main() {
 	// let a = 2;
 	// let a = (1 < 2) ?;
 	// let a = tn!(a > a; a : a);
