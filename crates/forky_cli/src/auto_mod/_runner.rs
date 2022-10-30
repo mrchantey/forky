@@ -46,8 +46,8 @@ pub fn run_for_crate_folder(path: PathBuf) {
 }
 
 const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
-const IGNORE_FOLDERS: &'static [&str] = &["examples"];
-const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main"];
+const IGNORE_FOLDERS: &'static [&str] = &["examples", "src"];
+const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib"];
 
 pub fn run_for_crate(path: PathBuf) {
 	CRATE_FOLDERS
@@ -58,7 +58,7 @@ pub fn run_for_crate(path: PathBuf) {
 
 fn save_to_file(path: &PathBuf, content: String) {
 	// let file_name = "mod.rs";
-	let file_name = tern!(path.file_name().str() == "src" ; "_lib.rs"; "mod.rs");
+	let file_name = tern!(path.file_name().str() == "src" ; "lib.rs"; "mod.rs");
 	let mut mod_path = path.clone();
 	mod_path.push(file_name);
 	fs::write(&mod_path, content).unwrap();

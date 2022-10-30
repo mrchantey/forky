@@ -30,3 +30,4 @@ harness = false
 
 [lib]
 proc-macro = true
+# path = "src/_lib.rs"

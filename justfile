@@ -40,7 +40,5 @@ test-w crate:
 	just watch 'cargo test -p {{crate}} --test forky -- -w'
 
 watch command:
-	cargo watch -q --ignore '**/mod.rs' --ignore '**/_lib.rs' -- {{command}}
+	cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
 #cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
-
-
