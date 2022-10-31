@@ -11,8 +11,8 @@ pub struct TestSuite {
 	num_failed: u32,
 	num_skipped: u32,
 	log: String,
-	skip_next_test: bool,
 	pub quiet: bool,
+	name: String,
 	// logger: TestLogger<'a>,
 }
 
@@ -27,15 +27,28 @@ pub struct TestSuiteResult {
 
 impl TestSuite {
 	pub fn new(desc: &'static TestSuiteDesc) -> Self {
+		let name = Self::get_name(desc);
 		TestSuite {
+			name,
 			desc,
 			log: String::new(),
 			// logger: TestLogger::new(desc.name, desc.file),
 			num_tests: 0,
 			quiet: false,
-			skip_next_test: false,
 			num_failed: 0,
 			num_skipped: 0,
+		}
+	}
+
+	fn get_name(desc:&TestSuiteDesc)->String{
+		if desc.name == "undefined"{
+			let f = desc.file.replace(".rs", "");
+			let f = f.split('\\').last().unwrap();
+			// .replace('_', " ");
+			let f = f.trim();
+			String::from(f)
+		}else{
+			String::from(desc.name)
 		}
 	}
 
@@ -48,8 +61,11 @@ impl TestSuite {
 		["", path, &middle, &file].concat()
 	}
 
-	pub fn skip(&mut self) -> &mut Self {
-		self.skip_next_test = true;
+	pub fn skip<F>(&mut self,name: &str, func: F) -> &mut Self 
+		where
+			F: FnOnce() -> MatcherResult{
+		self.num_tests = self.num_tests + 1;
+		self.num_skipped = self.num_skipped + 1;
 		self
 	}
 
@@ -64,11 +80,11 @@ impl TestSuite {
 		F: FnOnce() -> MatcherResult,
 	{
 		self.num_tests = self.num_tests + 1;
-		if self.skip_next_test {
-			self.num_skipped = self.num_skipped + 1;
-			self.skip_next_test = false;
-			return;
-		}
+		// if self.skip_next_test {
+		// 	self.num_skipped = self.num_skipped + 1;
+		// 	self.skip_next_test = false;
+		// 	return;
+		// }
 
 		let buf = BufferRedirect::stdout();
 		let res = func();
@@ -81,7 +97,7 @@ impl TestSuite {
 		if let Some(err) = res.err() {
 			self.num_failed = self.num_failed + 1;
 			self.log.push_str(
-				&["\n● ", self.desc.name, " > ", name, "\n\n"]
+				&["\n● ", &self.name, " > ", name, "\n\n"]
 					.concat()
 					.red()
 					.bold()[..],

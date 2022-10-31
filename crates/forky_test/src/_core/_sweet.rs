@@ -15,7 +15,7 @@ impl Parse for Sweet {
 		let stream = proc_macro2::TokenStream::parse(&input)?;
 		let mut iter = stream.into_iter().peekable();
 		//TODO from file
-		let mut name: Literal = Literal::string("my test");
+		let mut name: Literal = Literal::string("undefined");
 		// let mut na
 		if let Some(t) = iter.peek() {
 			if let TokenTree::Literal(lit) = t {
@@ -31,7 +31,7 @@ impl Parse for Sweet {
 			match t {
 				TokenTree::Ident(ident) => {
 					let i_str = ident.to_string();
-					if i_str == "test" {
+					if i_str == "test" || i_str == "it" {
 						parse_test(&mut iter, &mut out);
 						continue;
 					} else {
@@ -41,10 +41,12 @@ impl Parse for Sweet {
 				tt => out.push(tt),
 			};
 		}
+		
 		// let name = syn::LitStr::new(&name, Span::call_site());
 
 		let body: proc_macro2::TokenStream = out.into_iter().collect();
 		let out: proc_macro::TokenStream = quote! {
+	
 			use inventory::{submit,*};
 			use sweet::*;
 			inventory::submit!(TestSuiteDesc {
@@ -108,7 +110,7 @@ where
 			s.#func(#name,||{
 				#body
 				Ok(())
-			})
+			});
 	}
 	.into();
 	for item in func.into_iter() {

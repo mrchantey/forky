@@ -2,16 +2,14 @@ use forky_core::*;
 use sweet::*;
 
 
-describe!("macros", |s| {
-	s.skip().test("log!", || {
-		log!(1 " is better than " 0);
-		Ok(())
-	});
+sweet! {
+	test "log!" {
+		// log!(1 " is better than " 0);
+	}
 
 
-	s.test("tern!", || {
+	test "tern!" {
 		let a = tern!(0 < 1; "foo";"bar");
 		expect(a).to_be("foo")?;
-		Ok(())
-	})
-});
+	}
+}

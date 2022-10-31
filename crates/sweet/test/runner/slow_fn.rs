@@ -10,10 +10,13 @@ fn long_fn() -> f32 {
 	a
 }
 
-describe!("slow fn", |s| {
-	s.skip().it("works slowly", || {
+sweet! {
+	it skip "works slowly" {
 		let a = long_fn();
 		expect(a).not().to_be(0.)?;
-		Ok(())
-	});
-});
+	}
+
+	it "fails" {
+		expect(true).to_be_false();
+	}
+}

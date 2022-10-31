@@ -1,8 +1,8 @@
 use forky_play::*;
 use sweet::*;
 
-describe!("kaleid", |s| {
-	s.it("works", || {
+sweet! {
+	it "works" {
 		// ForkyApp::init()
 		// .add_plugin(Kaleid)
 		// // .add_plugin(BasicPlugin)
@@ -12,6 +12,5 @@ describe!("kaleid", |s| {
 		// 	// .add_system(create_exit_after_system(3))
 		// 	.run();
 
-		Ok(())
-	});
-});
+	}
+}

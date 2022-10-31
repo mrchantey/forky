@@ -9,3 +9,11 @@ repository = {workspace=true}
 
 [dependencies]
 forky_core = {path = "../forky_core"}
+
+[dev-dependencies]
+sweet = {workspace = true}
+
+[[test]]
+name = "sweet"
+path = "test/sweet.rs"
+harness = false

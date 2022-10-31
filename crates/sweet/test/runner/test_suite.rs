@@ -8,14 +8,14 @@ const DESC: TestSuiteDesc = TestSuiteDesc {
 	file: file!(),
 };
 
-describe!("test suite", |s| {
+sweet!{
 	fn setup() -> TestSuite {
 		let mut suite = TestSuite::new(&DESC);
 		suite.quiet = true;
 		suite
 	}
 
-	s.test("run", || {
+	test "run" {
 		let mut suite = setup();
 
 		suite.test("foobar", || Ok(()));
@@ -25,9 +25,9 @@ describe!("test suite", |s| {
 		expect(results.skipped).to_be(0)?;
 		expect(results.failed).to_be(0)?;
 
-		Ok(())
-	});
-	s.test("fail", || {
+	}
+
+	test "fail" {
 		let mut suite = setup();
 
 		suite.test("foobar", || {
@@ -40,18 +40,16 @@ describe!("test suite", |s| {
 		expect(results.skipped).to_be(0)?;
 		expect(results.failed).to_be(1)?;
 
-		Ok(())
-	});
-	s.test("skip", || {
+	}
+	test skip "skip" {
 		let mut suite = setup();
 
-		suite.skip().test("foobar", || Ok(()));
+		suite.test("foobar", || Ok(()));
 
 		let results = suite.results();
 		expect(results.tests).to_be(1)?;
 		expect(results.skipped).to_be(1)?;
 		expect(results.failed).to_be(0)?;
 
-		Ok(())
-	});
-});
+	}
+}

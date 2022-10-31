@@ -1,8 +1,8 @@
 use forky_core::log;
 use sweet::*;
 
-describe!("matcher", |s| {
-	s.test("to_be_bool", || {
+sweet! {
+	test "to_be_bool" {
 		//lmao
 		let result = expect(true).to_be_true();
 		expect(result.is_ok()).to_be(true)?;
@@ -12,10 +12,9 @@ describe!("matcher", |s| {
 		expect(result.is_ok()).to_be(false)?;
 		expect(result.unwrap_err().message.as_str()).to_contain("this line")?;
 
-		Ok(())
-	});
+	}
 
-	s.test("to_be", || {
+	test "to_be" {
 		//lmao
 		let result = expect(true).to_be(true);
 		expect(result.is_ok()).to_be(true)?;
@@ -23,15 +22,12 @@ describe!("matcher", |s| {
 		let result = expect(true).to_be(false);
 		expect(result.unwrap_err().message.as_str()).to_contain("this line")?;
 
-		Ok(())
-	});
+	}
 
-	s.test("to contain", || {
+	test "to contain" {
 		let result = expect("foo").to_contain("foo");
 		expect(result.is_ok()).to_be_true()?;
 		let result = expect("foo").to_contain("bar");
 		expect(result.unwrap_err().message.as_str()).to_contain("this line")?;
-
-		Ok(())
-	})
-});
+	}
+}

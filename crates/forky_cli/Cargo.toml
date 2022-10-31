@@ -13,11 +13,9 @@ notify = {workspace = true}
 # notify-debouncer-mini = {workspace = true}
 
 [dev-dependencies]
-forky_test = {workspace = true }
-inventory = {workspace = true}
-
+sweet = {workspace = true}
 
 [[test]]
-name = "forky"
-path = "test/main.rs"
+name = "sweet"
+path = "test/sweet.rs"
 harness = false
