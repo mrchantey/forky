@@ -1,5 +1,5 @@
 use forky_core::*;
-use forky_test::*;
+use sweet::*;
 
 
 describe!("macros", |s| {

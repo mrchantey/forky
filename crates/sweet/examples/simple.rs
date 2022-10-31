@@ -1,6 +1,5 @@
 #![feature(imported_main)]
-pub use forky_test::*;
-use sweet::*;
+pub use sweet::*;
 
 sweet! {"banana"
 	let mut a = 1;
@@ -10,3 +9,8 @@ sweet! {"banana"
 		expect(a).to_be(2)?;
 	}
 }
+
+
+// fn main() {
+// 	print!("howdy");
+// }

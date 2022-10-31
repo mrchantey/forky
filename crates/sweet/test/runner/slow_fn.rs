@@ -1,4 +1,4 @@
-use forky_test::*;
+use sweet::*;
 //slow
 fn long_fn() -> f32 {
 	let mut a = 3290.;
@@ -16,5 +16,4 @@ describe!("slow fn", |s| {
 		expect(a).not().to_be(0.)?;
 		Ok(())
 	});
-	
 });

@@ -1,5 +1,5 @@
 use forky_core::*;
-use forky_test::*;
+use sweet::*;
 
 
 const DESC: TestSuiteDesc = TestSuiteDesc {
@@ -55,4 +55,3 @@ describe!("test suite", |s| {
 		Ok(())
 	});
 });
-

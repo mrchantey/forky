@@ -12,7 +12,7 @@ repository = {workspace=true}
 crossterm = {workspace = true}
 
 [dev-dependencies]
-forky_test = {path="../forky_test"}
+forky_test = {workspace = true}
 inventory = {workspace = true}
 
 [[test]]

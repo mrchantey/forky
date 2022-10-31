@@ -1,7 +1,7 @@
-#![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
+mod _core;
+use _core::*;
+use proc_macro::TokenStream;
+use syn::parse_macro_input;
 
-mod _utility;
-pub use _utility::*;
-
-
-pub const FOO :u32 = 2;
+#[proc_macro]
+pub fn sweet(input: TokenStream) -> TokenStream { parse_macro_input!(input as Sweet).out }

@@ -1,5 +1,5 @@
-use forky_test::*;
 use forky_core::*;
+use sweet::*;
 
 describe!("str x", |s| {
 	s.it("works", || {

@@ -1,6 +1,6 @@
 use backtrace::Backtrace;
 use forky_core::*;
-use forky_test::*;
+use sweet::*;
 
 describe!("backtrace", |s| {
 	s.it("works", || {
@@ -8,5 +8,4 @@ describe!("backtrace", |s| {
 		expect(ctx.as_str()).to_contain("let ctx = backtracer::file_context();")?;
 		Ok(())
 	});
-
 });

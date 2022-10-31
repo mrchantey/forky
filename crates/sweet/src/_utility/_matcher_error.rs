@@ -1,5 +1,5 @@
-use std::fmt;
 use crate::Matchable;
+use std::fmt;
 
 use super::backtracer;
 use colorize::*;
@@ -10,8 +10,8 @@ pub struct MatcherError {
 	pub message: String,
 }
 
-impl MatcherError{
-	pub fn new<T: Matchable>(expected:T,received:T,backtrace_depth:usize)->MatcherError{
+impl MatcherError {
+	pub fn new<T: Matchable>(expected: T, received: T, backtrace_depth: usize) -> MatcherError {
 		MatcherError {
 			message: format!(
 				"{}{}{}{}\n\n{}",
@@ -23,13 +23,10 @@ impl MatcherError{
 			),
 		}
 	}
-
 }
 
 impl fmt::Display for MatcherError {
-	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-		write!(f, "{}",self.message)
-	}
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{}", self.message) }
 }
 
 pub type MatcherResult = Result<(), MatcherError>;

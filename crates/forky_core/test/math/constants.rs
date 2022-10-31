@@ -1,6 +1,6 @@
 use forky_core::math::*;
-use forky_test::*;
-use std::f32::consts::{TAU as FTAU, PI};
+use std::f32::consts::{PI, TAU as FTAU};
+use sweet::*;
 
 describe!("constants", |s| {
 	s.it("works", || {

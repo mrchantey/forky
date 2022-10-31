@@ -1,5 +1,5 @@
 use forky_core::log;
-use forky_test::*;
+use sweet::*;
 
 describe!("matcher", |s| {
 	s.test("to_be_bool", || {

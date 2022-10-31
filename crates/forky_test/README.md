@@ -34,7 +34,7 @@ harness = false
 
 `tests/main.rs`
 ```rust
-use forky_test::*;
+use sweet::*;
 mod my_test;
 
 fn main() -> Result<(), MatcherError> {
@@ -44,7 +44,7 @@ fn main() -> Result<(), MatcherError> {
 
 `tests/my_test.rs`
 ```rust
-use forky_test::*;
+use sweet::*;
 
 describe!("my test", |s| {
 	s.it("works", || {

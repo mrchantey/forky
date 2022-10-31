@@ -1,9 +1,10 @@
-use forky_core::StringX;
-// use proc_macro::;
 use proc_macro2::{Literal, Span, TokenStream, TokenTree};
 use quote::*;
-use syn::parse::{Parse, ParseStream, Result};
-use syn::{braced, Attribute, GenericParam, Ident, Lifetime, Stmt, Token, Type, UseTree};
+use syn::{
+	braced,
+	parse::{Parse, ParseStream, Result},
+	Attribute, GenericParam, Ident, Lifetime, Stmt, Token, Type, UseTree,
+};
 
 pub struct Sweet {
 	pub out: proc_macro::TokenStream,
@@ -45,7 +46,7 @@ impl Parse for Sweet {
 		let body: proc_macro2::TokenStream = out.into_iter().collect();
 		let out: proc_macro::TokenStream = quote! {
 			use inventory::{submit,*};
-			use forky_test::*;
+			use sweet::*;
 			inventory::submit!(TestSuiteDesc {
 				name: #name,
 				func: |s|{

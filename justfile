@@ -37,10 +37,10 @@ start crate:
 	./target/debug/{{crate}}.exe
 
 test crate:
-	cargo test -p {{crate}} --test forky
+	cargo test -p {{crate}} --test sweet
 
 test-w crate:
-	just watch 'cargo test -p {{crate}} --test forky -- -w'
+	just watch 'cargo test -p {{crate}} --test sweet -- -w'
 
 watch command:
 	cargo watch -q --ignore '**/mod.rs' -- {{command}}

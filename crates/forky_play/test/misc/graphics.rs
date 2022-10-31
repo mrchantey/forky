@@ -1,5 +1,5 @@
 use forky_play::*;
-use forky_test::*;
+use sweet::*;
 
 describe!("graphics", |s| {
 	s.it("works", || {
