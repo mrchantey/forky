@@ -10,8 +10,3 @@ sweet! {"banana"
 		expect(a).to_be(2)?;
 	}
 }
-
-
-// fn main(){
-// 	// forky_test::p
-// }
