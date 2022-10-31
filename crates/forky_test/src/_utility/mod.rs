@@ -6,6 +6,8 @@ pub mod redirect_io;
 pub mod test_runner;
 mod _backtrace_file;
 pub use _backtrace_file::*;
+mod _main;
+pub use _main::*;
 mod _matcher;
 pub use _matcher::*;
 mod _matcher_error;

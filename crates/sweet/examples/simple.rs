@@ -1,17 +1,17 @@
+#![feature(imported_main)]
+pub use forky_test::*;
 use sweet::*;
 
 sweet! {"banana"
 	let mut a = 1;
 	let b = 2;
-	test skip "pizza"{
-		expect(a).to_be(a)?;
+	test "pizza"{
+		a = a + 1;
+		expect(a).to_be(2)?;
 	}
 }
 
 
-fn main() {
-	// let a = 2;
-	// let a = (1 < 2) ?;
-	// let a = tn!(a > a; a : a);
-	// tn!(1 < 2 ? 1 : 2);
-}
+// fn main(){
+// 	// forky_test::p
+// }

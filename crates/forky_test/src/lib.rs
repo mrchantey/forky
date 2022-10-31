@@ -2,3 +2,6 @@
 
 mod _utility;
 pub use _utility::*;
+
+
+pub const FOO :u32 = 2;
