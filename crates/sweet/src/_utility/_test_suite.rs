@@ -1,4 +1,4 @@
-use forky_core::*;
+// use forky_core::*;
 use crate::*;
 use colorize::*;
 use crossterm::*;
@@ -55,7 +55,7 @@ impl TestSuite {
 	fn get_location(&self) -> String {
 		let mut splt = self.desc.file.split("\\").collect::<Vec<&str>>();
 		let _file = splt.pop();
-		let file = _file.or_default().to_string().bold();
+		let file = _file.unwrap_or_default().to_string().bold();
 		let path = &splt.join("\\").faint();
 		let middle = "\\".to_string().faint();
 		["", path, &middle, &file].concat()
@@ -110,7 +110,7 @@ impl TestSuite {
 	pub fn print_runs(&self) {
 		let location = self.get_location();
 		let runs_msg = [&" RUNS ".black().bold().yellowb()[..], " ", &location[..]].concat();
-		log!(runs_msg);
+		// log!(runs_msg);
 	}
 
 	pub fn print_log(&self) {

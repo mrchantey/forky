@@ -3,4 +3,5 @@
 pub mod backtrace_test;
 pub mod matcher;
 pub mod slow_fn;
+pub mod sweet;
 pub mod test_suite;

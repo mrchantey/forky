@@ -6,10 +6,11 @@ members = [
 	"crates/*"
 ]
 [workspace.package]
-version = "0.1.6"
+version = "0.1.8"
 edition = "2021"
 license-file = "LICENSE"
 readme = "README.md"
+authors = ["Peter Hayman <peteyhayman@gmail.com>"]
 description = "Rust Utilities"
 repository = "https://github.com/mrchantey/forky"
 
@@ -24,17 +25,18 @@ opt-level = 3
 # bevy = "0.8.1"
 # dynamic currently not supported on windows
 [workspace.dependencies]
-forky = {path = "./crates/forky", version = "0.*.*" }
-forky_core = {path = "./crates/forky_core", version = "0.*.*" }
-forky_cli = {path = "./crates/forky_cli", version = "0.*.*" }
-forky_esp = {path = "./crates/forky_esp", version = "0.*.*" }
-forky_play = {path = "./crates/forky_play", version = "0.*.*" }
-forky_test = {path = "./crates/forky_test", version = "0.*.*" }
+forky = {path = "./crates/forky", version = "0.1.8" }
+forky_core = {path = "./crates/forky_core", version = "0.1.8" }
+forky_cli = {path = "./crates/forky_cli", version = "0.1.8" }
+forky_esp = {path = "./crates/forky_esp", version = "0.1.8" }
+forky_play = {path = "./crates/forky_play", version = "0.1.8" }
+forky_test = {path = "./crates/forky_test", version = "0.1.8" }
 sweet = {path = "./crates/sweet", version = "0.*.*" }
 # bevy = { version = "0.8.1", features = ["dynamic"] }
 bevy = { version = "0.8.1" }
 bevy-inspector-egui = "0.13.0"
 inventory = "0.3.2"
+# notify_5 = { package = "notify", version = "5.0.0"}
 notify = "5.0.0-pre.15"
 crossterm = "0.25.0"
 colorize = "0.1.0"

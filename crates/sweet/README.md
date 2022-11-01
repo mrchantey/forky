@@ -22,9 +22,9 @@ Basically a [jest](https://jestjs.io/) clone, the `sweet` crate will set you up 
 	pub use sweet::*;
 
 	sweet! {
-		it "works" {
-			expect(true).to_be_false()?;
-		}
+	  it "works" {
+	    expect(true).to_be_false()?;
+	  }
 	}
 	```
 2. run these commands
@@ -43,9 +43,9 @@ Basically a [jest](https://jestjs.io/) clone, the `sweet` crate will set you up 
 		```rust
 		//test/sub_dir/some_test.rs
 		sweet!{
-			it "works" {
-				expect(true).to_be_true();
-			}
+		  it "works" {
+		    expect(true).to_be_true();
+		  }
 		}
 		//test/sub_dir/mod.rs
 		mod some_test

@@ -1,10 +1,13 @@
 [package]
 name = "sweet"
+description = "Declarative testing framework"
+categories = ["development-tools::testing"]
+readme = "README.md"
 version = {workspace=true}
 edition = {workspace=true}
+authors = {workspace=true}
+documentation = {workspace=true}
 license-file = {workspace=true}
-# readme = "README.md"
-description = {workspace=true}
 repository = {workspace=true}
 
 [dependencies]

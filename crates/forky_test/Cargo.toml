@@ -2,6 +2,8 @@
 name = "forky_test"
 version = {workspace=true}
 edition = {workspace=true}
+authors = {workspace=true}
+documentation = {workspace=true}
 license-file = {workspace=true}
 readme = "README.md"
 description = {workspace=true}
