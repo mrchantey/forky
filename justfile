@@ -48,11 +48,11 @@ publish-all:
 start crate: 
 	./target/debug/{{crate}}.exe
 
-test crate:
-	cargo test -p {{crate}} --test sweet
+test crate *args:
+	cargo test -p {{crate}} --test sweet -- {{args}}
 
-test-w crate:
-	just watch 'cargo test -p {{crate}} --test sweet -- -w'
+test-w crate *args:
+	just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'
 
 watch command:
 	cargo watch -q --ignore '**/mod.rs' -- {{command}}

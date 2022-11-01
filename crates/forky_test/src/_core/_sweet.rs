@@ -47,9 +47,8 @@ impl Parse for Sweet {
 		let body: proc_macro2::TokenStream = out.into_iter().collect();
 		let out: proc_macro::TokenStream = quote! {
 	
-			use inventory::{submit,*};
 			use sweet::*;
-			inventory::submit!(TestSuiteDesc {
+			inventory::submit!(sweet::TestSuiteDesc {
 				name: #name,
 				func: |s|{
 					#body

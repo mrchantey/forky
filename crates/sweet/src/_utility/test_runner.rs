@@ -55,7 +55,7 @@ pub fn run() -> Result<(), MatcherError> {
 				acc
 			});
 
-	println!("");
+	print!("\n");
 	if combined_suite_results.tests == 0 {
 		log!(String::from("No Tests Found\n").red());
 		return Ok(());

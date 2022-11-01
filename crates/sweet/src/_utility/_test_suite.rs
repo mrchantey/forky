@@ -110,7 +110,7 @@ impl TestSuite {
 	pub fn print_runs(&self) {
 		let location = self.get_location();
 		let runs_msg = [&" RUNS ".black().bold().yellowb()[..], " ", &location[..]].concat();
-		// log!(runs_msg);
+		println!("{}",runs_msg);
 	}
 
 	pub fn print_log(&self) {

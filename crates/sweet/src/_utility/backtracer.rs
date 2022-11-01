@@ -2,7 +2,7 @@ use super::BacktraceFile;
 use backtrace::{Backtrace, BacktraceSymbol, Symbol};
 
 
-const PREFIX_STACK_FRAMES: usize = 5;//was 6
+const PREFIX_STACK_FRAMES: usize = 6;
 const RUST_INTERNAL_FILE: &str = "library\\core\\src\\ops\\function.rs";
 
 pub fn file_context_depth(frame_depth: usize) -> String {
