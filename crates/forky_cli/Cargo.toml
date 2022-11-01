@@ -8,7 +8,7 @@ description = {workspace=true}
 repository = {workspace=true}
 
 [dependencies]
-forky_core = {path = "../forky_core"}
+forky_core = {workspace = true}
 notify = {workspace = true}
 # notify-debouncer-mini = {workspace = true}
 

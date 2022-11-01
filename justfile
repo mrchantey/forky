@@ -1,7 +1,7 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_core forky_cli forky_test forky_play'
+crates := 'forky forky_core forky_cli forky_test forky_play sweet'
 
 default:
 	just --list
@@ -32,6 +32,14 @@ mod:
 publish crate:
 	cargo publish -p {{crate}} --allow-dirty
 # publishing all will not work because of equal dependency race
+
+publish-all:
+	just publish forky
+	just publish forky_core
+	just publish forky_cli
+	just publish forky_test
+	just publish sweet
+# just publish forky_play
 
 start crate: 
 	./target/debug/{{crate}}.exe
