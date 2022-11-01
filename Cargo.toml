@@ -12,6 +12,7 @@ license-file = "LICENSE"
 readme = "README.md"
 authors = ["Peter Hayman <peteyhayman@gmail.com>"]
 description = "Rust Utilities"
+documentation = "https://github.com/mrchantey/forky"
 repository = "https://github.com/mrchantey/forky"
 
 # Enable a small amount of optimization in debug mode
