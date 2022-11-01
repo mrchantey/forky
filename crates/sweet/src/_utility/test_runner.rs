@@ -22,7 +22,7 @@ pub fn run() -> Result<(), MatcherError> {
 	if args.watch {
 		terminal::clear()
 	}
-	log!("\n🤘 lets get forky! 🤘\n");
+	log!("\n🤘 sweet as! 🤘\n");
 
 	let start_time = Instant::now();
 	let mut suite_results: Vec<TestSuiteResult> = Vec::new();
@@ -78,6 +78,7 @@ pub fn run() -> Result<(), MatcherError> {
 		combined_suite_results.skipped,
 	);
 	print_time(start_time);
+	print!("\n\n");
 
 	if args.watch {
 		return Ok(());
@@ -113,6 +114,7 @@ fn print_summary(prefix: String, total: u32, failed: u32, skipped: u32) {
 	}
 	summaries.push(&passed_str);
 	summaries.push(&total_str);
+	
 
 	log!(prefix.bold() summaries.join(", "));
 }

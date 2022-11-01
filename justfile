@@ -6,7 +6,7 @@ crates := 'forky forky_core forky_cli forky_test forky_play'
 default:
 	just --list
 
-all command:
+@all command:
 	for file in {{crates}}; do \
 		just {{command}} $file; \
 	done

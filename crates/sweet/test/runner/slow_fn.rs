@@ -16,7 +16,7 @@ sweet! {
 		expect(a).not().to_be(0.)?;
 	}
 
-	it "fails" {
-		expect(true).to_be_false();
+	it skip "fails" {
+		expect(true).to_be_false()?;
 	}
 }
