@@ -1,5 +1,9 @@
 assets
 
+# rust
 /target/
 Cargo.lock
 **/*.rs.bk
+
+# esp idf
+.embuild
