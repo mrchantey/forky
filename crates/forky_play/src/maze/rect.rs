@@ -4,7 +4,7 @@ use super::{char_shape, u8_shape, MazeGraph, Node};
 use std::collections::HashSet;
 
 
-pub fn init(width: usize, height: usize) -> MazeGraph {
+pub fn new(width: usize, height: usize) -> MazeGraph {
 	let num_nodes = width * height;
 	let mut nodes = vec![Node::new(); num_nodes];
 	let head = nodes.first();
@@ -12,19 +12,19 @@ pub fn init(width: usize, height: usize) -> MazeGraph {
 	for row in 0..height {
 		for col in 0..width {
 			let i = col + width * row;
-			//top
+			//left
 			if col > 0 {
 				nodes[i].neighbors.insert(i - 1);
 			}
-			//bottom
+			//right
 			if col < width - 1 {
 				nodes[i].neighbors.insert(i + 1);
 			}
-			//left
+			//top
 			if row > 0 {
 				nodes[i].neighbors.insert(i - width);
 			}
-			//right
+			//bottom
 			if row < height - 1 {
 				nodes[i].neighbors.insert(i + width);
 			}
@@ -46,7 +46,7 @@ e4    e2
 c4 e3 c3
 
 */
-pub fn draw_maze(graph: MazeGraph, width: usize, height: usize) -> Vec<u8> {
+pub fn draw_maze(graph: &MazeGraph, width: usize, height: usize) -> Vec<u8> {
 	let mut vec = draw(width, height);
 	let e_width = width + 1;
 	let e_height = height + 1;
@@ -73,7 +73,7 @@ pub fn draw_maze(graph: MazeGraph, width: usize, height: usize) -> Vec<u8> {
 				} else {
 					vec[e1] = u8_shape::TOP_TEE;
 				}
-			} else if row == height - 1 && col < width - 1 {
+			} if row == height - 1 && col < width - 1 {
 				if c1_c2_linked {
 					vec[e3] = u8_shape::HORIZONTAL;
 				} else {
@@ -87,7 +87,8 @@ pub fn draw_maze(graph: MazeGraph, width: usize, height: usize) -> Vec<u8> {
 				} else {
 					vec[e4] = u8_shape::LEFT_TEE;
 				}
-			} else if col == width - 2 && row < height - 1 {
+			} 
+			if col == width - 2 && row < height - 1 {
 				if c2_c3_linked {
 					vec[e2] = u8_shape::VERTICAL;
 				} else {
@@ -95,35 +96,39 @@ pub fn draw_maze(graph: MazeGraph, width: usize, height: usize) -> Vec<u8> {
 				}
 			}
 			//handle centers
-			if row < e_height - 2 && col < e_width - 2 {
-				if c1_c2_linked && c2_c3_linked && c3_c4_linked && c4_c1_linked{
+			if row < height - 1 && col < width - 1 {
+				if c1_c2_linked && c2_c3_linked && c3_c4_linked && c4_c1_linked {
 					vec[e3] = u8_shape::NONE;
-				}else if c1_c2_linked && c2_c3_linked && c3_c4_linked{
+				} else if c1_c2_linked && c2_c3_linked && c3_c4_linked {
+					vec[e3] = u8_shape::HORIZONTAL_LEFT;
+				} else if c2_c3_linked && c3_c4_linked && c4_c1_linked {
+					vec[e3] = u8_shape::VERTICAL_TOP;
+				} else if c3_c4_linked && c4_c1_linked && c1_c2_linked {
 					vec[e3] = u8_shape::HORIZONTAL_RIGHT;
-				}else if c2_c3_linked && c3_c4_linked && c4_c1_linked{
-					vec[e3] = u8_shape::VERTICAL_TOP;	
-				}else if c3_c4_linked && c4_c1_linked && c1_c2_linked{
-					vec[e3] = u8_shape::HORIZONTAL_LEFT;	
-				}else if c4_c1_linked && c1_c2_linked && c2_c3_linked{
-					vec[e3] = u8_shape::VERTICAL_BOTTOM;	
-				}else if c1_c2_linked && c2_c3_linked{
+				} else if c4_c1_linked && c1_c2_linked && c2_c3_linked {
+					vec[e3] = u8_shape::VERTICAL_BOTTOM;
+				} else if c1_c2_linked && c3_c4_linked {
+					vec[e3] = u8_shape::HORIZONTAL;
+				} else if c4_c1_linked && c2_c3_linked {
+					vec[e3] = u8_shape::VERTICAL;
+				} else if c1_c2_linked && c2_c3_linked {
 					vec[e3] = u8_shape::TOP_RIGHT;
-				}else if c2_c3_linked && c3_c4_linked{
-					vec[e3] = u8_shape::TOP_LEFT;	
-				}else if c3_c4_linked && c4_c1_linked{
-					vec[e3] = u8_shape::BOTTOM_LEFT;	
-				}else if c4_c1_linked && c1_c2_linked{
-					vec[e3] = u8_shape::TOP_LEFT;	
-				}else if c1_c2_linked{
+				} else if c2_c3_linked && c3_c4_linked {
+					vec[e3] = u8_shape::BOTTOM_RIGHT;
+				} else if c3_c4_linked && c4_c1_linked {
+					vec[e3] = u8_shape::BOTTOM_LEFT;
+				} else if c4_c1_linked && c1_c2_linked {
+					vec[e3] = u8_shape::TOP_LEFT;
+				} else if c1_c2_linked {
 					vec[e3] = u8_shape::TOP_TEE;
-				}else if c2_c3_linked{
-					vec[e3] = u8_shape::RIGHT_TEE;	
-				}else if c3_c4_linked{
-					vec[e3] = u8_shape::BOTTOM_TEE;	
-				}else if c4_c1_linked{
-					vec[e3] = u8_shape::LEFT_TEE;	
-				}else {
-					vec[e3] = u8_shape::CROSS;	
+				} else if c2_c3_linked {
+					vec[e3] = u8_shape::RIGHT_TEE;
+				} else if c3_c4_linked {
+					vec[e3] = u8_shape::BOTTOM_TEE;
+				} else if c4_c1_linked {
+					vec[e3] = u8_shape::LEFT_TEE;
+				} else {
+					vec[e3] = u8_shape::CROSS;
 				}
 			}
 		}
@@ -161,7 +166,7 @@ pub fn draw(width: usize, height: usize) -> Vec<u8> {
 }
 
 
-pub fn format(grid: Vec<u8>, width: usize, height: usize) -> String {
+pub fn format(grid: &Vec<u8>, width: usize, height: usize) -> String {
 	let mut str = String::new();
 
 	for row in 0..height + 1 {

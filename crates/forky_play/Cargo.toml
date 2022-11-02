@@ -15,6 +15,7 @@ bevy = {workspace = true}
 bevy-inspector-egui = {workspace = true}
 enigo = {path = "../../../../work-ref/enigo", version = "0.0.14"}
 bevy_rapier3d = {version = "0.18.0", features=["debug-render"]}
+rand = "0.8.5"
 
 [dev-dependencies]
 sweet = {workspace = true}

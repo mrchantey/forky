@@ -66,7 +66,7 @@ fn save_to_file(path: &PathBuf, content: String) {
 }
 
 const PREFIX: &str =
-	"#![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]\n\n";
+	"#![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables))]\n\n";
 
 pub fn create_mod_text(path: &PathBuf) -> String {
 	let children = fs::read_dir(&path).unwrap();
