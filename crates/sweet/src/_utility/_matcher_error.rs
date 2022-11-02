@@ -1,5 +1,5 @@
 use crate::Matchable;
-use std::fmt;
+use std::{fmt};
 
 use super::backtracer;
 use colorize::*;

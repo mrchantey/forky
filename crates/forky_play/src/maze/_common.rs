@@ -9,6 +9,14 @@ pub struct MazeGraph {
 
 impl MazeGraph {
 	pub fn is_linked(&self, a: usize, b: usize) -> bool { self.nodes[a].links.contains(&b) }
+	pub fn link(&mut self, a: usize, b: usize) {
+		self.nodes[a].links.insert(b);
+		self.nodes[b].links.insert(a);
+	}
+	pub fn unlink(&mut self, a: usize, b: usize) {
+		self.nodes[a].links.remove(&b);
+		self.nodes[b].links.remove(&a);
+	}
 }
 
 #[derive(Clone, Debug)]

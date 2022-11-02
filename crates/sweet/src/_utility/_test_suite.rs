@@ -3,7 +3,9 @@ use crate::*;
 use colorize::*;
 use crossterm::*;
 use gag::BufferRedirect;
+use std::any::Any;
 use std::io::{stdout, Read, Write};
+use std::panic;
 
 pub struct TestSuite {
 	desc: &'static TestSuiteDesc,
@@ -40,14 +42,14 @@ impl TestSuite {
 		}
 	}
 
-	fn get_name(desc:&TestSuiteDesc)->String{
-		if desc.name == "undefined"{
+	fn get_name(desc: &TestSuiteDesc) -> String {
+		if desc.name == "undefined" {
 			let f = desc.file.replace(".rs", "");
 			let f = f.split('\\').last().unwrap();
 			// .replace('_', " ");
 			let f = f.trim();
 			String::from(f)
-		}else{
+		} else {
 			String::from(desc.name)
 		}
 	}
@@ -61,9 +63,10 @@ impl TestSuite {
 		["", path, &middle, &file].concat()
 	}
 
-	pub fn skip<F>(&mut self,name: &str, func: F) -> &mut Self 
-		where
-			F: FnOnce() -> MatcherResult{
+	pub fn skip<F>(&mut self, name: &str, func: F) -> &mut Self
+	where
+		F: FnOnce() -> MatcherResult + std::panic::UnwindSafe,
+	{
 		self.num_tests = self.num_tests + 1;
 		self.num_skipped = self.num_skipped + 1;
 		self
@@ -71,13 +74,13 @@ impl TestSuite {
 
 	pub fn it<F>(&mut self, name: &str, func: F)
 	where
-		F: FnOnce() -> MatcherResult,
+		F: FnOnce() -> MatcherResult + std::panic::UnwindSafe,
 	{
 		self.test(name, func);
 	}
 	pub fn test<F>(&mut self, name: &str, func: F)
 	where
-		F: FnOnce() -> MatcherResult,
+		F: FnOnce() -> MatcherResult + std::panic::UnwindSafe,
 	{
 		self.num_tests = self.num_tests + 1;
 		// if self.skip_next_test {
@@ -85,16 +88,22 @@ impl TestSuite {
 		// 	self.skip_next_test = false;
 		// 	return;
 		// }
+		
+		
+		let stdout_buf = BufferRedirect::stdout();
+		let stderr_buf = BufferRedirect::stderr();
 
-		let buf = BufferRedirect::stdout();
-		let res = func();
-		if buf.is_ok(){
-			let mut bb = buf.unwrap();
+		panic::set_hook(Box::new(|_| {}));
+		let panic_res = panic::catch_unwind(|| func());
+		let _ = panic::take_hook();
+
+		if stdout_buf.is_ok() {
+			let mut bb = stdout_buf.unwrap();
 			bb.read_to_string(&mut self.log).unwrap();
 			drop(bb);
 		}
 
-		if let Some(err) = res.err() {
+		let mut handle_error = |msg: &str| {
 			self.num_failed = self.num_failed + 1;
 			self.log.push_str(
 				&["\n● ", &self.name, " > ", name, "\n\n"]
@@ -102,15 +111,32 @@ impl TestSuite {
 					.red()
 					.bold()[..],
 			);
-			self.log.push_str(&err.message[..]);
+			self.log.push_str(msg);
 			self.log.push_str("\n\n");
+		};
+
+		match panic_res {
+			Ok(matcher_res) => {
+				match matcher_res {
+					Ok(()) => {}
+					Err(err) => handle_error(&err.message[..]),
+				}
+				// &err.message[..]
+			}
+			Err(e) => handle_error(&panic_info(e)[..]),
 		}
+		if stderr_buf.is_ok() {
+			let mut bb = stderr_buf.unwrap();
+			bb.read_to_string(&mut self.log).unwrap();
+			drop(bb);
+		}
+
 	}
 
 	pub fn print_runs(&self) {
 		let location = self.get_location();
 		let runs_msg = [&" RUNS ".black().bold().yellowb()[..], " ", &location[..]].concat();
-		println!("{}",runs_msg);
+		println!("{}", runs_msg);
 	}
 
 	pub fn print_log(&self) {
@@ -138,5 +164,16 @@ impl TestSuite {
 			failed: self.num_failed,
 			skipped: self.num_skipped,
 		}
+	}
+}
+
+
+fn panic_info(e: Box<dyn Any + Send>) -> String {
+	match e.downcast::<String>() {
+		Ok(v) => *v,
+		Err(e) => match e.downcast::<&str>() {
+			Ok(v) => v.to_string(),
+			_ => "Unknown Source of Error".to_owned(),
+		},
 	}
 }

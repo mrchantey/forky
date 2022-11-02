@@ -1,4 +1,4 @@
-use forky_core::log;
+use forky_core::{log, StringX};
 
 use super::{char_shape, u8_shape, MazeGraph, Node};
 use std::collections::HashSet;
@@ -42,10 +42,19 @@ pub fn init(width: usize, height: usize) -> MazeGraph {
 pub fn draw_maze(graph: MazeGraph, width: usize, height: usize) -> Vec<u8> {
 	let mut vec = draw(width, height);
 
-	for row in 0..height{
-		for col in 0..width{
-			if row == 0{
-			
+
+	for col in 0..width {}
+	for row in 0..height {
+		for col in 0..width {
+			if row == 0 && col < width - 1 {
+				let a = col + row * width;
+				let b = col + row * width + 1;
+				let i = a + 1;
+				if graph.is_linked(a, b) {
+					vec[i] = u8_shape::HORIZONTAL;
+				} else {
+					vec[i] = u8_shape::TOP_TEE;
+				}
 			}
 
 			// if graph.no
@@ -92,6 +101,18 @@ pub fn format(grid: Vec<u8>, width: usize, height: usize) -> String {
 		for col in 0..width + 1 {
 			let i = col + row * (width + 1);
 			str.push(char_shape::from_u8(grid[i]));
+		}
+		str.push('\n');
+	}
+	str
+}
+pub fn format_indices(width: usize, height: usize) -> String {
+	let mut str = String::new();
+
+	for row in 0..height {
+		for col in 0..width {
+			let i = col + row * width;
+			str.push_string(&format!("{}\t", i));
 		}
 		str.push('\n');
 	}

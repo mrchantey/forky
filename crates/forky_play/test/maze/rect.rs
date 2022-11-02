@@ -5,6 +5,11 @@ use sweet::*;
 sweet! {
 	let width = 5;
 	let height = 3;
+	test "indices"{
+		let str = maze::rect::format_indices(width,height);
+		// expect(&str[..]).to_be("┌┬┬┬┬┐\n├┼┼┼┼┤\n├┼┼┼┼┤\n└┴┴┴┴┘\n")?;
+		log!(str);
+	}
 
 	test "grid"{
 		let grid = maze::rect::draw(width,height);
@@ -15,9 +20,11 @@ sweet! {
 	
 	test "maze" {
 		let mut graph = maze::rect::init(width,height);
-		
-		graph.nodes[0].links.insert(1);
-		graph.nodes[1].links.insert(0);
+
+		graph.link(0,1);
+		graph.link(3,4);
+		graph.link(11,12);
+		// graph.link(1989,2898);
 		
 		let grid = maze::rect::draw_maze(graph,width,height);
 		let str = maze::rect::format(grid,width,height);
