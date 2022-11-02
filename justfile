@@ -58,6 +58,6 @@ test-w crate *args:
 	just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'
 
 watch command:
-	cargo watch -q --ignore '**/mod.rs' -- {{command}}
+	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md}' -- {{command}}
 # cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
 #cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
