@@ -28,11 +28,11 @@ harness = false
 
 ### Optimization https://bevyengine.org/learn/book/getting-started/setup/
 
-# [profile.dev]
-# opt-level = 1
+[profile.dev]
+opt-level = 1
 
-# [profile.dev.package."*"]
-# opt-level = 3
+[profile.dev.package."*"]
+opt-level = 3
 
 # [target.x86_64-pc-windows-msvc]
 # linker = "rust-lld.exe"

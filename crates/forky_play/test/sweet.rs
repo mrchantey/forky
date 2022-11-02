@@ -1,3 +1,4 @@
 #![feature(imported_main)]
 pub use sweet::*;
-mod misc;
+pub mod misc;
+pub mod maze;

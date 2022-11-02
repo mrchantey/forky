@@ -23,7 +23,6 @@ impl Plugin for BasicPlugin {
 
 pub fn spawn_camera(mut commands: Commands) {
 	let mut transform = Transform::from_xyz(0., 1., -10.);
-	let a = jkldsd;
 	transform.rotate_local_y(TAU / 2.);
 	commands.spawn().insert_bundle(Camera3dBundle {
 		// transform::Transform
