@@ -20,6 +20,14 @@ macro_rules! log {
 	};
 }
 #[macro_export]
+macro_rules! dir {
+	($($x:expr) +) => {
+		$(print!("{:#?}",$x));+;
+		print!("\n");
+	};
+}
+
+#[macro_export]
 macro_rules! tern {
 	($pred:expr; $a:expr; $b:expr) => {
 		if $pred {

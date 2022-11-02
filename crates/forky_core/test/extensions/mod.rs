@@ -2,3 +2,4 @@
 
 pub mod int_x;
 pub mod str_x;
+pub mod vec;

@@ -3,7 +3,14 @@
 [workspace]
 resolver = "2" # Important! wgpu/Bevy needs this!
 members = [
-	"crates/*"
+	# "crates/*"
+	"crates/forky",
+	"crates/forky_core",
+	"crates/forky_cli",
+	# "crates/forky_esp",
+	"crates/forky_play",
+	"crates/forky_test",
+	"crates/sweet",
 ]
 [workspace.package]
 version = "0.1.8"

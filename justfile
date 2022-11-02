@@ -15,6 +15,9 @@ default:
 build crate:
 	cargo build -p crate
 
+check crate:
+	cargo check -p {{crate}}
+
 clean crate:
 	cargo clean -p {{crate}}
 

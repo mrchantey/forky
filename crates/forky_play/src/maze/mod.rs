@@ -1,4 +1,8 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
 
-mod _generator;
-pub use _generator::*;
+pub mod char_shape;
+pub mod rect;
+pub mod square;
+pub mod u8_shape;
+mod _common;
+pub use _common::*;

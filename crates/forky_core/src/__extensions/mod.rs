@@ -10,3 +10,5 @@ mod string;
 pub use string::*;
 mod str_x;
 pub use str_x::*;
+mod vec;
+pub use vec::*;

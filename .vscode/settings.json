@@ -2,14 +2,14 @@
 	"files.autoSave": "afterDelay",
 	"files.autoSaveDelay": 20,
 	"files.exclude": {
-		// ".embuild": true,
+		".embuild": true,
+		".cargo": true,
 		"**/.git": true,
 		"**/.svn": true,
 		"**/.hg": true,
 		"**/CVS": true,
 		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
-		".cargo": true,
 		".vscode": true,
 		// "target": true,
 	},
@@ -20,7 +20,8 @@
 		"tsconfig.json": "tsconfig.*.json",
 		"Cargo.toml": "Cargo.toml, Cargo.lock, rustfmt.toml, .gitignore, README.md, LICENSE, justfile, build.rs, export-esp.ps1, rust-toolchain.toml, sdkconfig.defaults"
 	},
-	// "rust-analyzer.files.excludeDirs": [
-	// 	"crates\\forky_test\\src\\utility\\shoosh"
-	// ],
+	"rust-analyzer.files.excludeDirs": [
+		// "crates\\forky_test\\src\\utility\\shoosh",
+		"crates\\forky_esp",//very slow
+	],
 }

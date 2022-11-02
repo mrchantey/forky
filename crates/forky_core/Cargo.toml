@@ -12,6 +12,7 @@ repository = {workspace=true}
 
 [dependencies]
 crossterm = {workspace = true}
+extend = "1.1.2"
 
 [dev-dependencies]
 sweet = {workspace = true}
