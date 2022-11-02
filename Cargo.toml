@@ -15,15 +15,6 @@ description = "Rust Utilities"
 documentation = "https://github.com/mrchantey/forky"
 repository = "https://github.com/mrchantey/forky"
 
-# Enable a small amount of optimization in debug mode
-[profile.dev]
-opt-level = 1
-
-# Enable high optimizations for dependencies (incl. Bevy), but not for our code:
-[profile.dev.package."*"]
-opt-level = 3
-
-# bevy = "0.8.1"
 # dynamic currently not supported on windows
 [workspace.dependencies]
 forky = {path = "./crates/forky", version = "0.1.8" }

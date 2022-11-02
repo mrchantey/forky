@@ -5,3 +5,4 @@ pub mod ecs;
 pub mod graphics;
 pub mod kaleid;
 pub mod physics;
+pub mod utility;

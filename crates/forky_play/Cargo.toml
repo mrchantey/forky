@@ -14,6 +14,7 @@ forky_core = {workspace = true }
 bevy = {workspace = true}
 bevy-inspector-egui = {workspace = true}
 enigo = {path = "../../../../work-ref/enigo", version = "0.0.14"}
+bevy_rapier3d = {version = "0.18.0", features=["debug-render"]}
 
 [dev-dependencies]
 sweet = {workspace = true}
@@ -22,3 +23,17 @@ sweet = {workspace = true}
 name = "sweet"
 path = "test/sweet.rs"
 harness = false
+# rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+
+
+### Optimization https://bevyengine.org/learn/book/getting-started/setup/
+
+# [profile.dev]
+# opt-level = 1
+
+# [profile.dev.package."*"]
+# opt-level = 3
+
+# [target.x86_64-pc-windows-msvc]
+# linker = "rust-lld.exe"
+# rustflags = ["-Zshare-generics=n"]
