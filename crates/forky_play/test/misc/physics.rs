@@ -4,7 +4,7 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
 sweet! {
-	it "works" {
+	it skip "works" {
 		println!("here!");
 		run();
 		println!("here!");

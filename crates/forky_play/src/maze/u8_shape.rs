@@ -14,3 +14,12 @@ pub const TOP_TEE:u8 = 8;
 pub const BOTTOM_TEE:u8 = 9;
 pub const LEFT_TEE:u8 = 10;
 pub const RIGHT_TEE:u8 = 11;
+
+pub const VERTICAL_TOP:u8 = 12;
+pub const VERTICAL_BOTTOM:u8 = 13;
+pub const HORIZONTAL_LEFT:u8 = 14;
+pub const HORIZONTAL_RIGHT:u8 = 15;
+
+pub const DIAG_TL_BR: u8 = 16;
+pub const DIAG_TR_BL: u8 = 17;
+pub const DIAG_CROSS: u8 = 18;

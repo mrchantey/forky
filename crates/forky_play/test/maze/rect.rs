@@ -22,7 +22,10 @@ sweet! {
 		let mut graph = maze::rect::init(width,height);
 
 		graph.link(0,1);
+		graph.link(0,5);
 		graph.link(3,4);
+		graph.link(4,9);
+		graph.link(9,14);
 		graph.link(11,12);
 		// graph.link(1989,2898);
 		
