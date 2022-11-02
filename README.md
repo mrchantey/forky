@@ -22,3 +22,4 @@ All commands used are in the `justfile`, for example to run a test:
 ```sh
 just test forky_core
 ```
+
