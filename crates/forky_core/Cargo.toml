@@ -13,6 +13,7 @@ repository = {workspace=true}
 [dependencies]
 crossterm = {workspace = true}
 extend = {workspace = true}
+num-traits = "0.2.15"
 
 
 [dev-dependencies]

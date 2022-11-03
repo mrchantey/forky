@@ -20,8 +20,8 @@ pub fn init() -> App {
 		..default()
 	})
 	.insert_resource(WindowDescriptor {
-		width: 500.,
-		height: 500.,
+		width: 1000.,
+		height: 800.,
 		title: "Forky".to_string(),
 		decorations: true,
 		cursor_visible: true,
@@ -34,9 +34,10 @@ pub fn init() -> App {
 		..Default::default()
 	})
 	.add_plugins(DefaultPlugins)
-	.add_startup_system(utility::surrender_focus)
+	// .add_startup_system(utility::surrender_focus)
 	.add_system(bevy::window::close_on_esc)
-	.add_plugin(WorldInspectorPlugin::new());
+	// .add_plugin(WorldInspectorPlugin::new())
+	.forky();
 	app
 }
 

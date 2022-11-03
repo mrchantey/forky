@@ -2,8 +2,8 @@
 
 mod generic;
 pub use generic::*;
-mod int_x;
-pub use int_x::*;
+mod num_x;
+pub use num_x::*;
 mod path;
 pub use path::*;
 mod string;
