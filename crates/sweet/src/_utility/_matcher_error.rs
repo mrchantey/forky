@@ -1,5 +1,5 @@
 use crate::Matchable;
-use std::{fmt};
+use std::fmt::{self, Display};
 
 use super::backtracer;
 use colorize::*;
@@ -26,7 +26,7 @@ impl MatcherError {
 }
 
 impl fmt::Display for MatcherError {
-	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{}", self.message) }
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "Message: {}", self.message) }
 }
 
 pub type MatcherResult = Result<(), MatcherError>;

@@ -1,5 +1,5 @@
-mod _core;
-use _core::*;
+mod _macros;
+use _macros::*;
 use proc_macro::TokenStream;
 use syn::parse_macro_input;
 

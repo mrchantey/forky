@@ -15,7 +15,6 @@ pub struct TestSuite {
 	log: String,
 	pub quiet: bool,
 	name: String,
-	// logger: TestLogger<'a>,
 }
 
 #[derive(Default)]
@@ -26,6 +25,7 @@ pub struct TestSuiteResult {
 }
 
 // const myFunc: 'static dyn FnMut() = ||{};
+fn dummy (){}
 
 impl TestSuite {
 	pub fn new(desc: &'static TestSuiteDesc) -> Self {

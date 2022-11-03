@@ -47,7 +47,29 @@ sweet! {
 	```
 
 
-## Features
+## Features - Summary
+- Pretty Messages
+	- Success
+		- ![success](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/success.png)
+	- In progress
+		- ![progress](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/progress.png)
+	- Failure
+		- ![failure](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/failure.png)
+## Features - Runner
+- Mutable globals
+	- When writing lots of tests its helpful to have access to an outer scope
+	```rust
+	sweet! {
+		let mut a = 0;
+		before {
+			a = a + 1;
+		}
+		test "before" {
+			expect(a).to_be(1)?;
+		}
+	}
+	```
+
 - Automatic suite names
 	- Unless otherwise defined, sweet suites will be named after the files:
 	```rust
@@ -56,14 +78,12 @@ sweet! {
 	  it "works"{}
 	}
 	//custom name
-	sweet!{"My Test"
+	sweet!{ "My Test"
 		it "works"{}
 	}
 	```
 - Nested Tests
 	- Sweet is designed to collect and run all tests in one go. All tests exposed in the `sweet.rs` file will be run:
-
-
 		```rust
 		//test/sub_dir/some_test.rs
 		sweet!{
@@ -78,13 +98,7 @@ sweet! {
 		pub use sweet::*;
 		mod sub_dir;
 		```
-- Pretty Messages
-	- Success
-		- ![success](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/success.png)
-	- In progress
-		- ![progress](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/progress.png)
-	- Failure
-		- ![failure](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/failure.png)
+
 
 ## Example Commands
 

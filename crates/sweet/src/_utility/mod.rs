@@ -4,6 +4,8 @@ pub mod backtracer;
 pub mod panic;
 pub mod redirect_io;
 pub mod test_runner;
+mod _action;
+pub use _action::*;
 mod _backtrace_file;
 pub use _backtrace_file::*;
 mod _main;
