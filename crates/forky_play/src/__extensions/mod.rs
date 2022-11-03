@@ -1,6 +1,4 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables))]
 
-pub mod generator;
-pub mod plugin;
-pub mod rect;
-pub mod rect_graphics;
+mod app_x;
+pub use app_x::*;

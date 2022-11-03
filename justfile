@@ -15,6 +15,9 @@ default:
 build crate:
 	cargo build -p crate
 
+bump:
+	cargo set-version --bump patch --dry-run
+
 check crate:
 	cargo check -p {{crate}}
 
@@ -39,11 +42,11 @@ publish crate:
 
 publish-all:
 	just publish forky || true
-	{{sh}}sleep 3
+	{{sh}}sleep 10
 	just publish forky_core || true
-	{{sh}}sleep 3
+	{{sh}}sleep 10
 	just publish forky_test || true
-	{{sh}}sleep 3
+	{{sh}}sleep 10
 	just publish sweet || true
 # just publish forky_cli
 # just publish forky_play

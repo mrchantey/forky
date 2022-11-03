@@ -1,10 +1,14 @@
-
-
+use forky_play::*;
 use sweet::*;
 
 sweet! {
+	
 	it "works" {
-		expect(true).to_be(false)?;
-		
+		app::init()
+			.add_plugin(base::BasicPlugin)
+			.forky_exit_after(2)
+			.run();
 	}
 }
+
+

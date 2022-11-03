@@ -1,9 +1,7 @@
+use extend::ext;
 
-pub trait IntX {
-	fn or_default(&self)->&i32;
-}
-
-impl IntX for Option<&i32>{
+#[ext(name = OptI32X)]
+pub impl Option<&i32>{
 	fn or_default(&self)->&i32{
 		match &self {
 			Some(c) => c,
