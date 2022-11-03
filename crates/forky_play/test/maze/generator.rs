@@ -9,10 +9,9 @@ sweet! {
 	it "works" {
 		let mut graph = maze::rect::new(width,height);
 		maze::generator::depth_first_backtrack(&mut graph,|g|{
-			time::sleep(5);
 			let grid = maze::rect::draw_maze(g,width,height);
 			let str = maze::rect::format(&grid,width,height);
-			log!(str);
+			// log!(str);
 		});
 
 
@@ -20,7 +19,7 @@ sweet! {
 		let str = maze::rect::format_indices(width,height);
 		// log!(str);
 		let str = maze::rect::format(&grid,width,height);
-		log!(str);
+		// log!(str);
 		// dir!(graph);
 		// expect(true).to_be(false)?;
 

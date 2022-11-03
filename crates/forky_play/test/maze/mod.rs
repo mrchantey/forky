@@ -2,3 +2,4 @@
 
 pub mod generator;
 pub mod rect;
+pub mod rect_graphics;

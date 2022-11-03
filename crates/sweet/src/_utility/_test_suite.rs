@@ -5,7 +5,7 @@ use crossterm::*;
 use gag::BufferRedirect;
 use std::any::Any;
 use std::io::{stdout, Read, Write};
-use std::panic;
+use std::panic::{self, AssertUnwindSafe};
 
 pub struct TestSuite {
 	desc: &'static TestSuiteDesc,
@@ -65,7 +65,7 @@ impl TestSuite {
 
 	pub fn skip<F>(&mut self, name: &str, func: F) -> &mut Self
 	where
-		F: FnOnce() -> MatcherResult + std::panic::UnwindSafe,
+		F: FnOnce() -> MatcherResult,
 	{
 		self.num_tests = self.num_tests + 1;
 		self.num_skipped = self.num_skipped + 1;
@@ -74,13 +74,13 @@ impl TestSuite {
 
 	pub fn it<F>(&mut self, name: &str, func: F)
 	where
-		F: FnOnce() -> MatcherResult + std::panic::UnwindSafe,
+		F: FnOnce() -> MatcherResult,
 	{
 		self.test(name, func);
 	}
 	pub fn test<F>(&mut self, name: &str, func: F)
 	where
-		F: FnOnce() -> MatcherResult + std::panic::UnwindSafe,
+		F: FnOnce() -> MatcherResult,
 	{
 		self.num_tests = self.num_tests + 1;
 		// if self.skip_next_test {
@@ -94,7 +94,7 @@ impl TestSuite {
 		let stderr_buf = BufferRedirect::stderr();
 
 		panic::set_hook(Box::new(|_| {}));
-		let panic_res = panic::catch_unwind(|| func());
+		let panic_res = panic::catch_unwind(AssertUnwindSafe(|| func()));
 		let _ = panic::take_hook();
 
 		if stdout_buf.is_ok() {
