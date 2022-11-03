@@ -26,8 +26,4 @@ pub fn spawn_cube(
 		})
 		.insert(CompanionCube);
 
-	commands.spawn_bundle(PointLightBundle {
-		transform: Transform::from_xyz(1., 3., -3.),
-		..default()
-	});
 }

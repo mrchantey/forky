@@ -15,9 +15,6 @@ default:
 build crate:
 	cargo build -p crate
 
-bump:
-	cargo set-version --bump patch --dry-run
-
 check crate:
 	cargo check -p {{crate}}
 
@@ -41,12 +38,13 @@ publish crate:
 # publishing all will not work because of equal dependency race
 
 publish-all:
+	cargo set-version --bump patch
 	just publish forky || true
-	{{sh}}sleep 10
+	{{sh}}sleep 5
 	just publish forky_core || true
-	{{sh}}sleep 10
+	{{sh}}sleep 5
 	just publish forky_test || true
-	{{sh}}sleep 10
+	{{sh}}sleep 5
 	just publish sweet || true
 # just publish forky_cli
 # just publish forky_play

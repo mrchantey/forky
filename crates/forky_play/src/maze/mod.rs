@@ -7,3 +7,5 @@ pub mod square;
 pub mod u8_shape;
 mod _common;
 pub use _common::*;
+mod _plugin;
+pub use _plugin::*;
