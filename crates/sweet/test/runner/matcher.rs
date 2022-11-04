@@ -24,10 +24,19 @@ sweet! {
 
 	}
 
-	test "to contain" {
+	test "to_contain" {
 		let result = expect("foo").to_contain("foo");
 		expect(result.is_ok()).to_be_true()?;
 		let result = expect("foo").to_contain("bar");
 		expect(result.unwrap_err().message.as_str()).to_contain("this line")?;
+	}
+
+	test "to_be_close_to"{
+		let result = expect(0.).to_be_close_to(0.);
+		expect(result.is_ok()).to_be_true()?;
+		let result = expect(-0.999).to_be_close_to(-1.);
+		expect(result.is_ok()).to_be_true()?;
+		let result = expect(0.9).to_be_close_to(1.);
+		expect(result.is_ok()).to_be_false()?;
 	}
 }

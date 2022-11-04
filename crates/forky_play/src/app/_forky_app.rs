@@ -36,6 +36,7 @@ pub fn init() -> App {
 	.add_plugins(DefaultPlugins)
 	// .add_startup_system(utility::surrender_focus)
 	.add_system(bevy::window::close_on_esc)
+	.add_startup_system(base::spawn_lights)
 	// .add_plugin(WorldInspectorPlugin::new())
 	.forky();
 	app

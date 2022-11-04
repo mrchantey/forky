@@ -1,3 +1,5 @@
+use bevy::prelude::*;
+use forky_core::{math::*, *};
 use forky_play::*;
 use sweet::*;
 // use crate::maze::plugin::MazePlugin;
@@ -11,3 +13,4 @@ sweet! {
 			.run();
 	}
 }
+

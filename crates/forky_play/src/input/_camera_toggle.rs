@@ -68,7 +68,7 @@ impl Default for CameraToggle {
 					ToggleState::Top,
 					OrbitCameraState{ pose: Pose {
 						position: Vec3::Y * DIST,
-						rotation: Quat::down(),
+						rotation: Quat::from_down(),
 					},
 					..default()
 					},
@@ -77,7 +77,7 @@ impl Default for CameraToggle {
 					ToggleState::Front,
 					OrbitCameraState{pose: Pose {
 						position: -Vec3::Z * DIST,
-						rotation: Quat::forward(),
+						rotation: Quat::from_forward(),
 					},..default()
 					},
 				),
@@ -85,7 +85,7 @@ impl Default for CameraToggle {
 					ToggleState::Right,
 					OrbitCameraState{pose: Pose {
 						position: -Vec3::X * DIST,
-						rotation: Quat::right(),
+						rotation: Quat::from_right(),
 					},..default()
 					},
 				),

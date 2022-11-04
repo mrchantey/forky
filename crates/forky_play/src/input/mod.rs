@@ -16,5 +16,7 @@ mod _orbit_keyboard_controller;
 pub use _orbit_keyboard_controller::*;
 mod _plugin;
 pub use _plugin::*;
+mod _side_camera;
+pub use _side_camera::*;
 mod _transform_controller;
 pub use _transform_controller::*;

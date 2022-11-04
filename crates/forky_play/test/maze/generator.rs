@@ -1,5 +1,5 @@
 use forky_core::*;
-use forky_play::{*, maze::generator::DepthFirstBacktrace};
+use forky_play::{*, maze::*};
 use sweet::*;
 
 sweet! {
@@ -7,7 +7,7 @@ sweet! {
 	let height = 20;
 
 	it "works" {
-		let mut graph = maze::RectMaze::new(width,height);
+		let mut graph = RectMaze::new(width,height);
 		expect(graph.nodes.len()).to_be(width*height)?;
 		expect(graph.paths.len()).to_be(width*height)?;
 

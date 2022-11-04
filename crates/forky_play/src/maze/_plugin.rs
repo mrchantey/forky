@@ -43,6 +43,4 @@ pub fn spawn_grid(
 		}
 	}
 
-	for i in 0..10 {
-	}
 }

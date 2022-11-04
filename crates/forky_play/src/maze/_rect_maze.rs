@@ -1,6 +1,6 @@
 use forky_core::{graph::*, *};
 
-use super::{generator::DepthFirstBacktrace, *};
+use super::{_depth_first_backtrack::DepthFirstBacktrace, *};
 use std::collections::HashSet;
 
 #[derive(Debug)]
