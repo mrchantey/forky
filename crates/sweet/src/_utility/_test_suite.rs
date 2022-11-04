@@ -93,7 +93,7 @@ impl TestSuite {
 		let stdout_buf = BufferRedirect::stdout();
 		let stderr_buf = BufferRedirect::stderr();
 
-		panic::set_hook(Box::new(|_| {}));
+		// panic::set_hook(Box::new(|_| {}));
 		let panic_res = panic::catch_unwind(AssertUnwindSafe(|| func()));
 		let _ = panic::take_hook();
 

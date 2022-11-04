@@ -6,7 +6,11 @@ use std::slice::Iter;
 use std::time::Instant;
 
 
-fn suite_in_args(path: &str, args: &Vec<String>) -> bool { args.iter().any(|a| path.contains(a)) }
+fn suite_in_args(path: &str, args: &Vec<String>) -> bool { 
+	let matchable_path = path.replace('\\', "/");
+	args.iter().any(|a| matchable_path.contains(a))
+}
+
 fn vec_contains_str(path: &str, args: &Vec<String>) -> bool { args.iter().any(|a| a == path) }
 fn arr_contains_str(path: &str, arr: &[&str]) -> bool { arr.iter().any(|a| *a == path) }
 
@@ -22,7 +26,11 @@ pub fn run() -> Result<(), MatcherError> {
 	if args.watch {
 		terminal::clear()
 	}
-	log!("\n🤘 sweet as! 🤘\n");
+
+	println!("\n🤘 sweet as! 🤘\n");
+	if args.files.len() > 0{
+		println!("matching: {}\n",args.files.to_string());
+	}
 
 	let start_time = Instant::now();
 	let mut suite_results: Vec<TestSuiteResult> = Vec::new();
@@ -31,7 +39,6 @@ pub fn run() -> Result<(), MatcherError> {
 		desc_arr.push(t);
 	}
 	desc_arr.sort_by(|a, b| a.file.cmp(&b.file));
-
 	for t in desc_arr {
 		if args.files.len() > 0 && !suite_in_args(t.file, &args.files) {
 			continue;
@@ -114,7 +121,7 @@ fn print_summary(prefix: String, total: u32, failed: u32, skipped: u32) {
 	}
 	summaries.push(&passed_str);
 	summaries.push(&total_str);
-	
+
 
 	log!(prefix.bold() summaries.join(", "));
 }

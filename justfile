@@ -53,7 +53,7 @@ start crate:
 	./target/debug/{{crate}}.exe
 
 test crate *args:
-	cargo test -p {{crate}} --test sweet -- {{args}}
+	RUST_BACKTRACE=1 cargo test -p {{crate}} --test sweet -- {{args}}
 
 test-w crate *args:
 	just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'

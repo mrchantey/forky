@@ -1,9 +1,11 @@
 # sweet
 
-> *Very early stage warning! No ongoing maintenance is guaranteed*
+*Write many tests quickly and cleanly.*
+
+> Very early stage warning! No ongoing maintenance is guaranteed
+
 
 Basically a [jest](https://jestjs.io/) clone, the `sweet` crate will set you up with a beautiful test harness and intuitive matchers that are easy on the eyes.
-
 
 ```rust
 pub use sweet::*;
@@ -98,18 +100,18 @@ sweet! {
 		pub use sweet::*;
 		mod sub_dir;
 		```
-
-
-## Example Commands
-
+## Features - CLI
 - Run 
-   - `cargo test --test sweet`
+	- `cargo test --test sweet`
 - With watch
-   - `cargo watch -q -x 'test --test sweet -- -w'`
-   - Clears terminal on each run
-   - Returns an exit code zero (cleaner output)
+	- `cargo watch -q -x 'test --test sweet -- -w'`
+	- Clears terminal on each run
+	- Returns an exit code zero (cleaner output)
 - Specify filename
-   - `cargo test --test sweet -- my_test`
+	- `cargo test --test sweet -- my_test`
+	- Use forward-slash `/` to specify directories
+		- `cargo test --test sweet -- my_dir/my_test`
+
 
 ## Reference
 - [jest](https://jestjs.io/)

@@ -8,20 +8,20 @@ fn main() -> ! {
 		count = count + 1;
 		let width = 140;
 		let height = 34;
-		let mut graph = maze::rect::new(width, height);
+		let mut graph = maze::_rect::new(width, height);
 
 		terminal::clear();
 		maze::generator::depth_first_backtrack(&mut graph, |g| {
 			// time::sleep_ms(16);
 			terminal::reset_cursor();
-			let grid = maze::rect::draw_maze(g, width, height);
-			let str = maze::rect::format(&grid, width, height);
+			let grid = maze::_rect::draw_maze(g, width, height);
+			let str = maze::_rect::format(&grid, width, height);
 			log!(str);
 			println!("making maze number {}", count);
 		});
 
-		let grid = maze::rect::draw_maze(&graph, width, height);
-		let str = maze::rect::format(&grid, width, height);
+		let grid = maze::_rect::draw_maze(&graph, width, height);
+		let str = maze::_rect::format(&grid, width, height);
 		file::write(format!("./output/maze_{}.txt", count), str.as_str()).unwrap();
 	}
 }

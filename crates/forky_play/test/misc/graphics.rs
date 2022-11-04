@@ -5,8 +5,8 @@ sweet! {
 
 	it "works" {
 		app::init()
-			.add_plugin(base::BasicPlugin)
-			.forky_surrender_focus()
+			// .add_plugin(base::BasicPlugin)
+			// .forky_surrender_focus()
 			.forky_exit_after(3)
 			.run();
 	}

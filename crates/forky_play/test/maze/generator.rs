@@ -1,5 +1,5 @@
 use forky_core::*;
-use forky_play::*;
+use forky_play::{*, maze::generator::DepthFirstBacktrace};
 use sweet::*;
 
 sweet! {
@@ -7,21 +7,21 @@ sweet! {
 	let height = 20;
 
 	it "works" {
-		let mut graph = maze::rect::new(width,height);
-		maze::generator::depth_first_backtrack(&mut graph,|g|{
-			let grid = maze::rect::draw_maze(g,width,height);
-			let str = maze::rect::format(&grid,width,height);
-			// log!(str);
+		let mut graph = maze::RectMaze::new(width,height);
+		expect(graph.nodes.len()).to_be(width*height)?;
+		expect(graph.paths.len()).to_be(width*height)?;
+
+		graph.depth_first_backtrack(|s|{
+			// let a = graph.head;
+			// 	// let grid = maze::_rect::draw_maze(g,width,height);
+			// 	// let str = maze::_rect::format(&grid,width,height);
+			// 	// log!(str);
 		});
 
-
-		let grid = maze::rect::draw_maze(&graph,width,height);
-		let str = maze::rect::format_indices(width,height);
-		// log!(str);
-		let str = maze::rect::format(&grid,width,height);
-		// log!(str);
+		let indices = graph.format_indices();
+		let maze = graph.format();
+		// log!(indices);
+		log!(maze);
 		// dir!(graph);
-		// expect(true).to_be(false)?;
-
 	}
 }

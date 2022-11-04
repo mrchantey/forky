@@ -4,7 +4,7 @@ use bevy::prelude::*;
 use forky_core::math::*;
 
 pub fn spawn_orbit_camera(mut commands: Commands) {
-	let translation = Vec3::new(0., 5., -10.0);
+	let translation = Vec3::new(0., 5., -20.0);
 	let radius = translation.length();
 
 	let child = commands

@@ -1,6 +1,6 @@
-use std::slice::SliceIndex;
-
+use crate::*;
 use extend::ext;
+use std::{fmt::Display, slice::SliceIndex};
 
 #[ext(name = OrderableVecExt)]
 pub impl<T: Ord> Vec<T> {
@@ -9,6 +9,20 @@ pub impl<T: Ord> Vec<T> {
 		self
 	}
 }
+#[ext(name = VecXDisplay)]
+pub impl<T: Display> Vec<T> {
+	fn to_string(&self) -> String {
+		self.iter().fold(String::new(), |mut acc, curr| {
+			acc.push_string(&format!("{}", curr));
+			acc
+		})
+	}
+}
+#[ext(name = VecXDefault)]
+pub impl<T: Default + Clone> Vec<T> {
+	fn from_len(len: usize) -> Self { vec![T::default(); len] }
+}
+
 
 #[ext(name = GenericVecExt)]
 pub impl<T> Vec<T> {
