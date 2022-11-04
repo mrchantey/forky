@@ -1,7 +1,9 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables))]
 
+pub mod ball;
 pub mod char_shape;
 pub mod maze_3d;
+pub mod maze_floor;
 pub mod maze_wall;
 pub mod mesh_shape;
 pub mod square;

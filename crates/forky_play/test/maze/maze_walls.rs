@@ -53,7 +53,7 @@ pub fn spawn_all_walls(
 			mesh_shape::vertical_bottom(cell_width, wall_width),
 		],
 	];
-	let h_cols = (walls.len() as f32 * cell_width)  / 2. - cell_width / 2.;
+	let h_cols = (walls.len() as f32 * cell_width) / 2. - cell_width / 2.;
 	let h_rows = (walls[0].len() as f32 * cell_width) / 2. - cell_width / 2.;
 
 	for (col, mut arr) in walls.iter_mut().enumerate() {

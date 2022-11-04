@@ -11,6 +11,7 @@
 		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
 		".vscode": true,
+		"**/mod.rs": true,
 		// "target": true,
 	},
 	"explorer.fileNesting.enabled": true,
@@ -22,6 +23,6 @@
 	},
 	"rust-analyzer.files.excludeDirs": [
 		// "crates\\forky_test\\src\\utility\\shoosh",
-		"crates\\forky_esp",//very slow
+		"crates\\forky_esp", //very slow
 	],
 }
