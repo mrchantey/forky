@@ -7,7 +7,7 @@ use forky_play::{
 use sweet::*;
 
 sweet! {
-	it "works" {
+	it skip "works" {
 		app::init()
 			// .add_plugin(maze::MazePlugin)
 			.add_startup_system(spawn_all_walls)

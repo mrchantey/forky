@@ -21,7 +21,7 @@ sweet! {
 		let indices = graph.format_indices();
 		let maze = graph.format();
 		// log!(indices);
-		log!(maze);
+		// log!(maze);
 		// dir!(graph);
 	}
 }

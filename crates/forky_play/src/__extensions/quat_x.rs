@@ -6,6 +6,7 @@ use crate::utility;
 
 #[ext]
 pub impl Quat {
+	//TODO forward faces back
 	fn forward(&self) -> Vec3 { *self * Vec3::Z }
 
 	fn from_up() -> Quat { Quat::look_at(Vec3::Y) }

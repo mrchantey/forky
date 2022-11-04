@@ -5,7 +5,7 @@ use sweet::*;
 // use crate::maze::plugin::MazePlugin;
 sweet! {
 
-	it "works" {
+	it skip "works" {
 		app::init()
 			// .add_plugin(maze::MazePlugin)
 			.add_plugin(input::DebugCameraPlugin)
