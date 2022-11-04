@@ -3,31 +3,33 @@ use crate::*;
 use bevy::prelude::*;
 use forky_core::math::*;
 
-pub fn spawn_orbit_camera(mut commands: Commands) {
-	let translation = Vec3::new(2., 5., -20.0);
-	let radius = translation.length();
+pub fn spawn_side_cameras(mut commands: Commands) {
+	let mut spawn = |position: Vec3, rotation: Quat, ct: CameraViewType| {
+		commands
+			.spawn_bundle(Camera3dBundle {
+				transform: Transform::from_translation(position).with_rotation(rotation),
+				camera: Camera {
+					is_active: false,
+					..default()
+				},
+				..default()
+			})
+			.insert(ct);
+	};
 
-	let child = commands
-		.spawn_bundle(Camera3dBundle {
-			transform: Transform::from_rotation(Quat::from_rotation_y(HALF_TAU)),
-			..default()
-		})
-		.id();
-
-	let parent = commands
-		.spawn_bundle(SpatialBundle {
-			transform: Transform::from_translation(translation).looking_away(Vec3::ZERO, Vec3::Y),
-			// .with_rotation(Quat::from_rotation_x(TAU * 0.1)),
-			..default()
-		})
-		.insert(CameraParent)
-		.insert(CameraToggle::default())
-		.insert(OrbitController {
-			radius,
-			..default()
-		})
-		.insert(TransformController::default())
-		.id();
-
-	commands.entity(parent).push_children(&[child]);
+	spawn(
+		Vec3::new(10., 0., 0.),
+		Quat::from_right(),
+		CameraViewType::Right,
+	);
+	spawn(
+		Vec3::new(0., 10., 0.),
+		Quat::from_up(),
+		CameraViewType::Top,
+	);
+	spawn(
+		Vec3::new(0., 0., 10.),
+		Quat::from_forward(),
+		CameraViewType::Front,
+	);
 }

@@ -1,10 +1,14 @@
+# disable_all_formatting = true
+
 hard_tabs = true
 # nightly
 blank_lines_lower_bound = 0
 blank_lines_upper_bound = 10
 fn_single_line = true
 
+chain_width = 40
+
+
 # use_small_heuristics = "Off"
-# chain_width = 1
 # max_width=1
 # fn_call_width=60

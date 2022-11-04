@@ -1,7 +1,7 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables))]
 
-mod _camera_toggle;
-pub use _camera_toggle::*;
+mod _camera_view_toggle;
+pub use _camera_view_toggle::*;
 mod _fps_camera;
 pub use _fps_camera::*;
 mod _keyboard_controller;

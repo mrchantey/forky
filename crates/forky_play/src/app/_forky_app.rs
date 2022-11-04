@@ -34,6 +34,7 @@ pub fn init() -> App {
 		..Default::default()
 	})
 	.add_plugins(DefaultPlugins)
+	.add_plugin(debug::GridPlugin)
 	// .add_startup_system(utility::surrender_focus)
 	.add_system(bevy::window::close_on_esc)
 	.add_startup_system(base::spawn_lights)

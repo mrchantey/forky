@@ -12,6 +12,7 @@ pub fn spawn_orbit_camera(mut commands: Commands) {
 			transform: Transform::from_rotation(Quat::from_rotation_y(HALF_TAU)),
 			..default()
 		})
+		.insert(CameraViewType::Orbit)
 		.id();
 
 	let parent = commands
@@ -21,7 +22,6 @@ pub fn spawn_orbit_camera(mut commands: Commands) {
 			..default()
 		})
 		.insert(CameraParent)
-		.insert(CameraToggle::default())
 		.insert(OrbitController {
 			radius,
 			..default()
