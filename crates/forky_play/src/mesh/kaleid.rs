@@ -21,7 +21,7 @@ impl Kaleid {
 		mut meshes: ResMut<Assets<Mesh>>,
 		mut materials: ResMut<Assets<StandardMaterial>>,
 	) {
-		let mesh = meshes.add(Mesh::from(shape::Cube { size: 1. }));
+		let mesh = meshes.add(Mesh::from(shape::Cube::default()));
 		let material = materials.add(Color::rgb(0., 1., 1.).into());
 		commands
 			.spawn_bundle(PbrBundle {

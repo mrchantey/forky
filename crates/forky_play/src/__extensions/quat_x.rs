@@ -17,7 +17,7 @@ pub impl Quat {
 
 
 	fn look_at(target: Vec3) -> Quat {
-		let up = tern!(target.x == 0. && target.z == 0.; Vec3::Z; Vec3::Y);
+		let up = tern!(target.x == 0. && target.z == 0.; -Vec3::Z; Vec3::Y);
 		let mat = Mat4::look_at_rh(target, Vec3::ZERO, up).inverse();
 		Quat::from_mat4(&mat)
 	}

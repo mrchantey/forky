@@ -2,15 +2,6 @@ use super::*;
 use forky_core::{graph::*, *};
 use std::collections::HashSet;
 
-
-pub trait Foo {
-	fn hello(&self);
-}
-pub trait Baz {
-	fn pizza(&self);
-}
-
-
 pub trait DepthFirstBacktrace: Maze {
 	fn depth_first_backtrack<T>(&mut self, on_next: T)
 	where

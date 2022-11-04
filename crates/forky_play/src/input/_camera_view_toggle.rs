@@ -32,13 +32,18 @@ pub fn camera_view_toggle(
 	keys: Res<Input<KeyCode>>,
 	mut query: Query<(&mut Camera, &CameraViewType)>,
 ) {
-	if !keys.just_pressed(KeyCode::Tab) {
-		return;
+	if keys.just_pressed(KeyCode::Tab) {
+		let next_state = next_toggle_state(&cam_type);
+		cam_type.clone_from(&next_state);
+		run_camera_view_toggle(cam_type, time, keys, query);
 	}
-
-	let next_state = next_toggle_state(&cam_type);
-	cam_type.clone_from(&next_state);
-
+}
+pub fn run_camera_view_toggle(
+	mut cam_type: ResMut<CameraViewType>,
+	time: Res<Time>,
+	keys: Res<Input<KeyCode>>,
+	mut query: Query<(&mut Camera, &CameraViewType)>,
+) {
 	for (mut cam, state) in query.iter_mut() {
 		if *state == *cam_type {
 			cam.is_active = true

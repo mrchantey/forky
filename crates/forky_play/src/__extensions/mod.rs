@@ -4,6 +4,8 @@ mod app_x;
 pub use app_x::*;
 mod color;
 pub use color::*;
+mod entity_builder;
+pub use entity_builder::*;
 mod pose;
 pub use pose::*;
 mod quat_x;

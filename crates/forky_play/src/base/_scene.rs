@@ -13,7 +13,8 @@ pub fn spawn_basic_scene(
 			size: Vec2::new(2., 2.),
 			..default()
 		})),
-		transform: Transform::from_xyz(0., 1., 0.).with_rotation(Quat::from_rotation_y(TAU / 2.)),
+		transform: Transform::from_xyz(0., 1., 0.)
+			.with_rotation(Quat::from_rotation_y(TAU / 2.)),
 		// mesh: meshes.add(Mesh::from(shape::Plane { size: 10. })),
 		material: materials.add(Color::rgb(0.2, 1., 0.2).into()),
 		..default()
@@ -24,6 +25,7 @@ pub fn spawn_lights(mut commands: Commands) {
 		transform: Transform::from_xyz(-5., 5., 3.),
 		point_light: PointLight {
 			intensity: 1000.,
+			color: Color::FUCHSIA,
 			..default()
 		},
 		..default()
@@ -32,6 +34,7 @@ pub fn spawn_lights(mut commands: Commands) {
 		transform: Transform::from_xyz(3., 5., -5.),
 		point_light: PointLight {
 			intensity: 1000.,
+			color: Color::CYAN,
 			..default()
 		},
 		..default()

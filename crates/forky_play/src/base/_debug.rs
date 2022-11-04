@@ -19,7 +19,7 @@ pub fn spawn_cube(
 ) {
 	commands
 		.spawn_bundle(PbrBundle {
-			mesh: meshes.add(Mesh::from(shape::Cube { size: 1. })),
+			mesh: meshes.add(Mesh::from(shape::Cube::default())),
 			material: materials.add(Color::rgb(0., 1., 1.).into()),
 			transform: Transform::from_xyz(0., 1., 0.),
 			..default()

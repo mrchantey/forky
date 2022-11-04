@@ -1,4 +1,5 @@
-use forky_core::{graph::*, *};
+use bevy::prelude::Transform;
+use forky_core::{graph::*, *, math::*};
 
 use super::{_depth_first_backtrack::DepthFirstBacktrace, *};
 use std::collections::HashSet;
@@ -115,7 +116,10 @@ impl RectMaze {
 				}
 				//handle centers
 				if row < self.height - 1 && col < self.width - 1 {
-					if c1_c2_linked && c2_c3_linked && c3_c4_linked && c4_c1_linked {
+					if c1_c2_linked
+						&& c2_c3_linked && c3_c4_linked
+						&& c4_c1_linked
+					{
 						vec[e3] = u8_shape::NONE;
 					} else if c1_c2_linked && c2_c3_linked && c3_c4_linked {
 						vec[e3] = u8_shape::HORIZONTAL_LEFT;
@@ -193,7 +197,7 @@ impl RectMaze {
 	pub fn format(&self) -> String {
 		let grid = self.draw_maze();
 		let mut str = String::new();
-
+		
 		for row in 0..self.height + 1 {
 			for col in 0..self.width + 1 {
 				let i = col + row * (self.width + 1);
@@ -203,6 +207,33 @@ impl RectMaze {
 		}
 		str
 	}
+	
+	pub fn transforms(&self,cell_width:f32,wall_width:f32) -> Vec<(Transform, Vec<Transform>)> {
+		let mut trans = Vec::new();
+		let grid = self.draw_maze();
+
+		let total_walls_w = f(self.width + 1) * cell_width;
+		let total_walls_h = f(self.height + 1) * cell_width;
+		
+		let x_min = total_walls_w / 2. - cell_width / 2.;
+		let z_min = total_walls_h / 2. - cell_width / 2.;
+
+		for row in 0..self.height + 1 {
+			for col in 0..self.width + 1 {
+				let i = col + row * (self.width + 1);
+				let func = mesh_shape::from_u8(grid[i]);
+				let mut tt = func(cell_width,wall_width);
+				let x = -x_min + cell_width * f(col);
+				let z = -z_min + cell_width * f(row);
+				tt.0.translation.x += x;
+				tt.0.translation.z += z;
+				trans.push(tt);
+			}
+		}
+		trans
+	}
+
+
 	pub fn format_indices(&self) -> String {
 		let mut str = String::new();
 

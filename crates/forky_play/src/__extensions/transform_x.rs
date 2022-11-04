@@ -17,20 +17,94 @@ pub impl Transform {
 		vec.normalize_or_zero()
 	}
 
-	fn from_rotation_x(x: f32) -> Self { Self::from_rotation(Quat::from_rotation_x(x)) }
-	fn from_rotation_y(y: f32) -> Self { Self::from_rotation(Quat::from_rotation_y(y)) }
-	fn from_rotation_z(z: f32) -> Self { Self::from_rotation(Quat::from_rotation_z(z)) }
+	fn from_position(v: Vec3) -> Self {
+		Self::from_translation(v)
+	}
+	
+	fn with_position(&self,v: Vec3) -> Self {
+		self.with_translation(v)
+	}
 
-	fn with_rotation_x(self, x: f32) -> Self { self.with_rotation(Quat::from_rotation_x(x)) }
-	fn with_rotation_y(self, y: f32) -> Self { self.with_rotation(Quat::from_rotation_y(y)) }
-	fn with_rotation_z(self, z: f32) -> Self { self.with_rotation(Quat::from_rotation_z(z)) }
+	fn from_position_x(x: f32) -> Self {
+		Self::from_translation(Vec3::new(x, 0., 0.))
+	}
+	fn from_position_y(y: f32) -> Self {
+		Self::from_translation(Vec3::new(0., y, 0.))
+	}
+	fn from_position_z(z: f32) -> Self {
+		Self::from_translation(Vec3::new(0., 0., z))
+	}
+	
+	fn with_position_x(self, x: f32) -> Self {
+		self.with_translation(Vec3::new(x, 0., 0.))
+	}
+	fn with_position_y(self, y: f32) -> Self {
+		self.with_translation(Vec3::new(0., y, 0.))
+	}
+	fn with_position_z(self, z: f32) -> Self {
+		self.with_translation(Vec3::new(0., 0., z))
+	}
+	fn from_rotation_x(x: f32) -> Self {
+		Self::from_rotation(Quat::from_rotation_x(x))
+	}
+	fn from_rotation_y(y: f32) -> Self {
+		Self::from_rotation(Quat::from_rotation_y(y))
+	}
+	fn from_rotation_z(z: f32) -> Self {
+		Self::from_rotation(Quat::from_rotation_z(z))
+	}
 
-	fn translate_x(&mut self, val: f32) { self.translation += self.local_x() * val; }
-	fn translate_y(&mut self, val: f32) { self.translation += self.local_y() * val; }
-	fn translate_z(&mut self, val: f32) { self.translation += self.local_z() * val; }
-	fn translate_flat_x(&mut self, val: f32) { self.translation += self.flat_x() * val; }
-	fn translate_flat_y(&mut self, val: f32) { self.translation += Vec3::Y * val; }
-	fn translate_flat_z(&mut self, val: f32) { self.translation += self.flat_z() * val; }
+	fn with_rotation_x(self, x: f32) -> Self {
+		self.with_rotation(Quat::from_rotation_x(x))
+	}
+	fn with_rotation_y(self, y: f32) -> Self {
+		self.with_rotation(Quat::from_rotation_y(y))
+	}
+	fn with_rotation_z(self, z: f32) -> Self {
+		self.with_rotation(Quat::from_rotation_z(z))
+	}
+
+	fn from_scale_xyz(x: f32, y: f32, z: f32) -> Self {
+		Self::from_scale(Vec3::new(x, y, z))
+	}
+	fn with_scale_xyz(self, x: f32, y: f32, z: f32) -> Self {
+		self.with_scale(Vec3::new(x, y, z))
+	}
+	fn from_scale_x(x: f32) -> Self { Self::from_scale(Vec3::new(x, 1., 1.)) }
+	fn from_scale_y(y: f32) -> Self { Self::from_scale(Vec3::new(1., y, 1.)) }
+	fn from_scale_z(z: f32) -> Self { Self::from_scale(Vec3::new(1., 1., z)) }
+
+	fn with_scale_x(self, x: f32) -> Self {
+		self.with_scale(Vec3::new(x, 1., 1.))
+	}
+	fn with_scale_y(self, y: f32) -> Self {
+		self.with_scale(Vec3::new(1., y, 1.))
+	}
+	fn with_scale_z(self, z: f32) -> Self {
+		self.with_scale(Vec3::new(1., 1., z))
+	}
+	fn with_scale_value(self, v: f32) -> Self {
+		self.with_scale(Vec3::splat(v))
+	}
+
+	fn translate_x(&mut self, val: f32) {
+		self.translation += self.local_x() * val;
+	}
+	fn translate_y(&mut self, val: f32) {
+		self.translation += self.local_y() * val;
+	}
+	fn translate_z(&mut self, val: f32) {
+		self.translation += self.local_z() * val;
+	}
+	fn translate_flat_x(&mut self, val: f32) {
+		self.translation += self.flat_x() * val;
+	}
+	fn translate_flat_y(&mut self, val: f32) {
+		self.translation += Vec3::Y * val;
+	}
+	fn translate_flat_z(&mut self, val: f32) {
+		self.translation += self.flat_z() * val;
+	}
 
 	fn look_away(&mut self, target: Vec3, up: Vec3) {
 		let forward = Vec3::normalize(target - self.translation);

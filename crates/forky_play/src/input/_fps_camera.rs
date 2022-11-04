@@ -16,7 +16,8 @@ pub fn spawn_fps_camera(mut commands: Commands) {
 
 	let parent = commands
 		.spawn_bundle(SpatialBundle {
-			transform: Transform::from_translation(translation).with_rotation_x(TAU * 0.1), // .looking_at(Vec3::ZERO, Vec3::Y)
+			transform: Transform::from_translation(translation)
+				.with_rotation_x(TAU * 0.1),
 			..default()
 		})
 		.insert(CameraParent)

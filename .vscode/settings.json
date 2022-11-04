@@ -1,6 +1,6 @@
 {
 	"files.autoSave": "afterDelay",
-	"files.autoSaveDelay": 20,
+	"files.autoSaveDelay": 1000,
 	"files.exclude": {
 		".embuild": true,
 		".cargo": true,
