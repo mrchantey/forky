@@ -1,26 +1,28 @@
 use crate::{maze::mesh_shape, *};
 use bevy::prelude::*;
+use bevy_rapier3d::prelude::*;
 use forky_core::{math::*, *};
+
+use super::RectMazeSpatial;
 
 pub fn spawn_all(
 	commands: &mut Commands,
 	meshes: &mut ResMut<Assets<Mesh>>,
 	materials: &mut ResMut<Assets<StandardMaterial>>,
-	walls: &Vec<(Transform, Vec<Transform>)>,
-	wall_height: f32,
+	maze: &RectMazeSpatial,
 ) -> Entity {
-	let walls: Vec<Entity> = walls
+	let walls: Vec<Entity> = maze
+		.transforms()
 		.iter()
 		.map(|(parent, children)| {
 			spawn(commands, meshes, materials, parent, children)
 		})
 		.collect();
 
-
 	commands
 		.spawn_bundle(SpatialBundle {
-			transform: Transform::from_xyz(0., wall_height / 2., 0.)
-				.with_scale_y(wall_height),
+			transform: Transform::from_xyz(0., maze.wall_height / 2., 0.)
+				.with_scale_y(maze.wall_height),
 			..default()
 		})
 		.push_children(&walls)
@@ -45,6 +47,7 @@ pub fn spawn(
 					material: materials.add(Color::rgb(1., 1., 1.).into()),
 					..default()
 				})
+				.insert(Collider::cuboid(0.5, 0.5, 0.5))
 				.id()
 		})
 		.collect();

@@ -6,6 +6,7 @@ pub mod base;
 pub mod input;
 pub mod maze;
 pub mod debug;
+pub mod physics;
 pub mod mesh;
 pub mod utility;
 pub use __extensions::*;

@@ -3,15 +3,17 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use forky_core::{math::*, *};
 
+use super::RectMazeSpatial;
+
 
 
 pub fn spawn(
 	commands: &mut Commands,
 	meshes: &mut ResMut<Assets<Mesh>>,
 	materials: &mut ResMut<Assets<StandardMaterial>>,
-	cell_width: f32,
+	maze: &RectMazeSpatial,
 ) -> Entity {
-	let h_cell_width = cell_width / 2.;
+	let h_cell_width = maze.cell_width / 2.;
 	let diameter = h_cell_width * 0.5;
 	commands
 		.spawn_bundle(PbrBundle {

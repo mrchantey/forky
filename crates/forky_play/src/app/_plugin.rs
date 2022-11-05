@@ -6,6 +6,7 @@ use bevy::{
 	winit::*,
 };
 use bevy_inspector_egui::WorldInspectorPlugin;
+use bevy_rapier3d::prelude::*;
 pub struct ForkyPlugin;
 
 pub fn init() -> App {
@@ -16,6 +17,7 @@ pub fn init() -> App {
 impl Plugin for ForkyPlugin {
 	fn build(&self, app: &mut App) {
 		app.forky()
+			.insert_resource(Msaa::default())
 			.insert_resource(LogSettings {
 				// filter: "info,wgpu_core=warn,wgpu_hal=warn,mygame=debug".into(),
 				level: bevy::log::Level::WARN,
@@ -42,6 +44,12 @@ impl Plugin for ForkyPlugin {
 				..Default::default()
 			})
 			.add_plugins(DefaultPlugins)
+			.add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
+			.add_plugin(RapierDebugRenderPlugin::default())
+			.insert_resource(RapierConfiguration {
+				gravity: Vec3::new(0., -9.8, 0.),
+				..default()
+			})
 			.add_plugin(debug::GridPlugin)
 			// .add_startup_system(utility::surrender_focus)
 			.add_system(bevy::window::close_on_esc)

@@ -56,7 +56,7 @@ test crate *args:
 	RUST_BACKTRACE=1 cargo test -p {{crate}} --test sweet -- {{args}}
 
 test-w crate *args:
-	just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'
+	RUST_BACKTRACE=1 just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'
 
 watch command:
 	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md}' --ignore 'output' -- {{command}}

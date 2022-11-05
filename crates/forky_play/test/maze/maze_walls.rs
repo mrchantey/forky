@@ -11,7 +11,6 @@ sweet! {
 		app::init()
 			// .add_plugin(maze::MazePlugin)
 			.add_startup_system(spawn_all_walls)
-			.add_plugin(input::DebugCameraPlugin)
 			.add_startup_system(utility::surrender_focus)
 			// .forky_exit_after(2)
 			.run();
