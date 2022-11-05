@@ -48,6 +48,7 @@ pub fn spawn(
 					..default()
 				})
 				.insert(Collider::cuboid(0.5, 0.5, 0.5))
+				.insert(ColliderMassProperties::Density(0.))
 				.id()
 		})
 		.collect();

@@ -2,6 +2,8 @@
 
 pub mod ball;
 pub mod board;
+pub mod board_force;
+pub mod board_joint;
 pub mod char_shape;
 pub mod floor;
 pub mod maze_3d;
@@ -9,6 +11,8 @@ pub mod maze_wall;
 pub mod mesh_shape;
 pub mod square;
 pub mod u8_shape;
+mod _board_joint_controller;
+pub use _board_joint_controller::*;
 mod _depth_first_backtrack;
 pub use _depth_first_backtrack::*;
 mod _maze;

@@ -2,6 +2,8 @@
 
 mod app_x;
 pub use app_x::*;
+mod bundle;
+pub use bundle::*;
 mod color;
 pub use color::*;
 mod entity_builder;

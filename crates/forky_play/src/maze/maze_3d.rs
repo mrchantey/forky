@@ -9,12 +9,12 @@ pub fn spawn(
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-	let num_cols = 10;
-	let num_rows = 10;
-	let cell_width = 0.2;
+	let num_cols = 4;
+	let num_rows = 4;
+	let cell_width = 2.;
 	// let h_cell_width = cell_width / 2.;
-	let wall_width = 0.02;
-	let wall_height = 0.05;
+	let wall_width = 0.2;
+	let wall_height = 0.5;
 
 	let mut maze = RectMazeSpatial::new(
 		num_cols,
@@ -27,6 +27,7 @@ pub fn spawn(
 
 	let board =
 		board::spawn(&mut commands, &mut meshes, &mut materials, &maze).id();
+
 
 	let ball =
 		ball::spawn(&mut commands, &mut meshes, &mut materials, &maze).id();

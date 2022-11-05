@@ -45,7 +45,7 @@ impl Plugin for ForkyPlugin {
 			})
 			.add_plugins(DefaultPlugins)
 			.add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
-			.add_plugin(RapierDebugRenderPlugin::default())
+			// .add_plugin(RapierDebugRenderPlugin::default())
 			.insert_resource(RapierConfiguration {
 				gravity: Vec3::new(0., -9.8, 0.),
 				..default()

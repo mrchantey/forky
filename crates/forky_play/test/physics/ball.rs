@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use forky_core::*;
-use forky_play::maze::{ball, floor, RectMazeSpatial, board};
+use forky_play::maze::{ball, board, floor, RectMazeSpatial};
 use forky_play::OptI32X;
 use forky_play::*;
 use sweet::*;
@@ -12,7 +12,7 @@ sweet! {
 		// .forky_exit_after(5)
 				.add_startup_system(utility::surrender_focus)
 				.add_startup_system(spawn)
-				.add_system(board::controller)
+				// .add_system(board::force_controller)
 				.run();
 	}
 }

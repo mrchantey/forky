@@ -14,55 +14,12 @@ pub fn spawn(
 	materials: &mut ResMut<Assets<StandardMaterial>>,
 	maze: &RectMazeSpatial,
 ) -> Entity {
-	let walls =
-		maze_wall::spawn_all(commands, meshes, materials, &maze);
+	let walls = maze_wall::spawn_all(commands, meshes, materials, &maze);
 	let floor = floor::spawn(commands, meshes, materials, &maze);
 
-	commands
-		.spawn_bundle(SpatialBundle::default())
-		.push_children(&[walls, floor])
-		.insert(MazeBoard)
-		.insert(RigidBody::Dynamic)
-		.insert(Damping {
-			linear_damping: 0.,
-			angular_damping: 0.8,
-		})
-		.insert(LockedAxes::TRANSLATION_LOCKED | LockedAxes::ROTATION_LOCKED_Y)
-		.insert(GravityScale(0.))
-		.insert(ExternalForce::default())
-		.id()
-}
+	let controller = board_joint::spawn(commands, meshes, materials);
 
-
-
-
-
-
-
-
-
-
-pub fn controller(
-	keys: Res<Input<KeyCode>>,
-	mut query: Query<(&mut ExternalForce, &Transform), With<MazeBoard>>,
-) {
-	let mut torque = Vec3::ZERO;
-	let force = 10.;
-	if keys.pressed(KeyCode::I) {
-		torque.x += force;
-	}
-	if keys.pressed(KeyCode::K) {
-		torque.x -= force;
-	}
-	if keys.pressed(KeyCode::J) {
-		torque.z -= force;
-	}
-	if keys.pressed(KeyCode::L) {
-		torque.z += force;
-	}
-
-	for (mut force, tran) in query.iter_mut() {
-		// force.torque += Vec3::new(1000.,0.,0.);
-		force.torque = torque;
-	}
+	// commands.entity(controller).push_children(&[walls]);
+	commands.entity(controller).push_children(&[walls, floor]);
+	controller
 }

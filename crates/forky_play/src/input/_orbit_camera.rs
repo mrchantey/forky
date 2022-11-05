@@ -9,7 +9,9 @@ pub fn spawn_orbit_camera(mut commands: Commands) {
 
 	let child = commands
 		.spawn_bundle(Camera3dBundle {
-			transform: Transform::from_rotation(Quat::from_rotation_y(HALF_TAU)),
+			transform: Transform::from_rotation(Quat::from_rotation_y(
+				HALF_TAU,
+			)),
 			..default()
 		})
 		.insert(CameraViewType::Orbit)
@@ -17,7 +19,8 @@ pub fn spawn_orbit_camera(mut commands: Commands) {
 
 	let parent = commands
 		.spawn_bundle(SpatialBundle {
-			transform: Transform::from_translation(translation).looking_away(Vec3::ZERO, Vec3::Y),
+			transform: Transform::from_translation(translation)
+				.looking_away(Vec3::ZERO, Vec3::Y),
 			// .with_rotation(Quat::from_rotation_x(TAU * 0.1)),
 			..default()
 		})
