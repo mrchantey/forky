@@ -2,3 +2,4 @@
 
 pub mod ball;
 pub mod revolute_joint;
+pub mod slerp_joint;

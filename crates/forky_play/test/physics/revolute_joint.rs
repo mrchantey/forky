@@ -35,7 +35,6 @@ fn my_startup_system(
 		.local_anchor1(Vec3::new(0.0, 0.0, 0.0))
 		.local_anchor2(Vec3::new(0.0, -2.0, 0.0))
 		.motor_position(TAU * 0.125,1000.,100.)
-		.motor_model(MotorModel::AccelerationBased)
 		// .motor_velocity(10., 10000.)//0.0001 = never, 10000||0 = now
 		;
 

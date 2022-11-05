@@ -11,13 +11,13 @@ sweet! {
 	it "works" {
 
 		app::init()
-		.insert_resource(MazeJointParams{
+		.insert_resource(board_joint::MazeJointParams{
 			target_pos:TAU * 0.125 * 0.5,
 			stiffness:500.,
 			damping:100.
 		})
 		.add_startup_system(spawn)
-		.add_system(board_joint_controller)
+		.add_system(board_joint::controller)
 		.run();
 	}
 }

@@ -16,7 +16,7 @@ pub struct MazeJoint {
 }
 
 
-pub fn board_joint_controller(
+pub fn controller(
 	params: Res<MazeJointParams>,
 	keys: Res<Input<KeyCode>>,
 	mut query: Query<(&mut ImpulseJoint, &MazeJoint)>,

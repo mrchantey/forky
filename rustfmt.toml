@@ -12,3 +12,4 @@ fn_single_line = true
 # use_small_heuristics = "Off"
 max_width=80
 # fn_call_width=60
+format_generated_files = false
