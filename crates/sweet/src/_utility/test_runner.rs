@@ -1,18 +1,23 @@
 use crate::*;
 use colorize::*;
 use forky_core::*;
+use forky_fs::*;
 use std::path::PathBuf;
 use std::slice::Iter;
 use std::time::Instant;
 
 
-fn suite_in_args(path: &str, args: &Vec<String>) -> bool { 
+fn suite_in_args(path: &str, args: &Vec<String>) -> bool {
 	let matchable_path = path.replace('\\', "/");
 	args.iter().any(|a| matchable_path.contains(a))
 }
 
-fn vec_contains_str(path: &str, args: &Vec<String>) -> bool { args.iter().any(|a| a == path) }
-fn arr_contains_str(path: &str, arr: &[&str]) -> bool { arr.iter().any(|a| *a == path) }
+fn vec_contains_str(path: &str, args: &Vec<String>) -> bool {
+	args.iter().any(|a| a == path)
+}
+fn arr_contains_str(path: &str, arr: &[&str]) -> bool {
+	arr.iter().any(|a| *a == path)
+}
 
 const FLAGS: &'static [&str] = &["-w"];
 
@@ -28,8 +33,8 @@ pub fn run() -> Result<(), MatcherError> {
 	}
 
 	println!("\n🤘 sweet as! 🤘\n");
-	if args.files.len() > 0{
-		println!("matching: {}\n",args.files.to_string());
+	if args.files.len() > 0 {
+		println!("matching: {}\n", args.files.to_string());
 	}
 
 	let start_time = Instant::now();
@@ -49,18 +54,18 @@ pub fn run() -> Result<(), MatcherError> {
 		suite_results.push(suite.results());
 	}
 	let mut suites_failed = 0;
-	let combined_suite_results =
-		suite_results
-			.iter()
-			.fold(TestSuiteResult::default(), |mut acc, item| {
-				acc.tests += item.tests;
-				acc.failed += item.failed;
-				acc.skipped += item.skipped;
-				if item.failed > 0 {
-					suites_failed = suites_failed + 1
-				}
-				acc
-			});
+	let combined_suite_results = suite_results.iter().fold(
+		TestSuiteResult::default(),
+		|mut acc, item| {
+			acc.tests += item.tests;
+			acc.failed += item.failed;
+			acc.skipped += item.skipped;
+			if item.failed > 0 {
+				suites_failed = suites_failed + 1
+			}
+			acc
+		},
+	);
 
 	print!("\n");
 	if combined_suite_results.tests == 0 {
@@ -111,8 +116,7 @@ fn print_summary(prefix: String, total: u32, failed: u32, skipped: u32) {
 	let passed_str = format!("{passed} passed").bold().green();
 	let skipped_str = format!("{skipped} skipped").bold().yellow();
 	let failed_str = format!("{failed} failed").bold().red();
-	let total_str =
-		tern!(passed == total;format!("{total} total");format!("{passed} of {total} total"));
+	let total_str = tern!(passed == total;format!("{total} total");format!("{passed} of {total} total"));
 	if failed > 0 {
 		summaries.push(&failed_str);
 	}

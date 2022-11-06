@@ -13,7 +13,7 @@ pub struct PoseLerp {
 }
 
 #[rustfmt::skip]
-pub fn lerp_animator(
+pub fn pose_lerp_animator(
 	time: Res<Time>,
 	mut commands:Commands,
 	mut query: Query<(Entity,&mut Transform, &mut PoseLerp)>,

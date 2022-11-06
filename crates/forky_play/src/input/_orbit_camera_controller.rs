@@ -1,9 +1,9 @@
-use bevy::{input::mouse::*, prelude::*, render::camera::*};
 //https://bevy-cheatbook.github.io/cookbook/pan-orbit-camera.html
-
 use crate::*;
 use bevy::prelude::*;
-use forky_core::math::*;
+use bevy::{input::mouse::*, prelude::*, render::camera::*};
+use bevy_easings::*;
+use forky_core::{log, math::*};
 
 #[derive(Component)]
 pub struct CameraParent;
@@ -16,6 +16,15 @@ pub struct OrbitController {
 	pub upside_down: bool,
 }
 
+impl Lerp for OrbitController {
+	type Scalar = f32;
+	fn lerp(&self, other: &Self, scalar: &Self::Scalar) -> Self {
+		OrbitController {
+			radius: f32::lerp(&self.radius, &other.radius, scalar),
+			..self.clone()
+		}
+	}
+}
 impl Default for OrbitController {
 	fn default() -> Self {
 		OrbitController {
@@ -36,6 +45,7 @@ pub fn orbit_camera_controller(
 	// change input mapping for orbit and panning here
 	let orbit_button = MouseButton::Left;
 	let pan_button = MouseButton::Middle;
+
 
 	let mut pan = Vec2::ZERO;
 	let mut rotation_move = Vec2::ZERO;
@@ -59,10 +69,10 @@ pub fn orbit_camera_controller(
 		orbit_button_changed = true;
 	}
 
-	for (mut tran, mut pan_orbit, projection) in query.iter_mut() {
+	for (mut tran, mut controller, projection) in query.iter_mut() {
 		if orbit_button_changed {
 			let up = tran.rotation * Vec3::Y;
-			pan_orbit.upside_down = up.y <= 0.0;
+			controller.upside_down = up.y <= 0.0;
 		}
 
 		let mut any = false;
@@ -71,7 +81,7 @@ pub fn orbit_camera_controller(
 			let window = get_primary_window_size(&windows);
 			let delta_x = {
 				let delta = rotation_move.x / window.x * PI * 2.0;
-				if pan_orbit.upside_down {
+				if controller.upside_down {
 					-delta
 				} else {
 					delta
@@ -96,17 +106,17 @@ pub fn orbit_camera_controller(
 			let right = tran.rotation * Vec3::X * -pan.x;
 			let up = tran.rotation * Vec3::Y * pan.y;
 			// make panning proportional to distance away from focus point
-			let translation = (right + up) * pan_orbit.radius;
-			pan_orbit.focus += translation;
+			let translation = (right + up) * controller.radius;
+			controller.focus += translation;
 		} else if scroll.abs() > 0.0 {
 			any = true;
-			pan_orbit.radius -= scroll * pan_orbit.radius * 0.2;
+			controller.radius -= scroll * controller.radius * 0.2;
 			// dont allow zoom to reach zero or you get stuck
-			pan_orbit.radius = f32::max(pan_orbit.radius, 0.05);
+			controller.radius = f32::max(controller.radius, 0.05);
 		}
 
 		if any {
-			update_translation_from_orbit(&mut tran, &pan_orbit);
+			update_translation_from_orbit(&mut tran, &controller);
 		}
 	}
 }
@@ -132,5 +142,5 @@ pub fn update_orbit_from_transform(
 	tran: &Transform,
 ) {
 	let r = orbit.radius;
-	orbit.focus = tran.local_z() * r;
+	orbit.focus = tran.forward() * r;
 }

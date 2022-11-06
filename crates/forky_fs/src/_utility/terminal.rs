@@ -1,5 +1,5 @@
-use crate::log;
 use crossterm::*;
+use forky_core::*;
 use std::{
 	fmt::Display,
 	io::{stdout, Write},
@@ -18,7 +18,7 @@ pub fn show_cursor() {
 }
 
 
-pub fn reset_cursor(){
+pub fn reset_cursor() {
 	let mut stdout = stdout();
 	stdout.execute(cursor::MoveTo(0, 0)).unwrap();
 }

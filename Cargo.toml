@@ -27,6 +27,7 @@ repository = "https://github.com/mrchantey/forky"
 # internal
 forky = {path = "./crates/forky", version = "0.1.9" }
 forky_core = {path = "./crates/forky_core", version = "0.1.9" }
+forky_fs = {path = "./crates/forky_fs", version = "0.1.9" }
 forky_cli = {path = "./crates/forky_cli", version = "0.1.9" }
 forky_esp = {path = "./crates/forky_esp", version = "0.1.8" }
 forky_play = {path = "./crates/forky_play", version = "0.1.9" }
@@ -47,6 +48,7 @@ notify = "5.0.0-pre.15"
 crossterm = "0.25.0"
 colorize = "0.1.0"
 gag = "1.0.0"
+num-traits = "0.2.15"
 
 # compile
 backtrace = "0.3.66"

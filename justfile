@@ -15,6 +15,10 @@ default:
 build crate:
 	cargo build -p crate
 
+build-maze:
+	cargo build --release --target wasm32-unknown-unknown	-p forky_play --example maze
+	wasm-bindgen --out-dir ./out/ --target web ./target/
+
 check crate:
 	cargo check -p {{crate}}
 

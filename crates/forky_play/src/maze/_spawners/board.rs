@@ -1,4 +1,3 @@
-use super::{maze_3d::MazeItemTag, *};
 use crate::maze::*;
 use crate::*;
 use bevy::prelude::*;
@@ -12,7 +11,7 @@ pub fn respawn(
 	mut commands: Commands,
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
-	mut spawn_event: EventReader<maze_3d::RespawnEvent>,
+	mut spawn_event: EventReader<RespawnEvent>,
 ) {
 	for e in spawn_event.iter() {
 		let mut maze = RectMazeSpatial::new(

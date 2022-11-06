@@ -8,6 +8,6 @@ pub mod maze;
 pub mod debug;
 pub mod physics;
 pub mod mesh;
-pub mod pose;
+pub mod animation;
 pub mod utility;
 pub use __extensions::*;

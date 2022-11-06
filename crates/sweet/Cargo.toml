@@ -12,6 +12,7 @@ repository = {workspace=true}
 
 [dependencies]
 forky_core = {workspace = true}
+forky_fs = {workspace = true}
 forky_test = {workspace = true}
 inventory = {workspace = true}
 crossterm = {workspace = true}

@@ -1,5 +1,5 @@
 [package]
-name = "forky_core"
+name = "forky_fs"
 version = {workspace=true}
 edition = {workspace=true}
 authors = {workspace=true}
@@ -11,9 +11,9 @@ repository = {workspace=true}
 
 
 [dependencies]
-extend = {workspace = true}
-rand = {workspace = true}
-num-traits = {workspace = true}
+forky_core = {workspace = true}
+crossterm = {workspace = true}
+
 
 [dev-dependencies]
 sweet = {workspace = true}

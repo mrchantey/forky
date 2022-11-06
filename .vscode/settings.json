@@ -1,5 +1,5 @@
 {
-	"files.autoSave": "afterDelay",
+	"files.autoSave": "off",
 	"files.autoSaveDelay": 1000,
 	"files.exclude": {
 		".embuild": true,
@@ -11,7 +11,7 @@
 		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
 		".vscode": true,
-		"**/mod.rs": true,
+		// "**/mod.rs": true,
 		// "target": true,
 	},
 	"explorer.fileNesting.enabled": true,

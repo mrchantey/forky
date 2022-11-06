@@ -1,4 +1,4 @@
-use forky_core::*;
+use forky_fs::*;
 use forky_play::{maze::*, *};
 
 
@@ -21,6 +21,7 @@ fn main() -> ! {
 		});
 
 		let str = maze.format();
-		file::write(format!("./output/maze_{}.txt", count), str.as_str()).unwrap();
+		file::write(format!("./output/maze_{}.txt", count), str.as_str())
+			.unwrap();
 	}
 }
