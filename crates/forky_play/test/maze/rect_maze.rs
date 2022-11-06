@@ -3,7 +3,7 @@ use forky_play::{maze::*, *};
 use sweet::*;
 
 sweet! {
-	
+
 	before {
 		let width = 5;
 		let height = 3;
@@ -16,7 +16,7 @@ sweet! {
 	}
 
 	test "grid"{
-		let str = maze.format();
+		let str = maze.format_grid();
 		expect(&str[..]).to_be("┌┬┬┬┬┐\n├┼┼┼┼┤\n├┼┼┼┼┤\n└┴┴┴┴┘\n")?;
 	}
 
@@ -28,15 +28,24 @@ sweet! {
 		maze.paths.link(9,14);
 		maze.paths.link(11,12);
 		let str = maze.format();
-		expect(&str[..]).to_be("┌─┬┬─┐\n│┌┼┴┬┤\n├┼┴┬┤│\n└┴─┴┴┘\n")?;
+		expect(&str[..]).to_be("┌─┬┬─┐\n│┌┼┴┬┤\n├┼┴┬┤│\n└┴─┴┘╵\n")?;
+		// log!(str);
 	}
 
-	test "random" {
+	test "tail"{
+		expect(&maze.format()[..]).to_be("┌┬┬┬┬┐\n├┼┼┼┼┤\n├┼┼┼┼┤\n└┴┴┴┘╵\n")?;
+		maze.tail = 13;
+		expect(&maze.format()[..]).to_be("┌┬┬┬┬┐\n├┼┼┼┼┤\n├┼┼┼┼┤\n└┴┴┘└┘\n")?;
+		maze.paths.link(13,14);
+		expect(&maze.format()[..]).to_be("┌┬┬┬┬┐\n├┼┼┼┼┤\n├┼┼┼┴┤\n└┴┴┘╶┘\n")?;
+	}
+
+	test skip "random" {
 		let width = 10;
 		let height = 5;
-		maze.paths.link_randomly();
+		maze.link_randomly();
 		let str = maze.format();
-		// log!(str);
+		log!(str);
 	}
 	test "options" {
 		let width = 2;

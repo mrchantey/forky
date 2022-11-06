@@ -20,8 +20,8 @@ pub fn force_controller(
 				torque.x = solve_torque(
 					x,
 					velocity.angvel.x,
-					keys.pressed(KeyCode::I),
 					keys.pressed(KeyCode::K),
+					keys.pressed(KeyCode::I),
 					&params
 				)
 			}

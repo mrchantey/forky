@@ -1,9 +1,9 @@
+use crate::maze::*;
 use crate::{maze::mesh_shape, *};
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use forky_core::{math::*, *};
 
-use super::RectMazeSpatial;
 
 pub fn spawn_all(
 	commands: &mut Commands,
@@ -44,7 +44,7 @@ pub fn spawn(
 				.spawn_bundle(PbrBundle {
 					transform: *transform,
 					mesh: meshes.add(Mesh::from(shape::Cube::default())),
-					material: materials.add(Color::rgb(1., 1., 1.).into()),
+					material: materials.from_white(),
 					..default()
 				})
 				.insert(Collider::cuboid(0.5, 0.5, 0.5))

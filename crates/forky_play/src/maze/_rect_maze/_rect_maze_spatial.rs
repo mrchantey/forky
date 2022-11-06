@@ -1,7 +1,9 @@
 use super::*;
+use crate::maze::*;
 use bevy::prelude::*;
 use forky_core::{math::*, *};
 
+#[derive(Component)]
 pub struct RectMazeSpatial {
 	pub rect_maze: RectMaze,
 	pub cell_width: f32,

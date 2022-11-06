@@ -1,4 +1,4 @@
-#![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables))]
+#![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens))]
 
 mod app_x;
 pub use app_x::*;
@@ -8,6 +8,8 @@ mod color;
 pub use color::*;
 mod entity_builder;
 pub use entity_builder::*;
+mod material;
+pub use material::*;
 mod physics;
 pub use physics::*;
 mod pose;

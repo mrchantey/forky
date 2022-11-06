@@ -1,5 +1,5 @@
 use crate::{
-	maze::{board::MazeBoard, mesh_shape},
+	maze::{board::MazeBoardTag, mesh_shape},
 	*,
 };
 use bevy::prelude::*;
@@ -15,7 +15,7 @@ pub fn spawn(
 	commands
 		.spawn_bundle(SpatialBundle::default())
 		// .push_children(&[walls, floor])
-		.insert(MazeBoard)
+		.insert(MazeBoardTag)
 		.insert(RigidBody::Dynamic)
 		.insert(Damping {
 			linear_damping: 0.,
@@ -30,7 +30,7 @@ pub fn spawn(
 
 pub fn force_controller(
 	keys: Res<Input<KeyCode>>,
-	mut query: Query<(&mut ExternalForce, &Transform), With<MazeBoard>>,
+	mut query: Query<(&mut ExternalForce, &Transform), With<MazeBoardTag>>,
 ) {
 	let mut torque = Vec3::ZERO;
 	let force = 10.;

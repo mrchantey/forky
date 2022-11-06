@@ -1,9 +1,8 @@
+use crate::maze::*;
 use crate::{maze::mesh_shape, *};
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use forky_core::{math::*, *};
-
-use super::RectMazeSpatial;
 
 
 pub fn spawn(
@@ -20,7 +19,7 @@ pub fn spawn(
 			transform: Transform::from_position_y(-floor_h / 2.)
 				.with_scale_xyz(floor_w, floor_h, floor_d),
 			mesh: meshes.add(Mesh::from(shape::Cube::default())),
-			material: materials.add(Color::rgb(1., 1., 1.).into()),
+			material: materials.from_white(),
 			..default()
 		})
 		.insert(Collider::cuboid(0.5, 0.5, 0.5))

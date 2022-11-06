@@ -1,7 +1,6 @@
-use crate::random;
+use crate::*;
 use extend::ext;
 use std::{collections::HashSet, fmt::Display, hash::Hash};
-
 
 pub type NodeGraph = Vec<Node>;
 
@@ -20,21 +19,18 @@ pub impl NodeGraph {
 	}
 
 
-	fn link_randomly(&mut self) {
+	fn link_randomly(&mut self, possibilities: &NodeGraph) {
+		self.clear_links();
 		let iter = self.iter().enumerate();
 		let mut to_link: Vec<(usize, usize)> = Vec::new();
-		for (i, node) in self.iter().enumerate() {
+		for (i, node) in possibilities.iter().enumerate() {
 			for neighbor in node.links.iter() {
-				let num = random::percent_i32();
-				if num < 20 {
+				if random::value() < 0.5 {
 					to_link.push((i, neighbor.clone()));
-					// self.link(i, neighbor.clone());
 				}
 			}
 		}
 		to_link.iter().for_each(|(a, b)| self.link(*a, *b));
-		// self.nodes[a].links.insert(b);
-		// self.nodes[b].links.insert(a);
 	}
 
 
@@ -47,7 +43,11 @@ pub impl NodeGraph {
 		self[b].links.remove(&a);
 	}
 
-	fn next_unvisited(&self, i: usize, visited: &HashSet<usize>) -> Option<&usize> {
+	fn next_unvisited(
+		&self,
+		i: usize,
+		visited: &HashSet<usize>,
+	) -> Option<&usize> {
 		self[i]
 			// ._get(i)
 			.links

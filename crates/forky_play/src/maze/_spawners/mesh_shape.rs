@@ -1,4 +1,5 @@
 use super::*;
+use crate::maze::*;
 use crate::*;
 use bevy::prelude::*;
 use forky_core::math::*;
@@ -22,7 +23,7 @@ fn _tee(cell_width: f32, wall_width: f32) -> Vec<Transform> {
 	let short_pos = cell_width * 0.25 + q_width;
 
 	vec![
-		Transform::from_scale_xyz(wall_width,1.,cell_width),
+		Transform::from_scale_xyz(wall_width, 1., cell_width),
 		Transform::from_xyz(short_pos, 0., 0.).with_scale_xyz(
 			short_height,
 			1.,
@@ -37,7 +38,7 @@ fn _cross(cell_width: f32, wall_width: f32) -> Vec<Transform> {
 	let short_pos = cell_width * 0.25 + q_width;
 
 	vec![
-		Transform::from_scale_xyz(wall_width,1.,cell_width),
+		Transform::from_scale_xyz(wall_width, 1., cell_width),
 		Transform::from_xyz(short_pos, 0., 0.).with_scale_xyz(
 			short_height,
 			1.,

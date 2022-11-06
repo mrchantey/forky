@@ -1,6 +1,6 @@
+use crate::*;
 use bevy::prelude::*;
 use bevy::render::mesh::{self, PrimitiveTopology};
-
 /// set up a simple 3D scene
 pub fn create_mesh(
 	mut commands: Commands,
@@ -34,7 +34,7 @@ pub fn create_mesh(
 	// plane
 	commands.spawn_bundle(PbrBundle {
 		mesh: meshes.add(mesh),
-		material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
+		material: materials.from_white(),
 		..default()
 	});
 	// light

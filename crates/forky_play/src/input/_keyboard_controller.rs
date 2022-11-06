@@ -24,16 +24,16 @@ pub fn keyboard_controller(
 pub fn parse_keyboard_translation(keys: &Res<Input<KeyCode>>) -> Vec3 {
 	let mut t = Vec3::default();
 	if keys.any_pressed([KeyCode::W, KeyCode::Up]) {
-		t.z += 1.;
-	}
-	if keys.any_pressed([KeyCode::S, KeyCode::Down]) {
 		t.z -= 1.;
 	}
+	if keys.any_pressed([KeyCode::S, KeyCode::Down]) {
+		t.z += 1.;
+	}
 	if keys.any_pressed([KeyCode::A, KeyCode::Left]) {
-		t.x += 1.;
+		t.x -= 1.;
 	}
 	if keys.any_pressed([KeyCode::D, KeyCode::Right]) {
-		t.x -= 1.;
+		t.x += 1.;
 	}
 	if keys.pressed(KeyCode::R) {
 		t.y += 1.;

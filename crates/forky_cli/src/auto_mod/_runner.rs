@@ -15,7 +15,10 @@ pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
 	let acc: Vec<PathBuf> = Vec::new();
 	_read_dir_recursive(acc, path)
 }
-pub fn _read_dir_recursive(mut acc: Vec<PathBuf>, path: PathBuf) -> Vec<PathBuf> {
+pub fn _read_dir_recursive(
+	mut acc: Vec<PathBuf>,
+	path: PathBuf,
+) -> Vec<PathBuf> {
 	if !path.is_dir() {
 		return acc;
 	}
@@ -26,8 +29,12 @@ pub fn _read_dir_recursive(mut acc: Vec<PathBuf>, path: PathBuf) -> Vec<PathBuf>
 		.fold(acc, _read_dir_recursive)
 }
 
-fn filename_starts_with_underscore(p: &PathBuf) -> bool { p.file_name().str().first() == '_' }
-fn filename_contains_double_underscore(p: &PathBuf) -> bool { p.file_name().str().contains("__") }
+fn filename_starts_with_underscore(p: &PathBuf) -> bool {
+	p.file_name().str().first() == '_'
+}
+fn filename_contains_double_underscore(p: &PathBuf) -> bool {
+	p.file_name().str().contains("__")
+}
 fn filename_starts_with_uppercase(p: &PathBuf) -> bool {
 	p.file_name().str().first().is_ascii_uppercase()
 }
@@ -66,7 +73,7 @@ fn save_to_file(path: &PathBuf, content: String) {
 }
 
 const PREFIX: &str =
-	"#![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables))]\n\n";
+	"#![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens))]\n\n";
 
 pub fn create_mod_text(path: &PathBuf) -> String {
 	let children = fs::read_dir(&path).unwrap();
@@ -80,7 +87,10 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 			let stem = c.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
 			if filename_starts_with_underscore(&c) || dir_is_double_underscore {
-				str.push_str(&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"].join("")[..]);
+				str.push_str(
+					&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"]
+						.join("")[..],
+				);
 			} else {
 				str.push_str(&["pub mod ", &name[..], ";\n"].join("")[..]);
 			}

@@ -24,6 +24,7 @@ pub impl Quat {
 		let mat = Mat4::look_at_rh(target, Vec3::ZERO, up).inverse();
 		Quat::from_mat4(&mat)
 	}
+	fn look_away(target: Vec3) -> Quat { Self::look_at(target * -1.) }
 
 
 	//from threejs

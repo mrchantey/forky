@@ -1,4 +1,5 @@
 use super::*;
+use crate::maze::*;
 use forky_core::{graph::*, *};
 use std::collections::HashSet;
 

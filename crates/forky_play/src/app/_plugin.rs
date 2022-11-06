@@ -55,6 +55,8 @@ impl Plugin for ForkyPlugin {
 			.add_system(bevy::window::close_on_esc)
 			.add_startup_system(base::spawn_lights)
 			// .add_plugin(WorldInspectorPlugin::new())
+			//MY PLUGINS
+			.add_system(pose::lerp_animator)
 			.forky();
 	}
 }

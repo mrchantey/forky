@@ -8,7 +8,7 @@ use forky_core::math::*;
 #[derive(Component)]
 pub struct CameraParent;
 
-#[derive(Component,Clone, Copy)]
+#[derive(Component, Clone, Copy)]
 pub struct OrbitController {
 	/// The "focus point" to orbit around. It is automatically updated when panning the camera
 	pub focus: Vec3,
@@ -31,8 +31,7 @@ pub fn orbit_camera_controller(
 	mouse: Res<Input<MouseButton>>,
 	mut ev_motion: EventReader<MouseMotion>,
 	mut ev_scroll: EventReader<MouseWheel>,
-	mut q_cam: Query<(&Parent, &mut Transform, &Projection)>,
-	mut q_parent: Query<(&mut OrbitController, &mut Transform), Without<Projection>>,
+	mut query: Query<(&mut Transform, &mut OrbitController, &Projection)>,
 ) {
 	// change input mapping for orbit and panning here
 	let orbit_button = MouseButton::Left;
@@ -42,7 +41,6 @@ pub fn orbit_camera_controller(
 	let mut rotation_move = Vec2::ZERO;
 	let mut scroll = 0.0;
 	let mut orbit_button_changed = false;
-	let invert_y = -1.;
 
 	if mouse.pressed(orbit_button) {
 		for ev in ev_motion.iter() {
@@ -61,11 +59,9 @@ pub fn orbit_camera_controller(
 		orbit_button_changed = true;
 	}
 
-	for (mut e_parent, mut tran_child, projection) in q_cam.iter_mut() {
-		let (mut pan_orbit, mut tran_parent) = q_parent.get_mut(e_parent.get()).unwrap();
-
+	for (mut tran, mut pan_orbit, projection) in query.iter_mut() {
 		if orbit_button_changed {
-			let up = tran_parent.rotation * Vec3::Y;
+			let up = tran.rotation * Vec3::Y;
 			pan_orbit.upside_down = up.y <= 0.0;
 		}
 
@@ -81,21 +77,24 @@ pub fn orbit_camera_controller(
 					delta
 				}
 			};
-			let delta_y = rotation_move.y / window.y * PI * invert_y;
+			let delta_y = rotation_move.y / window.y * PI;
 			let yaw = Quat::from_rotation_y(-delta_x);
 			let pitch = Quat::from_rotation_x(-delta_y);
-			tran_parent.rotation = yaw * tran_parent.rotation; // rotate around global y axis
-			tran_parent.rotation = tran_parent.rotation * pitch; // rotate around local x axis
+			tran.rotation = yaw * tran.rotation; // rotate around global y axis
+			tran.rotation = tran.rotation * pitch; // rotate around local x axis
 		} else if pan.length_squared() > 0.0 {
 			any = true;
 			// make panning distance independent of resolution and FOV,
 			let window = get_primary_window_size(&windows);
 			if let Projection::Perspective(projection) = projection {
-				pan *= Vec2::new(projection.fov * projection.aspect_ratio, projection.fov) / window;
+				pan *= Vec2::new(
+					projection.fov * projection.aspect_ratio,
+					projection.fov,
+				) / window;
 			}
 			// translate by local axes
-			let right = tran_parent.rotation * Vec3::X * -pan.x;
-			let up = tran_parent.rotation * Vec3::Y * pan.y;
+			let right = tran.rotation * Vec3::X * -pan.x;
+			let up = tran.rotation * Vec3::Y * pan.y;
 			// make panning proportional to distance away from focus point
 			let translation = (right + up) * pan_orbit.radius;
 			pan_orbit.focus += translation;
@@ -107,7 +106,7 @@ pub fn orbit_camera_controller(
 		}
 
 		if any {
-			update_translation_from_orbit(&mut tran_parent, &pan_orbit);
+			update_translation_from_orbit(&mut tran, &pan_orbit);
 		}
 	}
 }
@@ -118,14 +117,20 @@ fn get_primary_window_size(windows: &Res<Windows>) -> Vec2 {
 	window
 }
 
-pub fn update_translation_from_orbit(tran:&mut Mut<Transform>,orbit:&OrbitController){
+pub fn update_translation_from_orbit(
+	tran: &mut Mut<Transform>,
+	orbit: &OrbitController,
+) {
 	let rot_matrix = Mat3::from_quat(tran.rotation);
-	//inverted orbit.radius because camera parent
+	//invert orbit.radius because camera parent
 	tran.translation =
-		orbit.focus + rot_matrix.mul_vec3(Vec3::new(0.0, 0.0, -orbit.radius));
+		orbit.focus + rot_matrix.mul_vec3(Vec3::new(0.0, 0.0, orbit.radius));
 }
 
-pub fn update_orbit_from_transform(orbit:&mut Mut<OrbitController>, tran:&Transform){
+pub fn update_orbit_from_transform(
+	orbit: &mut Mut<OrbitController>,
+	tran: &Transform,
+) {
 	let r = orbit.radius;
 	orbit.focus = tran.local_z() * r;
 }

@@ -1,14 +1,15 @@
-use bevy::prelude::Transform;
+use super::*;
+use crate::maze::*;
+use bevy::prelude::*;
 use forky_core::{graph::*, math::*, *};
-
-use super::{_depth_first_backtrack::DepthFirstBacktrace, *};
 use std::collections::HashSet;
 
-#[derive(Debug)]
+#[derive(Debug, Component)]
 pub struct RectMaze {
 	pub num_cols: usize,
 	pub num_rows: usize,
 	pub head: usize,
+	pub tail: usize,
 	pub nodes: NodeGraph,
 	pub paths: NodeGraph,
 }
@@ -64,10 +65,12 @@ impl RectMaze {
 			num_cols,
 			num_rows,
 			head: 0,
+			tail: nodes.len() - 1,
 			nodes,
 			paths,
 		}
 	}
+
 	pub fn draw_maze(&self) -> Vec<u8> {
 		let mut vec = self.draw_grid();
 		let e_width = self.num_cols + 1;
@@ -159,7 +162,47 @@ impl RectMaze {
 				}
 			}
 		}
+
+		//handle tail - only works for bottom edge
+		let tail_edges = self.node_to_edges(self.tail);
+		vec[tail_edges.2] = self.open_left(vec[tail_edges.2]);
+		vec[tail_edges.3] = self.open_right(vec[tail_edges.3]);
+
 		vec
+	}
+	/*
+	e1,e2
+	e3,e4
+	*/
+	fn node_to_edges(&self, node: usize) -> (usize, usize, usize, usize) {
+		let col = node % self.num_cols;
+		let row = node / self.num_cols; //floor
+		let e_num_cols = self.num_cols + 1;
+		let e1 = col + row * e_num_cols;
+		let e2 = e1 + 1;
+		let e3 = e1 + e_num_cols;
+		let e4 = e3 + 1;
+		(e1, e2, e3, e4)
+	}
+
+	pub fn open_left(&self, shape: u8) -> u8 {
+		match shape {
+			u8_shape::BOTTOM_RIGHT => u8_shape::VERTICAL_TOP,
+			u8_shape::BOTTOM_LEFT => u8_shape::VERTICAL_TOP,
+			u8_shape::BOTTOM_TEE => u8_shape::BOTTOM_RIGHT,
+			u8_shape::HORIZONTAL => u8_shape::HORIZONTAL_LEFT,
+			other => other,
+		}
+	}
+	pub fn open_right(&self, shape: u8) -> u8 {
+		match shape {
+			u8_shape::BOTTOM_LEFT => u8_shape::VERTICAL_TOP,
+			u8_shape::BOTTOM_RIGHT => u8_shape::VERTICAL_TOP,
+			u8_shape::BOTTOM_TEE => u8_shape::BOTTOM_LEFT,
+			u8_shape::HORIZONTAL => u8_shape::HORIZONTAL_RIGHT,
+
+			other => other,
+		}
 	}
 
 	pub fn draw_grid(&self) -> Vec<u8> {
@@ -189,17 +232,18 @@ impl RectMaze {
 		}
 		buf
 	}
+
+	pub fn format_grid(&self) -> String { self.format_vec(self.draw_grid()) }
+	pub fn format(&self) -> String { self.format_vec(self.draw_maze()) }
+
 	/*
 	|_|_|
 	|_|_|
 	c1 e1 c2
 	e4    e2
 	c4 e3 c3
-
 	*/
-
-	pub fn format(&self) -> String {
-		let grid = self.draw_maze();
+	fn format_vec(&self, grid: Vec<u8>) -> String {
 		let mut str = String::new();
 
 		for row in 0..self.num_rows + 1 {
@@ -211,8 +255,6 @@ impl RectMaze {
 		}
 		str
 	}
-
-
 
 	pub fn format_indices(&self) -> String {
 		let mut str = String::new();
@@ -226,4 +268,6 @@ impl RectMaze {
 		}
 		str
 	}
+
+	pub fn link_randomly(&mut self) { self.paths.link_randomly(&self.nodes); }
 }
