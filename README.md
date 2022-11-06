@@ -8,11 +8,17 @@
 
 ## Why Forky?
 
+
 As a web dev I'm used to super low friction tooling and want the same in my rust enviroment.
 
 Each tool is standalone and can be used independently of the others.
 - [Forky Test](./crates/forky_test/README.md)
 - [Forky CLI](./crates/forky_cli/README.md)
+
+## Demos
+
+- [Maze](https://mrchantey.github.io/forky/wasm/)
+
 
 ## Contributing
 
