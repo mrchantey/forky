@@ -1,5 +1,9 @@
 # Embedded
 
+## Quickstart
+- [commands](../../crates/forky_esp/justfile)
+
+
 ## ESP32 C3
 
 - [My Board](https://core-electronics.com.au/esp32-c3-mini-development-board.html)
@@ -31,7 +35,7 @@
 	rustup default nightly
 	# cargo install ldproxy #handled by espup?
 	```
-2. Create project
+2. (Optional) Create idf project
    ```sh
 	cargo install cargo-generate
 	cargo generate --git https://github.com/esp-rs/esp-idf-template cargo
@@ -47,6 +51,10 @@
 - SK6812
 - APA102
 	- Fast
+
+# MPU6050
+
+- https://docs.rs/mpu6050/latest/mpu6050/
 
 ## Resources
 - [Ferrous Systems Rust](https://espressif-trainings.ferrous-systems.com/01_intro.html)

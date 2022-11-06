@@ -15,13 +15,6 @@ default:
 build crate:
 	cargo build -p crate
 
-watch-wasm crate example:
-	just watch 'just build-wasm {{crate}} {{example}}'
-
-build-wasm crate example:
-	cargo build --release --target wasm32-unknown-unknown	-p {{crate}} --example {{example}}
-	wasm-bindgen --out-dir ./wasm/{{example}} --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
-
 serve-wasm:
 	cd ./wasm && live-server
 
@@ -72,3 +65,33 @@ watch command:
 	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md}' --ignore '{output,wasm}' -- {{command}}
 # cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
 #cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
+
+# WASM
+
+wasm-watch crate example:
+	just watch 'just build-wasm {{crate}} {{example}}'
+
+wasm-build crate example:
+	cargo build --release --target wasm32-unknown-unknown	-p {{crate}} --example {{example}}
+	wasm-bindgen --out-dir ./wasm/{{example}} --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
+
+
+
+# ESP
+
+port := 'COM3'
+
+@flash-w *args:
+	just watch 'just flash {{args}}'
+
+flash file='hello_world' *args='':
+	cargo espflash {{port}} --package forky_esp --monitor --release --target riscv32imc-unknown-none-elf -Zbuild-std=core --bin {{file}} {{args}}
+
+esp-info:
+	cargo espflash board-info {{port}}
+
+esp-monitor:
+	cargo espflash serial-monitor {{port}}
+
+# esp-build:
+# 	./export-esp.ps1 && cargo build --target riscv32imc-esp-espidf

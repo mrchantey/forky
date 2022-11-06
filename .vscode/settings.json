@@ -3,7 +3,7 @@
 	"files.autoSaveDelay": 1000,
 	"files.exclude": {
 		".embuild": true,
-		".cargo": true,
+		// ".cargo": true,
 		"**/.git": true,
 		"**/.svn": true,
 		"**/.hg": true,
@@ -13,6 +13,7 @@
 		".vscode": true,
 		// "**/mod.rs": true,
 		// "target": true,
+		"wasm": true,
 	},
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.patterns": {

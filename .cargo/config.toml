@@ -1,2 +1,27 @@
+# WASM
+
 [target.wasm32-unknown-unknown]
 runner = "wasm-server-runner"
+
+# ESP32
+
+[target.riscv32imc-unknown-none-elf]
+runner = "espflash --monitor"
+rustflags = [
+  "-C", "link-arg=-Tlinkall.x"
+]
+
+# for testing: you can specify this target to see atomic emulation in action
+[target.riscv32imac-unknown-none-elf]
+runner = "espflash --monitor"
+rustflags = [
+  "-C", "link-arg=-Tlinkall.x"
+]
+
+# calling these frome espflash instead:
+
+# [build]
+# target = "riscv32imc-unknown-none-elf"
+
+# [unstable]
+# build-std = [ "core" ]

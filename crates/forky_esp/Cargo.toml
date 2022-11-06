@@ -1,16 +1,16 @@
 [package]
 name = "forky_esp"
-version = "0.0.0"
-edition = "2021"
+# version = "0.0.0"
+# edition = "2021"
+version = {workspace=true}
+edition = {workspace=true}
+authors = {workspace=true}
+documentation = {workspace=true}
+license-file = {workspace=true}
+readme = {workspace=true}
+description = {workspace=true}
+repository = {workspace=true}
 
-# version = {workspace=true}
-# edition = {workspace=true}
-# authors = {workspace=true}
-# documentation = {workspace=true}
-# license-file = {workspace=true}
-# readme = {workspace=true}
-# description = {workspace=true}
-# repository = {workspace=true}
 [[bin]]
 name = "forky_esp"
 path = "src/entry/main.rs"

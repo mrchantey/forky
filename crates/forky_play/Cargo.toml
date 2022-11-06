@@ -21,7 +21,7 @@ bevy_easings = "0.8.1"
 
 
 [dev-dependencies]
-# sweet = {workspace = true}
+sweet = {workspace = true}
 # forky_fs = {workspace = true }
 
 [[test]]
