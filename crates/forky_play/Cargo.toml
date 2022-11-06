@@ -13,7 +13,7 @@ repository = {workspace=true}
 forky_core = {workspace = true }
 bevy = {workspace = true}
 bevy-inspector-egui = {workspace = true}
-enigo = {path = "../../../../work-ref/enigo", version = "0.0.14"}
+# enigo = {path = "../../../../work-ref/enigo", version = "0.0.14"}
 extend = {workspace = true}
 bevy_rapier3d = {workspace = true}
 bevy_prototype_debug_lines = {workspace = true}
@@ -21,8 +21,8 @@ bevy_easings = "0.8.1"
 
 
 [dev-dependencies]
-sweet = {workspace = true}
-forky_fs = {workspace = true }
+# sweet = {workspace = true}
+# forky_fs = {workspace = true }
 
 [[test]]
 name = "sweet"

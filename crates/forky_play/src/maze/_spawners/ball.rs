@@ -59,12 +59,15 @@ pub fn respawn(
 const KILL_FLOOR: f32 = -50.;
 
 pub fn despawn_on_ball_fall(
+	mut commands: Commands,
+	mut game: ResMut<MazeGame>,
 	mut despawn_event: EventWriter<DespawnEvent>,
-	query: Query<&Transform, With<ball::BallTag>>,
+	query: Query<(Entity, &Transform), (With<ball::BallTag>, Without<DeadTag>)>,
 ) {
-	for tran in query.iter() {
+	for (eid, tran) in query.iter() {
 		if tran.translation.y < KILL_FLOOR {
 			despawn_event.send(DespawnEvent::Success);
+			commands.entity(eid).insert(DeadTag);
 		}
 	}
 }

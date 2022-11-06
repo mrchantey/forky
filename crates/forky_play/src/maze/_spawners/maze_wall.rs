@@ -44,7 +44,7 @@ pub fn spawn(
 				.spawn_bundle(PbrBundle {
 					transform: *transform,
 					mesh: meshes.add(Mesh::from(shape::Cube::default())),
-					material: materials.from_white(),
+					material: materials.from_rgb(0.8, 0.8, 0.8),
 					..default()
 				})
 				.insert(Collider::cuboid(0.5, 0.5, 0.5))

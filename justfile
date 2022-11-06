@@ -15,9 +15,15 @@ default:
 build crate:
 	cargo build -p crate
 
-build-maze:
-	cargo build --release --target wasm32-unknown-unknown	-p forky_play --example maze
-	wasm-bindgen --out-dir ./out/ --target web ./target/
+watch-wasm crate example:
+	just watch 'just build-wasm {{crate}} {{example}}'
+
+build-wasm crate example:
+	cargo build --release --target wasm32-unknown-unknown	-p {{crate}} --example {{example}}
+	wasm-bindgen --out-dir ./wasm/{{example}} --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
+
+serve-wasm:
+	cd ./wasm && live-server
 
 check crate:
 	cargo check -p {{crate}}
@@ -63,6 +69,6 @@ test-w crate *args:
 	RUST_BACKTRACE=1 just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'
 
 watch command:
-	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md}' --ignore 'output' -- {{command}}
+	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md}' --ignore '{output,wasm}' -- {{command}}
 # cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
 #cargo watch -q --ignore '**/mod.rs' -x '{{command}}'

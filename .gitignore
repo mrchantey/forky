@@ -1,8 +1,9 @@
-assets
+# assets
 output
 
 # rust
 /target/
+/out/
 Cargo.lock
 **/*.rs.bk
 

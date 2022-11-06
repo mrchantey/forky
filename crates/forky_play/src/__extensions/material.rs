@@ -16,6 +16,6 @@ pub impl Assets<StandardMaterial> {
 		self.add(color.into())
 	}
 	fn from_rgb(&mut self, r: f32, g: f32, b: f32) -> Handle<StandardMaterial> {
-		self.add(Color::rgb(0., 1., 1.).into())
+		self.add(Color::rgb(r, g, b).into())
 	}
 }

@@ -1,4 +1,4 @@
-use forky_fs::*;
+// use forky_fs::*;
 use forky_play::{maze::*, *};
 
 
@@ -10,7 +10,7 @@ fn main() -> ! {
 		let height = 34;
 		let mut maze = RectMaze::new(width, height);
 
-		terminal::clear();
+		// terminal::clear();
 		maze.depth_first_backtrack(|g| {
 			// time::sleep_ms(16);
 			// terminal::reset_cursor();
@@ -21,7 +21,7 @@ fn main() -> ! {
 		});
 
 		let str = maze.format();
-		file::write(format!("./output/maze_{}.txt", count), str.as_str())
-			.unwrap();
+		// file::write(format!("./output/maze_{}.txt", count), str.as_str())
+		// 	.unwrap();
 	}
 }

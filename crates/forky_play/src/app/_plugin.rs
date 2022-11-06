@@ -18,7 +18,10 @@ pub fn init() -> App {
 }
 impl Plugin for ForkyPlugin {
 	fn build(&self, app: &mut App) {
+		let return_from_run =
+			cfg!(all(debug_assertions, not(target_family = "wasm")));
 		app.forky()
+			.insert_resource(ClearColor(Color::BLACK))
 			.insert_resource(Msaa::default())
 			.insert_resource(LogSettings {
 				// filter: "info,wgpu_core=warn,wgpu_hal=warn,mygame=debug".into(),
@@ -28,7 +31,7 @@ impl Plugin for ForkyPlugin {
 			.add_plugin(input::DebugCameraPlugin)
 			.insert_resource(WinitSettings {
 				//SHOULD BE IN DEBUG MODE ONLY
-				return_from_run: true,
+				return_from_run,
 				..default()
 			})
 			.insert_resource(WindowDescriptor {

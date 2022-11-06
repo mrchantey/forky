@@ -9,7 +9,7 @@ pub fn increment_score(
 	mut game: ResMut<MazeGame>,
 ) {
 	for e in event.iter() {
-		if *e == DespawnEvent::Success{
+		if *e == DespawnEvent::Success {
 			game.score += 1;
 		}
 	}
