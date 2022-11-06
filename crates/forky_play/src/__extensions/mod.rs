@@ -8,6 +8,8 @@ mod color;
 pub use color::*;
 mod entity_builder;
 pub use entity_builder::*;
+mod physics;
+pub use physics::*;
 mod pose;
 pub use pose::*;
 mod quat_x;

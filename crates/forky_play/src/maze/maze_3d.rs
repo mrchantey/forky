@@ -9,8 +9,8 @@ pub fn spawn(
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-	let num_cols = 4;
-	let num_rows = 4;
+	let num_cols = 5;
+	let num_rows = 5;
 	let cell_width = 2.;
 	// let h_cell_width = cell_width / 2.;
 	let wall_width = 0.2;

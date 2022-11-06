@@ -1,25 +1,14 @@
 use bevy::prelude::*;
-use bevy_rapier3d::{
-	prelude::*,
-	rapier::prelude::{ImpulseJointSet, JointAxis, MotorModel, Vector},
-};
-use forky_core::{math::*, *};
+use bevy_rapier3d::prelude::*;
+// use forky_core::{math::*, *};
 use forky_play::{maze::*, *};
-use sweet::*;
 
-sweet! {
-	it "works" {
-
-		app::init()
-		.insert_resource(board_joint::MazeJointParams{
-			target_pos:TAU * 0.125 * 0.5,
-			stiffness:500.,
-			damping:100.
-		})
+fn main() {
+	app::init()
+		.insert_resource(board_joint::MazeJointParams::default())
 		.add_startup_system(spawn)
-		.add_system(board_joint::controller)
+		.add_system(board_joint::force_controller)
 		.run();
-	}
 }
 
 fn spawn(
@@ -40,7 +29,7 @@ fn spawn(
 
 
 	let hinge_z =
-		board_joint::spawn(&mut commands, &mut meshes, &mut materials);
+		board_joint::force_spawn(&mut commands, &mut meshes, &mut materials);
 	commands.entity(hinge_z).add_child(obj);
 	// obj
 }

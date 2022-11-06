@@ -30,7 +30,7 @@ pub fn spawn(
 		.insert(RigidBody::Dynamic)
 		.insert(Collider::ball(1.))
 		.insert(Restitution {
-			coefficient: 1.,
+			coefficient: 0.5,
 			combine_rule: CoefficientCombineRule::Average,
 		})
 		.insert(Friction {

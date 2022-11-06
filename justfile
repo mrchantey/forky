@@ -24,8 +24,8 @@ clean crate:
 expand crate example:
 	just watch 'cargo expand -p {{crate}} --example {{example}}'
 
-example crate example:
-	just watch 'cargo run -p {{crate}} --example {{example}}'
+example crate example *args:
+	just watch 'cargo run -p {{crate}} --example {{example}} {{args}}'
 
 @log argument:
 	echo {{argument}}
