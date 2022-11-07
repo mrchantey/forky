@@ -24,6 +24,9 @@ path = "src/entry/hello_led.rs"
 name = "hello_led_strip"
 path = "src/entry/hello_led_strip.rs"
 [[bin]]
+name = "hello_wasm"
+path = "src/entry/hello_wasm.rs"
+[[bin]]
 name = "device"
 path = "src/entry/device.rs"
 

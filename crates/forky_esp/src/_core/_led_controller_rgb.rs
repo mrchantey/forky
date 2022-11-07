@@ -1,16 +1,12 @@
 #[allow(unused_imports, unused_variables)]
 use crate::ESPDevice;
-use esp32c3_hal::utils::{smartLedAdapter, SmartLedsAdapter};
+// use esp32c3_hal::utils::*;
 use esp_hal_common::{
 	pulse_control::{ConfiguredChannel, OutputChannel},
-	utils::smart_leds_adapter::LedAdapterError,
+	utils::smart_leds_adapter::*,
 	OutputPin,
 };
-use smart_leds::{
-	brightness, gamma,
-	hsv::{hsv2rgb, Hsv},
-	RGB, RGB8,
-};
+use smart_leds::{hsv, *};
 
 
 #[macro_export]
@@ -60,19 +56,20 @@ where
 	}
 
 	pub fn set_hue_all(&mut self, hue: u8) {
-		let color = Hsv {
+		let color = hsv::Hsv {
 			hue,
 			sat: 255,
 			val: 255,
 		};
 		for i in 0..NUM_LEDS {
-			self.data[i] = hsv2rgb(color);
+			self.data[i] = hsv::hsv2rgb(color);
 		}
 	}
 
 	pub fn show(&mut self) {
 		self.led
-			.write(brightness(gamma(self.data.iter().cloned()), 10))
+			.write(self.data.iter().cloned())
+			// .write(brightness(gamma(self.data.iter().cloned()), 10))
 			.unwrap();
 	}
 }

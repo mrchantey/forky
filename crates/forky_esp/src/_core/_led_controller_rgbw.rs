@@ -7,11 +7,7 @@ use esp_hal_common::{
 	OutputPin,
 };
 
-use smart_leds::{
-	brightness, gamma,
-	hsv::{hsv2rgb, Hsv},
-	SmartLedsWrite, RGB, RGB8, RGBA,
-};
+use smart_leds::*;
 pub type RGBA8 = RGBA<u8>;
 
 #[macro_export]
@@ -77,13 +73,13 @@ where
 	}
 
 	pub fn set_hue(&mut self, hue: u8) {
-		let color = Hsv {
+		let color = hsv::Hsv {
 			hue,
 			sat: 255,
 			val: 255,
 		};
 		for i in 0..NUM_LEDS {
-			let RGB { r, g, b } = hsv2rgb(color);
+			let RGB { r, g, b } = hsv::hsv2rgb(color);
 			self.data[i].r = r;
 			self.data[i].g = g;
 			self.data[i].b = b;

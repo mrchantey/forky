@@ -3,4 +3,5 @@
 pub mod device;
 pub mod hello_led;
 pub mod hello_led_strip;
+pub mod hello_wasm;
 pub mod hello_world;
