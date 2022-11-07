@@ -2,13 +2,14 @@
 use crate::ESPDevice;
 use esp32c3_hal::utils::{smartLedAdapter, SmartLedsAdapter};
 use esp_hal_common::{
-	pulse_control::OutputChannel, utils::smart_leds_adapter::LedAdapterError,
+	pulse_control::{ConfiguredChannel, OutputChannel},
+	utils::smart_leds_adapter::LedAdapterError,
 	OutputPin,
 };
 use smart_leds::{
 	brightness, gamma,
 	hsv::{hsv2rgb, Hsv},
-	SmartLedsWrite, RGB, RGB8,
+	RGB, RGB8,
 };
 
 
@@ -28,22 +29,26 @@ pub struct LEDController<
 	const NUM_LEDS: usize,
 > {
 	// led: T,
-	data: [RGB<u8>; NUM_LEDS],
+	data: [RGB8; NUM_LEDS],
 	led: SmartLedsAdapter<CHANNEL, PIN, BUFFER_SIZE>,
 }
 
-impl<CHANNEL, PIN, const BUFFER_SIZE: usize, const NUM_LEDS: usize>
-	LEDController<CHANNEL, PIN, BUFFER_SIZE, NUM_LEDS>
+
+impl<CC, PIN, const BUFFER_SIZE: usize, const NUM_LEDS: usize>
+	LEDController<CC, PIN, BUFFER_SIZE, NUM_LEDS>
 where
-	CHANNEL: OutputChannel,
+	CC: ConfiguredChannel,
 	PIN: OutputPin,
 {
-	pub fn new(
-		mut channel: CHANNEL,
+	pub fn new<OC>(
+		mut channel: OC,
 		pin: PIN,
-	) -> LEDController<CHANNEL, PIN, BUFFER_SIZE, NUM_LEDS> {
+	) -> LEDController<CC, PIN, BUFFER_SIZE, NUM_LEDS>
+	where
+		OC: OutputChannel<CC>,
+	{
 		let mut led =
-			SmartLedsAdapter::<CHANNEL, PIN, BUFFER_SIZE>::new(channel, pin);
+			SmartLedsAdapter::<CC, PIN, BUFFER_SIZE>::new(channel, pin);
 		LEDController {
 			led,
 			data: [RGB8 {

@@ -9,5 +9,5 @@ pub use riscv_rt::entry;
 //crate
 mod _core;
 pub use _core::*;
-mod _utility;
-pub use _utility::*;
+// mod _utility;
+// pub use _utility::*;

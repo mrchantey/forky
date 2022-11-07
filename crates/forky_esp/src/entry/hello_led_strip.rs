@@ -8,15 +8,17 @@ fn main() -> ! {
 	let mut device = ESPDevice::new();
 
 	let mut controller =
-		led_controller_rgb!(device.pulse.channel0, device.io.pins.gpio7, 4);
+		led_controller_rgbw!(device.pulse.channel0, device.io.pins.gpio7, 5);
+	// led_controller_rgb!(device.pulse.channel0, device.io.pins.gpio7, 4);
 
+	controller.set_white(127);
 	loop {
-		for hue in 0..=255 {
-			controller.set_hue_all(hue);
+		for h in 0..=255 {
+			controller.set_hue(h);
 			controller.show();
-			device.timer.delay(10);
+			device.timer.delay(100);
 		}
-		device.timer.delay(2000);
-		device.logger.write("howdy!");
+		// device.timer.delay(2000);
+		// device.logger.write("howdy!");
 	}
 }
