@@ -1,7 +1,7 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_core forky_cli forky_test forky_play sweet'
+crates := 'forky forky_core forky_cli forky_test forky_play forky_esp sweet'
 sh := 'C:/tools/cygwin/bin/'
 
 default:
@@ -25,6 +25,8 @@ clean crate:
 	cargo clean -p {{crate}}
 
 expand crate example:
+	just watch 'cargo expand -p {{crate}} --bin {{example}}'
+expand-example crate example:
 	just watch 'cargo expand -p {{crate}} --example {{example}}'
 
 example crate example *args:
@@ -87,11 +89,15 @@ port := 'COM3'
 flash file='hello_world' *args='':
 	cargo espflash {{port}} --package forky_esp --monitor --release --target riscv32imc-unknown-none-elf -Zbuild-std=core --bin {{file}} {{args}}
 
+esp-watch *args:
+	just watch 'just esp-build {{args}}'
+
+esp-build bin *args:
+	cargo espflash save-image --package forky_esp --release --target riscv32imc-unknown-none-elf -Zbuild-std=core --bin {{bin}} ESP32-C3 out/esp.image {{args}}
+# ./export-esp.ps1 && cargo build --target riscv32imc-esp-espidf
+
 esp-info:
 	cargo espflash board-info {{port}}
 
 esp-monitor:
 	cargo espflash serial-monitor {{port}}
-
-# esp-build:
-# 	./export-esp.ps1 && cargo build --target riscv32imc-esp-espidf

@@ -1,7 +1,8 @@
-//https://github.com/esp-rs/esp-hal/blob/main/esp32c3-hal/examples/hello_world.rs
 #![no_std]
 #![no_main]
+
 use forky_esp::*;
+use riscv_rt::entry;
 
 #[entry]
 fn main() -> ! {
@@ -10,6 +11,6 @@ fn main() -> ! {
 	loop {
 		device.write("hello");
 		device.write("world");
-		// device.delay(1000);
+		device.delay(1000);
 	}
 }

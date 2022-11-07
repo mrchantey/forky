@@ -1,7 +1,5 @@
 [package]
 name = "forky_esp"
-# version = "0.0.0"
-# edition = "2021"
 version = {workspace=true}
 edition = {workspace=true}
 authors = {workspace=true}
@@ -20,8 +18,14 @@ name = "hello_world"
 path = "src/entry/hello_world.rs"
 
 [[bin]]
-name = "hello_rgb"
-path = "src/entry/hello_rgb.rs"
+name = "hello_led"
+path = "src/entry/hello_led.rs"
+[[bin]]
+name = "hello_led_strip"
+path = "src/entry/hello_led_strip.rs"
+[[bin]]
+name = "device"
+path = "src/entry/device.rs"
 
 [dependencies]
 esp32c3-hal = "0.2.0"

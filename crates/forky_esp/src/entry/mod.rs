@@ -1,4 +1,6 @@
-#![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens))]
+#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]
 
-pub mod hello_rgb;
+pub mod device;
+pub mod hello_led;
+pub mod hello_led_strip;
 pub mod hello_world;

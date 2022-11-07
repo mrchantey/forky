@@ -3,7 +3,6 @@
 	"files.autoSaveDelay": 1000,
 	"files.exclude": {
 		".embuild": true,
-		// ".cargo": true,
 		"**/.git": true,
 		"**/.svn": true,
 		"**/.hg": true,
@@ -11,8 +10,10 @@
 		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
 		".vscode": true,
-		// "**/mod.rs": true,
-		// "target": true,
+		//optional
+		".cargo": true,
+		"**/mod.rs": true,
+		"target": true,
 		"wasm": true,
 	},
 	"explorer.fileNesting.enabled": true,
@@ -24,6 +25,6 @@
 	},
 	"rust-analyzer.files.excludeDirs": [
 		// "crates\\forky_test\\src\\utility\\shoosh",
-		"crates\\forky_esp", //very slow
+		// "crates\\forky_esp", //very slow
 	],
 }
