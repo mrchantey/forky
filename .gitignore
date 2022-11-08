@@ -9,3 +9,4 @@ Cargo.lock
 
 # esp idf
 .embuild
+/crates/*/target/
