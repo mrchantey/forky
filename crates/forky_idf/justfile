@@ -17,3 +17,10 @@ flash *args='main':
 	--monitor --release \
 	{{target-idf}} \
 	--bin {{args}}
+
+save bin *args:
+	cargo espflash save-image \
+	--release \
+	{{target-idf}} \
+	--bin {{bin}} \
+	ESP32-C3 ../../out/esp.image {{args}}
