@@ -1,4 +1,4 @@
-// use esp_idf_sys as _; // If using the `binstart` feature of `esp-idf-sys`, always keep this module imported
+use esp_idf_sys as _;
 // esp_idf_sys::link_patches();
 use std::{thread, time};
 fn main() {

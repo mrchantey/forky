@@ -69,3 +69,13 @@
 
 - long paths
 	- New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `-Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+
+
+## Hardware
+
+- [Aliexpress - $3.61](https://www.aliexpress.com/item/1005004490215444.html)
+- [Core Electronics - $22.90](https://core-electronics.com.au/esp32-c3-mini-development-board.html)
+	- Chip type:         ESP32-C3 (revision 3)
+	- Crystal frequency: 40MHz
+	- Flash size:        4MB
+	- Features:          WiFi

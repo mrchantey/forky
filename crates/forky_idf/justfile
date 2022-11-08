@@ -3,6 +3,8 @@ set shell := ["powershell.exe", "-c"]
 port := 'COM3'
 target-idf := '--target riscv32imc-esp-espidf "-Zbuild-std=std,panic_abort" --target-dir C:/temp/idf'
 
+
+# $Env:RUST_BACKTRACE=1; \
 build *args='main':
 	./export-esp.ps1; \
 	cargo build \

@@ -90,11 +90,14 @@ wasm-build crate example:
 # ESP
 
 port := 'COM3'
+# port := 'COM4'
 
 target-esp := '--target riscv32imc-unknown-none-elf -Zbuild-std=core'
 
 @esp command *args:
 	just esp-{{command}} {{args}}
+@esp-w command *args:
+	just watch 'just esp-{{command}} {{args}}'
 
 esp-build *args:
 	cargo build \
@@ -108,12 +111,6 @@ esp-flash *args:
 	--package forky_esp \
 	{{target-esp}} \
 	--bin {{args}}
-
-@esp-flash-w *args:
-	just watch 'just esp-flash {{args}}'
-
-esp-watch *args:
-	just watch 'just esp-build {{args}}'
 
 esp-save bin *args:
 	cargo espflash save-image \
