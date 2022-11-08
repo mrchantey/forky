@@ -3,6 +3,8 @@
 ## Quickstart
 - [commands](../../crates/forky_esp/justfile)
 
+## Generate from template
+- `cargo generate --git https://github.com/esp-rs/esp-idf-template cargo`
 
 ## ESP32 C3
 
@@ -60,3 +62,10 @@
 - [Ferrous Systems Rust](https://espressif-trainings.ferrous-systems.com/01_intro.html)
 - [ESP32-C3 HAL](https://github.com/esp-rs/esp-hal/tree/main/esp32c3-hal)
 - [Rust Book](https://esp-rs.github.io/book/overview/using-the-standard-library.html)
+
+
+
+## Troubleshooting
+
+- long paths
+	- New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `-Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
