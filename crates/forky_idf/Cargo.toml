@@ -11,16 +11,15 @@ opt-level = "s"
 debug = true
 opt-level = "z"
 
-[features]
-pio = ["esp-idf-sys/pio"]
+# [features]
+# pio = ["esp-idf-sys/pio"]
 
 [[bin]]
-name = "main"
-path = "./src/main.rs"
+name = "hello_world"
+path = "./src/entry/hello_world.rs"
 
 [dependencies]
 esp-idf-sys = { version = "0.31.9", features = ["binstart"] }
-
 
 [build-dependencies]
 embuild = "0.30"

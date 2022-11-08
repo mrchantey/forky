@@ -54,6 +54,14 @@ publish-all:
 # just publish forky_cli
 # just publish forky_play
 
+purge:
+	rm -rf C:/temp/.embuild
+	rm -rf C:/temp/idf
+	rm -rf ./.embuild
+	rm -rf ./out
+	rm -rf ./target-esp
+	cargo clean
+
 start crate: 
 	./target/debug/{{crate}}.exe
 
@@ -83,21 +91,44 @@ wasm-build crate example:
 
 port := 'COM3'
 
-@flash-w *args:
-	just watch 'just flash {{args}}'
+target-esp := '--target riscv32imc-unknown-none-elf -Zbuild-std=core'
 
-flash file='hello_world' *args='':
-	cargo espflash {{port}} --package forky_esp --monitor --release --target riscv32imc-unknown-none-elf -Zbuild-std=core --bin {{file}} {{args}}
+@esp command *args:
+	just esp-{{command}} {{args}}
+
+esp-build *args:
+	cargo build \
+	-p forky_esp \
+	{{target-esp}} \
+	--bin {{args}}
+
+esp-flash *args:
+	cargo espflash {{port}} \
+	--monitor --release \
+	--package forky_esp \
+	{{target-esp}} \
+	--bin {{args}}
+
+@esp-flash-w *args:
+	just watch 'just esp-flash {{args}}'
 
 esp-watch *args:
 	just watch 'just esp-build {{args}}'
 
-esp-build bin *args:
-	cargo espflash save-image --package forky_esp --release --target riscv32imc-unknown-none-elf -Zbuild-std=core --bin {{bin}} ESP32-C3 out/esp.image {{args}}
-# ./export-esp.ps1 && cargo build --target riscv32imc-esp-espidf
+esp-save bin *args:
+	cargo espflash save-image \
+	--package forky_esp --release \
+	{{target-esp}} \
+	--bin {{bin}} \
+	ESP32-C3 out/esp.image {{args}}
 
 esp-info:
 	cargo espflash board-info {{port}}
 
 esp-monitor:
 	cargo espflash serial-monitor {{port}}
+
+idf *args:
+	cd ./crates/forky_idf; just {{args}}
+@idf-w *args:
+	just watch 'just idf {{args}}'

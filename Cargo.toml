@@ -13,7 +13,7 @@ members = [
 	"crates/forky_test",
 	"crates/sweet",
 ]
-exclude = ["crates/forky_esp_idf"]
+exclude = ["crates/forky_idf"]
 
 [workspace.package]
 version = "0.1.9"
