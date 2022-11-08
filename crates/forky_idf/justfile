@@ -1,0 +1,17 @@
+# requires powershell because of CMAKE_OBJECT_PATH_MAX
+set shell := ["powershell.exe", "-c"]
+port := 'COM3'
+target-idf := '--target riscv32imc-esp-espidf "-Zbuild-std=std,panic_abort" --target-dir C:/temp/idf'
+
+build *args='main':
+	./export-esp.ps1; \
+	cargo build \
+	{{target-idf}} \
+	--bin {{args}} \
+
+flash *args='main':
+	./export-esp.ps1; \
+	cargo espflash {{port}} \
+	--monitor --release \
+	{{target-idf}} \
+	--bin {{args}}

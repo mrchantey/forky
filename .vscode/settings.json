@@ -11,8 +11,8 @@
 		".vscode": true,
 		//optional
 		"LICENSE": true,
-		"**/.embuild/": true,
-		"**/.cargo/": true,
+		// "**/.embuild/": true,
+		// "**/.cargo/": true,
 		"**/Cargo.lock": true,
 		"**/mod.rs": true,
 		"**/target": true,
@@ -25,7 +25,7 @@
 		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
 		"*.jsx": "${capture}.js",
 		"tsconfig.json": "tsconfig.*.json",
-		"Cargo.toml": "Cargo.toml, Cargo.lock, rustfmt.toml, .gitignore, README.md, LICENSE, justfile, build.rs, export-esp.ps1, rust-toolchain.toml, sdkconfig.defaults"
+		"Cargo.toml": "Cargo.toml, Cargo.lock, rustfmt.toml, .gitignore, README.md, LICENSE, justfile, build.rs, export-esp.ps1, export-esp.sh, rust-toolchain.toml, sdkconfig.defaults"
 	},
 	"rust-analyzer.files.excludeDirs": [
 		// "crates\\forky_test\\src\\utility\\shoosh",

@@ -8,8 +8,7 @@ fn main() -> ! {
 	let mut device = ESPDevice::new();
 
 	loop {
-		device.write("hello");
-		device.write("world");
-		// device.delay(1000);
+		device.logger.write("hello world");
+		device.timer.delay(1000);
 	}
 }
