@@ -20,18 +20,23 @@ path = "./src/entry/hello_world.rs"
 
 [[bin]]
 name = "hello_wasm"
-path = "./src/entry/hello_wasm.rs"
+path = "./src/entry/hello_wasmi.rs"
 
 
 [dependencies]
 # anyhow = "1"
 esp-idf-sys = { version = "0.31.9", features = ["binstart"] }
-# wasm3 = {version = "0.3.1", default-features = false, features = ["std", "use-32bit-slots","build-bindgen"] }
-# wasm3 = {version = "0.3.1", features = ["build-bindgen"]}
-wasm3 = {path="../../../../work-ref/wasm3-rs", features = ["build-bindgen"]}
 # wasmer = "2.3.0"
-# wasmi = "0.20.0"
+wasmi = "0.20.0"
 # wat = "1.0.50"
+# bindgen = "0.61.0"
+# wasm3 = {version = "0.3.1", default-features = false, features = ["std", "use-32bit-slots","build-bindgen"] }
+# wasm3 = {version = "0.3.1"}
+# wasm3 = {version = "0.3.1",default-features = false, features = ["std","wasi"]}
+# wasm3 = {path="../../../../work-ref/wasm3-rs", features = ["build-bindgen"]}
+# wasm3 = {path="../../../../work-ref/wasm3-rs"}
+# wasm3 = {version = "0.3.1", default-features = false, features = ["std", "use-32bit-slots","build-bindgen"] }
+# wasm3 = {path="../../../../work-ref/wasm3-rs", default-features = false, features = ["std","wasi"]}
 
 [build-dependencies]
 embuild = "0.30"

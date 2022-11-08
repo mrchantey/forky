@@ -1,22 +1,32 @@
-use anyhow::{anyhow, Result};
+// use anyhow::{anyhow, Result};
+use esp_idf_sys as _;
+use std::{thread, time};
 use wasmi::*;
-
-fn main() -> Result<()> {
+fn main() {
+	std::thread::sleep(time::Duration::from_secs(5));
 	// First step is to create the Wasm execution engine with some config.
 	// In this example we are using the default configuration.
 	let engine = Engine::default();
-	let wat = r#"
-        (module
-            (import "host" "hello" (func $host_hello (param i32)))
-            (func (export "hello")
-                (call $host_hello (i32.const 3))
-            )
-        )
-    "#;
+	// let wat = r#"
+	//       (module
+	//           (import "host" "hello" (func $host_hello (param i32)))
+	//           (func (export "hello")
+	//               (call $host_hello (i32.const 3))
+	//           )
+	//       )
+	//   "#;
 	// Wasmi does not yet support parsing `.wat` so we have to convert
 	// out `.wat` into `.wasm` before we compile and validate it.
-	let wasm = wat::parse_str(&wat)?;
-	let module = Module::new(&engine, &mut &wasm[..])?;
+	// let wasm = wat::parse_str(&wat).unwrap();
+	let wasm = [
+		0, 97, 115, 109, 1, 0, 0, 0, 1, 133, 128, 128, 128, 0, 1, 96, 0, 1,
+		127, 3, 130, 128, 128, 128, 0, 1, 0, 4, 132, 128, 128, 128, 0, 1, 112,
+		0, 0, 5, 131, 128, 128, 128, 0, 1, 0, 1, 6, 129, 128, 128, 128, 0, 0,
+		7, 145, 128, 128, 128, 0, 2, 6, 109, 101, 109, 111, 114, 121, 2, 0, 4,
+		109, 97, 105, 110, 0, 0, 10, 138, 128, 128, 128, 0, 1, 132, 128, 128,
+		128, 0, 0, 65, 42, 11,
+	];
+	let module = Module::new(&engine, &mut &wasm[..]).unwrap();
 
 	// All Wasm objects operate within the context of a `Store`.
 	// Each `Store` has a type parameter to store host-specific data,
@@ -37,17 +47,20 @@ fn main() -> Result<()> {
 	// type signature of the function with `get_typed_func`.
 	//
 	// Also before using an instance created this way we need to start it.
-	linker.define("host", "hello", host_hello)?;
-	let instance =
-		linker.instantiate(&mut store, &module)?.start(&mut store)?;
+	linker.define("host", "hello", host_hello).unwrap();
+	let instance = linker
+		.instantiate(&mut store, &module)
+		.unwrap()
+		.start(&mut store)
+		.unwrap();
 	let hello = instance
 		.get_export(&store, "hello")
 		.and_then(Extern::into_func)
-		.ok_or_else(|| anyhow!("could not find function \"hello\""))?
-		.typed::<(), ()>(&mut store)?;
+		.ok_or_else(|| panic!("could not find function \"hello\""))
+		.unwrap()
+		.typed::<(), ()>(&mut store)
+		.unwrap();
 
 	// And finally we can call the wasm!
-	hello.call(&mut store, ())?;
-
-	Ok(())
+	hello.call(&mut store, ()).unwrap();
 }
