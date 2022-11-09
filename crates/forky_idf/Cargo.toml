@@ -26,6 +26,10 @@ path = "./src/entry/hello_wasmi.rs"
 name = "hello_wifi"
 path = "./src/entry/hello_wifi.rs"
 
+[[bin]]
+name = "hello_server"
+path = "./src/entry/hello_server.rs"
+
 
 [dependencies]
 anyhow = "1"
