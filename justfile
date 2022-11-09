@@ -1,7 +1,7 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_core forky_cli forky_test forky_play forky_esp sweet'
+crates := 'forky forky_core forky_cli forky_test forky_play forky_esp forky_wasm sweet wasm_simple wasm_sketch'
 sh := 'C:/tools/cygwin/bin/'
 
 default:
@@ -65,26 +65,33 @@ purge:
 start crate: 
 	./target/debug/{{crate}}.exe
 
+backtrace := '0'
+
 test crate *args:
-	RUST_BACKTRACE=1 cargo test -p {{crate}} --test sweet -- {{args}}
+	RUST_BACKTRACE={{backtrace}} cargo test -p {{crate}} --test sweet -- {{args}}
 
 test-w crate *args:
-	RUST_BACKTRACE=1 just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'
+	RUST_BACKTRACE={{backtrace}} just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'
 
 watch command:
-	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md}' --ignore '{output,wasm}' -- {{command}}
+	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat}' --ignore '{output/,out/}' -- {{command}}
 # cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
 #cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
 
 # WASM
+# ie just wasm build simple
+@wasm command *args:
+	just wasm-{{command}} {{args}}
 
-wasm-watch crate example:
-	just watch 'just build-wasm {{crate}} {{example}}'
+wasm-w command bin *args:
+	just watch 'just wasm-{{command}} {{bin}} {{args}}'
 
-wasm-build crate example:
-	cargo build --release --target wasm32-unknown-unknown	-p {{crate}} --example {{example}}
-	wasm-bindgen --out-dir ./wasm/{{example}} --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
+wasm-build bin *args:
+	cd ./crates/wasm_{{bin}} && cargo build --release --target wasm32-unknown-unknown
 
+wasm-wat bin *args:
+	C:/path/wabt/bin/wasm2wat.exe ./crates/wasm_{{bin}}/target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
+# wasm-bindgen --out-dir ./wasm/{{example}} --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
 
 
 # ESP

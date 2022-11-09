@@ -1,5 +1,5 @@
 {
-	"files.autoSave": "off",
+	"files.autoSave": "afterDelay",
 	"files.autoSaveDelay": 1000,
 	"files.exclude": {
 		"**/.git": true,
@@ -11,11 +11,11 @@
 		".vscode": true,
 		//optional
 		"LICENSE": true,
-		// "**/.embuild/": true,
-		// "**/.cargo/": true,
+		"**/.embuild/": true,
+		"**/.cargo/": true,
 		"**/Cargo.lock": true,
 		"**/mod.rs": true,
-		"**/target": true,
+		// "**/target": true,
 		"**/sdkconfig.defaults": true,
 		"**/build.rs": true,
 		"wasm": true,
@@ -29,6 +29,8 @@
 	},
 	"rust-analyzer.files.excludeDirs": [
 		// "crates\\forky_test\\src\\utility\\shoosh",
-		// "crates\\forky_esp", //very slow
+		////these seem to break red squigglies
+		"crates\\forky_esp",
+		"crates\\forky_idf",
 	],
 }

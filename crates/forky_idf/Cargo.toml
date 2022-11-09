@@ -20,7 +20,7 @@ path = "./src/entry/hello_world.rs"
 
 [[bin]]
 name = "hello_wasm"
-path = "./src/entry/hello_wasm3.rs"
+path = "./src/entry/hello_wasmi.rs"
 
 
 [dependencies]

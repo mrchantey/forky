@@ -1,0 +1,17 @@
+[package]
+name = "wasm_simple"
+version = {workspace=true}
+edition = {workspace=true}
+authors = {workspace=true}
+documentation = {workspace=true}
+license-file = {workspace=true}
+readme = {workspace=true}
+description = {workspace=true}
+repository = {workspace=true}
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+opt-level = 3
+lto = true

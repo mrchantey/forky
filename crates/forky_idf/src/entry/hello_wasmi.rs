@@ -3,7 +3,7 @@ use esp_idf_sys as _;
 use std::{thread, time};
 use wasmi::*;
 fn main() {
-	std::thread::sleep(time::Duration::from_secs(5));
+	thread::sleep(time::Duration::from_secs(5));
 	// First step is to create the Wasm execution engine with some config.
 	// In this example we are using the default configuration.
 	let engine = Engine::default();
