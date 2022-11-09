@@ -11,8 +11,8 @@ opt-level = "s"
 debug = true
 opt-level = "z"
 
-# [features]
-# pio = ["esp-idf-sys/pio"]
+
+[lib]#required
 
 [[bin]]
 name = "hello_world"
@@ -31,7 +31,7 @@ path = "./src/entry/hello_wifi.rs"
 anyhow = "1"
 embedded-svc = "0.22.3"
 esp-idf-hal = "0.38.1"
-esp-idf-svc = "0.42.5"
+esp-idf-svc = {version = "0.42.5", features = ["experimental", "alloc"]}
 esp-idf-sys = { version = "0.31.9", features = ["binstart"] }
 wasmi = "0.20.0"
 

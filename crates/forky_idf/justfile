@@ -12,6 +12,7 @@ build *args:
 	--bin {{args}} \
 
 #remove speed if experiencing issues
+# --partition-table partitions.csv \
 flash *args:
 	./export-esp.ps1; \
 	cargo espflash {{port}} \

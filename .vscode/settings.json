@@ -31,6 +31,6 @@
 		// "crates\\forky_test\\src\\utility\\shoosh",
 		////these seem to break red squigglies
 		"crates\\forky_esp",
-		"crates\\forky_idf",
+		// "crates\\forky_idf",
 	],
 }
