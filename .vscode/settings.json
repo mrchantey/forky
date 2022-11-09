@@ -15,7 +15,8 @@
 		"**/.cargo/": true,
 		"**/Cargo.lock": true,
 		"**/mod.rs": true,
-		// "**/target": true,
+		"out/": true,
+		"**/target/": true,
 		"**/sdkconfig.defaults": true,
 		"**/build.rs": true,
 		"wasm": true,
@@ -31,6 +32,6 @@
 		// "crates\\forky_test\\src\\utility\\shoosh",
 		////these seem to break red squigglies
 		"crates\\forky_esp",
-		// "crates\\forky_idf",
+		"crates\\forky_idf",
 	],
 }

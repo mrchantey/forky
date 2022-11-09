@@ -1,2 +1,2 @@
-mod _wasmi;
-pub use _wasmi::*;
+mod _wasm;
+pub use _wasm::*;

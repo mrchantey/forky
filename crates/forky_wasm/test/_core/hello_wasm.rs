@@ -20,10 +20,10 @@ fn read_wasm_bytes(path: &str) -> io::Result<(Vec<u8>)> {
 
 sweet! {
 
-	let mut engine = WasmEngine::new();
+	let mut engine = WasmEngdine::new();
 	let mut buf = read_wasm_bytes("simple").unwrap();
 	let mut instance = engine.instantiate().add_import(
-		"host", "hello",|mut caller, param:i32| {
+	"host", "hello",|mut caller, param:i32| {
 			let data = caller.host_data_mut();
 			*data = *data + param as u32;
 		}
