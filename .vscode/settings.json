@@ -15,7 +15,7 @@
 		"**/.cargo/": true,
 		"**/Cargo.lock": true,
 		"**/mod.rs": true,
-		// "**/target": true,
+		"**/target": true,
 		"**/sdkconfig.defaults": true,
 		"**/build.rs": true,
 		"wasm": true,
