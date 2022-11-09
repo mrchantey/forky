@@ -5,22 +5,24 @@ target-idf := '--target riscv32imc-esp-espidf "-Zbuild-std=std,panic_abort" --ta
 
 
 # $Env:RUST_BACKTRACE=1; \
-build *args='main':
+build *args:
 	./export-esp.ps1; \
 	cargo build \
 	{{target-idf}} \
 	--bin {{args}} \
 
-flash *args='main':
+#remove speed if experiencing issues
+flash *args:
 	./export-esp.ps1; \
 	cargo espflash {{port}} \
 	--monitor --release \
+	--speed 921600 \
 	{{target-idf}} \
 	--bin {{args}}
 
-save bin *args:
+save *args:
 	cargo espflash save-image \
+	ESP32-C3 ../../out/esp.image \
 	--release \
 	{{target-idf}} \
-	--bin {{bin}} \
-	ESP32-C3 ../../out/esp.image {{args}}
+	--bin {{args}} \

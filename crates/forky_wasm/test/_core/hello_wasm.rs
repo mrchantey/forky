@@ -36,7 +36,7 @@ sweet! {
 	}
 	test "imports" {
 		let hello = instance.get_export::<(),()>("hello");
-		hello.call(&mut instance.store,());
+		hello.call(&mut instance.store,()).unwrap();
 		let state = instance.store.state();
 		expect(*state).to_be(54)?;
 

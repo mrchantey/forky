@@ -22,8 +22,16 @@ path = "./src/entry/hello_world.rs"
 name = "hello_wasm"
 path = "./src/entry/hello_wasmi.rs"
 
+[[bin]]
+name = "hello_wifi"
+path = "./src/entry/hello_wifi.rs"
+
 
 [dependencies]
+anyhow = "1"
+embedded-svc = "0.22.3"
+esp-idf-hal = "0.38.1"
+esp-idf-svc = "0.42.5"
 esp-idf-sys = { version = "0.31.9", features = ["binstart"] }
 wasmi = "0.20.0"
 

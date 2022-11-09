@@ -4,7 +4,7 @@
 #[link(wasm_import_module = "host")]
 extern "C" {
 	#[link_name = "hello"]
-	#[no_mangle]
+	// #[no_mangle]
 	fn host_hello(val: i32);
 }
 
