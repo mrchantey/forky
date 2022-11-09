@@ -19,14 +19,14 @@ pub fn start_server() -> anyhow::Result<()> {
 	let server_config = Configuration::default();
 	let mut server = EspHttpServer::new(&server_config)?;
 	server.handle_get("/", |_request, response| {
-		let html = index_html();
+		let html = templated("welcome");
 		let mut writer = response.into_writer()?;
 		writer.write_all(html.as_bytes())?;
 		Ok(())
 	})?;
 
 	server.handle_get("/nicha", move |_request, response| {
-		let html = sketch_html();
+		let html = templated("❤️❤️❤️HELLO FROM NICHA!❤️❤️❤️");
 		let mut writer = response.into_writer()?;
 		writer.write_all(html.as_bytes())?;
 		Ok(())
@@ -67,8 +67,3 @@ fn templated(content: impl AsRef<str>) -> String {
 		content.as_ref()
 	)
 }
-
-fn index_html() -> String {
-	templated("❤️❤️❤️HELLO FROM NICHA!❤️❤️❤️")
-}
-fn sketch_html() -> String { templated("Sketch Page") }

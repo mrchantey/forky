@@ -10,3 +10,8 @@
 	- Crystal frequency: 40MHz
 	- Flash size:        4MB
 	- Features:          WiFi
+
+
+# My Boards
+	- Mini Dev Board - 84:f7:03:08:16:98 - 192.168.86.222
+	- Aliexpress Board - 
