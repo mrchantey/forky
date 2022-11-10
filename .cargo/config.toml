@@ -1,3 +1,6 @@
+[build]
+target = "x86_64-pc-windows-msvc"
+
 # WASM
 
 [target.wasm32-unknown-unknown]

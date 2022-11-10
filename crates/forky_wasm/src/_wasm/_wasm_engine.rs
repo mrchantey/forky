@@ -7,7 +7,7 @@ pub fn run_wasm() {}
 
 
 pub struct WasmEngine {
-	engine: Engine,
+	pub engine: Engine,
 }
 
 impl WasmEngine {
@@ -17,7 +17,10 @@ impl WasmEngine {
 		}
 	}
 
-	pub fn instantiate(&mut self) -> WasmInstanceBuilder {
-		WasmInstanceBuilder::new(&mut self.engine)
+	pub fn instantiate<T>(
+		&mut self,
+		initial_state: T,
+	) -> WasmInstanceBuilder<T> {
+		WasmInstanceBuilder::new(self, initial_state)
 	}
 }

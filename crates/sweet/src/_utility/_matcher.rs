@@ -34,12 +34,15 @@ impl Matcher<bool> {
 	pub fn to_be_false(&self) -> MatcherResult { self.assert_equal(false) }
 }
 impl Matcher<&str> {
-	pub fn to_contain(&self, other: &str) -> MatcherResult { self.assert_contains(other) }
+	pub fn to_contain(&self, other: &str) -> MatcherResult {
+		self.assert_contains(other)
+	}
 	fn assert_contains(&self, other: &str) -> MatcherResult {
 		if self.value.contains(other) {
 			Ok(())
 		} else {
-			let expect = [String::from("(contains)\n").blue().as_str(), other].join("");
+			let expect =
+				[String::from("(contains)\n").blue().as_str(), other].join("");
 			let receive = ["\n", self.value].join("");
 			Err(MatcherError::new(expect.as_str(), receive.as_str(), 0))
 		}
@@ -48,12 +51,28 @@ impl Matcher<&str> {
 const MIN_DELTA: f32 = 0.1;
 
 impl Matcher<f32> {
-	pub fn to_be_close_to(&self, other: f32) -> MatcherResult { self.assert_close(other) }
+	pub fn to_be_close_to(&self, other: f32) -> MatcherResult {
+		self.assert_close(other)
+	}
 	fn assert_close(&self, other: f32) -> MatcherResult {
 		if (self.value - other).abs() < MIN_DELTA {
 			Ok(())
 		} else {
 			let expect = format!("close to {}", other);
+			let receive = format!("{}", self.value);
+			Err(MatcherError::new(expect.as_str(), receive.as_str(), 0))
+		}
+	}
+}
+impl Matcher<i32> {
+	pub fn to_be_at_least(&self, other: i32) -> MatcherResult {
+		self.assert_greater_equal(other)
+	}
+	fn assert_greater_equal(&self, other: i32) -> MatcherResult {
+		if self.value >= other {
+			Ok(())
+		} else {
+			let expect = format!("at least {}", other);
 			let receive = format!("{}", self.value);
 			Err(MatcherError::new(expect.as_str(), receive.as_str(), 0))
 		}
@@ -93,6 +112,8 @@ impl<T: Matchable> Matcher<T> {
 }
 
 
-pub fn expect<T: Matchable + cmp::PartialEq + fmt::Display>(value: T) -> Matcher<T> {
+pub fn expect<T: Matchable + cmp::PartialEq + fmt::Display>(
+	value: T,
+) -> Matcher<T> {
 	Matcher::new(value)
 }

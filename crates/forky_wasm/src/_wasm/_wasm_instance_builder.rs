@@ -1,44 +1,27 @@
-use crate::WasmInstance;
+use crate::{WasmEngine, WasmInstance};
 use wasmi::*;
 
-type HostState = (u32);
-
-pub struct WasmInstanceBuilder<'a> {
-	// instance: Instance,
-	// module: Module,
-	engine: &'a mut Engine,
-	pub store: Store<HostState>,
-	pub linker: Linker<HostState>,
+pub struct WasmInstanceBuilder<T> {
+	pub store: Store<T>,
+	pub linker: Linker<T>,
 }
 
-impl<'a> WasmInstanceBuilder<'a> {
-	pub fn new(engine: &'a mut Engine) -> WasmInstanceBuilder {
-		let store = Store::new(engine, 42);
-		let linker = <Linker<HostState>>::new();
-		WasmInstanceBuilder {
-			engine,
-			store,
-			linker, 
-		}
+impl<T> WasmInstanceBuilder<T> {
+	pub fn new(
+		engine: &mut WasmEngine,
+		initial_state: T,
+	) -> WasmInstanceBuilder<T> {
+		let store = Store::new(&engine.engine, initial_state);
+		let linker = <Linker<T>>::new();
+		WasmInstanceBuilder { store, linker }
 	}
 
-	pub fn add_import<T, P1, P, R>(
+	pub fn build(
 		mut self,
-		module_name: &str,
-		func_name: &str,
-		func: T,
-	) -> Self
-	where
-		T: Fn(Caller<u32>, P1) -> () + IntoFunc<u32, P, R>,
-	{
-		self.linker
-			.define(module_name, func_name, Func::wrap(&mut self.store, func))
-			.unwrap();
-		self
-	}
-
-	pub fn build(mut self, stream: impl Read) -> WasmInstance<HostState> {
-		let module = Module::new(self.engine, stream).unwrap();
+		engine: &mut WasmEngine,
+		stream: impl Read,
+	) -> WasmInstance<T> {
+		let module = Module::new(&engine.engine, stream).unwrap();
 		let instance = self
 			.linker
 			.instantiate(&mut self.store, &module)
@@ -49,5 +32,90 @@ impl<'a> WasmInstanceBuilder<'a> {
 			store: self.store,
 			instance,
 		}
+	}
+	pub fn add_import<F, P, R>(
+		mut self,
+		module_name: &str,
+		func_name: &str,
+		func: F,
+	) -> Self
+	where
+		F: IntoFunc<T, P, R>,
+	{
+		self.linker
+			.define(module_name, func_name, Func::wrap(&mut self.store, func))
+			.unwrap();
+		self
+	}
+	pub fn add_import_0<F, P, R>(
+		&mut self,
+		module_name: &str,
+		func_name: &str,
+		func: F,
+	) -> &Self
+	where
+		F: Fn(Caller<T>) -> R + IntoFunc<T, P, R>,
+	{
+		self.linker
+			.define(module_name, func_name, Func::wrap(&mut self.store, func))
+			.unwrap();
+		self
+	}
+	pub fn add_import_1<F, P1, P, R>(
+		&mut self,
+		module_name: &str,
+		func_name: &str,
+		func: F,
+	) -> &Self
+	where
+		F: Fn(Caller<T>, P1) -> R + IntoFunc<T, P, R>,
+	{
+		self.linker
+			.define(module_name, func_name, Func::wrap(&mut self.store, func))
+			.unwrap();
+		self
+	}
+
+	pub fn add_import_2<F, P1, P2, P, R>(
+		&mut self,
+		module_name: &str,
+		func_name: &str,
+		func: F,
+	) -> &Self
+	where
+		F: Fn(Caller<T>, P1, P2) -> R + IntoFunc<T, P, R>,
+	{
+		self.linker
+			.define(module_name, func_name, Func::wrap(&mut self.store, func))
+			.unwrap();
+		self
+	}
+	pub fn add_import_3<F, P1, P2, P3, P, R>(
+		&mut self,
+		module_name: &str,
+		func_name: &str,
+		func: F,
+	) -> &Self
+	where
+		F: Fn(Caller<T>, P1, P2, P3) -> R + IntoFunc<T, P, R>,
+	{
+		self.linker
+			.define(module_name, func_name, Func::wrap(&mut self.store, func))
+			.unwrap();
+		self
+	}
+	pub fn add_import_4<F, P1, P2, P3, P4, P, R>(
+		&mut self,
+		module_name: &str,
+		func_name: &str,
+		func: F,
+	) -> &Self
+	where
+		F: Fn(Caller<T>, P1, P2, P3, P4) -> R + IntoFunc<T, P, R>,
+	{
+		self.linker
+			.define(module_name, func_name, Func::wrap(&mut self.store, func))
+			.unwrap();
+		self
 	}
 }

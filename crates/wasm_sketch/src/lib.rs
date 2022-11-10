@@ -3,21 +3,23 @@
 
 #[link(wasm_import_module = "host")]
 extern "C" {
-	#[link_name = "hello"]
+	// #[link_name = "millis"]
 	// #[no_mangle]
-	fn host_hello(val: i32);
+	fn millis() -> u64;
 }
-
+#[link(wasm_import_module = "led")]
+extern "C" {
+	fn set_rgbw(r:u32,g:u32,b:u32,w:u32);
+}
 #[no_mangle]
-pub extern "C" fn hello() {
+pub extern "C" fn run() {
 	unsafe {
-		let a = 2;
-		let b = 6;
-		host_hello(a + b);
+		let _millis = millis();
+		set_rgbw(0,0,0,0);
 	}
 }
 #[no_mangle]
-pub extern "C" fn add(a: u64, b: u64) -> u64 { a + b }
+pub extern "C" fn _millis() -> u64 { unsafe { millis() } }
 
 #[cfg(not(test))]
 #[panic_handler]

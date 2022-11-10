@@ -1,3 +1,4 @@
 #![feature(imported_main)]
 pub use sweet::*;
-pub mod _core;
+mod _core;
+pub use _core::*;

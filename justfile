@@ -90,7 +90,7 @@ wasm-build bin *args:
 	cd ./crates/wasm_{{bin}} && cargo build --release --target wasm32-unknown-unknown
 
 wasm-wat bin *args:
-	C:/path/wabt/bin/wasm2wat.exe ./crates/wasm_{{bin}}/target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
+	C:/path/wabt/bin/wasm2wat.exe ./target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
 # wasm-bindgen --out-dir ./wasm/{{example}} --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
 
 

@@ -39,4 +39,12 @@ sweet! {
 		let result = expect(0.9).to_be_close_to(1.);
 		expect(result.is_ok()).to_be_false()?;
 	}
+	test "to_be_at_least"{
+		let result = expect(0).to_be_at_least(0);
+		expect(result.is_ok()).to_be_true()?;
+		let result = expect(10).to_be_at_least(-10);
+		expect(result.is_ok()).to_be_true()?;
+		let result = expect(10).to_be_at_least(11);
+		expect(result.is_ok()).to_be_false()?;
+	}
 }

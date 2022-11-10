@@ -10,10 +10,15 @@ description = {workspace=true}
 repository = {workspace=true}
 
 [dependencies]
+rgb = "0.8.34"
 wasmi = {workspace = true}
+extend = {workspace=true}
 
 [dev-dependencies]
+forky_core = {workspace = true}
 sweet = {workspace = true}
+
+# [build-dependencies]
 
 [[test]]
 name = "sweet"
