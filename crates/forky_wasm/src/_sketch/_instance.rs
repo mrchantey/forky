@@ -1,4 +1,6 @@
-use crate::{LedsInterface, WasmEngine, WasmInstance, WasmInstanceBuilder};
+use crate::{
+	Led, LedStrip, SharedLeds, WasmEngine, WasmInstance, WasmInstanceBuilder,
+};
 use std::sync::{Arc, Mutex};
 use std::{cell::RefCell, rc::Rc, time::SystemTime};
 use wasmi::{Caller, TypedFunc};
@@ -12,9 +14,17 @@ pub struct SketchInstance {
 	instance: WasmInstance<Store>,
 }
 
-type A = ();
 
 impl SketchInstance {
+	pub fn new(stream: &Vec<u8>, leds: SharedLeds) -> SketchInstance {
+		let mut engine = WasmEngine::new();
+		let mut builder = SketchInstance::init(&mut engine);
+		SketchInstance::append_millis(&mut builder);
+		Led::append_set_rgbw(&mut builder, &leds);
+		SketchInstance::build(&mut engine, builder, &stream)
+	}
+
+
 	pub fn init(engine: &mut WasmEngine) -> SketchBuilder {
 		let mut store: Store = [0; 16];
 		engine.instantiate(store)

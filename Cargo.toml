@@ -8,7 +8,7 @@ members = [
 	"crates/forky",
 	"crates/forky_core",
 	"crates/forky_cli",
-	# "crates/forky_esp",
+	"crates/forky_esp",
 	"crates/forky_play",
 	"crates/forky_test",
 	"crates/forky_wasm",

@@ -116,6 +116,7 @@ esp-flash *args:
 	cargo espflash {{port}} \
 	--monitor --release \
 	--package forky_esp \
+	--speed 921600 \
 	{{target-esp}} \
 	--bin {{args}}
 

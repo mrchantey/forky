@@ -9,35 +9,22 @@ opt-level = "s"
 
 [profile.dev]
 debug = true
-opt-level = "z"
-
+# opt-level = "z"
 
 [lib]#required
-
-[[bin]]
-name = "hello_world"
-path = "./src/entry/hello_world.rs"
-
-[[bin]]
-name = "hello_wasm"
-path = "./src/entry/hello_wasmi.rs"
-
-[[bin]]
-name = "hello_wifi"
-path = "./src/entry/hello_wifi.rs"
-
-[[bin]]
-name = "hello_server"
-path = "./src/entry/hello_server.rs"
-
 
 [dependencies]
 anyhow = "1"
 embedded-svc = "0.22.3"
+embedded-hal = "=1.0.0-alpha.8"
 esp-idf-hal = "0.38.1"
+# esp-idf-hal = {path = "../../../../work-ref/esp-idf-hal"}
 esp-idf-svc = {version = "0.42.5", features = ["experimental", "alloc"]}
 esp-idf-sys = { version = "0.31.9", features = ["binstart"] }
 wasmi = "0.20.0"
+rgb = "0.8.34"
+# forky_esp = {path = "../forky_esp"}
+# forky_wasm = {path = "../forky_wasm"}
 
 [build-dependencies]
 embuild = "0.30"

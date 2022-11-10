@@ -1,6 +1,6 @@
 use std::sync::{Arc, Mutex};
 
-use forky_wasm::{LedsInterface, SharedLeds};
+use forky_wasm::{LedStrip, SharedLeds};
 
 
 
@@ -9,13 +9,11 @@ use forky_wasm::{LedsInterface, SharedLeds};
 pub struct TerminalLeds {}
 
 impl TerminalLeds {
-	pub fn shared() -> SharedLeds {
-		Arc::new(Mutex::new(TerminalLeds {}))
-	}
+	pub fn shared() -> SharedLeds { Arc::new(Mutex::new(TerminalLeds {})) }
 }
 
 
-impl LedsInterface for TerminalLeds {
+impl LedStrip for TerminalLeds {
 	fn set_leds(&self, r: u8, g: u8, b: u8, w: u8) {
 		println!("r: {}\tg: {}\tb: {}\tw: {}", r, g, b, w);
 	}

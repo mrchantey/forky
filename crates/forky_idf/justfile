@@ -1,15 +1,17 @@
 # requires powershell because of CMAKE_OBJECT_PATH_MAX
 set shell := ["powershell.exe", "-c"]
 port := 'COM3'
+backtrace := '1'
 target-idf := '--target riscv32imc-esp-espidf "-Zbuild-std=std,panic_abort" --target-dir C:/temp/idf'
 
 
 # $Env:RUST_BACKTRACE=1; \
 build *args:
 	./export-esp.ps1; \
+	$Env:RUST_BACKTRACE={{backtrace}}; \
 	cargo build \
 	{{target-idf}} \
-	--bin {{args}} \
+	--example {{args}} \
 
 #remove speed if experiencing issues
 flash *args:
@@ -19,12 +21,12 @@ flash *args:
 	--partition-table partitions.csv \
 	--speed 921600 \
 	{{target-idf}} \
-	--bin {{args}}
+	--example {{args}}
 
 save *args:
 	cargo espflash save-image \
 	ESP32-C3 ../../out/esp.image \
 	--release \
 	{{target-idf}} \
-	--bin {{args}} \
+	--example {{args}} \
 

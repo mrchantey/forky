@@ -10,6 +10,7 @@ fn main() -> ! {
 	let mut controller =
 		led_controller_rgb!(device.pulse.channel0, device.io.pins.gpio7, 1);
 
+	// controller
 	loop {
 		for hue in 0..=255 {
 			controller.set_hue_all(hue);

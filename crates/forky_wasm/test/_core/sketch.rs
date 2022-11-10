@@ -9,12 +9,8 @@ use wasmi::*;
 sweet! {
 
 	let leds = TerminalLeds::shared();
-	let mut engine = WasmEngine::new();
 	let mut wasm = utility::read_wasm_bytes("sketch").unwrap();
-	let mut builder = SketchInstance::init(&mut engine);
-	SketchInstance::append_millis(&mut builder);
-	Led::append_set_rgbw(&mut builder,&leds);
-	let mut instance = SketchInstance::build(&mut engine, builder, &wasm);
+	let mut instance = SketchInstance::new(&wasm,leds);
 	test "millis" {
 		let a = instance._millis();
 		forky_core::time::sleep(1);

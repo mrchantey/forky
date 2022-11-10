@@ -2,18 +2,15 @@ use crate::*;
 use std::sync::{Arc, Mutex};
 
 
-pub type SharedLeds = Arc<Mutex<dyn LedsInterface + Send>>;
+pub type SharedLeds = Arc<Mutex<dyn LedStrip + Send>>;
 
-pub trait LedsInterface {
+pub trait LedStrip {
 	fn set_leds(&self, r: u8, g: u8, b: u8, w: u8);
 }
 
 pub struct Led;
 impl Led {
-	pub fn append_set_rgbw(
-		builder: &mut SketchBuilder,
-		leds: &SharedLeds,
-	) {
+	pub fn append_set_rgbw(builder: &mut SketchBuilder, leds: &SharedLeds) {
 		// leds: &Arc<Mutex<dyn LedsInterface + Send>>,
 
 		let leds = Arc::clone(&leds);
