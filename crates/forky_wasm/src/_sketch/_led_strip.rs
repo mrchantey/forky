@@ -5,7 +5,9 @@ use std::sync::{Arc, Mutex};
 pub type SharedLeds = Arc<Mutex<dyn LedStrip + Send>>;
 
 pub trait LedStrip {
-	fn set_leds(&self, r: u8, g: u8, b: u8, w: u8);
+	fn as_shared(self) -> SharedLeds;
+
+	fn set_leds(&mut self, r: u8, g: u8, b: u8, w: u8);
 }
 
 pub struct Led;

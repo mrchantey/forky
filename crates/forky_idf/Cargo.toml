@@ -24,7 +24,7 @@ esp-idf-sys = { version = "0.31.9", features = ["binstart"] }
 wasmi = "0.20.0"
 rgb = "0.8.34"
 # forky_esp = {path = "../forky_esp"}
-# forky_wasm = {path = "../forky_wasm"}
+forky_wasm = {path = "../forky_wasm"}
 
 [build-dependencies]
 embuild = "0.30"

@@ -11,8 +11,9 @@ repository = {workspace=true}
 
 [dependencies]
 rgb = "0.8.34"
+anyhow = {workspace = true}
 wasmi = {workspace = true}
-extend = {workspace=true}
+extend = {workspace = true}
 
 [dev-dependencies]
 forky_core = {workspace = true}

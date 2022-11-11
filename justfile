@@ -1,7 +1,7 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_core forky_cli forky_test forky_play forky_esp forky_wasm sweet wasm_simple wasm_sketch'
+crates := 'forky forky_core forky_cli forky_test forky_play forky_esp forky_wasm sweet'
 sh := 'C:/tools/cygwin/bin/'
 
 default:
@@ -21,8 +21,14 @@ serve-wasm:
 check crate:
 	cargo check -p {{crate}}
 
-clean crate:
-	cargo clean -p {{crate}}
+clean *args:
+	cargo clean -p {{args}}
+
+clean-repo:
+	cargo clean
+	cd ./crates/wasm_simple && cargo clean
+	cd ./crates/wasm_sketch && cargo clean
+	cd ./crates/forky_idf && cargo clean
 
 expand crate example:
 	just watch 'cargo expand -p {{crate}} --bin {{example}}'
@@ -83,11 +89,18 @@ watch command:
 @wasm command *args:
 	just wasm-{{command}} {{args}}
 
-wasm-w command bin *args:
-	just watch 'just wasm-{{command}} {{bin}} {{args}}'
+wasm-w command *args:
+	just watch 'just wasm-{{command}} {{args}}'
 
 wasm-build bin *args:
-	cd ./crates/wasm_{{bin}} && cargo build --release --target wasm32-unknown-unknown
+	cd ./crates/wasm_{{bin}} && cargo build --release --target wasm32-unknown-unknown {{args}}
+	stat --printf="%s\n" ./crates/wasm_{{bin}}/target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
+# cargo build -p wasm_{{bin}} --release --target wasm32-unknown-unknown {{args}}
+# stat --printf="%s\n" ./target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
+
+
+wasm-dump bin *args:
+	hexdump -b ./target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm {{args}}
 
 wasm-wat bin *args:
 	C:/path/wabt/bin/wasm2wat.exe ./target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm

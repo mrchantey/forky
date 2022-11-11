@@ -10,16 +10,7 @@ use wasmi::*;
 
 sweet! {
 
-	let mut engine = WasmEngine::new();
-	let mut buf = utility::read_wasm_bytes("simple").unwrap();
-	let mut builder = engine.instantiate(0);
-	builder.add_import_1(
-	"host", "hello",|mut caller, param:i32| {
-			let data = caller.host_data_mut();
-			*data = *data + param as u32;
-		}
-	);
-	let mut instance = builder.build(&mut engine,&buf[..]);
+	let mut instance = build_simple().unwrap();
 
 	test "exports" {
 		let add = instance.get_export::<(u64,u64),u64>("add");

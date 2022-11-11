@@ -13,10 +13,14 @@ members = [
 	"crates/forky_test",
 	"crates/forky_wasm",
 	"crates/sweet",
-	"crates/wasm_simple",
-	"crates/wasm_sketch",
+	# "crates/wasm_simple",
+	# "crates/wasm_sketch",
 ]
-exclude = ["crates/forky_idf"]
+exclude = [
+	"crates/forky_idf",
+	"crates/wasm_simple",
+	"crates/wasm_sketch"
+]
 
 [workspace.package]
 version = "0.1.9"
@@ -57,6 +61,7 @@ crossterm = "0.25.0"
 colorize = "0.1.0"
 gag = "1.0.0"
 num-traits = "0.2.15"
+anyhow = "1"
 
 # compile
 backtrace = "0.3.66"

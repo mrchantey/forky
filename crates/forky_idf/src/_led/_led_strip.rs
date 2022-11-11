@@ -2,53 +2,63 @@ use anyhow::{Ok, Result};
 use core::time::Duration;
 use embedded_hal::delay::blocking::DelayUs;
 use esp_idf_hal::delay::Ets;
-use esp_idf_hal::gpio::{Gpio7, Output};
+use esp_idf_hal::gpio::{Output, OutputPin};
 use esp_idf_hal::ledc::Channel;
 use esp_idf_hal::peripherals::Peripherals;
 use esp_idf_hal::rmt::config::TransmitConfig;
 use esp_idf_hal::rmt::{
-	FixedLengthSignal, PinState, Pulse, Transmit, CHANNEL0,
+	FixedLengthSignal, HwChannel, PinState, Pulse, Transmit,
 };
+use forky_wasm::{LedStrip, SharedLeds};
 use rgb::RGBA;
+use std::pin::Pin;
+use std::sync::{Arc, Mutex};
 
 pub type RGBA8 = RGBA<u8>;
 
 // const num_leds: i32 = 5;
-// TODO sk6812 differnt signal speeds?
+// TODO sk6812 & ws2812b different signal speeds?
 // https://cdn-shop.adafruit.com/datasheets/WS2812.pdf
 
 #[macro_export]
-macro_rules! smartLedAdapter {
-	($num_leds: literal ) => {
+macro_rules! led_strip_rgbw {
+	($pin: expr,$channel: expr,$num_leds: literal) => {
 		//rgbw 4 * 8 + 1 delimeter
-		SmartLedsAdapter::<{ $num_leds * 32 + 1 }>
+		LedStripRGBW::<_, _, { $num_leds }, { $num_leds * 32 + 1 }>::new(
+			$pin, $channel,
+		)
 	};
 }
 
-pub struct Led;
-impl Led {
-	/// these are the endians you're looking for
-	pub fn as_u32_be(col: &RGBA8) -> u32 {
-		((col.g as u32) << 24)
-			+ ((col.r as u32) << 16)
-			+ ((col.b as u32) << 8)
-			+ ((col.a as u32) << 0)
-	}
-	/// rarely big endian
-	pub fn as_u32_le(col: &RGBA8) -> u32 {
-		((col.g as u32) << 0)
-			+ ((col.r as u32) << 8)
-			+ ((col.b as u32) << 16)
-			+ ((col.a as u32) << 24)
-	}
-}
+// pub struct Led;
+// impl Led {
+// 	/// big endian is rarely used
+// 	pub fn as_u32_be(col: &RGBA8) -> u32 {
+// 		((col.g as u32) << 24)
+// 			+ ((col.r as u32) << 16)
+// 			+ ((col.b as u32) << 8)
+// 			+ ((col.a as u32) << 0)
+// 	}
+// 	/// these are the endians you're looking for
+// 	pub fn as_u32_le(col: &RGBA8) -> u32 {
+// 		((col.g as u32) << 0)
+// 			+ ((col.r as u32) << 8)
+// 			+ ((col.b as u32) << 16)
+// 			+ ((col.a as u32) << 24)
+// 	}
+// }
 
-pub struct LedStrip<const NUM_LEDS: usize, const BUFF_LEN: usize> {
+pub struct LedStripRGBW<
+	PIN: OutputPin,
+	CHANNEL: HwChannel,
+	const NUM_LEDS: usize,
+	const BUFF_LEN: usize,
+> {
 	t0h: Pulse,
 	t0l: Pulse,
 	t1h: Pulse,
 	t1l: Pulse,
-	tx: Transmit<Gpio7<Output>, CHANNEL0>,
+	tx: Transmit<PIN, CHANNEL>,
 	pub buffer: [RGBA8; NUM_LEDS],
 	signal: FixedLengthSignal<BUFF_LEN>,
 }
@@ -57,13 +67,30 @@ pub struct LedStrip<const NUM_LEDS: usize, const BUFF_LEN: usize> {
 
 fn ns(nanos: u64) -> Duration { Duration::from_nanos(nanos) }
 
-impl<const NUM_LEDS: usize, const BUFF_LEN: usize>
-	LedStrip<NUM_LEDS, BUFF_LEN>
+impl<
+		T1: OutputPin + 'static,
+		T2: HwChannel + std::marker::Send + 'static,
+		const T3: usize,
+		const T4: usize,
+	> LedStrip for LedStripRGBW<T1, T2, T3, T4>
+{
+	fn set_leds(&mut self, r: u8, g: u8, b: u8, w: u8) {
+		self.set_all(r, g, b, w)
+	}
+	fn as_shared(self) -> SharedLeds { Arc::new(Mutex::new(self)) }
+}
+
+impl<
+		PIN: OutputPin,
+		CHANNEL: HwChannel,
+		const NUM_LEDS: usize,
+		const BUFF_LEN: usize,
+	> LedStripRGBW<PIN, CHANNEL, NUM_LEDS, BUFF_LEN>
 {
 	pub fn new(
-		pin: Gpio7<Output>,
-		channel: CHANNEL0,
-	) -> Result<LedStrip<NUM_LEDS, BUFF_LEN>> {
+		pin: PIN,
+		channel: CHANNEL,
+	) -> Result<LedStripRGBW<PIN, CHANNEL, NUM_LEDS, BUFF_LEN>> {
 		let config = TransmitConfig::new().clock_divider(1);
 		let mut tx = Transmit::new(pin, channel, &config)?;
 		//32 * 6 = 192
@@ -76,7 +103,7 @@ impl<const NUM_LEDS: usize, const BUFF_LEN: usize>
 		let t0l = Pulse::new_with_duration(ticks_hz, PinState::Low, &ns(800))?;
 		let t1h = Pulse::new_with_duration(ticks_hz, PinState::High, &ns(700))?;
 		let t1l = Pulse::new_with_duration(ticks_hz, PinState::Low, &ns(600))?;
-		Ok(LedStrip {
+		Ok(LedStripRGBW {
 			t0h,
 			t0l,
 			t1h,

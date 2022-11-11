@@ -9,13 +9,13 @@ extern "C" {
 }
 #[link(wasm_import_module = "led")]
 extern "C" {
-	fn set_rgbw(r:u32,g:u32,b:u32,w:u32);
+	fn set_rgbw(r: u32, g: u32, b: u32, w: u32);
 }
 #[no_mangle]
 pub extern "C" fn run() {
 	unsafe {
 		let _millis = millis();
-		set_rgbw(0,0,0,0);
+		set_rgbw(0, 255, 255, 4);
 	}
 }
 #[no_mangle]

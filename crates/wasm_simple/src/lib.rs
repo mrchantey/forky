@@ -3,9 +3,9 @@
 
 #[link(wasm_import_module = "host")]
 extern "C" {
-	#[link_name = "hello"]
+	// #[link_name = "hello"]
 	// #[no_mangle]
-	fn host_hello(val: i32);
+	fn howdy(val: i32);
 }
 
 #[no_mangle]
@@ -13,7 +13,7 @@ pub extern "C" fn hello() {
 	unsafe {
 		let a = 2;
 		let b = 10;
-		host_hello(a + b);
+		howdy(a + b);
 	}
 }
 #[no_mangle]

@@ -11,8 +11,9 @@
 // use esp_idf_svc::wifi::EspWifi;
 // use std::sync::Arc;
 use anyhow::Result;
-fn main() -> anyhow::Result<()> {
+fn main() -> Result<()> {
 	println!("hi");
+	Ok(())
 }
 // use embedded_svc::wifi::{
 // 	ClientConfiguration, ClientConnectionStatus, ClientIpStatus, ClientStatus,

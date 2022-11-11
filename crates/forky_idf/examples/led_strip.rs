@@ -8,12 +8,10 @@ use std::time::Duration;
 fn main() -> anyhow::Result<()> {
 	// esp_idf_sys::link_patches();
 	let device = IDFDevice::new();
-
-	let led = device.peripherals.pins.gpio7.into_output().unwrap();
+	let led_pin = device.peripherals.pins.gpio7.into_output().unwrap();
 	let channel = device.peripherals.rmt.channel0;
-	// device.peripherals.
-
-	let mut strip = LedStrip::<6, 193>::new(led, channel)?;
+	let mut strip = led_strip_rgbw!(led_pin,channel,6)?; 
+	
 	strip.set_all(8, 0, 0, 4);
 	strip.show()?;
 	loop {

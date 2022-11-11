@@ -9,8 +9,7 @@ use wasmi::*;
 sweet! {
 
 	let leds = TerminalLeds::shared();
-	let mut wasm = utility::read_wasm_bytes("sketch").unwrap();
-	let mut instance = SketchInstance::new(&wasm,leds);
+	let mut instance = SketchInstance::from_default(leds);
 	test "millis" {
 		let a = instance._millis();
 		forky_core::time::sleep(1);
@@ -20,8 +19,11 @@ sweet! {
 
 	test "leds"{
 		instance.run();
-
 	}
 
-
+	test skip "print"{
+		let mut wasm = include_wasm!("../../../","wasm_sketch");
+		println!("{:?}",wasm);
+		println!("\n{} bytes\n",wasm.len());
+	}
 }

@@ -14,7 +14,9 @@ impl TerminalLeds {
 
 
 impl LedStrip for TerminalLeds {
-	fn set_leds(&self, r: u8, g: u8, b: u8, w: u8) {
+	fn set_leds(&mut self, r: u8, g: u8, b: u8, w: u8) {
 		println!("r: {}\tg: {}\tb: {}\tw: {}", r, g, b, w);
 	}
+
+	fn as_shared(self) -> SharedLeds { Arc::new(Mutex::new(self)) }
 }
