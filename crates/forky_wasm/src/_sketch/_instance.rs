@@ -15,12 +15,12 @@ pub struct SketchInstance {
 
 
 impl SketchInstance {
-	pub fn from_default(leds: SharedLeds) -> SketchInstance {
+	pub fn from_default(leds: &SharedLeds) -> SketchInstance {
 		let stream = include_wasm!("../../../", "wasm_sketch");
 		Self::new(&stream[..], leds)
 	}
 
-	pub fn new(stream: impl Read, leds: SharedLeds) -> SketchInstance {
+	pub fn new(stream: impl Read, leds: &SharedLeds) -> SketchInstance {
 		let mut engine = WasmEngine::new();
 		let mut builder = SketchInstance::init(&mut engine);
 		SketchInstance::append_millis(&mut builder);

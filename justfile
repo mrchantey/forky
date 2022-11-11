@@ -100,10 +100,10 @@ wasm-build bin *args:
 
 
 wasm-dump bin *args:
-	hexdump -b ./target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm {{args}}
+	hexdump -b ./crates/wasm_{{bin}}/target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm {{args}}
 
 wasm-wat bin *args:
-	C:/path/wabt/bin/wasm2wat.exe ./target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
+	C:/path/wabt/bin/wasm2wat.exe ./crates/wasm_{{bin}}/target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
 # wasm-bindgen --out-dir ./wasm/{{example}} --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
 
 

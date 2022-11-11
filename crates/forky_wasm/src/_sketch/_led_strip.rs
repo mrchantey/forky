@@ -8,6 +8,7 @@ pub trait LedStrip {
 	fn as_shared(self) -> SharedLeds;
 
 	fn set_leds(&mut self, r: u8, g: u8, b: u8, w: u8);
+	fn show(&mut self);
 }
 
 pub struct Led;

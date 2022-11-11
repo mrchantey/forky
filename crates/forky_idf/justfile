@@ -14,18 +14,20 @@ build *args:
 	--example {{args}} \
 
 #remove speed if experiencing issues
+# this is causing stack overflows? possibly corrupt target dir
+# {{target-idf}} \
 flash *args:
 	./export-esp.ps1; \
 	cargo espflash {{port}} \
-	--monitor --release \
-	--partition-table partitions.csv \
+	--monitor \
+	--release \
 	--speed 921600 \
-	{{target-idf}} \
+	--partition-table partitions.csv \
 	--example {{args}}
 
 save *args:
 	cargo espflash save-image \
-	ESP32-C3 ../../out/esp.image \
+	ESP32-C3 ./esp.image \
 	--release \
 	{{target-idf}} \
 	--example {{args}} \

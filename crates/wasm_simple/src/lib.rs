@@ -3,7 +3,7 @@
 
 #[link(wasm_import_module = "host")]
 extern "C" {
-	// #[link_name = "hello"]
+	// #[link_name = "howdy"]
 	// #[no_mangle]
 	fn howdy(val: i32);
 }

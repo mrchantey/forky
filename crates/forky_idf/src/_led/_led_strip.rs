@@ -77,6 +77,7 @@ impl<
 	fn set_leds(&mut self, r: u8, g: u8, b: u8, w: u8) {
 		self.set_all(r, g, b, w)
 	}
+	fn show(&mut self) { self.show().unwrap(); }
 	fn as_shared(self) -> SharedLeds { Arc::new(Mutex::new(self)) }
 }
 

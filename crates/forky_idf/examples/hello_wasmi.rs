@@ -1,24 +1,8 @@
 // use anyhow::{anyhow, Result};
 use esp_idf_sys as _;
-use std::{thread, time};
 use wasmi::*;
 fn main() {
-	thread::sleep(time::Duration::from_secs(5));
-	// First step is to create the Wasm execution engine with some config.
-	// In this example we are using the default configuration.
 	let engine = Engine::default();
-	// let wat = r#"
-	//       (module
-	//           (import "host" "hello" (func $host_hello (param i32)))
-	//           (func (export "hello")
-	//               (call $host_hello (i32.const 3))
-	//           )
-	//       )
-	//   "#;
-	// Wasmi does not yet support parsing `.wat` so we have to convert
-	// out `.wat` into `.wasm` before we compile and validate it.
-	// let wasm = wat::parse_str(&wat).unwrap();
-
 	let wasm = [
 		0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x02, 0x60,
 		0x01, 0x7f, 0x00, 0x60, 0x00, 0x00, 0x02, 0x0e, 0x01, 0x04, 0x68, 0x6f,
@@ -27,10 +11,6 @@ fn main() {
 		0x01, 0x0a, 0x08, 0x01, 0x06, 0x00, 0x41, 0x03, 0x10, 0x00, 0x0b,
 	];
 	let module = Module::new(&engine, &mut &wasm[..]).unwrap();
-
-	// All Wasm objects operate within the context of a `Store`.
-	// Each `Store` has a type parameter to store host-specific data,
-	// which in this case we are using `42` for.
 	type HostState = u32;
 	let mut store = Store::new(&engine, 42);
 	let host_hello =
@@ -38,15 +18,7 @@ fn main() {
 			println!("Got {param} from WebAssembly");
 			println!("My host state is: {}", caller.host_data());
 		});
-
-	// In order to create Wasm module instances and link their imports
-	// and exports we require a `Linker`.
 	let mut linker = <Linker<HostState>>::new();
-	// Instantiation of a Wasm module requires defining its imports and then
-	// afterwards we can fetch exports by name, as well as asserting the
-	// type signature of the function with `get_typed_func`.
-	//
-	// Also before using an instance created this way we need to start it.
 	linker.define("host", "hello", host_hello).unwrap();
 	let instance = linker
 		.instantiate(&mut store, &module)
