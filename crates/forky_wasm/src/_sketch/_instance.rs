@@ -8,24 +8,38 @@ type Store = u32;
 pub type SketchBuilder = WasmInstanceBuilder<Store>;
 
 pub struct SketchInstance {
-	run: TypedFunc<(), ()>,
-	_millis: TypedFunc<(), u64>,
-	instance: WasmInstance<Store>,
+	pub run: TypedFunc<(), ()>,
+	pub _millis: TypedFunc<(), u64>,
+	pub instance: WasmInstance<Store>,
 }
 
 
 impl SketchInstance {
 	pub fn from_default(leds: &SharedLeds) -> SketchInstance {
+		let mut engine = WasmEngine::new();
+		Self::from_default_with_engine(&mut engine, leds)
+	}
+	pub fn from_default_with_engine(
+		engine: &mut WasmEngine,
+		leds: &SharedLeds,
+	) -> SketchInstance {
 		let stream = include_wasm!("../../../", "wasm_sketch");
-		Self::new(&stream[..], leds)
+		Self::new_with_engine(engine, &stream[..], leds)
 	}
 
 	pub fn new(stream: impl Read, leds: &SharedLeds) -> SketchInstance {
 		let mut engine = WasmEngine::new();
-		let mut builder = SketchInstance::init(&mut engine);
+		Self::new_with_engine(&mut engine, stream, leds)
+	}
+	pub fn new_with_engine(
+		engine: &mut WasmEngine,
+		stream: impl Read,
+		leds: &SharedLeds,
+	) -> SketchInstance {
+		let mut builder = SketchInstance::init(engine);
 		SketchInstance::append_millis(&mut builder);
-		Led::append_set_rgbw(&mut builder, &leds);
-		SketchInstance::build(&mut engine, builder, stream)
+		Led::append_imports(&mut builder, &leds);
+		SketchInstance::build(engine, builder, stream)
 	}
 
 

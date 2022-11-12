@@ -6,6 +6,7 @@ use embedded_svc::wifi::{
 	ClientConfiguration, ClientConnectionStatus, ClientIpStatus, ClientStatus,
 	Configuration, Wifi,
 };
+use esp_idf_svc::http::server::EspHttpServer;
 use esp_idf_svc::netif::EspNetifStack;
 use esp_idf_svc::nvs::EspDefaultNvs;
 use esp_idf_svc::sysloop::EspSysLoopStack;
@@ -58,16 +59,16 @@ impl Connection {
 			Err(anyhow::anyhow!("WIFI - Failed to connect in time."))
 		}
 	}
-	pub fn get(&self, url: impl AsRef<str>) -> anyhow::Result<()> {
+	pub fn get(&self, url: impl AsRef<str>) -> Result<()> {
 		fetch(Method::Get, url)
 	}
 
-	pub fn start_server(&self) -> anyhow::Result<()> {
+	pub fn start_server(&self) -> Result<EspHttpServer> {
 		println!("server running at http://{:?}", self.settings.ip);
 		start_server()
 	}
 
-	// pub fn post(url: impl AsRef<str>) -> anyhow::Result<()> {
+	// pub fn post(url: impl AsRef<str>) -> Result<()> {
 
 	// }
 }

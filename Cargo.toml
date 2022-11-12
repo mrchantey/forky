@@ -69,6 +69,10 @@ proc-macro2 = "1.0.47"
 syn = {version="1.0.103",features= ["full"] }
 quote = "1.0.21"
 
+# wasm
+rgb = "0.8.34"
+
+
 extend = "1.1.2"
 
 

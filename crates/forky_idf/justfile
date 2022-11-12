@@ -6,15 +6,15 @@ target-idf := '--target riscv32imc-esp-espidf "-Zbuild-std=std,panic_abort" --ta
 
 
 # $Env:RUST_BACKTRACE=1; \
+# {{target-idf}} \
 build *args:
 	./export-esp.ps1; \
 	$Env:RUST_BACKTRACE={{backtrace}}; \
 	cargo build \
-	{{target-idf}} \
 	--example {{args}} \
 
 #remove speed if experiencing issues
-# this is causing stack overflows? possibly corrupt target dir
+# target-idf is causing stack overflows? possibly corrupt target dir
 # {{target-idf}} \
 flash *args:
 	./export-esp.ps1; \

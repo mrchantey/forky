@@ -28,6 +28,7 @@ wasmi =  {version = "0.20.0", default-features=false }
 rgb = "0.8.34"
 # forky_esp = {path = "../forky_esp"}
 forky_wasm = {path = "../forky_wasm"}
+extend = "1.1.2"
 
 [build-dependencies]
 embuild = "0.30"

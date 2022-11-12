@@ -19,8 +19,8 @@ fn main() -> anyhow::Result<()> {
 		for i in 0..255{			
 			// strip.set_all(0,i,0,4);
 			strip.show()?;
-			thread::sleep(Duration::from_millis(50));
+			utility::sleep_ms(50);
 		}
-		thread::sleep(Duration::from_millis(1000));
+		utility::sleep_ms(1000);
 	}
 }

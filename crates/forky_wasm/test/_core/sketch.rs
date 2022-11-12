@@ -1,15 +1,14 @@
-use std::cell::RefCell;
-
 use crate::{terminal_leds::TerminalLeds, *};
 use forky_core::*;
 use forky_wasm::*;
+use std::cell::RefCell;
 use sweet::*;
 use wasmi::*;
 
 sweet! {
 
-	let leds = TerminalLeds::shared();
-	let mut instance = SketchInstance::from_default(leds);
+	let leds = TerminalLeds::new(2).as_shared();
+	let mut instance = SketchInstance::from_default(&leds);
 	let mut wasm = include_wasm!("../../../","wasm_sketch");
 	test "millis" {
 		let a = instance._millis();
@@ -18,12 +17,13 @@ sweet! {
 		expect((b - a) as i32).to_be_at_least(1000)?;
 	}
 
+
 	test "leds"{
 		instance.run();
 	}
 
 	test "size"{
-		expect(wasm.len() < 1000).to_be_true();
+		expect(wasm.len() < 1000).to_be_true()?;
 	}
 
 	test skip "print"{

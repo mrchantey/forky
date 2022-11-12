@@ -25,12 +25,9 @@ pub fn build_simple_slowly() -> Result<WasmInstance<u32>> {
 	builder.linker.define(
 		"host",
 		"howdy",
-		Func::wrap(
-			&mut builder.store,
-			|caller: Caller<'_, u32>, param: i32| {
-				println!("the value is {}", param);
-			},
-		),
+		Func::wrap(&mut builder.store, |_: Caller<'_, u32>, param: i32| {
+			println!("the value is {}", param);
+		}),
 	)?;
 
 	let mut instance = builder.build(&mut engine, &buf[..]);

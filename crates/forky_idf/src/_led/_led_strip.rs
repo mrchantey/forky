@@ -129,7 +129,7 @@ impl<
 			Self::set_channel(&mut self.signal, i_byte + 24, col.a, self.t0l, self.t0h, self.t1l, self.t1h)?;
 		}
 		//terminator?
-		// self.signal.set(self.buffer.len() * 32, &(self.t0h, self.t0l))?;
+		// self.signal.set(self.buffer.len() * 32, 0)?;
 		self.tx.start_blocking(&self.signal)?;
 		Ok(())
 	}

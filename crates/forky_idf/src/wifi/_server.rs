@@ -1,5 +1,6 @@
 //https://github.com/ferrous-systems/espressif-trainings/blob/main/intro/http-server/src/main.rs
 //https://github.com/esp-rs/esp-idf-svc
+use anyhow::Result;
 use core::str;
 use std::{
 	sync::{Arc, Mutex},
@@ -15,7 +16,7 @@ use embedded_svc::{
 use esp_idf_svc::http::server::{Configuration, EspHttpRequest, EspHttpServer};
 
 
-pub fn start_server() -> anyhow::Result<()> {
+pub fn start_server() -> Result<EspHttpServer> {
 	let server_config = Configuration::default();
 	let mut server = EspHttpServer::new(&server_config)?;
 	server.handle_get("/", |_request, response| {
@@ -45,9 +46,7 @@ pub fn start_server() -> anyhow::Result<()> {
 		Ok(())
 	})?;
 
-	loop {
-		sleep(Duration::from_millis(1000));
-	}
+	Ok(server)
 }
 
 fn templated(content: impl AsRef<str>) -> String {

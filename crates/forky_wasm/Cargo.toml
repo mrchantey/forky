@@ -10,7 +10,7 @@ description = {workspace=true}
 repository = {workspace=true}
 
 [dependencies]
-rgb = "0.8.34"
+rgb = {workspace = true}
 anyhow = {workspace = true}
 wasmi = {workspace = true}
 extend = {workspace = true}

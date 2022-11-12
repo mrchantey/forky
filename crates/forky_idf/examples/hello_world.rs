@@ -1,10 +1,11 @@
 use esp_idf_sys as _;
+use forky_idf::utility;
 // esp_idf_sys::link_patches();
 use std::{thread, time};
 fn main() {
 	let str = String::from("hello idf world!");
 	loop {
 		println!("{}", str);
-		thread::sleep(time::Duration::from_secs(1))
+		utility::sleep_ms(1000);
 	}
 }

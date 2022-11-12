@@ -8,7 +8,6 @@ use esp_hal_common::{
 };
 
 use smart_leds::*;
-pub type RGBA8 = RGBA<u8>;
 
 #[macro_export]
 macro_rules! led_controller_rgbw {

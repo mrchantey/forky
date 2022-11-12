@@ -95,6 +95,7 @@ wasm-w command *args:
 wasm-build bin *args:
 	cd ./crates/wasm_{{bin}} && cargo build --release --target wasm32-unknown-unknown {{args}}
 	stat --printf="%s\n" ./crates/wasm_{{bin}}/target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
+	just wasm-wat {{bin}}
 # cargo build -p wasm_{{bin}} --release --target wasm32-unknown-unknown {{args}}
 # stat --printf="%s\n" ./target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
 
