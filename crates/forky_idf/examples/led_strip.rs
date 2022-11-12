@@ -1,7 +1,5 @@
 use anyhow::{self};
 use forky_idf::*;
-use std::thread;
-use std::time::Duration;
 // const num_leds: i32 = 5;
 
 #[rustfmt::skip]

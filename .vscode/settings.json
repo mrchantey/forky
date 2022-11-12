@@ -19,7 +19,6 @@
 		// "**/target/": true,
 		"**/sdkconfig.defaults": true,
 		"**/build.rs": true,
-		"wasm": true,
 	},
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.patterns": {
