@@ -2,7 +2,7 @@
 set shell := ["powershell.exe", "-c"]
 port := 'COM3'
 backtrace := '1'
-target-idf := '--target riscv32imc-esp-espidf "-Zbuild-std=std,panic_abort" --target-dir C:/temp/idf'
+# target-idf := '--target riscv32imc-esp-espidf "-Zbuild-std=std,panic_abort" --target-dir C:/temp/idf'
 
 
 # $Env:RUST_BACKTRACE=1; \
@@ -25,10 +25,15 @@ flash *args:
 	--partition-table partitions.csv \
 	--example {{args}}
 
+# {{target-idf}} \
 save *args:
 	cargo espflash save-image \
 	ESP32-C3 ./esp.image \
+	--partition-table partitions.csv \
 	--release \
-	{{target-idf}} \
+	--merge \
 	--example {{args}} \
 
+monitor *args:
+	cargo espflash serial-monitor {{port}} \
+	--speed 921600
