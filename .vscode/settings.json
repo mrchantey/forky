@@ -20,13 +20,6 @@
 		"**/sdkconfig.defaults": true,
 		"**/build.rs": true,
 	},
-	"explorer.fileNesting.enabled": true,
-	"explorer.fileNesting.patterns": {
-		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
-		"*.jsx": "${capture}.js",
-		"tsconfig.json": "tsconfig.*.json",
-		"Cargo.toml": "Cargo.toml, Cargo.lock, rustfmt.toml, .gitignore, README.md, LICENSE, justfile, build.rs, export-esp.ps1, export-esp.sh, rust-toolchain.toml, sdkconfig.defaults, partitions.csv, partitions-default.csv"
-	},
 	"rust-analyzer.files.excludeDirs": [
 		// "crates\\forky_test\\src\\utility\\shoosh",
 		////these seem to break red squigglies
