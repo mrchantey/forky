@@ -1,4 +1,4 @@
 mod constants;
-pub use constants::*;
+pub use self::constants::*;
 mod funcs;
-pub use funcs::*;
+pub use self::funcs::*;
