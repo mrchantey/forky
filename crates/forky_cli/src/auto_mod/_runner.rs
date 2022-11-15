@@ -73,13 +73,13 @@ fn save_to_file(path: &PathBuf, content: String) {
 	println!("created mod file: {}", &mod_path.to_str().unwrap());
 }
 
-const PREFIX: &str =
-	// "#![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens))]\n\n";
-	"#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]\n\n";
+const PREFIX: &str = "";
+// "#![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens))]\n\n";
+// "#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]\n\n";
 
 pub fn create_mod_text(path: &PathBuf) -> String {
 	let children = fs::read_dir(&path).unwrap();
-	let dir_is_double_underscore = filename_contains_double_underscore(&path);
+	// let dir_is_double_underscore = filename_contains_double_underscore(&path);
 
 	let mut str = String::from(PREFIX);
 	children
@@ -88,13 +88,15 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 		.for_each(|c| {
 			let stem = c.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
-			if filename_starts_with_underscore(&c) || dir_is_double_underscore {
-				str.push_str(
-					&["mod ", &name[..], ";\npub use ", &name[..], "::*;\n"]
-						.join("")[..],
-				);
-			} else {
+			let mut is_mod = c.is_dir();
+			if filename_starts_with_underscore(&c) {
+				is_mod = !is_mod;
+			}
+			if is_mod {
 				str.push_str(&["pub mod ", &name[..], ";\n"].join("")[..]);
+			} else {
+				#[rustfmt::skip]
+				str.push_str(&["mod ", &name[..], ";\npub use self::", &name[..], "::*;\n"].join("")[..]);
 			}
 		});
 	str
