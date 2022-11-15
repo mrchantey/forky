@@ -1,3 +1,2 @@
-#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]
-
-pub mod graph;
+mod graph;
+pub use self::graph::*;

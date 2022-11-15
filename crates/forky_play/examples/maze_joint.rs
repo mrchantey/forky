@@ -11,11 +11,7 @@ fn main() {
 		.run();
 }
 
-fn spawn(
-	mut commands: Commands,
-	mut meshes: ResMut<Assets<Mesh>>,
-	mut materials: ResMut<Assets<StandardMaterial>>,
-) {
+fn spawn(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>) {
 	let obj = commands
 		.spawn_bundle(PbrBundle {
 			transform: Transform::from_xyz(0., -0.1, 0.)
@@ -28,8 +24,7 @@ fn spawn(
 		.id();
 
 
-	let hinge_z =
-		board_joint::force_spawn(&mut commands, &mut meshes, &mut materials);
+	let hinge_z = board_joint::force_spawn(&mut commands);
 	commands.entity(hinge_z).add_child(obj);
 	// obj
 }

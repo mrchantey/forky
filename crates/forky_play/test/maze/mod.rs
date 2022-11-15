@@ -1,7 +1,10 @@
-#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]
-
-pub mod ball;
-pub mod depth_first_backtrace;
-pub mod maze_walls;
-pub mod plugin;
-pub mod rect_maze;
+mod ball;
+pub use self::ball::*;
+mod depth_first_backtrace;
+pub use self::depth_first_backtrace::*;
+mod maze_walls;
+pub use self::maze_walls::*;
+mod plugin;
+pub use self::plugin::*;
+mod rect_maze;
+pub use self::rect_maze::*;

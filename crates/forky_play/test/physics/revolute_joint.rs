@@ -4,14 +4,14 @@ use bevy_rapier3d::{
 	rapier::prelude::{MotorModel, Vector},
 };
 use forky_core::{math::*, *};
-use forky_play::*;
+use forky_play::{utility::surrender_focus, *};
 use sweet::*;
 
 sweet! {
 	it "works" {
 
 		app::init()
-		.add_startup_system(utility::surrender_focus)
+		.add_startup_system(surrender_focus)
 		.add_startup_system(my_startup_system)
 		.add_system(my_system)
 		.run();

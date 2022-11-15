@@ -1,10 +1,8 @@
-#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]
-
-mod _kinematic_body;
-pub use _kinematic_body::*;
-mod _plugin;
-pub use _plugin::*;
-mod _slerp_joint;
-pub use _slerp_joint::*;
-mod _steer;
-pub use _steer::*;
+mod kinematic_body;
+pub use kinematic_body::*;
+mod plugin;
+pub use plugin::*;
+mod slerp_joint;
+pub use slerp_joint::*;
+mod steer;
+pub use steer::*;

@@ -1,4 +1,2 @@
-#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]
-
-mod _plugin;
-pub use _plugin::*;
+mod plugin;
+pub use plugin::*;

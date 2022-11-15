@@ -1,5 +1,5 @@
-mod __common;
-mod __extensions;
+mod common;
+mod extensions;
 pub mod animation;
 pub mod app;
 pub mod base;
@@ -9,5 +9,5 @@ pub mod maze;
 pub mod mesh;
 pub mod physics;
 pub mod utility;
-pub use __common::*;
-pub use __extensions::*;
+pub use common::*;
+pub use extensions::*;

@@ -1,8 +1,7 @@
 use crate::maze::*;
-use crate::{maze::mesh_shape, *};
+use crate::*;
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
-use forky_core::{math::*, *};
 
 
 pub fn spawn_all(

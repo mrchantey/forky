@@ -1,9 +1,7 @@
-use super::*;
 use crate::maze::*;
 use crate::*;
 use bevy::prelude::*;
 use forky_core::math::*;
-use forky_core::*;
 
 fn _vertical(cell_width: f32, wall_width: f32) -> Vec<Transform> {
 	vec![Transform::from_scale_xyz(wall_width, 1., cell_width)]
@@ -92,7 +90,7 @@ pub fn vertical(
 	(Transform::default(), _vertical(cell_width, wall_width))
 }
 
-pub fn none(cell_width: f32, wall_width: f32) -> (Transform, Vec<Transform>) {
+pub fn none(_cell_width: f32, _wall_width: f32) -> (Transform, Vec<Transform>) {
 	(Transform::default(), Vec::default())
 }
 pub fn cross(cell_width: f32, wall_width: f32) -> (Transform, Vec<Transform>) {

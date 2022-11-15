@@ -1,6 +1,5 @@
 use bevy::prelude::*;
 use forky_play::*;
-use forky_core::*;
 
 use sweet::*;
 
@@ -8,7 +7,7 @@ sweet! {
 	it "works" {
 		let v = Quat::from_right();
 		expect(v.forward().x).to_be_close_to(1.)?;
-		let v = Quat::from_left(); 
+		let v = Quat::from_left();
 		expect(v.forward().x).to_be_close_to(-1.)?;
 		let v = Quat::from_up();
 		expect(v.forward().y).to_be_close_to(1.)?;

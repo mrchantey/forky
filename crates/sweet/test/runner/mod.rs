@@ -1,10 +1,16 @@
-#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]
-
-pub mod action;
-pub mod backtrace_test;
-pub mod lifecycle;
-pub mod matcher;
-pub mod mutables;
-pub mod slow_fn;
-pub mod sweet;
-pub mod test_suite;
+mod action;
+pub use self::action::*;
+mod backtrace_test;
+pub use self::backtrace_test::*;
+mod lifecycle;
+pub use self::lifecycle::*;
+mod matcher;
+pub use self::matcher::*;
+mod mutables;
+pub use self::mutables::*;
+mod slow_fn;
+pub use self::slow_fn::*;
+mod sweet;
+pub use self::sweet::*;
+mod test_suite;
+pub use self::test_suite::*;

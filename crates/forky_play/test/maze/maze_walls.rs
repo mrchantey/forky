@@ -1,7 +1,7 @@
 use bevy::prelude::*;
-use forky_core::{math::*, *};
 use forky_play::{
 	maze::{maze_wall, mesh_shape},
+	utility::surrender_focus,
 	*,
 };
 use sweet::*;
@@ -11,7 +11,7 @@ sweet! {
 		app::init()
 			// .add_plugin(maze::MazePlugin)
 			.add_startup_system(spawn_all_walls)
-			.add_startup_system(utility::surrender_focus)
+			.add_startup_system(surrender_focus)
 			// .forky_exit_after(2)
 			.run();
 	}
@@ -55,7 +55,7 @@ pub fn spawn_all_walls(
 	let h_cols = (walls.len() as f32 * cell_width) / 2. - cell_width / 2.;
 	let h_rows = (walls[0].len() as f32 * cell_width) / 2. - cell_width / 2.;
 
-	for (col, mut arr) in walls.iter_mut().enumerate() {
+	for (col, arr) in walls.iter_mut().enumerate() {
 		for (row, mut wall) in arr.iter_mut().enumerate() {
 			wall.0.translation.x += -h_rows + row as f32 * cell_width;
 			wall.0.translation.z += -h_cols + col as f32 * cell_width;

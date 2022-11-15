@@ -1,9 +1,8 @@
 use forky_cli::*;
-use forky_core::*;
-use std::{fs, path::*};
+use std::path::*;
 use sweet::*;
 
-sweet!{
+sweet! {
 	it "works" {
 		let path = Path::new("test/files/test_dir");
 

@@ -1,8 +1,12 @@
-#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]
-
-pub mod boid;
-pub mod ecs;
-pub mod graphics;
-pub mod kaleid;
-pub mod physics;
-pub mod utility;
+mod boid;
+pub use self::boid::*;
+mod ecs;
+pub use self::ecs::*;
+mod graphics;
+pub use self::graphics::*;
+mod kaleid;
+pub use self::kaleid::*;
+mod physics;
+pub use self::physics::*;
+mod utility;
+pub use self::utility::*;

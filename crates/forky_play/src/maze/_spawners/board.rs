@@ -1,8 +1,5 @@
 use crate::maze::*;
-use crate::*;
 use bevy::prelude::*;
-use bevy_rapier3d::prelude::*;
-use forky_core::{math::*, *};
 
 #[derive(Component)]
 pub struct MazeBoardTag;
@@ -21,7 +18,7 @@ pub fn respawn(
 			e.wall_width,
 			e.wall_height,
 		);
-		maze.rect_maze.depth_first_backtrack(|f| {});
+		maze.rect_maze.depth_first_backtrack(|_| {});
 
 		let walls = maze_wall::spawn_all(
 			&mut commands,
@@ -31,11 +28,7 @@ pub fn respawn(
 		);
 		let floor =
 			floor::spawn(&mut commands, &mut meshes, &mut materials, &maze);
-		let controller = board_joint::force_spawn(
-			&mut commands,
-			&mut meshes,
-			&mut materials,
-		);
+		let controller = board_joint::force_spawn(&mut commands);
 		commands
 			.entity(controller)
 			.insert(MazeItemTag)

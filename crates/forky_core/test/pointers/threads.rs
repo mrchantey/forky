@@ -2,23 +2,22 @@ use forky_core::*;
 // use std::rc::Rc;
 use std::sync::{Arc, Mutex};
 use std::thread;
-use std::time::Duration;
 use sweet::*;
 
 sweet! {
 
 	it "spawns"{
 		let handle = thread::spawn(|| {
-			for i in 1..10 {
+			for _ in 1..10 {
 					// println!("hi number {} from the spawned thread!", i);
-					time::sleep_ms(1);
+					utility::sleep_ms(1);
 				}
 			});
 			handle.join().unwrap();
 
-			for i in 1..5 {
+			for _ in 1..5 {
 				// println!("hi number {} from the main thread!", i);
-				time::sleep_ms(100);
+				utility::sleep_ms(100);
 			}
 			// println!("all done!");
 	}
@@ -63,8 +62,8 @@ sweet! {
 
 		fn do_something(a:Arc<Mutex<dyn Bar + Send>>){
 			let a = Arc::clone(&a);
-			let closure = thread::spawn(move ||{
-				let foo = a.lock().unwrap();
+			let _closure = thread::spawn(move ||{
+				let _foo = a.lock().unwrap();
 			});
 		}
 

@@ -1,6 +1,8 @@
-#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]
-
-pub mod device;
-pub mod hello_led;
-pub mod hello_led_strip;
-pub mod hello_world;
+mod device;
+pub use self::device::*;
+mod hello_led;
+pub use self::hello_led::*;
+mod hello_led_strip;
+pub use self::hello_led_strip::*;
+mod hello_world;
+pub use self::hello_world::*;

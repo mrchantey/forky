@@ -1,15 +1,10 @@
-use super::*;
 use crate::maze::*;
-use crate::*;
-use bevy::{prelude::*, transform};
-use forky_core::{math::*, *};
+use bevy::prelude::*;
 
 pub fn respawn(
 	game: ResMut<MazeGame>,
 	mut spawn_event: EventWriter<RespawnEvent>,
 	mut commands: Commands,
-	mut meshes: ResMut<Assets<Mesh>>,
-	mut materials: ResMut<Assets<StandardMaterial>>,
 	query: Query<&MazeItemTag>,
 ) {
 	if query.is_empty() {
@@ -26,9 +21,7 @@ pub fn respawn(
 }
 
 pub fn despawn(
-	mut game: ResMut<MazeGame>,
 	mut despawn_event: EventReader<DespawnEvent>,
-	mut spawn_event: EventReader<DespawnEvent>,
 	mut commands: Commands,
 	q_items: Query<Entity, With<MazeItemTag>>,
 ) {

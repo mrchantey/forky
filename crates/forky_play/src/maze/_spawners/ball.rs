@@ -2,7 +2,7 @@ use crate::maze::*;
 use crate::*;
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
-use forky_core::{math::*, *};
+use forky_core::*;
 
 #[derive(Component)]
 pub struct BallTag;
@@ -60,7 +60,6 @@ const KILL_FLOOR: f32 = -50.;
 
 pub fn despawn_on_ball_fall(
 	mut commands: Commands,
-	mut game: ResMut<MazeGame>,
 	mut despawn_event: EventWriter<DespawnEvent>,
 	query: Query<(Entity, &Transform), (With<ball::BallTag>, Without<DeadTag>)>,
 ) {

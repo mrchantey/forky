@@ -1,5 +1,6 @@
-#![allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens)]
-
-pub mod int_x;
-pub mod str_x;
-pub mod vec;
+mod int_x;
+pub use self::int_x::*;
+mod str_x;
+pub use self::str_x::*;
+mod vec;
+pub use self::vec::*;

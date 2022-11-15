@@ -1,4 +1,4 @@
 pub use forky_test::*;
-mod _utility;
-pub use _utility::*;
+mod utility;
+pub use utility::*;
 pub use inventory;

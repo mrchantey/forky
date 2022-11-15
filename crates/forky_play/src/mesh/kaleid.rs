@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use forky_core::{math::*, *};
+use forky_core::math::*;
 
 use crate::base::*;
 
@@ -32,7 +32,10 @@ impl Kaleid {
 			})
 			.insert(CompanionCube);
 	}
-	pub fn rotate_cube(time: Res<Time>, mut query: Query<&mut Transform, With<CompanionCube>>) {
+	pub fn rotate_cube(
+		time: Res<Time>,
+		mut query: Query<&mut Transform, With<CompanionCube>>,
+	) {
 		for mut transform in &mut query {
 			transform.rotate_x(TAU * 0.1 * time.delta_seconds());
 		}

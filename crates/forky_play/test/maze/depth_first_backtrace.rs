@@ -1,5 +1,4 @@
-use forky_core::*;
-use forky_play::{*, maze::*};
+use forky_play::maze::*;
 use sweet::*;
 
 sweet! {
@@ -11,15 +10,15 @@ sweet! {
 		expect(graph.nodes.len()).to_be(width*height)?;
 		expect(graph.paths.len()).to_be(width*height)?;
 
-		graph.depth_first_backtrack(|s|{
+		graph.depth_first_backtrack(|_s|{
 			// let a = graph.head;
 			// 	// let grid = maze::_rect::draw_maze(g,width,height);
 			// 	// let str = maze::_rect::format(&grid,width,height);
 			// 	// log!(str);
 		});
 
-		let indices = graph.format_indices();
-		let maze = graph.format();
+		let _indices = graph.format_indices();
+		let _maze = graph.format();
 		// log!(indices);
 		// log!(maze);
 		// dir!(graph);

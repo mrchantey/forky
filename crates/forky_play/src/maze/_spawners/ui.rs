@@ -1,8 +1,5 @@
-use super::*;
-use crate::{maze::RespawnEvent, *};
+use crate::maze::RespawnEvent;
 use bevy::prelude::*;
-use bevy_rapier3d::prelude::*;
-use forky_core::{math::*, *};
 
 #[derive(Component)]
 pub struct ScoreUI;
