@@ -1,11 +1,11 @@
-pub mod _force;
 mod force_controller;
-pub use force_controller::*;
+pub use self::force_controller::*;
 mod force_spawn;
-pub use force_spawn::*;
+pub use self::force_spawn::*;
 mod motor_controller;
-pub use motor_controller::*;
+pub use self::motor_controller::*;
 mod motor_spawn;
-pub use motor_spawn::*;
+pub use self::motor_spawn::*;
 mod structs;
-pub use structs::*;
+pub use self::structs::*;
+pub mod _force;

@@ -5,10 +5,10 @@ use super::u8_shape;
 pub const NONE: char = ' ';
 pub const VERTICAL: char = '│';
 pub const HORIZONTAL: char = '─';
-pub const VERTICAL_TOP:char = '╵';
-pub const VERTICAL_BOTTOM:char = '╷';
-pub const HORIZONTAL_LEFT:char = '╴';
-pub const HORIZONTAL_RIGHT:char = '╶';
+pub const VERTICAL_TOP: char = '╵';
+pub const VERTICAL_BOTTOM: char = '╷';
+pub const HORIZONTAL_LEFT: char = '╴';
+pub const HORIZONTAL_RIGHT: char = '╶';
 
 
 pub const CROSS: char = '┼';
@@ -44,7 +44,7 @@ pub fn from_u8(val: u8) -> char {
 		u8_shape::BOTTOM_TEE => BOTTOM_TEE,
 		u8_shape::LEFT_TEE => LEFT_TEE,
 		u8_shape::RIGHT_TEE => RIGHT_TEE,
-		
+
 		u8_shape::HORIZONTAL_LEFT => HORIZONTAL_LEFT,
 		u8_shape::HORIZONTAL_RIGHT => HORIZONTAL_RIGHT,
 		u8_shape::VERTICAL_TOP => VERTICAL_TOP,

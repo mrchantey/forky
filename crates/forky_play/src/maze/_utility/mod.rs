@@ -1,4 +1,6 @@
-pub mod char_shape;
-pub mod u8_shape;
+mod char_shape;
+pub use self::char_shape::*;
 mod maze;
-pub use maze::*;
+pub use self::maze::*;
+mod u8_shape;
+pub use self::u8_shape::*;
