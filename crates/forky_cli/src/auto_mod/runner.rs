@@ -33,9 +33,9 @@ pub fn _read_dir_recursive(
 fn filename_starts_with_underscore(p: &PathBuf) -> bool {
 	p.file_name().str().first() == '_'
 }
-// fn filename_contains_double_underscore(p: &PathBuf) -> bool {
-// 	p.file_name().str().contains("__")
-// }
+fn filename_contains_double_underscore(p: &PathBuf) -> bool {
+	p.file_name().str().contains("__")
+}
 // fn filename_starts_with_uppercase(p: &PathBuf) -> bool {
 // 	p.file_name().str().first().is_ascii_uppercase()
 // }
@@ -79,7 +79,7 @@ const PREFIX: &str = "";
 
 pub fn create_mod_text(path: &PathBuf) -> String {
 	let children = fs::read_dir(&path).unwrap();
-	// let dir_is_double_underscore = filename_contains_double_underscore(&path);
+	let parent_is_double_underscore = filename_contains_double_underscore(&path);
 
 	let mut str = String::from(PREFIX);
 	children
@@ -88,7 +88,7 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 		.for_each(|c| {
 			let stem = c.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
-			let mut is_mod = c.is_dir();
+			let mut is_mod = c.is_dir() || parent_is_double_underscore;
 			if filename_starts_with_underscore(&c) {
 				is_mod = !is_mod;
 			}
