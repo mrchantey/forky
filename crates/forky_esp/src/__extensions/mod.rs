@@ -1,2 +1,1 @@
-mod rgb;
-pub use self::rgb::*;
+pub mod rgb;
