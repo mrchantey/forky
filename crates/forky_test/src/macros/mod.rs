@@ -1,8 +1,8 @@
 mod suite_parser;
-pub use suite_parser::*;
+pub use self::suite_parser::*;
 mod sweet;
-pub use sweet::*;
+pub use self::sweet::*;
 mod test_parser;
-pub use test_parser::*;
+pub use self::test_parser::*;
 mod utility;
-pub use utility::*;
+pub use self::utility::*;

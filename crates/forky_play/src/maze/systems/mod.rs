@@ -1,6 +1,6 @@
 mod camera;
-pub use camera::*;
+pub use self::camera::*;
 mod game;
-pub use game::*;
+pub use self::game::*;
 mod reset;
-pub use reset::*;
+pub use self::reset::*;

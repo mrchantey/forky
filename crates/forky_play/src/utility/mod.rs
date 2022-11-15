@@ -1,6 +1,6 @@
+mod inspector;
+pub use self::inspector::*;
 mod keycode;
 pub use self::keycode::*;
-mod inspector;
-pub use inspector::*;
 mod systems;
-pub use systems::*;
+pub use self::systems::*;

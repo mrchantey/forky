@@ -1,2 +1,2 @@
 mod plugin;
-pub use plugin::*;
+pub use self::plugin::*;
