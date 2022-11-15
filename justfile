@@ -84,30 +84,6 @@ watch command:
 # cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
 #cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
 
-# WASM
-# ie just wasm build simple
-@wasm command *args:
-	just wasm-{{command}} {{args}}
-
-wasm-w command *args:
-	just watch 'just wasm-{{command}} {{args}}'
-
-wasm-build bin *args:
-	cd ./crates/wasm_{{bin}} && cargo build --release --target wasm32-unknown-unknown {{args}}
-	stat --printf="%s\n" ./crates/wasm_{{bin}}/target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
-	just wasm-wat {{bin}}
-# cargo build -p wasm_{{bin}} --release --target wasm32-unknown-unknown {{args}}
-# stat --printf="%s\n" ./target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
-
-
-wasm-dump bin *args:
-	hexdump -b ./crates/wasm_{{bin}}/target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm {{args}}
-
-wasm-wat bin *args:
-	C:/path/wabt/bin/wasm2wat.exe ./crates/wasm_{{bin}}/target/wasm32-unknown-unknown/release/wasm_{{bin}}.wasm
-# wasm-bindgen --out-dir ./wasm/{{example}} --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
-
-
 # ESP
 
 port := 'COM3'
