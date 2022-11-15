@@ -1,3 +1,4 @@
+use crate::maze::rect_maze::RectMazeSpatial;
 use crate::maze::*;
 use crate::*;
 use bevy::prelude::*;

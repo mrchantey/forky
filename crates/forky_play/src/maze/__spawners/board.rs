@@ -1,4 +1,4 @@
-use crate::maze::*;
+use crate::maze::{rect_maze::RectMazeSpatial, *};
 use bevy::prelude::*;
 
 #[derive(Component)]
