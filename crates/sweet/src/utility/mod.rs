@@ -5,6 +5,8 @@ mod backtrace_file;
 pub use self::backtrace_file::*;
 mod macros;
 pub use self::macros::*;
+mod main_func;
+pub use self::main_func::*;
 mod matcher;
 pub use self::matcher::*;
 mod matcher_error;
