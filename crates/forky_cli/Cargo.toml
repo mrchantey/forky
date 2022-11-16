@@ -13,6 +13,7 @@ repository = {workspace=true}
 forky_core = {workspace = true}
 forky_fs = {workspace = true}
 notify = {workspace = true}
+anyhow = {workspace = true}
 
 [dev-dependencies]
 sweet = {workspace = true}

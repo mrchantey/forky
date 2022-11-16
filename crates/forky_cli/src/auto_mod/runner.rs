@@ -1,15 +1,22 @@
+use anyhow::Result;
 use forky_core::*;
 use forky_fs::*;
-use std::{fs, path::PathBuf};
+use std::{env, fs, path::PathBuf};
 
-pub fn run() {
+//TODO anyhow
+
+pub fn run() -> Result<()> {
 	terminal::clear();
 	terminal::get_forky();
-	fs::read_dir("crates")
-		.unwrap()
-		.map(|e| e.unwrap().path())
-		.for_each(|p| run_for_crate(p));
+	match fs::read_dir("crates") {
+		Ok(dirs) => dirs
+			.map(|e| e.unwrap().path())
+			.for_each(|p| run_for_crate(p)),
+		_ => run_for_crate(env::current_dir()?),
+	}
+	// .unwrap();
 	terminal::show_cursor();
+	Ok(())
 }
 
 pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
@@ -79,7 +86,8 @@ const PREFIX: &str = "";
 
 pub fn create_mod_text(path: &PathBuf) -> String {
 	let children = fs::read_dir(&path).unwrap();
-	let parent_is_double_underscore = filename_contains_double_underscore(&path);
+	let parent_is_double_underscore =
+		filename_contains_double_underscore(&path);
 
 	let mut str = String::from(PREFIX);
 	children
