@@ -1,4 +1,5 @@
 use crate::*;
+use anyhow::Result;
 use colorize::*;
 use forky_core::*;
 use forky_fs::*;
@@ -24,7 +25,7 @@ struct Args {
 	files: Vec<String>,
 }
 
-pub fn run() -> Result<(), MatcherError> {
+pub fn run() -> Result<()> {
 	let args = parse_args();
 	if args.watch {
 		terminal::clear()

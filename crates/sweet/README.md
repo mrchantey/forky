@@ -117,3 +117,7 @@ sweet! {
 - [jest](https://jestjs.io/)
 - [demonstrate](https://crates.io/crates/demonstrate)
 - [speculate](https://github.com/utkarshkukreti/speculate.rs)
+
+
+## TODO
+- Handle panics and errors outside of tests, ie inside setup/teardown

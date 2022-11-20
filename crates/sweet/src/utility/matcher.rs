@@ -1,10 +1,10 @@
+use anyhow::Result;
+use colorize::AnsiColor;
 use std::cmp;
 use std::fmt;
 
-use colorize::AnsiColor;
-
 use super::MatcherError;
-use super::MatcherResult;
+// use super::Result;
 pub trait Matchable: cmp::PartialEq + fmt::Display + std::marker::Copy {}
 impl Matchable for bool {}
 impl Matchable for f32 {}
@@ -30,14 +30,14 @@ pub struct Matcher<T: Matchable + cmp::PartialEq + fmt::Display> {
 }
 
 impl Matcher<bool> {
-	pub fn to_be_true(&self) -> MatcherResult { self.assert_equal(true) }
-	pub fn to_be_false(&self) -> MatcherResult { self.assert_equal(false) }
+	pub fn to_be_true(&self) -> Result<()> { self.assert_equal(true) }
+	pub fn to_be_false(&self) -> Result<()> { self.assert_equal(false) }
 }
 impl Matcher<&str> {
-	pub fn to_contain(&self, other: &str) -> MatcherResult {
+	pub fn to_contain(&self, other: &str) -> Result<()> {
 		self.assert_contains(other)
 	}
-	fn assert_contains(&self, other: &str) -> MatcherResult {
+	fn assert_contains(&self, other: &str) -> Result<()> {
 		if self.value.contains(other) {
 			Ok(())
 		} else {
@@ -51,10 +51,10 @@ impl Matcher<&str> {
 const MIN_DELTA: f32 = 0.1;
 
 impl Matcher<f32> {
-	pub fn to_be_close_to(&self, other: f32) -> MatcherResult {
+	pub fn to_be_close_to(&self, other: f32) -> Result<()> {
 		self.assert_close(other)
 	}
-	fn assert_close(&self, other: f32) -> MatcherResult {
+	fn assert_close(&self, other: f32) -> Result<()> {
 		if (self.value - other).abs() < MIN_DELTA {
 			Ok(())
 		} else {
@@ -65,10 +65,10 @@ impl Matcher<f32> {
 	}
 }
 impl Matcher<i32> {
-	pub fn to_be_at_least(&self, other: i32) -> MatcherResult {
+	pub fn to_be_at_least(&self, other: i32) -> Result<()> {
 		self.assert_greater_equal(other)
 	}
-	fn assert_greater_equal(&self, other: i32) -> MatcherResult {
+	fn assert_greater_equal(&self, other: i32) -> Result<()> {
 		if self.value >= other {
 			Ok(())
 		} else {
@@ -100,7 +100,7 @@ impl<T: Matchable> Matcher<T> {
 		self
 	}
 
-	fn assert_equal(&self, other: T) -> MatcherResult {
+	fn assert_equal(&self, other: T) -> Result<()> {
 		if self.equality(other) {
 			Ok(())
 		} else {
@@ -108,7 +108,7 @@ impl<T: Matchable> Matcher<T> {
 		}
 	}
 
-	pub fn to_be(&self, other: T) -> MatcherResult { self.assert_equal(other) }
+	pub fn to_be(&self, other: T) -> Result<()> { self.assert_equal(other) }
 }
 
 

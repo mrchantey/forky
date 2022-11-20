@@ -16,13 +16,6 @@ impl Parse for Sweet {
 	}
 }
 
-
-
-
-
-// let name = syn::LitStr::new(&name[..], Span::call_site());
-
-
 // impl Parse for Root {
 // 	fn parse(input: ParseStream) -> Result<Self> {
 // 		let mut out = proc_macro2::TokenStream::new();

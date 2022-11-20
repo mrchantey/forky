@@ -41,7 +41,6 @@ bevy = { version = "0.8.1" }
 bevy-inspector-egui = "0.13.0"
 bevy_rapier3d = {version = "0.18.0", features=["debug-render"]}
 rand = "0.8.5"
-inventory = "0.3.2"
 bevy_prototype_debug_lines = {version = "0.8.1", features = ["3d"]}
 
 # utility
@@ -53,6 +52,7 @@ num-traits = "0.2.15"
 anyhow = "1"
 
 # compile
+inventory = "0.3.2"
 backtrace = "0.3.66"
 proc-macro2 = "1.0.47"
 syn = {version="1.0.103",features= ["full"] }

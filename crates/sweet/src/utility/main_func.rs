@@ -1,4 +1,4 @@
 use crate::*;
+use anyhow::Result;
 
-
-pub fn main() -> Result<(), MatcherError> { test_runner::run() }
+pub fn main() -> Result<()> { test_runner::run() }

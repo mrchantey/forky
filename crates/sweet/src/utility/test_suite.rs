@@ -1,5 +1,6 @@
 // use forky_core::*;
 use crate::*;
+use anyhow::Result;
 use colorize::*;
 use crossterm::*;
 use gag::BufferRedirect;
@@ -64,7 +65,7 @@ impl TestSuite {
 
 	pub fn skip<F>(&mut self, _name: &str, _func: F) -> &mut Self
 	where
-		F: FnOnce() -> MatcherResult,
+		F: FnOnce() -> Result<()>,
 	{
 		self.num_tests = self.num_tests + 1;
 		self.num_skipped = self.num_skipped + 1;
@@ -73,13 +74,13 @@ impl TestSuite {
 
 	pub fn it<F>(&mut self, name: &str, func: F)
 	where
-		F: FnOnce() -> MatcherResult,
+		F: FnOnce() -> Result<()>,
 	{
 		self.test(name, func);
 	}
 	pub fn test<F>(&mut self, name: &str, func: F)
 	where
-		F: FnOnce() -> MatcherResult,
+		F: FnOnce() -> Result<()>,
 	{
 		self.num_tests = self.num_tests + 1;
 		// if self.skip_next_test {
@@ -118,7 +119,7 @@ impl TestSuite {
 			Ok(matcher_res) => {
 				match matcher_res {
 					Ok(()) => {}
-					Err(err) => handle_error(&err.message[..]),
+					Err(err) => handle_error(&err.to_string()[..]),
 				}
 				// &err.message[..]
 			}
