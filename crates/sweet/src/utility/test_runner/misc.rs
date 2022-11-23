@@ -49,8 +49,9 @@ pub fn run() -> Result<()> {
 		}
 		let mut suite = TestSuite::new(t);
 		suite.print_runs();
-		let suite_failed = (t.func)(&mut suite);
-		suite_results.push(suite.results(suite_failed));
+		let results = suite.run(t.func);
+		// let suite_failed = (t.func)(&mut suite);
+		suite_results.push(results);
 	}
 	let mut suites_failed = 0;
 	let combined_suite_results = suite_results.iter().fold(

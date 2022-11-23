@@ -132,6 +132,25 @@ impl TestSuite {
 		}
 	}
 
+	pub fn run(
+		&mut self,
+		func: fn(&mut TestSuite) -> Result<()>,
+	) -> TestSuiteResult {
+		let outer_result = (func)(self);
+		if let Err(err) = outer_result {
+			self.log.push_str(
+				format!("Failed outside of tests..\n {}", err).as_str(),
+			);
+			self.num_failed = self.num_tests - self.num_skipped;
+		}
+		self.print_log();
+		TestSuiteResult {
+			tests: self.num_tests,
+			failed: self.num_failed,
+			skipped: self.num_skipped,
+		}
+	}
+
 	pub fn print_runs(&self) {
 		let location = self.get_location();
 		let runs_msg =
@@ -158,24 +177,6 @@ impl TestSuite {
 			&[&" ", &self.get_location()[..], "\n", &self.log[..]].concat()[..],
 		);
 		stdout.write(prefix.as_bytes()).unwrap();
-	}
-
-	pub fn results(&self, suite_failed: Result<()>) -> TestSuiteResult {
-		self.print_log();
-		if let Err(err) = suite_failed {
-			println!("SWEET - failed outside of test..\n{}", err);
-			TestSuiteResult {
-				tests: self.num_tests,
-				failed: self.num_tests - self.num_skipped,
-				skipped: self.num_skipped,
-			}
-		} else {
-			TestSuiteResult {
-				tests: self.num_tests,
-				failed: self.num_failed,
-				skipped: self.num_skipped,
-			}
-		}
 	}
 }
 

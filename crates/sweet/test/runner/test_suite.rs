@@ -17,9 +17,11 @@ sweet! {
 	test "run" {
 		let mut suite = setup();
 
-		suite.test("foobar", || Ok(()));
 
-		let results = suite.results(Ok(()));
+		let results = suite.run(|s|{
+			s.test("foobar", || Ok(()));
+			Ok(())
+		});
 		expect(results.tests).to_be(1)?;
 		expect(results.skipped).to_be(0)?;
 		expect(results.failed).to_be(0)?;
@@ -29,12 +31,14 @@ sweet! {
 	test "fail" {
 		let mut suite = setup();
 
-		suite.test("foobar", || {
-			expect(true).to_be_false()?;
+
+		let results = suite.run(|s|{
+			s.test("foobar", || {
+				expect(true).to_be_false()?;
+				Ok(())
+			});
 			Ok(())
 		});
-
-		let results = suite.results(Ok(()));
 		expect(results.tests).to_be(1)?;
 		expect(results.skipped).to_be(0)?;
 		expect(results.failed).to_be(1)?;
@@ -43,9 +47,11 @@ sweet! {
 	test skip "skip" {
 		let mut suite = setup();
 
-		suite.test("foobar", || Ok(()));
 
-		let results = suite.results(Ok(()));
+		let results = suite.run(|s|{
+			s.test("foobar", || Ok(()));
+			Ok(())
+	});
 		expect(results.tests).to_be(1)?;
 		expect(results.skipped).to_be(1)?;
 		expect(results.failed).to_be(0)?;
