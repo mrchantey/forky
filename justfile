@@ -31,8 +31,6 @@ clean-repo:
 	cd ./crates/forky_idf && cargo clean
 
 expand crate example:
-	just watch 'cargo expand -p {{crate}} --bin {{example}}'
-expand-example crate example:
 	just watch 'cargo expand -p {{crate}} --example {{example}}'
 
 example crate example *args:

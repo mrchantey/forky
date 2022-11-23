@@ -1,14 +1,9 @@
 use bevy::prelude::*;
-use bevy_rapier3d::{
-	prelude::*,
-	rapier::prelude::{MotorModel, Vector},
-};
-use forky_core::{math::*, *};
 use forky_play::{utility::surrender_focus, *};
 use sweet::*;
 
 sweet! {
-	it "works" {
+	it skip "works" {
 
 		app::init()
 		.add_plugin(physics::SlerpJointPlugin)
@@ -22,7 +17,7 @@ fn my_startup_system(
 	mut commands: Commands,
 	mut meshes: ResMut<Assets<Mesh>>,
 ) {
-	let obj = commands
+	commands
 		.spawn_bundle(PbrBundle {
 			transform: Transform::from_xyz(0., -0.1, 0.),
 			mesh: meshes.add(Mesh::from(shape::Cube::default())),

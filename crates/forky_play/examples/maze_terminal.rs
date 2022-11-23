@@ -1,5 +1,5 @@
 // use forky_fs::*;
-use forky_play::maze::*;
+use forky_play::maze::{rect_maze::RectMaze, *};
 
 
 fn main() -> ! {

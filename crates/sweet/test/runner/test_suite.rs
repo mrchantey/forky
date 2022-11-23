@@ -1,10 +1,9 @@
-use forky_core::*;
 use sweet::*;
 
 
 const DESC: TestSuiteDesc = TestSuiteDesc {
 	name: "my test",
-	func: |_| {},
+	func: |_| Ok(()),
 	file: file!(),
 };
 
@@ -20,7 +19,7 @@ sweet! {
 
 		suite.test("foobar", || Ok(()));
 
-		let results = suite.results();
+		let results = suite.results(Ok(()));
 		expect(results.tests).to_be(1)?;
 		expect(results.skipped).to_be(0)?;
 		expect(results.failed).to_be(0)?;
@@ -35,7 +34,7 @@ sweet! {
 			Ok(())
 		});
 
-		let results = suite.results();
+		let results = suite.results(Ok(()));
 		expect(results.tests).to_be(1)?;
 		expect(results.skipped).to_be(0)?;
 		expect(results.failed).to_be(1)?;
@@ -46,7 +45,7 @@ sweet! {
 
 		suite.test("foobar", || Ok(()));
 
-		let results = suite.results();
+		let results = suite.results(Ok(()));
 		expect(results.tests).to_be(1)?;
 		expect(results.skipped).to_be(1)?;
 		expect(results.failed).to_be(0)?;
@@ -54,15 +53,13 @@ sweet! {
 	}
 
 
-	let mut a = 2;
-	
-	let mut f1 = ||{
-		a = 3;
+	// let mut a = 2;
 
-		
-	};
+	// let mut f1 = ||{
+	// 	a = 3;
+	// };
 	test "scope"{
-		let mut suite = setup();
+		// let mut suite = setup();
 		// let f2 = ||{
 		// 	a = 3;
 		// };
@@ -75,6 +72,5 @@ sweet! {
 		// }
 		// suite.before(&before);
 		// suite.before(&b);
-
 	}
 }

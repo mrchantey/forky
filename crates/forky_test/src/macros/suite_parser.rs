@@ -58,6 +58,7 @@ impl SuiteParser {
 			}
 		}
 		self.collect_tests(&mut out);
+		out.append_all(quote! {Ok(())});
 		out
 	}
 

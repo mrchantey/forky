@@ -3,10 +3,10 @@ use sweet::*;
 
 sweet! {
 
-	it "works" {
+	it skip "works" {
 		app::init()
 			// .forky_surrender_focus()
-			// .forky_exit_after(3)
+			.forky_exit_after(1)
 			.run();
 	}
 }

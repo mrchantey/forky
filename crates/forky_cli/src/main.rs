@@ -1,5 +1,6 @@
 use forky_cli::*;
 
-fn main() {
-	auto_mod::run();
+fn main() -> anyhow::Result<()> {
+	auto_mod::run()?;
+	Ok(())
 }

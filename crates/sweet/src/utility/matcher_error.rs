@@ -1,5 +1,4 @@
 use crate::Matchable;
-use std::fmt::{self};
 
 use super::backtracer;
 use anyhow::anyhow;

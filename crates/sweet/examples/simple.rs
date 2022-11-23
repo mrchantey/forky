@@ -16,4 +16,8 @@ sweet! {"banana"
 		a = a + 1;
 		expect(a).to_be(2)?;
 	}
+	test "taco"{
+		a = a + 1;
+		expect(a).to_be(2)?;
+	}
 }

@@ -1,14 +1,11 @@
 use bevy::prelude::*;
-use bevy_rapier3d::{
-	prelude::*,
-	rapier::prelude::{MotorModel, Vector},
-};
-use forky_core::{math::*, *};
+use bevy_rapier3d::prelude::*;
+use forky_core::math::*;
 use forky_play::{utility::surrender_focus, *};
 use sweet::*;
 
 sweet! {
-	it "works" {
+	it skip "works" {
 
 		app::init()
 		.add_startup_system(surrender_focus)
@@ -18,11 +15,7 @@ sweet! {
 	}
 }
 
-fn my_startup_system(
-	mut commands: Commands,
-	mut meshes: ResMut<Assets<Mesh>>,
-	mut materials: ResMut<Assets<StandardMaterial>>,
-) {
+fn my_startup_system(mut commands: Commands) {
 	let parent = commands
 		.spawn_bundle(SpatialBundle::default())
 		.insert(Collider::cuboid(0.5, 0.5, 0.5))
@@ -50,12 +43,10 @@ fn my_startup_system(
 }
 
 
-fn my_system(
-	time: Res<Time>,
-	mut query: Query<(&mut ImpulseJoint, &Transform)>,
+fn my_system(// mut query: Query<(&mut ImpulseJoint, &Transform)>,
 ) {
-	for (mut joint, tran) in query.iter_mut() {
-		// joint.data.mot
-		// joint.mo
-	}
+	// for (mut joint, tran) in query.iter_mut() {
+	// joint.data.mot
+	// joint.mo
+	// }
 }

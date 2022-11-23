@@ -160,12 +160,21 @@ impl TestSuite {
 		stdout.write(prefix.as_bytes()).unwrap();
 	}
 
-	pub fn results(&self) -> TestSuiteResult {
+	pub fn results(&self, suite_failed: Result<()>) -> TestSuiteResult {
 		self.print_log();
-		TestSuiteResult {
-			tests: self.num_tests,
-			failed: self.num_failed,
-			skipped: self.num_skipped,
+		if let Err(err) = suite_failed {
+			println!("SWEET - failed outside of test..\n{}", err);
+			TestSuiteResult {
+				tests: self.num_tests,
+				failed: self.num_tests - self.num_skipped,
+				skipped: self.num_skipped,
+			}
+		} else {
+			TestSuiteResult {
+				tests: self.num_tests,
+				failed: self.num_failed,
+				skipped: self.num_skipped,
+			}
 		}
 	}
 }
