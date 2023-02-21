@@ -17,13 +17,9 @@ pub impl Transform {
 		vec.normalize_or_zero()
 	}
 
-	fn from_position(v: Vec3) -> Self {
-		Self::from_translation(v)
-	}
-	
-	fn with_position(&self,v: Vec3) -> Self {
-		self.with_translation(v)
-	}
+	fn from_position(v: Vec3) -> Self { Self::from_translation(v) }
+
+	fn with_position(&self, v: Vec3) -> Self { self.with_translation(v) }
 
 	fn from_position_x(x: f32) -> Self {
 		Self::from_translation(Vec3::new(x, 0., 0.))
@@ -34,7 +30,7 @@ pub impl Transform {
 	fn from_position_z(z: f32) -> Self {
 		Self::from_translation(Vec3::new(0., 0., z))
 	}
-	
+
 	fn with_position_x(self, x: f32) -> Self {
 		self.with_translation(Vec3::new(x, 0., 0.))
 	}

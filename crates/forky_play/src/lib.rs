@@ -1,9 +1,9 @@
-mod common;
-mod extensions;
 pub mod animation;
 pub mod app;
 pub mod base;
+mod common;
 pub mod debug;
+mod extensions;
 pub mod input;
 pub mod maze;
 pub mod mesh;

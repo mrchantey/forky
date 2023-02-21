@@ -18,8 +18,6 @@ impl Default for Pose {
 
 
 impl Pose {
-
-
 	pub fn from_transform(tran: &Transform) -> Pose {
 		Pose {
 			position: tran.translation,

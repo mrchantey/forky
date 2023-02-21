@@ -8,7 +8,4 @@ use esp_backtrace as _;
 use riscv_rt::entry;
 
 #[entry]
-fn main() -> ! {
-	loop {
-	}
-}
+fn main() -> ! { loop {} }

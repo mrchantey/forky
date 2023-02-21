@@ -6,7 +6,8 @@ pub fn spawn_side_cameras(mut commands: Commands) {
 	let mut spawn = |position: Vec3, rotation: Quat, ct: CameraViewType| {
 		commands
 			.spawn_bundle(Camera3dBundle {
-				transform: Transform::from_translation(position).with_rotation(rotation),
+				transform: Transform::from_translation(position)
+					.with_rotation(rotation),
 				camera: Camera {
 					is_active: false,
 					..default()
@@ -21,11 +22,7 @@ pub fn spawn_side_cameras(mut commands: Commands) {
 		Quat::from_right(),
 		CameraViewType::Right,
 	);
-	spawn(
-		Vec3::new(0., 10., 0.),
-		Quat::from_up(),
-		CameraViewType::Top,
-	);
+	spawn(Vec3::new(0., 10., 0.), Quat::from_up(), CameraViewType::Top);
 	spawn(
 		Vec3::new(0., 0., 10.),
 		Quat::from_forward(),

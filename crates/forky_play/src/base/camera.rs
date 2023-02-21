@@ -1,5 +1,5 @@
-use forky_core::math::*;
 use bevy::prelude::*;
+use forky_core::math::*;
 
 pub fn spawn_camera(mut commands: Commands) {
 	let mut transform = Transform::from_xyz(0., 1., -10.);

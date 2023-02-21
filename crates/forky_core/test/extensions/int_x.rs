@@ -1,7 +1,7 @@
 use forky_core::*;
 use sweet::*;
 
-sweet!  {
+sweet! {
 	it "works" {
 		let a = 1;
 		let _a = Some(&a);

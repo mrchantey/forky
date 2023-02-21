@@ -1,5 +1,5 @@
-use sweet::*;
 use forky_core::*;
+use sweet::*;
 
 sweet! {
 	test "sorted" {
