@@ -29,3 +29,6 @@ All commands used are in the `justfile`, for example to run a test:
 just test forky_core
 ```
 
+## Quickstart
+[notes](docs/notes.md)
+

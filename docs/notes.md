@@ -1,3 +1,23 @@
+## Quickstart
+
+1. Install Rust
+	- [Installer](https://www.rust-lang.org/tools/install)
+	- Use powershell and be sure to carefully follow steps for build tools
+2. Install Depedencies
+	- ```sh
+			choco install just
+			choco install cygwin
+			# check
+			just all check
+			# nightly
+			rustup toolchain install nightly
+			rustup component add rustfmt --toolchain nightly
+			cargo +nightly fmt
+			rustup default nightly
+			# test - compilation will take several minutes
+			just all test
+		```
+
 ## Misc
 
 Nightly format
@@ -12,9 +32,6 @@ cargo +nightly fmt
 Justfiles require cygwin to work on windows.
 1. install cygwin
 2. add to path: `C:\tools\cygwin\bin`
-```
-
-```
 
 ## Wasm
 

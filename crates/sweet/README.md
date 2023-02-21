@@ -44,7 +44,6 @@ sweet! {
 	```
 2. run these commands
 	```sh
-	rustup default nightly
 	cargo test --test sweet
 	```
 
