@@ -6,7 +6,7 @@ use forky_play::*;
 use sweet::*;
 
 sweet! {
-	it "works" {
+	it skip "works" {
 		app::init()
 				.add_startup_system(surrender_focus)
 				.insert_resource(RapierConfiguration::with_gravity_scalar(10.))

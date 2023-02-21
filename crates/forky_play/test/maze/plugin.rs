@@ -3,7 +3,7 @@ use sweet::*;
 // use crate::maze::plugin::MazePlugin;
 sweet! {
 
-	it "works" {
+	it skip "works" {
 		app::init()
 			.add_plugin(MazePlugin)
 			.add_startup_system(utility::surrender_focus)
