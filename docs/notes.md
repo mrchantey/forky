@@ -48,6 +48,11 @@ Justfiles require cygwin to work on windows.
 	```
 - run
 	```sh
-	cargo build --release --target wasm32-unknown-unknown
-	wasm-bindgen --out-dir ./out/ --target web ./target/
+	#run
+	cargo run -p forky_play --example maze --target wasm32-unknown-unknown
+	#compile
+	cargo build -p forky_play --example maze --release --target wasm32-unknown-unknown
+	#build bindings
+	wasm-bindgen --out-dir ./html/maze --target web ./target/wasm32-unknown-unknown/release/examples/maze.wasm
+	cd html && live-server
 	```

@@ -20,7 +20,8 @@ bevy_prototype_debug_lines = {workspace = true}
 bevy_easings = "0.8.1"
 
 
-[dev-dependencies]
+# [dev-dependencies]
+[target.'cfg(windows)'.dev-dependencies]
 sweet = {workspace = true}
 # forky_fs = {workspace = true }
 

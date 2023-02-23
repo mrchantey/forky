@@ -1,5 +1,6 @@
 # assets
 output
+html/maze*
 
 # rust
 /target/
