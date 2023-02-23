@@ -1,4 +1,3 @@
-
 // pub trait GenericX<T> {
 // 	fn or_default(&self)->T;
 // }

@@ -2,7 +2,7 @@ use sweet::*;
 
 
 sweet! {
-	
+
 	let mut a = 0;
 	let mut b = 0;
 	before {
@@ -18,7 +18,7 @@ sweet! {
 	test "before2" {
 		expect(a).to_be(2)?;
 	}
-	
+
 	test "after" {
 		expect(b).to_be(2)?;
 	}

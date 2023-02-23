@@ -1,7 +1,8 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_core forky_cli forky_test forky_play forky_esp forky_wasm sweet'
+crates := 'forky forky_core forky_cli forky_test forky_play sweet'
+# forky_esp
 sh := 'C:/tools/cygwin/bin/'
 
 default:

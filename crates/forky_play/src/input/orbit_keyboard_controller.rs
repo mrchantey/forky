@@ -7,7 +7,11 @@ use crate::*;
 pub fn orbit_keyboard_controller(
 	time: Res<Time>,
 	keys: Res<Input<KeyCode>>,
-	mut query: Query<(&TransformController, &mut OrbitController, &mut Transform)>,
+	mut query: Query<(
+		&TransformController,
+		&mut OrbitController,
+		&mut Transform,
+	)>,
 ) {
 	for (kb, mut orbit, mut tran) in query.iter_mut() {
 		let t_delta = kb.translate_speed * time.delta_seconds();

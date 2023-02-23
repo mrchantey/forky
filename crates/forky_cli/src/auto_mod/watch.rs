@@ -7,7 +7,7 @@ use std::{path::Path, time::Duration};
 // }
 
 
-pub fn log_changes(path: &str, on_change: fn(e:notify::Event)) {
+pub fn log_changes(path: &str, on_change: fn(e: notify::Event)) {
 	let (tx, rx) = std::sync::mpsc::channel();
 	let config = PollWatcherConfig {
 		compare_contents: true,

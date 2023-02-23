@@ -1,6 +1,6 @@
 use bevy::prelude::*;
-use bevy_rapier3d::{rapier::prelude::JointAxis};
-use forky_core::{math::*};
+use bevy_rapier3d::rapier::prelude::JointAxis;
+use forky_core::math::*;
 
 
 pub struct MazeJointParams {

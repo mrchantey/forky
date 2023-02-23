@@ -15,10 +15,6 @@ Each tool is standalone and can be used independently of the others.
 - [Forky Test](./crates/forky_test/README.md)
 - [Forky CLI](./crates/forky_cli/README.md)
 
-## Demos
-
-- [Maze](https://mrchantey.github.io/forky/wasm/)
-
 
 ## Contributing
 
@@ -28,4 +24,7 @@ All commands used are in the `justfile`, for example to run a test:
 ```sh
 just test forky_core
 ```
+
+## Quickstart
+[notes](docs/notes.md)
 
