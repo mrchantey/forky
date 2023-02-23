@@ -9,7 +9,8 @@
 			choco install cygwin
 			# check
 			just all check
-			# nightly
+			# tools
+			cargo install cargo-watch
 			rustup toolchain install nightly
 			rustup component add rustfmt --toolchain nightly
 			cargo +nightly fmt
@@ -40,6 +41,7 @@ Justfiles require cygwin to work on windows.
 	```sh
 	rustup target install wasm32-unknown-unknown
 	cargo install wasm-server-runner
+	cargo install -f wasm-bindgen-cli
 	#.cargo/config.toml
 	[target.wasm32-unknown-unknown]
 	runner = "wasm-server-runner"
