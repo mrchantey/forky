@@ -39,21 +39,15 @@ fn setup_graphics(mut commands: Commands) {
 fn setup_physics(mut commands: Commands) {
 	/* Create the ground. */
 	commands
-		.spawn_empty()
-		.insert(Collider::cuboid(100.0, 0.1, 100.0))
-		.insert_bundle(TransformBundle::from(Transform::from_xyz(
-			0.0, -2.0, 0.0,
-		)));
+		.spawn(TransformBundle::from(Transform::from_xyz(0.0, -2.0, 0.0)))
+		.insert(Collider::cuboid(100.0, 0.1, 100.0));
 
 	/* Create the bouncing ball. */
 	commands
-		.spawn_empty()
+		.spawn(TransformBundle::from(Transform::from_xyz(0.0, 4.0, 0.0)))
 		.insert(RigidBody::Dynamic)
 		.insert(Collider::ball(0.5))
-		.insert(Restitution::coefficient(0.7))
-		.insert_bundle(TransformBundle::from(Transform::from_xyz(
-			0.0, 4.0, 0.0,
-		)));
+		.insert(Restitution::coefficient(0.7));
 }
 
 fn print_ball_altitude(positions: Query<&Transform, With<RigidBody>>) {

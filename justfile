@@ -4,6 +4,7 @@ set positional-arguments
 crates := 'forky forky_core forky_cli forky_test forky_play sweet'
 # forky_esp
 sh := 'C:/tools/cygwin/bin/'
+backtrace := '1'
 
 default:
 	just --list
@@ -14,10 +15,10 @@ default:
 	done
 
 run crate example:
-	cargo run -p {{crate}} --example {{example}}
+	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}}
 
 build crate example:
-	cargo build -p {{crate}} --example {{example}}
+	RUST_BACKTRACE={{backtrace}} cargo build -p {{crate}} --example {{example}}
 
 serve-wasm:
 	cd ./wasm && live-server
@@ -73,7 +74,6 @@ purge:
 start crate: 
 	./target/debug/{{crate}}.exe
 
-backtrace := '0'
 
 test crate *args:
 	RUST_BACKTRACE={{backtrace}} cargo test -p {{crate}} --test sweet -- {{args}}

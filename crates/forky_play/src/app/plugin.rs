@@ -1,4 +1,4 @@
-use crate::{utility::toggle_inspector_on_keypress, *};
+use crate::{utility::{WorldInspectorPlugin}, *};
 use bevy::{
 	log::LogPlugin,
 	prelude::*,
@@ -6,7 +6,7 @@ use bevy::{
 	winit::*,
 };
 use bevy_easings::EasingsPlugin;
-use bevy_inspector_egui::{quick::WorldInspectorPlugin};
+// use bevy_inspector_egui::{quick::WorldInspectorPlugin};
 use bevy_rapier3d::prelude::*;
 
 pub struct ForkyPlugin;
@@ -23,11 +23,11 @@ impl Plugin for ForkyPlugin {
 		app.forky()
 			.insert_resource(ClearColor(Color::BLACK))
 			.insert_resource(Msaa::default())
-			.add_plugins(DefaultPlugins.set(LogPlugin {
-				// filter: "info,wgpu_core=warn,wgpu_hal=warn,mygame=debug".into(),
-				level: bevy::log::Level::WARN,
-				..Default::default()
-			}))
+			// .add_plugins(DefaultPlugins.set(LogPlugin {
+			// 	// filter: "info,wgpu_core=warn,wgpu_hal=warn,mygame=debug".into(),
+			// 	level: bevy::log::Level::WARN,
+			// 	..Default::default()
+			// }))
 			.add_plugin(input::DebugCameraPlugin)
 			.insert_resource(WinitSettings {
 				//SHOULD BE IN DEBUG MODE ONLY
@@ -51,7 +51,7 @@ impl Plugin for ForkyPlugin {
 			},
 			..Default::default()
 			}))
-			.add_plugins(DefaultPlugins)
+			// .add_plugins(DefaultPlugins)
 			.add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
 			.insert_resource(RapierConfiguration {
 				gravity: Vec3::new(0., -9.8, 0.),
@@ -74,7 +74,7 @@ impl Plugin for ForkyPlugin {
 				.add_plugin(WorldInspectorPlugin)
 				.add_plugin(RapierDebugRenderPlugin::default())
 				.add_plugin(debug::GridPlugin)
-				.add_system(toggle_inspector_on_keypress)
+				// .add_system(toggle_inspector_on_keypress)
 				.forky();
 		}
 	}
