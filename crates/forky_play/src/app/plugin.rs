@@ -1,4 +1,4 @@
-use crate::{utility::{WorldInspectorPlugin}, *};
+use crate::{utility::WorldInspectorPlugin, *};
 use bevy::{
 	log::LogPlugin,
 	prelude::*,
@@ -23,34 +23,39 @@ impl Plugin for ForkyPlugin {
 		app.forky()
 			.insert_resource(ClearColor(Color::BLACK))
 			.insert_resource(Msaa::default())
-			// .add_plugins(DefaultPlugins.set(LogPlugin {
-			// 	// filter: "info,wgpu_core=warn,wgpu_hal=warn,mygame=debug".into(),
-			// 	level: bevy::log::Level::WARN,
-			// 	..Default::default()
-			// }))
+			// .add_plugins(DefaultPlugins)
+			.add_plugins(
+				DefaultPlugins
+					.set(WindowPlugin {
+						window: WindowDescriptor {
+							width: 1000.,
+							height: 800.,
+							title: "Forky".to_string(),
+							decorations: true,
+							cursor_visible: true,
+							cursor_grab_mode:
+								bevy::window::CursorGrabMode::None,
+							resizable: true,
+							// return:true,
+							// winit
+							present_mode: PresentMode::AutoVsync,
+							position: WindowPosition::At(Vec2::new(-1440., 0.)),
+							..Default::default()
+						},
+						..Default::default()
+					})
+					.set(LogPlugin {
+						// filter: "info,wgpu_core=warn,wgpu_hal=warn,mygame=debug".into(),
+						level: bevy::log::Level::WARN,
+						..Default::default()
+					}),
+			)
 			.add_plugin(input::DebugCameraPlugin)
 			.insert_resource(WinitSettings {
 				//SHOULD BE IN DEBUG MODE ONLY
 				return_from_run,
 				..default()
 			})
-			.add_plugins(DefaultPlugins.set(WindowPlugin {
-				window:WindowDescriptor{
-				width: 1000.,
-				height: 800.,
-				title: "Forky".to_string(),
-				decorations: true,
-				cursor_visible: true,
-				cursor_grab_mode: bevy::window::CursorGrabMode::None,
-				resizable: true,
-				// return:true,
-				// winit
-				present_mode: PresentMode::AutoVsync,
-				position: WindowPosition::At(Vec2::new(-1440., 0.)),
-				..Default::default()
-			},
-			..Default::default()
-			}))
 			// .add_plugins(DefaultPlugins)
 			.add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
 			.insert_resource(RapierConfiguration {
