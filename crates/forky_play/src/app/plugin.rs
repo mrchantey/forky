@@ -1,12 +1,12 @@
 use crate::{utility::toggle_inspector_on_keypress, *};
 use bevy::{
-	log::LogSettings,
+	log::LogPlugin,
 	prelude::*,
 	window::{PresentMode, WindowDescriptor},
 	winit::*,
 };
 use bevy_easings::EasingsPlugin;
-use bevy_inspector_egui::{WorldInspectorParams, WorldInspectorPlugin};
+use bevy_inspector_egui::{quick::WorldInspectorPlugin};
 use bevy_rapier3d::prelude::*;
 
 pub struct ForkyPlugin;
@@ -23,18 +23,19 @@ impl Plugin for ForkyPlugin {
 		app.forky()
 			.insert_resource(ClearColor(Color::BLACK))
 			.insert_resource(Msaa::default())
-			.insert_resource(LogSettings {
+			.add_plugins(DefaultPlugins.set(LogPlugin {
 				// filter: "info,wgpu_core=warn,wgpu_hal=warn,mygame=debug".into(),
 				level: bevy::log::Level::WARN,
 				..Default::default()
-			})
+			}))
 			.add_plugin(input::DebugCameraPlugin)
 			.insert_resource(WinitSettings {
 				//SHOULD BE IN DEBUG MODE ONLY
 				return_from_run,
 				..default()
 			})
-			.insert_resource(WindowDescriptor {
+			.add_plugins(DefaultPlugins.set(WindowPlugin {
+				window:WindowDescriptor{
 				width: 1000.,
 				height: 800.,
 				title: "Forky".to_string(),
@@ -47,7 +48,9 @@ impl Plugin for ForkyPlugin {
 				present_mode: PresentMode::AutoVsync,
 				position: WindowPosition::At(Vec2::new(-1440., 0.)),
 				..Default::default()
-			})
+			},
+			..Default::default()
+			}))
 			.add_plugins(DefaultPlugins)
 			.add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
 			.insert_resource(RapierConfiguration {
@@ -64,11 +67,11 @@ impl Plugin for ForkyPlugin {
 
 		if cfg!(debug_assertions) {
 			app.forky()
-				.insert_resource(WorldInspectorParams {
-					enabled: false,
-					..default()
-				})
-				.add_plugin(WorldInspectorPlugin::new())
+				// .insert_resource(WorldInspectorParams {
+				// 	enabled: false,
+				// 	..default()
+				// })
+				.add_plugin(WorldInspectorPlugin)
 				.add_plugin(RapierDebugRenderPlugin::default())
 				.add_plugin(debug::GridPlugin)
 				.add_system(toggle_inspector_on_keypress)

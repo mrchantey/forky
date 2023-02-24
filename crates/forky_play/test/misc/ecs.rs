@@ -24,7 +24,7 @@ sweet! {
 
 	it "fooo" {
 		let mut app = App::new();
-		let id = app.world.spawn().insert(Pos { x: 0., y: 1. }).id();
+		let id = app.world.spawn_empty().insert(Pos { x: 0., y: 1. }).id();
 		app.update();
 		let result = app.world.get::<Pos>(id).unwrap();
 		expect(result.x).to_be(0.)?;

@@ -8,7 +8,7 @@ pub fn respawn(
 	query: Query<&MazeItemTag>,
 ) {
 	if query.is_empty() {
-		commands.spawn().insert(MazeItemTag);
+		commands.spawn_empty().insert(MazeItemTag);
 
 		let level = game.score + 1;
 		spawn_event.send(RespawnEvent {

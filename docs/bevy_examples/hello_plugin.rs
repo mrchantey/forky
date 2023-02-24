@@ -24,15 +24,15 @@ struct GreetTimer(Timer);
 
 fn add_people(mut commands: Commands) {
 	commands
-		.spawn()
+		.spawn_empty()
 		.insert(Person)
 		.insert(FavFood("Chicken".to_string()));
 	commands
-		.spawn()
+		.spawn_empty()
 		.insert(Person)
 		.insert(FavFood("Pizza".to_string()));
 	commands
-		.spawn()
+		.spawn_empty()
 		.insert(Person)
 		.insert(FavFood("Burger".to_string()));
 }
