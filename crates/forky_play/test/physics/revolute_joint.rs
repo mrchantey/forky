@@ -17,7 +17,7 @@ sweet! {
 
 fn my_startup_system(mut commands: Commands) {
 	let parent = commands
-		.spawn_bundle(SpatialBundle::default())
+		.spawn(SpatialBundle::default())
 		.insert(Collider::cuboid(0.5, 0.5, 0.5))
 		.insert(RigidBody::Fixed)
 		.insert(GravityScale(0.))
@@ -32,7 +32,7 @@ fn my_startup_system(mut commands: Commands) {
 		;
 
 	commands
-		.spawn_bundle(SpatialBundle {
+		.spawn(SpatialBundle {
 			transform: Transform::from_xyz(0., 2., 0.),
 			..default()
 		})

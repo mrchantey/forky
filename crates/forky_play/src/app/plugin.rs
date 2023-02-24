@@ -40,7 +40,7 @@ impl Plugin for ForkyPlugin {
 				title: "Forky".to_string(),
 				decorations: true,
 				cursor_visible: true,
-				cursor_locked: false,
+				cursor_grab_mode: bevy::window::CursorGrabMode::None,
 				resizable: true,
 				// return:true,
 				// winit

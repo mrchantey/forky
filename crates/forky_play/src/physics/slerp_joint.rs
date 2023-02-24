@@ -1,6 +1,7 @@
 use crate::{QuatExt, Vec3Ext};
 use bevy::prelude::*;
 
+#[derive(Resource)]
 struct ChangeTargetTimer(Timer);
 
 
@@ -15,9 +16,12 @@ pub struct SlerpTarget {
 
 impl Plugin for SlerpJointPlugin {
 	fn build(&self, app: &mut App) {
-		app.insert_resource(ChangeTargetTimer(Timer::from_seconds(1., true)))
-			// .add_startup_system(add_people)
-			.add_system(update_slerp);
+		app.insert_resource(ChangeTargetTimer(Timer::from_seconds(
+			1.,
+			TimerMode::Repeating,
+		)))
+		// .add_startup_system(add_people)
+		.add_system(update_slerp);
 	}
 }
 

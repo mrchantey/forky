@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy_rapier3d::rapier::prelude::JointAxis;
 use forky_core::math::*;
 
-
+#[derive(Resource)]
 pub struct MazeJointParams {
 	pub max_angle: f32,
 	pub stiffness: f32,

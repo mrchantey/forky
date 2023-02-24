@@ -13,7 +13,7 @@ fn main() {
 
 fn spawn(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>) {
 	let obj = commands
-		.spawn_bundle(PbrBundle {
+		.spawn(PbrBundle {
 			transform: Transform::from_xyz(0., -0.1, 0.)
 				.with_scale_xyz(10., 0.2, 10.),
 			mesh: meshes.add(Mesh::from(shape::Cube::default())),

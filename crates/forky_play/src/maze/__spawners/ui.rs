@@ -7,7 +7,7 @@ pub struct ScoreUI;
 
 pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
 	commands
-		.spawn_bundle(NodeBundle {
+		.spawn(NodeBundle {
 			style: Style {
 				size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
 				justify_content: JustifyContent::FlexStart,
@@ -17,12 +17,12 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 				..default()
 			},
-			color: Color::NONE.into(),
+			background_color: Color::NONE.into(),
 			..default()
 		})
 		.with_children(|parent| {
-			// parent.spawn_bundle(NodeBundle::default());
-			parent.spawn_bundle(TextBundle::from_section(
+			// parent.spawn(NodeBundle::default());
+			parent.spawn(TextBundle::from_section(
 				"You're on a roll!",
 				TextStyle {
 					font: asset_server.load("fonts/FiraSans-Bold.ttf"),
@@ -32,7 +32,7 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
 				},
 			));
 			parent
-				.spawn_bundle(
+				.spawn(
 					TextBundle::from_section(
 						"Score:  0",
 						TextStyle {
@@ -53,7 +53,7 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
 					}),
 				)
 				.insert(ScoreUI);
-			parent.spawn_bundle(TextBundle::from_section(
+			parent.spawn(TextBundle::from_section(
 				"\nClick on maze to start\n\nKeys:         I, J, K, L\nReset:       spacebar",
 				TextStyle {
 					font: asset_server.load("fonts/FiraSans-Bold.ttf"),

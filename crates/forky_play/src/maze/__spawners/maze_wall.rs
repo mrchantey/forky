@@ -19,7 +19,7 @@ pub fn spawn_all(
 		.collect();
 
 	commands
-		.spawn_bundle(SpatialBundle {
+		.spawn(SpatialBundle {
 			transform: Transform::from_xyz(0., maze.wall_height / 2., 0.)
 				.with_scale_y(maze.wall_height),
 			..default()
@@ -40,7 +40,7 @@ pub fn spawn(
 		.iter()
 		.map(|transform| {
 			commands
-				.spawn_bundle(PbrBundle {
+				.spawn(PbrBundle {
 					transform: *transform,
 					mesh: meshes.add(Mesh::from(shape::Cube::default())),
 					material: materials.from_rgb(0.8, 0.8, 0.8),
@@ -54,7 +54,7 @@ pub fn spawn(
 
 
 	let parent = commands
-		.spawn_bundle(SpatialBundle {
+		.spawn(SpatialBundle {
 			transform: *parent,
 			..default()
 		})

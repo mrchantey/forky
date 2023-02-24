@@ -15,7 +15,7 @@ sweet! {
 
 fn my_startup_system(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>) {
 	commands
-		.spawn_bundle(PbrBundle {
+		.spawn(PbrBundle {
 			transform: Transform::from_xyz(0., -0.1, 0.),
 			mesh: meshes.add(Mesh::from(shape::Cube::default())),
 			..default()

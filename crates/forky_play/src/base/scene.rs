@@ -7,7 +7,7 @@ pub fn spawn_basic_scene(
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-	commands.spawn_bundle(PbrBundle {
+	commands.spawn(PbrBundle {
 		mesh: meshes.add(Mesh::from(shape::Quad {
 			size: Vec2::new(2., 2.),
 			..default()
@@ -20,7 +20,7 @@ pub fn spawn_basic_scene(
 	});
 }
 pub fn spawn_lights(mut commands: Commands) {
-	commands.spawn_bundle(PointLightBundle {
+	commands.spawn(PointLightBundle {
 		transform: Transform::from_xyz(-5., 5., 3.),
 		point_light: PointLight {
 			intensity: 1000.,
@@ -30,7 +30,7 @@ pub fn spawn_lights(mut commands: Commands) {
 		},
 		..default()
 	});
-	commands.spawn_bundle(PointLightBundle {
+	commands.spawn(PointLightBundle {
 		transform: Transform::from_xyz(3., 5., -5.),
 		point_light: PointLight {
 			intensity: 1000.,

@@ -13,8 +13,11 @@ default:
 		just {{command}} $file; \
 	done
 
-build crate:
-	cargo build -p crate
+run crate example:
+	cargo run -p {{crate}} --example {{example}}
+
+build crate example:
+	cargo build -p {{crate}} --example {{example}}
 
 serve-wasm:
 	cd ./wasm && live-server
@@ -83,7 +86,17 @@ watch command:
 # cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
 #cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
 
-# ESP
+
+### WASM ###
+
+run-wasm crate example:
+	cargo run -p {{crate}} --example {{example}} --target wasm32-unknown-unknown
+
+build-wasm crate example:
+	cargo build -p {{crate}} --example {{example}} --release --target wasm32-unknown-unknown
+	wasm-bindgen --out-dir ./html/{{example}} --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
+
+### ESP ###
 
 port := 'COM3'
 # port := 'COM4'

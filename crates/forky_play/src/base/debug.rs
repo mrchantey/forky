@@ -21,7 +21,7 @@ pub fn spawn_cube(
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
 	commands
-		.spawn_bundle(PbrBundle {
+		.spawn(PbrBundle {
 			mesh: meshes.add(Mesh::from(shape::Cube::default())),
 			material: materials.from_white(),
 			transform: Transform::from_xyz(0., 1., 0.),

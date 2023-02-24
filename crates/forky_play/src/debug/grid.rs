@@ -20,7 +20,7 @@ impl Plugin for GridPlugin {
 }
 
 fn spawn_grid(mut commands: Commands) {
-	commands.spawn_bundle(SpatialBundle::default()).insert(Grid);
+	commands.spawn(SpatialBundle::default()).insert(Grid);
 }
 
 

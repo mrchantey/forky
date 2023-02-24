@@ -8,14 +8,14 @@ pub fn spawn_fps_camera(mut commands: Commands) {
 	// let radius = translation.length();
 
 	let child = commands
-		.spawn_bundle(Camera3dBundle {
+		.spawn(Camera3dBundle {
 			transform: Transform::from_rotation_y(HALF_TAU),
 			..default()
 		})
 		.id();
 
 	let parent = commands
-		.spawn_bundle(SpatialBundle {
+		.spawn(SpatialBundle {
 			transform: Transform::from_translation(translation)
 				.with_rotation_x(TAU * 0.1),
 			..default()

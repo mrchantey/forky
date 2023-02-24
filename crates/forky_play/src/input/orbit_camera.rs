@@ -6,7 +6,7 @@ pub fn spawn_orbit_camera(mut commands: Commands) {
 	let radius = translation.length();
 
 	let _camera = commands
-		.spawn_bundle(Camera3dBundle {
+		.spawn(Camera3dBundle {
 			// transform: Transform::from_rotation(Quat::from_rotation_y(
 			// 	HALF_TAU,
 			// )),

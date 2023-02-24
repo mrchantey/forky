@@ -27,7 +27,7 @@ pub fn spawn(
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
 	let _obj = commands
-		.spawn_bundle(PbrBundle {
+		.spawn(PbrBundle {
 			transform: Transform::from_xyz(0., -0.1, 0.)
 				.with_scale_xyz(10., 0.2, 10.)
 				.with_rotation_x(0.1),

@@ -19,7 +19,7 @@ pub fn respawn(
 		let start_offset = tern!(e.num_cols % 2 == 0;-h_cell_width;0.);
 
 		commands
-			.spawn_bundle(PbrBundle {
+			.spawn(PbrBundle {
 				transform: Transform::from_xyz(
 					start_offset,
 					h_cell_width,

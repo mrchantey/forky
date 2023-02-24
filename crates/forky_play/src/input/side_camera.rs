@@ -5,7 +5,7 @@ use bevy::prelude::*;
 pub fn spawn_side_cameras(mut commands: Commands) {
 	let mut spawn = |position: Vec3, rotation: Quat, ct: CameraViewType| {
 		commands
-			.spawn_bundle(Camera3dBundle {
+			.spawn(Camera3dBundle {
 				transform: Transform::from_translation(position)
 					.with_rotation(rotation),
 				camera: Camera {

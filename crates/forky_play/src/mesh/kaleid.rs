@@ -24,7 +24,7 @@ impl Kaleid {
 		let mesh = meshes.add(Mesh::from(shape::Cube::default()));
 		let material = materials.add(Color::rgb(0., 1., 1.).into());
 		commands
-			.spawn_bundle(PbrBundle {
+			.spawn(PbrBundle {
 				mesh,
 				material,
 				transform: Transform::from_xyz(0., 1., 0.),

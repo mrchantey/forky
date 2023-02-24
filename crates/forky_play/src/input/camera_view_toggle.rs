@@ -3,7 +3,7 @@ use bevy::prelude::*;
 
 #[derive(Hash, PartialEq, Eq, Clone, Debug)]
 // #[derive(Eq)]
-#[derive(Component)]
+#[derive(Resource, Component)]
 pub enum CameraViewType {
 	Orbit,
 	Top,

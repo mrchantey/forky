@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use sweet::*;
 
-
+#[derive(Resource)]
 struct Score(u32);
 
 #[derive(Component)]

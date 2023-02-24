@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 
 
-#[derive(Default)]
+#[derive(Resource, Default)]
 pub struct MazeGame {
 	pub score: usize,
 }

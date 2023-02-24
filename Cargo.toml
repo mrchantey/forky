@@ -36,12 +36,17 @@ forky_test = {path = "./crates/forky_test", version = "0.1.9" }
 sweet = {path = "./crates/sweet", version = "0.*" }
 
 # game
-bevy = { version = "0.8.1" }
+# bevy = { version = "0.8.1" }
+bevy = { version = "0.9.1" }
 # bevy = { version = "0.8.1", features = ["dynamic"] }
-bevy-inspector-egui = "0.13.0"
-bevy_rapier3d = {version = "0.18.0", features=["debug-render"]}
+# bevy-inspector-egui = "0.13.0"
+bevy-inspector-egui = "0.17.0"
+bevy_rapier3d = {version = "0.20.0", features=["debug-render"]}
+# bevy_rapier3d = {version = "0.18.0", features=["debug-render"]}
 rand = "0.8.5"
-bevy_prototype_debug_lines = {version = "0.8.1", features = ["3d"]}
+# bevy_prototype_debug_lines = {version = "0.8.1", features = ["3d"]}
+bevy_prototype_debug_lines = {version = "0.9.0", features = ["3d"]}
+bevy_easings = "0.9.1"
 
 # utility
 notify = "5.0.0-pre.15"
@@ -59,7 +64,7 @@ syn = {version="1.0.103",features= ["full"] }
 quote = "1.0.21"
 extend = "1.1.2"
 
-# wasm
+# esp
 rgb = "0.8.34"
 
 # wasm

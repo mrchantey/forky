@@ -32,7 +32,7 @@ pub fn create_mesh(
 
 	// add entities to the world
 	// plane
-	commands.spawn_bundle(PbrBundle {
+	commands.spawn(PbrBundle {
 		mesh: meshes.add(mesh),
 		material: materials.from_white(),
 		..default()
@@ -40,7 +40,7 @@ pub fn create_mesh(
 	// light
 
 	// camera
-	// commands.spawn_bundle(Camera3dBundle {
+	// commands.spawn(Camera3dBundle {
 	// 	transform: Transform::from_xyz(-2.0, 2.5, 5.0).looking_at(Vec3::ZERO, Vec3::Y),
 	// 	..default()
 	// });

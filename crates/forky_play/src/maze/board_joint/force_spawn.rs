@@ -5,7 +5,7 @@ use bevy_rapier3d::{prelude::*, rapier::prelude::JointAxis};
 
 pub fn force_spawn(commands: &mut Commands) -> Entity {
 	let root = commands
-		.spawn_bundle(SpatialBundle::from_xyz(0., 0., 0.))
+		.spawn(SpatialBundle::from_xyz(0., 0., 0.))
 		.insert(RigidBody::Fixed)
 		.id();
 
@@ -32,7 +32,7 @@ fn spawn_revolute_joint(
 	let joint = RevoluteJointBuilder::new(vec);
 
 	commands
-		.spawn_bundle(SpatialBundle::from_xyz(0., 0., 0.))
+		.spawn(SpatialBundle::from_xyz(0., 0., 0.))
 		//rigidbody
 		.insert(RigidBody::Dynamic)
 		.insert(ImpulseJoint::new(*parent, joint))

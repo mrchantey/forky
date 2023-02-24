@@ -5,7 +5,7 @@ use bevy_rapier3d::{prelude::*, rapier::prelude::JointAxis};
 
 pub fn motor_spawn(commands: &mut Commands) -> Entity {
 	let root = commands
-		.spawn_bundle(SpatialBundle {
+		.spawn(SpatialBundle {
 			transform: Transform::from_xyz(0., 0., 0.),
 			..default()
 		})
@@ -48,7 +48,7 @@ fn spawn_revolute_joint(
 	// ijoint.data
 
 	commands
-		.spawn_bundle(SpatialBundle::from_xyz(0., 0., 0.))
+		.spawn(SpatialBundle::from_xyz(0., 0., 0.))
 		.insert(MazeJoint { axis })
 		.insert(Collider::ball(0.))
 		.insert(ColliderMassProperties::Density(1.0))

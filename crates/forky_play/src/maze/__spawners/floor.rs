@@ -14,7 +14,7 @@ pub fn spawn(
 	let floor_w = maze.cols() as f32 * maze.cell_width + maze.wall_width;
 	let floor_d = maze.rows() as f32 * maze.cell_width + maze.wall_width;
 	commands
-		.spawn_bundle(PbrBundle {
+		.spawn(PbrBundle {
 			transform: Transform::from_position_y(-floor_h / 2.)
 				.with_scale_xyz(floor_w, floor_h, floor_d),
 			mesh: meshes.add(Mesh::from(shape::Cube::default())),

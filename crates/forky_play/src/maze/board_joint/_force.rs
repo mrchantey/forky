@@ -4,7 +4,7 @@ use bevy_rapier3d::prelude::*;
 
 pub fn spawn(commands: &mut Commands) -> Entity {
 	commands
-		.spawn_bundle(SpatialBundle::default())
+		.spawn(SpatialBundle::default())
 		// .push_children(&[walls, floor])
 		.insert(MazeBoardTag)
 		.insert(RigidBody::Dynamic)

@@ -3,9 +3,12 @@ use bevy::prelude::*;
 pub struct HelloPlugin;
 impl Plugin for HelloPlugin {
 	fn build(&self, app: &mut App) {
-		app.insert_resource(GreetTimer(Timer::from_seconds(2., true)))
-			.add_startup_system(add_people)
-			.add_system(greet_people);
+		app.insert_resource(GreetTimer(Timer::from_seconds(
+			2.,
+			TimerMode::Repeating,
+		)))
+		.add_startup_system(add_people)
+		.add_system(greet_people);
 	}
 }
 
@@ -15,6 +18,8 @@ struct Person;
 #[derive(Component)]
 struct FavFood(String);
 
+
+#[derive(Resource)]
 struct GreetTimer(Timer);
 
 fn add_people(mut commands: Commands) {
