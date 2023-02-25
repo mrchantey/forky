@@ -11,6 +11,7 @@ members = [
 	"crates/forky_esp",
 	"crates/forky_play",
 	"crates/forky_test",
+	"crates/forky_wasm",
 	"crates/sweet",
 ]
 
@@ -25,7 +26,7 @@ documentation = "https://github.com/mrchantey/forky"
 repository = "https://github.com/mrchantey/forky"
 
 [workspace.dependencies]
-# internal
+### internal ###
 forky = {path = "./crates/forky", version = "0.1.9" }
 forky_core = {path = "./crates/forky_core", version = "0.1.9" }
 forky_fs = {path = "./crates/forky_fs", version = "0.1.9" }
@@ -33,9 +34,10 @@ forky_cli = {path = "./crates/forky_cli", version = "0.1.9" }
 forky_esp = {path = "./crates/forky_esp", version = "0.1.9" }
 forky_play = {path = "./crates/forky_play", version = "0.1.9" }
 forky_test = {path = "./crates/forky_test", version = "0.1.9" }
+forky_wasm = {path = "./crates/forky_wasm", version = "0.1.9" }
 sweet = {path = "./crates/sweet", version = "0.*" }
 
-# game
+### game ###
 # bevy = { version = "0.8.1" }
 bevy = { version = "0.9.1" }
 # bevy = { version = "0.8.1", features = ["dynamic"] }
@@ -48,7 +50,7 @@ rand = "0.8.5"
 bevy_prototype_debug_lines = {version = "0.9.0", features = ["3d"]}
 bevy_easings = "0.9.1"
 
-# utility
+### utility ###
 notify = "5.1.0"
 crossterm = "0.25.0"
 colorize = "0.1.0"
@@ -56,7 +58,7 @@ gag = "1.0.0"
 num-traits = "0.2.15"
 anyhow = "1"
 
-# compile
+### compile ###
 inventory = "0.3.2"
 backtrace = "0.3.66"
 proc-macro2 = "1.0.47"
@@ -64,8 +66,63 @@ syn = {version="1.0.103",features= ["full"] }
 quote = "1.0.21"
 extend = "1.1.2"
 
-# esp
+### esp ###
 rgb = "0.8.34"
 
-# wasm
+### wasm ###
 wasmi = "0.20.0"
+futures = "0.3.26"
+js-sys = "0.3.61"
+wasm-bindgen = "0.2.84"
+wasm-bindgen-futures = "0.4.34"
+
+[workspace.dependencies.web-sys]
+version = "0.3.61"
+features = [
+  'Document',
+  'Element',
+  'Gpu',
+  'Headers',
+  'HtmlCanvasElement',
+  'Navigator',
+  'Request',
+  'RequestInit',
+  'RequestMode',
+  'Response',
+  'WebGl2RenderingContext',
+  'Window',
+  'XrBoundedReferenceSpace',
+  'XrEye',
+  'XrFrame',
+  'XrHandedness',
+  'XrInputSource',
+  'XrInputSourceArray',
+  'XrInputSourceEvent',
+  'XrInputSourceEventInit',
+  'XrInputSourcesChangeEvent',
+  'XrJointPose',
+  'XrJointSpace',
+  'XrPose',
+  'XrReferenceSpace',
+  'XrReferenceSpaceEvent',
+  'XrReferenceSpaceEventInit',
+  'XrReferenceSpaceType',
+  'XrRenderState',
+  'XrRenderStateInit',
+  'XrRigidTransform',
+  'XrSession',
+  'XrSessionEvent',
+  'XrSessionEventInit',
+  'XrSessionInit',
+  'XrSessionMode',
+  'XrSpace',
+  'XrTargetRayMode',
+  'XrView',
+  'XrViewerPose',
+  'XrViewport',
+  'XrVisibilityState',
+  'XrWebGlLayer',
+  'XrWebGlLayerInit',
+  'XrSystem',
+  'console'
+]

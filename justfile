@@ -1,10 +1,12 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_core forky_cli forky_test forky_play sweet'
+crates := 'forky forky_cli forky_core forky_play forky_test forky_wasm sweet'
 # forky_esp
 sh := 'C:/tools/cygwin/bin/'
-backtrace := '1'
+# backtrace := '0'
+# backtrace := '1'
+backtrace := 'full'
 
 default:
 	just --list
@@ -20,9 +22,6 @@ run crate example:
 build crate example:
 	RUST_BACKTRACE={{backtrace}} cargo build -p {{crate}} --example {{example}}
 
-serve-wasm:
-	cd ./wasm && live-server
-
 check crate:
 	cargo check -p {{crate}}
 
@@ -31,9 +30,13 @@ clean *args:
 
 clean-repo:
 	cargo clean
-	cd ./crates/wasm_simple && cargo clean
-	cd ./crates/wasm_sketch && cargo clean
-	cd ./crates/forky_idf && cargo clean
+	just all clean
+	rm -rf ./target
+# rm -rf C:/temp/.embuild
+# rm -rf C:/temp/idf
+# rm -rf ./.embuild
+# rm -rf ./target-esp
+
 
 expand crate example:
 	just watch 'cargo expand -p {{crate}} --example {{example}}'
@@ -63,13 +66,6 @@ publish-all:
 # just publish forky_cli
 # just publish forky_play
 
-purge:
-	rm -rf C:/temp/.embuild
-	rm -rf C:/temp/idf
-	rm -rf ./.embuild
-	rm -rf ./out
-	rm -rf ./target-esp
-	cargo clean
 
 start crate: 
 	./target/debug/{{crate}}.exe
@@ -94,7 +90,11 @@ run-wasm crate example:
 
 build-wasm crate example:
 	cargo build -p {{crate}} --example {{example}} --release --target wasm32-unknown-unknown
-	wasm-bindgen --out-dir ./html/{{example}} --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
+	RUST_BACKTRACE={{backtrace}} wasm-bindgen --out-dir ./html/wasm --out-name bindgen --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
+	# cd html 
+
+serve-wasm:
+	cd ./html && live-server
 
 ### ESP ###
 

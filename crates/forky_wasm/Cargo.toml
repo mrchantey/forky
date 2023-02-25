@@ -11,9 +11,11 @@ repository = {workspace=true}
 
 
 [dependencies]
-# extend = {workspace = true}
-# rand = {workspace = true}
-# num-traits = {workspace = true}
+wasm-bindgen = {workspace = true}
+futures = {workspace = true}
+js-sys = {workspace = true}
+web-sys = {workspace = true}
+wasm-bindgen-futures = {workspace = true}
 
 [target.'cfg(windows)'.dev-dependencies]
 sweet = {workspace = true}

@@ -1,10 +1,8 @@
 # assets
-output
-html/maze*
+html/wasm*
 
 # rust
 /target/
-/out/
 Cargo.lock
 **/*.rs.bk
 
