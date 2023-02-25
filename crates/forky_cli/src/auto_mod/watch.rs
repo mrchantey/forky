@@ -1,6 +1,6 @@
-use notify::poll::PollWatcherConfig;
 use notify::*;
-use std::{path::Path, time::Duration};
+use notify::{Config, PollWatcher};
+use std::{default, path::Path, time::Duration};
 
 // pub struct OnChange{
 // 	kind:
@@ -9,11 +9,10 @@ use std::{path::Path, time::Duration};
 
 pub fn log_changes(path: &str, on_change: fn(e: notify::Event)) {
 	let (tx, rx) = std::sync::mpsc::channel();
-	let config = PollWatcherConfig {
-		compare_contents: true,
-		poll_interval: Duration::from_millis(500),
-	};
-	let mut watcher = PollWatcher::with_config(tx, config).unwrap();
+	let config = Config::default()
+		.with_poll_interval(Duration::from_millis(500))
+		.with_compare_contents(true);
+	let mut watcher = PollWatcher::new(tx, config).unwrap();
 	let path = Path::new(path);
 	watcher.watch(path, RecursiveMode::Recursive).unwrap();
 
