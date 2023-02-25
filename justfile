@@ -4,9 +4,9 @@ set positional-arguments
 crates := 'forky forky_cli forky_core forky_play forky_test forky_wasm sweet'
 # forky_esp
 sh := 'C:/tools/cygwin/bin/'
-# backtrace := '0'
+backtrace := '0'
 # backtrace := '1'
-backtrace := 'full'
+# backtrace := 'full'
 
 default:
 	just --list
@@ -90,8 +90,15 @@ run-wasm crate example:
 
 build-wasm crate example:
 	cargo build -p {{crate}} --example {{example}} --release --target wasm32-unknown-unknown
-	RUST_BACKTRACE={{backtrace}} wasm-bindgen --out-dir ./html/wasm --out-name bindgen --target web ./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
-	# cd html 
+	RUST_BACKTRACE={{backtrace}} wasm-bindgen \
+	--out-dir ./html/wasm \
+	--out-name bindgen \
+	--target web \
+	--no-typescript \
+	./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
+
+watch-wasm *args:
+	just watch 'just build-wasm {{args}}'
 
 serve-wasm:
 	cd ./html && live-server

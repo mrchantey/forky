@@ -3,9 +3,13 @@ target = "x86_64-pc-windows-msvc"
 
 # WASM
 
+
+
 [target.wasm32-unknown-unknown]
 runner = "wasm-server-runner"
-
+rustflags = [
+ "--cfg","web_sys_unstable_apis"
+]
 # ESP32
 
 [target.riscv32imc-unknown-none-elf]
