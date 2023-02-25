@@ -1,14 +1,15 @@
 #![cfg(web_sys_unstable_apis)]
 
 use crate::{core::*, *};
+use anyhow::Result;
 use js_sys::{Object, Promise, Reflect};
 use std::cell::RefCell;
 use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::future_to_promise;
+use wasm_bindgen_futures::JsFuture;
 use web_sys::*;
 
-pub fn run_xr() {}
 
 fn request_animation_frame(
 	session: &XrSession,
@@ -22,14 +23,13 @@ fn request_animation_frame(
 pub fn create_webgl_context(
 	xr_mode: bool,
 ) -> Result<WebGl2RenderingContext, JsValue> {
-	let canvas = web_sys::window()
-		.unwrap()
-		.document()
-		.unwrap()
-		.get_element_by_id("canvas")
-		.unwrap()
-		.dyn_into::<HtmlCanvasElement>()
-		.unwrap();
+	let window = web_sys::window().expect("");
+	let document = window.document().expect("");
+	let body = document.body().expect("");
+
+	let el = document.create_element("canvas")?;
+	body.append_child(&el)?;
+	let canvas = el.dyn_into::<HtmlCanvasElement>()?;
 
 	let gl: WebGl2RenderingContext = if xr_mode {
 		let gl_attribs = Object::new();
@@ -61,8 +61,6 @@ pub struct XrApp {
 impl XrApp {
 	#[wasm_bindgen(constructor)]
 	pub fn new() -> XrApp {
-		set_panic_hook();
-
 		let session = Rc::new(RefCell::new(None));
 
 		let xr_mode = true;
@@ -72,7 +70,6 @@ impl XrApp {
 	}
 
 	pub fn init(&self) -> Promise {
-		log!("Starting WebXR...");
 		let navigator: web_sys::Navigator =
 			web_sys::window().unwrap().navigator();
 		let xr = navigator.xr();
@@ -152,4 +149,18 @@ impl XrApp {
 
 		request_animation_frame(sess, g.borrow().as_ref().unwrap());
 	}
+}
+
+pub fn run_xr() { future_to_promise(run_xr_async()); }
+
+
+pub async fn run_xr_async() -> Result<JsValue, JsValue> {
+	log!("WebXR - Starting...");
+	set_panic_hook();
+	// panic!("foobar");
+	let app = XrApp::new();
+	let result = JsFuture::from(app.init()).await?;
+	log!("WebXR - Initialized");
+	app.start();
+	Ok(result)
 }

@@ -10,11 +10,13 @@ description = {workspace=true}
 repository = {workspace=true}
 
 [dependencies]
+anyhow = {workspace = true}
 wasm-bindgen = {workspace = true}
 futures = {workspace = true}
 js-sys = {workspace = true}
 web-sys = {workspace = true}
 wasm-bindgen-futures = {workspace = true}
+console_error_panic_hook = {workspace = true}
 
 [target.'cfg(windows)'.dev-dependencies]
 sweet = {workspace = true}

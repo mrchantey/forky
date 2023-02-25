@@ -20,12 +20,14 @@
 		"**/sdkconfig.defaults": true,
 		"**/build.rs": true,
 	},
+	// "rust-analyzer.cargo.features": [
+	// 	"web_sys_unstable_apis"
+	// ],
+	"rust-analyzer.cargo.target": "wasm32-unknown-unknown",
 	"rust-analyzer.files.excludeDirs": [
 		// "crates\\forky_test\\src\\utility\\shoosh",
 		////these seem to break red squigglies
 		"crates\\forky_esp",
 		"crates\\forky_idf",
-		"crates\\wasm_simple",
-		"crates\\wasm_sketch",
 	],
 }
