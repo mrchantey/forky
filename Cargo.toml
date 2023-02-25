@@ -49,7 +49,7 @@ bevy_prototype_debug_lines = {version = "0.9.0", features = ["3d"]}
 bevy_easings = "0.9.1"
 
 # utility
-notify = "5.0.0-pre.15"
+notify = "5.1.0"
 crossterm = "0.25.0"
 colorize = "0.1.0"
 gag = "1.0.0"

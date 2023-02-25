@@ -1,11 +1,6 @@
 use notify::*;
 use notify::{Config, PollWatcher};
-use std::{default, path::Path, time::Duration};
-
-// pub struct OnChange{
-// 	kind:
-// }
-
+use std::{path::Path, time::Duration};
 
 pub fn log_changes(path: &str, on_change: fn(e: notify::Event)) {
 	let (tx, rx) = std::sync::mpsc::channel();
