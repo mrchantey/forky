@@ -15,7 +15,7 @@ forky_fs = {workspace = true}
 notify = {workspace = true}
 anyhow = {workspace = true}
 
-[dev-dependencies]
+[target.'cfg(windows)'.dev-dependencies]
 sweet = {workspace = true}
 
 [[test]]

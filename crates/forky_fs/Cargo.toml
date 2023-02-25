@@ -15,7 +15,7 @@ forky_core = {workspace = true}
 crossterm = {workspace = true}
 
 
-[dev-dependencies]
+[target.'cfg(windows)'.dev-dependencies]
 sweet = {workspace = true}
 
 [[test]]

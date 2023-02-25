@@ -45,7 +45,7 @@ smart-leds        = "0.3.0"
 fugit = "0.3.6"
 
 
-[dev-dependencies]
+[target.'cfg(windows)'.dev-dependencies]
 sweet = {workspace = true}
 
 [features]
