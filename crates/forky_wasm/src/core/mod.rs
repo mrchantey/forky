@@ -4,6 +4,8 @@ mod utils;
 pub use self::utils::*;
 mod webgl;
 pub use self::webgl::*;
+mod webxr;
+pub use self::webxr::*;
 mod webxr_app;
 pub use self::webxr_app::*;
 mod webxr_bevy;
