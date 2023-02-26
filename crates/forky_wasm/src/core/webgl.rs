@@ -71,7 +71,7 @@ pub fn init_webxr(
 		let mut session = session.borrow_mut();
 		session.replace(xr_session);
 
-		Ok(JsValue::from("Session set"))
+		Ok(JsValue::from("XR session initialized"))
 	};
 
 	future_to_promise(future_)
@@ -129,7 +129,7 @@ where
 	let session = Rc::new(RefCell::new(None));
 	let result =
 		JsFuture::from(init_webxr(session.clone(), gl.clone())).await?;
-	log!("WebXR - {}",result.as_string().unwrap());
+	// log!("WebXR - {}",result.as_string().unwrap());
 	run_xr(&session, f);
 	Ok(result)
 }
