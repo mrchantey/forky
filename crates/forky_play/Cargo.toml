@@ -14,10 +14,11 @@ forky_core = {workspace = true }
 bevy = {workspace = true}
 bevy-inspector-egui = {workspace = true}
 # enigo = {path = "../../../../work-ref/enigo", version = "0.0.14"}
-extend = {workspace = true}
 bevy_rapier3d = {workspace = true}
 bevy_prototype_debug_lines = {workspace = true}
 bevy_easings = {workspace = true}
+# dev dependency?
+extend = {workspace = true}
 
 
 [target.'cfg(windows)'.dev-dependencies]

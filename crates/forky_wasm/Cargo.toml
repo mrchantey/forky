@@ -10,6 +10,8 @@ description = {workspace=true}
 repository = {workspace=true}
 
 [dependencies]
+forky_play = {workspace = true}
+bevy = {workspace = true}
 anyhow = {workspace = true}
 wasm-bindgen = {workspace = true}
 futures = {workspace = true}

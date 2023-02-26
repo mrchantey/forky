@@ -2,8 +2,6 @@ use wasm_bindgen::prelude::*;
 
 use forky_wasm::*;
 
-// Called when the wasm module is instantiated
-// #[wasm_bindgen(start)]
 fn main() -> Result<(), JsValue> {
 	log!("starting wasm bindgen...");
 	let window = web_sys::window().expect("no global `window` exists");

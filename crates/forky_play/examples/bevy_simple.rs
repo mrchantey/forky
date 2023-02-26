@@ -2,11 +2,9 @@
 use bevy::prelude::*;
 
 fn main() {
-	fn main() {
-    App::new().run();
-}
+	App::new().run();
 	// app::init()
-		// .add_plugin(MazePlugin)
-		// .forky_exit_after(2)
-		// .run();
+	// .add_plugin(MazePlugin)
+	// .forky_exit_after(2)
+	// .run();
 }
