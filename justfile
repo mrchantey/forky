@@ -94,8 +94,8 @@ build-wasm crate example:
 	--out-dir ./html/wasm \
 	--out-name bindgen \
 	--target web \
-	--no-typescript \
 	./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
+# --no-typescript \
 
 watch-wasm *args:
 	just watch 'just build-wasm {{args}}'

@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use forky_core::math::{PI, TAU};
+use forky_core::math::TAU;
 
 
 pub struct SimplePlugin;
@@ -17,8 +17,10 @@ impl Plugin for SimplePlugin {
 struct Shape;
 
 #[derive(Resource)]
-struct Speed(f32);
-
+pub struct Speed(f32);
+impl Speed {
+	pub fn new(speed: f32) -> Speed { Speed(speed) }
+}
 
 fn setup(
 	mut commands: Commands,
