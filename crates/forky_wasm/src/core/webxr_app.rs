@@ -1,13 +1,9 @@
-use crate::{core::*, *};
-use anyhow::Result;
-use js_sys::{Object, Promise, Reflect};
+use crate::core::*;
+use js_sys::{Promise};
 use std::cell::RefCell;
 use std::rc::Rc;
 use wasm_bindgen::prelude::*;
-use wasm_bindgen_futures::future_to_promise;
-use wasm_bindgen_futures::JsFuture;
 use web_sys::*;
-
 
 #[wasm_bindgen]
 pub struct XrApp {
@@ -33,9 +29,9 @@ impl XrApp {
 		init_webxr(session, gl)
 	}
 
-	pub fn start(&self) {
+	// pub fn start(&self) {
 		// run_xr(&self.session, move |_time: f64, frame: XrFrame| {
 		// 	log!("frame");
 		// });
-	}
+	// }
 }

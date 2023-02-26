@@ -10,6 +10,7 @@ use wasm_bindgen_futures::JsFuture;
 use web_sys::*;
 
 
+
 pub fn create_webgl_context(
 	xr_mode: bool,
 ) -> Result<WebGl2RenderingContext, JsValue> {
@@ -47,22 +48,18 @@ pub fn init_webxr(
 ) -> Promise {
 	let navigator: web_sys::Navigator = web_sys::window().unwrap().navigator();
 	let xr = navigator.xr();
-	let session_mode = XrSessionMode::Inline;
-	let session_supported_promise = xr.is_session_supported(session_mode);
+	let session_mode = XrSessionMode::ImmersiveVr;
+	// let session_mode = XrSessionMode::Inline;
 
 	let future_ = async move {
-		let supports_session =
-			wasm_bindgen_futures::JsFuture::from(session_supported_promise)
-				.await;
+		let supports_session = JsFuture::from(xr.is_session_supported(session_mode)).await;
 		let supports_session = supports_session.unwrap();
 		if supports_session == false {
 			log!("XR session not supported");
 			return Ok(JsValue::from("XR session not supported"));
 		}
 
-		let xr_session_promise = xr.request_session(session_mode);
-		let xr_session =
-			wasm_bindgen_futures::JsFuture::from(xr_session_promise).await;
+		let xr_session = JsFuture::from(xr.request_session(session_mode)).await;
 		let xr_session: XrSession = xr_session.unwrap().into();
 
 		let xr_gl_layer =
@@ -116,11 +113,11 @@ fn request_animation_frame_xr(
 }
 
 
-pub fn init_and_run_xr<F>(f: F) -> Promise
+pub fn init_and_run_xr<F>(f: F)
 where
 	F: Fn(f64, XrFrame) + 'static,
 {
-	future_to_promise(init_and_run_xr_async(f))
+	let _ = future_to_promise(init_and_run_xr_async(f));
 }
 
 pub async fn init_and_run_xr_async<F>(f: F) -> Result<JsValue, JsValue>
@@ -132,17 +129,16 @@ where
 	let session = Rc::new(RefCell::new(None));
 	let result =
 		JsFuture::from(init_webxr(session.clone(), gl.clone())).await?;
-	run_xr(&session, move |_time: f64, frame: XrFrame| {
-		log!("frame");
-	});
+	log!("WebXR - {}",result.as_string().unwrap());
+	run_xr(&session, f);
 	Ok(result)
 }
 
 
-pub fn run_xr_test() -> Promise {
+pub fn run_xr_test() {
 	log!("WebXR - Starting...");
 	set_panic_hook();
-	let prom = init_and_run_xr(move |_time: f64, frame: XrFrame| {
+	let _ = init_and_run_xr(move |_time: f64, _frame: XrFrame| {
 		log!("frame");
 	});
 	// let gl = create_webgl_context(true).unwrap();
@@ -152,5 +148,4 @@ pub fn run_xr_test() -> Promise {
 	// 	JsFuture::from(init_webxr(session.clone(), gl.clone())).await?;
 	// run_xr(&session, );
 	log!("WebXR - Initialized");
-	prom
 }

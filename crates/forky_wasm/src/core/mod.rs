@@ -6,5 +6,5 @@ mod webgl;
 pub use self::webgl::*;
 mod webxr_app;
 pub use self::webxr_app::*;
-mod webxr_runner;
-pub use self::webxr_runner::*;
+mod webxr_bevy;
+pub use self::webxr_bevy::*;
