@@ -20,7 +20,6 @@
 	- demo: 
 		- https://github.com/expenses/kiss-engine/blob/d877a28c0bf86e3b65fb438446647e2998820be4/ludum-dare/src/main.rs
 		- https://expenses.github.io/wgpu-vr/
-		- https://github.com/expenses/kiss-engine/blob/d877a28c0bf86e3b65fb438446647e2998820be4/ludum-dare/src/main.rs
 
 
 - SketchPunk Labs
