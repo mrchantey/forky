@@ -10,3 +10,5 @@ mod webxr_app;
 pub use self::webxr_app::*;
 mod webxr_bevy;
 pub use self::webxr_bevy::*;
+mod wgpu;
+pub use self::wgpu::*;
