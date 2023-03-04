@@ -55,7 +55,9 @@ pub fn create_framebuffer_texture(
 				format: wgpu::TextureFormat::Rgba8Unorm,
 				view_formats: &[wgpu::TextureFormat::Rgba8Unorm],
 				usage: wgpu::TextureUsages::RENDER_ATTACHMENT
-					| wgpu::TextureUsages::COPY_SRC,
+					| wgpu::TextureUsages::COPY_DST,
+				// | wgpu::TextureUsages::COPY_SRC;
+				// wgpu::TextureUsages::TEXTURE_BINDING
 			},
 		)
 	}

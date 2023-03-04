@@ -54,22 +54,54 @@ impl Node for BlitNode {
 			..default()
 		};
 
-		let src = ImageCopyTexture {
-			texture: &src.texture,
-			mip_level: 0,
-			origin: Origin3d::ZERO,
-			aspect: TextureAspect::All,
-		};
-		let dest = ImageCopyTexture {
-			texture: &dest.texture,
-			mip_level: 0,
-			origin: Origin3d::ZERO,
-			aspect: TextureAspect::All,
-		};
+		// let src = ImageCopyTexture {
+		// 	texture: &src.texture,
+		// 	mip_level: 0,
+		// 	origin: Origin3d::ZERO,
+		// 	aspect: TextureAspect::All,
+		// };
+		// let dest = ImageCopyTexture {
+		// 	texture: &dest.texture,
+		// 	mip_level: 0,
+		// 	origin: Origin3d::ZERO,
+		// 	aspect: TextureAspect::All,
+		// };
 
-		render_context
-			.command_encoder
-			.copy_texture_to_texture(src, dest, size);
+		render_context.command_encoder.copy_texture_to_texture(
+			src.texture.as_image_copy(),
+			dest.texture.as_image_copy(),
+			size,
+		);
+		// .copy_texture_to_texture(src, dest, size);
 		Ok(())
 	}
 }
+
+
+
+// let pass_descriptor = RenderPassDescriptor {
+// 	label: Some("Blit Pass"),
+// 	color_attachments: &[
+// 		Some(RenderPassColorAttachment {
+// 			view: &src.texture_view,
+// 			// view: &target_view,
+// 			resolve_target: None,
+// 			ops: wgpu::Operations {
+// 				load: wgpu::LoadOp::Load,
+// 				store: true,
+// 			},
+// 		}),
+// 		Some(RenderPassColorAttachment {
+// 			view: dest_view,
+// 			resolve_target: None,
+// 			ops: wgpu::Operations {
+// 				load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
+// 				store: true,
+// 			},
+// 		}),
+// 	],
+// 	depth_stencil_attachment: None,
+// };
+// render_context
+// 	.command_encoder()
+// 	.begin_render_pass(&pass_descriptor);

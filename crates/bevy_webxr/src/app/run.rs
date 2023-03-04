@@ -1,3 +1,4 @@
+use crate::bevy_utils::{create_blit_target, insert_final_node, BlitNode};
 use crate::test_utils::render_test_scene;
 // #![cfg(web_sys_unstable_apis)]
 use crate::{core::*, *};
@@ -5,6 +6,7 @@ use anyhow::Result;
 use bevy::prelude::*;
 use bevy::render::render_phase::AddRenderCommand;
 use bevy::render::renderer::{RenderDevice, RenderQueue};
+use bevy::render::RenderApp;
 use std::cell::RefCell;
 use std::rc::Rc;
 use std::sync::{Arc, Mutex};
@@ -34,7 +36,7 @@ pub async fn run_bevy_webxr_async(app: App) -> Result<JsValue, JsValue> {
 	let app = Arc::new(Mutex::new(app));
 	let app = Arc::clone(&app);
 	let app1 = app.clone();
-	let app1 = app1.lock().unwrap();
+	let mut app1 = app1.lock().unwrap();
 
 	let device = app1.world.resource::<RenderDevice>().wgpu_device();
 	let gl = create_webgl_context(true)?;
@@ -54,8 +56,14 @@ pub async fn run_bevy_webxr_async(app: App) -> Result<JsValue, JsValue> {
 	let reference_space = Arc::new(reference_space);
 	let reference_space_2 = reference_space.clone();
 
-	// let dst_texture = create_framebuffer_texture(&device, &gl_layer);
+	let dst_texture = create_framebuffer_texture(&device, &gl_layer);
 
+
+	let blit_target = create_blit_target(&mut app1, &gl_layer);
+
+	let render_app = app1.get_sub_app_mut(RenderApp).unwrap();
+	render_app.insert_resource(blit_target);
+	insert_final_node(render_app, BlitNode, "blit_pass");
 	// let gl_layer = session.render_state().base_layer().unwrap();
 	// render_wgpu(&device, &opaque_texture, &gl_layer, mode).unwrap();
 
@@ -71,11 +79,11 @@ pub async fn run_bevy_webxr_async(app: App) -> Result<JsValue, JsValue> {
 		// let app1 = app.lock().unwrap();
 		// set_framebuffer(app1, &frame);
 		let mut app = app.lock().unwrap();
-		let device = app.world.resource::<RenderDevice>().wgpu_device();
+		app.update();
+		// let device = app.world.resource::<RenderDevice>().wgpu_device();
 		// render_wgpu(&device, &opaque_texture, &gl_layer, mode).unwrap();
 		// let result = render_wgpu(&device, &opaque_texture, &frame, mode);
 		// log!("frame: {:?}", result);
-		app.update();
 	});
 	Ok(JsValue::from_str("success"))
 }

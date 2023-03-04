@@ -11,7 +11,7 @@ pub fn insert_final_node<T>(
 	render_app: &mut App,
 	node: T,
 	name: &'static str,
-	in_view: &'static str,
+	// in_view: &'static str,
 ) where
 	T: Node,
 {
@@ -23,9 +23,9 @@ pub fn insert_final_node<T>(
 
 
 	//what does this do?
-	let input_node_id = draw_3d_graph.input_node().id;
-	draw_3d_graph
-		.add_slot_edge(input_node_id, graph::input::VIEW_ENTITY, name, in_view);
+	// let input_node_id = draw_3d_graph.input_node().id;
+	// draw_3d_graph
+	// 	.add_slot_edge(input_node_id, graph::input::VIEW_ENTITY, name, in_view);
 
 
 	draw_3d_graph
