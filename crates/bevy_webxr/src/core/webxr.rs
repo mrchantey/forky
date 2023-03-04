@@ -110,31 +110,17 @@ pub async fn get_reference_space(
 	Ok(reference_space)
 }
 
-pub fn run_xr<F>(session: &XrSession, on_frame: F)
+pub fn run_xr_loop<F>(session: &XrSession, on_frame: F)
 where
 	F: Fn(f64, XrFrame) + 'static,
 {
 	let f = Rc::new(RefCell::new(None));
 	let g = f.clone();
-	// let mut i = 0;
 	*g.borrow_mut() = Some(Closure::new(move |_time: f64, frame: XrFrame| {
 		on_frame(_time, frame.clone());
-		// if i > 2 {
-		// 	log!("All done!");
-		// 	let _ = f.borrow_mut().take();
-		// 	return;
-		// }
-		// i += 1;
-		let sess: XrSession = frame.session();
-		request_animation_frame_xr(&sess, f.borrow().as_ref().unwrap());
+		let session: XrSession = frame.session();
+		request_animation_frame_xr(&session, f.borrow().as_ref().unwrap());
 	}));
-
-	// let session: &Option<XrSession> = &session.borrow();
-	// let sess: &XrSession = if let Some(sess) = session {
-	// 	sess
-	// } else {
-	// 	return ();
-	// };
 	request_animation_frame_xr(&session, g.borrow().as_ref().unwrap());
 }
 
@@ -160,46 +146,11 @@ where
 	let gl = create_webgl_context(true).unwrap();
 	let session = create_xr_session(&gl).await.unwrap();
 	// log!("WebXR - {}",result.as_string().unwrap());
-	run_xr(&session, f);
+	run_xr_loop(&session, f);
 	Ok(JsValue::from_str("success"))
 }
 
 
-
-pub fn render_test_scene(
-	gl: &WebGl2RenderingContext,
-	frame: XrFrame,
-	reference_space: Arc<XrReferenceSpace>,
-) {
-	let gl_layer = frame.session().render_state().base_layer().unwrap();
-	let framebuffer = gl_layer.framebuffer();
-	gl.bind_framebuffer(
-		WebGl2RenderingContext::FRAMEBUFFER,
-		framebuffer.as_ref(),
-	);
-
-	let mut i = 0;
-	let pose = frame.get_viewer_pose(&reference_space).unwrap();
-	pose.views().iter().for_each(|view| {
-		// log!("viewport: x:{},y:{},width:{},height:{}",viewport.x(),viewport.y(),viewport.width(),viewport.height());
-		let (x, y, width, height) =
-			viewport_rect(&gl_layer.get_viewport(&view.into()).unwrap().into());
-		gl.viewport(x, y, width, height); //for vertices
-		gl.scissor(x, y, width, height); //for clear
-		if i == 0 {
-			gl.clear_color(0.2, 0.0, 0.0, 1.0);
-		} else {
-			gl.clear_color(0.0, 0.2, 0.0, 1.0);
-		}
-		gl.clear(
-			WebGl2RenderingContext::COLOR_BUFFER_BIT
-				| WebGl2RenderingContext::DEPTH_BUFFER_BIT,
-		);
-		//TODO render app.world.resource::<Some_Render_Texture>()
-		//gl_layer.get_viewport(&view.into()).unwrap().into()
-		i += 1;
-	});
-}
 
 
 

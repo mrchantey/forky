@@ -6,5 +6,5 @@ fn main() {
 	app
 		// .add_plugins(DefaultPlugins.build().disable::<WinitPlugin>())
 		.add_plugin(demo::SimplePlugin);
-	core::run_bevy_webxr(app);
+	bevy_webxr::app::run_bevy_webxr(app);
 }

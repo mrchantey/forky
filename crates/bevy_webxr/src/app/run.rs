@@ -1,3 +1,4 @@
+use crate::test_utils::render_test_scene;
 // #![cfg(web_sys_unstable_apis)]
 use crate::{core::*, *};
 use anyhow::Result;
@@ -44,6 +45,7 @@ pub async fn run_bevy_webxr_async(app: App) -> Result<JsValue, JsValue> {
 	let gl_layer = create_xr_gl_layer(&session, &gl).await?;
 	let width = gl_layer.framebuffer_width();
 	let height = gl_layer.framebuffer_height();
+	let framebuffer = gl_layer.framebuffer_unwrapped();
 	// log!(
 	// 	"got gl layer, width: {width}, height: {height}, framebuffer: {:?}",
 	// 	gl_layer.framebuffer_unwrapped()
@@ -51,22 +53,28 @@ pub async fn run_bevy_webxr_async(app: App) -> Result<JsValue, JsValue> {
 	let reference_space = get_reference_space(&session, &mode).await?;
 	let reference_space = Arc::new(reference_space);
 	let reference_space_2 = reference_space.clone();
+
+	// let dst_texture = create_framebuffer_texture(&device, &gl_layer);
+
 	// let gl_layer = session.render_state().base_layer().unwrap();
-	// let opaque_texture = get_opaque_texture(&device, 100, 100);
-	let opaque_texture = get_opaque_texture(&device, width, height);
-	// let opaque_texture = get_opaque_texture(&device, &gl_layer);
 	// render_wgpu(&device, &opaque_texture, &gl_layer, mode).unwrap();
 
 
-	run_xr(&session, move |_time: f64, frame: XrFrame| {
+	//TODO
+	//1. render camera to src texture texture
+	//2. insert src/dest texture in render scene
+	//3. add blit node
+
+
+	run_xr_loop(&session, move |_time: f64, frame: XrFrame| {
+		// render_test_scene(&gl, frame, reference_space_2.clone());
 		// let app1 = app.lock().unwrap();
 		// set_framebuffer(app1, &frame);
 		let mut app = app.lock().unwrap();
 		let device = app.world.resource::<RenderDevice>().wgpu_device();
 		// render_wgpu(&device, &opaque_texture, &gl_layer, mode).unwrap();
-		let result = render_wgpu(&device, &opaque_texture, &frame, mode);
-		log!("frame: {:?}", result);
-		// render_test_scene(&gl, frame, reference_space_2.clone());
+		// let result = render_wgpu(&device, &opaque_texture, &frame, mode);
+		// log!("frame: {:?}", result);
 		app.update();
 	});
 	Ok(JsValue::from_str("success"))
