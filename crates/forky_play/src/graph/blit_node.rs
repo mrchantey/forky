@@ -14,7 +14,6 @@ use super::BlitImageHandle;
 
 
 pub struct BlitNode {
-	query: QueryState<(&'static ViewTarget), With<ExtractedView>>,
 	image_handle: BlitImageHandle,
 }
 
@@ -24,7 +23,6 @@ impl BlitNode {
 
 	pub fn new(world: &mut World) -> Self {
 		Self {
-			query: QueryState::new(world),
 			image_handle: BlitImageHandle::default(),
 		}
 	}
@@ -36,14 +34,13 @@ impl Node for BlitNode {
 	}
 
 	fn update(&mut self, world: &mut World) {
-		self.query.update_archetypes(world);
 		self.image_handle =
 			world.get_resource::<BlitImageHandle>().unwrap().clone();
 	}
 
 	fn run(
 		&self,
-		graph: &mut RenderGraphContext,
+		_graph: &mut RenderGraphContext,
 		render_context: &mut RenderContext,
 		world: &World,
 	) -> Result<(), NodeRunError> {
@@ -73,40 +70,6 @@ impl Node for BlitNode {
 		render_context
 			.command_encoder
 			.copy_texture_to_texture(src, dest, size);
-
-		// for target in self.query.iter_manual(world) {
-		// let target_view = target.main_texture();
-
-		// // image.sampler
-
-		// let pass_descriptor = RenderPassDescriptor {
-		// 	label: Some("Blit Pass"),
-		// 	color_attachments: &[
-		// 		Some(RenderPassColorAttachment {
-		// 			view: &image.texture_view,
-		// 			// view: &target_view,
-		// 			resolve_target: None,
-		// 			ops: wgpu::Operations {
-		// 				// load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
-		// 				load: wgpu::LoadOp::Load,
-		// 				store: true,
-		// 			},
-		// 		}),
-		// 		Some(target.get_color_attachment(Operations {
-		// 			// load: wgpu::LoadOp::Load,
-		// 			load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
-		// 			store: true,
-		// 		})),
-		// 	],
-		// 	depth_stencil_attachment: None,
-		// };
-		// render_context
-		// 	.command_encoder
-		// 	.clear_texture(&image.texture, wgpu::Color::RED);
-		// render_context
-		// 	.command_encoder
-		// 	.begin_render_pass(&pass_descriptor);
-		// }
 		Ok(())
 	}
 }
