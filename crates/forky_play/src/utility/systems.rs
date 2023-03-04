@@ -3,10 +3,10 @@ use bevy::{app::AppExit, prelude::*};
 use std::{thread, time};
 
 pub fn create_exit_after_system(
-	secs: u64,
+	secs: f64,
 ) -> impl Fn(EventWriter<AppExit>, Res<Time>) {
 	move |mut exit, time| {
-		if time.elapsed_seconds_f64() > secs as f64 {
+		if time.elapsed_seconds_f64() > secs {
 			exit.send(AppExit);
 		}
 	}

@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use forky_play::utility;

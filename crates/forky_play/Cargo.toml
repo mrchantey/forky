@@ -17,6 +17,9 @@ bevy-inspector-egui = {workspace = true}
 bevy_rapier3d = {workspace = true}
 bevy_prototype_debug_lines = {workspace = true}
 bevy_easings = {workspace = true}
+bevy_mod_debugdump = {workspace = true}
+wgpu = {workspace = true}
+
 # dev dependency?
 extend = {workspace = true}
 

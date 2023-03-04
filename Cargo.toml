@@ -11,7 +11,6 @@ members = [
 	"crates/forky_esp",
 	"crates/forky_play",
 	"crates/forky_test",
-	"crates/forky_wasm",
 	"crates/sweet",
 ]
 
@@ -34,23 +33,30 @@ forky_cli = {path = "./crates/forky_cli", version = "0.1.9" }
 forky_esp = {path = "./crates/forky_esp", version = "0.1.9" }
 forky_play = {path = "./crates/forky_play", version = "0.1.9" }
 forky_test = {path = "./crates/forky_test", version = "0.1.9" }
-forky_wasm = {path = "./crates/forky_wasm", version = "0.1.9" }
 sweet = {path = "./crates/sweet", version = "0.*" }
 
 ### game ###
-# bevy = { version = "0.8.1" }
-bevy = { version = "0.9.1" }
+
+# WGPU 0.15
+bevy = { version = "0.9.0" }
+# bevy = { git = "https://github.com/bevyengine/bevy?rev=bfd1d4b0a7731cf96e430d54397e7078e06c65e9"}
+# bevy = { path = "../../work-ref/bevy" }
 # bevy = { version = "0.8.1", features = ["dynamic"] }
 # bevy-inspector-egui = "0.13.0"
 bevy-inspector-egui = "0.17.0"
+bevy_mod_debugdump = "0.6.0"
 bevy_rapier3d = {version = "0.20.0", features=["debug-render"]}
 # bevy_rapier3d = {version = "0.18.0", features=["debug-render"]}
 rand = "0.8.5"
 # bevy_prototype_debug_lines = {version = "0.8.1", features = ["3d"]}
 bevy_prototype_debug_lines = {version = "0.9.0", features = ["3d"]}
 bevy_easings = "0.9.1"
-wgpu = { version = "0.15.0" }
+wgpu = { version = "0.14.0" }
 # wgpu-hal = {version = "0.15.2",features = ["gles"]}
+
+
+
+
 
 ### utility ###
 notify = "5.1.0"
@@ -59,6 +65,7 @@ colorize = "0.1.0"
 gag = "1.0.0"
 num-traits = "0.2.15"
 anyhow = "1"
+
 
 ### compile ###
 inventory = "0.3.2"
@@ -129,3 +136,45 @@ features = [
   'XrSystem',
   'console'
 ]
+
+# [patch.crates-io]
+# # latest as of 28/02/23
+# # [patch."https://github.com/bevyengine/bevy"]
+# bevy = { path="../../work-ref/bevy"}
+# bevy_animation ={path="../../work-ref/bevy/crates/bevy_animation"}
+# bevy_app ={path="../../work-ref/bevy/crates/bevy_app"}
+# bevy_asset ={path="../../work-ref/bevy/crates/bevy_asset"}
+# bevy_audio ={path="../../work-ref/bevy/crates/bevy_audio"}
+# bevy_core ={path="../../work-ref/bevy/crates/bevy_core"}
+# bevy_core_pipeline ={path="../../work-ref/bevy/crates/bevy_core_pipeline"}
+# bevy_derive ={path="../../work-ref/bevy/crates/bevy_derive"}
+# bevy_diagnostic ={path="../../work-ref/bevy/crates/bevy_diagnostic"}
+# # bevy_dylib ={path="../../work-ref/bevy/crates/bevy_dylib"}
+# # bevy_dynamic_plugin ={path="../../work-ref/bevy/crates/bevy_dynamic_plugin"}
+# bevy_ecs ={path="../../work-ref/bevy/crates/bevy_ecs"}
+# # bevy_ecs_compile_fail_tests ={path="../../work-ref/bevy/crates/bevy_ecs_compile_fail_tests"}        
+# bevy_encase_derive ={path="../../work-ref/bevy/crates/bevy_encase_derive"}
+# bevy_gilrs ={path="../../work-ref/bevy/crates/bevy_gilrs"}
+# bevy_gltf ={path="../../work-ref/bevy/crates/bevy_gltf"}
+# bevy_hierarchy ={path="../../work-ref/bevy/crates/bevy_hierarchy"}
+# bevy_input ={path="../../work-ref/bevy/crates/bevy_input"}
+# bevy_internal ={path="../../work-ref/bevy/crates/bevy_internal"}
+# bevy_log ={path="../../work-ref/bevy/crates/bevy_log"}
+# bevy_macro_utils ={path="../../work-ref/bevy/crates/bevy_macro_utils"}
+# bevy_math ={path="../../work-ref/bevy/crates/bevy_math"}
+# bevy_mikktspace ={path="../../work-ref/bevy/crates/bevy_mikktspace"}
+# bevy_pbr ={path="../../work-ref/bevy/crates/bevy_pbr"}
+# bevy_ptr ={path="../../work-ref/bevy/crates/bevy_ptr"}
+# bevy_reflect ={path="../../work-ref/bevy/crates/bevy_reflect"}
+# # bevy_reflect_compile_fail_tests ={path="../../work-ref/bevy/crates/bevy_reflect_compile_fail_tests"}    
+# bevy_render ={path="../../work-ref/bevy/crates/bevy_render"}
+# bevy_scene ={path="../../work-ref/bevy/crates/bevy_scene"}
+# bevy_sprite ={path="../../work-ref/bevy/crates/bevy_sprite"}
+# bevy_tasks ={path="../../work-ref/bevy/crates/bevy_tasks"}
+# bevy_text ={path="../../work-ref/bevy/crates/bevy_text"}
+# bevy_time ={path="../../work-ref/bevy/crates/bevy_time"}
+# bevy_transform ={path="../../work-ref/bevy/crates/bevy_transform"}
+# bevy_ui ={path="../../work-ref/bevy/crates/bevy_ui"}
+# bevy_utils ={path="../../work-ref/bevy/crates/bevy_utils"}
+# bevy_window ={path="../../work-ref/bevy/crates/bevy_window"}
+# bevy_winit ={path="../../work-ref/bevy/crates/bevy_winit"}

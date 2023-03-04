@@ -1,4 +1,3 @@
-#![allow(unused, unused_mut)]
 use forky_core::*;
 use forky_play::{
 	maze::{rect_maze::RectMaze, *},

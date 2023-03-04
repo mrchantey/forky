@@ -21,35 +21,9 @@ impl Plugin for ForkyPlugin {
 		let return_from_run =
 			cfg!(all(debug_assertions, not(target_family = "wasm")));
 		app.forky()
-			.insert_resource(ClearColor(Color::BLACK))
 			.insert_resource(Msaa::default())
 			// .add_plugins(DefaultPlugins)
-			.add_plugins(
-				DefaultPlugins
-					.set(WindowPlugin {
-						window: WindowDescriptor {
-							width: 1000.,
-							height: 800.,
-							title: "Forky".to_string(),
-							decorations: true,
-							cursor_visible: true,
-							cursor_grab_mode:
-								bevy::window::CursorGrabMode::None,
-							resizable: true,
-							// return:true,
-							// winit
-							present_mode: PresentMode::AutoVsync,
-							position: WindowPosition::At(Vec2::new(-1440., 0.)),
-							..Default::default()
-						},
-						..Default::default()
-					})
-					.set(LogPlugin {
-						// filter: "info,wgpu_core=warn,wgpu_hal=warn,mygame=debug".into(),
-						level: bevy::log::Level::WARN,
-						..Default::default()
-					}),
-			)
+
 			.add_plugin(input::DebugCameraPlugin)
 			.insert_resource(WinitSettings {
 				//SHOULD BE IN DEBUG MODE ONLY
@@ -64,7 +38,6 @@ impl Plugin for ForkyPlugin {
 			})
 			.add_plugin(EasingsPlugin)
 			// .add_startup_system(utility::surrender_focus)
-			.add_system(bevy::window::close_on_esc)
 			.add_startup_system(base::spawn_lights)
 			//MY PLUGINS
 			.add_system(animation::pose_lerp_animator)

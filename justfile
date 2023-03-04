@@ -1,9 +1,9 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
-
-crates := 'forky forky_cli forky_core forky_play forky_test forky_wasm sweet'
-# forky_esp
 sh := 'C:/tools/cygwin/bin/'
+
+crates := 'forky forky_cli forky_core forky_play forky_test sweet'
+# forky_esp
 backtrace := '0'
 # backtrace := '1'
 # backtrace := 'full'
@@ -19,6 +19,10 @@ default:
 run crate example:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}}
 
+
+run-w *args:
+	just watch 'just run {{args}}'
+
 build crate example:
 	RUST_BACKTRACE={{backtrace}} cargo build -p {{crate}} --example {{example}}
 
@@ -30,8 +34,9 @@ clean *args:
 
 clean-repo:
 	cargo clean
-	just all clean
 	rm -rf ./target
+	rm -rf ./Cargo.lock
+	just all clean
 # rm -rf C:/temp/.embuild
 # rm -rf C:/temp/idf
 # rm -rf ./.embuild
@@ -82,6 +87,12 @@ watch command:
 # cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
 #cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
 
+
+### PLAY ###
+
+vis:
+	just run forky_play bevy_graph
+	dot -Tsvg -O target/render_graph.dot
 
 ### WASM ###
 
