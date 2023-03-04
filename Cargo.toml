@@ -13,6 +13,7 @@ members = [
 	"crates/forky_test",
 	"crates/sweet",
 ]
+exclude = ["crates/bevy_webxr"]
 
 [workspace.package]
 version = "0.1.9"

@@ -1,0 +1,46 @@
+set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
+set positional-arguments
+
+# forky_esp
+sh := 'C:/tools/cygwin/bin/'
+backtrace := '0'
+# backtrace := '1'
+# backtrace := 'full'
+
+default:
+	just --list
+
+# run example:
+# 	RUST_BACKTRACE={{backtrace}} cargo run --example {{example}} --target wasm32-unknown-unknown
+
+# run-w *args:
+# 	just watch 'just run {{args}}'
+
+build example:
+	cargo build --example {{example}} --release --target wasm32-unknown-unknown
+	RUST_BACKTRACE={{backtrace}} wasm-bindgen \
+	--out-dir ./html/wasm \
+	--out-name bindgen \
+	--target web \
+	./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
+# --no-typescript \
+
+build-w *args:
+	just watch 'just build {{args}}'
+
+serve:
+	cd ./html && live-server
+
+clean:
+	cargo clean
+	rm -rf ./target
+	rm -rf ./Cargo.lock
+
+@log argument:
+	echo {{argument}}
+
+publish:
+	cargo publish --allow-dirty
+
+watch command:
+	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat}' --ignore '{html/wasm,target/}' -- {{command}}

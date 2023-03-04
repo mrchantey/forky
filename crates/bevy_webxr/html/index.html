@@ -1,0 +1,35 @@
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<style>
+		body {
+			overflow: hidden;
+			margin: 0;
+			background: black;
+			color: white;
+			background-size: 400% 400%;
+			height: 80vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		canvas {
+			background-color: darkblue;
+		}
+	</style>
+</head>
+
+<script type="module">
+	import init from './wasm/bindgen.js'
+	init()
+	window.initWasm = init
+</script>
+
+<body>
+	<!-- <button onclick="initWasm()">Click me</button> -->
+
+</body>
+
+</html>
