@@ -22,6 +22,7 @@ wgpu = {workspace = true}
 
 # dev dependency?
 extend = {workspace = true}
+bytemuck = "1.13.1"
 
 
 [target.'cfg(windows)'.dev-dependencies]

@@ -17,6 +17,11 @@ pub struct BlitGraphPlugin;
 
 
 #[derive(Resource, Clone, Default)]
+pub struct BlitSource {
+	pub src: Handle<Image>,
+}
+
+#[derive(Resource, Clone, Default)]
 pub struct BlitImageHandle {
 	pub src: Handle<Image>,
 	pub dest: Handle<Image>,
@@ -24,7 +29,7 @@ pub struct BlitImageHandle {
 	pub height: u32,
 }
 
-fn create_image(width: u32, height: u32) -> Image {
+pub fn create_image(width: u32, height: u32) -> Image {
 	Image::new_fill(
 		Extent3d {
 			width,

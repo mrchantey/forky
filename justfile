@@ -82,11 +82,9 @@ test crate *args:
 test-w crate *args:
 	RUST_BACKTRACE={{backtrace}} just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'
 
+#https://crates.io/crates/cargo-watch
 watch command:
-	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat}' --ignore '{output/,out/}' -- {{command}}
-# cargo watch -q --ignore '**/mod.rs' --ignore '**/lib.rs' -- {{command}}
-#cargo watch -q --ignore '**/mod.rs' -x '{{command}}'
-
+	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat}' --ignore 'html*' -- {{command}}
 
 ### PLAY ###
 
@@ -100,6 +98,8 @@ run-wasm crate example:
 	cargo run -p {{crate}} --example {{example}} --target wasm32-unknown-unknown
 
 build-wasm crate example:
+	echo building
+	just copy-wasm-assets
 	cargo build -p {{crate}} --example {{example}} --release --target wasm32-unknown-unknown
 	RUST_BACKTRACE={{backtrace}} wasm-bindgen \
 	--out-dir ./html/wasm \
@@ -110,9 +110,14 @@ build-wasm crate example:
 
 watch-wasm *args:
 	just watch 'just build-wasm {{args}}'
+# just watch 'just copy-wasm-assets'
 
 serve-wasm:
 	cd ./html && live-server
+
+copy-wasm-assets:
+	rm -rf ./html/assets
+	cp -r ./crates/forky_play/assets ./html/assets
 
 ### ESP ###
 

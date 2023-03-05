@@ -1,5 +1,6 @@
 # assets
 html/wasm*
+html/assets*
 
 # rust
 /target/
