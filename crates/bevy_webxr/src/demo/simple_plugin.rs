@@ -11,7 +11,7 @@ impl Plugin for SimplePlugin {
 		xr_utils::create_canvas().unwrap();
 
 		app.insert_resource(Speed(0.25))
-			.insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
+			// .insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
 			// .add_startup_system(setup_cube)
 			.add_startup_system(setup_cubes)
 			.add_startup_system(setup_camera)

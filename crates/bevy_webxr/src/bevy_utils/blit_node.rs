@@ -85,6 +85,7 @@ impl Node for BlitNode {
 				// resolve_target: Some(self.main_texture()),
 				ops: Operations {
 					// load: LoadOp::Load,
+					// load: wgpu::LoadOp::Clear(wgpu::Color::WHITE),
 					load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
 					// load: wgpu::LoadOp::Clear(wgpu::Color::RED),
 					store: true,

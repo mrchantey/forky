@@ -13,10 +13,10 @@ use bevy::{
 use wgpu::{
 	AddressMode, BindGroupDescriptor, BindGroupEntry,
 	BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingResource,
-	BindingType, BufferBinding, BufferBindingType, ColorTargetState,
-	ColorWrites, FilterMode, MultisampleState, PrimitiveState,
-	SamplerBindingType, SamplerDescriptor, ShaderStages, TextureFormat,
-	TextureSampleType, TextureViewDimension,
+	BindingType, BlendState, BufferBinding, BufferBindingType,
+	ColorTargetState, ColorWrites, FilterMode, MultisampleState,
+	PrimitiveState, SamplerBindingType, SamplerDescriptor, ShaderStages,
+	TextureFormat, TextureSampleType, TextureViewDimension,
 };
 
 
@@ -72,6 +72,7 @@ impl FromWorld for BlitPipeline {
 						// format: ViewTarget::TEXTURE_FORMAT_HDR,
 						format: TextureFormat::Rgba8Unorm,
 						// format: TextureFormat::Rgba8UnormSrgb,
+						// blend: Some(BlendState::REPLACE),
 						blend: None,
 						write_mask: ColorWrites::ALL,
 					})],

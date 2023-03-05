@@ -30,6 +30,8 @@ build-w *args:
 
 serve:
 	cd ./html && live-server
+serve-https:
+	cd ./html && live-server --https=https.config.js
 
 clean:
 	cargo clean
@@ -44,3 +46,9 @@ publish:
 
 watch command:
 	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat}' --ignore '{html/wasm,target/}' -- {{command}}
+
+
+ssl:
+	openssl genrsa -out target/client-key.pem 2048
+	openssl req -new -key target/client-key.pem -subj "/CN=$cn\/emailAddress=admin@$cn/C=US/ST=Ohio/L=Columbus/O=Widgets Inc/OU=Some Unit" -out target/client.csr
+	openssl x509 -req -in target/client.csr -signkey target/client-key.pem -out target/client-cert.pem

@@ -8,7 +8,7 @@
 			margin: 0;
 			background: black;
 			color: white;
-			background-size: 400% 400%;
+			/* background-size: 400% 400%; */
 			height: 80vh;
 			display: flex;
 			justify-content: center;
@@ -16,19 +16,27 @@
 		}
 
 		canvas {
-			background-color: darkblue;
+			/* background-color: darkblue; */
+		}
+
+		button {
+			font-size: 3em;
+			color: white;
+			background-color: #222222;
+			width: 300px;
+			height: 300px;
 		}
 	</style>
 </head>
 
 <script type="module">
 	import init from './wasm/bindgen.js'
-	init()
 	window.initWasm = init
+	init()
 </script>
 
 <body>
-	<!-- <button onclick="initWasm()">Click me</button> -->
+	<!-- <button onclick="initWasm()">Enter XR</button> -->
 
 </body>
 
