@@ -4,7 +4,7 @@ use bevy_webxr::*;
 use wasm_bindgen::prelude::*;
 
 fn main() {
-	core::set_panic_hook();
+	set_panic_hook();
 	let mut app = App::new();
 	app
 		// .add_plugins(DefaultPlugins.build().disable::<WinitPlugin>())
@@ -22,6 +22,7 @@ fn main() {
 		.set_interval_with_callback_and_timeout_and_arguments_0(
 			update.as_ref().unchecked_ref(),
 			1,
-		);
+		)
+		.unwrap();
 	update.forget(); //terrible, memory leak
 }

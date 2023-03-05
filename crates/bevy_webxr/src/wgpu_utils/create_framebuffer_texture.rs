@@ -1,4 +1,4 @@
-use crate::{core::*, *};
+use crate::*;
 use anyhow::Result;
 // use bevy::prelude::*;
 // use bevy::render::render_phase::AddRenderCommand;
@@ -23,6 +23,7 @@ pub fn create_framebuffer_texture(
 		device.create_texture_from_hal::<wgpu_hal::gles::Api>(
 			wgpu_hal::gles::Texture {
 				inner: wgpu_hal::gles::TextureInner::ExternalFramebuffer {
+					// inner: framebuffer,
 					inner: gl_layer.framebuffer_unwrapped(),
 					// inner: framebuffer.as_ref().unwrap().clone(),
 				},
@@ -54,10 +55,9 @@ pub fn create_framebuffer_texture(
 				dimension: wgpu::TextureDimension::D2,
 				format: wgpu::TextureFormat::Rgba8Unorm,
 				view_formats: &[wgpu::TextureFormat::Rgba8Unorm],
-				usage: wgpu::TextureUsages::RENDER_ATTACHMENT
-					| wgpu::TextureUsages::COPY_DST,
-				// | wgpu::TextureUsages::COPY_SRC;
-				// wgpu::TextureUsages::TEXTURE_BINDING
+				usage: wgpu::TextureUsages::RENDER_ATTACHMENT, // | wgpu::TextureUsages::COPY_SRC,
+				                                               // | wgpu::TextureUsages::COPY_DST,
+				                                               // wgpu::TextureUsages::TEXTURE_BINDING
 			},
 		)
 	}
@@ -86,19 +86,6 @@ pub fn create_framebuffer_texture(
 // 		label: Some("opaque texture"),
 // 	})
 // }
-
-pub fn render_wgpu(
-	opaque_texture: &wgpu::Texture,
-	// gl_layer: &XrWebGlLayer,
-	frame: &XrFrame,
-	mode: web_sys::XrSessionMode,
-) -> Result<JsValue, JsValue> {
-	let session = frame.session();
-	let gl_layer = session.render_state().base_layer().unwrap();
-
-
-	Ok(JsValue::TRUE)
-}
 
 
 // let framebuffer = gl_layer.framebuffer_unwrapped();

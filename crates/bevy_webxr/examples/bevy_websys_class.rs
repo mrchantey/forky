@@ -14,7 +14,7 @@ pub struct Runner {
 impl Runner {
 	#[wasm_bindgen(constructor)]
 	pub fn new() -> Runner {
-		core::set_panic_hook();
+		set_panic_hook();
 		let mut app = App::new();
 		app
 			// .add_plugins(DefaultPlugins.build().disable::<WinitPlugin>())
@@ -34,7 +34,7 @@ impl Runner {
 			.set_interval_with_callback_and_timeout_and_arguments_0(
 				update.as_ref().unchecked_ref(),
 				16,
-			);
+			).unwrap();
 		update.forget(); //terrible, memory leak
 
 		Runner {

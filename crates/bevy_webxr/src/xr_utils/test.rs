@@ -1,4 +1,3 @@
-use crate::core::*;
 use crate::*;
 use anyhow::{Error, Result};
 use js_sys::{Object, Promise, Reflect};
@@ -14,7 +13,7 @@ use web_sys::*;
 pub fn run_xr_test() {
 	log!("WebXR - Starting...");
 	set_panic_hook();
-	let _ = init_and_run_xr(move |_time: f64, _frame: XrFrame| {
+	let _ = xr_utils::init_and_run_xr(move |_time: f64, _frame: XrFrame| {
 		log!("frame");
 	});
 	// let gl = create_webgl_context(true).unwrap();
@@ -31,8 +30,9 @@ fn viewport_rect(view: &XrViewport) -> (i32, i32, i32, i32) {
 
 pub fn render_test_scene(
 	gl: &WebGl2RenderingContext,
-	frame: XrFrame,
-	reference_space: Arc<XrReferenceSpace>,
+	frame: &XrFrame,
+	reference_space: &XrReferenceSpace,
+	// reference_space: Arc<XrReferenceSpace>,
 ) {
 	let gl_layer = frame.session().render_state().base_layer().unwrap();
 	let framebuffer = gl_layer.framebuffer();

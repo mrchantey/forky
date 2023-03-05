@@ -8,10 +8,9 @@ use bevy::{
 	},
 };
 use bevy_webxr::*;
-use wgpu::SurfaceTexture;
 
 fn main() {
-	core::set_panic_hook();
+	set_panic_hook();
 	App::new()
 		.add_plugin(demo::SimplePlugin)
 		.add_plugin(TexturePlugin)

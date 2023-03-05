@@ -4,8 +4,10 @@
 #![allow(unused_imports)]
 #![allow(unused_parens)]
 
-pub mod app;
+pub mod bevy_xr_utils;
 pub mod bevy_utils;
-pub mod core;
 pub mod demo;
-pub mod test_utils;
+pub mod wgpu_utils;
+pub mod xr_utils;
+mod core;
+pub use self::core::*;

@@ -27,13 +27,9 @@ pub fn insert_final_node<T>(
 	// draw_3d_graph
 	// 	.add_slot_edge(input_node_id, graph::input::VIEW_ENTITY, name, in_view);
 
-
 	draw_3d_graph
-		.add_node_edge(graph::node::END_MAIN_PASS_POST_PROCESSING, name)
-		;
-	draw_3d_graph
-		.add_node_edge(name, graph::node::UPSCALING)
-		;
+		.add_node_edge(graph::node::END_MAIN_PASS_POST_PROCESSING, name);
+	draw_3d_graph.add_node_edge(name, graph::node::UPSCALING);
 
 	draw_3d_graph
 		.remove_node_edge(
