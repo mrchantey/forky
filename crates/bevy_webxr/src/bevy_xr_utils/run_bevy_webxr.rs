@@ -40,7 +40,7 @@ pub async fn run_bevy_webxr_async(app: App) -> Result<JsValue, JsValue> {
 
 	let device = app1.world.resource::<RenderDevice>().wgpu_device();
 	let gl = xr_utils::create_webgl_context(true)?;
-
+	// xr_utils::clear_canvas(&gl)?;
 	// let mode = web_sys::XrSessionMode::Inline;
 	let mode = web_sys::XrSessionMode::ImmersiveVr;
 	let session = xr_utils::create_xr_session_with_mode(&gl, mode).await?;
@@ -58,15 +58,25 @@ pub async fn run_bevy_webxr_async(app: App) -> Result<JsValue, JsValue> {
 
 	let blit_target = bevy_xr_utils::BlitTarget::new(&mut app1, &gl_layer);
 
-	let render_app = app1.get_sub_app_mut(RenderApp).unwrap();
+	let mut render_app = app1.get_sub_app_mut(RenderApp).unwrap();
 	render_app
 		.insert_resource(blit_target)
 		.init_resource::<bevy_utils::BlitPipeline>();
 
-	bevy_utils::insert_final_node(
+	// bevy_utils::insert_node(
+	// 	render_app,
+	// 	bevy_utils::ClearNode,
+	// 	bevy_utils::CLEAR_PASS,
+	// 	bevy_utils::END_MAIN_PASS,
+	// 	bevy_utils::FINAL_PASS,
+	// );
+	bevy_utils::insert_node(
 		render_app,
 		bevy_utils::BlitNode,
-		"blit_pass",
+		bevy_utils::BLIT_PASS,
+		bevy_utils::END_MAIN_PASS,
+		// bevy_utils::CLEAR_PASS,
+		bevy_utils::FINAL_PASS,
 	);
 
 	xr_utils::run_xr_loop(&session, move |_time: f64, frame: XrFrame| {

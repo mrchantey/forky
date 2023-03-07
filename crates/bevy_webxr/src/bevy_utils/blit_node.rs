@@ -5,7 +5,7 @@ use bevy::render::render_graph::{
 };
 use bevy::render::render_resource::*;
 use bevy::render::renderer::RenderContext;
-use bevy::render::view::{ExtractedView, ViewTarget};
+use bevy::render::view::{ExtractedView, ViewTarget, ExtractedWindows};
 use std::sync::Mutex;
 
 use super::*;
@@ -49,6 +49,8 @@ impl Node for BlitNode {
 		let dest_view = &target
 			.dest
 			.create_view(&wgpu::TextureViewDescriptor::default());
+
+
 		// let dest_view = &target.dest.create_view(&TextureViewDescriptor {
 		// 	label: Some("Blit Target"),
 		// 	format: Some(wgpu::TextureFormat::Rgba8Unorm),
@@ -62,7 +64,7 @@ impl Node for BlitNode {
 
 		//TODO cache bind group
 		let bind_group = device.create_bind_group(&BindGroupDescriptor {
-			label: Some("custom_pipeline_bind_group"),
+			label: Some("blit_bind_group"),
 			layout: &pipeline.get_bind_group_layout(0),
 			entries: &[
 				BindGroupEntry {
@@ -85,8 +87,8 @@ impl Node for BlitNode {
 				// resolve_target: Some(self.main_texture()),
 				ops: Operations {
 					// load: LoadOp::Load,
+					load: wgpu::LoadOp::Clear(Default::default()),
 					// load: wgpu::LoadOp::Clear(wgpu::Color::WHITE),
-					load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
 					// load: wgpu::LoadOp::Clear(wgpu::Color::RED),
 					store: true,
 				},
@@ -94,9 +96,12 @@ impl Node for BlitNode {
 			depth_stencil_attachment: None,
 		};
 
+		// let mut pass =
+		// 	render_context.begin_tracked_render_pass(pass_descriptor);
 		let mut pass = render_context
 			.command_encoder()
 			.begin_render_pass(&pass_descriptor);
+		// pass.set_render_pipeline(pipeline);
 		pass.set_pipeline(pipeline);
 		// pass.set_viewport(0., 0., 100., 100., 0.0, 1.0);
 		pass.set_bind_group(0, &bind_group, &[]);

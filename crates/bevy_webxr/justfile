@@ -10,8 +10,8 @@ backtrace := '0'
 default:
 	just --list
 
-# run example:
-# 	RUST_BACKTRACE={{backtrace}} cargo run --example {{example}} --target wasm32-unknown-unknown
+run *args:
+	RUST_BACKTRACE={{backtrace}} cargo run --example {{args}}
 
 # run-w *args:
 # 	just watch 'just run {{args}}'
@@ -47,6 +47,9 @@ publish:
 watch command:
 	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat}' --ignore '{html/wasm,target/}' -- {{command}}
 
+vis:
+	just run bevy_graph_print --target x86_64-pc-windows-msvc
+	dot -Tsvg -O target/render_graph.dot
 
 ssl:
 	openssl genrsa -out target/client-key.pem 2048

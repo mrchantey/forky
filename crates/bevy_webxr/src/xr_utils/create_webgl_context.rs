@@ -36,6 +36,15 @@ pub fn get_canvas() -> Result<HtmlCanvasElement, JsValue> {
 	Ok(canvas)
 }
 
+
+pub fn clear_canvas(gl:&WebGl2RenderingContext)->Result<JsValue, JsValue>{
+	let canvas = get_canvas()?;
+	// gl.base_l
+	// gl.bind_framebuffer(target, framebuffer)
+
+	Ok(JsValue::NULL)
+}
+
 pub fn create_webgl_context(
 	xr_mode: bool,
 ) -> Result<WebGl2RenderingContext, JsValue> {
