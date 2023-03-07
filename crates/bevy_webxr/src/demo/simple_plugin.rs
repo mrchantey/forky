@@ -1,56 +1,44 @@
 use bevy::{
-	log::LogPlugin, prelude::*, window::{WindowResolution, CompositeAlphaMode}, winit::WinitPlugin,
+	core_pipeline::clear_color::ClearColorConfig,
+	log::LogPlugin,
+	prelude::*,
+	window::{CompositeAlphaMode, WindowResolution},
+	winit::WinitPlugin,
 };
 
 use crate::xr_utils;
 pub const TAU: f32 = std::f32::consts::TAU;
 
-
-pub struct SimpleNoWinitPlugin;
-
-impl Plugin for SimpleNoWinitPlugin {
-	fn build(&self, app: &mut App) {
-		xr_utils::create_canvas().unwrap();
-
-		app.insert_resource(Speed(0.25))
-			// .insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
-			// .add_startup_system(setup_cube)
-			.add_startup_system(setup_cubes)
-			// .add_startup_system(setup_camera)
-			.add_startup_system(spawn_lights)
-			.add_system(rotate)
-			.add_plugins(
-				DefaultPlugins
-					.set(LogPlugin {
-						level: bevy::log::Level::WARN,
-						..Default::default()
-					})
-					.build()
-					.disable::<WinitPlugin>(),
-			);
-	}
-}
 pub struct SimplePlugin;
 
 impl Plugin for SimplePlugin {
 	fn build(&self, app: &mut App) {
-		xr_utils::create_canvas().unwrap();
+		// xr_utils::create_canvas(xr_utils::BEVY_CANVAS_ID).unwrap();
+		xr_utils::create_both_canvases().unwrap();
 
 		app.insert_resource(Speed(0.25))
 			.insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
 			// .add_startup_system(setup_cube)
 			.add_startup_system(setup_cubes)
-			// .add_startup_system(setup_camera)
+			.add_startup_system(setup_camera)
 			.add_startup_system(spawn_lights)
 			.add_system(rotate)
 			.add_plugins(
 				DefaultPlugins
 					.set(WindowPlugin {
 						primary_window: Some(Window {
-							resolution: WindowResolution::from((1280., 720.)),
+							// resolution: WindowResolution::from((100., 100.)),
+							// resolution: WindowResolution::from((1000., 500.)),
+							// resolution: WindowResolution::from((1280., 720.)),
 							title: "Bevy WebXR Demo".into(),
-							canvas: Some(xr_utils::CANVAS_QUERY.into()),
-							fit_canvas_to_parent:true,
+							canvas: Some(xr_utils::BEVY_CANVAS_QUERY.into()),
+							// resize_constraints: WindowResizeConstraints {
+							// 	min_width: 100.,
+							// 	min_height: 100.,
+							// 	max_width: 10.,
+							// 	max_height: 100.,
+							// },
+							// fit_canvas_to_parent:true,
 							// transparent: true,
 							// composite_alpha_mode:CompositeAlphaMode::Opaque,
 							// decorations: true,
@@ -89,6 +77,11 @@ impl Speed {
 fn setup_camera(mut commands: Commands) {
 	commands.spawn((
 		Camera3dBundle {
+			// priority: -1,
+			// camera_3d: Camera3d {
+			// 	clear_color: ClearColorConfig::Custom(Color::rgba(0.0, 0.0, 0.0, 0.0)),
+			// 	..default()
+			// },
 			// transform: Transform::from_xyz(-2.0, 2.5, 5.0)
 			transform: Transform::from_xyz(0., 0., 5.0)
 				.looking_at(Vec3::ZERO, Vec3::Y),
@@ -167,3 +160,29 @@ fn rotate(
 		transform.rotate_y(time.delta_seconds() * speed.0 * TAU);
 	}
 }
+
+
+// pub struct SimpleNoWinitPlugin;
+
+// impl Plugin for SimpleNoWinitPlugin {
+// 	fn build(&self, app: &mut App) {
+// 		xr_utils::create_canvas().unwrap();
+
+// 		app.insert_resource(Speed(0.25))
+// 			.insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
+// 			// .add_startup_system(setup_cube)
+// 			.add_startup_system(setup_cubes)
+// 			.add_startup_system(setup_camera)
+// 			.add_startup_system(spawn_lights)
+// 			.add_system(rotate)
+// 			.add_plugins(
+// 				DefaultPlugins
+// 					.set(LogPlugin {
+// 						level: bevy::log::Level::WARN,
+// 						..Default::default()
+// 					})
+// 					.build()
+// 					.disable::<WinitPlugin>(),
+// 			);
+// 	}
+// }
