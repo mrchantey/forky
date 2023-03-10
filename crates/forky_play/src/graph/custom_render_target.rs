@@ -37,7 +37,7 @@ pub fn create_blit_source(app: &mut App) -> BlitSource {
 		},
 		camera: Camera {
 			// render before the "main pass" camera
-			priority: -1,
+			order: -1,
 			target: RenderTarget::Image(src_image_handle.clone()),
 			..default()
 		},

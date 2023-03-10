@@ -36,12 +36,13 @@ impl Default for OrbitController {
 }
 
 pub fn orbit_camera_controller(
-	windows: Res<Windows>,
+	window: Query<&Window>,
 	mouse: Res<Input<MouseButton>>,
 	mut ev_motion: EventReader<MouseMotion>,
 	mut ev_scroll: EventReader<MouseWheel>,
 	mut query: Query<(&mut Transform, &mut OrbitController, &Projection)>,
 ) {
+	let window = window.single();
 	// change input mapping for orbit and panning here
 	let orbit_button = MouseButton::Left;
 	let pan_button = MouseButton::Middle;
@@ -69,6 +70,7 @@ pub fn orbit_camera_controller(
 		orbit_button_changed = true;
 	}
 
+	let window_size = Vec2::new(window.width(), window.height());
 	for (mut tran, mut controller, projection) in query.iter_mut() {
 		if orbit_button_changed {
 			let up = tran.rotation * Vec3::Y;
@@ -78,16 +80,15 @@ pub fn orbit_camera_controller(
 		let mut any = false;
 		if rotation_move.length_squared() > 0.0 {
 			any = true;
-			let window = get_primary_window_size(&windows);
 			let delta_x = {
-				let delta = rotation_move.x / window.x * PI * 2.0;
+				let delta = rotation_move.x / window_size.x * PI * 2.0;
 				if controller.upside_down {
 					-delta
 				} else {
 					delta
 				}
 			};
-			let delta_y = rotation_move.y / window.y * PI;
+			let delta_y = rotation_move.y / window_size.y * PI;
 			let yaw = Quat::from_rotation_y(-delta_x);
 			let pitch = Quat::from_rotation_x(-delta_y);
 			tran.rotation = yaw * tran.rotation; // rotate around global y axis
@@ -95,12 +96,11 @@ pub fn orbit_camera_controller(
 		} else if pan.length_squared() > 0.0 {
 			any = true;
 			// make panning distance independent of resolution and FOV,
-			let window = get_primary_window_size(&windows);
 			if let Projection::Perspective(projection) = projection {
 				pan *= Vec2::new(
 					projection.fov * projection.aspect_ratio,
 					projection.fov,
-				) / window;
+				) / window_size;
 			}
 			// translate by local axes
 			let right = tran.rotation * Vec3::X * -pan.x;
@@ -121,11 +121,11 @@ pub fn orbit_camera_controller(
 	}
 }
 
-fn get_primary_window_size(windows: &Res<Windows>) -> Vec2 {
-	let window = windows.get_primary().unwrap();
-	let window = Vec2::new(window.width() as f32, window.height() as f32);
-	window
-}
+// fn get_primary_window_size(windows: &Res<Windows>) -> Vec2 {
+// 	let window = windows.get_primary().unwrap();
+// 	let window = Vec2::new(window.width() as f32, window.height() as f32);
+// 	window
+// }
 
 pub fn update_translation_from_orbit(
 	tran: &mut Mut<Transform>,

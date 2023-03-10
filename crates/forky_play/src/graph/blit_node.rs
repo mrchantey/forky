@@ -67,7 +67,7 @@ impl Node for BlitNode {
 		// 	aspect: TextureAspect::All,
 		// };
 
-		render_context.command_encoder.copy_texture_to_texture(
+		render_context.command_encoder().copy_texture_to_texture(
 			src.texture.as_image_copy(),
 			dest.texture.as_image_copy(),
 			size,

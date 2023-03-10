@@ -58,7 +58,7 @@ impl Node for CustomPipelineNode {
 
 		let col: [f32; 4] = [1., 1.0, 1.0, 1.0];
 
-		let device = &render_context.render_device;
+		let device = &render_context.render_device();
 
 		let buffer =
 			device.create_buffer_with_data(&wgpu::util::BufferInitDescriptor {
@@ -99,7 +99,7 @@ impl Node for CustomPipelineNode {
 		});
 
 		for (target, camera) in self.query.iter_manual(world) {
-			if(camera.priority < 0) {
+			if (camera.order < 0) {
 				continue;
 			}
 
@@ -116,7 +116,7 @@ impl Node for CustomPipelineNode {
 			};
 
 			let mut pass = render_context
-				.command_encoder
+				.command_encoder()
 				.begin_render_pass(&pass_descriptor);
 			pass.set_pipeline(pipeline);
 			pass.set_bind_group(0, &bind_group, &[]);

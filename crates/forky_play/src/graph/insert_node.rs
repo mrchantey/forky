@@ -23,23 +23,18 @@ pub fn insert_final_node<T>(
 
 
 	//what does this do?
-	let input_node_id = draw_3d_graph.input_node().unwrap().id;
-	draw_3d_graph
-		.add_slot_edge(
-			input_node_id,
-			graph::input::VIEW_ENTITY,
-			name,
-			in_view,
-		)
-		.unwrap();
+	let input_node_id = draw_3d_graph.input_node().id;
+	draw_3d_graph.add_slot_edge(
+		input_node_id,
+		graph::input::VIEW_ENTITY,
+		name,
+		in_view,
+	);
 
 
 	draw_3d_graph
-		.add_node_edge(graph::node::END_MAIN_PASS_POST_PROCESSING, name)
-		.unwrap();
-	draw_3d_graph
-		.add_node_edge(name, graph::node::UPSCALING)
-		.unwrap();
+		.add_node_edge(graph::node::END_MAIN_PASS_POST_PROCESSING, name);
+	draw_3d_graph.add_node_edge(name, graph::node::UPSCALING);
 
 	draw_3d_graph
 		.remove_node_edge(

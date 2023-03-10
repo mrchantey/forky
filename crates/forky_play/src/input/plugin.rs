@@ -13,9 +13,8 @@ impl Plugin for DebugCameraPlugin {
 			.add_system(orbit_camera_controller)
 			.add_system(orbit_keyboard_controller)
 			.add_system(camera_view_toggle)
-			.add_startup_system_to_stage(
-				StartupStage::PostStartup,
-				run_camera_view_toggle,
+			.add_startup_system(
+				run_camera_view_toggle.in_base_set(StartupSet::PostStartup),
 			)
 			// .add_system(mouse_controller)
 			// .add_system(keyboard_controller)

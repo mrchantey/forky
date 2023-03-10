@@ -50,9 +50,7 @@ impl Plugin for BlitGraphPlugin {
 	fn build(&self, app: &mut App) {
 		//create texture
 		// let color: [u8; 4] = ;
-
-		let windows = app.world.get_resource::<Windows>().unwrap();
-		let window = windows.get_primary().unwrap();
+		let window = app.world.query::<&Window>().single(&app.world);
 
 		let width = window.physical_width();
 		let height = window.physical_height();
@@ -81,7 +79,10 @@ impl Plugin for BlitGraphPlugin {
 			..default()
 		});
 		let mut meshes = app.world.get_resource_mut::<Assets<Mesh>>().unwrap();
-		let mesh_handle = meshes.add(Mesh::from(shape::Plane { size: 1.0 }));
+		let mesh_handle = meshes.add(Mesh::from(shape::Plane {
+			size: 1.0,
+			..default()
+		}));
 		// app.world.insert_resource(BlitImageHandle {
 		// 	src: dest_image_handle.clone(),
 		// });
@@ -101,7 +102,7 @@ impl Plugin for BlitGraphPlugin {
 			},
 			camera: Camera {
 				// render before the "main pass" camera
-				priority: -1,
+				order: -1,
 				target: RenderTarget::Image(src_image_handle.clone()),
 				..default()
 			},

@@ -1,5 +1,6 @@
 use crate::maze::*;
 use crate::*;
+use bevy::prelude::shape::Icosphere;
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use forky_core::*;
@@ -26,7 +27,7 @@ pub fn respawn(
 					start_offset,
 				)
 				.with_scale_value(diameter),
-				mesh: meshes.add(Mesh::from(shape::Icosphere::default())),
+				mesh: meshes.add(Mesh::from(shape::UVSphere::default())),
 				material: materials.add(StandardMaterial {
 					metallic: 0.5,
 					perceptual_roughness: 0.5,

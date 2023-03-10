@@ -17,12 +17,7 @@ pub struct RightCamera;
 pub struct XrCamera;
 
 
-fn spawn_clear_camera(){
-
-
-
-
-}
+fn spawn_clear_camera() {}
 
 pub fn setup_xr_cameras(
 	mut commands: Commands,
@@ -41,7 +36,7 @@ pub fn setup_xr_cameras(
 	} else {
 		(2, h_width)
 	};
-	
+
 	//clear hack
 	commands.spawn(Camera3dBundle {
 		camera_3d: Camera3d {
@@ -61,7 +56,7 @@ pub fn setup_xr_cameras(
 		},
 		..default()
 	});
-	
+
 
 	for i in 0..num_cameras {
 		let pos_x_offset = 0.5;
@@ -72,7 +67,7 @@ pub fn setup_xr_cameras(
 		};
 		// log!("camera width: {camera_width}, uv_x: {uv_x}, pos_x: {pos_x}");
 		let mut entity = commands.spawn(Camera3dBundle {
-			transform: Transform::from_xyz(pos_x, 0., 5.0),
+			transform: Transform::from_xyz(pos_x, 0., 5.0), //inital, will be overridden
 			camera_3d: Camera3d {
 				clear_color: ClearColorConfig::None, //split screen
 				..default()

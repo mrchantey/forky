@@ -1,10 +1,5 @@
 use crate::{utility::WorldInspectorPlugin, *};
-use bevy::{
-	log::LogPlugin,
-	prelude::*,
-	window::{PresentMode, WindowDescriptor},
-	winit::*,
-};
+use bevy::{log::LogPlugin, prelude::*, window::PresentMode, winit::*};
 use bevy_easings::EasingsPlugin;
 // use bevy_inspector_egui::{quick::WorldInspectorPlugin};
 use bevy_rapier3d::prelude::*;
@@ -23,7 +18,6 @@ impl Plugin for ForkyPlugin {
 		app.forky()
 			.insert_resource(Msaa::default())
 			// .add_plugins(DefaultPlugins)
-
 			.add_plugin(input::DebugCameraPlugin)
 			.insert_resource(WinitSettings {
 				//SHOULD BE IN DEBUG MODE ONLY

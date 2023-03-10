@@ -83,7 +83,7 @@ impl FromWorld for CustomPipeline {
 		let id =
 			pipeline_cache.queue_render_pipeline(RenderPipelineDescriptor {
 				label: Some("custom_pipeline".into()),
-				layout: Some(vec![bind_group_layout.clone()]),
+				layout: vec![bind_group_layout.clone()],
 				vertex: fullscreen_shader_vertex_state(),
 				fragment: Some(FragmentState {
 					shader: shader,
@@ -103,7 +103,7 @@ impl FromWorld for CustomPipeline {
 					count: 4,
 					..default()
 				},
-				// push_constant_ranges: Vec::new(),
+				push_constant_ranges: Vec::new(),
 			});
 
 		// println!("yes, created id: {:?}", id);
