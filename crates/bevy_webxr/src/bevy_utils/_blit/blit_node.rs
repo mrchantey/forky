@@ -5,7 +5,7 @@ use bevy::render::render_graph::{
 };
 use bevy::render::render_resource::*;
 use bevy::render::renderer::RenderContext;
-use bevy::render::view::{ExtractedView, ViewTarget, ExtractedWindows};
+use bevy::render::view::{ExtractedView, ExtractedWindows, ViewTarget};
 use std::sync::Mutex;
 
 use super::*;
@@ -20,21 +20,17 @@ impl Node for BlitNode {
 		render_context: &mut RenderContext,
 		world: &World,
 	) -> Result<(), NodeRunError> {
-		let target = world.get_resource::<bevy_xr_utils::BlitTarget>();
 		let pipeline_cache = world.resource::<PipelineCache>();
 		let custom_pipeline = world.resource::<BlitPipeline>();
-		let pipeline = pipeline_cache.get_render_pipeline(custom_pipeline.id);
-
-		if let None = pipeline {
-			return Ok(());
-		}
-		let pipeline = pipeline.unwrap();
-
-		if let None = target {
-			return Ok(());
-		}
-		let target = target.unwrap();
-
+		let pipeline =
+			match pipeline_cache.get_render_pipeline(custom_pipeline.id) {
+				Some(value) => value,
+				None => return Ok(()),
+			};
+		let target = match world.get_resource::<bevy_utils::BlitTarget>() {
+			Some(value) => value,
+			None => return Ok(()),
+		};
 		let images = world.get_resource::<RenderAssets<Image>>().unwrap();
 		let src = images.get(&target.src).unwrap();
 		// let dest = images.get(&self.image_handle.dest).unwrap();
@@ -106,9 +102,13 @@ impl Node for BlitNode {
 		// pass.set_viewport(0., 0., 100., 100., 0.0, 1.0);
 		pass.set_bind_group(0, &bind_group, &[]);
 		pass.draw(0..3, 0..1);
-		// pass.
 
-		// log!("ok! {}", target.frame_count);
+		// src
+		// pass.
+		// drop(pass);
+		// render_context
+		// 	.command_encoder()
+		// 	.clear_texture(&src.texture, &ImageSubresourceRange::default());
 		Ok(())
 	}
 }

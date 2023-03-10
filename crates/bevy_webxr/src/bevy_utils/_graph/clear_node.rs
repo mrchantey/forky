@@ -26,8 +26,9 @@ impl Node for ClearNode {
 		// log!("rendering for {} views", len);
 		// let mut i = 0;
 		for (_, window) in world.resource::<ExtractedWindows>().iter() {
-			let Some(swap_chain_texture) = &window.swap_chain_texture else {
-					continue;
+			let swap_chain_texture = match &window.swap_chain_texture {
+				Some(value) => value,
+				None => continue,
 			};
 
 			let pass_descriptor = RenderPassDescriptor {

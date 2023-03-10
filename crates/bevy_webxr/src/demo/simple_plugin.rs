@@ -17,9 +17,9 @@ impl Plugin for SimplePlugin {
 		xr_utils::create_both_canvases().unwrap();
 
 		app.insert_resource(Speed(0.25))
-			.insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
-			// .add_startup_system(setup_cube)
-			.add_startup_system(setup_cubes)
+			// .insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
+			.add_startup_system(setup_cube)
+			// .add_startup_system(setup_cubes)
 			.add_startup_system(setup_camera)
 			.add_startup_system(spawn_lights)
 			.add_system(rotate)
@@ -83,13 +83,15 @@ fn setup_camera(mut commands: Commands) {
 			// 	..default()
 			// },
 			// transform: Transform::from_xyz(-2.0, 2.5, 5.0)
-			transform: Transform::from_xyz(0., 0., 5.0)
-				.looking_at(Vec3::ZERO, Vec3::Y),
+			transform: Transform::from_xyz(0., 0., 0.),
+			// .looking_at(Vec3::ZERO, Vec3::Y),
 			..default()
 		},
 		MainCamera,
 	));
 }
+
+const SCENE_Z: f32 = -5.0;
 
 fn setup_cube(
 	mut commands: Commands,
@@ -99,8 +101,8 @@ fn setup_cube(
 	commands.spawn((
 		PbrBundle {
 			mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-			material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-			transform: Transform::from_xyz(0.0, 0.5, 0.0),
+			material: materials.add(Color::WHITE.into()),
+			transform: Transform::from_xyz(0.0, 0., SCENE_Z),
 			..default()
 		},
 		Shape,
@@ -112,15 +114,18 @@ fn setup_cubes(
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
 	let spacing = 1.5;
-	for i in -5..6 {
-		for j in -5..6 {
+	let num_cubes = 3;
+	let min_num_cubes = num_cubes / 2 * -1;
+	let max_num_cubes = num_cubes / 2 + 1;
+	for i in min_num_cubes..max_num_cubes {
+		for j in min_num_cubes..max_num_cubes {
 			let x = i as f32 * spacing;
 			let y = j as f32 * spacing;
 			commands.spawn((
 				PbrBundle {
 					mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-					material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-					transform: Transform::from_xyz(x, y, 0.0),
+					material: materials.add(Color::WHITE.into()),
+					transform: Transform::from_xyz(x, y, SCENE_Z),
 					..Default::default()
 				},
 				Shape,
@@ -129,12 +134,16 @@ fn setup_cubes(
 	}
 }
 pub fn spawn_lights(mut commands: Commands) {
+	commands.insert_resource(AmbientLight {
+		color: Color::WHITE,
+		brightness: 1.,
+	});
 	commands.spawn(PointLightBundle {
 		transform: Transform::from_xyz(-5., 5., 3.),
 		point_light: PointLight {
-			intensity: 1000.,
+			intensity: 10000., //10x for xr?
 			color: Color::FUCHSIA,
-			shadows_enabled: true,
+			shadows_enabled: false,
 			..default()
 		},
 		..default()
@@ -142,7 +151,7 @@ pub fn spawn_lights(mut commands: Commands) {
 	commands.spawn(PointLightBundle {
 		transform: Transform::from_xyz(3., 5., -5.),
 		point_light: PointLight {
-			intensity: 1000.,
+			intensity: 10000., //10x for xr?
 			shadows_enabled: true,
 			color: Color::CYAN,
 			..default()
@@ -158,6 +167,7 @@ fn rotate(
 ) {
 	for mut transform in &mut query {
 		transform.rotate_y(time.delta_seconds() * speed.0 * TAU);
+		transform.rotate_x(time.delta_seconds() * speed.0 * TAU * 0.5);
 	}
 }
 

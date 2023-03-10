@@ -4,7 +4,6 @@
 #![allow(unused_imports)]
 #![allow(unused_parens)]
 
-pub mod bevy_xr_utils;
 pub mod bevy_utils;
 pub mod demo;
 pub mod wgpu_utils;

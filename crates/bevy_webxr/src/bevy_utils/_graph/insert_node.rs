@@ -12,6 +12,7 @@ pub const END_MAIN_PASS: &'static str =
 	graph::node::END_MAIN_PASS_POST_PROCESSING;
 pub const FINAL_PASS: &'static str = graph::node::UPSCALING;
 pub const BLIT_PASS: &'static str = "blit_pass";
+pub const CLEAR_SRC_PASS: &'static str = "clear_src_pass";
 pub const CLEAR_PASS: &'static str = "clear_pass";
 pub const EMPTY_PASS: &'static str = "";
 
