@@ -1,6 +1,7 @@
 use crate::*;
 use anyhow::Result;
 use bevy::prelude::*;
+use bevy::render::camera::ManualTextureViews;
 use bevy::render::render_asset::RenderAssets;
 use bevy::render::render_phase::AddRenderCommand;
 use bevy::render::renderer::{RenderDevice, RenderQueue};
@@ -43,4 +44,27 @@ pub fn update_framebuffer_texture(
 		&gl_layer,
 	);
 	blit_target.update_dest(dest_texture);
+}
+
+
+pub fn update_manual_texture_views(
+	frame: NonSend<web_sys::XrFrame>,
+	render_device: Res<RenderDevice>,
+	mut manual_tex_view: ResMut<ManualTextureViews>,
+) {
+	let gl_layer = frame.session().render_state().base_layer().unwrap();
+
+	let dest_texture = wgpu_utils::create_framebuffer_texture(
+		&render_device.wgpu_device(),
+		&gl_layer,
+	);
+
+	let resolution =
+		UVec2::new(gl_layer.framebuffer_width(), gl_layer.framebuffer_height());
+
+	let view =
+		dest_texture.create_view(&wgpu::TextureViewDescriptor::default());
+
+	//TODO use real id
+	manual_tex_view.insert(0, (view.into(), resolution));
 }

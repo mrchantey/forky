@@ -39,26 +39,29 @@ pub fn update_xr_tracking(
 
 	for (mut transform, mut camera, xr_camera) in query.iter_mut() {
 		let view = &views[xr_camera.index];
-		let translation =
-			bevy_utils::dom_point_to_vec3(&view.transform().position());
-		let rotation =
-			bevy_utils::dom_point_to_quat(&view.transform().orientation());
+		let translation = bevy_utils::dom_point_to_vec3_invert_y(
+			&view.transform().position(),
+		);
+		let rotation = bevy_utils::dom_point_to_quat_invert_pitch(
+			&view.transform().orientation(),
+		);
+		// bevy_utils::dom_point_to_quat(&view.transform().orientation());
 		transform.translation = translation;
 		transform.rotation = rotation;
 
 		// TODO requires rendertarget::textureview
-		// let viewport = gl_layer.get_viewport(view).unwrap();
-		// let viewport = Viewport {
-		// 	physical_position: UVec2::new(
-		// 		viewport.x() as u32,
-		// 		viewport.y() as u32,
-		// 	),
-		// 	physical_size: UVec2::new(
-		// 		viewport.width() as u32,
-		// 		viewport.height() as u32,
-		// 	),
-		// 	..default()
-		// };
-		// camera.viewport = Some(viewport);
+		let viewport = gl_layer.get_viewport(view).unwrap();
+		let viewport = Viewport {
+			physical_position: UVec2::new(
+				viewport.x() as u32,
+				viewport.y() as u32,
+			),
+			physical_size: UVec2::new(
+				viewport.width() as u32,
+				viewport.height() as u32,
+			),
+			..default()
+		};
+		camera.viewport = Some(viewport);
 	}
 }

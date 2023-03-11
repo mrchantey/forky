@@ -15,6 +15,9 @@ use web_sys::*;
 // use wgpu::*;
 
 
+// const FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
+const FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8UnormSrgb;
+
 pub fn create_framebuffer_texture(
 	device: &wgpu::Device,
 	gl_layer: &XrWebGlLayer,
@@ -53,8 +56,8 @@ pub fn create_framebuffer_texture(
 				mip_level_count: 1,
 				sample_count: 1,
 				dimension: wgpu::TextureDimension::D2,
-				format: wgpu::TextureFormat::Rgba8Unorm,
-				view_formats: &[wgpu::TextureFormat::Rgba8Unorm],
+				format: FORMAT,
+				view_formats: &[FORMAT],
 				usage: wgpu::TextureUsages::RENDER_ATTACHMENT, // | wgpu::TextureUsages::COPY_SRC,
 				                                               // | wgpu::TextureUsages::COPY_DST,
 				                                               // wgpu::TextureUsages::TEXTURE_BINDING

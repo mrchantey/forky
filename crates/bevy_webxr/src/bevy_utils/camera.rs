@@ -43,9 +43,10 @@ pub fn setup_xr_cameras(
 		let pos_x_offset = 0.5;
 		//the left camera clears entire target
 		let (uv_x, pos_x, clear_color, order) = if i == 0 {
-			(0, -pos_x_offset, ClearColorConfig::default(), 1)
+			(0, -pos_x_offset, ClearColorConfig::None, 1)
+		// (0, -pos_x_offset, ClearColorConfig::default(), 1)
 		} else {
-			(h_width, pos_x_offset, ClearColorConfig::None, 0)
+			(h_width, pos_x_offset, ClearColorConfig::default(), 0)
 		};
 		// log!("camera width: {camera_width}, uv_x: {uv_x}, pos_x: {pos_x}");
 		let mut entity = commands.spawn(Camera3dBundle {
@@ -58,7 +59,8 @@ pub fn setup_xr_cameras(
 				order,
 				// render before the "main pass" camera
 				// order: -1,
-				target: RenderTarget::Image(src_image.handle.clone()),
+				target: RenderTarget::TextureView(0),
+				// target: RenderTarget::Image(src_image.handle.clone()),
 				viewport: Some(Viewport {
 					physical_position: UVec2::new(uv_x, 0),
 					physical_size: UVec2::new(camera_width, height),
