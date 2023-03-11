@@ -1,8 +1,8 @@
-use crate::*;
-use bevy::prelude::*;
+use bevy::{prelude::*, render::extract_resource::ExtractResource};
 use web_sys::*;
 
 
 
-#[derive(Resource)]
-pub struct SessionMode(pub web_sys::XrSessionMode);
+
+// #[derive(ExtractResource, Clone)]
+// pub struct ExtractedXrFrame(pub NonSend<XrFrame>);

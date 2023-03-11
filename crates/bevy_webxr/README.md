@@ -1,6 +1,6 @@
 # Bevy WebXR
 
-A WebXR renderer for the Bevy Engine.
+A Standalone WebXR renderer for the Bevy Engine. Tested on Oculus Quest 2.
 
 ## Quickstart
 
@@ -14,3 +14,4 @@ Two cameras render to an image, and the `blit_node` will run a simple shader tha
 ## Issues
 
 - Lighting is very dark
+- Standard Materials broken on Android Chrome, [issue](https://github.com/bevyengine/bevy/issues/4582)

@@ -4,7 +4,7 @@ use bevy::{
 	prelude::*,
 	render::camera::{RenderTarget, Viewport},
 };
-use web_sys::XrSessionMode;
+use web_sys::*;
 
 use super::BlitSrc;
 
@@ -14,66 +14,48 @@ pub struct LeftCamera;
 #[derive(Component)]
 pub struct RightCamera;
 #[derive(Component)]
-pub struct XrCamera;
+pub struct XrCamera {
+	pub index: usize,
+}
 
 
 fn spawn_clear_camera() {}
 
 pub fn setup_xr_cameras(
 	mut commands: Commands,
-	mode: Res<bevy_utils::SessionMode>,
+	mode: NonSend<XrSessionMode>,
 	images: Res<Assets<Image>>,
 	src_image: Res<BlitSrc>,
 ) {
-	// let image = images.get(&src_image.0).unwrap();
+	let image = images.get(&src_image.handle).unwrap();
 
-	let width = src_image.width;
+	let width = image.size().x as u32;
 	let h_width = width / 2;
-	let height = src_image.height;
+	let height = image.size().y as u32;
 
-	let (num_cameras, camera_width) = if mode.0 == XrSessionMode::Inline {
+	let (num_cameras, camera_width) = if *mode == XrSessionMode::Inline {
 		(1, width)
 	} else {
 		(2, h_width)
 	};
 
-	//clear hack
-	commands.spawn(Camera3dBundle {
-		camera_3d: Camera3d {
-			// clear_color: ClearColorConfig::Default,
-			clear_color: ClearColorConfig::Custom(Color::rgb(1.0, 1.0, 1.0)),
-			..default()
-		},
-		camera: Camera {
-			order: 2,
-			target: RenderTarget::Image(src_image.handle.clone()),
-			viewport: Some(Viewport {
-				physical_position: UVec2::new(0, 0),
-				physical_size: UVec2::new(1, 1),
-				..default()
-			}),
-			..default()
-		},
-		..default()
-	});
-
-
 	for i in 0..num_cameras {
 		let pos_x_offset = 0.5;
-		let (uv_x, pos_x) = if i == 0 {
-			(0, -pos_x_offset)
+		//the left camera clears entire target
+		let (uv_x, pos_x, clear_color, order) = if i == 0 {
+			(0, -pos_x_offset, ClearColorConfig::default(), 1)
 		} else {
-			(h_width, pos_x_offset)
+			(h_width, pos_x_offset, ClearColorConfig::None, 0)
 		};
 		// log!("camera width: {camera_width}, uv_x: {uv_x}, pos_x: {pos_x}");
 		let mut entity = commands.spawn(Camera3dBundle {
 			transform: Transform::from_xyz(pos_x, 0., 5.0), //inital, will be overridden
 			camera_3d: Camera3d {
-				clear_color: ClearColorConfig::None, //split screen
+				clear_color, //split screen
 				..default()
 			},
 			camera: Camera {
-				order: i,
+				order,
 				// render before the "main pass" camera
 				// order: -1,
 				target: RenderTarget::Image(src_image.handle.clone()),
@@ -87,7 +69,7 @@ pub fn setup_xr_cameras(
 			// transform: Transform::from_xyz(-2.0, 2.5, 5.0)
 			..default()
 		});
-		entity.insert(XrCamera);
+		entity.insert(XrCamera { index: i });
 		if i == 0 {
 			entity.insert(LeftCamera);
 		} else {

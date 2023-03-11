@@ -21,7 +21,7 @@ pub async fn init_xr_render(
 	// xr_utils::clear_canvas(&gl)?;
 	// let mode = web_sys::XrSessionMode::Inline;
 	let mode = web_sys::XrSessionMode::ImmersiveVr;
-	app.insert_resource(bevy_utils::SessionMode(mode));
+	app.insert_non_send_resource(mode);
 	let session = xr_utils::create_xr_session_with_mode(&gl, mode).await?;
 
 	let gl_layer = xr_utils::create_xr_gl_layer(&session, &gl).await?;
@@ -32,17 +32,15 @@ pub async fn init_xr_render(
 	return Ok((session, reference_space));
 }
 
-pub fn update_framebuffer_texture(app: &mut App, frame: &XrFrame) {
-	// let images = app.world.get_resource::<RenderAssets<Image>>().unwrap();
-	// let src_image = images.get(&blit_target.src).unwrap();
-	//TODO clear image
-	let mut render_app = app.get_sub_app_mut(RenderApp).unwrap();
-	let device = render_app.world.resource::<RenderDevice>().wgpu_device();
+pub fn update_framebuffer_texture(
+	render_device: Res<RenderDevice>,
+	mut blit_target: ResMut<bevy_utils::BlitTarget>,
+	frame: NonSend<XrFrame>,
+) {
 	let gl_layer = frame.session().render_state().base_layer().unwrap();
-	let dest_texture =
-		wgpu_utils::create_framebuffer_texture(device, &gl_layer);
-
-	let mut blit_target =
-		render_app.world.resource_mut::<bevy_utils::BlitTarget>();
+	let dest_texture = wgpu_utils::create_framebuffer_texture(
+		&render_device.wgpu_device(),
+		&gl_layer,
+	);
 	blit_target.update_dest(dest_texture);
 }

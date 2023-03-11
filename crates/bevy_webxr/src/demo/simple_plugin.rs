@@ -127,9 +127,9 @@ fn setup_cube_unlit(
 
 	commands.spawn((
 		MaterialMeshBundle {
-			mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
+			mesh: meshes.add(Mesh::from(shape::Cube { size: 0.1 })),
 			material: materials.add(material),
-			transform: Transform::from_xyz(0.0, 0., SCENE_Z),
+			transform: Transform::from_xyz(0.0, 0., -0.3),
 			..default()
 		},
 		Shape,

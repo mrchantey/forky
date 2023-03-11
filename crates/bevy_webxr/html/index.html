@@ -36,14 +36,18 @@
 	</style>
 </head>
 
-<script type="module">
+<script type="module" defer>
 	import init from './wasm/bindgen.js'
 	window.initWasm = init
-	init()
+	let button = document.querySelector('button');
+	if (button)
+		button.onclick = () => init()
+	else
+		init()
 </script>
 
 <body>
-	<!-- <button onclick="initWasm()">Enter XR</button> -->
+	<!-- <button>Enter XR</button> -->
 
 </body>
 

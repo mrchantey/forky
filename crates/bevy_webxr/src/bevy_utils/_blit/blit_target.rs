@@ -37,6 +37,8 @@ pub fn insert_blit_target(
 	// let height = gl_layer.framebuffer_height();
 	let width = 1000;
 	let height = 500;
+	// let width = 8145;
+	// let height = 4073;
 
 	let mut src_image = create_image(width, height);
 	src_image.texture_descriptor.usage = wgpu::TextureUsages::TEXTURE_BINDING
@@ -51,8 +53,6 @@ pub fn insert_blit_target(
 
 	app.world.insert_resource(bevy_utils::BlitSrc {
 		handle: src_image_handle.clone(),
-		width,
-		height,
 	});
 
 	let blit_target = BlitTarget {

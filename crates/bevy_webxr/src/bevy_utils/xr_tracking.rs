@@ -19,9 +19,9 @@ use wgpu::Extent3d;
 
 
 pub fn update_xr_tracking(
-	app: &mut App,
-	frame: &XrFrame,
-	reference_space: &XrReferenceSpace,
+	frame: NonSend<XrFrame>,
+	reference_space: NonSend<XrReferenceSpace>,
+	mut query: Query<(&mut Transform, &mut Camera, &bevy_utils::XrCamera)>,
 ) {
 	let gl_layer = frame.session().render_state().base_layer().unwrap();
 
@@ -37,46 +37,28 @@ pub fn update_xr_tracking(
 	let views: Vec<web_sys::XrView> =
 		pose.views().iter().map(|view| view.into()).collect();
 
-	let transforms: Vec<_> = views
-		.iter()
-		.map(|view| {
-			(
-				bevy_utils::dom_point_to_vec3(&view.transform().position()),
-				bevy_utils::dom_point_to_quat(&view.transform().orientation()),
-			)
-		})
-		.collect();
+	for (mut transform, mut camera, xr_camera) in query.iter_mut() {
+		let view = &views[xr_camera.index];
+		let translation =
+			bevy_utils::dom_point_to_vec3(&view.transform().position());
+		let rotation =
+			bevy_utils::dom_point_to_quat(&view.transform().orientation());
+		transform.translation = translation;
+		transform.rotation = rotation;
 
-
-	let viewports: Vec<_> = views
-		.iter()
-		.map(|view| {
-			let viewport = gl_layer.get_viewport(view).unwrap();
-
-			Viewport {
-				physical_position: UVec2::new(
-					viewport.x() as u32,
-					viewport.y() as u32,
-				),
-				physical_size: UVec2::new(
-					viewport.width() as u32,
-					viewport.height() as u32,
-				),
-				..default()
-			}
-		})
-		.collect();
-
-	let mut query =
-		app.world
-			.query::<(&mut Transform, &mut Camera, With<bevy_utils::XrCamera>)>(
-			);
-
-	for (i, (mut transform, mut camera, _)) in
-		query.iter_mut(&mut app.world).enumerate()
-	{
-		transform.translation = transforms[i].0;
-		transform.rotation = transforms[i].1;
-		// camera.viewport = Some(viewports[i].clone());
+		// TODO requires rendertarget::textureview
+		// let viewport = gl_layer.get_viewport(view).unwrap();
+		// let viewport = Viewport {
+		// 	physical_position: UVec2::new(
+		// 		viewport.x() as u32,
+		// 		viewport.y() as u32,
+		// 	),
+		// 	physical_size: UVec2::new(
+		// 		viewport.width() as u32,
+		// 		viewport.height() as u32,
+		// 	),
+		// 	..default()
+		// };
+		// camera.viewport = Some(viewport);
 	}
 }

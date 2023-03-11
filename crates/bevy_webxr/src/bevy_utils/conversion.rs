@@ -1,5 +1,6 @@
-use bevy::prelude::*;
+use bevy::{prelude::*, render::extract_component::ExtractComponent};
 use web_sys::*;
+
 
 
 

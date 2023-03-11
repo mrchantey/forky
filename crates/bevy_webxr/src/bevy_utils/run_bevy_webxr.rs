@@ -21,21 +21,17 @@ pub async fn run_bevy_webxr_async(mut app: App) -> Result<JsValue, JsValue> {
 	app.add_plugin(bevy_utils::WebXrPlugin);
 	let (session, reference_space) =
 		bevy_utils::init_xr_render(&mut app).await?;
+	app.insert_non_send_resource(session.clone());
+	app.insert_non_send_resource(reference_space);
 	let app = Arc::new(Mutex::new(app));
 	xr_utils::run_xr_loop(&session, move |_time: f64, frame: XrFrame| {
 		let mut app = app.lock().unwrap();
-		update_xr(&mut app, &frame, &reference_space);
+		app.world.insert_non_send_resource(frame.clone());
+		//TODO extract instead?
+		let render_app = app.get_sub_app_mut(RenderApp).unwrap();
+		render_app.insert_non_send_resource(frame);
+		// update_xr(&mut app, &frame, &reference_space);
+		app.update();
 	});
 	Ok(JsValue::TRUE)
-}
-
-pub fn update_xr(
-	app: &mut App,
-	frame: &XrFrame,
-	reference_space: &XrReferenceSpace,
-) {
-	bevy_utils::update_framebuffer_texture(app, frame);
-	bevy_utils::update_src_image_size(app, frame);
-	bevy_utils::update_xr_tracking(app, frame, reference_space);
-	app.update();
 }
