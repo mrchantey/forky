@@ -26,7 +26,7 @@ console_error_panic_hook = "0.1.6"
 
 wgpu = "0.15.0"
 wgpu-types = { version = "0.15.0" }
-wgpu-hal = {version = "0.15.0",features = ["gles"]}
+wgpu-hal = {version = "0.15.1",features = ["gles"]}
 glow = "0.12.1"
 raw-window-handle = "0.5.0"
 extend = "1.1.2"

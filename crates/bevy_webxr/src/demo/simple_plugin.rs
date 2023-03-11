@@ -6,7 +6,9 @@ use bevy::{
 	winit::WinitPlugin,
 };
 
-use crate::xr_utils;
+// use ColorMaterial: = crate::bevy_utils::color_material::ColorMaterial;
+
+use crate::{bevy_utils::MyColorMaterial, *};
 pub const TAU: f32 = std::f32::consts::TAU;
 
 pub struct SimplePlugin;
@@ -14,15 +16,9 @@ pub struct SimplePlugin;
 impl Plugin for SimplePlugin {
 	fn build(&self, app: &mut App) {
 		// xr_utils::create_canvas(xr_utils::BEVY_CANVAS_ID).unwrap();
-		xr_utils::create_both_canvases().unwrap();
+		xr_utils::create_default_canvas().unwrap();
 
-		app.insert_resource(Speed(0.25))
-			// .insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
-			.add_startup_system(setup_cube)
-			// .add_startup_system(setup_cubes)
-			.add_startup_system(setup_camera)
-			.add_startup_system(spawn_lights)
-			.add_system(rotate)
+		app.__()
 			.add_plugins(
 				DefaultPlugins
 					.set(WindowPlugin {
@@ -58,7 +54,16 @@ impl Plugin for SimplePlugin {
 						level: bevy::log::Level::WARN,
 						..Default::default()
 					}),
-			);
+			)
+			.insert_resource(Speed(0.25))
+			// .insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
+			.add_startup_system(setup_cube_unlit)
+			// .add_startup_system(setup_cubes)
+			.add_startup_system(setup_camera)
+			.add_startup_system(spawn_lights)
+			.add_system(rotate)
+			.add_plugin(MaterialPlugin::<bevy_utils::MyColorMaterial>::default())
+			.__();
 	}
 }
 
@@ -108,6 +113,29 @@ fn setup_cube(
 		Shape,
 	));
 }
+fn setup_cube_unlit(
+	mut commands: Commands,
+	mut meshes: ResMut<Assets<Mesh>>,
+	mut materials: ResMut<Assets<MyColorMaterial>>,
+	// mut materials: ResMut<Assets<StandardMaterial>>,
+) {
+	// let material = Color::WHITE.into();
+	let material = bevy_utils::MyColorMaterial {
+		color: Color::CYAN,
+		..default()
+	};
+
+	commands.spawn((
+		MaterialMeshBundle {
+			mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
+			material: materials.add(material),
+			transform: Transform::from_xyz(0.0, 0., SCENE_Z),
+			..default()
+		},
+		Shape,
+	));
+}
+
 fn setup_cubes(
 	mut commands: Commands,
 	mut meshes: ResMut<Assets<Mesh>>,

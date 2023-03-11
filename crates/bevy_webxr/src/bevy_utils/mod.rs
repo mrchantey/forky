@@ -1,5 +1,7 @@
 mod camera;
 pub use self::camera::*;
+mod color_material;
+pub use self::color_material::*;
 mod components;
 pub use self::components::*;
 mod conversion;

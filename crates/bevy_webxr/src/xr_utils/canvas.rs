@@ -34,7 +34,7 @@ pub fn create_canvas(id: &'static str) -> Result<HtmlCanvasElement, JsValue> {
 	Ok(canvas)
 }
 
-pub fn create_both_canvases() -> Result<HtmlCanvasElement, JsValue> {
+pub fn create_default_canvas() -> Result<HtmlCanvasElement, JsValue> {
 	// create_canvas(BEVY_CANVAS_ID).unwrap();
 	create_canvas(BEVY_CANVAS_ID)
 	// create_canvas(XR_CANVAS_ID)

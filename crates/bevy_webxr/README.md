@@ -2,6 +2,11 @@
 
 A WebXR renderer for the Bevy Engine.
 
+## Quickstart
+
+- just serve
+- just build-w bevy_webxr
+
 ## Method
 
 Two cameras render to an image, and the `blit_node` will run a simple shader that writes the image to the framebuffer.

@@ -1,12 +1,15 @@
 use bevy::prelude::*;
 use forky_core::math::TAU;
 
+use crate::utility::WorldInspectorPlugin;
+
 
 pub struct SimplePlugin;
 
 impl Plugin for SimplePlugin {
 	fn build(&self, app: &mut App) {
-		app.insert_resource(Speed(0.25))
+		app.add_plugin(WorldInspectorPlugin)
+			.insert_resource(Speed(0.25))
 			.add_startup_system(setup)
 			.add_system(rotate);
 	}

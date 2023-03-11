@@ -1,4 +1,4 @@
-use crate::{utility::WorldInspectorPlugin, *};
+use crate::*;
 use bevy::{log::LogPlugin, prelude::*, window::PresentMode, winit::*};
 use bevy_easings::EasingsPlugin;
 // use bevy_inspector_egui::{quick::WorldInspectorPlugin};
@@ -43,7 +43,10 @@ impl Plugin for ForkyPlugin {
 				// 	enabled: false,
 				// 	..default()
 				// })
-				.add_plugin(WorldInspectorPlugin)
+				.add_plugin(
+					WorldInspectorPlugin::default()
+						.run_if(input_toggle_active(true, KeyCode::G)),
+				)
 				.add_plugin(RapierDebugRenderPlugin::default())
 				.add_plugin(debug::GridPlugin)
 				// .add_system(toggle_inspector_on_keypress)

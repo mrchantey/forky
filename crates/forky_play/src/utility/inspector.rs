@@ -1,6 +1,6 @@
-use bevy::prelude::*;
+use bevy::{prelude::*, window::PrimaryWindow};
 use bevy_inspector_egui::{
-	bevy_egui::{self, EguiPlugin},
+	bevy_egui::{self, EguiContext, EguiPlugin},
 	bevy_inspector, egui, DefaultInspectorConfigPlugin,
 };
 
@@ -32,18 +32,18 @@ fn world_inspector_ui(world: &mut World) {
 	if !params.enabled {
 		return;
 	}
-	// let egui_context = world
-	// 	.query::<&bevy_egui::EguiContext>()
-	// 	.single_mut(world)
-	// 	.get_mut();
-	// egui::Window::new("World Inspector")
-	// 	.default_size(DEFAULT_SIZE)
-	// 	.show(&egui_context, |ui| {
-	// 		egui::ScrollArea::vertical().show(ui, |ui| {
-	// 			bevy_inspector::ui_for_world(world, ui);
-	// 			ui.allocate_space(ui.available_size());
-	// 		});
-	// 	});
+	let mut egui_context = world
+		.query_filtered::<&mut EguiContext, With<PrimaryWindow>>()
+		.single(world)
+		.clone();
+	egui::Window::new("World Inspector")
+		.default_size(DEFAULT_SIZE)
+		.show(egui_context.get_mut(), |ui| {
+			egui::ScrollArea::vertical().show(ui, |ui| {
+				bevy_inspector::ui_for_world(world, ui);
+				ui.allocate_space(ui.available_size());
+			});
+		});
 }
 
 fn toggle_inspector_on_keypress(

@@ -28,3 +28,16 @@
 	- https://immersive-web.github.io/webxr-samples/
 - Winit run return
 	- https://github.com/rust-windowing/winit/issues/1493
+
+
+## Research
+
+
+State of XR in Bevy
+- [OpenXR issue](https://github.com/bevyengine/bevy/issues/115)
+- [Zarik5 - 11/21](https://github.com/zarik5/bevy)
+	- `adopt-me` pull request: https://github.com/bevyengine/bevy/pull/2319 
+- [Kcking - 01/23](https://github.com/kcking/bevy/tree/xr)
+	- PCVR support
+- [dekuraan - 01/23](https://github.com/dekuraan/xr-bevy)
+	- WebXR support
