@@ -8,5 +8,5 @@ pub mod bevy_utils;
 pub mod demo;
 pub mod wgpu_utils;
 pub mod xr_utils;
-mod core;
-pub use self::core::*;
+mod utils;
+pub use self::utils::*;

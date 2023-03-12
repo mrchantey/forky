@@ -10,6 +10,9 @@ backtrace := '0'
 default:
 	just --list
 
+mod:
+	cd ../../ && just mod
+
 run *args:
 	RUST_BACKTRACE={{backtrace}} cargo run --example {{args}}
 

@@ -15,7 +15,7 @@ repository = "https://github.com/mrchantey/forky"
 [dependencies]
 # wasm-bindgen = "0.2.84"
 # bevy = "0.10.0"
-bevy = {version = "0.10.0", path = "../../../../work-ref/bevy"}
+bevy = {path = "../../../../work-ref/bevy"}
 bevy_mod_debugdump = "0.7.0"
 anyhow = "1.0.4"
 wasm-bindgen = "0.2"
@@ -30,6 +30,7 @@ wgpu-hal = {version = "0.15.1",features = ["gles"]}
 glow = "0.12.1"
 raw-window-handle = "0.5.0"
 extend = "1.1.2"
+derive_deref = "1.1.1"
 
 # web-sys = "0.3"
 

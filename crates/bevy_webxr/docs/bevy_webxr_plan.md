@@ -5,7 +5,10 @@
 [X] web_sys webxr
 [X] bevy web_sys hello world
 [X] bevy webxr inline
-[] bevy webxr immersive
+[X] bevy webxr immersive
+[] remove blit stuff
+[] nicer camera integrations
+[] shaders
 [] ...
 [] profit
 

@@ -7,9 +7,21 @@ A Standalone WebXR renderer for the Bevy Engine. Tested on Oculus Quest 2.
 - just serve
 - just build-w bevy_webxr
 
-## Method
+## Resources
 
-Two cameras render to an image, and the `blit_node` will run a simple shader that writes the image to the framebuffer.
+- `XrFrame`
+- `XrReferenceSpace`
+- `XrSession`
+- `XrSessionMode`
+- `XrWebGlLayer`
+
+Resources can be accesed as a `NonSend`, ie:
+
+```rs
+fn do_thing(frame: NonSend<web_sys::XrFrame>){
+	...
+}
+```
 
 ## Issues
 
