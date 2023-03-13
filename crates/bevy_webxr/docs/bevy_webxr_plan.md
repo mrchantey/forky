@@ -6,15 +6,12 @@
 [X] bevy web_sys hello world
 [X] bevy webxr inline
 [X] bevy webxr immersive
-[] remove blit stuff
-[] nicer camera integrations
-[] shaders
+[X] remove blit stuff
+[X] nicer camera integrations
+[X] shaders
+[X] controllers
 [] ...
 [] profit
-
-## Notes
-
-- Looks like neither winit nor bevy touch webgl and just put pixels, may need to handroll this. check out wasm-bindgen webgl example
 
 ## Reference
 
@@ -34,7 +31,6 @@
 
 
 ## Research
-
 
 State of XR in Bevy
 - [OpenXR issue](https://github.com/bevyengine/bevy/issues/115)

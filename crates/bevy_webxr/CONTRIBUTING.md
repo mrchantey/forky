@@ -15,9 +15,9 @@ These are all pretty much dev's choice for running commands, servers etc. but th
 	- Command runner
 	- Alternatively copy/paste commands from [justfile](./justfile)
 - [cygwin](https://www.cygwin.com/)
-	- Bash shell for running just on Windows
+	- Bash shell for Windows
 - [live-server](https://www.npmjs.com/package/live-server)
-	- feel free to use any server you wish
+	- feel free to use any server you're used to
 - [openssl](https://www.openssl.org/)
 	- https cert key generation
 

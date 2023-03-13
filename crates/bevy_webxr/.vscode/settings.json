@@ -13,6 +13,8 @@
 		// ".vscode": true,
 		//optional
 		"**/LICENSE": true,
+		"**/LICENSE-APACHE": true,
+		"**/LICENSE-MIT": true,
 		"**/.embuild/": true,
 		// "**/.cargo/": true,
 		// "**/Cargo.lock": true,

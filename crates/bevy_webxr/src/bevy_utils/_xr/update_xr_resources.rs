@@ -39,8 +39,6 @@ pub fn update_xr_resources(world: &mut World) {
     });
 
 	world.insert_non_send_resource(gl_layer);
-	world.insert_non_send_resource(pose);
-	world.insert_non_send_resource(views);
 	world.insert_non_send_resource(bevy_views);
 	world.insert_resource(bevy_utils::BevyInputSourceLookup(bevy_input_sources));
 }

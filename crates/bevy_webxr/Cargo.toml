@@ -2,12 +2,15 @@
 name = "bevy_webxr"
 version = "0.0.1"
 edition = "2021"
-# license-file = "LICENSE"
+license = "MIT OR Apache-2.0"
 readme = "README.md"
-authors = ["Peter Hayman <peteyhayman@gmail.com>"]
-description = "Bevy WebXR Plugin"
-documentation = "https://github.com/mrchantey/forky"
-repository = "https://github.com/mrchantey/forky"
+authors = ["mrchantey"]
+keywords = ["game", "engine", "gamedev", "graphics", "bevy", "xr", "webxr"]
+categories = ["game-engines", "graphics", "gui", "rendering", "xr", "webxr"]
+description = "WebXR renderer for the Bevy Engine."
+homepage = "https://github.com/mrchantey/forky/tree/main/crates/bevy_webxr"
+documentation = "https://github.com/mrchantey/forky/tree/main/crates/bevy_webxr"
+repository = "https://github.com/mrchantey/forky/tree/main/crates/bevy_webxr"
 
 # [lib]
 # crate-type = ["cdylib"]
@@ -20,18 +23,16 @@ crossbeam-channel = "0.5.0"
 notify = "5.0.0"
 
 # bevy = "0.10.0"
-bevy = {path = "../../../../work-ref/bevy"}
+bevy = {version = "0.11.0-dev", path = "../../../../work-ref/bevy"}
 wgpu = "0.15.0"
 wgpu-types = { version = "0.15.0" }
 wgpu-hal = {version = "0.15.1",features = ["gles"]}
 glow = "0.12.1"
 # WEB
-# wasm-bindgen = "0.2.84"
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
 futures = "0.3.26"
 js-sys = "0.3"
-# web-sys = "0.3"
 console_error_panic_hook = "0.1.6"
 # MISC
 anyhow = "1.0.4"
@@ -39,7 +40,6 @@ extend = "1.1.2"
 derive_deref = "1.1.1"
 
 [dependencies.web-sys]
-# web-sys = "0.3"
 version = "0.3.61"
 features = [
 	# STANDARD
@@ -91,7 +91,6 @@ features = [
   'XrSpace',
   'XrTargetRayMode',
   'XrView',
-  # 'XrViewArray',
   'XrViewerPose',
   'XrViewport',
   'XrVisibilityState',
@@ -99,6 +98,3 @@ features = [
   'XrWebGlLayerInit',
   'XrSystem',
 ]
-
-# [dev-dependencies]
-# forky_play = {path = "../forky/crates/forky_play"}
