@@ -1,2 +1,2 @@
-mod simple_plugin;
-pub use self::simple_plugin::*;
+mod demo_scene_plugin;
+pub use self::demo_scene_plugin::*;

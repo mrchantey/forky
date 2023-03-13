@@ -21,7 +21,7 @@ pub fn update_manual_texture_views(
 	texture_id: Res<bevy_utils::FramebufferTextureViewId>,
 	mut manual_tex_view: ResMut<ManualTextureViews>,
 ) {
-	let dest_texture = wgpu_utils::create_framebuffer_texture(
+	let dest_texture = xr_utils::create_framebuffer_texture(
 		&render_device.wgpu_device(),
 		&gl_layer,
 	);

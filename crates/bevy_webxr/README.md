@@ -2,11 +2,6 @@
 
 A Standalone WebXR renderer for the Bevy Engine. Tested on Oculus Quest 2.
 
-## Quickstart
-
-- just serve
-- just build-w bevy_webxr
-
 ## Resources
 
 - `XrFrame`
@@ -22,6 +17,11 @@ fn do_thing(frame: NonSend<web_sys::XrFrame>){
 	...
 }
 ```
+
+
+## Contributing
+
+For more info about the repo see [CONTRIBUTING](contributing.md)
 
 ## Issues
 

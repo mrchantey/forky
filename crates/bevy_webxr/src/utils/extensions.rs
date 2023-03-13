@@ -1,6 +1,7 @@
 use crate::*;
 use bevy::{prelude::*, render::camera::Viewport};
 use extend::ext;
+use wasm_bindgen::JsValue;
 use web_sys::*;
 
 pub trait GetFramebuffer {
@@ -25,11 +26,14 @@ impl GetFramebuffer for XrWebGlLayer {
 
 #[ext(name = AppX)]
 pub impl App {
+	/// Chaining helper, returns self
 	fn __(&mut self) -> &mut Self { self }
+	/// Custom runner that updates on the required XR requestAnimationFrame
 	fn run_webxr(mut self) { bevy_utils::run_bevy_webxr(self); }
 }
 #[ext(name = WorldX)]
 pub impl World {
+	/// Chaining helper, returns self
 	fn __(&mut self) -> &mut Self { self }
 }
 #[ext(name = Mat4X)]
@@ -65,3 +69,13 @@ pub impl Viewport {
 			&& f32_equal(self.depth.end, other.depth.end, EPSILON_POJECTION)
 	}
 }
+#[ext(name = ArrayX)]
+pub impl js_sys::Array {
+	fn to_vec_typed<T>(&self) -> Vec<T>
+	where
+		T: From<JsValue>,
+	{
+		self.iter().map(|x| x.into()).collect::<Vec<T>>()
+	}
+}
+

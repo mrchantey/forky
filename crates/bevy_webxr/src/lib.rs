@@ -5,8 +5,8 @@
 #![allow(unused_parens)]
 
 pub mod bevy_utils;
+pub mod bevy_web_asset;
 pub mod demo;
-pub mod wgpu_utils;
-pub mod xr_utils;
 mod utils;
+pub mod xr_utils;
 pub use self::utils::*;

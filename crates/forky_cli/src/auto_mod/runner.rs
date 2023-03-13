@@ -1,7 +1,7 @@
 use anyhow::Result;
 use forky_core::*;
 use forky_fs::*;
-use std::{env, fs, path::PathBuf};
+use std::{env, fs, path::PathBuf, ffi::OsString};
 
 //TODO anyhow
 
@@ -42,6 +42,12 @@ fn filename_starts_with_underscore(p: &PathBuf) -> bool {
 }
 fn filename_contains_double_underscore(p: &PathBuf) -> bool {
 	p.file_name().str().contains("__")
+}
+fn is_dir_or_rustfile(p: &PathBuf) -> bool {
+	match p.extension() {
+		Some(value) => value.to_str().unwrap() == "rs",
+		None => p.is_dir(),
+	}
 }
 // fn filename_starts_with_uppercase(p: &PathBuf) -> bool {
 // 	p.file_name().str().first().is_ascii_uppercase()
@@ -92,6 +98,7 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 	children
 		.map(|p| p.unwrap().path())
 		.filter(|c| !filename_included(c, IGNORE_FILES))
+		.filter(|c| is_dir_or_rustfile(c))
 		.for_each(|c| {
 			let stem = c.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();

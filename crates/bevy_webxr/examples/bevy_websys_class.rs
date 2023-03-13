@@ -18,7 +18,7 @@ impl Runner {
 		let mut app = App::new();
 		app
 			// .add_plugins(DefaultPlugins.build().disable::<WinitPlugin>())
-			.add_plugin(demo::SimplePlugin);
+			.add_plugin(demo::DemoScenePlugin);
 		// .run();
 		// .update();
 
@@ -34,7 +34,8 @@ impl Runner {
 			.set_interval_with_callback_and_timeout_and_arguments_0(
 				update.as_ref().unchecked_ref(),
 				16,
-			).unwrap();
+			)
+			.unwrap();
 		update.forget(); //terrible, memory leak
 
 		Runner {

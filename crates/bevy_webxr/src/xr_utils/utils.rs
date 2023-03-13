@@ -42,7 +42,7 @@ pub async fn create_xr_session_with_mode(
 	Ok(session)
 }
 
-pub async fn create_xr_gl_layer(
+pub fn create_xr_gl_layer(
 	session: &XrSession,
 	gl: &WebGl2RenderingContext,
 ) -> Result<XrWebGlLayer, JsValue> {
@@ -59,18 +59,28 @@ pub async fn create_xr_gl_layer(
 pub async fn get_reference_space(
 	session: &XrSession,
 	mode: &XrSessionMode,
+	reference_space_type: &XrReferenceSpaceType,
 ) -> Result<XrReferenceSpace, JsValue> {
-	let space_type = match mode {
-		XrSessionMode::Inline => XrReferenceSpaceType::Viewer,
-		XrSessionMode::ImmersiveVr => XrReferenceSpaceType::Local,
-		XrSessionMode::ImmersiveAr => XrReferenceSpaceType::Local,
-		_ => XrReferenceSpaceType::Viewer,
-	};
 	let reference_space =
-		JsFuture::from(session.request_reference_space(space_type))
+		JsFuture::from(session.request_reference_space(*reference_space_type))
 			.await?
 			.into();
 	Ok(reference_space)
+}
+
+pub fn unwrap_reference_space_type(
+	session_mode: &XrSessionMode,
+	reference_space_type: Option<XrReferenceSpaceType>,
+) -> XrReferenceSpaceType {
+	match reference_space_type {
+		Some(value) => value,
+		None => match session_mode {
+			XrSessionMode::Inline => XrReferenceSpaceType::Viewer,
+			XrSessionMode::ImmersiveVr => XrReferenceSpaceType::Local,
+			XrSessionMode::ImmersiveAr => XrReferenceSpaceType::Local,
+			_ => XrReferenceSpaceType::Viewer,
+		},
+	}
 }
 
 

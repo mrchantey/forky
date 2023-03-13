@@ -13,46 +13,57 @@ repository = "https://github.com/mrchantey/forky"
 # crate-type = ["cdylib"]
 
 [dependencies]
-# wasm-bindgen = "0.2.84"
+# RENDER
+# Copied from https://github.com/bevyengine/bevy/blob/main/crates/bevy_asset/Cargo.toml
+# bevy_web_asset = {git = "https://github.com/johanhelsing/bevy_web_asset.git", branch="bevy-0.10" }
+crossbeam-channel = "0.5.0"
+notify = "5.0.0"
+
 # bevy = "0.10.0"
 bevy = {path = "../../../../work-ref/bevy"}
-bevy_mod_debugdump = "0.7.0"
-anyhow = "1.0.4"
-wasm-bindgen = "0.2"
-wasm-bindgen-futures = "0.4"
-futures = "0.3.26"
-js-sys = "0.3"
-console_error_panic_hook = "0.1.6"
-
 wgpu = "0.15.0"
 wgpu-types = { version = "0.15.0" }
 wgpu-hal = {version = "0.15.1",features = ["gles"]}
 glow = "0.12.1"
-raw-window-handle = "0.5.0"
+# WEB
+# wasm-bindgen = "0.2.84"
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+futures = "0.3.26"
+js-sys = "0.3"
+# web-sys = "0.3"
+console_error_panic_hook = "0.1.6"
+# MISC
+anyhow = "1.0.4"
 extend = "1.1.2"
 derive_deref = "1.1.1"
-
-# web-sys = "0.3"
 
 [dependencies.web-sys]
 # web-sys = "0.3"
 version = "0.3.61"
 features = [
+	# STANDARD
+  'console',
   'Document',
-	'DomPointReadOnly',
   'Element',
-  'Gpu',
   'Headers',
-  'HtmlCanvasElement',
   'Navigator',
+  'Window',
+	# IO
+	# 'Json',
   'Request',
   'RequestInit',
   'RequestMode',
   'Response',
+  # 'Url',
+	# WEBGL
+  'Gpu',
+  'HtmlCanvasElement',
   'WebGl2RenderingContext',
 	'WebGlFramebuffer', 
+	## XR
+	'DomPointReadOnly',
 	'XrWebGlLayer',
-  'Window',
   'XrBoundedReferenceSpace',
   'XrEye',
   'XrFrame',
@@ -80,13 +91,13 @@ features = [
   'XrSpace',
   'XrTargetRayMode',
   'XrView',
+  # 'XrViewArray',
   'XrViewerPose',
   'XrViewport',
   'XrVisibilityState',
   'XrWebGlLayer',
   'XrWebGlLayerInit',
   'XrSystem',
-  'console'
 ]
 
 # [dev-dependencies]

@@ -39,11 +39,11 @@ pub fn setup_xr_cameras(
 
 	for (i,view) in views.iter().enumerate() {
 		let index = i;
-		//the left camera clears entire target, wait right now?
-		let (clear_color, order) = if i == 0 {
-			(ClearColorConfig::None, 1)
+		//the first/left camera clears entire target
+		let clear_color = if i == 0 {
+			ClearColorConfig::default()
 		} else {
-			(ClearColorConfig::default(), 0)
+			ClearColorConfig::None
 		};
 		let mut entity = commands.spawn(Camera3dBundle {
 			camera_3d: Camera3d {
@@ -52,7 +52,7 @@ pub fn setup_xr_cameras(
 			},
 			projection: Projection::Perspective(view.projection.clone()),
 			camera: Camera {
-				order,
+				order: index as isize,
 				target: RenderTarget::TextureView(texture_id.0),
 				viewport: Some(view.viewport.clone()),
 				..default()

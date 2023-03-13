@@ -38,17 +38,18 @@
 
 <script type="module" defer>
 	import init from './wasm/bindgen.js'
-	window.initWasm = init
-	let button = document.querySelector('button');
-	if (button)
-		button.onclick = () => init()
-	else
+	//if http assume test
+	const isTest = navigator.userAgent.indexOf("OculusBrowser") === -1
+	// const isTest = location.protocol === 'http:'
+
+	if (isTest) {
 		init()
+	} else {
+		var button = document.createElement('button')
+		button.innerHTML = 'Enter XR'
+		button.onclick = () => init()
+		document.body.appendChild(button);
+	}
 </script>
-
-<body>
-	<button>Enter XR</button>
-
-</body>
 
 </html>

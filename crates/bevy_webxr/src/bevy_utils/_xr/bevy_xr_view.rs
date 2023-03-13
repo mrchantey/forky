@@ -4,8 +4,7 @@ use web_sys::*;
 
 
 pub struct BevyXrView {
-	pub position: Vec3,
-	pub rotation: Quat,
+	pub pose: bevy_utils::Pose,
 	pub viewport: Viewport,
 	pub projection: PerspectiveProjection,
 	// pub projection: Vec<f32>,
@@ -15,18 +14,20 @@ pub struct BevyXrView {
 
 impl BevyXrView {
 	pub fn new(view: &XrView, gl_layer: &XrWebGlLayer) -> Self {
-		let (position, rotation) = bevy_utils::view_pose(&view);
+		let pose: bevy_utils::Pose = view.transform().into();
 		let viewport = gl_layer.get_viewport(view).unwrap();
 		let viewport = bevy_utils::view_viewport(&viewport);
 		let projection = view.projection_matrix();
 		let mut projection = projection_from_vec(&projection);
-		projection.fov *= -1.;
+		//fov seems to always be negative, but no issue
+		// projection.fov *= -1.;
 		projection.near = 0.01;
 		projection.far = 1000.0;
+		//otherwise bevy inverts the ar? ie 2 becomes 0.5
+		projection.aspect_ratio = 1. / projection.aspect_ratio;
 
 		Self {
-			position,
-			rotation,
+			pose,
 			viewport,
 			projection,
 		}
@@ -37,24 +38,20 @@ impl BevyXrView {
 		camera: &Camera,
 		projection: &PerspectiveProjection,
 	) -> bool {
-		// let (fov, ar) = crate::projection_from_vec(&self.projection);
-		// let cam_projection = projection_from_mat(&cam_proj);
-
-		//TODO camera projection looks wrong
 		if !self.projection.is_equal(projection) {
 			log!(
-				"rebuild for projection, xr: {:?} cam: {:?}",
+				"rebuild for projection, current: {:?} next: {:?}",
+				projection,
 				self.projection,
-				projection
 			);
 			return true;
 		}
 		let cam_viewport = camera.viewport.clone().unwrap();
 		if !self.viewport.is_equal(&cam_viewport) {
 			log!(
-				"rebuild for projection, xr: {:?} cam: {:?}",
+				"rebuild for viewport, current: {:?} next: {:?}",
+				&cam_viewport,
 				self.viewport,
-				&cam_viewport
 			);
 			return true;
 		}

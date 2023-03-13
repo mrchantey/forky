@@ -8,9 +8,11 @@
 		"**/CVS": true,
 		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
+		// "html/assets": true,
+		// "html/wasm": true,
 		// ".vscode": true,
 		//optional
-		"LICENSE": true,
+		"**/LICENSE": true,
 		"**/.embuild/": true,
 		// "**/.cargo/": true,
 		// "**/Cargo.lock": true,

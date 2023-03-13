@@ -1,7 +1,9 @@
 mod canvas;
 pub use self::canvas::*;
-mod run;
-pub use self::run::*;
+mod create_framebuffer_texture;
+pub use self::create_framebuffer_texture::*;
+mod run_xr_loop;
+pub use self::run_xr_loop::*;
 mod test;
 pub use self::test::*;
 mod utils;

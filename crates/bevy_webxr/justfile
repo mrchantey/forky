@@ -20,6 +20,7 @@ run *args:
 # 	just watch 'just run {{args}}'
 
 build example:
+	just copy-wasm-assets
 	cargo build --example {{example}} --release --target wasm32-unknown-unknown
 	RUST_BACKTRACE={{backtrace}} wasm-bindgen \
 	--out-dir ./html/wasm \
@@ -31,10 +32,14 @@ build example:
 build-w *args:
 	just watch 'just build {{args}}'
 
-serve:
-	cd ./html && live-server
+copy-wasm-assets:
+	rm -rf ./html/assets
+	cp -r ./assets ./html/assets
+
+serve *args:
+	cd ./html && live-server --watch=wasm/bindgen_bg.wasm,index.html {{args}}
 serve-https:
-	cd ./html && live-server --https=https.config.js
+	just serve --https=https.config.js
 
 clean:
 	cargo clean
@@ -48,7 +53,7 @@ publish:
 	cargo publish --allow-dirty
 
 watch command:
-	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat}' --ignore '{html/wasm,target/}' -- {{command}}
+	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat}' --ignore '{html/wasm,target/}' --ignore 'html*' -- {{command}}
 
 vis:
 	just run bevy_graph_print --target x86_64-pc-windows-msvc
