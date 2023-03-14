@@ -19,8 +19,9 @@ impl Plugin for DemoScenePlugin {
 		app.__()
 			.insert_resource(Speed(0.25))
 			// .insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
-			.add_startup_system(spawn_cube)
+			// .add_startup_system(spawn_cube)
 			.add_startup_system(spawn_ground)
+			.add_startup_system(spawn_logo)
 			// .add_startup_system(setup_cubes)
 			.add_startup_system(spawn_camera)
 			.add_startup_system(spawn_lights)
@@ -79,6 +80,25 @@ pub fn spawn_ground(
 		}),
 		transform: Transform::from_xyz(0., -1., 0.)
 			.with_rotation(Quat::from_rotation_x(TAU * -0.25)),
+		..default()
+	});
+}
+pub fn spawn_logo(
+	mut commands: Commands,
+	mut meshes: ResMut<Assets<Mesh>>,
+	mut materials: ResMut<Assets<bevy_utils::UnlitTextureMaterial>>,
+	asset_server: Res<AssetServer>,
+) {
+	commands.spawn(MaterialMeshBundle {
+		mesh: meshes.add(Mesh::from(shape::Quad {
+			size: Vec2::new(3., 1.),
+			..default()
+		})),
+		material: materials.add(bevy_utils::UnlitTextureMaterial {
+			color_texture: Some(asset_server.load("textures/logo_text.png")),
+			..default()
+		}),
+		transform: Transform::from_xyz(0., 0., -5.),
 		..default()
 	});
 }

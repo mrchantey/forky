@@ -1,5 +1,5 @@
 use crate::*;
-use bevy::{prelude::*, render::camera::Viewport};
+use bevy::{prelude::*, render::camera::Viewport, ecs::system::EntityCommands};
 use extend::ext;
 use wasm_bindgen::JsValue;
 use web_sys::*;
@@ -36,10 +36,24 @@ pub impl World {
 	/// Chaining helper, returns self
 	fn __(&mut self) -> &mut Self { self }
 }
+#[ext(name = EntityCommandsX)]
+pub impl<'w,'s,'a> EntityCommands<'w,'s,'a> {
+	/// Chaining helper, returns self
+	fn __(&mut self) -> &mut Self { self }
+}
 #[ext(name = Mat4X)]
 pub impl Mat4 {
 	fn is_equal(&self, arr: &Vec<f32>, eps: f32) -> bool {
 		mat4_equal(self, arr, eps)
+	}
+
+	fn from_vec(m: &Vec<f32>) -> Self {
+		Self {
+			x_axis: Vec4::new(m[0], m[1], m[2], m[3]),
+			y_axis: Vec4::new(m[4], m[5], m[6], m[7]),
+			z_axis: Vec4::new(m[8], m[9], m[10], m[11]),
+			w_axis: Vec4::new(m[12], m[13], m[14], m[15]),
+		}
 	}
 }
 
@@ -78,4 +92,3 @@ pub impl js_sys::Array {
 		self.iter().map(|x| x.into()).collect::<Vec<T>>()
 	}
 }
-

@@ -2,6 +2,11 @@ use bevy::{
 	core_pipeline::clear_color::ClearColorConfig,
 	log::LogPlugin,
 	prelude::*,
+	render::{
+		camera::{camera_system, CameraProjectionPlugin},
+		view::{update_frusta, VisibilitySystems},
+	},
+	transform::TransformSystem,
 	window::{CompositeAlphaMode, WindowResolution},
 	winit::WinitPlugin,
 };
@@ -9,7 +14,7 @@ use bevy::{
 use crate::*;
 
 pub struct WebXrBasePlugin;
-// #[rustfmt::skip]
+#[rustfmt::skip]
 impl Plugin for WebXrBasePlugin {
 	fn build(&self, app: &mut App) {
 		set_panic_hook();
@@ -33,16 +38,12 @@ impl Plugin for WebXrBasePlugin {
 						..Default::default()
 					})
 					.build()
-					.disable::<AssetPlugin>(),
+					.disable::<AssetPlugin>()//use webassetplugin
 			)
+			.add_plugin(bevy_utils::RawProjectionPlugin)
 			.add_plugin(MaterialPlugin::<bevy_utils::UnlitMaterial>::default())
-			.add_plugin(
-				MaterialPlugin::<bevy_utils::UnlitTextureMaterial>::default(),
-			)
-			// .add_system(
-			// 	bevy_utils::replace_standard_material
-			// 		.in_base_set(CoreSet::PostUpdate),
-			// )
+			.add_plugin(MaterialPlugin::<bevy_utils::UnlitTextureMaterial>::default())
+			// .add_system(bevy_utils::replace_standard_material.in_base_set(CoreSet::PostUpdate))
 			.__();
 	}
 }

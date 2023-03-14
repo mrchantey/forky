@@ -15,10 +15,14 @@ impl Pose {
 #[rustfmt::skip]
 impl From<XrRigidTransform> for Pose {
 	fn from(transform: XrRigidTransform) -> Self {
-		let position = bevy_utils::dom_point_to_vec3_invert_x(
+		// let position = bevy_utils::dom_point_to_vec3_invert_x(
+		// 	&transform.position());
+		let position = bevy_utils::dom_point_to_vec3(
 			&transform.position());
-		let rotation = bevy_utils::dom_point_to_quat_invert_yaw_roll(
+		let rotation = bevy_utils::dom_point_to_quat(
 			&transform.orientation());
+		// let rotation = bevy_utils::dom_point_to_quat_invert_yaw_roll(
+		// 	&transform.orientation());
 		Self { position, rotation }
 	}
 }
