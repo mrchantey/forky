@@ -1,13 +1,13 @@
 use crate::*;
 use bevy::{
-	core_pipeline::clear_color::ClearColorConfig,
+	core_pipeline::{clear_color::ClearColorConfig, tonemapping::{Tonemapping, DebandDither}},
 	prelude::*,
 	render::{
 		camera::{
 			CameraProjection, ManualTextureViews, RenderTarget, Viewport,
 		},
 		extract_resource::ExtractResource,
-		primitives::Frustum,
+		primitives::Frustum, view::ColorGrading,
 	},
 };
 use derive_deref::{Deref, DerefMut};
@@ -54,6 +54,8 @@ pub fn setup_xr_cameras(
 		let view_projection =
 			view.projection.get_projection_matrix() * Mat4::IDENTITY.inverse();
 
+		// let frustum = Frustum::from_view_projection(&view_projection);
+
 		let mut entity = commands.spawn(Camera3dBundle {
 			camera_3d: Camera3d {
 				clear_color, //split screen
@@ -69,6 +71,10 @@ pub fn setup_xr_cameras(
 		});
 		entity
 			.__()
+			// .insert(frustum)
+			// .remove::<Tonemapping>()
+			// .remove::<DebandDither>()
+			// .remove::<ColorGrading>()
 			.remove::<Projection>()
 			.insert(view.projection.clone())
 			.insert(XrCamera { index })

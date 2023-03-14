@@ -29,7 +29,6 @@ impl Plugin for WebXrPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
 		.add_plugin(bevy_utils::WebXrBasePlugin)
-		.add_plugin(bevy_utils::InvertPlugin)
 		.add_plugin(ExtractResourcePlugin::<bevy_utils::FramebufferTextureViewId>::default())
 		.add_event::<bevy_utils::InputSourceAdded>()
 		.add_event::<bevy_utils::InputSourceRemoved>()

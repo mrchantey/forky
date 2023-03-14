@@ -43,9 +43,13 @@ impl RawProjection {
 		// mat.w_axis.z = 0.1;
 		Self { mat }
 	}
-	pub fn from_vec(vec: &Vec<f32>) -> Self {
+	pub fn from_vec_inverted(vec: &Vec<f32>) -> Self {
 		//
-		Self::new(Mat4::from_vec(vec))
+		let mut mat = Mat4::from_vec(vec);
+		mat.y_axis.y *= -1.;
+		mat.z_axis.z = 0.;
+		mat.w_axis.z = 0.01;
+		Self::new(mat)
 	}
 	//proj_matrix[14] / (proj_matrix[10] - 1.0);
 	pub fn get_near(&self) -> f32 {

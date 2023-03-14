@@ -1,7 +1,14 @@
 use bevy::{
+	pbr::{MaterialPipeline, MaterialPipelineKey},
 	prelude::*,
 	reflect::TypeUuid,
-	render::render_resource::{AsBindGroup, ShaderRef},
+	render::{
+		mesh::MeshVertexBufferLayout,
+		render_resource::{
+			AsBindGroup, RenderPipelineDescriptor, ShaderRef,
+			SpecializedMeshPipelineError,
+		},
+	},
 };
 
 // This is the struct that will be passed to your shader
@@ -34,4 +41,13 @@ impl Material for UnlitTextureMaterial {
 	fn fragment_shader() -> ShaderRef { "shaders/unlit_texture.wgsl".into() }
 
 	fn alpha_mode(&self) -> AlphaMode { self.alpha_mode }
+	fn specialize(
+		pipeline: &MaterialPipeline<Self>,
+		descriptor: &mut RenderPipelineDescriptor,
+		layout: &MeshVertexBufferLayout,
+		key: MaterialPipelineKey<Self>,
+	) -> Result<(), SpecializedMeshPipelineError> {
+		descriptor.primitive.cull_mode = None;
+		Ok(())
+	}
 }

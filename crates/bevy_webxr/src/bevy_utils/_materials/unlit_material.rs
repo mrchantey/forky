@@ -1,7 +1,7 @@
 use bevy::{
 	prelude::*,
 	reflect::TypeUuid,
-	render::render_resource::{AsBindGroup, ShaderRef},
+	render::{render_resource::{AsBindGroup, ShaderRef, RenderPipelineDescriptor, SpecializedMeshPipelineError}, mesh::MeshVertexBufferLayout}, pbr::{MaterialPipeline, MaterialPipelineKey},
 };
 
 // This is the struct that will be passed to your shader
@@ -18,4 +18,13 @@ impl Material for UnlitMaterial {
 	fn fragment_shader() -> ShaderRef { "shaders/unlit.wgsl".into() }
 
 	fn alpha_mode(&self) -> AlphaMode { self.alpha_mode }
+	fn specialize(
+		pipeline: &MaterialPipeline<Self>,
+		descriptor: &mut RenderPipelineDescriptor,
+		layout: &MeshVertexBufferLayout,
+		key: MaterialPipelineKey<Self>,
+	) -> Result<(), SpecializedMeshPipelineError> {
+		descriptor.primitive.cull_mode = None;
+		Ok(())
+	}
 }

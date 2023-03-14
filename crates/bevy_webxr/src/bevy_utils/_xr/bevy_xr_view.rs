@@ -21,7 +21,8 @@ impl BevyXrView {
 		let viewport = gl_layer.get_viewport(view).unwrap();
 		let viewport = bevy_utils::view_viewport(&viewport);
 		let projection = view.projection_matrix();
-		let projection = bevy_utils::RawProjection::from_vec(&projection);
+		let projection =
+			bevy_utils::RawProjection::from_vec_inverted(&projection);
 		// let mut projection = bevy_utils::projection_from_vec(&projection);
 		//fov seems to always be negative, but no issue
 		// projection.fov *= -1.;
