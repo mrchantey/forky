@@ -1,3 +1,5 @@
+mod bevy_xr_input_source;
+pub use self::bevy_xr_input_source::*;
 mod input_source_event;
 pub use self::input_source_event::*;
 mod rebuild_input_sources;

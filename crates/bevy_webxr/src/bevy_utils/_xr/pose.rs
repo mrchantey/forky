@@ -2,14 +2,10 @@ use crate::*;
 use bevy::prelude::*;
 use web_sys::*;
 
+#[derive(Debug, Clone)]
 pub struct Pose {
 	pub position: Vec3,
 	pub rotation: Quat,
-}
-
-impl Pose {
-	// pub fn from(transform: &XrRigidTransform) -> Self {
-	// }
 }
 
 #[rustfmt::skip]

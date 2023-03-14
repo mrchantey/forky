@@ -47,11 +47,12 @@ impl RawProjection {
 		//
 		let mut mat = Mat4::from_vec(vec);
 		mat.y_axis.y *= -1.;
-		mat.z_axis.z = 0.;
-		mat.w_axis.z = 0.01;
+		mat.z_axis.z = 0.; //far: infinite
+		mat.w_axis.z = 0.01; //near: 0.01
+					 // mat.z_axis.z *= -1.;
+					 // mat.w_axis.z *= -1.;
 		Self::new(mat)
 	}
-	//proj_matrix[14] / (proj_matrix[10] - 1.0);
 	pub fn get_near(&self) -> f32 {
 		0.01
 		// self.mat.w_axis.z / (self.mat.z_axis.z - 1.0)

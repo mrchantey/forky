@@ -1,17 +1,23 @@
 use crate::*;
 use bevy::{
-	core_pipeline::{clear_color::ClearColorConfig, tonemapping::{Tonemapping, DebandDither}},
+	core_pipeline::{
+		clear_color::ClearColorConfig,
+		tonemapping::{DebandDither, Tonemapping},
+	},
 	prelude::*,
 	render::{
 		camera::{
 			CameraProjection, ManualTextureViews, RenderTarget, Viewport,
 		},
 		extract_resource::ExtractResource,
-		primitives::Frustum, view::ColorGrading,
+		primitives::Frustum,
+		view::ColorGrading,
 	},
 };
 use derive_deref::{Deref, DerefMut};
 use web_sys::*;
+
+use super::BevyXrViewLookup;
 
 #[derive(Resource, Clone, Deref, DerefMut, ExtractResource)]
 pub struct FramebufferTextureViewId(pub u32);
@@ -38,10 +44,11 @@ pub fn remove_xr_cameras(
 pub fn setup_xr_cameras(
 	mut commands: Commands,
 	mode: NonSend<XrSessionMode>,
-	views: NonSend<Vec<bevy_utils::BevyXrView>>,
+	views: Res<BevyXrViewLookup>,
 	texture_id: Res<FramebufferTextureViewId>,
 	frame: NonSend<web_sys::XrFrame>,
 ) {
+	log!("setup_xr_cameras");
 	for (i, view) in views.iter().enumerate() {
 		let index = i;
 		//the first/left camera clears entire target
@@ -76,6 +83,7 @@ pub fn setup_xr_cameras(
 			// .remove::<DebandDither>()
 			// .remove::<ColorGrading>()
 			.remove::<Projection>()
+			.insert(view.clone())
 			.insert(view.projection.clone())
 			.insert(XrCamera { index })
 			.__();

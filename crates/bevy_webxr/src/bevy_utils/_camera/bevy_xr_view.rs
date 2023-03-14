@@ -1,10 +1,14 @@
 use std::{collections::hash_map::DefaultHasher, hash::Hasher};
 
 use crate::*;
-use bevy::{prelude::*, render::camera::Viewport};
+use bevy::{prelude::*, render::camera::Viewport, utils::HashMap};
+use derive_deref::{Deref, DerefMut};
 use web_sys::*;
 
-#[derive(Component)]
+#[derive(Resource, Deref, DerefMut)]
+pub struct BevyXrViewLookup(pub Vec<BevyXrView>);
+
+#[derive(Component, Debug, Clone)]
 pub struct BevyXrView {
 	pub hash: u64,
 	pub pose: bevy_utils::Pose,
@@ -46,31 +50,5 @@ impl BevyXrView {
 		let viewport = gl_layer.get_viewport(view).unwrap();
 		hash_viewport(&viewport, &mut hasher);
 		hasher.finish()
-	}
-
-	pub fn needs_rebuild(
-		&self,
-		// camera: &Camera,
-		// projection: &PerspectiveProjection,
-	) -> bool {
-		//TODO use hash not camera
-		// if !self.projection.is_equal(projection) {
-		// 	log!(
-		// 		"rebuild for projection, current: {:?} next: {:?}",
-		// 		projection,
-		// 		self.projection,
-		// 	);
-		// 	return true;
-		// }
-		// let cam_viewport = camera.viewport.clone().unwrap();
-		// if !self.viewport.is_equal(&cam_viewport) {
-		// 	log!(
-		// 		"rebuild for viewport, current: {:?} next: {:?}",
-		// 		&cam_viewport,
-		// 		self.viewport,
-		// 	);
-		// 	return true;
-		// }
-		false
 	}
 }

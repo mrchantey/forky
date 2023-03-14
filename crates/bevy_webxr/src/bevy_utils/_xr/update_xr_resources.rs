@@ -8,7 +8,7 @@ use wasm_bindgen::JsValue;
 use web_sys::*;
 use wgpu::Extent3d;
 
-
+#[rustfmt::skip]
 pub fn update_xr_resources(world: &mut World) {
 	let frame = world.non_send_resource::<XrFrame>();
 	let session = frame.session();
@@ -39,6 +39,6 @@ pub fn update_xr_resources(world: &mut World) {
     });
 
 	world.insert_non_send_resource(gl_layer);
-	world.insert_non_send_resource(bevy_views);
+	world.insert_resource(bevy_utils::BevyXrViewLookup(bevy_views));
 	world.insert_resource(bevy_utils::BevyInputSourceLookup(bevy_input_sources));
 }

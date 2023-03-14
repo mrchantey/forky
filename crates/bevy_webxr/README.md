@@ -15,29 +15,30 @@ VERY early-stage standalone WebXR renderer for the Bevy Engine.
 
 ```rs
 use bevy::prelude::*;
-use bevy_webxr::{demo, bevy_utils};
+use bevy_webxr::{demo::DemoScenePlugin, bevy_utils::WebXrPlugin};
 
 fn main() {
 	let mut app = App::new();
 	app
-		.add_plugin(demo::DemoScenePlugin)
-		.add_plugin(bevy_utils::WebXrPlugin {
-			..default()
-		});
+		.add_plugin(DemoScenePlugin)
+		.add_plugin(WebXrPlugin)
 	// custom run method hooks into session.requestAnimationFrame
 	app.run_webxr();
 }
 ```
 
 ## Resources
-
-- `XrFrame`
-- `XrReferenceSpace`
-- `XrSession`
-- `XrSessionMode`
-- `XrWebGlLayer`
-- `NonSend<BevyXrView>` TODO xrviewlookup
-- `BevyInputSourceLookup`
+- JsValues
+	- `XrFrame`
+	- `XrReferenceSpace`
+	- `XrReferenceSpaceType`
+	- `XrSession`
+	- `XrSessionMode`
+	- `XrWebGlLayer`
+- Additional
+	- `BevyXrViewLookup`
+	- `BevyInputSourceLookup`
+	- `FramebufferTextureViewId`
 
 JsValue Resources can be accesed via `NonSend`, ie:
 
@@ -48,14 +49,11 @@ fn do_thing(frame: NonSend<web_sys::XrFrame>){
 ```
 ## Issues
 
-- All devices
-	- Lighting seems about 10x darker than regular rendering
-	- Controller models are inverted on x axis
-- [WebXR API Emulator](https://chrome.google.com/webstore/detail/webxr-api-emulator/mjddjgeghkdijejnciaefnkjmkafnnje?hl=en)
+- Lighting seems about 10x darker than regular rendering
 - Oculus Quest
 	- Standard Materials broken on Android/Quest web, [issue](https://github.com/bevyengine/bevy/issues/4582)
 		- Thus controllers currently dont render
-	- Projection seems a bit off
+	- **Help Wanted** - Subtle issue with projection matrix, ie rotating head seems to translate meshes slightly
 - No other devices have been tested
 
 ## Contributing

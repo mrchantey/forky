@@ -1,3 +1,5 @@
+mod bevy_xr_view;
+pub use self::bevy_xr_view::*;
 mod cameras_need_rebuild;
 pub use self::cameras_need_rebuild::*;
 mod raw_projection;

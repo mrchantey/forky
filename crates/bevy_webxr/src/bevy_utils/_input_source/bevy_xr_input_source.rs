@@ -8,8 +8,6 @@ use std::{
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::*;
 
-use super::*;
-
 #[derive(Resource, Deref, DerefMut)]
 pub struct BevyInputSourceLookup(pub HashMap<u64, BevyXrInputSource>);
 
@@ -19,7 +17,7 @@ pub struct InputSourceHash(pub u64);
 #[derive(Component)]
 pub struct BevyXrInputSource {
 	pub hash: u64,
-	pub grip_pose: Pose,
+	pub grip_pose: bevy_utils::Pose,
 }
 
 impl BevyXrInputSource {
