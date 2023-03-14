@@ -2,11 +2,15 @@ use crate::*;
 use anyhow::Result;
 use bevy::prelude::*;
 use bevy::render::camera::ManualTextureViews;
+use bevy::render::extract_resource::ExtractResource;
 use bevy::render::render_asset::RenderAssets;
 use bevy::render::render_phase::AddRenderCommand;
+use bevy::render::render_resource::TextureView;
 use bevy::render::renderer::{RenderDevice, RenderQueue};
 use bevy::render::RenderApp;
+use derive_deref::{Deref, DerefMut};
 use std::cell::RefCell;
+use std::collections::HashMap;
 use std::rc::Rc;
 use std::sync::{Arc, Mutex};
 use wasm_bindgen::prelude::*;
@@ -14,8 +18,8 @@ use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::{future_to_promise, JsFuture};
 use web_sys::*;
 
-
 pub fn update_manual_texture_views(
+	mut commands: Commands,
 	gl_layer: NonSend<web_sys::XrWebGlLayer>,
 	render_device: Res<RenderDevice>,
 	texture_id: Res<bevy_utils::FramebufferTextureViewId>,

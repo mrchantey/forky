@@ -58,10 +58,11 @@ pub fn create_framebuffer_texture(
 				dimension: wgpu::TextureDimension::D2,
 				format: FORMAT,
 				view_formats: &[FORMAT],
-				usage: wgpu::TextureUsages::RENDER_ATTACHMENT, // | wgpu::TextureUsages::COPY_SRC,
+				usage: wgpu::TextureUsages::RENDER_ATTACHMENT
+					| wgpu::TextureUsages::TEXTURE_BINDING,
+				// | wgpu::TextureUsages::COPY_SRC,
 				// | wgpu::TextureUsages::COPY_DST,
-				                                               // wgpu::TextureUsages::TEXTURE_BINDING
-																											},
-																										)
-																									}
-																								}
+			},
+		)
+	}
+}

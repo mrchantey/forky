@@ -43,30 +43,9 @@ impl RawProjection {
 		// mat.w_axis.z = 0.1;
 		Self { mat }
 	}
-	pub fn from_vec_inverse(vec: &Vec<f32>) -> Self {
-		let mut mat = Mat4::from_vec(vec);
-		// mat.x_axis.x *= -1.;
-		// mat.y_axis.y *= -1.;//fix upside down
-		// //fix render back-to-front
-		// mat.z_axis.z = 0.;//infinite far
-		// // mat.z_axis.w *= -1.;
-		// mat.w_axis.z = 0.01;//near: 0.01
-		// mat.w_axis.z *= -1.;
-		// mat.w_axis.w *= -1.;
-		// let near = 0.01;
-		// let far = 1000.;
-		// let range_inv = 1. / (near - far);
-		// mat.z_axis.z = (near + far) * range_inv;
-		// mat.w_axis.z = near * far * range_inv * 2.;
-		// let r = far / (near - far);
-		// mat.z_axis.z = -r;
-		// mat.w_axis.z = -r * near;
-		// mat.z_axis.z = -(far + near) / (far - near);
-		// mat.z_axis.w = -(2.0 * far * near) / (far - near);
-		// mat.w_axis.z = -(2.0 * far * near) / (far - near);
-		// mat.w_axis.w = 0.0;
-		Self::new(mat)
-		// Self::new(Mat4::from_vec(vec).inverse())
+	pub fn from_vec(vec: &Vec<f32>) -> Self {
+		//
+		Self::new(Mat4::from_vec(vec))
 	}
 	//proj_matrix[14] / (proj_matrix[10] - 1.0);
 	pub fn get_near(&self) -> f32 {
@@ -122,12 +101,12 @@ PerspectiveProjection Mat4 {
 	x_axis: Vec4(2.4142134, 0.0, 0.0, 0.0),
 	y_axis: Vec4(0.0, 2.4142134, 0.0, 0.0),
 	z_axis: Vec4(0.0, 0.0, 0.0, -1.0),
-	w_axis: Vec4(0.0, 0.0, 0.1, 0.0) 
+	w_axis: Vec4(0.0, 0.0, 0.1, 0.0)
 }
 RawProjection Mat4 {
 		x_axis: Vec4(1.4527131, 0.0, 0.0, 0.0),
 		y_axis: Vec4(0.0, 1.0, 0.0, 0.0),
 		z_axis: Vec4(0.0, 0.0, -1.0002, -1.0),
-		w_axis: Vec4(0.0, 0.0, -0.20002, 0.0) 
+		w_axis: Vec4(0.0, 0.0, -0.20002, 0.0)
 }
 */

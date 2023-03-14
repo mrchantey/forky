@@ -2,14 +2,18 @@ use crate::*;
 use bevy::{
 	core_pipeline::clear_color::ClearColorConfig,
 	prelude::*,
-	render::{camera::{
-		CameraProjection, ManualTextureViews, RenderTarget, Viewport,
-	}, primitives::Frustum},
+	render::{
+		camera::{
+			CameraProjection, ManualTextureViews, RenderTarget, Viewport,
+		},
+		extract_resource::ExtractResource,
+		primitives::Frustum,
+	},
 };
 use derive_deref::{Deref, DerefMut};
 use web_sys::*;
 
-#[derive(Resource, Deref, DerefMut)]
+#[derive(Resource, Clone, Deref, DerefMut, ExtractResource)]
 pub struct FramebufferTextureViewId(pub u32);
 
 #[derive(Component)]
@@ -42,33 +46,19 @@ pub fn setup_xr_cameras(
 		let index = i;
 		//the first/left camera clears entire target
 		let clear_color = if i == 0 {
-			ClearColorConfig::Custom(Color::OLIVE)
-		// ClearColorConfig::default()
+			// ClearColorConfig::Custom(Color::OLIVE)
+			ClearColorConfig::default()
 		} else {
 			ClearColorConfig::None
 		};
-		// log!("viewport: {:?}", view.viewport);
-		// log!("projection: {:?}", view.projection);
-		// log!(
-		// 	"default: {:?}",
-		// 	PerspectiveProjection::default().get_projection_matrix()
-		// );
-    let view_projection =
-        view.projection.get_projection_matrix() * Mat4::IDENTITY.inverse();
-
-    // let frustum = Frustum::from_view_projection_custom_far(
-    //     &view_projection,
-    //     &Vec3::ZERO,
-    //     &Vec3::new(0.,0.,1.),
-    //     view.projection.get_far(),
-    // );
+		let view_projection =
+			view.projection.get_projection_matrix() * Mat4::IDENTITY.inverse();
 
 		let mut entity = commands.spawn(Camera3dBundle {
 			camera_3d: Camera3d {
 				clear_color, //split screen
 				..default()
 			},
-			// projection: Projection::Perspective(view.projection.clone()),
 			camera: Camera {
 				order: index as isize,
 				target: RenderTarget::TextureView(**texture_id),
@@ -79,10 +69,8 @@ pub fn setup_xr_cameras(
 		});
 		entity
 			.__()
-			// .insert(frustum)
 			.remove::<Projection>()
 			.insert(view.projection.clone())
-			// .insert(PerspectiveProjection::default())
 			.insert(XrCamera { index })
 			.__();
 		if i == 0 {

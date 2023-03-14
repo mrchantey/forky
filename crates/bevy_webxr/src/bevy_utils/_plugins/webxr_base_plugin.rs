@@ -4,7 +4,7 @@ use bevy::{
 	prelude::*,
 	render::{
 		camera::{camera_system, CameraProjectionPlugin},
-		view::{update_frusta, VisibilitySystems},
+		view::{update_frusta, VisibilitySystems}, extract_resource::ExtractResourcePlugin,
 	},
 	transform::TransformSystem,
 	window::{CompositeAlphaMode, WindowResolution},
