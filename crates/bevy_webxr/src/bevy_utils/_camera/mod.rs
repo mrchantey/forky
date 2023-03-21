@@ -1,12 +1,12 @@
 mod bevy_xr_view;
 pub use self::bevy_xr_view::*;
-mod cameras_need_rebuild;
-pub use self::cameras_need_rebuild::*;
+mod create_views;
+pub use self::create_views::*;
+mod insert_views;
+pub use self::insert_views::*;
 mod raw_projection;
 pub use self::raw_projection::*;
-mod setup_xr_cameras;
-pub use self::setup_xr_cameras::*;
 mod update_manual_texture_views;
 pub use self::update_manual_texture_views::*;
-mod update_xr_cameras;
-pub use self::update_xr_cameras::*;
+mod update_views;
+pub use self::update_views::*;

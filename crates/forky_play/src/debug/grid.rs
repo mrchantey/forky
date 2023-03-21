@@ -9,13 +9,13 @@ pub struct GridPlugin;
 
 impl Plugin for GridPlugin {
 	fn build(&self, app: &mut App) {
-		app.forky()
+		app.__()
 			.add_plugin(DebugLinesPlugin::with_depth_test(true))
 			.add_system(draw_grid)
 			// .add_system(some_system)
 			.add_system(draw_grid_axis)
 			.add_startup_system(spawn_grid)
-			.forky();
+			.__();
 	}
 }
 

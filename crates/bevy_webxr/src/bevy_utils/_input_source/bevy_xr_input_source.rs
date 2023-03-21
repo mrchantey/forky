@@ -8,31 +8,15 @@ use std::{
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::*;
 
-#[derive(Resource, Deref, DerefMut)]
-pub struct BevyInputSourceLookup(pub HashMap<u64, BevyXrInputSource>);
-
-#[derive(Component, Deref, DerefMut)]
-pub struct InputSourceHash(pub u64);
-
 #[derive(Component)]
 pub struct BevyXrInputSource {
 	pub hash: u64,
-	pub grip_pose: bevy_utils::Pose,
 }
 
 impl BevyXrInputSource {
-	pub fn new(
-		input_source: XrInputSource,
-		frame: &XrFrame,
-		reference_space: &XrReferenceSpace,
-	) -> Self {
-		let grip_pose = frame
-			.get_pose(&input_source.grip_space().unwrap(), &reference_space)
-			.unwrap();
-
+	pub fn new(input_source: &XrInputSource) -> Self {
 		Self {
 			hash: Self::get_hash(&input_source),
-			grip_pose: grip_pose.into(),
 		}
 	}
 
@@ -43,6 +27,17 @@ impl BevyXrInputSource {
 			hash_js_value(&profile, &mut hasher);
 		}
 		hasher.finish()
+	}
+
+	pub fn grip_pose(
+		source: &XrInputSource,
+		frame: &XrFrame,
+		reference_space: &XrReferenceSpace,
+	) -> bevy_utils::Pose {
+		frame
+			.get_pose(&source.grip_space().unwrap(), &reference_space)
+			.unwrap()
+			.into()
 	}
 }
 /*

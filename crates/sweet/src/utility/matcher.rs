@@ -48,14 +48,14 @@ impl Matcher<&str> {
 		}
 	}
 }
-const MIN_DELTA: f32 = 0.1;
+const EPSILON: f32 = 0.1;
 
 impl Matcher<f32> {
 	pub fn to_be_close_to(&self, other: f32) -> Result<()> {
 		self.assert_close(other)
 	}
 	fn assert_close(&self, other: f32) -> Result<()> {
-		if (self.value - other).abs() < MIN_DELTA {
+		if (self.value - other).abs() < EPSILON {
 			Ok(())
 		} else {
 			let expect = format!("close to {}", other);

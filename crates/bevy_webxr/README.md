@@ -28,6 +28,7 @@ fn main() {
 ```
 
 ## Resources
+
 - JsValues
 	- `XrFrame`
 	- `XrReferenceSpace`
@@ -47,6 +48,20 @@ fn do_thing(frame: NonSend<web_sys::XrFrame>){
 	...
 }
 ```
+
+## Components
+
+- `BevyXrView`
+	- Added to each camera
+	- `LeftCamera`/`RightCamera`
+- `BevyXrInputSource`
+	- Added to each controller/hand
+- Handedness
+	- Used for controllers and views
+	- `LeftHandedness`
+	- `RightHandedness`
+	- `NoneHandedness`
+
 ## Issues
 
 - Lighting seems about 10x darker than regular rendering

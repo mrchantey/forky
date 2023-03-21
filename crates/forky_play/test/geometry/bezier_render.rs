@@ -6,7 +6,7 @@ use sweet::*;
 
 sweet! {
 
-	it skip "works" {
+	it "works" {
 		let mut app = App::new();
 		app.__()
 			.forky_exit_after(3.)

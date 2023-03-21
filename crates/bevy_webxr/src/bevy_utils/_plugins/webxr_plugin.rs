@@ -23,58 +23,60 @@ impl Default for WebXrPlugin {
 		}
 	}
 }
+#[derive(Debug, Hash, PartialEq, Eq, Clone, SystemSet)]
+pub enum WebXrSet {
+	PrePrepare,
+	Prepare,
+	Tracking,
+}
 
 #[rustfmt::skip]
 impl Plugin for WebXrPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-		.add_plugin(bevy_utils::WebXrBasePlugin)
-		.add_plugin(ExtractResourcePlugin::<bevy_utils::FramebufferTextureViewId>::default())
-		.add_event::<bevy_utils::InputSourceAdded>()
-		.add_event::<bevy_utils::InputSourceRemoved>()
-		// .add_event::<bevy_utils::InputSourceRemovedEvent>()
-		.insert_resource(bevy_utils::FramebufferTextureViewId(self.framebuffer_id))
-		.insert_non_send_resource(self.session_mode)
-		.insert_non_send_resource(xr_utils::unwrap_reference_space_type(&self.session_mode, self.reference_space_type))
-			.add_system(bevy_utils::update_xr_resources
-				.in_base_set(CoreSet::PreUpdate)
+			.add_plugin(bevy_utils::WebXrBasePlugin)
+			.insert_resource(bevy_utils::FramebufferTextureViewId(self.framebuffer_id))
+			.insert_non_send_resource(self.session_mode)
+			.insert_non_send_resource(xr_utils::unwrap_reference_space_type(&self.session_mode, self.reference_space_type))
+			.configure_sets((
+				WebXrSet::PrePrepare,
+				WebXrSet::Prepare, 
+				WebXrSet::Tracking
+				).in_base_set(CoreSet::PreUpdate))
+			.configure_set(WebXrSet::Prepare.after(WebXrSet::PrePrepare))
+			.configure_set(WebXrSet::Tracking.after(WebXrSet::Prepare))
+			//Config
+			.add_startup_system(xr_utils::set_canvas_size)
+			.add_system(bevy_utils::insert_gl_layer
+				.in_set(WebXrSet::PrePrepare)
+			)		
+			//Cameras
+			// .add_plugin(ExtractResourcePlugin::<bevy_utils::FramebufferTextureViewId>::default())
+			.add_system(bevy_utils::update_manual_texture_views
+				.in_set(WebXrSet::Prepare)
 			)
-			
+			.add_system(bevy_utils::insert_views
+				.in_set(WebXrSet::Prepare)
+			)
+			.add_system(bevy_utils::create_views
+				.in_set(WebXrSet::Tracking)
+			)
+			.add_system(bevy_utils::update_views
+				.after(bevy_utils::create_views)
+				.in_set(WebXrSet::Tracking)
+			)
 			//Input Sources
 			.insert_resource(bevy_utils::InputSourceAssetLookup::default())
-			.add_system(bevy_utils::remove_input_sources
-				.in_base_set(CoreSet::PreUpdate)
-				.after(bevy_utils::update_xr_resources)
+			.add_system(bevy_utils::insert_input_sources
+				.in_set(WebXrSet::Prepare)
 			)
-			.add_system(bevy_utils::rebuild_input_sources
-				.in_base_set(CoreSet::PreUpdate)
-				.after(bevy_utils::update_xr_resources)
+			.add_system(bevy_utils::create_input_sources
+				.in_set(WebXrSet::Tracking)
 			)
 			.add_system(bevy_utils::update_input_sources
-				// .in_base_set(CoreSet::PreUpdate)
-				.after(bevy_utils::rebuild_input_sources)
+				.after(bevy_utils::create_input_sources)
+				.in_set(WebXrSet::Tracking)
 			)
-			
-			//Cameras
-			.add_system(bevy_utils::remove_xr_cameras
-				.in_base_set(CoreSet::PreUpdate)
-				.run_if(bevy_utils::cameras_need_rebuild)
-				.after(bevy_utils::update_xr_resources)
-			)
-			.add_system(bevy_utils::setup_xr_cameras
-				.in_base_set(CoreSet::PreUpdate)
-				.run_if(bevy_utils::cameras_need_rebuild)
-				.after(bevy_utils::remove_xr_cameras)
-			)
-			.add_system(bevy_utils::update_xr_cameras
-				// .in_base_set(CoreSet::PreUpdate)
-				.after(bevy_utils::setup_xr_cameras)
-			)
-			.add_system(bevy_utils::update_manual_texture_views)
-
-			//Misc
-
-			.add_startup_system(xr_utils::set_canvas_size)
 			.__();
 	}
 }

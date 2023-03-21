@@ -1,17 +1,37 @@
-use crate::{bevy_utils::BevyInputSourceLookup, *};
-use bevy::{prelude::*, render::camera::Viewport};
+use crate::*;
+use bevy::{
+	prelude::*,
+	render::camera::Viewport,
+	utils::{HashMap, HashSet},
+};
+use js_sys::Array;
+use wasm_bindgen::JsValue;
 use web_sys::*;
 
-pub fn update_input_sources(
-	// frame: NonSend<XrFrame>,
-	input_sources: Res<BevyInputSourceLookup>,
-	mut query: Query<(&mut Transform, &bevy_utils::InputSourceHash)>,
-) {
-	// let gl_layer = frame.session().render_state().base_layer().unwrap();
+use super::BevyXrInputSource;
 
-	for (mut transform, hash) in query.iter_mut() {
-		let source = input_sources.get(hash).unwrap();
-		transform.translation = source.grip_pose.position;
-		transform.rotation = source.grip_pose.rotation;
+pub fn update_input_sources(
+	mut commands: Commands,
+	frame: NonSend<XrFrame>,
+	reference_space: NonSend<XrReferenceSpace>,
+	mut query: Query<(Entity, &mut Transform, &bevy_utils::BevyXrInputSource)>,
+	input_sources: NonSend<bevy_utils::InputSourceLookup>,
+) {
+	for (entity, mut transform, source) in query.iter_mut() {
+		match input_sources.get(&source.hash) {
+			Some(input_source) => {
+				let grip_pose = BevyXrInputSource::grip_pose(
+					input_source,
+					&frame,
+					&reference_space,
+				);
+				transform.translation = grip_pose.position;
+				transform.rotation = grip_pose.rotation;
+			}
+			None => {
+				// log!("removing input source for hash: {}", source.hash);
+				commands.entity(entity).despawn();
+			}
+		};
 	}
 }

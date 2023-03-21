@@ -5,7 +5,7 @@ use crate::utility;
 
 #[ext(name = OptI32X)]
 pub impl App {
-	fn forky(&mut self) -> &mut Self { self }
+	fn __(&mut self) -> &mut Self { self }
 	fn forky_surrender_focus(&mut self) -> &mut Self {
 		self.add_startup_system(utility::surrender_focus);
 		self

@@ -1,9 +1,11 @@
 mod bevy_xr_input_source;
 pub use self::bevy_xr_input_source::*;
-mod input_source_event;
-pub use self::input_source_event::*;
-mod rebuild_input_sources;
-pub use self::rebuild_input_sources::*;
+mod create_input_sources;
+pub use self::create_input_sources::*;
+mod input_source_asset_handler;
+pub use self::input_source_asset_handler::*;
+mod insert_input_sources;
+pub use self::insert_input_sources::*;
 mod update_input_sources;
 pub use self::update_input_sources::*;
 mod webxr_input_profiles;

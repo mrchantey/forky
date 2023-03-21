@@ -5,7 +5,7 @@ pub struct DebugCameraPlugin;
 
 impl Plugin for DebugCameraPlugin {
 	fn build(&self, app: &mut App) {
-		app.forky()
+		app.__()
 			.insert_resource(CameraViewType::Orbit)
 			// .insert_resource(CameraViewType::Top)
 			.add_startup_system(spawn_side_cameras)
@@ -20,6 +20,6 @@ impl Plugin for DebugCameraPlugin {
 			// .add_system(keyboard_controller)
 			// .add_startup_system(spawn_orbit_camera)
 			// .add_startup_system(spawn_fps_camera)
-			.forky();
+			.__();
 	}
 }

@@ -22,7 +22,7 @@ fn run() {
 		// .add_startup_system(setup_graphics)
 		// .add_startup_system(setup_physics)
 		// .add_system(print_ball_altitude)
-		.add_system(utility::create_exit_after_system(3))
+		.add_system(utility::create_exit_after_system(3.))
 		.run();
 }
 

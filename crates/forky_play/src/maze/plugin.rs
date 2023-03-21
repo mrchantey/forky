@@ -9,7 +9,7 @@ pub struct MazePlugin;
 
 impl Plugin for MazePlugin {
 	fn build(&self, app: &mut App) {
-		app.forky()
+		app.__()
 			.add_event::<RespawnEvent>()
 			.add_event::<DespawnEvent>()
 			.insert_resource(MazeGame::default())
@@ -26,6 +26,6 @@ impl Plugin for MazePlugin {
 			.add_system(board_joint::force_controller)
 			.add_startup_system(ui::spawn)
 			.add_system(ui::update)
-			.forky();
+			.__();
 	}
 }

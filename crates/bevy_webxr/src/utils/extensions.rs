@@ -92,3 +92,12 @@ pub impl js_sys::Array {
 		self.iter().map(|x| x.into()).collect::<Vec<T>>()
 	}
 }
+#[ext(name = JsValueX)]
+pub impl JsValue {
+	fn into_typed<T>(&self) -> T
+	where
+		T: From<JsValue>,
+	{
+		self.clone().into()
+	}
+}

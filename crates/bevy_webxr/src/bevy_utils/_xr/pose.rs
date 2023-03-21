@@ -25,3 +25,12 @@ impl From<XrRigidTransform> for Pose {
 impl From<XrPose> for Pose {
 	fn from(pose: XrPose) -> Self { Self::from(pose.transform()) }
 }
+impl Into<Transform> for Pose {
+    fn into(self) -> Transform {
+				Transform {
+					translation: self.position,
+					rotation: self.rotation,
+					..default()
+				}
+		}
+}

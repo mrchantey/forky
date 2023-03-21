@@ -7,7 +7,7 @@ sweet! {
 		app::init()
 			.add_plugin(MazePlugin)
 			.add_startup_system(utility::surrender_focus)
-			.forky_exit_after(2)
+			.forky_exit_after(2.)
 			.run();
 
 	}

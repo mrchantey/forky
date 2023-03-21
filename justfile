@@ -112,8 +112,8 @@ watch-wasm *args:
 	just watch 'just build-wasm {{args}}'
 # just watch 'just copy-wasm-assets'
 
-serve-wasm:
-	cd ./html && live-server
+serve-wasm *args:
+	cd ./html && live-server --watch=wasm/bindgen_bg.wasm,index.html {{args}}
 
 copy-wasm-assets:
 	rm -rf ./html/assets

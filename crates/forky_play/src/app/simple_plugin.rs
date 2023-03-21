@@ -25,6 +25,17 @@ impl Speed {
 	pub fn new(speed: f32) -> Speed { Speed(speed) }
 }
 
+pub fn spawn_default_camera(
+	mut commands: Commands,
+) {
+	commands.spawn(Camera3dBundle {
+		transform: Transform::from_xyz(0., 0., 5.0)
+			// transform: Transform::from_xyz(-2.0, 2.5, 5.0)
+			.looking_at(Vec3::ZERO, Vec3::Y),
+		..default()
+	});
+}
+
 fn setup(
 	mut commands: Commands,
 	mut meshes: ResMut<Assets<Mesh>>,

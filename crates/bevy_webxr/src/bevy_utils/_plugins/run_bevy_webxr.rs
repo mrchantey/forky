@@ -25,7 +25,7 @@ pub async fn run_bevy_webxr_async(mut app: App) -> Result<(), JsValue> {
 	}
 	let (session, _) = init_xr_render(&mut app).await?;
 	let app = Arc::new(Mutex::new(app));
-	bevy_utils::add_input_source_event(&session, app.clone())?;
+	bevy_utils::input_source_asset_loader(&session, app.clone())?;
 	xr_utils::run_xr_loop(&session, move |_time: f64, frame: XrFrame| {
 		let mut app = app.lock().unwrap();
 		app.insert_non_send_resource(frame);
@@ -38,8 +38,6 @@ pub async fn init_xr_render(
 	app: &mut App,
 ) -> Result<(XrSession, XrReferenceSpace), JsValue> {
 	let gl = xr_utils::create_webgl_context(true)?;
-	// xr_utils::clear_canvas(&gl)?;
-	// let mode = web_sys::XrSessionMode::Inline;
 	let mode = app.world.non_send_resource::<web_sys::XrSessionMode>();
 	let reference_space_type = app
 		.world
