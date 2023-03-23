@@ -5,6 +5,7 @@ use std::fmt;
 
 use super::MatcherError;
 // use super::Result;
+// pub type MatchableType = dyn cmp::PartialEq + fmt::Display + std::marker::Copy;
 pub trait Matchable: cmp::PartialEq + fmt::Display + std::marker::Copy {}
 impl Matchable for bool {}
 impl Matchable for f32 {}

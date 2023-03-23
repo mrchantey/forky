@@ -5,7 +5,7 @@
 #![allow(unused_parens)]
 
 pub mod animation;
-pub mod app;
+pub mod plugins;
 pub mod base;
 pub mod debug;
 pub mod graph;

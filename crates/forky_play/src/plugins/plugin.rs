@@ -7,11 +7,11 @@ use bevy_rapier3d::prelude::*;
 
 pub struct ForkyPlugin;
 
-pub fn init() -> App {
-	let mut app = App::new();
-	app.add_plugin(ForkyPlugin);
-	app
-}
+// pub fn init() -> App {
+// 	let mut app = App::new();
+//.add_plugin(plugins::ForkyPlugin)
+// 	app
+// }
 impl Plugin for ForkyPlugin {
 	fn build(&self, app: &mut App) {
 		let return_from_run =

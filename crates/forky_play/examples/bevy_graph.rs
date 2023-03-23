@@ -3,8 +3,8 @@ use forky_play::*;
 
 fn main() {
 	App::new()
-		.add_plugin(app::CustomDefaultPlugin)
-		.add_plugin(app::SimplePlugin)
+		.add_plugin(plugins::CustomDefaultPlugin)
+		.add_plugin(plugins::SimplePlugin)
 		// .add_plugin(graph::BlitGraphPlugin)
 		// .add_plugin(graph::ClearGraphPlugin)
 		.add_plugin(graph::CustomPipelinePlugin)

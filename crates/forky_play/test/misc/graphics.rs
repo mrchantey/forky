@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use forky_play::app::*;
+use forky_play::plugins::*;
 use forky_play::*;
 use sweet::*;
 

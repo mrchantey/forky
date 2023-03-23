@@ -1,6 +1,6 @@
 use super::types::*;
 use super::*;
-use crate::{OptI32X, *};
+use crate::*;
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::RapierConfiguration;
 // use bevy_rapier3d::prelude::*;

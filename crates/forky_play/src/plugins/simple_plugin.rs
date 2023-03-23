@@ -10,7 +10,8 @@ impl Plugin for SimplePlugin {
 	fn build(&self, app: &mut App) {
 		app.add_plugin(WorldInspectorPlugin)
 			.insert_resource(Speed(0.25))
-			.add_startup_system(setup)
+			.add_startup_system(spawn_default_camera)
+			.add_startup_system(spawn_cube)
 			.add_system(rotate);
 	}
 }
@@ -36,7 +37,7 @@ pub fn spawn_default_camera(
 	});
 }
 
-fn setup(
+pub fn spawn_cube(
 	mut commands: Commands,
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
@@ -50,12 +51,6 @@ fn setup(
 		},
 		Shape,
 	));
-	commands.spawn(Camera3dBundle {
-		transform: Transform::from_xyz(0., 0., 5.0)
-			// transform: Transform::from_xyz(-2.0, 2.5, 5.0)
-			.looking_at(Vec3::ZERO, Vec3::Y),
-		..default()
-	});
 }
 
 fn rotate(

@@ -6,3 +6,5 @@ mod slerp_joint;
 pub use self::slerp_joint::*;
 mod steer;
 pub use self::steer::*;
+mod velocity;
+pub use self::velocity::*;

@@ -1,17 +1,15 @@
 use bevy::prelude::*;
 use bevy_prototype_debug_lines::*;
-use forky_play::app::*;
 use forky_play::*;
 
 
 fn main() {
 	App::new()
-		.add_plugin(CustomDefaultPlugin)
-		.add_plugin(app::SimplePlugin)
+		.add_plugin(plugins::CustomDefaultPlugin)
+		// .add_plugin(plugins::SimplePlugin)
+		.add_startup_system(plugins::spawn_default_camera)
 		.add_plugin(DebugLinesPlugin::with_depth_test(true))
-		// .add_startup_system(spawn_default_camera)
 		.add_system(draw_cubic)
-		.__()
 		.run();
 }
 

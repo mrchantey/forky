@@ -7,17 +7,18 @@ use sweet::*;
 
 sweet! {
 	it skip "works" {
-		app::init()
-				.add_startup_system(surrender_focus)
-				.insert_resource(RapierConfiguration::with_gravity_scalar(10.))
-				.add_event::<RespawnEvent>()
-				.add_event::<DespawnEvent>()
-				.add_system(maze_3d::respawn)
-				.add_system(maze_3d::despawn)
-				.add_system(ball::respawn)
-				.add_system(ball::despawn_on_ball_fall)
-				.add_startup_system(spawn)
-				.run();
+		App::new()
+			.add_plugin(plugins::ForkyPlugin)
+			.add_startup_system(surrender_focus)
+			.insert_resource(RapierConfiguration::with_gravity_scalar(10.))
+			.add_event::<RespawnEvent>()
+			.add_event::<DespawnEvent>()
+			.add_system(maze_3d::respawn)
+			.add_system(maze_3d::despawn)
+			.add_system(ball::respawn)
+			.add_system(ball::despawn_on_ball_fall)
+			.add_startup_system(spawn)
+			.run();
 	}
 }
 

@@ -3,7 +3,7 @@ use forky_play::*;
 fn main() {
 	App::new()
 		// .add_plugins(DefaultPlugins)
-		.add_plugin(app::CustomDefaultPlugin)
-		.add_plugin(app::SimplePlugin)
+		.add_plugin(plugins::CustomDefaultPlugin)
+		.add_plugin(plugins::SimplePlugin)
 		.run();
 }

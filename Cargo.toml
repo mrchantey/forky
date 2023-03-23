@@ -62,7 +62,7 @@ colorize = "0.1.0"
 gag = "1.0.0"
 num-traits = "0.2.15"
 anyhow = "1"
-
+derive_deref = "1.1.1"
 
 ### compile ###
 inventory = "0.3.2"

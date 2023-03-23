@@ -2,7 +2,7 @@ use sweet::*;
 
 sweet! {
 	it "works" {
-		// ForkyApp::init()
+		// App::new()
 		// .add_plugin(Kaleid)
 		// // .add_plugin(BasicPlugin)
 		// .add_startup_system(BasicPlugin::spawn_camera)

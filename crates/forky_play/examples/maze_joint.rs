@@ -4,7 +4,8 @@ use bevy_rapier3d::prelude::*;
 use forky_play::{maze::*, *};
 
 fn main() {
-	app::init()
+	App::new()
+		.add_plugin(plugins::ForkyPlugin)
 		.insert_resource(board_joint::MazeJointParams::default())
 		.add_startup_system(spawn)
 		.add_system(board_joint::force_controller)

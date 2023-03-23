@@ -5,11 +5,12 @@ use sweet::*;
 sweet! {
 	it skip "works" {
 
-		app::init()
-		.add_plugin(physics::SlerpJointPlugin)
-		.add_startup_system(surrender_focus)
-		.add_startup_system(my_startup_system)
-		.run();
+		App::new()
+			.add_plugin(plugins::ForkyPlugin)
+			.add_plugin(physics::SlerpJointPlugin)
+			.add_startup_system(surrender_focus)
+			.add_startup_system(my_startup_system)
+			.run();
 	}
 }
 

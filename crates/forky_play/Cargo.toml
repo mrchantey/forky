@@ -10,7 +10,10 @@ description = {workspace=true}
 repository = {workspace=true}
 
 [dependencies]
+### Internal ###
 forky_core = {workspace = true }
+
+### Game ###
 bevy = {workspace = true}
 bevy-inspector-egui = {workspace = true}
 # enigo = {path = "../../../../work-ref/enigo", version = "0.0.14"}
@@ -20,7 +23,8 @@ bevy_easings = {workspace = true}
 bevy_mod_debugdump = {workspace = true}
 wgpu = {workspace = true}
 
-# dev dependency?
+### Utility ###
+derive_deref = {workspace = true}
 extend = {workspace = true}
 bytemuck = "1.13.1"
 
