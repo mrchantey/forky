@@ -17,6 +17,11 @@ pub fn cubic(p0: f32, p1: f32, p2: f32, p3: f32, t: f32) -> f32 {
 		+ t.powi(3) * p3
 }
 
+pub fn tangent_linear(p0: f32, p1: f32) -> f32 {
+	(p1 - p0)
+	// t * (p1 - p0)
+}
+
 pub fn tangent_quadratic(p0: f32, p1: f32, p2: f32, t: f32) -> f32 {
 	2.0 * (1.0 - t) * (p1 - p0) + 2.0 * t * (p2 - p1)
 }
@@ -26,50 +31,4 @@ pub fn tangent_cubic(p0: f32, p1: f32, p2: f32, p3: f32, t: f32) -> f32 {
 	3.0 * it.powi(2) * (p1 - p0)
 		+ 6.0 * it * t * (p2 - p1)
 		+ 3.0 * t.powi(2) * (p3 - p2)
-}
-
-#[rustfmt::skip]
-pub fn linear2d(p0: Vec2, p1: Vec2, t: f32) -> Vec2 {
-	Vec2::new(
-		linear(p0.x, p1.x, t), 
-		linear(p0.y, p1.y, t)
-	)
-}
-
-pub fn quadratic2d(p0: Vec2, p1: Vec2, p2: Vec2, t: f32) -> Vec2 {
-	Vec2::new(
-		quadratic(p0.x, p1.x, p2.x, t),
-		quadratic(p0.y, p1.y, p2.y, t),
-	)
-}
-
-pub fn cubic2d(p0: Vec2, p1: Vec2, p2: Vec2, p3: Vec2, t: f32) -> Vec2 {
-	Vec2::new(
-		cubic(p0.x, p1.x, p2.x, p3.x, t),
-		cubic(p0.y, p1.y, p2.y, p3.y, t),
-	)
-}
-
-pub fn linear3d(p0: Vec3, p1: Vec3, t: f32) -> Vec3 {
-	Vec3::new(
-		linear(p0.x, p1.x, t),
-		linear(p0.y, p1.y, t),
-		linear(p0.z, p1.z, t),
-	)
-}
-
-pub fn quadratic3d(p0: Vec3, p1: Vec3, p2: Vec3, t: f32) -> Vec3 {
-	Vec3::new(
-		quadratic(p0.x, p1.x, p2.x, t),
-		quadratic(p0.y, p1.y, p2.y, t),
-		quadratic(p0.z, p1.z, p2.z, t),
-	)
-}
-
-pub fn cubic3d(p0: Vec3, p1: Vec3, p2: Vec3, p3: Vec3, t: f32) -> Vec3 {
-	Vec3::new(
-		cubic(p0.x, p1.x, p2.x, p3.x, t),
-		cubic(p0.y, p1.y, p2.y, p3.y, t),
-		cubic(p0.z, p1.z, p2.z, p3.z, t),
-	)
 }

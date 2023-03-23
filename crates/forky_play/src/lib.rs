@@ -13,6 +13,7 @@ pub mod input;
 pub mod maze;
 pub mod mesh;
 pub mod physics;
+pub mod spline;
 pub mod utility;
 
 mod common;

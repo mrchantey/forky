@@ -1,3 +1,4 @@
 pub mod bezier;
-pub mod bezier_slider;
+pub mod bezier2;
+pub mod bezier3;
 pub mod path;

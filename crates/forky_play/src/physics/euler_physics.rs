@@ -2,30 +2,31 @@ use crate::*;
 use bevy::prelude::*;
 use derive_deref::{Deref, DerefMut};
 
-
-pub struct VelocityPlugin;
-
 #[derive(Debug, Hash, PartialEq, Eq, Clone, SystemSet)]
-pub enum VelocitySet {
+pub enum EulerPhysicsSet {
 	Update,
 }
+
+pub struct EulerPhysicsPlugin;
+
 #[rustfmt::skip]
-impl Plugin for VelocityPlugin {
+impl Plugin for EulerPhysicsPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-			.configure_set(VelocitySet::Update
+			.configure_set(EulerPhysicsSet::Update
 				.in_base_set(CoreSet::PostUpdate))
 			.add_system(update_velocity_from_impulse
-				.in_set(VelocitySet::Update)
+				.in_set(EulerPhysicsSet::Update)
 			)
 			.add_system(update_velocity_from_force
-				.in_set(VelocitySet::Update)
+				.in_set(EulerPhysicsSet::Update)
 				.after(update_velocity_from_impulse),
 			)
 			.add_system(update_position
-				.in_set(VelocitySet::Update)
+				.in_set(EulerPhysicsSet::Update)
 				.after(update_velocity_from_force),
-			);
+			)
+			.__();
 	}
 }
 
@@ -51,8 +52,6 @@ pub fn update_velocity_from_force(
 	time: Res<Time>,
 ) {
 	for (acceleration, mut velocity) in query_force.iter_mut() {
-		// **velocity = **velocity * 2. + **acceleration * time.delta_seconds().powf(2.) * 0.5;
-		// **velocity += **acceleration * time.delta_seconds().powf(2.) * 0.5;
 		**velocity += **acceleration * time.delta_seconds();
 	}
 }

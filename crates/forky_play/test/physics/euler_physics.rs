@@ -11,7 +11,7 @@ sweet! {
 		let mut app = App::new();
 		app.__()
 			.insert_test_timer()
-			.add_plugin(physics::VelocityPlugin)
+			.add_plugin(physics::EulerPhysicsPlugin)
 			.__();
 
 		let player_id = app.world.spawn((
@@ -67,7 +67,7 @@ sweet! {
 		App::new()
 		.forky_exit_after(4.)
 		.add_plugin(plugins::CustomDefaultPlugin)
-		.add_plugin(physics::VelocityPlugin)
+		.add_plugin(physics::EulerPhysicsPlugin)
 		.add_startup_system(plugins::spawn_default_camera)
 		.add_startup_system(spawn_falling_cube)
 		.run();
@@ -83,12 +83,11 @@ fn spawn_falling_cube(
 	commands.spawn((
 		PbrBundle {
 			mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-				material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-				transform: Transform::from_xyz(0.0, 0.0, 0.0),
-				..default()
-			},
-			AccelerationForce(Vec3::new(0., -9.81 * 0.1, 0.)),
-			Velocity::default(),
-		));
-	}
-	
+			material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+			transform: Transform::from_xyz(0.0, 0.0, 0.0),
+			..default()
+		},
+		AccelerationForce(Vec3::new(0., -9.81 * 0.1, 0.)),
+		Velocity::default(),
+	));
+}

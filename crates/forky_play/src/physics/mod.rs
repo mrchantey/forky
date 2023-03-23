@@ -1,3 +1,5 @@
+mod euler_physics;
+pub use self::euler_physics::*;
 mod kinematic_body;
 pub use self::kinematic_body::*;
 mod plugin;
@@ -6,5 +8,3 @@ mod slerp_joint;
 pub use self::slerp_joint::*;
 mod steer;
 pub use self::steer::*;
-mod velocity;
-pub use self::velocity::*;
