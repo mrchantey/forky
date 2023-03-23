@@ -38,18 +38,18 @@ impl Plugin for WebXrPlugin {
 			.insert_resource(bevy_utils::FramebufferTextureViewId(self.framebuffer_id))
 			.insert_non_send_resource(self.session_mode)
 			.insert_non_send_resource(xr_utils::unwrap_reference_space_type(&self.session_mode, self.reference_space_type))
-			.configure_sets((
+			.configure_sets(PreUpdate,(
 				WebXrSet::PrePrepare,
 				WebXrSet::Prepare, 
 				WebXrSet::Tracking
-				).in_base_set(CoreSet::PreUpdate))
-			.configure_set(WebXrSet::Prepare.after(WebXrSet::PrePrepare))
-			.configure_set(WebXrSet::Tracking.after(WebXrSet::Prepare))
+				))
+			.configure_set(Update,WebXrSet::Prepare.after(WebXrSet::PrePrepare))
+			.configure_set(Update,WebXrSet::Tracking.after(WebXrSet::Prepare))
 			//Config
 			.add_startup_system(xr_utils::set_canvas_size)
 			.add_system(bevy_utils::insert_gl_layer
 				.in_set(WebXrSet::PrePrepare)
-			)		
+			)
 			//Cameras
 			// .add_plugin(ExtractResourcePlugin::<bevy_utils::FramebufferTextureViewId>::default())
 			.add_system(bevy_utils::update_manual_texture_views

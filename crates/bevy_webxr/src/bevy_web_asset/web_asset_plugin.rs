@@ -71,7 +71,7 @@ impl Plugin for WebAssetPlugin {
         if self.asset_plugin.watch_for_changes {
             app.add_system(
                 super::filesystem_watcher::filesystem_watcher_system
-                    .in_base_set(CoreSet::PostUpdate),
+                    .in_schedule(PostUpdate),
             );
         }
     }
