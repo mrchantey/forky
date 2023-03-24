@@ -10,20 +10,14 @@ pub struct SplinePhysicsPlugin;
 impl Plugin for SplinePhysicsPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-			.add_system(update_velocity_from_impulse
+			.add_systems((
+				update_velocity_from_impulse,
+				update_velocity_from_force,
+				update_spline_position,
+				update_transform_position,
+				)
 				.in_set(physics::EulerPhysicsSet::Update)
-			)
-			.add_system(update_velocity_from_force
-				.in_set(physics::EulerPhysicsSet::Update)
-				.after(update_velocity_from_impulse),
-			)
-			.add_system(update_spline_position
-				.in_set(physics::EulerPhysicsSet::Update)
-				.after(update_velocity_from_force),
-			)
-			.add_system(update_transform_position
-				.in_set(physics::EulerPhysicsSet::Update)
-				.after(update_spline_position),
+				.chain()
 			)
 			.__();
 	}
@@ -74,6 +68,7 @@ pub fn update_spline_position(
 ) {
 	for (mut position, velocity, spline) in query.iter_mut() {
 		**position += **velocity * time.delta_seconds();
+		// println!("pos: {}, velocity: {}", **position, **velocity);
 	}
 }
 pub fn update_transform_position(

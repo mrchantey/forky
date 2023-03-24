@@ -13,11 +13,6 @@ sweet! {
 			.insert_test_timer()
 			.add_plugin(physics::EulerPhysicsPlugin)
 			.__();
-
-		let player_id = app.world.spawn((
-			Transform::default(),
-			Velocity(Vec3::RIGHT),
-		)).id();
 	}
 
 	test "velocity" {

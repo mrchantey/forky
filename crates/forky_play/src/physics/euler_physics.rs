@@ -15,17 +15,14 @@ impl Plugin for EulerPhysicsPlugin {
 		app.__()
 			.configure_set(EulerPhysicsSet::Update
 				.in_base_set(CoreSet::PostUpdate))
-			.add_system(update_velocity_from_impulse
-				.in_set(EulerPhysicsSet::Update)
+			.add_systems((
+				update_velocity_from_impulse,
+				update_velocity_from_force,
+				update_position,
 			)
-			.add_system(update_velocity_from_force
-				.in_set(EulerPhysicsSet::Update)
-				.after(update_velocity_from_impulse),
-			)
-			.add_system(update_position
-				.in_set(EulerPhysicsSet::Update)
-				.after(update_velocity_from_force),
-			)
+			.in_set(EulerPhysicsSet::Update)
+				.chain()
+		)
 			.__();
 	}
 }
@@ -37,6 +34,8 @@ pub struct AccelerationForce(pub Vec3);
 
 #[derive(Default, Component, Deref, DerefMut)]
 pub struct Velocity(pub Vec3);
+#[derive(Default, Component, Deref, DerefMut)]
+pub struct Drag(pub f32);
 
 
 pub fn update_velocity_from_impulse(
@@ -55,6 +54,8 @@ pub fn update_velocity_from_force(
 		**velocity += **acceleration * time.delta_seconds();
 	}
 }
+//TODO drag
+
 pub fn update_position(
 	mut query: Query<(&mut Transform, &Velocity)>,
 	time: Res<Time>,
