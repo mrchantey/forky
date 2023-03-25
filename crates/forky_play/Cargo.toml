@@ -26,6 +26,8 @@ wgpu = {workspace = true}
 ### Utility ###
 derive_deref = {workspace = true}
 extend = {workspace = true}
+anyhow = {workspace = true}
+petgraph = {workspace = true}
 bytemuck = "1.13.1"
 
 

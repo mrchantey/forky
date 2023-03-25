@@ -90,7 +90,9 @@ watch command:
 
 vis:
 	just run forky_play bevy_graph
-	dot -Tsvg -O target/render_graph.dot
+	just dot-to-svg target/render_graph.dot
+dot-to-svg target:
+	dot -Tsvg -O {{target}}
 
 ### WASM ###
 

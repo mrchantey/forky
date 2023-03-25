@@ -40,4 +40,16 @@ pub impl<T> Vec<T> {
 	{
 		self.get_mut(index).unwrap()
 	}
+	fn remove_first_element(&mut self, element: T) -> bool
+	where
+		T: PartialEq,
+	{
+		let index = self.iter().position(|x| *x == element);
+		if let Some(index) = index {
+			self.remove(index);
+			true
+		} else {
+			false
+		}
+	}
 }

@@ -1,3 +1,5 @@
+mod graph;
+pub use self::graph::*;
 mod spline;
 pub use self::spline::*;
 mod spline_graph;

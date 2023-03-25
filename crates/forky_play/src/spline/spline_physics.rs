@@ -1,8 +1,8 @@
+use super::*;
 use crate::*;
 use bevy::prelude::*;
+use bevy_rapier3d::na::ComplexField;
 use derive_deref::{Deref, DerefMut};
-
-use super::*;
 
 pub struct SplinePhysicsPlugin;
 
@@ -15,6 +15,7 @@ impl Plugin for SplinePhysicsPlugin {
 				update_velocity_from_force,
 				update_velocity_from_friction,
 				update_spline_position,
+				update_current_spline,
 				update_transform_position,
 				)
 				.in_set(physics::EulerPhysicsSet::Update)
@@ -49,7 +50,7 @@ pub fn update_velocity_from_impulse(
 	}
 }
 pub fn update_velocity_from_force(
-	mut query_force: Query<(
+	mut query: Query<(
 		&physics::AccelerationForce,
 		&mut SplineVelocity,
 		&SplinePosition,
@@ -57,23 +58,55 @@ pub fn update_velocity_from_force(
 	)>,
 	time: Res<Time>,
 ) {
-	for (acceleration, mut velocity, position, spline) in query_force.iter_mut()
-	{
+	for (acceleration, mut velocity, position, spline) in query.iter_mut() {
 		**velocity += spline
 			.acceleration(**position, **acceleration * time.delta_seconds());
 	}
 }
 
 pub fn update_velocity_from_friction(
-	mut query_force: Query<(&physics::Friction, &mut SplineVelocity)>,
+	mut query: Query<(&physics::Friction, &mut SplineVelocity)>,
 	time: Res<Time>,
 ) {
-	for (friction, mut velocity) in query_force.iter_mut() {
+	for (friction, mut velocity) in query.iter_mut() {
 		let force = velocity.signum() * -1. * **friction * time.delta_seconds();
 		**velocity += force;
 	}
 }
 
+pub fn update_current_spline(
+	mut commands: Commands,
+	mut query: Query<(
+		Entity,
+		&mut SplinePosition,
+		&mut Spline,
+		&mut SplineEdge,
+		&SplineGraph,
+	)>,
+) {
+	for (entity, mut position, mut spline, mut edge, graph) in query.iter_mut()
+	{
+		if **position >= 0. && **position <= 1. {
+			continue;
+		}
+		let next_edge = match graph.get_current_spline(&edge, **position) {
+			Some(value) => value,
+			None => {
+				commands
+					.entity(entity)
+					.remove::<SplinePosition>()
+					.remove::<SplineVelocity>()
+					.remove::<SplineEdge>();
+				// .remove::<SplineGraph>();
+				//TODO add velocity with tangent
+				continue;
+			}
+		};
+		*edge = next_edge;
+		*spline = edge.spline;
+		*position = SplinePosition(position.0 % 1.);
+	}
+}
 
 pub fn update_spline_position(
 	mut query: Query<(&mut SplinePosition, &SplineVelocity, &Spline)>,
