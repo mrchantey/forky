@@ -80,12 +80,12 @@ impl SuiteParser {
 			let body = &test.body;
 			let func = if test.skip { &skip_ident } else { &test_ident };
 			out.append_all(quote! {
-					s.#func(#name,||{
-						#before
-						#body
-						#after
-						Ok(())
-					});
+				#before
+				s.#func(#name,||{
+					#body
+					Ok(())
+				});
+				#after
 			});
 		}
 	}
