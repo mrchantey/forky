@@ -118,3 +118,4 @@ pub fn expect<T: Matchable + cmp::PartialEq + fmt::Display>(
 ) -> Matcher<T> {
 	Matcher::new(value)
 }
+

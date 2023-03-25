@@ -3,22 +3,27 @@ use bevy::prelude::*;
 use derive_deref::{Deref, DerefMut};
 
 
-#[derive(Component)]
+#[derive(Component, Clone, Copy, Debug, PartialEq)]
 pub enum Spline {
 	Linear(LinearSpline),
 	Quadratic(QuadraticSpline),
 	Cubic(CubicSpline),
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct LinearSpline {
 	pub p0: Vec3,
 	pub p1: Vec3,
 }
+
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct QuadraticSpline {
 	pub p0: Vec3,
 	pub p1: Vec3,
 	pub p2: Vec3,
 }
+
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct CubicSpline {
 	pub p0: Vec3,
 	pub p1: Vec3,

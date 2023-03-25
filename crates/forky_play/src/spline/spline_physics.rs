@@ -13,6 +13,7 @@ impl Plugin for SplinePhysicsPlugin {
 			.add_systems((
 				update_velocity_from_impulse,
 				update_velocity_from_force,
+				update_velocity_from_friction,
 				update_spline_position,
 				update_transform_position,
 				)
@@ -62,6 +63,18 @@ pub fn update_velocity_from_force(
 			.acceleration(**position, **acceleration * time.delta_seconds());
 	}
 }
+
+pub fn update_velocity_from_friction(
+	mut query_force: Query<(&physics::Friction, &mut SplineVelocity)>,
+	time: Res<Time>,
+) {
+	for (friction, mut velocity) in query_force.iter_mut() {
+		let force = velocity.signum() * -1. * **friction * time.delta_seconds();
+		**velocity += force;
+	}
+}
+
+
 pub fn update_spline_position(
 	mut query: Query<(&mut SplinePosition, &SplineVelocity, &Spline)>,
 	time: Res<Time>,

@@ -28,6 +28,20 @@ sweet! {
 		expect(app.world.get::<Transform>(player_id).unwrap().translation.x)
 			.to_be(1.)?;
 	}
+	test "velocity" {
+		let player_id = app.world.spawn((
+			Transform::default(),
+			Velocity(Vec3::RIGHT),
+			Friction(0.5),
+		)).id();
+
+		expect(app.world.get::<Transform>(player_id).unwrap().translation.x)
+			.to_be(0.)?;
+
+		app.update_with_tick(1.);
+		expect(app.world.get::<Transform>(player_id).unwrap().translation.x)
+			.to_be(0.5)?;
+	}
 
 	test "acceleration - impulse"{
 		let player_id = app.world.spawn((

@@ -18,6 +18,7 @@ impl Plugin for EulerPhysicsPlugin {
 			.add_systems((
 				update_velocity_from_impulse,
 				update_velocity_from_force,
+				update_velocity_from_friction,
 				update_position,
 			)
 			.in_set(EulerPhysicsSet::Update)
@@ -35,7 +36,7 @@ pub struct AccelerationForce(pub Vec3);
 #[derive(Default, Component, Deref, DerefMut)]
 pub struct Velocity(pub Vec3);
 #[derive(Default, Component, Deref, DerefMut)]
-pub struct Drag(pub f32);
+pub struct Friction(pub f32);
 
 
 pub fn update_velocity_from_impulse(
@@ -54,7 +55,15 @@ pub fn update_velocity_from_force(
 		**velocity += **acceleration * time.delta_seconds();
 	}
 }
-//TODO drag
+pub fn update_velocity_from_friction(
+	mut query_force: Query<(&Friction, &mut Velocity)>,
+	time: Res<Time>,
+) {
+	for (friction, mut velocity) in query_force.iter_mut() {
+		let force = velocity.normalize() * -1. * **friction * time.delta_seconds();
+		**velocity += force;
+	}
+}
 
 pub fn update_position(
 	mut query: Query<(&mut Transform, &Velocity)>,

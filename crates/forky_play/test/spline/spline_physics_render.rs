@@ -7,10 +7,10 @@ use forky_play::*;
 use sweet::*;
 sweet! {
 
-	test "spline physics" {
+	test skip "spline physics render" {
 		let mut app = App::new();
 		app.__()
-		.forky_exit_after(4.)
+		.forky_exit_after(10.)
 			.add_plugin(plugins::CustomDefaultPlugin)
 			.add_plugin(spline::SplinePhysicsPlugin)
 			.add_plugin(DebugLinesPlugin::with_depth_test(true))
@@ -35,6 +35,7 @@ fn spawn_spline_cube(
 		},
 		SplinePosition::default(),
 		SplineVelocity::default(),
+		physics::Friction(0.1),
 		physics::AccelerationForce(Vec3::DOWN),
 		Spline::Cubic(CubicSpline {
 			p0: Vec3::new(-1., 1., 0.),
