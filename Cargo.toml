@@ -10,7 +10,6 @@ members = [
 	"crates/forky_core",
 	"crates/forky_esp",
 	"crates/forky_play",
-	"crates/forky_spline",
 	"crates/forky_test",
 	"crates/sweet",
 ]
@@ -34,7 +33,6 @@ forky_core = {path = "./crates/forky_core", version = "0.1.9" }
 forky_fs = {path = "./crates/forky_fs", version = "0.1.9" }
 forky_esp = {path = "./crates/forky_esp", version = "0.1.9" }
 forky_play = {path = "./crates/forky_play", version = "0.1.9" }
-forky_spline = {path = "./crates/forky_spline", version = "0.1.9" }
 forky_test = {path = "./crates/forky_test", version = "0.1.9" }
 sweet = {path = "./crates/sweet", version = "0.*" }
 
@@ -43,7 +41,7 @@ sweet = {path = "./crates/sweet", version = "0.*" }
 bevy = { version = "0.10.0" }
 bevy-inspector-egui = "0.18.0"
 bevy_mod_debugdump = "0.7.0"
-bevy_rapier3d = {version = "0.21.0", features=["debug-render"]}
+bevy_rapier3d = {version = "0.21.0", features=["debug-render-3d"]}
 bevy_prototype_debug_lines = {version = "0.10.0", features = ["3d"]}
 bevy_easings = "0.10.0"
 ### game ###

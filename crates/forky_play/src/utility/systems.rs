@@ -12,6 +12,8 @@ pub fn spawn_camera_at_position(position: Vec3) -> impl FnMut(Commands) {
 		});
 	}
 }
+
+
 pub fn spawn_default_lights(mut commands: Commands) {
 	commands.insert_resource(AmbientLight {
 		// color: Color::WHITE,

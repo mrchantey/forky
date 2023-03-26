@@ -22,7 +22,10 @@ impl Plugin for ForkyFullPlugin {
 			.add_system(animation::pose_lerp_animator)
 			.__();
 		if cfg!(debug_assertions) {
-			app.__().add_plugin(RapierDebugRenderPlugin::default()).__();
+			app.__()
+				//
+				.add_plugin(RapierDebugRenderPlugin::default())
+				.__();
 		}
 	}
 }

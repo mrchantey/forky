@@ -44,7 +44,7 @@ pub fn orbit_camera_controller(
 ) {
 	let window = window.single();
 	// change input mapping for orbit and panning here
-	let orbit_button = MouseButton::Left;
+	let orbit_button = MouseButton::Right;
 	let pan_button = MouseButton::Middle;
 
 
