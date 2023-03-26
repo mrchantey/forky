@@ -75,9 +75,8 @@ sweet! {
 	test skip "acceleration - force - visualize"{
 		App::new()
 		.forky_exit_after(4.)
-		.add_plugin(plugins::CustomDefaultPlugin)
+		.add_plugin(plugins::ForkyDebugPlugin)
 		.add_plugin(physics::EulerPhysicsPlugin)
-		.add_startup_system(plugins::spawn_default_camera)
 		.add_startup_system(spawn_falling_cube)
 		.run();
 

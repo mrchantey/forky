@@ -6,7 +6,7 @@ sweet! {
 	it skip "works" {
 
 		App::new()
-			.add_plugin(plugins::ForkyPlugin)
+			.add_plugin(plugins::ForkyFullPlugin)
 			.add_plugin(physics::SlerpJointPlugin)
 			.add_startup_system(surrender_focus)
 			.add_startup_system(my_startup_system)

@@ -4,7 +4,6 @@ use bevy_prototype_debug_lines::*;
 use forky_play::spline::*;
 use forky_play::*;
 
-use forky_play::utility::spawn_camera_at_position;
 use sweet::*;
 sweet! {
 
@@ -12,10 +11,8 @@ sweet! {
 		let mut app = App::new();
 		app.__()
 		.forky_exit_after(10.)
-			.add_plugin(plugins::CustomDefaultPlugin)
+			.add_plugin(plugins::ForkyDebugPlugin)
 			.add_plugin(spline::physics::SplinePhysicsPlugin)
-			.add_startup_system(spawn_camera_at_position(Vec3::new(5., 5., 5.)))
-			.add_startup_system(plugins::spawn_default_lights)
 			.add_startup_system(spawn_spline)
 			.add_system(spline::mesh::append_spline_mesh)
 			.run();

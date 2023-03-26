@@ -1,17 +1,15 @@
+use crate::*;
 use bevy::{
 	log::LogPlugin,
 	prelude::*,
 	window::{PresentMode, WindowResolution},
 };
 
-use crate::{utility, materials};
-
-
 pub struct CustomDefaultPlugin;
 
 impl Plugin for CustomDefaultPlugin {
 	fn build(&self, app: &mut App) {
-		app.insert_resource(ClearColor(Color::NAVY))
+		app.__()
 			.add_plugins(
 				DefaultPlugins
 					.set(WindowPlugin {
@@ -37,7 +35,6 @@ impl Plugin for CustomDefaultPlugin {
 						..Default::default()
 					}),
 			)
-			.add_plugin(MaterialPlugin::<materials::UvMaterial>::default())
-			.add_system(bevy::window::close_on_esc);
+			.__();
 	}
 }

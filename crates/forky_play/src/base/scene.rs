@@ -19,25 +19,3 @@ pub fn spawn_basic_scene(
 		..default()
 	});
 }
-pub fn spawn_lights(mut commands: Commands) {
-	commands.spawn(PointLightBundle {
-		transform: Transform::from_xyz(-5., 5., 3.),
-		point_light: PointLight {
-			intensity: 1000.,
-			color: Color::FUCHSIA,
-			shadows_enabled: true,
-			..default()
-		},
-		..default()
-	});
-	commands.spawn(PointLightBundle {
-		transform: Transform::from_xyz(3., 5., -5.),
-		point_light: PointLight {
-			intensity: 1000.,
-			shadows_enabled: true,
-			color: Color::CYAN,
-			..default()
-		},
-		..default()
-	});
-}

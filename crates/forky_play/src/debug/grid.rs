@@ -69,26 +69,28 @@ fn draw_grid(
 	}
 }
 
+const Y_OFFSET:f32 = 0.01;
+
 fn draw_grid_axis(
 	query: Query<&Transform, With<Grid>>,
 	mut lines: ResMut<DebugLines>,
 ) {
 	for _ in query.iter() {
 		lines.line_colored(
-			Vec3::ZERO.add_y(0.1),
-			Vec3::X.add_y(0.1),
+			Vec3::ZERO.add_y(Y_OFFSET),
+			Vec3::X.add_y(Y_OFFSET),
 			0.,
 			Color::RED,
 		);
 		lines.line_colored(
-			Vec3::ZERO.add_y(0.1),
-			Vec3::Y.add_y(0.1),
+			Vec3::ZERO.add_y(Y_OFFSET),
+			Vec3::Y.add_y(Y_OFFSET),
 			0.,
 			Color::GREEN,
 		);
 		lines.line_colored(
-			Vec3::ZERO.add_y(0.1),
-			Vec3::Z.add_y(0.1),
+			Vec3::ZERO.add_y(Y_OFFSET),
+			Vec3::Z.add_y(Y_OFFSET),
 			0.,
 			Color::BLUE,
 		);

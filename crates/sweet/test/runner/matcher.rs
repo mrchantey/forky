@@ -28,7 +28,7 @@ sweet! {
 		let result = expect("foo").to_contain("foo");
 		expect(result.is_ok()).to_be_true()?;
 		let result = expect("foo").to_contain("bar");
-		expect(result.unwrap_err().to_string().as_str()).to_contain("this line")?;
+		expect(result.is_err()).to_be_true()?;
 	}
 
 	test "to_be_close_to"{

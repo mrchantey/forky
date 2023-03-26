@@ -12,6 +12,34 @@ pub fn spawn_camera_at_position(position: Vec3) -> impl FnMut(Commands) {
 		});
 	}
 }
+pub fn spawn_default_lights(mut commands: Commands) {
+	commands.insert_resource(AmbientLight {
+		// color: Color::WHITE,
+		brightness: 1.,
+		..default()
+	});
+
+	commands.spawn(PointLightBundle {
+		transform: Transform::from_xyz(-5., 5., 3.),
+		point_light: PointLight {
+			intensity: 1000.,
+			// color: Color::FUCHSIA,
+			shadows_enabled: true,
+			..default()
+		},
+		..default()
+	});
+	commands.spawn(PointLightBundle {
+		transform: Transform::from_xyz(3., 5., -5.),
+		point_light: PointLight {
+			intensity: 1000.,
+			shadows_enabled: true,
+			// color: Color::CYAN,
+			..default()
+		},
+		..default()
+	});
+}
 
 
 pub fn create_exit_after_system(

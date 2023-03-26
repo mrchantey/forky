@@ -8,7 +8,7 @@ use sweet::*;
 sweet! {
 	it skip "works" {
 		App::new()
-			.add_plugin(plugins::ForkyPlugin)
+			.add_plugin(plugins::ForkyFullPlugin)
 			.add_startup_system(surrender_focus)
 			.insert_resource(RapierConfiguration::with_gravity_scalar(10.))
 			.add_event::<RespawnEvent>()

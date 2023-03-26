@@ -25,7 +25,31 @@ impl Plugin for MazePlugin {
 			.add_system(ball::despawn_on_ball_fall)
 			.add_system(board_joint::force_controller)
 			.add_startup_system(ui::spawn)
+			.add_startup_system(spawn_lights)
 			.add_system(ui::update)
 			.__();
 	}
+}
+
+fn spawn_lights(mut commands: Commands) {
+	commands.spawn(PointLightBundle {
+		transform: Transform::from_xyz(-5., 5., 3.),
+		point_light: PointLight {
+			intensity: 1000.,
+			color: Color::FUCHSIA,
+			shadows_enabled: true,
+			..default()
+		},
+		..default()
+	});
+	commands.spawn(PointLightBundle {
+		transform: Transform::from_xyz(3., 5., -5.),
+		point_light: PointLight {
+			intensity: 1000.,
+			shadows_enabled: true,
+			color: Color::CYAN,
+			..default()
+		},
+		..default()
+	});
 }

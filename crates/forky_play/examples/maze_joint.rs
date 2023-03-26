@@ -5,7 +5,7 @@ use forky_play::{maze::*, *};
 
 fn main() {
 	App::new()
-		.add_plugin(plugins::ForkyPlugin)
+		.add_plugin(plugins::ForkyFullPlugin)
 		.insert_resource(board_joint::MazeJointParams::default())
 		.add_startup_system(spawn)
 		.add_system(board_joint::force_controller)

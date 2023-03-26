@@ -2,7 +2,7 @@ use super::*;
 use bevy::prelude::*;
 
 pub fn spawn_orbit_camera(mut commands: Commands) {
-	let translation = Vec3::new(2., 5., 20.0);
+	let translation = Vec3::new(2., 3., 5.);
 	let radius = translation.length();
 
 	let _camera = commands

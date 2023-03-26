@@ -9,7 +9,7 @@ use sweet::*;
 sweet! {
 	it skip "works" {
 		App::new()
-			.add_plugin(plugins::ForkyPlugin)
+			.add_plugin(plugins::ForkyFullPlugin)
 			// .add_plugin(maze::MazePlugin)
 			.add_startup_system(spawn_all_walls)
 			.add_startup_system(surrender_focus)

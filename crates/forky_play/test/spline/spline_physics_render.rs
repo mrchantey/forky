@@ -12,10 +12,9 @@ sweet! {
 		let mut app = App::new();
 		app.__()
 		.forky_exit_after(10.)
-			.add_plugin(plugins::CustomDefaultPlugin)
+			.add_plugin(plugins::ForkyDebugPlugin)
 			.add_plugin(spline::physics::SplinePhysicsPlugin)
 			.add_plugin(DebugLinesPlugin::with_depth_test(true))
-			.add_startup_system(plugins::spawn_default_camera)
 			// .add_startup_system(spawn_spline_cube)
 			.add_startup_system(crate::spline::utils::spawn_spline_graph_cube)
 			.add_system(crate::spline::utils::draw_spline)
