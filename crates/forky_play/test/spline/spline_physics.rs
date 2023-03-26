@@ -1,6 +1,5 @@
 use bevy::prelude::*;
-use forky_play::spline::*;
-use forky_play::*;
+use forky_play::{*, spline::{Spline, CubicSpline}};
 use sweet::*;
 sweet! {
 
@@ -8,13 +7,13 @@ sweet! {
 		let mut app = App::new();
 		app.__()
 			.insert_test_timer()
-			.add_plugin(spline::SplinePhysicsPlugin)
+			.add_plugin(spline::physics::SplinePhysicsPlugin)
 			.__();
 
 		let player_id = app.world.spawn((
 			Transform::default(),
-			SplinePosition::default(),
-			SplineVelocity::default(),
+			spline::physics::SplinePosition::default(),
+			spline::physics::SplineVelocity::default(),
 			physics::AccelerationForce(Vec3::DOWN),
 			Spline::Cubic(CubicSpline{
 				p0: Vec3::new(0.,1.,0.),

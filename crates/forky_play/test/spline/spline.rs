@@ -3,7 +3,7 @@ use forky_play::spline::*;
 use forky_play::*;
 use sweet::*;
 sweet! {
-	test "spline acceleration - linear" {
+	test "acceleration - linear" {
 
 		let spline = Spline::Linear(LinearSpline{
 			p0: Vec3::UP,
@@ -22,7 +22,7 @@ sweet! {
 
 		
 	}
-	test "spline acceleration - quadratic" {
+	test "acceleration - quadratic" {
 		
 		let spline = Spline::Quadratic(QuadraticSpline{
 			p0: Vec3::UP,
@@ -37,7 +37,7 @@ sweet! {
 		expect(spline.acceleration(0.5,Vec3::new(-2.,2.,0.)))
 			.to_be_close_to(-2.8)?;
 	}
-	test "spline acceleration - cubic" {
+	test "acceleration - cubic" {
 		
 		let spline = Spline::Cubic(CubicSpline{
 			p0: Vec3::new(0.,1.,0.),
@@ -51,6 +51,31 @@ sweet! {
 		expect(spline.acceleration(0.75,Vec3::DOWN)).to_be_close_to(-0.8)?;
 		expect(spline.acceleration(1.,Vec3::DOWN)).to_be(-1.)?;
 
+	}
+
+	test "total length"{
+		let spline = Spline::Linear(LinearSpline{
+			p0: Vec3::new(0.,0.,0.),
+			p1: Vec3::new(10.,0.,0.),
+		});
+		expect(spline.total_length(0)).to_be(10.)?;
+		expect(spline.total_length(1000)).to_be(10.)?;
+
+		let spline = Spline::Cubic(CubicSpline{
+			p0: Vec3::new(0.,1.,0.),
+			p1: Vec3::new(0.,0.,0.),
+			p2: Vec3::new(1.,0.,0.),
+			p3: Vec3::new(1.,1.,0.),
+		});
+		expect(spline.total_length(0)).to_be(1.)?;
+		expect(spline.total_length(2)).to_be_close_to(1.91)?;
+		expect(spline.total_length(10)).to_be_close_to(1.99)?;
+
+		expect(spline.get_lengths(0)[0]).to_be(0.)?;
+		expect(spline.get_lengths(0)[1]).to_be(1.)?;
+		expect(spline.get_lengths(1)[0]).to_be(0.)?;
+		expect(spline.get_lengths(1)[1]).to_be_close_to(0.9)?;
+		expect(spline.get_lengths(1)[2]).to_be_close_to(1.8)?;
 	}
 
 }

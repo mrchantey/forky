@@ -84,4 +84,59 @@ impl Spline {
 
 		points
 	}
+
+	pub fn total_length(&self, subdivisions: usize) -> f32 {
+		let mut len = 0.;
+		let mut last = self.position(0.);
+		let divisions = subdivisions + 2;
+		let delta_t = 1. / (divisions - 1) as f32;
+		for i in 1..divisions {
+			let t = i as f32 * delta_t;
+			let next = self.position(t);
+			len += (next - last).length();
+			last = next;
+		}
+		len
+	}
+
+	pub fn get_lengths(&self, subdivisions: usize) -> Vec<f32> {
+		let mut len = 0.;
+		let mut last = self.position(0.);
+		let divisions = subdivisions + 2;
+		let delta_t = 1. / (divisions - 1) as f32;
+		let mut lengths = Vec::with_capacity(divisions);
+		lengths.push(0.);
+		for i in 1..divisions {
+			let t = i as f32 * delta_t;
+			let next = self.position(t);
+			len += (next - last).length();
+			last = next;
+			lengths.push(len);
+		}
+		lengths
+	}
+}
+
+
+pub struct SplineLengthIterator<'a> {
+	spline: &'a Spline,
+	divisions: usize,
+	delta_t: f32,
+	t: f32,
+	last: Vec3,
+	len: f32,
+}
+
+impl<'a> SplineLengthIterator<'a> {
+	pub fn new(spline: &'a Spline, subdivisions: usize) -> Self {
+		let total_len = spline.total_length(subdivisions);
+		SplineLengthIterator::<'a> {
+			spline,
+			divisions: subdivisions + 2,
+			delta_t: 1. / (subdivisions + 1) as f32,
+			t: 0.,
+			last: spline.position(0.),
+			len: 0.,
+		}
+	}
 }

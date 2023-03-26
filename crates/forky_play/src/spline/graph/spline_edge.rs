@@ -1,6 +1,6 @@
 use super::*;
+use crate::spline::Spline;
 use bevy::prelude::*;
-
 
 #[derive(Component, Debug, Copy, Clone, PartialEq)]
 pub struct SplineEdge {

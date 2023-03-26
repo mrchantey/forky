@@ -1,4 +1,7 @@
 use super::*;
+use crate::spline::graph::SplineEdge;
+use crate::spline::graph::SplineGraph;
+use crate::spline::Spline;
 use crate::*;
 use bevy::prelude::*;
 use bevy_rapier3d::na::ComplexField;

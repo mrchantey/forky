@@ -2,6 +2,7 @@ use anyhow::*;
 use bevy::prelude::*;
 use forky_play::spline::*;
 use forky_play::*;
+use forky_play::spline::graph::SplineGraph;
 use sweet::*;
 sweet! {
 	test "spline graph" {

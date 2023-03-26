@@ -26,9 +26,7 @@ impl Speed {
 	pub fn new(speed: f32) -> Speed { Speed(speed) }
 }
 
-pub fn spawn_default_camera(
-	mut commands: Commands,
-) {
+pub fn spawn_default_camera(mut commands: Commands) {
 	commands.spawn(Camera3dBundle {
 		transform: Transform::from_xyz(0., 0., 5.0)
 			// transform: Transform::from_xyz(-2.0, 2.5, 5.0)
@@ -52,6 +50,36 @@ pub fn spawn_cube(
 		Shape,
 	));
 }
+
+pub fn spawn_default_lights(mut commands: Commands) {
+	commands.insert_resource(AmbientLight {
+		// color: Color::WHITE,
+		brightness: 1.,
+		..default()
+	});
+
+	commands.spawn(PointLightBundle {
+		transform: Transform::from_xyz(-5., 5., 3.),
+		point_light: PointLight {
+			intensity: 1000.,
+			// color: Color::FUCHSIA,
+			shadows_enabled: true,
+			..default()
+		},
+		..default()
+	});
+	commands.spawn(PointLightBundle {
+		transform: Transform::from_xyz(3., 5., -5.),
+		point_light: PointLight {
+			intensity: 1000.,
+			shadows_enabled: true,
+			// color: Color::CYAN,
+			..default()
+		},
+		..default()
+	});
+}
+
 
 fn rotate(
 	mut query: Query<&mut Transform, With<Shape>>,

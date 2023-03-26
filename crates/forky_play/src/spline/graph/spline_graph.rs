@@ -1,5 +1,5 @@
 use super::*;
-use crate::*;
+use crate::{spline::Spline, *};
 use bevy::prelude::*;
 use derive_deref::{Deref, DerefMut};
 use forky_core::*;
@@ -62,7 +62,7 @@ impl SplineGraph {
 		};
 
 		if t >= 0.0 && t <= 1.0 {
-			return Some(edge.clone())
+			return Some(edge.clone());
 		} else if t < 0.0 {
 			for next in self.edges(edge.a) {
 				if next.2 != edge {

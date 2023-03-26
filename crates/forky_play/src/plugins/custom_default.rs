@@ -4,7 +4,7 @@ use bevy::{
 	window::{PresentMode, WindowResolution},
 };
 
-use crate::utility;
+use crate::{utility, materials};
 
 
 pub struct CustomDefaultPlugin;
@@ -37,6 +37,7 @@ impl Plugin for CustomDefaultPlugin {
 						..Default::default()
 					}),
 			)
+			.add_plugin(MaterialPlugin::<materials::UvMaterial>::default())
 			.add_system(bevy::window::close_on_esc);
 	}
 }

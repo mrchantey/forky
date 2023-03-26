@@ -5,14 +5,15 @@
 #![allow(unused_parens)]
 
 pub mod animation;
-pub mod plugins;
 pub mod base;
 pub mod debug;
 pub mod graph;
 pub mod input;
+pub mod materials;
 pub mod maze;
 pub mod mesh;
 pub mod physics;
+pub mod plugins;
 pub mod spline;
 pub mod utility;
 

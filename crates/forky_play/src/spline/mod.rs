@@ -1,12 +1,5 @@
+pub mod graph;
+pub mod mesh;
+pub mod physics;
 mod spline;
 pub use self::spline::*;
-mod spline_edge;
-pub use self::spline_edge::*;
-mod spline_graph;
-pub use self::spline_graph::*;
-mod spline_node;
-pub use self::spline_node::*;
-mod spline_physics;
-pub use self::spline_physics::*;
-mod spline_physics_bundle;
-pub use self::spline_physics_bundle::*;
