@@ -2,30 +2,9 @@ use anyhow::Result;
 use colorize::AnsiColor;
 use std::cmp;
 use std::fmt;
-
 use super::MatcherError;
-// use super::Result;
-// pub type MatchableType = dyn cmp::PartialEq + fmt::Display + std::marker::Copy;
-pub trait Matchable: cmp::PartialEq + fmt::Display + std::marker::Copy {}
-impl Matchable for bool {}
-impl Matchable for f32 {}
-impl Matchable for f64 {}
-impl Matchable for u8 {}
-impl Matchable for u16 {}
-impl Matchable for u32 {}
-impl Matchable for u64 {}
-impl Matchable for u128 {}
-impl Matchable for i8 {}
-impl Matchable for i16 {}
-impl Matchable for i32 {}
-impl Matchable for i64 {}
-impl Matchable for i128 {}
-impl Matchable for usize {}
-impl Matchable for char {}
-impl Matchable for &str {}
-// impl Matchable for String {}
 
-pub struct Matcher<T: Matchable + cmp::PartialEq + fmt::Display> {
+pub struct Matcher<T: cmp::PartialEq + fmt::Display> {
 	value: T,
 	negated: bool,
 }
@@ -80,7 +59,10 @@ impl Matcher<i32> {
 	}
 }
 
-impl<T: Matchable> Matcher<T> {
+impl<T> Matcher<T>
+where
+	T: cmp::PartialEq + fmt::Display + std::marker::Copy,
+{
 	pub fn new(value: T) -> Matcher<T> {
 		Matcher {
 			value,
@@ -105,7 +87,12 @@ impl<T: Matchable> Matcher<T> {
 		if self.equality(other) {
 			Ok(())
 		} else {
-			Err(MatcherError::new(other, self.value, 0))
+			Err(MatcherError::new_with_not(
+				other,
+				self.value,
+				self.negated,
+				0,
+			))
 		}
 	}
 
@@ -113,9 +100,9 @@ impl<T: Matchable> Matcher<T> {
 }
 
 
-pub fn expect<T: Matchable + cmp::PartialEq + fmt::Display>(
-	value: T,
-) -> Matcher<T> {
+pub fn expect<T>(value: T) -> Matcher<T>
+where
+	T: cmp::PartialEq + fmt::Display + std::marker::Copy,
+{
 	Matcher::new(value)
 }
-
