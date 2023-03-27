@@ -4,36 +4,33 @@ use bevy_rapier3d::prelude::Collider;
 use derive_deref::{Deref, DerefMut};
 
 #[derive(
-	Deref, DerefMut, Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash,
+	Component,
+	Deref,
+	DerefMut,
+	Debug,
+	Copy,
+	Clone,
+	Eq,
+	PartialEq,
+	Ord,
+	PartialOrd,
+	Hash,
 )]
 pub struct SplineNode(pub u64);
 
-
-
-#[derive(Bundle, Default)]
+#[derive(Bundle)]
 pub struct SplineNodeBundle {
-	pub pbr: PbrBundle,
-	pub collider: Collider,
-	pub interact_color: spline::tool::InteractColor,
-	//todo reference node
+	pub node: SplineNode,
+	pub transform: TransformBundle,
 }
 
 impl SplineNodeBundle {
-	pub fn new(
-		position: Vec3,
-		mesh: &Handle<Mesh>,
-		materials: &mut ResMut<Assets<StandardMaterial>>,
-		radius: f32,
-	) -> Self {
+	pub fn new(position: Vec3, node: SplineNode) -> Self {
 		SplineNodeBundle {
-			pbr: PbrBundle {
-				transform: Transform::from_translation(position),
-				mesh: mesh.clone(),
-				material: materials.add(Color::BLACK.into()),
-				..default()
-			},
-			collider: Collider::ball(radius),
-			..default()
+			transform: TransformBundle::from(Transform::from_translation(
+				position,
+			)),
+			node,
 		}
 	}
 }

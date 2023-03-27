@@ -1,8 +1,14 @@
 mod camera_ray;
 pub use self::camera_ray::*;
+mod highlight;
+pub use self::highlight::*;
+mod interact_state;
+pub use self::interact_state::*;
 mod move_tool;
 pub use self::move_tool::*;
-mod tool_interaction;
-pub use self::tool_interaction::*;
+mod resources;
+pub use self::resources::*;
+mod select;
+pub use self::select::*;
 mod tool_plugin;
 pub use self::tool_plugin::*;

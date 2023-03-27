@@ -18,6 +18,7 @@ impl Plugin for ForkyDebugPlugin {
 			.add_plugin(plugins::CustomDefaultPlugin)
 			.add_plugin(input::DebugCameraPlugin)
 			.add_plugin(MaterialPlugin::<materials::UvMaterial>::default())
+			.add_plugin(MaterialPlugin::<materials::UnlitMaterial>::default())
 			.add_system(bevy::window::close_on_esc)
 			.add_startup_system(utility::spawn_default_lights)
 			.__();

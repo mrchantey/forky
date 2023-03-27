@@ -15,25 +15,17 @@ fn main() {
 		.run();
 }
 
-fn spawn_spline(
-	mut commands: Commands,
-	mut meshes: ResMut<Assets<Mesh>>,
-	mut materials: ResMut<Assets<StandardMaterial>>,
-) {
+fn spawn_spline(mut commands: Commands) {
 	let p0 = Vec3::new(-1., 1., 0.);
 	let p3 = Vec3::new(1., 1., 0.);
 
-	let mesh = meshes.add(Mesh::from(shape::UVSphere {
-		radius: 0.1,
-		sectors: 8,
-		stacks: 8,
-	}));
-
 	commands.spawn(spline::graph::SplineNodeBundle::new(
-		p0, &mesh, &mut materials, 0.1,
+		p0,
+		spline::graph::SplineNode(0),
 	));
 	commands.spawn(spline::graph::SplineNodeBundle::new(
-		p3, &mesh, &mut materials, 0.1,
+		p3,
+		spline::graph::SplineNode(1),
 	));
 
 	commands.spawn(

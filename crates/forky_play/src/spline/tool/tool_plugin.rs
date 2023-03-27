@@ -9,11 +9,17 @@ impl Plugin for SplineToolPlugin {
 		app.__()
 			//
 			.init_resource::<CameraRay>()
+			.init_resource::<InteractionSettings>()
+			.add_startup_system(spawn_resources)
+			.add_system(append_node_meshes)
 			.add_systems((
 				cast_camera_ray, 
-				select_entity,
-				update_selected,
-				on_interact_color_change,
+				set_entity_intersect,
+				select_entities,
+				highlight_entities,
+				//these can be parallel
+				move_items,
+				on_interact_state_change,
 			).chain(),
 			)
 			.__();

@@ -10,7 +10,7 @@ pub impl Vec3 {
 	const DOWN: Vec3 = Vec3::new(0., -1., 0.);
 	const Z: Vec3 = Vec3::new(0., 0., 1.);
 	const Z_NEG: Vec3 = Vec3::new(0., 0., -1.);
-	
+
 	fn from_x(x: f32) -> Self { Vec3::new(x, 0., 0.) }
 	fn from_y(y: f32) -> Self { Vec3::new(0., y, 0.) }
 	fn from_z(z: f32) -> Self { Vec3::new(0., 0., z) }
