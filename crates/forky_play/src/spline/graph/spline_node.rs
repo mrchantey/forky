@@ -22,6 +22,7 @@ pub struct SplineNode(pub u64);
 pub struct SplineNodeBundle {
 	pub node: SplineNode,
 	pub transform: TransformBundle,
+	pub handle: SplineNodeHandle,
 }
 
 impl SplineNodeBundle {
@@ -31,6 +32,21 @@ impl SplineNodeBundle {
 				position,
 			)),
 			node,
+			handle:SplineNodeHandle::default()
 		}
+	}
+}
+
+#[derive(Component, Debug, Default, Clone, PartialEq)]
+pub struct SplineNodeHandle {
+	pub edges: Vec<Entity>,
+}
+
+
+pub fn on_node_moved(
+	query: Query<(&Transform, &SplineNode), Changed<Transform>>,
+) {
+	for (transform, node) in query.iter() {
+		println!("Node {} moved to {:?}", node.0, transform.translation);
 	}
 }

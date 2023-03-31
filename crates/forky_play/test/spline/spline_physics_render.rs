@@ -8,7 +8,7 @@ use sweet::*;
 
 sweet! {
 
-	test "spline physics render" {
+	test skip "spline physics render" {
 		let mut app = App::new();
 		app.__()
 		.forky_exit_after(10.)

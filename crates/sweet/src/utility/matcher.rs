@@ -1,10 +1,11 @@
+use super::MatcherError;
 use anyhow::Result;
 use colorize::AnsiColor;
 use std::cmp;
 use std::fmt;
-use super::MatcherError;
+use std::fmt::Debug;
 
-pub struct Matcher<T: cmp::PartialEq + fmt::Display> {
+pub struct Matcher<T: cmp::PartialEq + Debug> {
 	value: T,
 	negated: bool,
 }
@@ -24,7 +25,7 @@ impl Matcher<&str> {
 			let expect =
 				[String::from("(contains)\n").blue().as_str(), other].join("");
 			let receive = ["\n", self.value].join("");
-			Err(MatcherError::new(expect.as_str(), receive.as_str(), 0))
+			Err(MatcherError::new(expect, receive, 0))
 		}
 	}
 }
@@ -40,7 +41,7 @@ impl Matcher<f32> {
 		} else {
 			let expect = format!("close to {}", other);
 			let receive = format!("{}", self.value);
-			Err(MatcherError::new(expect.as_str(), receive.as_str(), 0))
+			Err(MatcherError::new(expect, receive, 0))
 		}
 	}
 }
@@ -61,7 +62,7 @@ impl Matcher<i32> {
 
 impl<T> Matcher<T>
 where
-	T: cmp::PartialEq + fmt::Display + std::marker::Copy,
+	T: cmp::PartialEq + Debug + std::marker::Copy,
 {
 	pub fn new(value: T) -> Matcher<T> {
 		Matcher {
@@ -97,12 +98,13 @@ where
 	}
 
 	pub fn to_be(&self, other: T) -> Result<()> { self.assert_equal(other) }
+
 }
 
 
 pub fn expect<T>(value: T) -> Matcher<T>
 where
-	T: cmp::PartialEq + fmt::Display + std::marker::Copy,
+	T: cmp::PartialEq + fmt::Debug + std::marker::Copy,
 {
 	Matcher::new(value)
 }

@@ -1,6 +1,6 @@
 use super::*;
 use crate::{spline::Spline, *};
-use bevy::prelude::*;
+use bevy::{prelude::*, utils::HashMap};
 use derive_deref::{Deref, DerefMut};
 use forky_core::*;
 use petgraph::{
@@ -8,8 +8,7 @@ use petgraph::{
 	Undirected,
 };
 
-
-#[derive(Component, Debug)]
+#[derive(Component, Debug, Clone)]
 pub struct SplineGraph {
 	pub next_node_id: u64,
 	pub graph: UnGraphMap<SplineNode, SplineEdge>,

@@ -71,6 +71,9 @@ fn do_thing(frame: NonSend<web_sys::XrFrame>){
 	- **Help Wanted** - Subtle issue with projection matrix, ie rotating head seems to translate meshes slightly
 - No other devices have been tested
 
+## TODO
+- use bevy/hashbrown hashmaps for performance
+
 ## Contributing
 
 - For more info about the repo see [CONTRIBUTING](contributing.md)

@@ -10,20 +10,20 @@ pub enum Spline {
 	Cubic(CubicSpline),
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct LinearSpline {
 	pub p0: Vec3,
 	pub p1: Vec3,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct QuadraticSpline {
 	pub p0: Vec3,
 	pub p1: Vec3,
 	pub p2: Vec3,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct CubicSpline {
 	pub p0: Vec3,
 	pub p1: Vec3,

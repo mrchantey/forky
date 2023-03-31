@@ -4,5 +4,7 @@ mod spline_graph;
 pub use self::spline_graph::*;
 mod spline_graph_editor;
 pub use self::spline_graph_editor::*;
+mod spline_graph_lookup;
+pub use self::spline_graph_lookup::*;
 mod spline_node;
 pub use self::spline_node::*;

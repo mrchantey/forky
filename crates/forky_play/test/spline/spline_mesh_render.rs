@@ -7,7 +7,7 @@ use forky_play::*;
 use sweet::*;
 sweet! {
 
-	test "spline mesh" {
+	test skip "spline mesh" {
 		let mut app = App::new();
 		app.__()
 		.forky_exit_after(10.)

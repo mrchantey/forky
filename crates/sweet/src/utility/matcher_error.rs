@@ -8,31 +8,32 @@ use std::fmt;
 pub struct MatcherError;
 
 impl MatcherError {
-	pub fn new<T: fmt::Display>(
-		expected: T,
-		received: T,
+	pub fn new<T1: fmt::Debug,T2: fmt::Debug>(
+		expected: T1,
+		received: T2,
 		backtrace_depth: usize,
 	) -> anyhow::Error {
 		Self::new_with_not(expected, received, false, backtrace_depth)
 	}
-	pub fn new_with_not<T: fmt::Display>(
-		expected: T,
-		received: T,
+	pub fn new_with_not<T1: fmt::Debug,T2: fmt::Debug>(
+		expected: T1,
+		received: T2,
 		not: bool,
 		backtrace_depth: usize,
 	) -> anyhow::Error {
 		let expected = if not {
-			format!("Not {}", expected)
+			format!("Not {:?}", expected)
 		} else {
-			format!("{}", expected)
+			format!("{:?}", expected)
 		};
 
+		let received = format!("{:?}", received);
 		anyhow!(format!(
 			"{}{}{}{}\n\n{}",
 			"Expected: ",
 			expected.green(),
 			"\nReceived: ",
-			received.to_string().red(),
+			received.red(),
 			backtracer::file_context_depth(backtrace_depth + 3),
 		))
 	}
