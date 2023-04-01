@@ -23,7 +23,7 @@ impl Plugin for SplineEcsGraphPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
 			.insert_resource(EcsSplineGraphLookup::new())
-			.add_system(on_ecs_node_moved)
+			.add_system(on_ecs_point_moved)
 			.__();
 	}
 }

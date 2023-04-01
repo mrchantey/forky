@@ -1,5 +1,5 @@
 use crate::*;
-use bevy::prelude::{*};
+use bevy::prelude::*;
 
 #[derive(Resource)]
 pub struct InteractionSettings {
@@ -26,7 +26,7 @@ impl Default for InteractionSettings {
 			highlight_color: Color::rgb(0., 1., 0.),
 			select_color: Color::rgb(0., 0., 0.8),
 			select_primary_color: Color::rgb(0., 0., 1.),
-			node_radius: 0.1,
+			node_radius: 0.3,
 			height_delta: 0.1,
 		}
 	}

@@ -35,7 +35,7 @@ impl SplineGraph {
 		node2: SplineNode,
 		spline: Spline,
 	) -> SplineEdge {
-		let edge = SplineEdge::new(self.next_edge_id, node1, node2, spline);
+		let edge = SplineEdge::new(node1, node2, spline);
 		self.add_edge(node1, node2, edge.clone());
 		self.next_edge_id += 1;
 		edge
@@ -54,6 +54,7 @@ impl SplineGraph {
 		if t >= 0.0 && t <= 1.0 {
 			return Some(edge.clone());
 		} else if t < 0.0 {
+			//TODO this just gets the next edge, it should be angle based or something
 			for next in self.edges(edge.a) {
 				if next.2 != edge {
 					return self.get_current_spline(next.2, t + 1.);

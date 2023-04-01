@@ -22,12 +22,12 @@ fn setup(
 	let (_id, graph) = graph_lookup.create_graph(material);
 	// let node = graph.create_node();
 
-	let spline = Spline::Cubic(CubicSpline {
-		p0: Vec3::new(-1.0, 1., 0.),
-		p1: Vec3::new(-1., 0., 0.),
-		p2: Vec3::new(1., 0., 0.),
-		p3: Vec3::new(1., 1., 0.),
-	});
+	let spline = Spline::Cubic(CubicSpline::new(
+		Vec3::new(-1.0, 1., 0.),
+		Vec3::new(-1., 0., 0.),
+		Vec3::new(1., 0., 0.),
+		Vec3::new(1., 1., 0.),
+	));
 
 	graph.create_edge_from_spline(
 		&mut commands,

@@ -19,28 +19,8 @@ use super::*;
 )]
 pub struct SplineNode(pub u64);
 
-#[derive(Bundle)]
-pub struct SplineNodeBundle {
-	pub node: SplineNode,
-	pub transform: TransformBundle,
-}
-
-impl SplineNodeBundle {
-	pub fn new(position: Vec3, node: SplineNode) -> Self {
-		SplineNodeBundle {
-			transform: TransformBundle::from(Transform::from_translation(
-				position,
-			)),
-			node,
-		}
-	}
-}
-
-// #[derive(Component, Debug, Default, Clone, PartialEq)]
-// pub struct SplineNodeHandle {
-// 	pub edges: Vec<Entity>,
-// }
-
+#[derive(Component, Deref, DerefMut, Debug, Copy, Clone, Eq, PartialEq)]
+pub struct SplinePointIndex(pub u32);
 
 pub fn on_node_moved(
 	mut graph_lookup: ResMut<SplineGraphLookup>,

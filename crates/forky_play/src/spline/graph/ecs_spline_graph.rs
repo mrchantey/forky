@@ -6,7 +6,6 @@ use crate::{
 };
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::Collider;
-use petgraph::data::Build;
 
 #[derive(Debug, Clone)]
 pub struct EcsSplineGraph {
@@ -14,8 +13,7 @@ pub struct EcsSplineGraph {
 	pub graph: SplineGraph,
 	pub edge_material: Handle<UvMaterial>,
 	pub edge_subdivisions: usize,
-	pub nodes: IdHashMap<Entity>,
-	pub edges: IdHashMap<Entity>,
+	pub edges: IdHashMap<EcsSplineEdge>,
 }
 
 impl EcsSplineGraph {
@@ -25,21 +23,21 @@ impl EcsSplineGraph {
 			edge_material,
 			edge_subdivisions: 10,
 			graph: SplineGraph::new(),
-			nodes: IdHashMap::<Entity>::new(),
-			edges: IdHashMap::<Entity>::new(),
+			edges: IdHashMap::<EcsSplineEdge>::new(),
 		}
 	}
-	pub fn create_node(
+
+	pub fn create_point(
 		&mut self,
 		commands: &mut Commands,
 		interaction_settings: &Res<tool::InteractionSettings>,
 		interaction_resources: &Res<tool::InteractionResources>,
+		point_index: u32,
 		position: Vec3,
-	) -> SplineNode {
-		let node = self.graph.create_node();
-		let entity = commands
+	) -> Entity {
+		commands
 			.spawn((
-				SplineNodeBundle::new(position, node),
+				TransformBundle::from(Transform::from_translation(position)),
 				materials::RenderBundle {
 					material: interaction_resources.inactive_material.clone(),
 					mesh: interaction_resources.node_mesh.clone(),
@@ -48,10 +46,48 @@ impl EcsSplineGraph {
 				Collider::ball(interaction_settings.node_radius),
 				tool::Interactable,
 				EcsSplineGraphId(self.id),
+				SplinePointIndex(point_index),
 			))
-			.id();
-		self.nodes.insert(*node, entity);
+			.id()
+	}
+
+	pub fn create_node(
+		&mut self,
+		commands: &mut Commands,
+		entity: Entity,
+	) -> SplineNode {
+		let node = self.graph.create_node();
+		commands.entity(entity).insert(node);
 		node
+	}
+
+	pub fn create_points(
+		&mut self,
+		commands: &mut Commands,
+		interaction_settings: &Res<tool::InteractionSettings>,
+		interaction_resources: &Res<tool::InteractionResources>,
+		spline: Spline,
+	) -> (SplineNode, SplineNode, Vec<Entity>) {
+		let mut first = SplineNode(0);
+		let mut last = SplineNode(0);
+		let mut points: Vec<Entity> = Vec::new();
+
+		for (point_index, position) in spline.get_points().iter().enumerate() {
+			let point = self.create_point(
+				commands,
+				interaction_settings,
+				interaction_resources,
+				point_index as u32,
+				*position,
+			);
+			if point_index == 0 {
+				first = self.create_node(commands, point);
+			} else if point_index == spline.get_points().len() - 1 {
+				last = self.create_node(commands, point);
+			}
+			points.push(point);
+		}
+		(first, last, points)
 	}
 
 	pub fn create_edge_from_spline(
@@ -61,60 +97,67 @@ impl EcsSplineGraph {
 		interaction_resources: Res<tool::InteractionResources>,
 		spline: Spline,
 	) {
-		let node1 = self.create_node(
+		let (node1, node2, points) = self.create_points(
 			commands,
 			&interaction_settings,
 			&interaction_resources,
-			spline.position(0.),
-		);
-		let node2 = self.create_node(
-			commands,
-			&interaction_settings,
-			&interaction_resources,
-			spline.position(1.),
+			spline.clone(),
 		);
 
-		let edge = self.graph.create_edge(node1, node2, spline);
+		self.graph.create_edge(node1, node2, spline);
 
-		let entity = commands.spawn((
-			TransformBundle::default(),
-			RenderBundle::new(
-				Handle::<Mesh>::default(),
-				self.edge_material.clone(),
-			),
-			spline,
-		));
-		self.edges.insert(edge.id, entity.id());
+		let entity = commands
+			.spawn((
+				TransformBundle::default(),
+				RenderBundle::new(
+					Handle::<Mesh>::default(),
+					self.edge_material.clone(),
+				),
+				spline,
+			))
+			.id();
+		let (edge_id, _) = self.edges.insert_next(EcsSplineEdge {
+			link: SplineLink::new(node1, node2),
+			mesh: entity,
+			points: points.clone(),
+		});
+
+		for point in points.iter() {
+			commands
+				.entity(*point)
+				.insert(SplineEdgeList(vec![edge_id]));
+		}
 	}
 
+	// pub fn update_edge_from_node(&mut self, node: &SplineNode, position: Vec3) {
+	// 	self.graph.edges(*node).for_each(|(_, _, edge)| {
+	// 		let mut edge = edge.clone();
+	// 		if edge.a == *node {
+	// 			edge.spline.set_first(position);
+	// 		} else {
+	// 			edge.spline.set_last(position);
+	// 		}
+	// 		self.graph.update_edge(edge.a, edge.b, edge);
+	// 	});
+	// }
 
-	pub fn edge_entities(
-		&self,
-		node: &SplineNode,
-	) -> impl Iterator<Item = (&Entity, &SplineEdge)> {
-		self.graph
-			.edges(*node)
-			.map(|(_, _, edge)| (self.edges.get(&edge.id).unwrap(), edge))
-		// self.edges.get(&edge)
-	}
-
-	pub fn update_node_position(&mut self, node: &SplineNode, position: Vec3) {
-		let edges = self
-			.graph
-			.edges(*node)
-			.map(|(_, _, edge)| {
-				let mut edge = edge.clone();
-				if edge.a == *node {
-					edge.spline.set_first(position);
-				} else {
-					edge.spline.set_last(position);
-				}
-				edge
-			})
-			.collect::<Vec<_>>();
-
-		for edge in edges {
-			self.graph.update_edge(edge.a, edge.b, edge);
+	pub fn update_edge_from_point(
+		&mut self,
+		commands: &mut Commands,
+		meshes: &mut ResMut<Assets<Mesh>>,
+		point_index: SplinePointIndex,
+		position: Vec3,
+		edges: &SplineEdgeList,
+	) {
+		for ecs_edge in edges.iter().map(|edge| self.edges.get(edge).unwrap()) {
+			let edge = self
+				.graph
+				.edge_weight_mut(ecs_edge.link.a, ecs_edge.link.b)
+				.unwrap();
+			edge.spline.set_point(position, *point_index).unwrap();
+			commands.entity(ecs_edge.mesh).insert(meshes.add(
+				mesh::create_spline_mesh(&edge.spline, self.edge_subdivisions),
+			));
 		}
 	}
 }
