@@ -1,8 +1,6 @@
 use std::{collections::hash_map::DefaultHasher, hash::Hasher};
-
 use crate::*;
-use bevy::{prelude::*, render::camera::Viewport, utils::HashMap};
-use derive_deref::{Deref, DerefMut};
+use bevy::{prelude::*, render::camera::Viewport};
 use web_sys::*;
 
 #[derive(Component, Debug, Clone)]

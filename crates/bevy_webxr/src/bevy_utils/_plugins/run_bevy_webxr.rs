@@ -2,15 +2,15 @@
 use crate::*;
 use anyhow::Result;
 use bevy::prelude::*;
-use bevy::render::render_phase::AddRenderCommand;
-use bevy::render::renderer::{RenderDevice, RenderQueue};
-use bevy::render::RenderApp;
-use std::cell::RefCell;
-use std::rc::Rc;
+
+
+
+
+
 use std::sync::{Arc, Mutex};
-use wasm_bindgen::prelude::*;
+
 use wasm_bindgen::JsValue;
-use wasm_bindgen_futures::{spawn_local, JsFuture};
+use wasm_bindgen_futures::{spawn_local};
 use web_sys::*;
 
 // use super::{add_input_source_event, WebXrPlugin};
@@ -44,9 +44,9 @@ pub async fn init_xr_render(
 		.non_send_resource::<web_sys::XrReferenceSpaceType>();
 	let session = xr_utils::create_xr_session_with_mode(&gl, *mode).await?;
 
-	let gl_layer = xr_utils::create_xr_gl_layer(&session, &gl)?;
+	let _gl_layer = xr_utils::create_xr_gl_layer(&session, &gl)?;
 	let reference_space =
-		xr_utils::get_reference_space(&session, &mode, reference_space_type)
+		xr_utils::get_reference_space(&session, reference_space_type)
 			.await?;
 
 	app.__()

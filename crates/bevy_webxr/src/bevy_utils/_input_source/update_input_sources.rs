@@ -1,11 +1,9 @@
 use crate::*;
 use bevy::{
 	prelude::*,
-	render::camera::Viewport,
-	utils::{HashMap, HashSet},
 };
-use js_sys::Array;
-use wasm_bindgen::JsValue;
+
+
 use web_sys::*;
 
 use super::BevyXrInputSource;

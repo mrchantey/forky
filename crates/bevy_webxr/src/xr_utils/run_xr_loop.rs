@@ -1,12 +1,12 @@
 #![cfg(web_sys_unstable_apis)]
-use crate::*;
-use anyhow::{Error, Result};
-use js_sys::{Object, Promise, Reflect};
+
+use anyhow::{Result};
+
 use std::cell::RefCell;
 use std::rc::Rc;
-use std::sync::{Arc, Mutex};
+
 use wasm_bindgen::prelude::*;
-use wasm_bindgen_futures::{future_to_promise, JsFuture};
+use wasm_bindgen_futures::{future_to_promise};
 use web_sys::*;
 
 

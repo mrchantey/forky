@@ -1,9 +1,9 @@
 use bevy::prelude::*;
-use bevy::render::extract_resource::ExtractResourcePlugin;
-use bevy::render::RenderApp;
+
+
 
 use crate::*;
-use web_sys::*;
+
 
 pub struct WebXrPlugin {
 	/// Used to index a texture view for the xr camera. This can be any u32.

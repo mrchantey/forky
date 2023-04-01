@@ -19,10 +19,10 @@ impl Material for UnlitMaterial {
 
 	fn alpha_mode(&self) -> AlphaMode { self.alpha_mode }
 	fn specialize(
-		pipeline: &MaterialPipeline<Self>,
+		_pipeline: &MaterialPipeline<Self>,
 		descriptor: &mut RenderPipelineDescriptor,
-		layout: &MeshVertexBufferLayout,
-		key: MaterialPipelineKey<Self>,
+		_layout: &MeshVertexBufferLayout,
+		_key: MaterialPipelineKey<Self>,
 	) -> Result<(), SpecializedMeshPipelineError> {
 		descriptor.primitive.cull_mode = None;
 		Ok(())

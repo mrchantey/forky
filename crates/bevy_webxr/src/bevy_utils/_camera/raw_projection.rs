@@ -1,18 +1,11 @@
 use crate::*;
-use bevy::core_pipeline::core_3d;
-use bevy::core_pipeline::tonemapping::{DebandDither, Tonemapping};
 use bevy::prelude::*;
-use bevy::reflect::{self, Reflect};
+use bevy::reflect::Reflect;
 use bevy::render::camera::{
-	camera_system, Camera, CameraProjection, CameraProjectionPlugin,
-	CameraRenderGraph,
+	camera_system, CameraProjection, CameraProjectionPlugin,
 };
-use bevy::render::primitives::Frustum;
-use bevy::render::view::{
-	update_frusta, ColorGrading, VisibilitySystems, VisibleEntities,
-};
+use bevy::render::view::{update_frusta, VisibilitySystems};
 use bevy::transform::TransformSystem;
-
 
 pub struct RawProjectionPlugin;
 #[rustfmt::skip]
@@ -37,7 +30,7 @@ pub struct RawProjection {
 }
 
 impl RawProjection {
-	pub fn new(mut mat: Mat4) -> Self {
+	pub fn new(mat: Mat4) -> Self {
 		//default perspective near/far
 		// mat.z_axis.z = 0.0;
 		// mat.w_axis.z = 0.1;
@@ -79,7 +72,7 @@ impl Default for RawProjection {
 
 impl CameraProjection for RawProjection {
 	fn get_projection_matrix(&self) -> Mat4 { self.mat }
-	fn update(&mut self, width: f32, height: f32) {}
+	fn update(&mut self, _width: f32, _height: f32) {}
 	fn far(&self) -> f32 { self.get_far() }
 }
 

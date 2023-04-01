@@ -1,7 +1,6 @@
 use bevy::{
 	ecs::{
-		component::StorageType,
-		system::{EntityCommand, EntityCommands},
+		system::{EntityCommands},
 	},
 	prelude::*,
 	render::camera::Viewport,
@@ -20,7 +19,7 @@ pub struct RightHand;
 pub struct NoneHand;
 
 pub fn insert_input_handedness(
-	mut entity: &mut EntityCommands,
+	entity: &mut EntityCommands,
 	handedness: XrHandedness,
 ) {
 	match handedness {
@@ -30,7 +29,7 @@ pub fn insert_input_handedness(
 	};
 }
 pub fn insert_view_handedness(
-	mut entity: &mut EntityCommands,
+	entity: &mut EntityCommands,
 	viewport: Viewport,
 	num_views: usize,
 ) {

@@ -1,35 +1,25 @@
-use std::collections::HashMap;
-
 use crate::*;
 use bevy::{
 	core_pipeline::{
 		clear_color::ClearColorConfig,
-		tonemapping::{DebandDither, Tonemapping},
 	},
 	prelude::*,
 	render::{
 		camera::{
-			CameraProjection, ManualTextureViews, RenderTarget, Viewport,
+			RenderTarget,
 		},
-		extract_resource::ExtractResource,
-		primitives::Frustum,
-		view::ColorGrading,
 	},
 	utils::HashSet,
 };
-use derive_deref::{Deref, DerefMut};
 use web_sys::*;
-
 use super::{BevyXrView, FramebufferTextureViewId};
 
 
 pub fn create_views(
 	mut commands: Commands,
-	frame: NonSend<XrFrame>,
 	gl_layer: NonSend<XrWebGlLayer>,
-	reference_space: NonSend<XrReferenceSpace>,
 	texture_id: Res<FramebufferTextureViewId>,
-	mut query: Query<(Entity, &mut Transform, &BevyXrView)>,
+	query: Query<(Entity, &mut Transform, &BevyXrView)>,
 	views: NonSend<bevy_utils::ViewLookup>,
 ) {
 	let spawned_views = query

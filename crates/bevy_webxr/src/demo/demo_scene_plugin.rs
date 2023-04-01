@@ -1,14 +1,10 @@
 use std::f32::consts::TAU;
 
 use bevy::{
-	core_pipeline::clear_color::ClearColorConfig,
-	log::LogPlugin,
 	prelude::*,
-	window::{CompositeAlphaMode, WindowResolution},
-	winit::WinitPlugin,
 };
 
-use crate::{bevy_utils::UnlitMaterial, *};
+use crate::{*};
 
 const SCENE_Z: f32 = -5.0;
 

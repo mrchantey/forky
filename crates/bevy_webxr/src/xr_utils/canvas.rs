@@ -1,12 +1,12 @@
 #![cfg(web_sys_unstable_apis)]
-use crate::*;
-use anyhow::{Error, Result};
-use js_sys::{Object, Promise, Reflect};
-use std::cell::RefCell;
-use std::rc::Rc;
-use std::sync::{Arc, Mutex};
+
+use anyhow::{Result};
+
+
+
+
 use wasm_bindgen::prelude::*;
-use wasm_bindgen_futures::{future_to_promise, JsFuture};
+
 use web_sys::*;
 
 pub const BEVY_CANVAS_ID: &str = "bevy_canvas";
@@ -17,7 +17,7 @@ pub const XR_CANVAS_QUERY: &str = "canvas[data-bevy-webxr=\"xr_canvas\"]";
 
 //hack to get winit to render a small section
 pub fn set_canvas_size() {
-	let mut canvas = get_canvas(BEVY_CANVAS_QUERY).unwrap();
+	let canvas = get_canvas(BEVY_CANVAS_QUERY).unwrap();
 	canvas.set_attribute("width", "9999").unwrap();
 	canvas.set_attribute("height", "5000").unwrap();
 }

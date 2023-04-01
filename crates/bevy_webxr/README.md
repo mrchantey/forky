@@ -3,7 +3,12 @@
 VERY early-stage standalone WebXR renderer for the Bevy Engine.
 
 ## Quickstart
-
+```sh
+#terminal1
+just serve
+#terminal2
+just build-w bevy_webxr
+```
 ### Dependencies
 
 - currently requires [RenderTarget::TextureView](https://github.com/bevyengine/bevy/pull/8042). The PR is scheduled for `bevy 0.11`

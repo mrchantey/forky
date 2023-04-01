@@ -1,21 +1,13 @@
-use crate::*;
-use bevy::{
-	prelude::*,
-	render::camera::Viewport,
-	utils::{HashMap, HashSet},
-};
-use js_sys::Array;
-use wasm_bindgen::JsValue;
-use web_sys::*;
-
 use super::BevyXrInputSource;
+use crate::*;
+use bevy::{prelude::*, utils::HashSet};
+use web_sys::*;
 
 pub fn create_input_sources(
 	mut commands: Commands,
 	frame: NonSend<XrFrame>,
 	reference_space: NonSend<XrReferenceSpace>,
-	session: NonSend<XrSession>,
-	mut query: Query<(Entity, &mut Transform, &bevy_utils::BevyXrInputSource)>,
+	query: Query<(Entity, &mut Transform, &bevy_utils::BevyXrInputSource)>,
 	asset_server: Res<AssetServer>,
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<bevy_utils::UnlitMaterial>>,
@@ -37,7 +29,7 @@ pub fn create_input_sources(
 			None => continue,
 		};
 		// log!("creating input source for hash: {hash}");
-		let handle: Handle<Scene> = asset_server.load(asset_path);
+		let _handle: Handle<Scene> = asset_server.load(asset_path);
 		// let mut entity = commands.spawn((
 		// 	SceneBundle {
 		// 		scene: handle,

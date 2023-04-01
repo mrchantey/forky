@@ -1,11 +1,11 @@
 use crate::*;
 use bevy::prelude::*;
-use js_sys::JsString;
+
 use std::{
-	collections::{hash_map::DefaultHasher, HashMap},
-	hash::{Hash, Hasher},
+	collections::{hash_map::DefaultHasher},
+	hash::{Hasher},
 };
-use wasm_bindgen::{JsCast, JsValue};
+
 use web_sys::*;
 
 #[derive(Component)]

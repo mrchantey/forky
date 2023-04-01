@@ -2,10 +2,10 @@ use crate::{bevy_utils::BevyXrInputSource, *};
 use anyhow::Result;
 use bevy::{prelude::*, utils::HashMap};
 use derive_deref::{Deref, DerefMut};
-use js_sys::Array;
+
 use std::sync::{Arc, Mutex};
 use wasm_bindgen::{prelude::Closure, JsCast, JsValue};
-use wasm_bindgen_futures::{spawn_local, JsFuture};
+use wasm_bindgen_futures::{spawn_local};
 use web_sys::*;
 
 #[derive(Default, Resource, Deref, DerefMut)]

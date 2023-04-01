@@ -10,7 +10,7 @@ pub fn replace_standard_material(
 	mut unlit_texture_materials: ResMut<
 		Assets<bevy_utils::UnlitTextureMaterial>,
 	>,
-	mut query: Query<(Entity, &Handle<StandardMaterial>)>,
+	query: Query<(Entity, &Handle<StandardMaterial>)>,
 ) {
 	for (entity, standard_handle) in query.iter() {
 		let standard_mat = match standard_materials.get(standard_handle) {

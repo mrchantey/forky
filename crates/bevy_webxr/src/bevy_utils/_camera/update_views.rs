@@ -1,24 +1,14 @@
-use std::collections::HashMap;
+
 
 use crate::*;
 use bevy::{
-	core_pipeline::{
-		clear_color::ClearColorConfig,
-		tonemapping::{DebandDither, Tonemapping},
-	},
 	prelude::*,
 	render::{
-		camera::{
-			CameraProjection, ManualTextureViews, RenderTarget, Viewport,
-		},
 		extract_resource::ExtractResource,
-		primitives::Frustum,
-		view::ColorGrading,
 	},
-	utils::HashSet,
 };
 use derive_deref::{Deref, DerefMut};
-use web_sys::*;
+
 
 use super::BevyXrView;
 

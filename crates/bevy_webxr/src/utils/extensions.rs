@@ -29,7 +29,7 @@ pub impl App {
 	/// Chaining helper, returns self
 	fn __(&mut self) -> &mut Self { self }
 	/// Custom runner that updates on the required XR requestAnimationFrame
-	fn run_webxr(mut self) { bevy_utils::run_bevy_webxr(self); }
+	fn run_webxr(self) { bevy_utils::run_bevy_webxr(self); }
 }
 #[ext(name = WorldX)]
 pub impl World {

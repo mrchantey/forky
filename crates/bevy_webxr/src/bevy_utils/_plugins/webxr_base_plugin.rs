@@ -1,14 +1,6 @@
 use bevy::{
-	core_pipeline::clear_color::ClearColorConfig,
 	log::LogPlugin,
 	prelude::*,
-	render::{
-		camera::{camera_system, CameraProjectionPlugin},
-		view::{update_frusta, VisibilitySystems}, extract_resource::ExtractResourcePlugin,
-	},
-	transform::TransformSystem,
-	window::{CompositeAlphaMode, WindowResolution},
-	winit::WinitPlugin,
 };
 
 use crate::*;

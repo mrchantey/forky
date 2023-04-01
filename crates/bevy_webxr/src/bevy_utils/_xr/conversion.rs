@@ -1,9 +1,9 @@
 use std::f32::consts::PI;
 
-use crate::*;
+
 use bevy::{
 	prelude::*,
-	render::{camera::Viewport, extract_component::ExtractComponent},
+	render::{camera::Viewport},
 };
 use web_sys::*;
 
