@@ -57,7 +57,6 @@ impl EcsSplineGraph {
 	pub fn create_edge_from_spline(
 		&mut self,
 		commands: &mut Commands,
-		mut meshes: ResMut<Assets<Mesh>>,
 		interaction_settings: Res<tool::InteractionSettings>,
 		interaction_resources: Res<tool::InteractionResources>,
 		spline: Spline,

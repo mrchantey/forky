@@ -13,7 +13,7 @@ sweet! {
 		app.__()
 		.forky_exit_after(10.)
 			.add_plugin(plugins::ForkyDebugPlugin)
-			.add_plugin(spline::SplinePlugin)
+			.add_plugin(spline::graph::SplineGraphPlugin)
 			.add_plugin(spline::physics::SplinePhysicsPlugin)
 			.add_plugin(DebugLinesPlugin::with_depth_test(true))
 			// .add_startup_system(spawn_spline_cube)

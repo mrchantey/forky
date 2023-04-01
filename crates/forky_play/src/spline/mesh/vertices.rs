@@ -26,9 +26,7 @@ pub fn spline_to_vertices(
 		let t = i as f32 * delta_t;
 		let pos = spline.position(t);
 		let tangent = spline.tangent(t);
-		// let normal = tangent.cross(Vec3::UP).normalize();
 		let normal = spline.normal(t);
-		// println!("tangent: {:?}", tangent);
 		let binormal = normal.cross(tangent).normalize();
 		for point in edge_loop.iter() {
 			let vertex = pos + normal * point.x + binormal * point.y;

@@ -9,7 +9,7 @@ sweet! {
 			p0: Vec3::UP,
 			p1: Vec3::ZERO,
 		});
-		
+
 		expect(spline.acceleration(0.,Vec3::DOWN)).to_be(1.)?;
 		expect(spline.acceleration(0.,Vec3::UP)).to_be(-1.)?;
 		expect(spline.acceleration(0.,Vec3::RIGHT)).to_be(0.)?;
@@ -20,10 +20,10 @@ sweet! {
 		expect(spline.acceleration(0.,Vec3::new(0.,-2.,0.)))
 			.to_be_close_to(2.)?;
 
-		
+
 	}
 	test "acceleration - quadratic" {
-		
+
 		let spline = Spline::Quadratic(QuadraticSpline{
 			p0: Vec3::UP,
 			p1: Vec3::ZERO,
@@ -38,7 +38,7 @@ sweet! {
 			.to_be_close_to(-2.8)?;
 	}
 	test "acceleration - cubic" {
-		
+
 		let spline = Spline::Cubic(CubicSpline{
 			p0: Vec3::new(0.,1.,0.),
 			p1: Vec3::new(0.,0.,0.),
@@ -76,6 +76,16 @@ sweet! {
 		expect(spline.get_lengths(1)[0]).to_be(0.)?;
 		expect(spline.get_lengths(1)[1]).to_be_close_to(0.9)?;
 		expect(spline.get_lengths(1)[2]).to_be_close_to(1.8)?;
+	}
+
+	test "normal"{
+		let spline = Spline::Linear(LinearSpline{
+			p0: Vec3::new(0.,0.,0.),
+			p1: Vec3::new(10.,0.,0.),
+		});
+
+
+
 	}
 
 }

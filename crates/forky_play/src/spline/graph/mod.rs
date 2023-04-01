@@ -10,5 +10,7 @@ mod spline_graph;
 pub use self::spline_graph::*;
 mod spline_graph_lookup;
 pub use self::spline_graph_lookup::*;
+mod spline_graph_plugin;
+pub use self::spline_graph_plugin::*;
 mod spline_node;
 pub use self::spline_node::*;

@@ -7,7 +7,7 @@ fn main() {
 	app.__()
 		// .forky_exit_after(10.)
 		.add_plugin(plugins::ForkyFullPlugin)
-		.add_plugin(spline::SplinePlugin)
+		.add_plugin(spline::SplineEcsGraphPlugin)
 		.add_plugin(spline::tool::SplineToolPlugin)
 		.add_plugin(spline::physics::SplinePhysicsPlugin)
 		.add_startup_system(setup)
@@ -18,7 +18,6 @@ fn setup(
 	mut graph_lookup: ResMut<spline::graph::EcsSplineGraphLookup>,
 	interaction_settings: Res<tool::InteractionSettings>,
 	interaction_resources: Res<tool::InteractionResources>,
-	meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<materials::UvMaterial>>,
 ) {
 	let material = materials.add(materials::UvMaterial::default());
@@ -34,7 +33,6 @@ fn setup(
 
 	graph.create_edge_from_spline(
 		&mut commands,
-		meshes,
 		interaction_settings,
 		interaction_resources,
 		spline,

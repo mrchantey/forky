@@ -1,5 +1,8 @@
 use bevy::prelude::*;
-use forky_play::{*, spline::{Spline, CubicSpline}};
+use forky_play::{
+	spline::{CubicSpline, Spline},
+	*,
+};
 use sweet::*;
 sweet! {
 
@@ -7,7 +10,7 @@ sweet! {
 		let mut app = App::new();
 		app.__()
 			.insert_test_timer()
-			.add_plugin(spline::SplinePlugin)
+			.add_plugin(spline::graph::SplineGraphPlugin)
 			.add_plugin(spline::physics::SplinePhysicsPlugin)
 			.__();
 
@@ -32,7 +35,7 @@ sweet! {
 		app.update();
 		expect(app.world.get::<Transform>(player_id).unwrap().translation.y)
 		.to_be(1.)?;
-		
+
 		app.update_with_tick(0.1);
 		expect(app.world.get::<Transform>(player_id).unwrap().translation.y)
 		.to_be(0.9703)?;
