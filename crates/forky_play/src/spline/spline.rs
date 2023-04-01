@@ -1,6 +1,6 @@
 use crate::*;
 use bevy::prelude::*;
-use derive_deref::{Deref, DerefMut};
+
 
 
 #[derive(Component, Clone, Copy, Debug, PartialEq)]
@@ -59,7 +59,7 @@ impl Spline {
 		}
 	}
 	pub fn acceleration(&self, position: f32, acceleration: Vec3) -> f32 {
-		if (acceleration.length() == 0.) {
+		if acceleration.length() == 0. {
 			return 0.;
 		}
 		//find scalar projection of acceleration vector onto tangent
@@ -119,17 +119,16 @@ impl Spline {
 
 
 pub struct SplineLengthIterator<'a> {
-	spline: &'a Spline,
-	divisions: usize,
-	delta_t: f32,
-	t: f32,
-	last: Vec3,
-	len: f32,
+	pub spline: &'a Spline,
+	pub divisions: usize,
+	pub delta_t: f32,
+	pub t: f32,
+	pub last: Vec3,
+	pub len: f32,
 }
 
 impl<'a> SplineLengthIterator<'a> {
 	pub fn new(spline: &'a Spline, subdivisions: usize) -> Self {
-		let total_len = spline.total_length(subdivisions);
 		SplineLengthIterator::<'a> {
 			spline,
 			divisions: subdivisions + 2,

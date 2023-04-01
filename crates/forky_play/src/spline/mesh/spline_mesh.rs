@@ -1,7 +1,7 @@
 use super::*;
 use crate::materials::UvMaterial;
 use crate::spline::Spline;
-use crate::*;
+
 use bevy::prelude::*;
 use bevy::render::mesh;
 use wgpu::PrimitiveTopology;

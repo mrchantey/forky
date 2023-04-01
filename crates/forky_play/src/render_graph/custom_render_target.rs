@@ -1,23 +1,23 @@
-use std::f32::consts::TAU;
-use std::sync::MutexGuard;
+
+
 
 use bevy::core_pipeline::clear_color::ClearColorConfig;
 use bevy::prelude::*;
 use bevy::render::camera::RenderTarget;
 use bevy::render::renderer::RenderDevice;
-use bevy::render::texture::BevyDefault;
-use bevy::render::view::WindowSurfaces;
-use bevy::render::RenderApp;
+
+
+
 // use bevy::window::Windows;
-use wgpu::Extent3d;
-use wgpu::TextureDimension;
-use wgpu::TextureFormat;
+
+
+
 
 use super::create_image;
 use super::BlitSource;
 
 pub fn create_blit_source(app: &mut App) -> BlitSource {
-	let device = app.world.resource::<RenderDevice>().wgpu_device();
+	let _device = app.world.resource::<RenderDevice>().wgpu_device();
 
 	let mut src_image = create_image(500, 500);
 	src_image.texture_descriptor.usage = wgpu::TextureUsages::TEXTURE_BINDING

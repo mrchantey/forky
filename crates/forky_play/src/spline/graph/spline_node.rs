@@ -1,6 +1,6 @@
-use crate::*;
+
 use bevy::prelude::*;
-use bevy_rapier3d::prelude::Collider;
+
 use derive_deref::{Deref, DerefMut};
 
 use super::*;
@@ -56,7 +56,7 @@ pub fn on_node_moved(
 	query: Query<(&Transform, &SplineNode, &SplineGraphId), Changed<Transform>>,
 ) {
 	for (transform, node, graph_id) in query.iter() {
-		let graph = graph_lookup.get_mut(&graph_id).unwrap();
+		let _graph = graph_lookup.get_mut(&graph_id).unwrap();
 
 		// graph.get_
 		println!("Node {} moved to {:?}", node.0, transform.translation);

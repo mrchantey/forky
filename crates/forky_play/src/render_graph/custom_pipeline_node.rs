@@ -8,7 +8,7 @@ use bevy::render::render_resource::*;
 use bevy::render::renderer::RenderContext;
 use bevy::render::view::{ExtractedView, ViewTarget};
 
-use super::{custom_pipeline, CustomClearColor};
+
 use super::{BlitSource, CustomPipeline};
 
 pub struct CustomPipelineNode {
@@ -99,7 +99,7 @@ impl Node for CustomPipelineNode {
 		});
 
 		for (target, camera) in self.query.iter_manual(world) {
-			if (camera.order < 0) {
+			if camera.order < 0 {
 				continue;
 			}
 

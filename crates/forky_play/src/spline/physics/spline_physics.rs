@@ -1,4 +1,3 @@
-use super::*;
 use crate::spline::graph::*;
 use crate::spline::Spline;
 use crate::*;
@@ -86,7 +85,8 @@ pub fn update_current_spline(
 		&SplineGraphId,
 	)>,
 ) {
-	for (entity, mut position, mut spline, mut edge, graph_id) in query.iter_mut()
+	for (entity, mut position, mut spline, mut edge, graph_id) in
+		query.iter_mut()
 	{
 		if **position >= 0. && **position <= 1. {
 			continue;
@@ -112,10 +112,10 @@ pub fn update_current_spline(
 }
 
 pub fn update_spline_position(
-	mut query: Query<(&mut SplinePosition, &SplineVelocity, &Spline)>,
+	mut query: Query<(&mut SplinePosition, &SplineVelocity)>,
 	time: Res<Time>,
 ) {
-	for (mut position, velocity, spline) in query.iter_mut() {
+	for (mut position, velocity) in query.iter_mut() {
 		**position += **velocity * time.delta_seconds();
 		// println!("pos: {}, velocity: {}", **position, **velocity);
 	}

@@ -5,8 +5,8 @@ use bevy::render::render_graph::{
 };
 use bevy::render::render_resource::*;
 use bevy::render::renderer::RenderContext;
-use bevy::render::view::{ExtractedView, ViewTarget};
-use std::sync::Mutex;
+
+
 
 use super::BlitImageHandle;
 
@@ -21,7 +21,7 @@ pub struct BlitNode {
 impl BlitNode {
 	pub const IN_VIEW: &'static str = "view";
 
-	pub fn new(world: &mut World) -> Self {
+	pub fn new(_world: &mut World) -> Self {
 		Self {
 			image_handle: BlitImageHandle::default(),
 		}

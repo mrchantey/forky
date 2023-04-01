@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+
 
 #[rustfmt::skip]
 pub fn linear(p0: f32, p1: f32, t: f32) -> f32 { 
@@ -18,7 +18,7 @@ pub fn cubic(p0: f32, p1: f32, p2: f32, p3: f32, t: f32) -> f32 {
 }
 
 pub fn tangent_linear(p0: f32, p1: f32) -> f32 {
-	(p1 - p0)
+	p1 - p0
 	// t * (p1 - p0)
 }
 

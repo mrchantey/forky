@@ -1,5 +1,5 @@
 use crate::spline::Spline;
-use crate::*;
+
 use bevy::prelude::*;
 
 pub fn spline_to_uv(
@@ -9,7 +9,7 @@ pub fn spline_to_uv(
 ) -> Vec<Vec2> {
 	let divisions = subdivisions + 2;
 
-	let capacity = (edge_loop_len * divisions);
+	let capacity = edge_loop_len * divisions;
 	let mut uv = Vec::with_capacity(capacity);
 
 	let lengths = spline.get_lengths(subdivisions);

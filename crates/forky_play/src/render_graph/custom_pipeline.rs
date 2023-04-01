@@ -3,19 +3,17 @@ use bevy::{
 	prelude::*,
 	render::{
 		render_resource::{
-			BindGroup, CachedRenderPipelineId, FragmentState, PipelineCache,
+			CachedRenderPipelineId, FragmentState, PipelineCache,
 			RenderPipelineDescriptor,
 		},
 		renderer::RenderDevice,
-		view::ViewTarget,
 	},
 };
 use wgpu::{
-	AddressMode, BindGroupDescriptor, BindGroupEntry,
-	BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingResource,
-	BindingType, BufferBinding, BufferBindingType, ColorTargetState,
-	ColorWrites, FilterMode, MultisampleState, PrimitiveState,
-	SamplerBindingType, SamplerDescriptor, ShaderStages, TextureFormat,
+	BindGroupLayoutDescriptor, BindGroupLayoutEntry,
+	BindingType, BufferBindingType, ColorTargetState,
+	ColorWrites, MultisampleState, PrimitiveState,
+	SamplerBindingType, ShaderStages, TextureFormat,
 	TextureSampleType, TextureViewDimension,
 };
 

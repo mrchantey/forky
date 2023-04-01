@@ -1,8 +1,6 @@
 use crate::*;
 use bevy::{
-	log::LogPlugin,
 	prelude::*,
-	window::{PresentMode, WindowResolution},
 	winit::WinitSettings,
 };
 use bevy_inspector_egui::quick::WorldInspectorPlugin;

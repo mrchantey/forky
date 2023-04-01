@@ -1,8 +1,8 @@
 use super::*;
 use crate::{spline::graph::SplineNode, *};
-use bevy::prelude::{shape::Icosphere, *};
+use bevy::prelude::{*};
 use bevy_rapier3d::prelude::Collider;
-use derive_deref::{Deref, DerefMut};
+
 
 
 #[derive(Resource)]

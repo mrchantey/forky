@@ -1,12 +1,9 @@
 use super::*;
-use crate::{spline::Spline, *};
+
 use bevy::{prelude::*, utils::HashMap};
 use derive_deref::{Deref, DerefMut};
-use forky_core::*;
-use petgraph::{
-	graphmap::{Edges, UnGraphMap},
-	Undirected,
-};
+
+
 
 #[derive(Component, Deref, DerefMut, Clone, Copy)]
 pub struct SplineGraphId(pub u64);

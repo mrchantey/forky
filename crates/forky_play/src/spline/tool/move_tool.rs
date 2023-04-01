@@ -1,21 +1,21 @@
 use super::*;
-use crate::*;
+
 use bevy::prelude::*;
-use bevy_prototype_debug_lines::DebugLines;
-use bevy_rapier3d::prelude::*;
+
+
 
 pub fn move_items(
 	camera_ray: Res<CameraRay>,
 	keys: Res<Input<KeyCode>>,
 	mouse: Res<Input<MouseButton>>,
 	settings: Res<InteractionSettings>,
-	mut selected_query: Query<(&mut Transform), With<Selected>>,
+	mut selected_query: Query<&mut Transform, With<Selected>>,
 ) {
 	for mut transform in selected_query.iter_mut() {
-		if (keys.just_pressed(KeyCode::PageUp)) {
+		if keys.just_pressed(KeyCode::PageUp) {
 			transform.translation.y += settings.height_delta;
 		}
-		if (keys.just_pressed(KeyCode::PageDown)) {
+		if keys.just_pressed(KeyCode::PageDown) {
 			transform.translation.y -= settings.height_delta;
 		}
 		if let Some(intersect) = &camera_ray.entity_intersect {

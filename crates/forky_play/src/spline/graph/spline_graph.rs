@@ -1,11 +1,10 @@
 use super::*;
-use crate::{spline::Spline, *};
-use bevy::{prelude::*, utils::HashMap};
-use derive_deref::{Deref, DerefMut};
-use forky_core::*;
+use crate::{spline::Spline};
+
+
+
 use petgraph::{
-	graphmap::{Edges, UnGraphMap},
-	Undirected,
+	graphmap::{UnGraphMap},
 };
 
 #[derive(Debug, Clone)]

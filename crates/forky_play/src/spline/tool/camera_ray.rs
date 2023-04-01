@@ -1,7 +1,7 @@
 use super::*;
 use crate::*;
 use bevy::prelude::*;
-use bevy_prototype_debug_lines::DebugLines;
+
 use bevy_rapier3d::prelude::*;
 
 const MAX_DISTANCE: f32 = 1000.;
@@ -86,7 +86,7 @@ pub fn cast_camera_ray(
 	for entity in primary_interacted.iter() {
 		commands.entity(entity).remove::<PrimaryInteracted>();
 	}
-	camera_ray.entity = if let Some((entity, dist)) = rapier_context.cast_ray(
+	camera_ray.entity = if let Some((entity, _dist)) = rapier_context.cast_ray(
 		ray.origin,
 		ray.direction,
 		MAX_DISTANCE,
@@ -103,10 +103,9 @@ pub fn set_entity_intersect(
 	mut camera_ray: ResMut<CameraRay>,
 	query: Query<&Transform, With<PrimaryInteracted>>,
 ) {
-	let first_transform = query.get_single();
 	// camera_ray.entity
 	camera_ray.entity_intersect =
-		if let Some(first_transform) = query.iter().next() {
+		if let Ok(first_transform) = query.get_single() {
 			RayIntersect::from_plane(
 				camera_ray.ray,
 				first_transform.translation,
