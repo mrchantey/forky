@@ -1,7 +1,5 @@
-use crate::spline::Spline;
+use crate::spline::*;
 use bevy::prelude::*;
-
-
 
 /// Create Vertices
 ///

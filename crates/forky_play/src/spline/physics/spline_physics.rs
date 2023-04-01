@@ -1,5 +1,6 @@
 use crate::spline::graph::*;
 use crate::spline::Spline;
+use crate::spline::SplineType;
 use crate::*;
 use bevy::prelude::*;
 use derive_deref::{Deref, DerefMut};
