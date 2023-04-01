@@ -1,4 +1,3 @@
-#[allow(unused_imports)]
 use core::fmt::Write;
 use esp32c3_hal::Delay;
 use esp_hal_common::{clock::Clocks, prelude::*};

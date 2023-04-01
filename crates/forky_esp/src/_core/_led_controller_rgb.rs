@@ -1,4 +1,3 @@
-#[allow(unused_imports, unused_variables)]
 use crate::ESPDevice;
 // use esp32c3_hal::utils::*;
 use esp_hal_common::{

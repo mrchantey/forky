@@ -1,4 +1,3 @@
-#[allow(unused_imports)]
 use core::fmt::Write;
 use esp_hal_common::{pac::UART0, prelude::*, Serial};
 

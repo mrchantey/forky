@@ -20,7 +20,7 @@ run crate example:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}}
 
 fix crate *args:
-	cargo fix --lib -p {{crate}} {{args}}
+	cargo fix --allow-dirty --lib -p {{crate}} {{args}}
 
 run-w *args:
 	just watch 'just run {{args}}'

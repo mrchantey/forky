@@ -1,4 +1,3 @@
-#[allow(unused_imports)]
 use esp32c3_hal::{
 	clock::ClockControl,
 	pac,

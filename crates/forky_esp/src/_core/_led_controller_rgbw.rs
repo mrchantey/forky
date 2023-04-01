@@ -1,4 +1,3 @@
-#[allow(unused_imports, unused_variables)]
 use crate::*;
 use esp32c3_hal::utils::{smartLedAdapter, SmartLedsAdapter};
 use esp_hal_common::{

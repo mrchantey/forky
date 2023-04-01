@@ -1,7 +1,7 @@
 use anyhow::Result;
 use forky_core::*;
 use forky_fs::terminal;
-use std::{env, ffi::OsString, fs, path::PathBuf};
+use std::{env, fs, path::PathBuf};
 
 pub fn run() -> Result<()> {
 	terminal::clear();

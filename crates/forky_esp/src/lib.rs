@@ -1,7 +1,7 @@
 #![no_std]
 #![no_main]
 // #![feature(generic_const_exprs)]
-#[allow(unused_imports, unused_variables)]
+// #[allow(unused_imports, unused_variables)]
 //general
 pub use esp32c3_hal::prelude::*;
 pub use esp_backtrace as _;
