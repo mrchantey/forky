@@ -83,7 +83,10 @@ impl Spline {
 		let normal = tangent1.cross(tangent2).normalize_or_zero();
 
 		if normal == Vec3::ZERO {
-			tern!(tangent1 == Vec3::UP;tangent1.cross(Vec3::RIGHT);tangent1.cross(Vec3::UP))
+			tern!(tangent1.abs() == Vec3::UP
+				;tangent1.cross(Vec3::RIGHT)
+				;tangent1.cross(Vec3::UP)
+			)
 		} else {
 			normal
 		}

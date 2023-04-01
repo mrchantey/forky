@@ -7,9 +7,7 @@ fn main() {
 	app.__()
 		// .forky_exit_after(10.)
 		.add_plugin(plugins::ForkyFullPlugin)
-		.add_plugin(spline::SplineEcsGraphPlugin)
-		.add_plugin(spline::tool::SplineToolPlugin)
-		.add_plugin(spline::physics::SplinePhysicsPlugin)
+		.add_plugin(spline::SplinePlugin)
 		.add_startup_system(setup)
 		.run();
 }

@@ -80,10 +80,32 @@ sweet! {
 
 	test "normal"{
 		let spline = Spline::Linear(LinearSpline{
-			p0: Vec3::new(0.,0.,0.),
-			p1: Vec3::new(10.,0.,0.),
+			p0: Vec3::ZERO,
+			p1: Vec3::RIGHT,
 		});
+		expect(spline.tangent(0.)).to_be(Vec3::RIGHT)?;
+		expect(spline.tangent(1.)).to_be(Vec3::RIGHT)?;
+		expect(spline.normal(0.)).to_be(Vec3::Z)?;
+		expect(spline.normal(1.)).to_be(Vec3::Z)?;
 
+		let spline = Spline::Linear(LinearSpline{
+			p0: Vec3::ZERO,
+			p1: Vec3::UP,
+		});
+		expect(spline.tangent(0.)).to_be(Vec3::UP)?;
+		expect(spline.tangent(1.)).to_be(Vec3::UP)?;
+		expect(spline.normal(0.)).to_be(Vec3::Z_NEG)?;
+		expect(spline.normal(1.)).to_be(Vec3::Z_NEG)?;
+
+		
+		let spline = Spline::Linear(LinearSpline{
+			p0: Vec3::ZERO,
+			p1: Vec3::Z,
+		});
+		expect(spline.tangent(0.)).to_be(Vec3::Z)?;
+		expect(spline.tangent(1.)).to_be(Vec3::Z)?;
+		expect(spline.normal(0.)).to_be(Vec3::LEFT)?;
+		expect(spline.normal(1.)).to_be(Vec3::LEFT)?;
 
 
 	}
