@@ -1,15 +1,11 @@
 use super::*;
-use crate::{spline::Spline};
+use crate::spline::Spline;
+use petgraph::graphmap::UnGraphMap;
 
-
-
-use petgraph::{
-	graphmap::{UnGraphMap},
-};
-
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct SplineGraph {
 	pub next_node_id: u64,
+	pub next_edge_id: u64,
 	pub graph: UnGraphMap<SplineNode, SplineEdge>,
 }
 
@@ -24,12 +20,7 @@ impl std::ops::DerefMut for SplineGraph {
 
 
 impl SplineGraph {
-	pub fn new() -> Self {
-		Self {
-			next_node_id: 0,
-			graph: UnGraphMap::new(),
-		}
-	}
+	pub fn new() -> Self { Self::default() }
 
 	pub fn create_node(&mut self) -> SplineNode {
 		let node = SplineNode(self.next_node_id);
@@ -44,8 +35,9 @@ impl SplineGraph {
 		node2: SplineNode,
 		spline: Spline,
 	) -> SplineEdge {
-		let edge = SplineEdge::new(node1, node2, spline);
+		let edge = SplineEdge::new(self.next_edge_id, node1, node2, spline);
 		self.add_edge(node1, node2, edge.clone());
+		self.next_edge_id += 1;
 		edge
 	}
 

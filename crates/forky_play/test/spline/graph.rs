@@ -1,8 +1,5 @@
-use petgraph::dot::Dot;
 use petgraph::graph::{Graph};
 use petgraph::graphmap::UnGraphMap;
-use std::fs::File;
-use std::io::Write;
 use sweet::*;
 
 //https://depth-first.com/articles/2020/02/03/graphs-in-rust-an-introduction-to-petgraph/
@@ -22,7 +19,6 @@ sweet! {
 		let origin = graph.add_node("Denver");
 		let destination_1 = graph.add_node("San Diego");
 		let destination_2 = graph.add_node("New York");
-		let destination_3 = graph.add_node("San Pete");
 		let cost_1 = graph.add_edge(origin, destination_1, 250);
 		let cost_2 = graph.add_edge(origin, destination_2, 1099);
 

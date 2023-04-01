@@ -1,19 +1,13 @@
-// #![allow(dead_code)]
-// #![allow(unused_mut)]
-// #![allow(unused_variables)]
-// #![allow(unused_imports)]
-// #![allow(unused_parens)]
-
 pub mod animation;
 pub mod base;
 pub mod debug;
-pub mod render_graph;
 pub mod input;
 pub mod materials;
 pub mod maze;
-pub mod mesh;
+pub mod mesh_utils;
 pub mod physics;
 pub mod plugins;
+pub mod render_graph;
 pub mod spline;
 pub mod utility;
 

@@ -1,3 +1,9 @@
+mod ecs_spline_graph;
+pub use self::ecs_spline_graph::*;
+mod ecs_spline_graph_lookup;
+pub use self::ecs_spline_graph_lookup::*;
+mod ecs_spline_node;
+pub use self::ecs_spline_node::*;
 mod spline_edge;
 pub use self::spline_edge::*;
 mod spline_graph;

@@ -1,4 +1,3 @@
-
 use bevy::prelude::*;
 
 use derive_deref::{Deref, DerefMut};
@@ -24,23 +23,15 @@ pub struct SplineNode(pub u64);
 pub struct SplineNodeBundle {
 	pub node: SplineNode,
 	pub transform: TransformBundle,
-	// pub handle: SplineNodeHandle,
-	pub graph_id: SplineGraphId,
 }
 
 impl SplineNodeBundle {
-	pub fn new(
-		position: Vec3,
-		node: SplineNode,
-		graph_id: SplineGraphId,
-	) -> Self {
+	pub fn new(position: Vec3, node: SplineNode) -> Self {
 		SplineNodeBundle {
 			transform: TransformBundle::from(Transform::from_translation(
 				position,
 			)),
 			node,
-			// handle: SplineNodeHandle::default(),
-			graph_id,
 		}
 	}
 }

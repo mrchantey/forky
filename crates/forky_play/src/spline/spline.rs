@@ -1,5 +1,6 @@
 use crate::*;
 use bevy::prelude::*;
+use forky_core::*;
 
 
 
@@ -33,6 +34,21 @@ pub struct CubicSpline {
 
 
 impl Spline {
+	pub fn set_first(&mut self, p: Vec3) {
+		match self {
+			Spline::Linear(spline) => spline.p0 = p,
+			Spline::Quadratic(spline) => spline.p0 = p,
+			Spline::Cubic(spline) => spline.p0 = p,
+		}
+	}
+	pub fn set_last(&mut self, p: Vec3) {
+		match self {
+			Spline::Linear(spline) => spline.p1 = p,
+			Spline::Quadratic(spline) => spline.p2 = p,
+			Spline::Cubic(spline) => spline.p3 = p,
+		}
+	}
+
 	pub fn position(&self, t: f32) -> Vec3 {
 		match self {
 			Spline::Linear(spline) => bezier3::linear(spline.p0, spline.p1, t),
@@ -58,6 +74,36 @@ impl Spline {
 			),
 		}
 	}
+
+	pub fn normal(&self, t: f32) -> Vec3 {
+		let dt = 0.01;
+		let is_at_end = t + dt > 1.;
+		let tangent1 = tern!(is_at_end; self.tangent(t - dt); self.tangent(t));
+		let tangent2 = tern!(is_at_end; self.tangent(t);			self.tangent(t + dt));
+		let normal = tangent1.cross(tangent2).normalize_or_zero();
+
+		if normal == Vec3::ZERO {
+			tern!(tangent1 == Vec3::UP;tangent1.cross(Vec3::RIGHT);tangent1.cross(Vec3::UP))
+		} else {
+			normal
+		}
+	}
+	// public static (Matrix4x4 WorldToLocal, Matrix4x4 LocalToWorld) PointsToMatrix(Vector3 a, Vector3 b, Vector3 c)
+	// {
+	// 	Vector3 dirY = (b - a).normalized;
+	// 	Vector3 ab = b - a;
+	// 	Vector3 ac = c - a;
+	// 	float thetaBAC = AngleBetween(ab, ac);
+	// 	float ad = Mathf.Cos(thetaBAC) * ac.magnitude;
+	// 	Vector3 d = a + dirY * ad;
+	// 	Vector3 dc = c - d;
+	// 	Vector3 dirX = dc.normalized;
+	// 	Vector3 dirZ = Vector3.Cross(dirX, dirY).normalized;
+	// 	var matrix = new Matrix4x4(dirX, dirY, dirZ, new Vector4(a.x, a.y, a.z, 1));
+	// 	return (matrix.inverse, matrix);
+	// }
+
+
 	pub fn acceleration(&self, position: f32, acceleration: Vec3) -> f32 {
 		if acceleration.length() == 0. {
 			return 0.;

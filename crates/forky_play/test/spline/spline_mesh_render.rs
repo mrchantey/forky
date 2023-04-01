@@ -1,6 +1,4 @@
-use bevy::ecs::query;
 use bevy::prelude::*;
-use bevy_prototype_debug_lines::*;
 use forky_play::spline::*;
 use forky_play::*;
 
@@ -15,7 +13,6 @@ sweet! {
 			.add_plugin(spline::SplinePlugin)
 			.add_plugin(spline::physics::SplinePhysicsPlugin)
 			.add_startup_system(spawn_spline)
-			.add_system(spline::mesh::append_spline_mesh)
 			.run();
 		}
 }

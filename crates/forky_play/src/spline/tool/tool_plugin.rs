@@ -10,8 +10,7 @@ impl Plugin for SplineToolPlugin {
 			//
 			.init_resource::<CameraRay>()
 			.init_resource::<InteractionSettings>()
-			.add_startup_system(spawn_resources)
-			.add_system(append_node_meshes)
+			.add_startup_system(spawn_resources.in_base_set(StartupSet::PreStartup))
 			.add_systems((
 				cast_camera_ray, 
 				set_entity_intersect,

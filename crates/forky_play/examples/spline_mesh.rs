@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use bevy_prototype_debug_lines::*;
 use forky_play::spline::*;
 use forky_play::*;
 
@@ -8,32 +7,36 @@ fn main() {
 	app.__()
 		// .forky_exit_after(10.)
 		.add_plugin(plugins::ForkyFullPlugin)
+		.add_plugin(spline::SplinePlugin)
 		.add_plugin(spline::tool::SplineToolPlugin)
 		.add_plugin(spline::physics::SplinePhysicsPlugin)
-		.add_startup_system(spawn_spline)
-		.add_system(spline::mesh::append_spline_mesh)
+		.add_startup_system(setup)
 		.run();
 }
+fn setup(
+	mut commands: Commands,
+	mut graph_lookup: ResMut<spline::graph::EcsSplineGraphLookup>,
+	interaction_settings: Res<tool::InteractionSettings>,
+	interaction_resources: Res<tool::InteractionResources>,
+	meshes: ResMut<Assets<Mesh>>,
+	mut materials: ResMut<Assets<materials::UvMaterial>>,
+) {
+	let material = materials.add(materials::UvMaterial::default());
+	let (_id, graph) = graph_lookup.create_graph(material);
+	// let node = graph.create_node();
 
-fn spawn_spline(mut commands: Commands) {
-	let p0 = Vec3::new(-1., 1., 0.);
-	let p3 = Vec3::new(1., 1., 0.);
+	let spline = Spline::Cubic(CubicSpline {
+		p0: Vec3::new(-1.0, 1., 0.),
+		p1: Vec3::new(-1., 0., 0.),
+		p2: Vec3::new(1., 0., 0.),
+		p3: Vec3::new(1., 1., 0.),
+	});
 
-	commands.spawn(spline::graph::SplineNodeBundle::new(
-		p0,
-		spline::graph::SplineNode(0),
-	));
-	commands.spawn(spline::graph::SplineNodeBundle::new(
-		p3,
-		spline::graph::SplineNode(1),
-	));
-
-	commands.spawn(
-		(Spline::Cubic(CubicSpline {
-			p0,
-			p1: Vec3::new(-1., 0., 0.),
-			p2: Vec3::new(1., 0., 0.),
-			p3,
-		})),
+	graph.create_edge_from_spline(
+		&mut commands,
+		meshes,
+		interaction_settings,
+		interaction_resources,
+		spline,
 	);
 }

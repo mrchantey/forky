@@ -1,9 +1,5 @@
-use super::*;
-use crate::{spline::graph::SplineNode, *};
+use crate::*;
 use bevy::prelude::{*};
-use bevy_rapier3d::prelude::Collider;
-
-
 
 #[derive(Resource)]
 pub struct InteractionSettings {
@@ -56,23 +52,4 @@ pub fn spawn_resources(
 			.add(settings.select_primary_color.into()),
 		inactive_material: materials.add(settings.inactive_color.into()),
 	});
-}
-
-pub fn append_node_meshes(
-	mut commands: Commands,
-	settings: Res<InteractionSettings>,
-	resources: Res<InteractionResources>,
-	query: Query<Entity, (With<SplineNode>, Without<Handle<Mesh>>)>,
-) {
-	for entity in query.iter() {
-		commands
-			.entity(entity)
-			.insert(materials::RenderBundle {
-				material: resources.inactive_material.clone(),
-				mesh: resources.node_mesh.clone(),
-				..Default::default()
-			})
-			.insert(Collider::ball(settings.node_radius))
-			.insert(Interactable);
-	}
 }

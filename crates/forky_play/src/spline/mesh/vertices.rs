@@ -1,5 +1,4 @@
 use crate::spline::Spline;
-use crate::*;
 use bevy::prelude::*;
 
 
@@ -17,7 +16,6 @@ pub fn spline_to_vertices(
 	edge_loop: &Vec<Vec2>,
 	subdivisions: usize,
 ) -> Vec<Vec3> {
-	
 	let divisions = subdivisions + 2;
 	let capacity = edge_loop.len() * divisions;
 	let mut vertices = Vec::with_capacity(capacity);
@@ -28,7 +26,9 @@ pub fn spline_to_vertices(
 		let t = i as f32 * delta_t;
 		let pos = spline.position(t);
 		let tangent = spline.tangent(t);
-		let normal = tangent.cross(Vec3::UP).normalize();
+		// let normal = tangent.cross(Vec3::UP).normalize();
+		let normal = spline.normal(t);
+		// println!("tangent: {:?}", tangent);
 		let binormal = normal.cross(tangent).normalize();
 		for point in edge_loop.iter() {
 			let vertex = pos + normal * point.x + binormal * point.y;

@@ -1,11 +1,11 @@
+mod ecs_spline_graph;
+pub use self::ecs_spline_graph::*;
 mod graph;
 pub use self::graph::*;
 mod spline;
 pub use self::spline::*;
 mod spline_graph;
 pub use self::spline_graph::*;
-mod spline_graph_lookup;
-pub use self::spline_graph_lookup::*;
 mod spline_handles;
 pub use self::spline_handles::*;
 mod spline_mesh;

@@ -45,6 +45,6 @@ sweet! {
 			panic!("spline is not linear");
 		}
 		let last = graph.get_current_spline(&edge12,2.1);
-		expect(prev).to_be(None)?;
+		expect(last).to_be(None)?;
 	}
 }
