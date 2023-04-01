@@ -12,6 +12,7 @@ sweet! {
 		app.__()
 		.forky_exit_after(10.)
 			.add_plugin(plugins::ForkyDebugPlugin)
+			.add_plugin(spline::SplinePlugin)
 			.add_plugin(spline::physics::SplinePhysicsPlugin)
 			.add_startup_system(spawn_spline)
 			.add_system(spline::mesh::append_spline_mesh)

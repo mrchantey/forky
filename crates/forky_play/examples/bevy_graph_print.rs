@@ -7,7 +7,7 @@ use std::io::Write;
 fn main() {
 	let mut app = App::new();
 	app.add_plugins(DefaultPlugins)
-		.add_plugin(graph::ClearGraphPlugin);
+		.add_plugin(render_graph::ClearGraphPlugin);
 	let render_graph = get_render_graph(&mut app);
 	let mut file = File::create("target/render_graph.dot").unwrap();
 	file.write_all(render_graph.as_bytes()).unwrap();

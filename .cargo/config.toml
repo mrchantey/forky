@@ -1,6 +1,9 @@
 [build]
 target = "x86_64-pc-windows-msvc"
-rustflags = "-A dead_code -A unused_variables -A unused_imports -A unused_parens"
+## Uncomment below to ignore the pesky warnings during development
+# rustflags = "-A dead_code -A unused_variables -A unused_imports -A unused_parens"
+
+
 ### WASM ###
 
 # [target.x86_64-pc-windows-msvc]

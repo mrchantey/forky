@@ -7,7 +7,7 @@ fn main() {
 		.add_plugin(plugins::RotateCubePlugin)
 		// .add_plugin(graph::BlitGraphPlugin)
 		// .add_plugin(graph::ClearGraphPlugin)
-		.add_plugin(graph::CustomPipelinePlugin)
+		.add_plugin(render_graph::CustomPipelinePlugin)
 		.add_system(utility::create_exit_after_system(4.))
 		.run();
 }

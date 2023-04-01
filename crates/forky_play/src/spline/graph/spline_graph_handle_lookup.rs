@@ -3,21 +3,15 @@ use crate::{spline::Spline, *};
 use bevy::{prelude::*, utils::HashMap};
 use derive_deref::{Deref, DerefMut};
 use forky_core::*;
-use petgraph::{
-	graphmap::{Edges, UnGraphMap},
-	Undirected,
-};
-
-#[derive(Component, Deref, DerefMut, Clone, Copy)]
-pub struct SplineGraphId(pub u64);
 
 #[derive(Resource, Default)]
-pub struct SplineGraphLookup {
+pub struct SplineGraphHandleLookup {
 	next_graph_id: u64,
-	graphs: HashMap<u64, SplineGraph>,
+	nodes: Vec<Entity>,
+	edges: Vec<Entity>,
 }
 
-impl SplineGraphLookup {
+impl SplineGraphHandleLookup {
 	pub fn create_graph(&mut self) -> (SplineGraphId, &mut SplineGraph) {
 		self.graphs.insert(self.next_graph_id, SplineGraph::new());
 		let graph = self.graphs.get_mut(&self.next_graph_id).unwrap();
@@ -27,11 +21,11 @@ impl SplineGraphLookup {
 	}
 }
 
-impl std::ops::Deref for SplineGraphLookup {
-	type Target = HashMap<u64, SplineGraph>;
-	fn deref(&self) -> &Self::Target { &self.graphs }
-}
+// impl std::ops::Deref for SplineGraphLookup {
+// 	type Target = HashMap<u64, SplineGraph>;
+// 	fn deref(&self) -> &Self::Target { &self.graphs }
+// }
 
-impl std::ops::DerefMut for SplineGraphLookup {
-	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.graphs }
-}
+// impl std::ops::DerefMut for SplineGraphLookup {
+// 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.graphs }
+// }

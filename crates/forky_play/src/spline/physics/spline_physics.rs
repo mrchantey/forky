@@ -1,10 +1,8 @@
 use super::*;
-use crate::spline::graph::SplineEdge;
-use crate::spline::graph::SplineGraph;
+use crate::spline::graph::*;
 use crate::spline::Spline;
 use crate::*;
 use bevy::prelude::*;
-use bevy_rapier3d::na::ComplexField;
 use derive_deref::{Deref, DerefMut};
 
 pub struct SplinePhysicsPlugin;
@@ -79,19 +77,21 @@ pub fn update_velocity_from_friction(
 
 pub fn update_current_spline(
 	mut commands: Commands,
+	graph_lookup: Res<SplineGraphLookup>,
 	mut query: Query<(
 		Entity,
 		&mut SplinePosition,
 		&mut Spline,
 		&mut SplineEdge,
-		&SplineGraph,
+		&SplineGraphId,
 	)>,
 ) {
-	for (entity, mut position, mut spline, mut edge, graph) in query.iter_mut()
+	for (entity, mut position, mut spline, mut edge, graph_id) in query.iter_mut()
 	{
 		if **position >= 0. && **position <= 1. {
 			continue;
 		}
+		let graph = graph_lookup.get(&graph_id).unwrap();
 		let next_edge = match graph.get_current_spline(&edge, **position) {
 			Some(value) => value,
 			None => {

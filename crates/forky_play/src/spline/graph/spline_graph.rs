@@ -8,7 +8,7 @@ use petgraph::{
 	Undirected,
 };
 
-#[derive(Component, Debug, Clone)]
+#[derive(Debug, Clone)]
 pub struct SplineGraph {
 	pub next_node_id: u64,
 	pub graph: UnGraphMap<SplineNode, SplineEdge>,

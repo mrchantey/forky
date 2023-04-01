@@ -7,6 +7,7 @@ sweet! {
 		let mut app = App::new();
 		app.__()
 			.insert_test_timer()
+			.add_plugin(spline::SplinePlugin)
 			.add_plugin(spline::physics::SplinePhysicsPlugin)
 			.__();
 

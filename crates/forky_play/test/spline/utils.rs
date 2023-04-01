@@ -1,10 +1,10 @@
 use bevy::ecs::query;
 use bevy::prelude::*;
 use bevy_prototype_debug_lines::*;
+use forky_play::physics;
+use forky_play::spline::graph::*;
 use forky_play::spline::*;
 use forky_play::*;
-use forky_play::physics;
-use forky_play::spline::graph::SplineGraph;
 // use forky_play::spline::physics;
 
 pub fn spawn_spline_cube(
@@ -34,10 +34,11 @@ pub fn spawn_spline_cube(
 
 pub fn spawn_spline_graph_cube(
 	mut commands: Commands,
+	mut graphs: ResMut<SplineGraphLookup>,
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-	let mut graph = SplineGraph::new();
+	let (graph_id,graph) = graphs.create_graph();
 	let spline1 = Spline::Quadratic(QuadraticSpline {
 		p0: Vec3::new(-1., 1., 0.),
 		p1: Vec3::new(-1., 0., 0.),
@@ -68,23 +69,26 @@ pub fn spawn_spline_graph_cube(
 		physics::AccelerationForce(Vec3::DOWN),
 		edge12,
 		spline1,
-		graph,
+		graph_id
 	));
 }
 
 pub fn draw_spline(
 	mut lines: ResMut<DebugLines>,
-	query: Query<&Spline, Without<SplineGraph>>,
+	query: Query<&Spline, Without<SplineGraphId>>,
 ) {
 	for spline in &query {
 		draw(&mut lines, spline);
 	}
 }
 
-pub fn draw_graph(mut lines: ResMut<DebugLines>, query: Query<&SplineGraph>) {
+pub fn draw_graph(
+	mut lines: ResMut<DebugLines>,
+	graphs: Res<SplineGraphLookup>,
+) {
 	let num_nodes = 10;
 
-	for graph in &query {
+	for graph in graphs.values() {
 		for edge in graph.all_edges() {
 			draw(&mut lines, &edge.2.spline);
 		}

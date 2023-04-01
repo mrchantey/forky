@@ -78,7 +78,7 @@ impl FromWorld for CustomPipeline {
 
 		let shader =
 			world.resource::<AssetServer>().load("shaders/simple.wgsl");
-		let mut pipeline_cache = world.resource_mut::<PipelineCache>();
+		let pipeline_cache = world.resource_mut::<PipelineCache>();
 
 		let id =
 			pipeline_cache.queue_render_pipeline(RenderPipelineDescriptor {

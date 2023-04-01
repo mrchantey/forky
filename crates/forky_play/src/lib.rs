@@ -1,13 +1,13 @@
-#![allow(dead_code)]
-#![allow(unused_mut)]
-#![allow(unused_variables)]
-#![allow(unused_imports)]
-#![allow(unused_parens)]
+// #![allow(dead_code)]
+// #![allow(unused_mut)]
+// #![allow(unused_variables)]
+// #![allow(unused_imports)]
+// #![allow(unused_parens)]
 
 pub mod animation;
 pub mod base;
 pub mod debug;
-pub mod graph;
+pub mod render_graph;
 pub mod input;
 pub mod materials;
 pub mod maze;

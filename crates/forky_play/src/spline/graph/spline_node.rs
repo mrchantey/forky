@@ -3,6 +3,8 @@ use bevy::prelude::*;
 use bevy_rapier3d::prelude::Collider;
 use derive_deref::{Deref, DerefMut};
 
+use super::*;
+
 #[derive(
 	Component,
 	Deref,
@@ -22,31 +24,41 @@ pub struct SplineNode(pub u64);
 pub struct SplineNodeBundle {
 	pub node: SplineNode,
 	pub transform: TransformBundle,
-	pub handle: SplineNodeHandle,
+	// pub handle: SplineNodeHandle,
+	pub graph_id: SplineGraphId,
 }
 
 impl SplineNodeBundle {
-	pub fn new(position: Vec3, node: SplineNode) -> Self {
+	pub fn new(
+		position: Vec3,
+		node: SplineNode,
+		graph_id: SplineGraphId,
+	) -> Self {
 		SplineNodeBundle {
 			transform: TransformBundle::from(Transform::from_translation(
 				position,
 			)),
 			node,
-			handle:SplineNodeHandle::default()
+			// handle: SplineNodeHandle::default(),
+			graph_id,
 		}
 	}
 }
 
-#[derive(Component, Debug, Default, Clone, PartialEq)]
-pub struct SplineNodeHandle {
-	pub edges: Vec<Entity>,
-}
+// #[derive(Component, Debug, Default, Clone, PartialEq)]
+// pub struct SplineNodeHandle {
+// 	pub edges: Vec<Entity>,
+// }
 
 
 pub fn on_node_moved(
-	query: Query<(&Transform, &SplineNode), Changed<Transform>>,
+	mut graph_lookup: ResMut<SplineGraphLookup>,
+	query: Query<(&Transform, &SplineNode, &SplineGraphId), Changed<Transform>>,
 ) {
-	for (transform, node) in query.iter() {
+	for (transform, node, graph_id) in query.iter() {
+		let graph = graph_lookup.get_mut(&graph_id).unwrap();
+
+		// graph.get_
 		println!("Node {} moved to {:?}", node.0, transform.translation);
 	}
 }
