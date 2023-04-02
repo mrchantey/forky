@@ -1,5 +1,4 @@
-use super::*;
-
+use crate::spline::tool::*;
 use bevy::prelude::*;
 
 
@@ -16,7 +15,7 @@ pub struct Interactable;
 
 //TODO not run every frame
 #[rustfmt::skip]
-pub fn on_interact_state_change(
+pub fn set_interactable_colors(
 	mut commands: Commands,
 	materials: Res<InteractionResources>,
 	inactive: Query<Entity, (With<Interactable>,Without<Selected>,Without<Highlighted>)>,

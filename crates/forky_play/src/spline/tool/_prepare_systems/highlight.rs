@@ -1,8 +1,5 @@
-use super::*;
-
+use crate::spline::tool::*;
 use bevy::prelude::*;
-
-
 
 #[rustfmt::skip]
 pub fn highlight_entities(

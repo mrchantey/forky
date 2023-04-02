@@ -47,11 +47,25 @@ impl SplineType for Spline {
 		}
 	}
 
-	fn tangent(&self, t: f32) -> Vec3 {
+	fn derivative(&self, t: f32) -> Vec3 {
 		match self {
-			Spline::Linear(spline) => spline.tangent(t),
-			Spline::Quadratic(spline) => spline.tangent(t),
-			Spline::Cubic(spline) => spline.tangent(t),
+			Spline::Linear(spline) => spline.derivative(t),
+			Spline::Quadratic(spline) => spline.derivative(t),
+			Spline::Cubic(spline) => spline.derivative(t),
+		}
+	}
+	fn derivative2(&self, t: f32) -> Vec3 {
+		match self {
+			Spline::Linear(spline) => spline.derivative2(t),
+			Spline::Quadratic(spline) => spline.derivative2(t),
+			Spline::Cubic(spline) => spline.derivative2(t),
+		}
+	}
+	fn derivative3(&self, t: f32) -> Vec3 {
+		match self {
+			Spline::Linear(spline) => spline.derivative3(t),
+			Spline::Quadratic(spline) => spline.derivative3(t),
+			Spline::Cubic(spline) => spline.derivative3(t),
 		}
 	}
 }

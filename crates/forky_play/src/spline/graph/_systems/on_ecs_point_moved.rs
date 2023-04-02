@@ -1,8 +1,5 @@
+use crate::spline::graph::*;
 use bevy::prelude::*;
-
-// use crate::*;
-use super::*;
-
 // pub fn on_ecs_node_moved(
 // 	mut commands: Commands,
 // 	mut meshes: ResMut<Assets<Mesh>>,

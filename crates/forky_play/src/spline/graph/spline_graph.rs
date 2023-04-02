@@ -5,7 +5,6 @@ use petgraph::graphmap::UnGraphMap;
 #[derive(Debug, Clone, Default)]
 pub struct SplineGraph {
 	pub next_node_id: u64,
-	pub next_edge_id: u64,
 	pub graph: UnGraphMap<SplineNode, SplineEdge>,
 }
 
@@ -37,7 +36,6 @@ impl SplineGraph {
 	) -> SplineEdge {
 		let edge = SplineEdge::new(node1, node2, spline);
 		self.add_edge(node1, node2, edge.clone());
-		self.next_edge_id += 1;
 		edge
 	}
 

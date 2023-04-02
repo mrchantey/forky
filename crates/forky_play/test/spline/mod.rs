@@ -14,5 +14,3 @@ mod spline_physics;
 pub use self::spline_physics::*;
 mod spline_physics_render;
 pub use self::spline_physics_render::*;
-mod utils;
-pub use self::utils::*;

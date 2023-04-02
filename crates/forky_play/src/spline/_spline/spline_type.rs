@@ -2,6 +2,7 @@ use crate::*;
 use anyhow::Result;
 use bevy::prelude::*;
 use forky_core::*;
+// cross product visualizer https://www.geogebra.org/m/psMTGDgc
 
 pub trait SplineType {
 	fn set_point(&mut self, pos: Vec3, index: u32) -> Result<()>;
@@ -9,8 +10,10 @@ pub trait SplineType {
 	fn get_points(&self) -> Vec<Vec3>;
 	fn set_last(&mut self, pos: Vec3);
 	fn position(&self, t: f32) -> Vec3;
-	fn tangent(&self, t: f32) -> Vec3;
-
+	fn derivative(&self, t: f32) -> Vec3;
+	fn derivative2(&self, t: f32) -> Vec3;
+	fn derivative3(&self, t: f32) -> Vec3;
+	fn tangent(&self, t: f32) -> Vec3 { self.derivative(t).normalize_or_zero() }
 
 	fn normal(&self, t: f32) -> Vec3 {
 		let dt = 0.01;
@@ -28,6 +31,38 @@ pub trait SplineType {
 			normal
 		}
 	}
+	fn normal_up(&self, t: f32, up: Vec3) -> Vec3 {
+		let mut tangent = self.tangent(t);
+		// account for vertical tangents
+		if tangent.abs() == Vec3::UP {
+			let dt = 0.01;
+			let is_at_end = t + dt > 1.;
+			tangent =
+				tern!(is_at_end; self.tangent(t - dt); self.tangent(t + dt));
+		}
+		if tangent.abs() == Vec3::UP {
+			tangent.x += 0.1;
+			tangent = tangent.normalize();
+		}
+
+
+		// account for inverted normals
+		let binormal = up.cross(tangent);
+		let normal = tangent.cross(binormal);
+
+		if normal.y >= 0. {
+			normal.normalize()
+		// up.cross(tangent).normalize()
+		} else {
+			Vec3::RIGHT
+			// tangent.cross((-up).cross(tangent)).normalize()
+			// -normal
+			// -up.cross(tangent).normalize()
+		}
+		// tangent.cross(normal)
+
+		// up.cross(tangent)
+	}
 
 	fn acceleration(&self, position: f32, acceleration: Vec3) -> f32 {
 		if acceleration.length() == 0. {
@@ -42,8 +77,8 @@ pub trait SplineType {
 	}
 
 
-	fn path(&self, num_nodes: u32) -> Vec<Vec3> {
-		let mut points = Vec::new();
+	fn path(&self, num_nodes: usize) -> Vec<Vec3> {
+		let mut points = Vec::with_capacity(num_nodes);
 		let segments = num_nodes.max(1);
 		let step = 1.0 / segments as f32;
 

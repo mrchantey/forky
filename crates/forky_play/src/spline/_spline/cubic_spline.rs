@@ -51,7 +51,13 @@ impl SplineType for CubicSpline {
 		bezier3::cubic(self.p0, self.p1, self.p2, self.p3, t)
 	}
 
-	fn tangent(&self, t: f32) -> Vec3 {
-		bezier3::tangent_cubic(self.p0, self.p1, self.p2, self.p3, t)
+	fn derivative(&self, t: f32) -> Vec3 {
+		bezier3::cubic_derivative(self.p0, self.p1, self.p2, self.p3, t)
+	}
+	fn derivative2(&self, t: f32) -> Vec3 {
+		bezier3::cubic_derivative2(self.p0, self.p1, self.p2, self.p3, t)
+	}
+	fn derivative3(&self, _t: f32) -> Vec3 {
+		bezier3::cubic_derivative3(self.p0, self.p1, self.p2, self.p3)
 	}
 }

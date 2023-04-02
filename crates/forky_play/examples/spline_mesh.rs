@@ -9,6 +9,7 @@ fn main() {
 		.add_plugin(plugins::ForkyFullPlugin)
 		.add_plugin(spline::SplinePlugin)
 		.add_startup_system(setup)
+		.add_system(spline::utils::draw_ecs_graph)
 		.run();
 }
 fn setup(
@@ -23,10 +24,10 @@ fn setup(
 	// let node = graph.create_node();
 
 	let spline = Spline::Cubic(CubicSpline::new(
-		Vec3::new(-1.0, 1., 0.),
+		Vec3::new(-1.0, 0., 1.),
 		Vec3::new(-1., 0., 0.),
 		Vec3::new(1., 0., 0.),
-		Vec3::new(1., 1., 0.),
+		Vec3::new(1., 0., 1.),
 	));
 
 	graph.create_edge_from_spline(

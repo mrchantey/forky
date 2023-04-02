@@ -21,7 +21,7 @@ impl EcsSplineGraph {
 		Self {
 			id,
 			edge_material,
-			edge_subdivisions: 10,
+			edge_subdivisions: 32,
 			graph: SplineGraph::new(),
 			edges: IdHashMap::<EcsSplineEdge>::new(),
 		}
@@ -70,9 +70,10 @@ impl EcsSplineGraph {
 	) -> (SplineNode, SplineNode, Vec<Entity>) {
 		let mut first = SplineNode(0);
 		let mut last = SplineNode(0);
-		let mut points: Vec<Entity> = Vec::new();
+		let spline_points = spline.get_points();
+		let mut points: Vec<Entity> = Vec::with_capacity(spline_points.len());
 
-		for (point_index, position) in spline.get_points().iter().enumerate() {
+		for (point_index, position) in spline_points.iter().enumerate() {
 			let point = self.create_point(
 				commands,
 				interaction_settings,
@@ -104,6 +105,22 @@ impl EcsSplineGraph {
 			spline.clone(),
 		);
 
+		let (edge_id, _) = self.create_edge(commands, node1, node2, spline);
+
+		for point in points.iter() {
+			commands
+				.entity(*point)
+				.insert(SplineEdgeList(vec![edge_id]));
+		}
+	}
+
+	pub fn create_edge(
+		&mut self,
+		commands: &mut Commands,
+		node1: SplineNode,
+		node2: SplineNode,
+		spline: Spline,
+	) -> (u64, &mut EcsSplineEdge) {
 		self.graph.create_edge(node1, node2, spline);
 
 		let entity = commands
@@ -116,17 +133,11 @@ impl EcsSplineGraph {
 				spline,
 			))
 			.id();
-		let (edge_id, _) = self.edges.insert_next(EcsSplineEdge {
+		self.edges.insert_next(EcsSplineEdge {
 			link: SplineLink::new(node1, node2),
 			mesh: entity,
-			points: points.clone(),
-		});
-
-		for point in points.iter() {
-			commands
-				.entity(*point)
-				.insert(SplineEdgeList(vec![edge_id]));
-		}
+			points: Vec::new(), //TODO points
+		})
 	}
 
 	// pub fn update_edge_from_node(&mut self, node: &SplineNode, position: Vec3) {
@@ -156,7 +167,7 @@ impl EcsSplineGraph {
 				.unwrap();
 			edge.spline.set_point(position, *point_index).unwrap();
 			commands.entity(ecs_edge.mesh).insert(meshes.add(
-				mesh::create_spline_mesh(&edge.spline, self.edge_subdivisions),
+				mesh::append_spline_mesh(&edge.spline, self.edge_subdivisions),
 			));
 		}
 	}

@@ -39,7 +39,9 @@ impl SplineType for LinearSpline {
 		bezier3::linear(self.p0, self.p1, t)
 	}
 
-	fn tangent(&self, _t: f32) -> Vec3 {
-		bezier3::tangent_linear(self.p0, self.p1)
+	fn derivative(&self, _t: f32) -> Vec3 {
+		bezier3::linear_derivative(self.p0, self.p1)
 	}
+	fn derivative2(&self, _t: f32) -> Vec3 { Vec3::ZERO }
+	fn derivative3(&self, _t: f32) -> Vec3 { Vec3::ZERO }
 }

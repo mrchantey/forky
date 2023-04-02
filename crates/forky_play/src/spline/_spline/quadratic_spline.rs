@@ -41,7 +41,13 @@ impl SplineType for QuadraticSpline {
 		bezier3::quadratic(self.p0, self.p1, self.p2, t)
 	}
 
-	fn tangent(&self, t: f32) -> Vec3 {
-		bezier3::tangent_quadratic(self.p0, self.p1, self.p2, t)
+	fn derivative(&self, t: f32) -> Vec3 {
+		bezier3::quadratic_derivative(self.p0, self.p1, self.p2, t)
+	}
+	fn derivative2(&self, _t: f32) -> Vec3 {
+		bezier3::quadratic_derivative2(self.p0, self.p1, self.p2)
+	}
+	fn derivative3(&self, _t: f32) -> Vec3 {
+		bezier3::quadratic_derivative3(self.p0, self.p1, self.p2)
 	}
 }

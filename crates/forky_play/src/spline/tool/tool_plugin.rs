@@ -16,11 +16,16 @@ impl Plugin for SplineToolPlugin {
 				set_entity_intersect,
 				select_entities,
 				highlight_entities,
-				//these can be parallel
-				move_items,
-				on_interact_state_change,
-			).chain(),
-			)
+			).chain())//todo in preupdate
+			.add_systems((
+				create_interactable,
+				move_selected_interactables,
+				set_interactable_colors
+			).after(highlight_entities))
+			.add_systems((
+				append_interactable_mesh,
+			
+			))
 			.__();
 	}
 }
