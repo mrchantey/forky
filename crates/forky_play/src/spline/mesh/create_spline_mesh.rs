@@ -6,7 +6,7 @@ use bevy::render::mesh;
 use wgpu::PrimitiveTopology;
 
 
-pub fn append_spline_mesh(spline: &Spline, subdivisions: usize) -> Mesh {
+pub fn create_spline_mesh(spline: &Spline, subdivisions: usize) -> Mesh {
 	let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
 
 	let edge_loop = rect_edge_loop(0.1, 0.02);

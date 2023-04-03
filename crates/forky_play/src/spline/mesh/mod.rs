@@ -1,9 +1,9 @@
+mod create_spline_mesh;
+pub use self::create_spline_mesh::*;
 mod edge_loop;
 pub use self::edge_loop::*;
 mod normals;
 pub use self::normals::*;
-mod spline_mesh;
-pub use self::spline_mesh::*;
 mod triangles;
 pub use self::triangles::*;
 mod uvs;

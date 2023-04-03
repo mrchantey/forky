@@ -12,16 +12,16 @@ fn main() {
 		.add_system(spline::utils::draw_ecs_graph)
 		.run();
 }
+
+
+
 fn setup(
 	mut commands: Commands,
-	mut graph_lookup: ResMut<spline::graph::EcsSplineGraphLookup>,
-	interaction_settings: Res<tool::InteractionSettings>,
-	interaction_resources: Res<tool::InteractionResources>,
+	mut graph_lookup: ResMut<spline::ecs_graph::EcsSplineGraphLookup>,
 	mut materials: ResMut<Assets<materials::UvMaterial>>,
 ) {
 	let material = materials.add(materials::UvMaterial::default());
-	let (_id, graph) = graph_lookup.create_graph(material);
-	// let node = graph.create_node();
+	let graph = graph_lookup.create_graph(material);
 
 	let spline = Spline::Cubic(CubicSpline::new(
 		Vec3::new(-1.0, 0., 1.),
@@ -30,10 +30,5 @@ fn setup(
 		Vec3::new(1., 0., 1.),
 	));
 
-	graph.create_edge_from_spline(
-		&mut commands,
-		interaction_settings,
-		interaction_resources,
-		spline,
-	);
+	graph.create_edge_from_spline(&mut commands, spline);
 }

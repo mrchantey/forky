@@ -1,6 +1,5 @@
 use crate::*;
 use bevy::prelude::*;
-use derive_deref::{Deref, DerefMut};
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, SystemSet)]
 pub enum EulerPhysicsSet {
@@ -60,7 +59,8 @@ pub fn update_velocity_from_friction(
 	time: Res<Time>,
 ) {
 	for (friction, mut velocity) in query_force.iter_mut() {
-		let force = velocity.normalize() * -1. * **friction * time.delta_seconds();
+		let force =
+			velocity.normalize() * -1. * **friction * time.delta_seconds();
 		**velocity += force;
 	}
 }

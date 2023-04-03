@@ -1,13 +1,5 @@
-
-
 use crate::*;
-use bevy::{
-	prelude::*,
-	render::{
-		extract_resource::ExtractResource,
-	},
-};
-use derive_deref::{Deref, DerefMut};
+use bevy::{prelude::*, render::extract_resource::ExtractResource};
 
 
 use super::BevyXrView;

@@ -4,6 +4,7 @@ hard_tabs = true
 blank_lines_lower_bound = 0
 blank_lines_upper_bound = 10
 fn_single_line = true
+# imports_granularity = "Item"
 
 max_width=80
 fn_call_width=60

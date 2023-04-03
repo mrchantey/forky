@@ -20,12 +20,13 @@ impl Plugin for SplineToolPlugin {
 			.add_systems((
 				create_interactable,
 				move_selected_interactables,
-				set_interactable_colors
+				set_interactable_colors,
+				link_spline_nodes,
 			).after(highlight_entities))
+			//TODO in sets
 			.add_systems((
 				append_interactable_mesh,
-			
-			))
+			).after(create_interactable))
 			.__();
 	}
 }

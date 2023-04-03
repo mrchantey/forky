@@ -10,7 +10,7 @@ sweet! {
 		app.__()
 		.forky_exit_after(10.)
 			.add_plugin(plugins::ForkyDebugPlugin)
-			.add_plugin(spline::graph::SplineEcsGraphPlugin)
+			.add_plugin(spline::graph::EcsSplineGraphPlugin)
 			.add_plugin(spline::physics::SplinePhysicsPlugin)
 			.add_startup_system(spawn_spline)
 			.run();

@@ -1,7 +1,6 @@
 use crate::{bevy_utils::BevyXrInputSource, *};
 use anyhow::Result;
 use bevy::{prelude::*, utils::HashMap};
-use derive_deref::{Deref, DerefMut};
 
 use std::sync::{Arc, Mutex};
 use wasm_bindgen::{prelude::Closure, JsCast, JsValue};

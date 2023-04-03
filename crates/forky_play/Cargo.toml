@@ -24,7 +24,6 @@ bevy_mod_debugdump = {workspace = true}
 wgpu = {workspace = true}
 
 ### Utility ###
-derive_deref = {workspace = true}
 extend = {workspace = true}
 anyhow = {workspace = true}
 petgraph = {workspace = true}

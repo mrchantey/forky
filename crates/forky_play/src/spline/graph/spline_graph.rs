@@ -4,6 +4,7 @@ use petgraph::graphmap::UnGraphMap;
 
 #[derive(Debug, Clone, Default)]
 pub struct SplineGraph {
+	pub next_edge_id: u64,
 	pub next_node_id: u64,
 	pub graph: UnGraphMap<SplineNode, SplineEdge>,
 }
@@ -21,6 +22,12 @@ impl std::ops::DerefMut for SplineGraph {
 impl SplineGraph {
 	pub fn new() -> Self { Self::default() }
 
+	pub fn clone_edges(&self, node: SplineNode) -> Vec<SplineEdge> {
+		self.edges(node)
+			.map(|(_, _, edge)| *edge)
+			.collect::<Vec<_>>()
+	}
+
 	pub fn create_node(&mut self) -> SplineNode {
 		let node = SplineNode(self.next_node_id);
 		self.add_node(node);
@@ -34,8 +41,14 @@ impl SplineGraph {
 		node2: SplineNode,
 		spline: Spline,
 	) -> SplineEdge {
-		let edge = SplineEdge::new(node1, node2, spline);
+		let edge = SplineEdge::new(
+			SplineEdgeId(self.next_edge_id),
+			node1,
+			node2,
+			spline,
+		);
 		self.add_edge(node1, node2, edge.clone());
+		self.next_edge_id += 1;
 		edge
 	}
 

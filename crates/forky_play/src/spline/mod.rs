@@ -1,3 +1,4 @@
+pub mod ecs_graph;
 pub mod graph;
 pub mod mesh;
 pub mod physics;

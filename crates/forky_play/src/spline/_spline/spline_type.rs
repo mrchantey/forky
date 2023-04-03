@@ -6,9 +6,11 @@ use forky_core::*;
 
 pub trait SplineType {
 	fn set_point(&mut self, pos: Vec3, index: u32) -> Result<()>;
+	fn first(&self) -> Vec3;
+	fn last(&self) -> Vec3;
 	fn set_first(&mut self, pos: Vec3);
-	fn get_points(&self) -> Vec<Vec3>;
 	fn set_last(&mut self, pos: Vec3);
+	fn get_points(&self) -> Vec<Vec3>;
 	fn position(&self, t: f32) -> Vec3;
 	fn derivative(&self, t: f32) -> Vec3;
 	fn derivative2(&self, t: f32) -> Vec3;

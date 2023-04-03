@@ -25,6 +25,21 @@ impl SplineType for Spline {
 			Spline::Cubic(spline) => spline.set_point(pos, index),
 		}
 	}
+	fn first(&self) -> Vec3 {
+		match self {
+			Spline::Linear(spline) => spline.first(),
+			Spline::Quadratic(spline) => spline.first(),
+			Spline::Cubic(spline) => spline.first(),
+		}
+	}
+	fn last(&self) -> Vec3 {
+		match self {
+			Spline::Linear(spline) => spline.last(),
+			Spline::Quadratic(spline) => spline.last(),
+			Spline::Cubic(spline) => spline.last(),
+		}
+	}
+
 	fn set_first(&mut self, p: Vec3) {
 		match self {
 			Spline::Linear(spline) => spline.set_first(p),

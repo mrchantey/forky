@@ -10,7 +10,7 @@ pub struct Highlighted;
 pub struct Selected;
 #[derive(Component)]
 pub struct PrimaryInteracted;
-#[derive(Component)]
+#[derive(Component, Clone)]
 pub struct Interactable;
 
 //TODO not run every frame

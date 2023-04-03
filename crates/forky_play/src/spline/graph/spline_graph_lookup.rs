@@ -1,9 +1,6 @@
 use super::*;
 use crate::IdHashMap;
 use bevy::prelude::*;
-use derive_deref::{Deref, DerefMut};
-
-
 
 #[derive(Component, Deref, DerefMut, Clone, Copy)]
 pub struct SplineGraphId(pub u64);

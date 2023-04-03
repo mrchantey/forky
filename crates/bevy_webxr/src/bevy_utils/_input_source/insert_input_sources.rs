@@ -1,9 +1,7 @@
-use std::collections::HashMap;
-
 use crate::*;
 use bevy::prelude::*;
-use derive_deref::{Deref, DerefMut};
 use js_sys::Array;
+use std::collections::HashMap;
 use wasm_bindgen::JsValue;
 use web_sys::*;
 

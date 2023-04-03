@@ -9,7 +9,7 @@ sweet! {
 		app.__()
 			.add_plugin(plugins::CustomDefaultPlugin)
 			.add_plugin(materials::ForkyMaterialPlugin)
-			.add_plugin(spline::graph::SplineEcsGraphPlugin)
+			.add_plugin(spline::graph::EcsSplineGraphPlugin)
 			.add_startup_system(setup)
 			.__();
 

@@ -1,4 +1,5 @@
 use crate::physics;
+use crate::spline::ecs_graph::EcsSplineGraphLookup;
 use crate::spline::graph::*;
 use crate::spline::*;
 use crate::*;

@@ -37,7 +37,6 @@ console_error_panic_hook = "0.1.6"
 # MISC
 anyhow = "1.0.4"
 extend = "1.1.2"
-derive_deref = "1.1.1"
 
 [dependencies.web-sys]
 version = "0.3.61"

@@ -1,7 +1,6 @@
-use std::collections::HashMap;
 use crate::*;
 use bevy::prelude::*;
-use derive_deref::{Deref, DerefMut};
+use std::collections::HashMap;
 use web_sys::*;
 
 #[derive(Deref, DerefMut)]

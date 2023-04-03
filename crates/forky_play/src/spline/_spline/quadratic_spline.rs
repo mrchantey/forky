@@ -34,6 +34,8 @@ impl SplineType for QuadraticSpline {
 		}
 	}
 
+	fn first(&self) -> Vec3 { self.p0 }
+	fn last(&self) -> Vec3 { self.p2 }
 	fn set_first(&mut self, pos: Vec3) { self.p0 = pos }
 	fn set_last(&mut self, pos: Vec3) { self.p2 = pos }
 

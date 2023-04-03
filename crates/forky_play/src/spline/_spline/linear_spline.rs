@@ -30,8 +30,9 @@ impl SplineType for LinearSpline {
 		}
 	}
 
+	fn first(&self) -> Vec3 { self.p0 }
+	fn last(&self) -> Vec3 { self.p1 }
 	fn set_first(&mut self, pos: Vec3) { self.p0 = pos }
-
 	fn set_last(&mut self, pos: Vec3) { self.p1 = pos }
 
 	fn position(&self, t: f32) -> Vec3 {
