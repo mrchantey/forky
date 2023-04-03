@@ -1,8 +1,8 @@
 use crate::spline::ecs_graph::EcsSplineGraphId;
 use crate::spline::ecs_graph::EcsSplineGraphLookup;
 use crate::spline::graph::*;
-use crate::spline::tool::*;
 use crate::spline::*;
+use crate::tool::*;
 use bevy::prelude::*;
 
 pub fn link_spline_nodes(
@@ -23,16 +23,13 @@ pub fn link_spline_nodes(
 		[(transform1, node1, graph_id1), (transform2, node2, graph_id2)],
 	) = combinations.fetch_next()
 	{
-		println!("here1!");
 		if **graph_id1 != **graph_id2 {
 			continue;
 		}
-		println!("here2!");
 		let graph = graphs.get_mut(&graph_id1).unwrap();
 		if graph.graph.contains_edge(*node1, *node2) {
 			continue;
 		}
-		println!("here3!");
 		let spline = Spline::Linear(LinearSpline::new(
 			transform1.translation,
 			transform2.translation,

@@ -12,6 +12,7 @@ pub mod physics;
 pub mod plugins;
 pub mod render_graph;
 pub mod spline;
+pub mod tool;
 pub mod utility;
 
 mod common;

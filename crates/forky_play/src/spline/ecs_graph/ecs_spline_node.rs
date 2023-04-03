@@ -1,5 +1,6 @@
 use super::*;
-use crate::spline::{graph::SplineNode, tool};
+use crate::spline::graph::SplineNode;
+use crate::tool;
 use bevy::prelude::*;
 
 

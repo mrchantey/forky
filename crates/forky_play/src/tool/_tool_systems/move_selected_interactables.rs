@@ -1,4 +1,4 @@
-use crate::spline::tool::*;
+use crate::tool::*;
 use bevy::prelude::*;
 
 pub fn move_selected_interactables(

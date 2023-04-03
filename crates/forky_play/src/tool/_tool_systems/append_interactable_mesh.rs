@@ -1,4 +1,4 @@
-use crate::spline::tool::*;
+use crate::tool::*;
 use crate::*;
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::Collider;

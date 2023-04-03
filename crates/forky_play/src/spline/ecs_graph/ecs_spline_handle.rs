@@ -1,5 +1,6 @@
 use super::*;
-use crate::spline::{graph::SplineEdgeId, tool};
+use crate::spline::graph::SplineEdgeId;
+use crate::tool;
 use bevy::prelude::*;
 
 

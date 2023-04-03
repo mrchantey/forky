@@ -2,9 +2,9 @@ use super::*;
 use crate::*;
 use bevy::prelude::*;
 
-pub struct SplineToolPlugin;
+pub struct ToolPlugin;
 #[rustfmt::skip]
-impl Plugin for SplineToolPlugin {
+impl Plugin for ToolPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
 			//
@@ -18,15 +18,13 @@ impl Plugin for SplineToolPlugin {
 				highlight_entities,
 			).chain())//todo in preupdate
 			.add_systems((
-				create_interactable,
 				move_selected_interactables,
 				set_interactable_colors,
-				link_spline_nodes,
 			).after(highlight_entities))
 			//TODO in sets
 			.add_systems((
 				append_interactable_mesh,
-			).after(create_interactable))
+			).after(set_interactable_colors))
 			.__();
 	}
 }
