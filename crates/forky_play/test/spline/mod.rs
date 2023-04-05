@@ -1,3 +1,5 @@
+mod catmull_rom;
+pub use self::catmull_rom::*;
 mod ecs_spline_graph;
 pub use self::ecs_spline_graph::*;
 mod graph;

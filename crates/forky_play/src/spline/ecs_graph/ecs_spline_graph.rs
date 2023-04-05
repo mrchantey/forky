@@ -1,19 +1,22 @@
 use super::*;
 use crate::{
 	materials::UvMaterial,
-	spline::{graph::*, mesh, Spline, SplineType},
+	spline::{self, graph::*, mesh, LinearSpline, Spline, SplineType},
 };
-use bevy::{prelude::*, utils::HashMap};
+use bevy::{
+	prelude::*,
+	utils::{HashMap, HashSet},
+};
 use petgraph::data::Build;
 
 #[derive(Debug, Clone)]
 pub struct EcsSplineGraph {
 	pub id: EcsSplineGraphId,
 	pub graph: SplineGraph,
-	pub edge_material: Handle<UvMaterial>,
-	pub edge_subdivisions: usize,
-	pub nodes: HashMap<SplineNode, Entity>,
-	pub edges: HashMap<SplineEdgeId, EcsSplineEdge>,
+	edge_material: Handle<UvMaterial>,
+	edge_subdivisions: usize,
+	nodes: HashMap<SplineNode, EcsSplineNode>,
+	edges: HashMap<SplineEdgeId, EcsSplineEdge>,
 }
 
 impl EcsSplineGraph {
@@ -35,36 +38,51 @@ impl EcsSplineGraph {
 		&mut self,
 		commands: &mut Commands,
 		position: Vec3,
-	) -> (Entity, SplineNode) {
+	) -> EcsSplineNode {
 		let node = self.graph.create_node();
 		let entity = commands
 			.spawn(EcsSplineNodeBundle::new(position, node, self.id))
 			.id();
-		self.nodes.insert(node, entity);
-		(entity, node)
+		let ecs_node = EcsSplineNode {
+			entity,
+			node,
+			position,
+		};
+		self.nodes.insert(node, ecs_node);
+		ecs_node
 	}
 
 	pub fn remove_node(&mut self, commands: &mut Commands, node: SplineNode) {
 		for edge in self.graph.clone_edges(node) {
 			self.remove_edge(commands, edge);
 		}
-		commands.entity(self.nodes[&node]).despawn();
+		commands.entity(self.nodes[&node].entity).despawn();
 	}
 
+
+	pub fn create_edge(
+		&mut self,
+		commands: &mut Commands,
+		node1: SplineNode,
+		node2: SplineNode,
+	) -> EcsSplineEdge {
+		let pos1 = self.nodes[&node1].position;
+		let pos2 = self.nodes[&node2].position;
+		let spline = Spline::Linear(LinearSpline::new(pos1, pos2));
+		self.create_edge_with_spline(commands, node1, node2, spline)
+	}
 
 	pub fn create_edge_from_spline(
 		&mut self,
 		commands: &mut Commands,
 		spline: Spline,
 	) -> EcsSplineEdge {
-		let (_, node1) = self.create_node(commands, spline.first());
-		let (_, node2) = self.create_node(commands, spline.last());
-		self.create_edge(commands, node1, node2, spline)
+		let node1 = self.create_node(commands, spline.first());
+		let node2 = self.create_node(commands, spline.last());
+		self.create_edge_with_spline(commands, node1.node, node2.node, spline)
 	}
 
-
-
-	pub fn create_edge(
+	pub fn create_edge_with_spline(
 		&mut self,
 		commands: &mut Commands,
 		node1: SplineNode,
@@ -166,6 +184,7 @@ impl EcsSplineGraph {
 		position: Vec3,
 		handle_index: &SplineHandleIndex,
 	) {
+		//TODO this should be after updating edge?
 		self.update_edge_mesh(commands, edge_id, meshes);
 		let ecs_edge = self.edges.get_mut(&edge_id).unwrap();
 		self.graph
@@ -176,13 +195,14 @@ impl EcsSplineGraph {
 			.unwrap();
 	}
 
-	pub fn update_edge_from_node(
+	pub fn update_node_position(
 		&mut self,
 		commands: &mut Commands,
 		meshes: &mut ResMut<Assets<Mesh>>,
 		node: &SplineNode,
 		position: Vec3,
 	) {
+		self.nodes.get_mut(node).unwrap().position = position;
 		//TODO can this be optimized, ie edge_weight_mut?
 		for edge in self.graph.clone_edges(*node).iter() {
 			self.update_edge_mesh(commands, &edge.id, meshes);
@@ -194,6 +214,57 @@ impl EcsSplineGraph {
 				edge.spline.set_last(position);
 			}
 			self.graph.update_edge(edge.a, edge.b, edge);
+		}
+	}
+
+	pub fn apply_catmull_rom(
+		&mut self,
+		_commands: &mut Commands,
+		_meshes: &mut ResMut<Assets<Mesh>>,
+	) {
+		// let solved = self.solve_catmull_rom();
+		// for (edge, position) in solved.iter() {
+		// 	self.update_node_position(commands, meshes, &edge.1, *position);
+		// }
+	}
+
+	pub fn solve_catmull_rom(
+		&mut self,
+	) -> HashMap<(SplineNode, SplineNode), Vec3> {
+		let mut visited: HashSet<SplineNode> = HashSet::new();
+		let mut solved: HashMap<(SplineNode, SplineNode), Vec3> =
+			HashMap::new();
+		let first = self.nodes.keys().next().unwrap();
+		self.solve_catmull_rom_recursive(*first, &mut visited, &mut solved);
+		solved
+	}
+
+	pub fn solve_catmull_rom_recursive(
+		&mut self,
+		node1: SplineNode,
+		visited: &mut HashSet<SplineNode>,
+		solved: &mut HashMap<(SplineNode, SplineNode), Vec3>,
+	) {
+		if visited.contains(&node1) {
+			return;
+		}
+		visited.insert(node1);
+		let node1_pos = self.nodes.get(&node1).unwrap().position;
+		for node2 in self.graph.neighbors(node1).collect::<Vec<_>>() {
+			self.solve_catmull_rom_recursive(node2, visited, solved);
+			let node2_pos = self.nodes.get(&node2).unwrap().position;
+			if let Some(node3) = self.graph.next_neighbour(node1, node2) {
+				let node3_pos = self.nodes.get(&node3).unwrap().position;
+				let (handle1, handle3) = spline::CatmullRom::solve_three(
+					node1_pos, node2_pos, node3_pos,
+				);
+				solved.insert((node2, node1), handle1);
+				solved.insert((node2, node3), handle3);
+			} else {
+				let handle1 =
+					spline::CatmullRom::solve_two(node1_pos, node2_pos);
+				solved.insert((node1, node2), handle1);
+			}
 		}
 	}
 }

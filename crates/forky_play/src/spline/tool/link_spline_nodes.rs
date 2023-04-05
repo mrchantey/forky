@@ -34,7 +34,7 @@ pub fn link_spline_nodes(
 			transform1.translation,
 			transform2.translation,
 		));
-		graph.create_edge(&mut commands, *node1, *node2, spline);
+		graph.create_edge_with_spline(&mut commands, *node1, *node2, spline);
 
 		// let new_node = graph.add_node(node.position);
 		// graph.add_edge(node.id,new_node.id);

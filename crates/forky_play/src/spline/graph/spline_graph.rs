@@ -35,6 +35,19 @@ impl SplineGraph {
 		node
 	}
 
+	pub fn next_neighbour(
+		&mut self,
+		prev: SplineNode,
+		node: SplineNode,
+	) -> Option<SplineNode> {
+		for next in self.neighbors(node) {
+			if next != prev {
+				return Some(next);
+			}
+		}
+		None
+	}
+
 	pub fn create_edge(
 		&mut self,
 		node1: SplineNode,

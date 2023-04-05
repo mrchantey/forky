@@ -4,12 +4,11 @@ use crate::tool;
 use bevy::prelude::*;
 
 
-#[derive(
-	Component, Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash,
-)]
+#[derive(Component, Debug, Copy, Clone, PartialEq)]
 pub struct EcsSplineNode {
-	id: u64,
-	entity: Entity,
+	pub node: SplineNode,
+	pub entity: Entity,
+	pub position: Vec3,
 }
 
 

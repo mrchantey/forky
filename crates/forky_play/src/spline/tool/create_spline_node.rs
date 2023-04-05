@@ -28,10 +28,10 @@ pub fn create_spline_node(
 
 	//hack
 	let graph = graphs.values_mut().next().unwrap();
-	let (entity, node1) = graph.create_node(&mut commands, intersect.position);
+	let node1 = graph.create_node(&mut commands, intersect.position);
 
 	commands
-		.entity(entity)
+		.entity(node1.entity)
 		.insert((Selected, PrimaryInteracted));
 
 	//TODO share code with link_spline_nodes
@@ -46,13 +46,18 @@ pub fn create_spline_node(
 			continue;
 		}
 
-		if graph.graph.contains_edge(node1, *node2) {
+		if graph.graph.contains_edge(node1.node, *node2) {
 			continue;
 		}
 		let spline = Spline::Linear(LinearSpline::new(
 			intersect.position,
 			transform.translation,
 		));
-		graph.create_edge(&mut commands, node1, *node2, spline);
+		graph.create_edge_with_spline(
+			&mut commands,
+			node1.node,
+			*node2,
+			spline,
+		);
 	}
 }

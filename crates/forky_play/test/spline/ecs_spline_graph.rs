@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use forky_play::{spline::graph::*, spline::*, *};
+use forky_play::{spline::*, *};
 use sweet::*;
 
 sweet! {
@@ -9,7 +9,7 @@ sweet! {
 		app.__()
 			.add_plugin(plugins::CustomDefaultPlugin)
 			.add_plugin(materials::ForkyMaterialPlugin)
-			.add_plugin(spline::graph::EcsSplineGraphPlugin)
+			.add_plugin(ecs_graph::EcsSplineGraphPlugin)
 			.add_startup_system(setup)
 			.__();
 
@@ -22,10 +22,9 @@ sweet! {
 
 fn setup(
 	mut commands: Commands,
-	mut graph_lookup: ResMut<EcsSplineGraphLookup>,
+	mut graph_lookup: ResMut<ecs_graph::EcsSplineGraphLookup>,
 	mut materials: ResMut<Assets<materials::UvMaterial>>,
 ) {
 	let material = materials.add(materials::UvMaterial::default());
-	let (_id, graph) = graph_lookup.create_graph(material);
-	// let node = graph.create_node();
+	let graph = graph_lookup.create_graph(material);
 }
