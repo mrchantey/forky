@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use forky_play::spline::*;
 use forky_play::*;
 
 fn main() {

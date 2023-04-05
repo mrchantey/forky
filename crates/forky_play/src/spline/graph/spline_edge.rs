@@ -27,11 +27,11 @@ impl SplineEdge {
 	}
 }
 
-// #[derive(Component, Debug, Copy, Clone, PartialEq)]
-// pub struct SplineLink {
-// 	pub a: SplineNode,
-// 	pub b: SplineNode,
-// }
-// impl SplineLink {
-// 	pub fn new(a: SplineNode, b: SplineNode) -> Self { Self { a, b } }
-// }
+#[derive(Component, Debug, Copy, Clone, Eq, PartialEq, Hash)]
+pub struct SplineLink {
+	pub a: SplineNode,
+	pub b: SplineNode,
+}
+impl SplineLink {
+	pub fn new(a: SplineNode, b: SplineNode) -> Self { Self { a, b } }
+}

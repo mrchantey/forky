@@ -11,6 +11,6 @@ pub fn on_node_moved(
 		let _graph = graph_lookup.get_mut(&graph_id).unwrap();
 
 		// graph.get_
-		println!("Node {} moved to {:?}", node.0, transform.translation);
+		println!("Node {} moved to {:?}", **node, transform.translation);
 	}
 }

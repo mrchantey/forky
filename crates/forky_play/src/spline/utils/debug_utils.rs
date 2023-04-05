@@ -39,20 +39,24 @@ pub fn spawn_spline_graph_cube(
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
 	let (graph_id, graph) = graphs.create_graph();
+	let pos1 = Vec3::new(-1., 1., 0.);
+	let pos2 = Vec3::new(0., 0., 0.);
+	let pos3 = Vec3::new(1., -1., 0.);
+
 	let spline1 = Spline::Quadratic(QuadraticSpline {
-		p0: Vec3::new(-1., 1., 0.),
+		p0: pos1,
 		p1: Vec3::new(-1., 0., 0.),
-		p2: Vec3::new(0., 0., 0.),
+		p2: pos2,
 	});
 	let spline2 = Spline::Quadratic(QuadraticSpline {
-		p0: Vec3::new(0., 0., 0.),
+		p0: pos2,
 		p1: Vec3::new(1., 0., 0.),
-		p2: Vec3::new(1., -1., 0.),
+		p2: pos3,
 	});
 
-	let node1 = graph.create_node();
-	let node2 = graph.create_node();
-	let node3 = graph.create_node();
+	let node1 = graph.create_node(pos1);
+	let node2 = graph.create_node(pos2);
+	let node3 = graph.create_node(pos3);
 	let edge12 = graph.create_edge(node1, node2, spline1);
 	let _edge23 = graph.create_edge(node2, node3, spline2);
 

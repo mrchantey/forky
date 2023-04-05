@@ -9,17 +9,21 @@ sweet! {
 
 		let mut graph = SplineGraph::new();
 
+		let pos1 = Vec3::UP;
+		let pos2 = Vec3::ZERO;
+		let pos3 = Vec3::DOWN;
+
 		let spline1 = Spline::Linear(LinearSpline{
-			p0: Vec3::UP,
-			p1: Vec3::ZERO,
+			p0: pos1,
+			p1: pos2,
 		});
 		let spline2 = Spline::Linear(LinearSpline{
-			p0: Vec3::ZERO,
-			p1: Vec3::DOWN,
+			p0: pos2,
+			p1: pos3,
 		});
-		let node1 = graph.create_node();
-		let node2 = graph.create_node();
-		let node3 = graph.create_node();
+		let node1 = graph.create_node(pos1);
+		let node2 = graph.create_node(pos2);
+		let node3 = graph.create_node(pos3);
 		expect(*node1).to_be(0)?;
 		expect(*node2).to_be(1)?;
 		expect(*node1).not().to_be(*node2)?;

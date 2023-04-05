@@ -1,12 +1,9 @@
 use super::*;
 use crate::{
 	materials::UvMaterial,
-	spline::{self, graph::*, mesh, LinearSpline, Spline, SplineType},
+	spline::{graph::*, *},
 };
-use bevy::{
-	prelude::*,
-	utils::{HashMap, HashSet},
-};
+use bevy::{prelude::*, utils::HashMap};
 use petgraph::data::Build;
 
 #[derive(Debug, Clone)]
@@ -39,15 +36,11 @@ impl EcsSplineGraph {
 		commands: &mut Commands,
 		position: Vec3,
 	) -> EcsSplineNode {
-		let node = self.graph.create_node();
+		let node = self.graph.create_node(position);
 		let entity = commands
 			.spawn(EcsSplineNodeBundle::new(position, node, self.id))
 			.id();
-		let ecs_node = EcsSplineNode {
-			entity,
-			node,
-			position,
-		};
+		let ecs_node = EcsSplineNode { entity, node };
 		self.nodes.insert(node, ecs_node);
 		ecs_node
 	}
@@ -66,8 +59,8 @@ impl EcsSplineGraph {
 		node1: SplineNode,
 		node2: SplineNode,
 	) -> EcsSplineEdge {
-		let pos1 = self.nodes[&node1].position;
-		let pos2 = self.nodes[&node2].position;
+		let pos1 = self.graph.positions[&node1];
+		let pos2 = self.graph.positions[&node2];
 		let spline = Spline::Linear(LinearSpline::new(pos1, pos2));
 		self.create_edge_with_spline(commands, node1, node2, spline)
 	}
@@ -202,7 +195,7 @@ impl EcsSplineGraph {
 		node: &SplineNode,
 		position: Vec3,
 	) {
-		self.nodes.get_mut(node).unwrap().position = position;
+		self.graph.positions.insert(*node, position);
 		//TODO can this be optimized, ie edge_weight_mut?
 		for edge in self.graph.clone_edges(*node).iter() {
 			self.update_edge_mesh(commands, &edge.id, meshes);
@@ -215,56 +208,43 @@ impl EcsSplineGraph {
 			}
 			self.graph.update_edge(edge.a, edge.b, edge);
 		}
+		//TODO we dont need to update the entire graph
+		self.apply_catmull_rom(commands, meshes);
 	}
 
 	pub fn apply_catmull_rom(
 		&mut self,
-		_commands: &mut Commands,
-		_meshes: &mut ResMut<Assets<Mesh>>,
+		commands: &mut Commands,
+		meshes: &mut ResMut<Assets<Mesh>>,
 	) {
-		// let solved = self.solve_catmull_rom();
+		let solved = self.graph.solve_catmull_rom();
+		for (a, b, mut edge) in self
+			.graph
+			.all_edges()
+			.map(|(a, b, e)| (a, b, e.clone()))
+			.collect::<Vec<_>>()
+		{
+			if let Some(handle_ab) = solved.get(&(a, b)) {
+				if let Some(handle_ba) = solved.get(&(b, a)) {
+					edge.spline = Spline::Cubic(CubicSpline {
+						p0: self.graph.positions[&a],
+						p1: *handle_ab,
+						p2: *handle_ba,
+						p3: self.graph.positions[&b],
+					});
+					self.graph.update_edge(a, b, edge);
+					self.update_edge_mesh(commands, &edge.id, meshes);
+				} else {
+					panic!("partially solved graph for {a},{b}");
+				}
+			} else {
+				panic!("unsolved solved graph for {a},{b}");
+			}
+
+			// edge.spline = solved[&edge.id].clone();
+		}
 		// for (edge, position) in solved.iter() {
 		// 	self.update_node_position(commands, meshes, &edge.1, *position);
 		// }
-	}
-
-	pub fn solve_catmull_rom(
-		&mut self,
-	) -> HashMap<(SplineNode, SplineNode), Vec3> {
-		let mut visited: HashSet<SplineNode> = HashSet::new();
-		let mut solved: HashMap<(SplineNode, SplineNode), Vec3> =
-			HashMap::new();
-		let first = self.nodes.keys().next().unwrap();
-		self.solve_catmull_rom_recursive(*first, &mut visited, &mut solved);
-		solved
-	}
-
-	pub fn solve_catmull_rom_recursive(
-		&mut self,
-		node1: SplineNode,
-		visited: &mut HashSet<SplineNode>,
-		solved: &mut HashMap<(SplineNode, SplineNode), Vec3>,
-	) {
-		if visited.contains(&node1) {
-			return;
-		}
-		visited.insert(node1);
-		let node1_pos = self.nodes.get(&node1).unwrap().position;
-		for node2 in self.graph.neighbors(node1).collect::<Vec<_>>() {
-			self.solve_catmull_rom_recursive(node2, visited, solved);
-			let node2_pos = self.nodes.get(&node2).unwrap().position;
-			if let Some(node3) = self.graph.next_neighbour(node1, node2) {
-				let node3_pos = self.nodes.get(&node3).unwrap().position;
-				let (handle1, handle3) = spline::CatmullRom::solve_three(
-					node1_pos, node2_pos, node3_pos,
-				);
-				solved.insert((node2, node1), handle1);
-				solved.insert((node2, node3), handle3);
-			} else {
-				let handle1 =
-					spline::CatmullRom::solve_two(node1_pos, node2_pos);
-				solved.insert((node1, node2), handle1);
-			}
-		}
 	}
 }

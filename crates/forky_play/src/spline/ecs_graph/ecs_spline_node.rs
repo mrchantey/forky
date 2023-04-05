@@ -8,7 +8,7 @@ use bevy::prelude::*;
 pub struct EcsSplineNode {
 	pub node: SplineNode,
 	pub entity: Entity,
-	pub position: Vec3,
+	// pub position: Vec3,
 }
 
 
