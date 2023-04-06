@@ -18,14 +18,15 @@ sweet! {
 
 		expect((node1,node2)).not().to_be((node2,node1))?;
 
-		println!("{:?}",graph);
 
-			let solved = graph.solve_catmull_rom();
+		let solved = graph.solve_catmull_rom();
+		expect(solved.len()).to_be(4)?;
 
-			println!("\n");
-		for result in solved.iter() {
-			println!("{:?}",result);
-		}
+		// println!("{:?}",graph);
+		// 	println!("\n");
+		// for result in solved.iter() {
+		// 	println!("{:?}",result);
+		// }
 
 	}
 }

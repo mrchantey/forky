@@ -177,8 +177,6 @@ impl EcsSplineGraph {
 		position: Vec3,
 		handle_index: &SplineHandleIndex,
 	) {
-		//TODO this should be after updating edge?
-		self.update_edge_mesh(commands, edge_id, meshes);
 		let ecs_edge = self.edges.get_mut(&edge_id).unwrap();
 		self.graph
 			.edge_weight_mut(ecs_edge.node1, ecs_edge.node2)
@@ -186,6 +184,7 @@ impl EcsSplineGraph {
 			.spline
 			.set_point(position, **handle_index)
 			.unwrap();
+		self.update_edge_mesh(commands, edge_id, meshes);
 	}
 
 	pub fn update_node_position(
@@ -198,7 +197,6 @@ impl EcsSplineGraph {
 		self.graph.positions.insert(*node, position);
 		//TODO can this be optimized, ie edge_weight_mut?
 		for edge in self.graph.clone_edges(*node).iter() {
-			self.update_edge_mesh(commands, &edge.id, meshes);
 			let mut edge = edge.clone();
 
 			if edge.a == *node {
@@ -207,9 +205,8 @@ impl EcsSplineGraph {
 				edge.spline.set_last(position);
 			}
 			self.graph.update_edge(edge.a, edge.b, edge);
+			self.update_edge_mesh(commands, &edge.id, meshes);
 		}
-		//TODO we dont need to update the entire graph
-		self.apply_catmull_rom(commands, meshes);
 	}
 
 	pub fn apply_catmull_rom(
@@ -238,7 +235,7 @@ impl EcsSplineGraph {
 					panic!("partially solved graph for {a},{b}");
 				}
 			} else {
-				panic!("unsolved solved graph for {a},{b}");
+				panic!("unsolved graph for {a},{b}");
 			}
 
 			// edge.spline = solved[&edge.id].clone();

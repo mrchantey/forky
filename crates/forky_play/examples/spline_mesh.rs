@@ -9,7 +9,6 @@ fn main() {
 		.add_plugin(plugins::ForkyFullPlugin)
 		.add_plugin(spline::SplinePlugin)
 		.add_startup_system(setup)
-		.add_system(spline::utils::draw_ecs_graph)
 		.run();
 }
 

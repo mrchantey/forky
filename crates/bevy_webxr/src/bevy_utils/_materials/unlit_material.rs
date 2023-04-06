@@ -1,7 +1,14 @@
 use bevy::{
+	pbr::{MaterialPipeline, MaterialPipelineKey},
 	prelude::*,
 	reflect::TypeUuid,
-	render::{render_resource::{AsBindGroup, ShaderRef, RenderPipelineDescriptor, SpecializedMeshPipelineError}, mesh::MeshVertexBufferLayout}, pbr::{MaterialPipeline, MaterialPipelineKey},
+	render::{
+		mesh::MeshVertexBufferLayout,
+		render_resource::{
+			AsBindGroup, RenderPipelineDescriptor, ShaderRef,
+			SpecializedMeshPipelineError,
+		},
+	},
 };
 
 // This is the struct that will be passed to your shader

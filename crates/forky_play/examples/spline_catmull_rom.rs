@@ -8,7 +8,6 @@ fn main() {
 		.add_plugin(plugins::ForkyFullPlugin)
 		.add_plugin(spline::SplinePlugin)
 		.add_startup_system(setup)
-		.add_system(spline::utils::draw_ecs_graph)
 		.run();
 }
 
@@ -30,4 +29,5 @@ fn setup(
 	graph.create_edge(&mut commands, node1.node, node2.node);
 	graph.create_edge(&mut commands, node2.node, node3.node);
 	graph.create_edge(&mut commands, node3.node, node4.node);
+	graph.create_edge(&mut commands, node4.node, node1.node);
 }

@@ -11,7 +11,7 @@ impl Plugin for SplineToolPlugin {
 			.add_systems((
 				create_spline_node,
 				link_spline_nodes,
-			).after(tool::highlight_entities))
+			).in_set(tool::ToolSystemSet::ModifySelection))
 			.__();
 	}
 }

@@ -18,8 +18,6 @@ sweet! {
 			.add_plugin(DebugLinesPlugin::with_depth_test(true))
 			// .add_startup_system(spawn_spline_cube)
 			.add_startup_system(spline::utils::spawn_spline_graph_cube)
-			.add_system(spline::utils::draw_spline)
-			.add_system(spline::utils::draw_graph)
 			.run();
 		}
 }

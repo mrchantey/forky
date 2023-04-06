@@ -10,3 +10,5 @@ mod spline_graph_plugin;
 pub use self::spline_graph_plugin::*;
 mod spline_node;
 pub use self::spline_node::*;
+mod spline_node_positional;
+pub use self::spline_node_positional::*;
