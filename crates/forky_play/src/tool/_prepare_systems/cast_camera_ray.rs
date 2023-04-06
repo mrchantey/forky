@@ -10,7 +10,7 @@ pub fn cast_camera_ray(
 	mut commands: Commands,
 	mut camera_ray: ResMut<CameraRay>,
 	mouse: Res<Input<MouseButton>>,
-	camera_query: Query<(&Camera, &GlobalTransform), With<input::ActiveCamera>>,
+	camera_query: Query<(&Camera, &GlobalTransform), With<camera::ActiveCamera>>,
 	hovered: Query<Entity, With<Hovered>>,
 	primary_interacted: Query<Entity, With<PrimaryInteracted>>,
 	windows: Query<&Window>,

@@ -3,11 +3,13 @@
 
 pub mod animation;
 pub mod base;
+pub mod camera;
 pub mod debug;
 pub mod input;
 pub mod materials;
 pub mod maze;
 pub mod mesh_utils;
+pub mod mithril;
 pub mod physics;
 pub mod plugins;
 pub mod render_graph;

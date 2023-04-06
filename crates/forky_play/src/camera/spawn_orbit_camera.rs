@@ -1,4 +1,5 @@
 use super::*;
+use crate::*;
 use bevy::prelude::*;
 
 pub fn spawn_orbit_camera(mut commands: Commands) {
@@ -21,5 +22,5 @@ pub fn spawn_orbit_camera(mut commands: Commands) {
 			radius,
 			..default()
 		})
-		.insert(TransformController::default());
+		.insert(input::TransformController::default());
 }

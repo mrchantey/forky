@@ -8,7 +8,7 @@ pub fn orbit_keyboard_controller(
 	time: Res<Time>,
 	keys: Res<Input<KeyCode>>,
 	mut query: Query<(
-		&TransformController,
+		&input::TransformController,
 		&mut OrbitController,
 		&mut Transform,
 	)>,
@@ -16,8 +16,8 @@ pub fn orbit_keyboard_controller(
 	for (kb, mut orbit, mut tran) in query.iter_mut() {
 		let t_delta = kb.translate_speed * time.delta_seconds();
 		let r_delta = (kb.rotate_speed * time.delta_seconds()) / TAU;
-		let t = parse_keyboard_translation(&keys) * t_delta;
-		let r = parse_keyboard_rotation(&keys) * r_delta;
+		let t = input::parse_keyboard_translation(&keys) * t_delta;
+		let r = input::parse_keyboard_rotation(&keys) * r_delta;
 		orbit.focus += tran.flat_x() * t.x;
 		orbit.focus += tran.flat_y() * t.y;
 		orbit.focus += tran.flat_z() * t.z;

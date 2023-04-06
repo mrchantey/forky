@@ -21,7 +21,7 @@ pub fn spawn_fps_camera(mut commands: Commands) {
 			..default()
 		})
 		.insert(CameraParent)
-		.insert(TransformController::default())
+		.insert(input::TransformController::default())
 		.id();
 
 	commands.entity(parent).push_children(&[child]);

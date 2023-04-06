@@ -14,7 +14,7 @@ impl Plugin for ForkyDebugPlugin {
 			.insert_resource(Msaa::default())
 			// .insert_resource(ClearColor(Color::NAVY))
 			.add_plugin(plugins::CustomDefaultPlugin)
-			.add_plugin(input::DebugCameraPlugin)
+			.add_plugin(camera::DebugCameraPlugin)
 			.add_plugin(materials::ForkyMaterialPlugin)
 			.add_system(bevy::window::close_on_esc)
 			.add_startup_system(utility::spawn_default_lights)
