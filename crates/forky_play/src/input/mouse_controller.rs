@@ -11,17 +11,25 @@ pub fn mouse_controller(
 		With<ActiveTransformController>,
 	>,
 ) {
-	// let t = time.de
-	for (param, mut tran) in query.iter_mut() {
-		if input_mouse.pressed(MouseButton::Left) {
+	for (controller, mut tran) in query.iter_mut() {
+		if controller.allow_rotation && input_mouse.pressed(MouseButton::Left) {
 			for ev in ev_motion.iter() {
-				tran.rotate_y(ev.delta.x * param.rotate_speed * 0.0001);
-				tran.rotate_local_x(-ev.delta.y * param.rotate_speed * 0.0001);
+				//TODO local axis
+				tran.rotate_y(ev.delta.x * controller.rotate_speed * 0.0001);
+				tran.rotate_local_x(
+					-ev.delta.y * controller.rotate_speed * 0.0001,
+				);
 			}
 		}
 
 		for ev in ev_scroll.iter() {
-			tran.translate_flat_y(ev.y * param.translate_speed * 0.1);
+			let scalar = ev.y * controller.translate_speed * 0.1;
+			if controller.local_axis {
+				let axis = tran.forward();
+				tran.translate_local(axis * scalar);
+			} else {
+				tran.translate_flat_y(scalar);
+			}
 		}
 	}
 }

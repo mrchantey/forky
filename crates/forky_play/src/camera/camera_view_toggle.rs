@@ -33,13 +33,19 @@ fn next_toggle_state(prev: &CameraViewType) -> CameraViewType {
 
 pub fn camera_view_toggle(
 	mut commands: Commands,
-	mut cam_type: ResMut<CameraViewType>,
+	cam_type: Option<ResMut<CameraViewType>>,
 	keys: Res<Input<KeyCode>>,
 	mut query: Query<(Entity, &mut Camera, &CameraViewType)>,
 ) {
+	let cam_type = match cam_type {
+		Some(value) => value,
+		None => return,
+	};
+
 	if keys.just_pressed(KeyCode::Tab) {
 		let next_state = next_toggle_state(&cam_type);
-		cam_type.clone_from(&next_state);
+		commands.insert_resource(next_state);
+		// cam_type.clone_from(&next_state);
 		run_camera_view_toggle(&mut commands, &cam_type, &mut query);
 	}
 }

@@ -7,6 +7,15 @@ pub struct ForkyDebugPlugin {
 	debug_cameras: bool,
 }
 
+impl ForkyDebugPlugin {
+	pub fn without_debug_cameras() -> Self {
+		Self {
+			debug_cameras: false,
+			..default()
+		}
+	}
+}
+
 impl Default for ForkyDebugPlugin {
 	fn default() -> Self {
 		Self {
