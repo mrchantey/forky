@@ -8,8 +8,9 @@ pub struct ActiveCamera;
 
 #[derive(Hash, PartialEq, Eq, Clone, Debug)]
 // #[derive(Eq)]
-#[derive(Resource, Component)]
+#[derive(Resource, Component, Default)]
 pub enum CameraViewType {
+	#[default]
 	Orbit,
 	Top,
 	Front,

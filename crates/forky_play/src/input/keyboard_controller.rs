@@ -10,46 +10,46 @@ pub fn keyboard_controller(
 	mut query: Query<(&TransformController, &mut Transform)>,
 ) {
 	for (kb, mut tran) in query.iter_mut() {
-		let t_delta = kb.translate_speed * time.delta_seconds();
-		let r_delta = (kb.rotate_speed * time.delta_seconds()) / TAU;
-		let t = parse_keyboard_translation(&keys) * t_delta;
-		let r = parse_keyboard_rotation(&keys) * r_delta;
-		tran.translate_flat_x(t.x);
-		tran.translate_flat_y(t.y);
-		tran.translate_flat_z(t.z);
-		tran.rotate_y(r.y);
+		let pos_scalar = kb.translate_speed * time.delta_seconds();
+		let pos_delta = parse_keyboard_translation(&keys) * pos_scalar;
+		tran.translate_flat_x(pos_delta.x);
+		tran.translate_flat_y(pos_delta.y);
+		tran.translate_flat_z(pos_delta.z);
+		let rot_scalar = (kb.rotate_speed * time.delta_seconds()) / TAU;
+		let rot_delta = parse_keyboard_rotation(&keys) * rot_scalar;
+		tran.rotate_y(rot_delta.y);
 	}
 }
 
 pub fn parse_keyboard_translation(keys: &Res<Input<KeyCode>>) -> Vec3 {
-	let mut t = Vec3::default();
+	let mut pos_delta = Vec3::default();
 	if keys.any_pressed([KeyCode::W, KeyCode::Up]) {
-		t.z -= 1.;
+		pos_delta.z -= 1.;
 	}
 	if keys.any_pressed([KeyCode::S, KeyCode::Down]) {
-		t.z += 1.;
+		pos_delta.z += 1.;
 	}
 	if keys.any_pressed([KeyCode::A, KeyCode::Left]) {
-		t.x -= 1.;
+		pos_delta.x -= 1.;
 	}
 	if keys.any_pressed([KeyCode::D, KeyCode::Right]) {
-		t.x += 1.;
+		pos_delta.x += 1.;
 	}
 	if keys.pressed(KeyCode::R) {
-		t.y += 1.;
+		pos_delta.y += 1.;
 	}
 	if keys.pressed(KeyCode::F) {
-		t.y -= 1.;
+		pos_delta.y -= 1.;
 	}
-	t
+	pos_delta
 }
 pub fn parse_keyboard_rotation(keys: &Res<Input<KeyCode>>) -> Vec3 {
-	let mut r = Vec3::default();
+	let mut rot_delta = Vec3::default();
 	if keys.pressed(KeyCode::Q) {
-		r.y += 1.;
+		rot_delta.y += 1.;
 	}
 	if keys.pressed(KeyCode::E) {
-		r.y -= 1.;
+		rot_delta.y -= 1.;
 	}
-	r
+	rot_delta
 }

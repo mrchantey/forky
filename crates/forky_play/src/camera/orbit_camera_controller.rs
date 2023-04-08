@@ -132,7 +132,7 @@ pub fn update_translation_from_orbit(
 	orbit: &OrbitController,
 ) {
 	let rot_matrix = Mat3::from_quat(tran.rotation);
-	//invert orbit.radius because camera parent
+	//invert orbit.radius if using camera parent
 	tran.translation =
 		orbit.focus + rot_matrix.mul_vec3(Vec3::new(0.0, 0.0, orbit.radius));
 }
@@ -141,6 +141,6 @@ pub fn update_orbit_from_transform(
 	orbit: &mut Mut<OrbitController>,
 	tran: &Transform,
 ) {
-	let r = orbit.radius;
-	orbit.focus = tran.forward() * r;
+	let radius = orbit.radius;
+	orbit.focus = tran.forward() * radius;
 }

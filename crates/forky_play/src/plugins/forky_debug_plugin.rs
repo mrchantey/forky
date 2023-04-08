@@ -1,8 +1,5 @@
 use crate::*;
-use bevy::{
-	prelude::*,
-	winit::WinitSettings,
-};
+use bevy::{prelude::*, winit::WinitSettings};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 
@@ -14,6 +11,7 @@ impl Plugin for ForkyDebugPlugin {
 			.insert_resource(Msaa::default())
 			// .insert_resource(ClearColor(Color::NAVY))
 			.add_plugin(plugins::CustomDefaultPlugin)
+			.add_plugin(input::InputPlugin)
 			.add_plugin(camera::DebugCameraPlugin)
 			.add_plugin(materials::ForkyMaterialPlugin)
 			.add_system(bevy::window::close_on_esc)

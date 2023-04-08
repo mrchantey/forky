@@ -5,6 +5,7 @@ use bevy::prelude::*;
 pub struct TransformController {
 	pub rotate_speed: f32,
 	pub translate_speed: f32,
+	pub axis: Option<Vec3>,
 }
 
 impl Default for TransformController {
@@ -12,6 +13,7 @@ impl Default for TransformController {
 		TransformController {
 			translate_speed: 10.,
 			rotate_speed: 20.,
+			axis: None,
 		}
 	}
 }

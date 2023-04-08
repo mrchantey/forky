@@ -1,9 +1,6 @@
-use bevy::{input::mouse::*, prelude::*};
-
 use super::*;
 use crate::*;
-
-use forky_core::*;
+use bevy::{input::mouse::*, prelude::*};
 
 pub fn mouse_controller(
 	mut ev_motion: EventReader<MouseMotion>,
@@ -15,7 +12,6 @@ pub fn mouse_controller(
 	for (param, mut tran) in query.iter_mut() {
 		if input_mouse.pressed(MouseButton::Left) {
 			for ev in ev_motion.iter() {
-				log!(ev.delta.y);
 				tran.rotate_y(ev.delta.x * param.rotate_speed * 0.0001);
 				tran.rotate_local_x(-ev.delta.y * param.rotate_speed * 0.0001);
 			}
