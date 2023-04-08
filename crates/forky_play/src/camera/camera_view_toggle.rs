@@ -1,4 +1,6 @@
-use bevy::prelude::*;
+use bevy::{ecs::query::QuerySingleError, prelude::*};
+
+use crate::input::ActiveTransformController;
 //https://bevy-cheatbook.github.io/input/keyboard.html
 
 
@@ -30,28 +32,53 @@ fn next_toggle_state(prev: &CameraViewType) -> CameraViewType {
 
 
 pub fn camera_view_toggle(
-	commands: Commands,
+	mut commands: Commands,
 	mut cam_type: ResMut<CameraViewType>,
 	keys: Res<Input<KeyCode>>,
-	query: Query<(Entity, &mut Camera, &CameraViewType)>,
+	mut query: Query<(Entity, &mut Camera, &CameraViewType)>,
 ) {
 	if keys.just_pressed(KeyCode::Tab) {
 		let next_state = next_toggle_state(&cam_type);
 		cam_type.clone_from(&next_state);
-		run_camera_view_toggle(commands, cam_type, query);
+		run_camera_view_toggle(&mut commands, &cam_type, &mut query);
 	}
 }
-pub fn run_camera_view_toggle(
+pub fn toggle_startup_camera(
 	mut commands: Commands,
-	cam_type: ResMut<CameraViewType>,
+	cam_type: Option<ResMut<CameraViewType>>,
 	mut query: Query<(Entity, &mut Camera, &CameraViewType)>,
 ) {
+	if let Some(cam_type) = cam_type {
+		run_camera_view_toggle(&mut commands, &cam_type, &mut query);
+		return;
+	}
+	match query.get_single() {
+		Ok((_, _, state)) => {
+			run_camera_view_toggle(&mut commands, &state.clone(), &mut query);
+		}
+		Err(QuerySingleError::NoEntities(_)) => {}
+		Err(QuerySingleError::MultipleEntities(_)) => {
+			panic!("multiple cameras found but no CameraViewType resource set");
+		}
+	}
+}
+
+pub fn run_camera_view_toggle(
+	commands: &mut Commands,
+	cam_type: &CameraViewType,
+	query: &mut Query<(Entity, &mut Camera, &CameraViewType)>,
+) {
 	for (entity, mut cam, state) in query.iter_mut() {
-		if *state == *cam_type {
+		if state == cam_type {
 			cam.is_active = true;
 			commands.entity(entity).insert(ActiveCamera);
+			if state != &CameraViewType::Orbit {
+				commands.entity(entity).insert(ActiveTransformController);
+			}
 		} else {
-			commands.entity(entity).remove::<ActiveCamera>();
+			commands
+				.entity(entity)
+				.remove::<(ActiveCamera, ActiveTransformController)>();
 			cam.is_active = false
 		}
 	}

@@ -12,7 +12,7 @@ sweet! {
 		let mut app = App::new();
 		app.__()
 		.forky_exit_after(10.)
-			.add_plugin(plugins::ForkyDebugPlugin)
+			.add_plugin(plugins::ForkyDebugPlugin::default())
 			.add_plugin(spline::graph::SplineGraphPlugin)
 			.add_plugin(spline::physics::SplinePhysicsPlugin)
 			.add_plugin(DebugLinesPlugin::with_depth_test(true))

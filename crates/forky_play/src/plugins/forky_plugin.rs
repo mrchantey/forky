@@ -1,5 +1,5 @@
 use crate::*;
-use bevy::{prelude::*};
+use bevy::prelude::*;
 use bevy_easings::EasingsPlugin;
 
 use bevy_rapier3d::prelude::*;
@@ -9,7 +9,7 @@ pub struct ForkyFullPlugin;
 impl Plugin for ForkyFullPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-			.add_plugin(plugins::ForkyDebugPlugin)
+			.add_plugin(plugins::ForkyDebugPlugin::default())
 			.add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
 			.insert_resource(RapierConfiguration {
 				gravity: Vec3::new(0., -9.8, 0.),

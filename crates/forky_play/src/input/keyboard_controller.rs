@@ -7,17 +7,31 @@ use crate::*;
 pub fn keyboard_controller(
 	time: Res<Time>,
 	keys: Res<Input<KeyCode>>,
-	mut query: Query<(&TransformController, &mut Transform)>,
+	mut query: Query<
+		(&TransformController, &mut Transform),
+		With<ActiveTransformController>,
+	>,
 ) {
-	for (kb, mut tran) in query.iter_mut() {
-		let pos_scalar = kb.translate_speed * time.delta_seconds();
-		let pos_delta = parse_keyboard_translation(&keys) * pos_scalar;
-		tran.translate_flat_x(pos_delta.x);
-		tran.translate_flat_y(pos_delta.y);
-		tran.translate_flat_z(pos_delta.z);
-		let rot_scalar = (kb.rotate_speed * time.delta_seconds()) / TAU;
+	for (controller, mut tran) in query.iter_mut() {
+		let pos_scalar = controller.translate_speed * time.delta_seconds();
+		let mut pos_delta = parse_keyboard_translation(&keys) * pos_scalar;
+		let rot_scalar = (controller.rotate_speed * time.delta_seconds()) / TAU;
 		let rot_delta = parse_keyboard_rotation(&keys) * rot_scalar;
-		tran.rotate_y(rot_delta.y);
+		if controller.local_axis {
+			pos_delta.swap_yz().negate_y().negate_z();
+			tran.translate_local(pos_delta);
+			if controller.allow_rotation {
+				let axis = tran.up();
+				tran.rotate_axis(axis, rot_delta.y);
+			}
+		} else {
+			tran.translate_flat_x(pos_delta.x);
+			tran.translate_flat_y(pos_delta.y);
+			tran.translate_flat_z(pos_delta.z);
+			if controller.allow_rotation {
+				tran.rotate_y(rot_delta.y);
+			}
+		}
 	}
 }
 

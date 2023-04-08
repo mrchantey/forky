@@ -3,7 +3,17 @@ use bevy::{prelude::*, winit::WinitSettings};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 
-pub struct ForkyDebugPlugin;
+pub struct ForkyDebugPlugin {
+	debug_cameras: bool,
+}
+
+impl Default for ForkyDebugPlugin {
+	fn default() -> Self {
+		Self {
+			debug_cameras: true,
+		}
+	}
+}
 
 impl Plugin for ForkyDebugPlugin {
 	fn build(&self, app: &mut App) {
@@ -12,11 +22,15 @@ impl Plugin for ForkyDebugPlugin {
 			// .insert_resource(ClearColor(Color::NAVY))
 			.add_plugin(plugins::CustomDefaultPlugin)
 			.add_plugin(input::InputPlugin)
-			.add_plugin(camera::DebugCameraPlugin)
+			.add_plugin(camera::CameraPlugin)
 			.add_plugin(materials::ForkyMaterialPlugin)
 			.add_system(bevy::window::close_on_esc)
 			.add_startup_system(utility::spawn_default_lights)
 			.__();
+
+		if self.debug_cameras {
+			app.add_plugin(camera::DebugCameraPlugin);
+		}
 		if cfg!(debug_assertions) {
 			app.__()
 				.add_plugin(WorldInspectorPlugin::default().run_if(

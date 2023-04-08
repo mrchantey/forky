@@ -6,7 +6,10 @@ pub fn mouse_controller(
 	mut ev_motion: EventReader<MouseMotion>,
 	mut ev_scroll: EventReader<MouseWheel>,
 	input_mouse: Res<Input<MouseButton>>,
-	mut query: Query<(&TransformController, &mut Transform)>,
+	mut query: Query<
+		(&TransformController, &mut Transform),
+		With<ActiveTransformController>,
+	>,
 ) {
 	// let t = time.de
 	for (param, mut tran) in query.iter_mut() {

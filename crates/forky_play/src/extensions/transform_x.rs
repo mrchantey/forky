@@ -101,6 +101,14 @@ pub impl Transform {
 	fn translate_flat_z(&mut self, val: f32) {
 		self.translation += self.flat_z() * val;
 	}
+	fn translate_local(&mut self, val: Vec3) {
+		let translation = self.local_x() * val.x
+			+ self.local_y() * val.y
+			+ self.local_z() * val.z;
+		self.translation += translation;
+	}
+
+
 
 	fn look_away(&mut self, target: Vec3, up: Vec3) {
 		let forward = Vec3::normalize(target - self.translation);

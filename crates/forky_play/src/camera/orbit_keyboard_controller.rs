@@ -11,7 +11,7 @@ pub fn orbit_keyboard_controller(
 		&input::TransformController,
 		&mut OrbitController,
 		&mut Transform,
-	)>,
+	),With<ActiveCamera>>,
 ) {
 	for (kb, mut orbit, mut tran) in query.iter_mut() {
 		let pos_scalar = kb.translate_speed * time.delta_seconds();

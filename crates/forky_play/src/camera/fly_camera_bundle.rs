@@ -23,7 +23,10 @@ impl FlyCameraBundle {
 				..default()
 			},
 			view_type,
-			transform_controller: input::TransformController::default(),
+			transform_controller: input::TransformController::default()
+				.with_local_axis()
+				.with_rotation_disabled()
+				.clone(),
 		}
 	}
 

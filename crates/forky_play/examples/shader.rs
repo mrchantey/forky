@@ -7,7 +7,7 @@ use forky_play::*;
 
 fn main() {
 	App::new()
-		.add_plugin(plugins::ForkyDebugPlugin)
+		.add_plugin(plugins::ForkyDebugPlugin::default())
 		.add_plugin(MaterialPlugin::<render_graph::CustomMaterial>::default())
 		.add_startup_system(setup)
 		.run();
@@ -19,7 +19,6 @@ fn setup(
 	mut materials: ResMut<Assets<render_graph::CustomMaterial>>,
 	asset_server: Res<AssetServer>,
 ) {
-
 	commands.spawn(MaterialMeshBundle {
 		mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
 		transform: Transform::from_xyz(0.0, 0.5, 0.0),

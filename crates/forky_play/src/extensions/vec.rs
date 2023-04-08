@@ -26,6 +26,37 @@ pub impl Vec3 {
 		self.z += z;
 		self
 	}
+	fn swap_xy(&mut self) -> &mut Self {
+		let tmp = self.x;
+		self.x = self.y;
+		self.y = tmp;
+		self
+	}
+	fn swap_xz(&mut self) -> &mut Self {
+		let tmp = self.x;
+		self.x = self.z;
+		self.z = tmp;
+		self
+	}
+	fn swap_yz(&mut self) -> &mut Self {
+		let tmp = self.z;
+		self.z = self.y;
+		self.y = tmp;
+		self
+	}
+	fn negate_x(&mut self) -> &mut Self {
+		self.x = -self.x;
+		self
+	}
+	fn negate_y(&mut self) -> &mut Self {
+		self.y = -self.y;
+		self
+	}
+	fn negate_z(&mut self) -> &mut Self {
+		self.z = -self.z;
+		self
+	}
+
 
 	fn random_on_sphere() -> Self {
 		Vec3::new(random_value(), random_value(), random_value()) * 2. - 1.

@@ -3,7 +3,7 @@ use forky_play::*;
 
 fn main() {
 	App::new()
-		.add_plugin(plugins::ForkyDebugPlugin)
+		.add_plugin(plugins::ForkyDebugPlugin::default())
 		.add_plugin(plugins::RotateCubePlugin)
 		// .add_plugin(graph::BlitGraphPlugin)
 		// .add_plugin(graph::ClearGraphPlugin)
