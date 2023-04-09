@@ -10,10 +10,12 @@ pub fn move_selected_interactables(
 ) {
 	for mut transform in selected_query.iter_mut() {
 		if keys.just_pressed(KeyCode::PageUp) {
-			transform.translation.y += settings.height_delta;
+			transform.translation +=
+				settings.intersect_normal * settings.height_delta;
 		}
 		if keys.just_pressed(KeyCode::PageDown) {
-			transform.translation.y -= settings.height_delta;
+			transform.translation -=
+				settings.intersect_normal * settings.height_delta;
 		}
 		if let Some(intersect) = &camera_ray.entity_intersect {
 			if mouse.pressed(SELECT_BUTTON) {

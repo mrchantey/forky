@@ -1,38 +1,9 @@
+use super::*;
 use crate::spline::graph::*;
 use crate::spline::Spline;
 use crate::spline::SplineType;
 use crate::*;
 use bevy::prelude::*;
-
-pub struct SplinePhysicsPlugin;
-
-#[rustfmt::skip]
-impl Plugin for SplinePhysicsPlugin {
-	fn build(&self, app: &mut App) {
-		app.__()
-			.add_systems((
-				update_velocity_from_impulse,
-				update_velocity_from_force,
-				update_velocity_from_friction,
-				update_spline_position,
-				update_current_spline,
-				update_transform_position,
-				)
-				.in_set(physics::EulerPhysicsSet::Update)
-				.chain()
-			)
-			.__();
-	}
-}
-
-#[derive(Default, Component, Deref, DerefMut)]
-pub struct SplineVelocity(pub f32);
-
-#[derive(Default, Component, Deref, DerefMut)]
-pub struct SplinePosition(pub f32);
-
-
-
 
 pub fn update_velocity_from_impulse(
 	mut query_impulse: Query<(
@@ -92,7 +63,7 @@ pub fn update_current_spline(
 			continue;
 		}
 		let graph = graph_lookup.get(&graph_id).unwrap();
-		let next_edge = match graph.get_current_spline(&edge, **position) {
+		let next_edge = match graph.get_current_edge(&edge, **position) {
 			Some(value) => value,
 			None => {
 				commands

@@ -4,7 +4,7 @@ use bevy::prelude::*;
 pub struct CameraRay {
 	pub ray: Ray,
 	pub entity: Option<Entity>,
-	pub ground_intersect: Option<RayIntersect>,
+	pub origin_intersect: Option<RayIntersect>,
 	pub entity_intersect: Option<RayIntersect>,
 }
 

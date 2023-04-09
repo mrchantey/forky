@@ -2,7 +2,7 @@
 use bevy::input::mouse::*;
 use bevy::prelude::*;
 // use bevy::{input::mouse::*, render::camera::*};
-use bevy_easings::*;
+// use bevy_easings;
 use forky_core::math::*;
 
 #[derive(Component)]
@@ -16,15 +16,15 @@ pub struct OrbitController {
 	pub upside_down: bool,
 }
 
-impl Lerp for OrbitController {
-	type Scalar = f32;
-	fn lerp(&self, other: &Self, scalar: &Self::Scalar) -> Self {
-		OrbitController {
-			radius: f32::lerp(&self.radius, &other.radius, scalar),
-			..self.clone()
-		}
-	}
-}
+// impl bevy_easings::Lerp for OrbitController {
+// 	type Scalar = f32;
+// 	fn lerp(&self, other: &Self, scalar: &Self::Scalar) -> Self {
+// 		OrbitController {
+// 			radius: f32::lerp(&self.radius, &other.radius, scalar),
+// 			..self.clone()
+// 		}
+// 	}
+// }
 impl Default for OrbitController {
 	fn default() -> Self {
 		OrbitController {

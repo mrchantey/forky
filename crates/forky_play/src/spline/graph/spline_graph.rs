@@ -85,7 +85,7 @@ impl SplineGraph {
 		edge
 	}
 
-	pub fn get_current_spline(
+	pub fn get_current_edge(
 		&self,
 		edge: &SplineEdge,
 		t: f32,
@@ -101,13 +101,13 @@ impl SplineGraph {
 			//TODO this just gets the next edge, it should be angle based or something
 			for next in self.edges(edge.a) {
 				if next.2 != edge {
-					return self.get_current_spline(next.2, t + 1.);
+					return self.get_current_edge(next.2, t + 1.);
 				}
 			}
 		} else if t > 1.0 {
 			for next in self.edges(edge.b) {
 				if next.2 != edge {
-					return self.get_current_spline(next.2, t - 1.);
+					return self.get_current_edge(next.2, t - 1.);
 				}
 			}
 		}

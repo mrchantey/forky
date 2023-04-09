@@ -10,6 +10,7 @@ use petgraph::data::Build;
 pub struct EcsSplineGraph {
 	pub id: EcsSplineGraphId,
 	pub graph: SplineGraph,
+	pub create_handles: bool,
 	edge_material: Handle<UvMaterial>,
 	edge_subdivisions: usize,
 	nodes: HashMap<SplineNode, EcsSplineNode>,
@@ -20,10 +21,12 @@ impl EcsSplineGraph {
 	pub fn new(
 		id: EcsSplineGraphId,
 		edge_material: Handle<UvMaterial>,
+		create_handles: bool,
 	) -> Self {
 		Self {
 			id,
 			edge_material,
+			create_handles,
 			edge_subdivisions: 32,
 			graph: Default::default(),
 			edges: Default::default(),
@@ -91,22 +94,9 @@ impl EcsSplineGraph {
 			))
 			.id();
 
-		let handles = spline
-			.get_points()
-			.iter()
-			.enumerate()
-			.skip(1)
-			.rev()
-			.skip(1)
-			.map(|(index, position)| {
-				self.create_handle(
-					commands,
-					*position,
-					SplineHandleIndex(index as u32),
-					edge,
-				)
-			})
-			.collect::<Vec<_>>();
+
+
+		let handles = self.try_create_handles(commands, spline, edge);
 
 		let ecs_edge = EcsSplineEdge {
 			node1,
@@ -117,6 +107,34 @@ impl EcsSplineGraph {
 		self.edges.insert(edge.id, ecs_edge.clone());
 
 		ecs_edge
+	}
+
+	pub fn try_create_handles(
+		&mut self,
+		commands: &mut Commands,
+		spline: Spline,
+		edge: SplineEdge,
+	) -> Vec<Entity> {
+		if self.create_handles {
+			spline
+				.get_points()
+				.iter()
+				.enumerate()
+				.skip(1)
+				.rev()
+				.skip(1)
+				.map(|(index, position)| {
+					self.create_handle(
+						commands,
+						*position,
+						SplineHandleIndex(index as u32),
+						edge,
+					)
+				})
+				.collect::<Vec<_>>()
+		} else {
+			Vec::with_capacity(0)
+		}
 	}
 
 	pub fn create_handle(

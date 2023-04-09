@@ -10,8 +10,12 @@ pub fn cast_camera_ray(
 	mut commands: Commands,
 	mut camera_ray: ResMut<CameraRay>,
 	mouse: Res<Input<MouseButton>>,
-	camera_query: Query<(&Camera, &GlobalTransform), With<camera::ActiveCamera>>,
+	camera_query: Query<
+		(&Camera, &GlobalTransform),
+		With<camera::ActiveCamera>,
+	>,
 	hovered: Query<Entity, With<Hovered>>,
+	settings: Res<InteractionSettings>,
 	primary_interacted: Query<Entity, With<PrimaryInteracted>>,
 	windows: Query<&Window>,
 	rapier_context: Res<RapierContext>,
@@ -22,11 +26,11 @@ pub fn cast_camera_ray(
 
 	camera_ray.ray = ray;
 
-	camera_ray.ground_intersect = RayIntersect::from_plane(
+	camera_ray.origin_intersect = RayIntersect::from_plane(
 		ray,
 		Vec3::ZERO,
-		Vec3::UP,
-		&camera_ray.ground_intersect,
+		settings.intersect_normal,
+		&camera_ray.origin_intersect,
 	);
 
 	for entity in hovered.iter() {
@@ -55,6 +59,7 @@ pub fn cast_camera_ray(
 }
 pub fn set_entity_intersect(
 	mut camera_ray: ResMut<CameraRay>,
+	settings: Res<InteractionSettings>,
 	query: Query<&Transform, With<PrimaryInteracted>>,
 ) {
 	// camera_ray.entity
@@ -63,7 +68,7 @@ pub fn set_entity_intersect(
 			RayIntersect::from_plane(
 				camera_ray.ray,
 				first_transform.translation,
-				Vec3::UP,
+				settings.intersect_normal,
 				&camera_ray.entity_intersect,
 			)
 		} else {

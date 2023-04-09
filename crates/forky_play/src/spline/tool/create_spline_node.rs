@@ -20,13 +20,12 @@ pub fn create_spline_node(
 	if !keys.just_pressed(KeyCode::N) {
 		return;
 	}
-
-	let intersect = match &camera_ray.ground_intersect {
+	let intersect = match &camera_ray.origin_intersect {
 		Some(intersect) => intersect,
 		None => return,
 	};
 
-	//hack
+	//TODO find common graph of selected handles?
 	let graph = graphs.values_mut().next().unwrap();
 	let node1 = graph.create_node(&mut commands, intersect.position);
 

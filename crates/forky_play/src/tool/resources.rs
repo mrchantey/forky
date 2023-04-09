@@ -1,7 +1,7 @@
 use crate::*;
 use bevy::prelude::*;
 
-#[derive(Resource)]
+#[derive(Resource, Clone)]
 pub struct InteractionSettings {
 	pub node_radius: f32,
 	pub height_delta: f32,
@@ -9,14 +9,7 @@ pub struct InteractionSettings {
 	pub select_color: Color,
 	pub select_primary_color: Color,
 	pub inactive_color: Color,
-}
-#[derive(Resource)]
-pub struct InteractionResources {
-	pub node_mesh: Handle<Mesh>,
-	pub highlight_material: Handle<materials::UnlitMaterial>,
-	pub select_material: Handle<materials::UnlitMaterial>,
-	pub select_primary_material: Handle<materials::UnlitMaterial>,
-	pub inactive_material: Handle<materials::UnlitMaterial>,
+	pub intersect_normal: Vec3,
 }
 
 impl Default for InteractionSettings {
@@ -28,8 +21,18 @@ impl Default for InteractionSettings {
 			select_primary_color: Color::rgb(0., 0., 1.),
 			node_radius: 0.3,
 			height_delta: 0.1,
+			intersect_normal: Vec3::UP,
 		}
 	}
+}
+
+#[derive(Resource)]
+pub struct InteractionResources {
+	pub node_mesh: Handle<Mesh>,
+	pub highlight_material: Handle<materials::UnlitMaterial>,
+	pub select_material: Handle<materials::UnlitMaterial>,
+	pub select_primary_material: Handle<materials::UnlitMaterial>,
+	pub inactive_material: Handle<materials::UnlitMaterial>,
 }
 
 pub const SELECT_BUTTON: MouseButton = MouseButton::Left;

@@ -2,23 +2,23 @@ use crate::*;
 use bevy::{prelude::*, winit::WinitSettings};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
-
+#[derive(Debug, Clone)]
 pub struct ForkyDebugPlugin {
-	debug_cameras: bool,
+	pub debug_cameras: bool,
+	pub debug_grid: bool,
 }
 
 impl ForkyDebugPlugin {
-	pub fn without_debug_cameras() -> Self {
-		Self {
-			debug_cameras: false,
-			..default()
-		}
+	pub fn without_debug_cameras(&mut self) -> &mut Self {
+		self.debug_cameras = false;
+		self
 	}
 }
 
 impl Default for ForkyDebugPlugin {
 	fn default() -> Self {
 		Self {
+			debug_grid: true,
 			debug_cameras: true,
 		}
 	}
@@ -42,6 +42,7 @@ impl Plugin for ForkyDebugPlugin {
 		}
 		if cfg!(debug_assertions) {
 			app.__()
+				.add_plugin(bevy_prototype_debug_lines::DebugLinesPlugin::with_depth_test(true))
 				.add_plugin(WorldInspectorPlugin::default().run_if(
 					bevy::input::common_conditions::input_toggle_active(
 						false,
@@ -55,9 +56,11 @@ impl Plugin for ForkyDebugPlugin {
 					)),
 					..default()
 				})
-				.add_plugin(debug::GridPlugin)
 				// .add_system(toggle_inspector_on_keypress)
 				.__();
+			if self.debug_grid {
+				app.add_plugin(debug::GridPlugin);
+			}
 		}
 	}
 }

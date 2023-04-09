@@ -7,7 +7,6 @@ pub struct SplineToolPlugin;
 impl Plugin for SplineToolPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-   		.add_plugin(tool::ToolPlugin)
 			.add_systems((
 				create_spline_node,
 				link_spline_nodes,

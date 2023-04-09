@@ -10,5 +10,7 @@ mod ecs_spline_handle;
 pub use self::ecs_spline_handle::*;
 mod ecs_spline_node;
 pub use self::ecs_spline_node::*;
+mod spawners;
+pub use self::spawners::*;
 mod _systems;
 pub use self::_systems::*;

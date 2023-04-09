@@ -10,13 +10,16 @@ pub enum ToolSystemSet {
 
 
 
-pub struct ToolPlugin;
+#[derive(Default, Clone)]
+pub struct ToolPlugin {
+	pub settings: InteractionSettings,
+}
 #[rustfmt::skip]
 impl Plugin for ToolPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
 			.init_resource::<CameraRay>()
-			.init_resource::<InteractionSettings>()
+			.insert_resource(self.settings.clone())
 			.add_startup_system(spawn_resources
 				.in_base_set(StartupSet::PreStartup))
 			.configure_set(ToolSystemSet::Select

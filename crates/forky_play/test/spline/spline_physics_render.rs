@@ -15,7 +15,6 @@ sweet! {
 			.add_plugin(plugins::ForkyDebugPlugin::default())
 			.add_plugin(spline::graph::SplineGraphPlugin)
 			.add_plugin(spline::physics::SplinePhysicsPlugin)
-			.add_plugin(DebugLinesPlugin::with_depth_test(true))
 			// .add_startup_system(spawn_spline_cube)
 			.add_startup_system(spline::utils::spawn_spline_graph_cube)
 			.run();
