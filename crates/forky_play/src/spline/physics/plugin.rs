@@ -13,7 +13,8 @@ impl Plugin for SplinePhysicsPlugin {
 				update_velocity_from_force,
 				update_velocity_from_friction,
 				update_spline_position,
-				update_current_spline,
+				update_current_edge,//these two can be parallel
+				update_current_edge_ecs,//these two can be parallel
 				update_transform_position,
 				)
 				.in_set(physics::EulerPhysicsSet::Update)

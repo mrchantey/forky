@@ -1,6 +1,5 @@
 use super::*;
-use crate::spline::graph::*;
-use crate::spline::Spline;
+use crate::spline::graph::SplineEdge;
 use crate::spline::SplineType;
 use crate::*;
 use bevy::prelude::*;
@@ -10,13 +9,13 @@ pub fn update_velocity_from_impulse(
 		&mut physics::AccelerationImpulse,
 		&mut SplineVelocity,
 		&SplinePosition,
-		&Spline,
+		&SplineEdge,
 	)>,
 ) {
-	for (mut acceleration, mut velocity, position, spline) in
+	for (mut acceleration, mut velocity, position, edge) in
 		query_impulse.iter_mut()
 	{
-		**velocity += spline.acceleration(**position, **acceleration);
+		**velocity += edge.spline.acceleration(**position, **acceleration);
 		**acceleration = Vec3::ZERO;
 	}
 }
@@ -25,12 +24,13 @@ pub fn update_velocity_from_force(
 		&physics::AccelerationForce,
 		&mut SplineVelocity,
 		&SplinePosition,
-		&Spline,
+		&SplineEdge,
 	)>,
 	time: Res<Time>,
 ) {
-	for (acceleration, mut velocity, position, spline) in query.iter_mut() {
-		**velocity += spline
+	for (acceleration, mut velocity, position, edge) in query.iter_mut() {
+		**velocity += edge
+			.spline
 			.acceleration(**position, **acceleration * time.delta_seconds());
 	}
 }
@@ -45,43 +45,6 @@ pub fn update_velocity_from_friction(
 	}
 }
 
-pub fn update_current_spline(
-	mut commands: Commands,
-	graph_lookup: Res<SplineGraphLookup>,
-	mut query: Query<(
-		Entity,
-		&mut SplinePosition,
-		&mut Spline,
-		&mut SplineEdge,
-		&SplineGraphId,
-	)>,
-) {
-	for (entity, mut position, mut spline, mut edge, graph_id) in
-		query.iter_mut()
-	{
-		if **position >= 0. && **position <= 1. {
-			continue;
-		}
-		let graph = graph_lookup.get(&graph_id).unwrap();
-		let next_edge = match graph.get_current_edge(&edge, **position) {
-			Some(value) => value,
-			None => {
-				commands
-					.entity(entity)
-					.remove::<SplinePosition>()
-					.remove::<SplineVelocity>()
-					.remove::<SplineEdge>();
-				// .remove::<SplineGraph>();
-				//TODO add velocity with tangent
-				continue;
-			}
-		};
-		*edge = next_edge;
-		*spline = edge.spline;
-		*position = SplinePosition(position.0 % 1.);
-	}
-}
-
 pub fn update_spline_position(
 	mut query: Query<(&mut SplinePosition, &SplineVelocity)>,
 	time: Res<Time>,
@@ -92,9 +55,9 @@ pub fn update_spline_position(
 	}
 }
 pub fn update_transform_position(
-	mut query: Query<(&mut Transform, &SplinePosition, &Spline)>,
+	mut query: Query<(&mut Transform, &SplinePosition, &SplineEdge)>,
 ) {
-	for (mut transform, position, spline) in query.iter_mut() {
-		transform.translation = spline.position(**position);
+	for (mut transform, position, edge) in query.iter_mut() {
+		transform.translation = edge.spline.position(**position);
 	}
 }

@@ -1,6 +1,6 @@
 use super::*;
 use crate::{
-	spline::{ecs_graph::EcsSplineGraphId, graph::SplineEdgeId},
+	spline::{ecs_graph::EcsSplineGraphId, graph::SplineEdge},
 	*,
 };
 use bevy::prelude::*;
@@ -12,29 +12,41 @@ pub struct SplinePhysicsBundle {
 	velocity: SplineVelocity,
 	friction: physics::Friction,
 	acceleration: physics::AccelerationForce,
-	edge_id: SplineEdgeId,
+	edge: SplineEdge,
 	graph_id: EcsSplineGraphId,
 }
 
 impl SplinePhysicsBundle {
-	pub fn new(
+	pub fn new_default(
 		meshes: &mut ResMut<Assets<Mesh>>,
 		materials: &mut ResMut<Assets<StandardMaterial>>,
-		edge_id: SplineEdgeId,
+		edge: SplineEdge,
+		graph_id: EcsSplineGraphId,
+	) -> Self {
+		Self::new(
+			meshes.add(Mesh::from(shape::Cube { size: 0.2 })),
+			materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+			edge,
+			graph_id,
+		)
+	}
+	pub fn new(
+		mesh: Handle<Mesh>,
+		material: Handle<StandardMaterial>,
+		edge: SplineEdge,
 		graph_id: EcsSplineGraphId,
 	) -> Self {
 		Self {
 			pbr: PbrBundle {
-				mesh: meshes.add(Mesh::from(shape::Cube { size: 0.2 })),
-				material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-				transform: Transform::from_xyz(0.0, 0.0, 0.0),
+				mesh,
+				material,
 				..default()
 			},
 			position: spline::physics::SplinePosition::default(),
 			velocity: spline::physics::SplineVelocity::default(),
 			friction: physics::Friction(0.1),
 			acceleration: physics::AccelerationForce(Vec3::DOWN),
-			edge_id,
+			edge,
 			graph_id,
 		}
 	}
