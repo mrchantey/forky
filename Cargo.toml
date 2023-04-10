@@ -11,6 +11,7 @@ members = [
 	"crates/forky_esp",
 	"crates/forky_play",
 	"crates/forky_test",
+	"crates/bevy_editor",
 	"crates/sweet",
 ]
 exclude = ["crates/bevy_webxr"]
