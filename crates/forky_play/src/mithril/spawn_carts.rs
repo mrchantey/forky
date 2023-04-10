@@ -1,6 +1,5 @@
-use crate::{
-	physics::Friction,
-	spline::{ecs_graph::EcsSplineGraphLookup, physics::SplinePhysicsBundle},
+use crate::spline::{
+	ecs_graph::EcsSplineGraphLookup, physics::SplinePhysicsBundle,
 };
 
 use super::*;

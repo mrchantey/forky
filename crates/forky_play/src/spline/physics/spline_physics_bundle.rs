@@ -1,6 +1,5 @@
 use super::*;
 use crate::{
-	physics::Friction,
 	spline::{ecs_graph::EcsSplineGraphId, graph::SplineEdge},
 	*,
 };
