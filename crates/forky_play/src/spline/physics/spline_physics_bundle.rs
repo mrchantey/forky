@@ -1,5 +1,6 @@
 use super::*;
 use crate::{
+	physics::Friction,
 	spline::{ecs_graph::EcsSplineGraphId, graph::SplineEdge},
 	*,
 };
@@ -49,5 +50,13 @@ impl SplinePhysicsBundle {
 			edge,
 			graph_id,
 		}
+	}
+	pub fn with_velocity(mut self, velocity: f32) -> Self {
+		*self.velocity = velocity;
+		self
+	}
+	pub fn with_friction(mut self, friction: f32) -> Self {
+		*self.friction = friction;
+		self
 	}
 }

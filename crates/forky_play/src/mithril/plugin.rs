@@ -25,7 +25,7 @@ impl Plugin for MithrilPlugin {
 			.add_startup_system(spawn_camera)
 			.add_startup_system(spawn_initial_graph)
 			.add_startup_system(spawn_cart_settings)
-			.add_system(spawn_carts)
+			.add_system(spawn_carts.in_base_set(CoreSet::PreUpdate))
 			.__();
 	}
 }

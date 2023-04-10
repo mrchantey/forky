@@ -89,14 +89,14 @@ impl SplineGraph {
 		&self,
 		edge: &SplineEdge,
 		t: f32,
-	) -> Option<SplineEdge> {
+	) -> Option<(f32, SplineEdge)> {
+		//checks for changed or removed
 		let edge = match self.edge_weight(edge.a, edge.b) {
 			Some(value) => value,
 			None => return None,
 		};
-
 		if t >= 0.0 && t <= 1.0 {
-			return Some(edge.clone());
+			return Some((t, edge.clone()));
 		} else if t < 0.0 {
 			//TODO this just gets the next edge, it should be angle based or something
 			for next in self.edges(edge.a) {

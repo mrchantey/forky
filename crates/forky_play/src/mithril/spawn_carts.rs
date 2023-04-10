@@ -1,5 +1,6 @@
-use crate::spline::{
-	ecs_graph::EcsSplineGraphLookup, physics::SplinePhysicsBundle,
+use crate::{
+	physics::Friction,
+	spline::{ecs_graph::EcsSplineGraphLookup, physics::SplinePhysicsBundle},
 };
 
 use super::*;
@@ -44,7 +45,8 @@ pub fn spawn_carts(
 			cart_settings.material.clone(),
 			edge.clone(),
 			node_settings.graph_id,
-		),
+		)
+		.with_friction(0.),
 		Cart,
 	));
 }

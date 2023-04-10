@@ -12,10 +12,11 @@ fn update_edge(
 	mut edge: Mut<SplineEdge>,
 	graph: &SplineGraph,
 ) {
-	if **position >= 0. && **position <= 1. {
-		return;
-	}
-	let next_edge = match graph.get_current_edge(&edge, **position) {
+	//we still need to check in case edge changed or removed
+	// if **position >= 0. && **position <= 1. {
+	// 	return;
+	// }
+	let (t, next_edge) = match graph.get_current_edge(&edge, **position) {
 		Some(value) => value,
 		None => {
 			commands.entity(entity).despawn();
@@ -24,7 +25,7 @@ fn update_edge(
 		}
 	};
 	*edge = next_edge;
-	*position = SplinePosition(position.0 % 1.);
+	position.0 = t;
 }
 
 

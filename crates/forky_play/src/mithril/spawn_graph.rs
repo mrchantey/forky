@@ -13,17 +13,24 @@ pub fn spawn_initial_graph(
 	let material = materials.add(materials::UvMaterial::default());
 	let graph = graph_lookup.create_graph(material);
 
-	let spline = spline::Spline::Cubic(spline::CubicSpline::new(
-		Vec3::new(-width, height, 0.),
-		Vec3::new(-width + 1., height, 0.),
-		Vec3::new(width - 1., height - 5., 0.),
-		Vec3::new(width, height - 5., 0.),
-	));
-	let edge = graph.create_edge_from_spline(&mut commands, spline);
+	let node1 = graph
+		.create_node(&mut commands, Vec3::new(-width, height, 0.))
+		.node;
+	let node2 = graph
+		.create_node(&mut commands, Vec3::new(0., height - 5., 0.))
+		.node;
+	let node3 = graph
+		.create_node(&mut commands, Vec3::new(width, height, 0.))
+		.node;
+
+	graph.create_edge(&mut commands, node1, node2);
+	graph.create_edge(&mut commands, node2, node3);
+
+	// let edge = graph.create_edge_from_spline(&mut commands, spline1);
 
 	commands.insert_resource(GraphSettings {
-		start_node: edge.node1,
-		end_node: edge.node2,
+		start_node: node1,
+		end_node: node3,
 		graph_id: graph.id,
 	})
 }

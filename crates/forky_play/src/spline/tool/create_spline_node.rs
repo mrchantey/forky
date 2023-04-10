@@ -27,14 +27,14 @@ pub fn create_spline_node(
 
 	//TODO find common graph of selected handles?
 	let graph = graphs.values_mut().next().unwrap();
-	let node1 = graph.create_node(&mut commands, intersect.position);
+	let node2 = graph.create_node(&mut commands, intersect.position);
 
 	commands
-		.entity(node1.entity)
+		.entity(node2.entity)
 		.insert((Selected, PrimaryInteracted));
 
 	//TODO share code with link_spline_nodes
-	for (entity, transform, node2, graph_id) in selected_node_query.iter() {
+	for (entity, transform, node1, graph_id) in selected_node_query.iter() {
 		commands
 			.entity(entity)
 			.remove::<(Selected, PrimaryInteracted)>();
@@ -45,7 +45,7 @@ pub fn create_spline_node(
 			continue;
 		}
 
-		if graph.graph.contains_edge(node1.node, *node2) {
+		if graph.graph.contains_edge(node2.node, *node1) {
 			continue;
 		}
 		let spline = Spline::Linear(LinearSpline::new(
@@ -54,8 +54,8 @@ pub fn create_spline_node(
 		));
 		graph.create_edge_with_spline(
 			&mut commands,
-			node1.node,
-			*node2,
+			*node1,
+			node2.node,
 			spline,
 		);
 	}
