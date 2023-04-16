@@ -1,0 +1,23 @@
+[package]
+name = "mystic"
+version = {workspace=true}
+edition = {workspace=true}
+authors = {workspace=true}
+documentation = {workspace=true}
+license-file = {workspace=true}
+readme = {workspace=true}
+description = {workspace=true}
+repository = {workspace=true}
+
+[dependencies]
+forky_core = {workspace = true}
+forky_fs = {workspace = true}
+anyhow = {workspace = true}
+
+[target.'cfg(windows)'.dev-dependencies]
+sweet = {workspace = true}
+
+[[test]]
+name = "sweet"
+path = "test/sweet.rs"
+harness = false
