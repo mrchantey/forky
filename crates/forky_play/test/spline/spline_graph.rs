@@ -34,7 +34,7 @@ sweet! {
 		let prev = graph.get_current_edge(&edge12,-0.01);
 		expect(prev).to_be(None)?;
 
-		let spline = graph.get_current_edge(&edge12,0.5).unwrap().spline;
+		let spline = graph.get_current_edge(&edge12,0.5).unwrap().1.spline;
 
 		expect(matches!(spline,Spline::Linear(_))).to_be_true()?;
 		if let Spline::Linear(spline) = spline {
@@ -42,7 +42,7 @@ sweet! {
 		}else{
 			panic!("spline is not linear");
 		}
-		let spline = graph.get_current_edge(&edge12,1.5).unwrap().spline;
+		let spline = graph.get_current_edge(&edge12,1.5).unwrap().1.spline;
 		if let Spline::Linear(spline) = spline {
 			expect(spline.p0).to_be(Vec3::ZERO)?;
 		}else{
