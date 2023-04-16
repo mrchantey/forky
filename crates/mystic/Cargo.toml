@@ -5,8 +5,9 @@ edition = {workspace=true}
 authors = {workspace=true}
 documentation = {workspace=true}
 license-file = {workspace=true}
-readme = {workspace=true}
-description = {workspace=true}
+readme = "README.md"
+description = "A set of tools for interpertation of tarot, astrology etc."
+keywords = ["tarot", "cards", "astrology", "numerology"]
 repository = {workspace=true}
 
 [dependencies]

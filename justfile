@@ -68,16 +68,17 @@ publish-all:
 	{{sh}}sleep 5
 	just publish forky_test || true
 	{{sh}}sleep 5
-	just publish sweet || true
+	just publish forky_fs || true
 	{{sh}}sleep 5
-	just publish forky_ai || true
+	just publish sweet || true
 	{{sh}}sleep 5
 	just publish forky_cli || true
 	{{sh}}sleep 5
+	just publish forky_ai || true
+	{{sh}}sleep 5
 	just publish mystic || true
-# just publish forky_cli
-# just publish forky_play
-
+	{{sh}}sleep 5
+	just publish forky_play || true
 
 start crate: 
 	./target/debug/{{crate}}.exe

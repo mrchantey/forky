@@ -10,7 +10,7 @@ pub async fn run_tarot_interpreter() -> Result<()> {
 
 	let gpt = ChatGptInstance::new()?;
 	println!("interpreting your spread...\n{}", spread.print());
-	let result = spread.interpret(&gpt).await?;
+	let _result = spread.interpret(&gpt).await?;
 	// println!("{}", result);
 	Ok(())
 }
