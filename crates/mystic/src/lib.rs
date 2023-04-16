@@ -1,2 +1,2 @@
-mod cli;
-pub use cli::*;
+pub mod cli;
+pub mod tarot;

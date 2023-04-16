@@ -31,6 +31,7 @@ repository = "https://github.com/mrchantey/forky"
 [workspace.dependencies]
 ### internal ###
 forky = {path = "./crates/forky", version = "0.1.9" }
+forky_ai = {path = "./crates/forky_ai", version = "0.1.9" }
 forky_cli = {path = "./crates/forky_cli", version = "0.1.9" }
 forky_core = {path = "./crates/forky_core", version = "0.1.9" }
 forky_fs = {path = "./crates/forky_fs", version = "0.1.9" }
@@ -58,6 +59,7 @@ chatgpt_rs = "1.1.1"
 
 ### utility ###
 anyhow = "1"
+clap = {version="4.2.2",features = ["derive"] }
 colorize = "0.1.0"
 crossterm = "0.25.0"
 dotenv = "0.15.0"
@@ -65,6 +67,8 @@ gag = "1.0.0"
 notify = "5.1.0"
 num-traits = "0.2.15"
 petgraph = "0.6.3"
+strum = "0.24.1"
+strum_macros = "0.24.1"
 tokio = {version="1.27.0",features = ["rt", "rt-multi-thread"] }
 
 ### compile ###
