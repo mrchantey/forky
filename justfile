@@ -57,9 +57,8 @@ example crate example *args:
 mod: 
 	just watch 'cargo run -p forky_cli'
 
-publish crate:
-	cargo publish -p {{crate}} --allow-dirty
-# publishing all will not work because of equal dependency race
+publish crate *args:
+	cargo publish -p {{crate}} --allow-dirty {{args}}
 
 publish-all:
 	cargo set-version --bump patch
@@ -70,6 +69,12 @@ publish-all:
 	just publish forky_test || true
 	{{sh}}sleep 5
 	just publish sweet || true
+	{{sh}}sleep 5
+	just publish forky_ai || true
+	{{sh}}sleep 5
+	just publish forky_cli || true
+	{{sh}}sleep 5
+	just publish mystic || true
 # just publish forky_cli
 # just publish forky_play
 

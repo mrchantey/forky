@@ -6,7 +6,8 @@ pub trait StringX {
 	fn push_string(&mut self, str: &String) -> &Self;
 }
 impl StringX for String {
-	fn to_str(&self) -> &str { &self[..] }
+	//TODO deprecate
+	fn to_str(&self) -> &str { self.as_str() }
 	fn push_string(&mut self, str: &String) -> &Self {
 		self.push_str(str.to_str());
 		self

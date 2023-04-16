@@ -1,4 +1,7 @@
 use anyhow::Result;
 use mystic;
-
-fn main() -> Result<()> { mystic::cli::run() }
+#[tokio::main]
+#[rustfmt::skip]
+async fn main() -> Result<()> { 
+	mystic::cli::run().await 
+}

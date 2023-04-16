@@ -18,7 +18,7 @@ sweet! {
 		let spread = tarot::spread::PastPresentFuture::new(&mut deck);
 
 
-		println!("{}", spread.interpret());
+		println!("{}", spread.print());
 
 		// expect(true).to_be_false()?;
 

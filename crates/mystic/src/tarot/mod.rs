@@ -9,3 +9,5 @@ mod tarot_card;
 pub use self::tarot_card::*;
 mod tarot_deck;
 pub use self::tarot_deck::*;
+mod tarot_interpreter;
+pub use self::tarot_interpreter::*;

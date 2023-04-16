@@ -18,6 +18,7 @@ forky_ai = {workspace = true}
 rand = {workspace = true}
 strum = {workspace = true}
 strum_macros = {workspace = true}
+tokio = {workspace = true}
 
 [target.'cfg(windows)'.dev-dependencies]
 sweet = {workspace = true}

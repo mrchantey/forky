@@ -10,12 +10,13 @@ description = {workspace=true}
 repository = {workspace=true}
 
 [dependencies]
-forky_core = {workspace = true}
-forky_fs = {workspace = true}
 anyhow = {workspace = true}
 chatgpt_rs = {workspace = true}
-tokio = {workspace = true}
 dotenv = {workspace = true}
+forky_core = {workspace = true}
+forky_fs = {workspace = true}
+futures-util = {workspace = true}
+tokio = {workspace = true}
 
 [target.'cfg(windows)'.dev-dependencies]
 sweet = {workspace = true}
