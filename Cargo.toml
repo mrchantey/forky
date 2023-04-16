@@ -5,13 +5,15 @@
 resolver = "2"
 members = [
 	# "crates/*"
+	"crates/bevy_editor",
 	"crates/forky",
+	"crates/forky_ai",
 	"crates/forky_cli",
 	"crates/forky_core",
 	"crates/forky_esp",
 	"crates/forky_play",
 	"crates/forky_test",
-	"crates/bevy_editor",
+	"crates/mystic",
 	"crates/sweet",
 ]
 exclude = ["crates/bevy_webxr"]
@@ -45,23 +47,25 @@ bevy_mod_debugdump = "0.7.0"
 bevy_rapier3d = {version = "0.21.0", features=["debug-render-3d"]}
 bevy_prototype_debug_lines = {version = "0.10.0", features = ["3d"]}
 bevy_easings = "0.10.0"
-### game ###
 wgpu = { version = "0.15.0" }
 rand = "0.8.5"
 # wgpu-hal = {version = "0.15.2",features = ["gles"]}
 
 
+### AI ###
 
-
+chatgpt_rs = "1.1.1"
 
 ### utility ###
-notify = "5.1.0"
-crossterm = "0.25.0"
-colorize = "0.1.0"
-gag = "1.0.0"
-num-traits = "0.2.15"
 anyhow = "1"
+colorize = "0.1.0"
+crossterm = "0.25.0"
+dotenv = "0.15.0"
+gag = "1.0.0"
+notify = "5.1.0"
+num-traits = "0.2.15"
 petgraph = "0.6.3"
+tokio = {version="1.27.0",features = ["rt", "rt-multi-thread"] }
 
 ### compile ###
 inventory = "0.3.2"

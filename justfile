@@ -16,8 +16,8 @@ default:
 		just {{command}} $file; \
 	done
 
-run crate example:
-	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}}
+run crate example *args:
+	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} {{args}}
 
 fix crate *args:
 	cargo fix --allow-dirty --lib -p {{crate}} {{args}}
