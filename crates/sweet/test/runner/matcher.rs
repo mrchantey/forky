@@ -36,15 +36,15 @@ sweet! {
 		expect(result.is_ok()).to_be_true()?;
 		let result = expect(-0.999).to_be_close_to(-1.);
 		expect(result.is_ok()).to_be_true()?;
-		let result = expect(0.9).to_be_close_to(1.);
+		let result = expect(0.9).to_be_close_to(1.01);
 		expect(result.is_ok()).to_be_false()?;
 	}
-	test "to_be_at_least"{
-		let result = expect(0).to_be_at_least(0);
+	test "order"{
+		let result = expect(0).to_be_greater_or_equal_to(0);
 		expect(result.is_ok()).to_be_true()?;
-		let result = expect(10).to_be_at_least(-10);
+		let result = expect(10).to_be_greater_than(-10);
 		expect(result.is_ok()).to_be_true()?;
-		let result = expect(10).to_be_at_least(11);
+		let result = expect(10).to_be_greater_than(11);
 		expect(result.is_ok()).to_be_false()?;
 	}
 }

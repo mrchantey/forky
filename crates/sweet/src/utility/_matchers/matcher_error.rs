@@ -1,4 +1,4 @@
-use super::backtracer;
+use super::super::backtracer;
 use anyhow::anyhow;
 use colorize::*;
 use std::fmt;
@@ -8,14 +8,14 @@ use std::fmt;
 pub struct MatcherError;
 
 impl MatcherError {
-	pub fn new<T1: fmt::Debug,T2: fmt::Debug>(
+	pub fn new<T1: fmt::Debug, T2: fmt::Debug>(
 		expected: T1,
 		received: T2,
 		backtrace_depth: usize,
 	) -> anyhow::Error {
 		Self::new_with_not(expected, received, false, backtrace_depth)
 	}
-	pub fn new_with_not<T1: fmt::Debug,T2: fmt::Debug>(
+	pub fn new_with_not<T1: fmt::Debug, T2: fmt::Debug>(
 		expected: T1,
 		received: T2,
 		not: bool,
