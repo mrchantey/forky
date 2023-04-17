@@ -1,2 +1,2 @@
-pub mod astrology;
+pub mod chart;
 pub mod planets;
