@@ -7,4 +7,5 @@
 	unused_parens
 )]
 pub use sweet::*;
+pub mod astro;
 pub mod tarot;
