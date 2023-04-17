@@ -1,3 +1,5 @@
+mod duration;
+pub use self::duration::*;
 mod generic;
 pub use self::generic::*;
 mod num_x;
