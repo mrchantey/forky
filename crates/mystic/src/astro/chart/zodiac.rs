@@ -1,134 +1,28 @@
-use std::collections::HashMap;
-
+use super::*;
+use std::{collections::HashMap, f64::consts::TAU};
+use strum::EnumCount;
 use strum_macros::EnumCount;
 
-
-
+pub const ZODIAC_ANGLE: f64 = TAU / 12.0;
 
 pub fn get_zodiac() -> HashMap<Sign, Zodiac> {
-	let map = HashMap::with_capacity(Sign::COUNT);
-	map.insert(
-		Sign::Aries,
-		Zodiac {
-			sign: Sign::Aries,
-			polarity: Polarity::Positive,
-			element: Element::Fire,
-			mode: Mode::Cardinal,
-		},
-	);
-	map.insert(
-		Sign::Taurus,
-		Zodiac {
-			sign: Sign::Taurus,
-			polarity: Polarity::Negative,
-			element: Element::Earth,
-			mode: Mode::Fixed,
-		},
-	);
-	map.insert(
-		Sign::Gemini,
-		Zodiac {
-			sign: Sign::Gemini,
-			polarity: Polarity::Positive,
-			element: Element::Air,
-			mode: Mode::Mutable,
-		},
-	);
-
-	map.insert(
-		Sign::Cancer,
-		Zodiac {
-			sign: Sign::Cancer,
-			polarity: Polarity::Negative,
-			element: Element::Water,
-			mode: Mode::Cardinal,
-		},
-	);
-
-	map.insert(
-		Sign::Leo,
-		Zodiac {
-			sign: Sign::Leo,
-			polarity: Polarity::Positive,
-			element: Element::Fire,
-			mode: Mode::Fixed,
-		},
-	);
-
-	map.insert(
-		Sign::Virgo,
-		Zodiac {
-			sign: Sign::Virgo,
-			polarity: Polarity::Negative,
-			element: Element::Earth,
-			mode: Mode::Mutable,
-		},
-	);
-
-	map.insert(
-		Sign::Libra,
-		Zodiac {
-			sign: Sign::Libra,
-			polarity: Polarity::Positive,
-			element: Element::Air,
-			mode: Mode::Cardinal,
-		},
-	);
-
-	map.insert(
-		Sign::Scorpio,
-		Zodiac {
-			sign: Sign::Scorpio,
-			polarity: Polarity::Negative,
-			element: Element::Water,
-			mode: Mode::Fixed,
-		},
-	);
-
-	map.insert(
-		Sign::Sagittarius,
-		Zodiac {
-			sign: Sign::Sagittarius,
-			polarity: Polarity::Positive,
-			element: Element::Fire,
-			mode: Mode::Mutable,
-		},
-	);
-
-	map.insert(
-		Sign::Capricorn,
-		Zodiac {
-			sign: Sign::Capricorn,
-			polarity: Polarity::Negative,
-			element: Element::Earth,
-			mode: Mode::Cardinal,
-		},
-	);
-
-	map.insert(
-		Sign::Aquarius,
-		Zodiac {
-			sign: Sign::Aquarius,
-			polarity: Polarity::Positive,
-			element: Element::Air,
-			mode: Mode::Fixed,
-		},
-	);
-
-	map.insert(
-		Sign::Pisces,
-		Zodiac {
-			sign: Sign::Pisces,
-			polarity: Polarity::Negative,
-			element: Element::Water,
-			mode: Mode::Mutable,
-		},
-	);
-
+	let mut map = HashMap::with_capacity(Sign::COUNT);
+	map.insert(Sign::Aries, constants::ARIES);
+	map.insert(Sign::Taurus, constants::TAURUS);
+	map.insert(Sign::Gemini, constants::GEMINI);
+	map.insert(Sign::Cancer, constants::CANCER);
+	map.insert(Sign::Leo, constants::LEO);
+	map.insert(Sign::Virgo, constants::VIRGO);
+	map.insert(Sign::Libra, constants::LIBRA);
+	map.insert(Sign::Scorpio, constants::SCORPIO);
+	map.insert(Sign::Sagittarius, constants::SAGITTARIUS);
+	map.insert(Sign::Capricorn, constants::CAPRICORN);
+	map.insert(Sign::Aquarius, constants::AQUARIUS);
+	map.insert(Sign::Pisces, constants::PISCES);
 	map
 }
 
-
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Zodiac {
 	pub sign: Sign,
 	pub polarity: Polarity,
@@ -136,7 +30,28 @@ pub struct Zodiac {
 	pub mode: Mode,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, EnumCount)]
+
+impl Zodiac {
+	pub fn from_index(index: usize) -> Self {
+		match index {
+			0 => constants::ARIES,
+			1 => constants::TAURUS,
+			2 => constants::GEMINI,
+			3 => constants::CANCER,
+			4 => constants::LEO,
+			5 => constants::VIRGO,
+			6 => constants::LIBRA,
+			7 => constants::SCORPIO,
+			8 => constants::SAGITTARIUS,
+			9 => constants::CAPRICORN,
+			10 => constants::AQUARIUS,
+			11 => constants::PISCES,
+			_ => panic!("Invalid index"),
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumCount)]
 pub enum Sign {
 	Aries,
 	Taurus,
@@ -152,18 +67,20 @@ pub enum Sign {
 	Pisces,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Polarity {
 	Positive,
 	Negative,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Element {
 	Fire,
 	Earth,
 	Air,
 	Water,
 }
-
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Mode {
 	Cardinal,
 	Fixed,

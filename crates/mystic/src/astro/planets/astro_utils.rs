@@ -1,5 +1,5 @@
 use std::{
-	f64::consts::PI,
+	f64::consts::{PI, TAU},
 	time::{Duration, SystemTime, UNIX_EPOCH},
 };
 
@@ -29,30 +29,7 @@ pub fn atan2_d(x: f64, y: f64) -> f64 {
 	f64::atan2(x * deg2rad, y * deg2rad) * rad2deg
 }
 
+pub fn wrapRad(value: f64) -> f64 { value - f64::floor(value / TAU) * TAU }
 pub fn wrapDeg(value: f64) -> f64 { value - f64::floor(value / 360.) * 360. }
 pub fn wrapHours(value: f64) -> f64 { value - f64::floor(value / 24.) * 24. }
-
-
-// pub fn cbrt(value:f64)->f64 {
-// 	if (value > 0.0){
-// 		return f64::exp(f64::log(value) / 3.0);
-// 	}
-// 	else if (x < 0.0){
-// 		return -cbrt(-x);
-// 	}
-// 	/* x == 0.0 */
-// 	return 0.0;
-// }
-pub fn cube_root(x: f64) -> f64 {
-	if x == 0.0 {
-		return 0.0;
-	}
-	let sign = x.signum();
-	let abs_x = x.abs();
-	let mut guess = abs_x;
-	while (guess * guess * guess - abs_x).abs() > 1e-15 {
-		guess = (2.0 * guess + abs_x / (guess * guess)) / 3.0;
-	}
-	sign * guess
-}
 // const earthTiltRad = earthTiltDeg * deg2rad

@@ -34,7 +34,7 @@ pub fn get_orbital_constants() -> HashMap<Body, OrbitalConstants> {
 	map.insert(Body::Jupiter, JUPITER);
 	map.insert(Body::Saturn, SATURN);
 	map.insert(Body::Uranus, URANUS);
-	map.insert(Body::Neptune, MERCURY);
+	map.insert(Body::Neptune, NEPTUNE);
 	map
 }
 

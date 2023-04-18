@@ -3,8 +3,11 @@ use super::*;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct RectangluarCoords {
+	//right
 	pub x: f64,
+	//forward
 	pub y: f64,
+	//up
 	pub z: f64,
 }
 
@@ -16,19 +19,22 @@ impl RectangluarCoords {
 		f64::sqrt(self.x * self.x + self.y * self.y)
 	}
 
+	pub fn flat_angle(&self) -> f64 { f64::atan2(self.y, self.x) }
+	pub fn up_angle(&self) -> f64 { f64::atan2(self.z, self.length_xy()) }
+
 	pub fn to_equatorial(&self) -> EquatorialCoords {
 		EquatorialCoords {
 			radius: self.length(),
-			right_ascention: f64::atan2(self.y, self.x) * rad2hours,
-			declination: f64::atan2(self.z, self.length_xy()) * rad2deg,
+			right_ascention: self.flat_angle() * rad2hours,
+			declination: self.up_angle() * rad2deg,
 		}
 	}
-	//yes identical to equatorial
+	//yes identical to equatorial except deg instead of hours
 	pub fn to_ecliptical(&self) -> EclipticalCoords {
 		EclipticalCoords {
 			radius: self.length(),
-			longitude: f64::atan2(self.y, self.x) * rad2deg,
-			latitude: f64::atan2(self.z, self.length_xy()) * rad2deg,
+			longitude: self.flat_angle() * rad2deg,
+			latitude: self.up_angle() * rad2deg,
 		}
 	}
 

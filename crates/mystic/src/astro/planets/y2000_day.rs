@@ -10,7 +10,9 @@ use time::{Date, Month, OffsetDateTime};
 // // pub const millisInHour = 1000 * 60 * 60
 // pub const y2000Millis: u64 = 946684800000;
 
-const JULIAN_Y2000: i32 = 2451545;
+/// julian date as of 31.12.1999 12:00:00
+const JULIAN_Y2000: f64 = 2451544.;
+// const JULIAN_Y2000: f64 = 2451545.;
 const SECS_IN_DAY: f64 = 86400.;
 
 #[derive(Debug, Clone, Copy, Deref, PartialEq, DerefMut)]
@@ -20,12 +22,12 @@ impl Y2000Day {
 	pub fn new(year: i32, month: u8, day: u8) -> Self {
 		let julian = Date::from_calendar_date(year, u8_to_month(month), day)
 			.unwrap()
-			.to_julian_day();
-		Y2000Day((julian - JULIAN_Y2000) as f64)
+			.to_julian_day() as f64;
+		Y2000Day(julian - JULIAN_Y2000)
 	}
 
 	pub fn add_utc_time(self, hour: u64, minute: u64, second: u64) -> Self {
-		self.add_duration(Duration::from_hhmmss(hour, minute, second))
+		self.add_duration(Duration::from_hms(hour, minute, second))
 	}
 	pub fn add_duration(self, duration: Duration) -> Self {
 		Y2000Day(self.0 + duration.as_secs_f64() / SECS_IN_DAY)
@@ -34,7 +36,7 @@ impl Y2000Day {
 	pub fn now() -> Self {
 		let now = OffsetDateTime::now_utc();
 		let (hours, minutes, seconds) = now.to_hms();
-		let day = now.to_julian_day();
+		let day = now.to_julian_day() as f64;
 		Y2000Day((day - JULIAN_Y2000) as f64).add_utc_time(
 			hours as u64,
 			minutes as u64,
@@ -64,4 +66,17 @@ pub fn u8_to_month(month: u8) -> Month {
 		12 => Month::December,
 		_ => panic!("invalid month: {month}"),
 	}
+}
+
+/// 2000-1-1 = 1
+pub fn get_day_quickly(y: i32, m: u8, d: u8) -> f64 {
+	let m = m as i32;
+	let d = d as i32;
+	//yes, integer division
+	let d2000 = 367 * y
+		- 7 * (y + (m + 9) / 12) / 4
+		- 3 * ((y + (m - 9) / 7) / 100 + 1) / 4
+		+ 275 * m / 9
+		+ d - 730515;
+	d2000 as f64
 }
