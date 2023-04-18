@@ -70,6 +70,8 @@ sweet! {
 
 
 /*
+http://cosinekitty.com/solar_system.html
+
 Sun 0.0000000	0.0000000	0.0000000
 Mercury -0.1407294	-0.4439021	-0.0233438
 Venus -0.7186428	-0.0225585	0.0411722

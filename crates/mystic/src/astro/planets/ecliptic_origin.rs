@@ -17,7 +17,7 @@ pub fn heliocentric_ecliptic(
 ) -> HashMap<Body, RectangluarCoords> {
 	let mut planets = HashMap::with_capacity(Body::COUNT);
 	for body in Body::iter() {
-		planets.insert(Body::Sun, ecliptic_position(day, body));
+		planets.insert(body, ecliptic_position(day, body));
 	}
 	planets
 }

@@ -4,8 +4,6 @@ mod coords;
 pub use self::coords::*;
 mod ecliptic_positions;
 pub use self::ecliptic_positions::*;
-mod orbital_bodies;
-pub use self::orbital_bodies::*;
 mod time;
 pub use self::time::*;
 mod topocentric;
