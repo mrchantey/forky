@@ -1,5 +1,11 @@
 use super::super::*;
 use super::*;
+use derive_deref::{Deref, DerefMut};
+
+#[derive(Debug, Copy, Clone, PartialEq, Deref, DerefMut)]
+pub struct GeoRectCoords(pub RectangluarCoords);
+#[derive(Debug, Copy, Clone, PartialEq, Deref, DerefMut)]
+pub struct HelioRectCoords(pub RectangluarCoords);
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct RectangluarCoords {
@@ -12,6 +18,7 @@ pub struct RectangluarCoords {
 }
 
 impl RectangluarCoords {
+	pub fn new(x: f64, y: f64, z: f64) -> Self { Self { x, y, z } }
 	pub fn length(&self) -> f64 {
 		f64::sqrt(self.x * self.x + self.y * self.y + self.z * self.z)
 	}

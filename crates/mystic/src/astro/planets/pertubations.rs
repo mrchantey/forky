@@ -2,23 +2,13 @@ use super::*;
 use std::collections::HashMap;
 
 pub fn apply_pertubations(bodies: &mut HashMap<Body, OrbitalBody>) {
-
 	let el_sun = bodies.get(&Body::Sun).unwrap().el;
 	let el_saturn = bodies.get(&Body::Saturn).unwrap().el;
 	let el_jupiter = bodies.get(&Body::Jupiter).unwrap().el;
 
-	moon(
-		bodies.get_mut(&Body::Moon).unwrap(),
-		&el_sun,
-	);
-	jupiter(
-		bodies.get_mut(&Body::Jupiter).unwrap(),
-		&el_saturn,
-	);
-	saturn(
-		bodies.get_mut(&Body::Saturn).unwrap(),
-		&el_jupiter,
-	);
+	moon(bodies.get_mut(&Body::Moon).unwrap(), &el_sun);
+	jupiter(bodies.get_mut(&Body::Jupiter).unwrap(), &el_saturn);
+	saturn(bodies.get_mut(&Body::Saturn).unwrap(), &el_jupiter);
 	uranus(
 		bodies.get_mut(&Body::Uranus).unwrap(),
 		&el_jupiter,

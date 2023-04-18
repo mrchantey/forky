@@ -4,6 +4,7 @@ mod body;
 pub use self::body::*;
 mod ecliptic_origin;
 pub use self::ecliptic_origin::*;
+pub mod ecliptic_positions;
 mod orbital_body;
 pub use self::orbital_body::*;
 mod orbital_constants;
