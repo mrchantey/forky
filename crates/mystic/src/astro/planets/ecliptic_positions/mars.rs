@@ -2,7 +2,7 @@ use super::super::*;
 use super::*;
 
 pub fn mars(day: Y2000Day) -> RectangluarCoords {
-	OrbitalElements::new(&MARS, day).pos
+	OrbitalElements::position(&MARS, day)
 }
 
 pub const MARS: OrbitalConstants = OrbitalConstants {

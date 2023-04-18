@@ -2,7 +2,7 @@ use super::super::*;
 use super::*;
 
 pub fn neptune(day: Y2000Day) -> RectangluarCoords {
-	OrbitalElements::new(&NEPTUNE, day).pos
+	OrbitalElements::position(&NEPTUNE, day)
 }
 
 pub const NEPTUNE: OrbitalConstants = OrbitalConstants {

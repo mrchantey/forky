@@ -2,15 +2,15 @@ use super::super::*;
 use super::*;
 
 pub fn uranus(day: Y2000Day) -> RectangluarCoords {
-	let el = OrbitalElements::new(&URANUS_FROM_JPL, day);
-	perturb(&el, day)
+	let pos = OrbitalElements::position(&URANUS_FROM_JPL, day);
+	perturb(&pos, day)
 }
 
-fn perturb(el: &OrbitalElements, day: Y2000Day) -> RectangluarCoords {
+fn perturb(pos: &RectangluarCoords, day: Y2000Day) -> RectangluarCoords {
 	let mj = OrbitalElements::get_m(&JUPITER_FROM_JPL, day);
 	let ms = OrbitalElements::get_m(&SATURN, day);
-	let mu = el.m;
-	let mut ecliptic = el.pos.to_ecliptical();
+	let mu = OrbitalElements::get_m(&URANUS_FROM_JPL, day);
+	let mut ecliptic = pos.to_ecliptical();
 	ecliptic.longitude += 0.040 * sin_d(ms - 2. * mu + 6.)
 		+ 0.035 * sin_d(ms - 3. * mu + 33.)
 		- 0.015 * sin_d(mj - mu + 20.);

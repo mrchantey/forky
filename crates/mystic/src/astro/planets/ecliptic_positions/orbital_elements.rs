@@ -37,9 +37,6 @@ pub struct OrbitalElements {
 	// P:f64,
 	// ///Epoch_of_M - (M(deg)/360_deg) / P  = time of perihelion
 	// T:f64,
-
-	//ECLIPTIC POSITION
-	pub pos: RectangluarCoords,
 }
 
 impl OrbitalElements {
@@ -58,6 +55,26 @@ impl OrbitalElements {
 
 		let v = atan2_d(yv, xv);
 		let r = f64::sqrt(xv * xv + yv * yv);
+		Self {
+			n,
+			i,
+			w,
+			a,
+			e,
+			m,
+			l,
+			v,
+			ea,
+			r,
+		}
+	}
+
+	pub fn position(
+		constants: &OrbitalConstants,
+		day: Y2000Day,
+	) -> RectangluarCoords {
+		let OrbitalElements { n, i, w, v, r, .. } =
+			OrbitalElements::new(constants, day);
 
 		let cos_n = cos_d(n);
 		let sin_n = sin_d(n);
@@ -69,23 +86,15 @@ impl OrbitalElements {
 		let x = r * (cos_n * cos_vw - sin_n * sin_vw * cos_i);
 		let y = r * (sin_n * cos_vw + cos_n * sin_vw * cos_i);
 		let z = r * sin_vw * sin_i;
-		OrbitalElements {
-			n,
-			i,
-			w,
-			a,
-			e,
-			m,
-			l,
-			v,
-			ea,
-			r,
-			pos: RectangluarCoords::new(x, y, z),
-		}
+
+		RectangluarCoords::new(x, y, z)
 	}
 
 	pub fn get_m(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
 		constants.m_offset + (*day * constants.m_scalar)
+	}
+	pub fn get_n(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
+		constants.n_offset + (*day * constants.n_scalar)
 	}
 	pub fn get_w(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
 		constants.w_offset + (*day * constants.w_scalar)

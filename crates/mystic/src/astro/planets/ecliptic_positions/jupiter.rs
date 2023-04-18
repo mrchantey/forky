@@ -2,15 +2,15 @@ use super::super::*;
 use super::*;
 
 pub fn jupiter(day: Y2000Day) -> RectangluarCoords {
-	let el = OrbitalElements::new(&JUPITER_FROM_JPL, day);
-	perturb(&el, day)
+	let pos = OrbitalElements::position(&JUPITER_FROM_JPL, day);
+	perturb(&pos, day)
 }
 
-fn perturb(el: &OrbitalElements, day: Y2000Day) -> RectangluarCoords {
-	let mj = el.m;
+fn perturb(pos: &RectangluarCoords, day: Y2000Day) -> RectangluarCoords {
+	let mj = OrbitalElements::get_m(&JUPITER_FROM_JPL, day);
 	//astronomy.js uses saturn, but i think it should be saturn_from_jpl
 	let ms = OrbitalElements::get_m(&SATURN, day);
-	let mut ecliptic = el.pos.to_ecliptical();
+	let mut ecliptic = pos.to_ecliptical();
 
 	ecliptic.longitude += -0.332 * sin_d(2. * mj - 5. * ms - 67.6)
 		- 0.056 * sin_d(2. * mj - 2. * ms + 21.)

@@ -2,25 +2,25 @@ use super::super::*;
 use super::*;
 
 pub fn moon(day: Y2000Day) -> RectangluarCoords {
-	let el = OrbitalElements::new(&MOON, day);
-	let pos = perturb(&el, day);
+	let pos = OrbitalElements::position(&MOON, day);
+	let pos = perturb(&pos, day);
 	earth(day) + pos
 }
 
-fn perturb(el: &OrbitalElements, day: Y2000Day) -> RectangluarCoords {
+fn perturb(pos: &RectangluarCoords, day: Y2000Day) -> RectangluarCoords {
 	let ms = OrbitalElements::get_m(&SUN, day);
 	let ws = OrbitalElements::get_w(&SUN, day);
 	let ls = ms + ws;
 
-	let mm = el.m;
-	let nm = el.n;
-	let wm = el.w;
+	let mm = OrbitalElements::get_m(&MOON,day);
+	let nm = OrbitalElements::get_n(&MOON,day);
+	let wm = OrbitalElements::get_w(&MOON,day);
 	let lm = mm + wm + nm;
 
 	let d = lm - ls;
 	let f = lm - nm;
 
-	let mut ecliptic = el.pos.to_ecliptical();
+	let mut ecliptic = pos.to_ecliptical();
 
 	ecliptic.longitude += -1.274 * sin_d(mm - 2. * d) + 0.658 * sin_d(2. * d)
 		- 0.186 * sin_d(ms)
