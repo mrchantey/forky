@@ -1,4 +1,4 @@
-use std::time::{Duration, SystemTime};
+use std::time::{Duration};
 
 use super::*;
 use derive_deref::{Deref, DerefMut};

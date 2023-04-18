@@ -1,4 +1,4 @@
-use strum_macros::{Display, EnumCount};
+use strum_macros::{EnumCount};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, EnumCount)]
 pub enum Body {

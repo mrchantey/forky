@@ -21,6 +21,8 @@ run crate example *args:
 
 fix crate *args:
 	cargo fix --allow-dirty --lib -p {{crate}} {{args}}
+fix-all *args:
+	cargo fix --allow-dirty --workspace {{args}}
 
 run-w *args:
 	just watch 'just run {{args}}'
