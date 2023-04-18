@@ -32,16 +32,16 @@ impl RectangluarCoords {
 	pub fn to_equatorial(&self) -> EquatorialCoords {
 		EquatorialCoords {
 			radius: self.length(),
-			right_ascention: self.flat_angle() * rad2hours,
-			declination: self.up_angle() * rad2deg,
+			right_ascention: self.flat_angle() * RAD2HOURS,
+			declination: self.up_angle() * RAD2DEG,
 		}
 	}
 	//yes identical to equatorial except deg instead of hours
 	pub fn to_ecliptical(&self) -> EclipticalCoords {
 		EclipticalCoords {
 			radius: self.length(),
-			longitude: self.flat_angle() * rad2deg,
-			latitude: self.up_angle() * rad2deg,
+			longitude: self.flat_angle() * RAD2DEG,
+			latitude: self.up_angle() * RAD2DEG,
 		}
 	}
 

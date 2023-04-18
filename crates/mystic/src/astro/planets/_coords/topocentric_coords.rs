@@ -21,7 +21,7 @@ impl TopocentricCoords {
 	) -> TopocentricCoords {
 		let lmst = gmst + utc_hour + lon; //lon in hours
 
-		let ha = (lmst - equatorial.right_ascention) * hours2deg;
+		let ha = (lmst - equatorial.right_ascention) * HOURS2DEG;
 
 		let x_sid = cos_d(ha) * cos_d(equatorial.declination);
 		let y_sid = sin_d(ha) * cos_d(equatorial.declination);

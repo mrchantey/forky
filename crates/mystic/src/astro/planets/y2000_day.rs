@@ -1,4 +1,4 @@
-use std::time::{Duration};
+use std::time::Duration;
 
 use super::*;
 use derive_deref::{Deref, DerefMut};
@@ -10,7 +10,7 @@ use time::{Date, Month, OffsetDateTime};
 // // pub const millisInHour = 1000 * 60 * 60
 // pub const y2000Millis: u64 = 946684800000;
 
-/// julian date as of 0/Jan/2000 (31/Dec/1999) 0:00 UTC, ie 
+/// julian date as of 0/Jan/2000 (31/Dec/1999) 0:00 UTC, ie
 const JULIAN_Y2000: f64 = 2451544.;
 // const JULIAN_Y2000: f64 = 2451545.;
 const SECS_IN_DAY: f64 = 86400.;
@@ -46,7 +46,7 @@ impl Y2000Day {
 
 	pub fn utc_hour(&self) -> f64 { (**self % 1.0) * 24.0 }
 	///obliquity of the ecliptic, decreasing
-	pub fn obl_ecl(&self) -> f64 { earthTiltDeg - 3.563E-7 * **self }
+	pub fn obl_ecl(&self) -> f64 { EARTH_TILT_DEG - 3.563E-7 * **self }
 }
 
 /// convert u8 to month, where 1 is january

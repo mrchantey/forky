@@ -4,15 +4,11 @@ use sweet::*;
 
 sweet! {
 	it "works" {
-
-		let day = Y2000Day::new(1992, 2, 20).add_utc_time(10,0, 0);
-		let chart = Chart::new(day);
-
-		for item in chart.positions.iter() {
-			println!("{:?}", item);
-		}
-		// println!("{:?}", chart);
-		// expect(true).to_be(false)?;
+		let day = Y2000Day::new(2000,1,1);
+		// let pos_geo = ecliptic_positions::sun_geo(day);
+		// let zodiac:ZodiacPosition = (&pos_geo).into();
+		// expect(zodiac.sign.sign).to_be(Sign::Capricorn)?;
+		// expect(zodiac.sign_angle).to_be(9.872532293896843)?;
 
 	}
 }

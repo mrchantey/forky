@@ -1,50 +1,23 @@
-use super::*;
-use std::collections::{HashMap, HashSet};
+use super::{ecliptic_positions::ecliptic_position, *};
+use std::collections::HashMap;
+use strum::{EnumCount, IntoEnumIterator};
 
-
-fn geo_bodies() -> HashSet<Body> { HashSet::from([Body::Sun, Body::Moon]) }
-
-/// Calculate geocentric positions. For the sun and moon this is already the case, otherwise add the suns position.
-pub fn geocentric_ecliptic(
-	bodies: &HashMap<Body, OrbitalBody>,
-) -> HashMap<Body, RectangluarCoords> {
-	let geo_bodies = geo_bodies();
-
-	bodies
-		.iter()
-		.map(|(key, value)| {
-			if geo_bodies.contains(key) {
-				(*key, value.ecliptic_rect)
-			} else {
-				(
-					*key,
-					value.ecliptic_rect
-						+ bodies.get(&Body::Sun).unwrap().ecliptic_rect,
-				)
-			}
-		})
-		.collect()
-	//convert moon radius to AU
-	// bodies.moon.eclipticSphere.radius /= earthRadiiPerAU
-	// bodies.moon.eclipticRect = eclipticalSphereToRectangular(bodies.moon.eclipticSphere)
+pub fn geocentric_ecliptic(day: Y2000Day) -> HashMap<Body, RectangluarCoords> {
+	let mut planets = heliocentric_ecliptic(day);
+	let earth_pos = planets.get(&Body::Earth).unwrap().clone();
+	for (_, mut planet) in planets.iter_mut() {
+		planet.x -= earth_pos.x;
+		planet.y -= earth_pos.y;
+		planet.z -= earth_pos.z;
+	}
+	planets
 }
 pub fn heliocentric_ecliptic(
-	bodies: &HashMap<Body, OrbitalBody>,
+	day: Y2000Day,
 ) -> HashMap<Body, RectangluarCoords> {
-	let geo_bodies = geo_bodies();
-
-	bodies
-		.iter()
-		.map(|(key, value)| {
-			if geo_bodies.contains(key) {
-				(
-					*key,
-					value.ecliptic_rect
-						- bodies.get(&Body::Sun).unwrap().ecliptic_rect,
-				)
-			} else {
-				(*key, value.ecliptic_rect)
-			}
-		})
-		.collect()
+	let mut planets = HashMap::with_capacity(Body::COUNT);
+	for body in Body::iter() {
+		planets.insert(Body::Sun, ecliptic_position(day, body));
+	}
+	planets
 }

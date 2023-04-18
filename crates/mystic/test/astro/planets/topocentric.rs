@@ -7,7 +7,7 @@ sweet! {
 		//SYDNEY TEST
 		let day = Y2000Day::new(2023, 4, 17).add_utc_time(8,3, 0);
 
-		let syd_lon = 151.2093 * deg2hours;
+		let syd_lon = 151.2093 * DEG2HOURS;
 		let syd_lat = -33.8688;
 
 
