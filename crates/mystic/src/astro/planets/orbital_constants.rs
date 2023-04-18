@@ -2,6 +2,12 @@ use super::*;
 use std::collections::HashMap;
 use strum::EnumCount;
 
+
+const METERS_PER_ASTRONOMICAL_UNIT: f64 = 1.4959787e+11;
+const METERS_PER_EARTH_EQUATORIAL_RADIUS: f64 = 6378140.0;
+const EARTH_RADII_PER_ASTRONOMICAL_UNIT: f64 =
+	METERS_PER_ASTRONOMICAL_UNIT / METERS_PER_EARTH_EQUATORIAL_RADIUS;
+
 pub struct OrbitalConstants {
 	/// Longitude of asc. node
 	pub N_offset: f64,
@@ -58,8 +64,8 @@ const MOON: OrbitalConstants = OrbitalConstants {
 	i_offset: 5.1454,
 	i_scalar: 0.,
 	w_offset: 318.0634,
-	w_scalar: 0.1643573223, //(Arg. of perigee)
-	a_offset: 60.2666,      //earth radii
+	w_scalar: 0.1643573223,
+	a_offset: 60.2666 / EARTH_RADII_PER_ASTRONOMICAL_UNIT,
 	a_scalar: 0.,
 	e_offset: 0.054900,
 	e_scalar: 0.,

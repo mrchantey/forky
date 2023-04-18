@@ -10,7 +10,7 @@ use time::{Date, Month, OffsetDateTime};
 // // pub const millisInHour = 1000 * 60 * 60
 // pub const y2000Millis: u64 = 946684800000;
 
-/// julian date as of 31.12.1999 12:00:00
+/// julian date as of 0/Jan/2000 (31/Dec/1999) 0:00 UTC, ie 
 const JULIAN_Y2000: f64 = 2451544.;
 // const JULIAN_Y2000: f64 = 2451545.;
 const SECS_IN_DAY: f64 = 86400.;
