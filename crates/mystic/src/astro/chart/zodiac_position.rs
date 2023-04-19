@@ -1,5 +1,5 @@
 use super::*;
-use crate::astro::planets::{wrap_rad, RectangluarCoords, RAD2DEG};
+use crate::astro::planets::{wrap_rad, RectCoords, RAD2DEG};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct ZodiacPosition {
@@ -11,8 +11,8 @@ pub struct ZodiacPosition {
 }
 
 
-impl From<&RectangluarCoords> for ZodiacPosition {
-	fn from(value: &RectangluarCoords) -> Self {
+impl From<&RectCoords> for ZodiacPosition {
+	fn from(value: &RectCoords) -> Self {
 		// let delta_theta =
 		let zodiac_angle = wrap_rad(value.flat_angle());
 

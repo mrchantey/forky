@@ -1,7 +1,7 @@
 use super::super::*;
 use super::*;
 
-pub fn earth(day: Y2000Day) -> RectangluarCoords {
+pub fn earth(day: Y2000Day) -> RectCoords {
 	let d = *day - 1.5;
 	let t = d / 36525.0;
 	let l0 = 280.46645 + (36000.76983 * t) + (0.0003032 * t * t);
@@ -17,7 +17,7 @@ pub fn earth(day: Y2000Day) -> RectangluarCoords {
 	let dist_au = (1.000001018 * (1. - e * e)) / (1. + e * cos_d(m0 + c));
 	let x = -dist_au * cos_d(ls);
 	let y = -dist_au * sin_d(ls);
-	RectangluarCoords::new(x, y, 0.0)
+	RectCoords::new(x, y, 0.0)
 }
 
 pub const EARTH: OrbitalConstants = OrbitalConstants {

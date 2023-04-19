@@ -1,7 +1,7 @@
 use super::*;
 use crate::astro::planets::*;
 
-pub fn sun() -> RectangluarCoords { RectangluarCoords::new(0., 0., 0.) }
+pub fn sun() -> RectCoords { RectCoords::new(0., 0., 0.) }
 
 pub const SUN: OrbitalConstants = OrbitalConstants {
 	//identical to earth with N flipped 180

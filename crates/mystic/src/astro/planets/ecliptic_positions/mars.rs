@@ -1,7 +1,7 @@
 use super::super::*;
 use super::*;
 
-pub fn mars(day: Y2000Day) -> RectangluarCoords {
+pub fn mars(day: Y2000Day) -> RectCoords {
 	OrbitalElements::position(&MARS, day)
 }
 

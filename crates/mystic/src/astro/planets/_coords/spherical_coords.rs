@@ -18,15 +18,15 @@ impl SphericalCoords {
 		}
 	}
 
-	pub fn to_rectangular(&self) -> RectangluarCoords {
-		RectangluarCoords {
+	pub fn to_rectangular(&self) -> RectCoords {
+		RectCoords {
 			x: self.radius * cos_d(self.longitude) * cos_d(self.latitude),
 			y: self.radius * sin_d(self.longitude) * cos_d(self.latitude),
 			z: self.radius * sin_d(self.latitude),
 		}
 	}
-	
-	pub fn from_rectangular(rect: &RectangluarCoords) -> Self {
+
+	pub fn from_rectangular(rect: &RectCoords) -> Self {
 		let xy_sq = rect.x * rect.x + rect.y * rect.y;
 		let mut longitude = atan2_d(rect.y, rect.x);
 		if longitude < 0. {
@@ -41,9 +41,9 @@ impl SphericalCoords {
 			radius,
 		}
 		// this.Polar = function (x, y, z) {
-			// 	var rho = (x * x) + (y * y);
-			// 	var radius = Math.sqrt(rho + (z * z));
-			// 	var phi = Angle.AtanDeg2(y, x);
+		// 	var rho = (x * x) + (y * y);
+		// 	var radius = Math.sqrt(rho + (z * z));
+		// 	var phi = Angle.AtanDeg2(y, x);
 		// 	var rho = Math.sqrt(rho);
 		// 	var theta = Angle.AtanDeg2(z, rho);
 		// 	return new SphericalCoordinates(phi, theta, radius);
@@ -51,7 +51,7 @@ impl SphericalCoords {
 	}
 }
 
-impl RectangluarCoords {
+impl RectCoords {
 	pub fn to_spherical(&self) -> SphericalCoords {
 		SphericalCoords::from_rectangular(self)
 	}

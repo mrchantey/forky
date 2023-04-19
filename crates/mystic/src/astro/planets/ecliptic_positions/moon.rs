@@ -1,20 +1,20 @@
 use super::super::*;
 use super::*;
 
-pub fn moon(day: Y2000Day) -> RectangluarCoords {
+pub fn moon(day: Y2000Day) -> RectCoords {
 	let pos = OrbitalElements::position(&MOON, day);
 	let pos = perturb(&pos, day);
 	earth(day) + pos
 }
 
-fn perturb(pos: &RectangluarCoords, day: Y2000Day) -> RectangluarCoords {
+fn perturb(pos: &RectCoords, day: Y2000Day) -> RectCoords {
 	let ms = OrbitalElements::get_m(&SUN, day);
 	let ws = OrbitalElements::get_w(&SUN, day);
 	let ls = ms + ws;
 
-	let mm = OrbitalElements::get_m(&MOON,day);
-	let nm = OrbitalElements::get_n(&MOON,day);
-	let wm = OrbitalElements::get_w(&MOON,day);
+	let mm = OrbitalElements::get_m(&MOON, day);
+	let nm = OrbitalElements::get_n(&MOON, day);
+	let wm = OrbitalElements::get_w(&MOON, day);
 	let lm = mm + wm + nm;
 
 	let d = lm - ls;

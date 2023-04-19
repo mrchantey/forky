@@ -2,7 +2,7 @@ use super::super::*;
 use super::*;
 
 
-pub fn ecliptic_position(day: Y2000Day, body: Body) -> RectangluarCoords {
+pub fn ecliptic_position(day: Y2000Day, body: Body) -> RectCoords {
 	match body {
 		Body::Sun => sun(),
 		Body::Moon => moon(day),
@@ -19,14 +19,14 @@ pub fn ecliptic_position(day: Y2000Day, body: Body) -> RectangluarCoords {
 	}
 }
 
-pub fn ecliptic_position_geo(day: Y2000Day, body: Body) -> RectangluarCoords {
+pub fn ecliptic_position_geo(day: Y2000Day, body: Body) -> RectCoords {
 	ecliptic_position_geo_with_earth(day, body, earth(day))
 }
 pub fn ecliptic_position_geo_with_earth(
 	day: Y2000Day,
 	body: Body,
-	pos_earth: RectangluarCoords,
-) -> RectangluarCoords {
+	pos_earth: RectCoords,
+) -> RectCoords {
 	let mut pos = ecliptic_position(day, body);
 	pos.x -= pos_earth.x;
 	pos.y -= pos_earth.y;

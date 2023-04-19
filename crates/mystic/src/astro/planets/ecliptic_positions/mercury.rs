@@ -1,7 +1,7 @@
 use super::super::*;
 use super::*;
 
-pub fn mercury(day: Y2000Day) -> RectangluarCoords {
+pub fn mercury(day: Y2000Day) -> RectCoords {
 	OrbitalElements::position(&MERCURY, day)
 }
 

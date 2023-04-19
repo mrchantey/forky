@@ -47,8 +47,8 @@ impl EquatorialCoords {
 		0.99833 + 0.00167 * cos_d(2.0 * latitude)
 	}
 
-	pub fn to_rectangular(&self) -> RectangluarCoords {
-		RectangluarCoords {
+	pub fn to_rectangular(&self) -> RectCoords {
+		RectCoords {
 			x: self.radius
 				* cos_d(self.right_ascention)
 				* cos_d(self.declination),
@@ -62,7 +62,7 @@ impl EquatorialCoords {
 
 
 //TODO georect instead
-impl RectangluarCoords {
+impl RectCoords {
 	pub fn to_equatorial(
 		&self,
 		day: Y2000Day,
@@ -80,9 +80,7 @@ impl RectangluarCoords {
 		let qy = (dy * cos_k) - (dz * sin_k);
 		let qz = (dy * sin_k) + (dz * cos_k);
 
-		let eq = RectangluarCoords::new(qx, qy, qz)
-			.to_spherical()
-			.to_equatorial();
+		let eq = RectCoords::new(qx, qy, qz).to_spherical().to_equatorial();
 
 		let parallax = 1.0 / (EARTH_RADII_PER_AU * eq.radius);
 		if parallax < PI / (180.0 * 3600.0) {

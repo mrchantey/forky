@@ -2,7 +2,7 @@ use super::{ecliptic_positions::ecliptic_position, *};
 use std::collections::HashMap;
 use strum::{EnumCount, IntoEnumIterator};
 
-pub fn geocentric_ecliptic(day: Y2000Day) -> HashMap<Body, RectangluarCoords> {
+pub fn geocentric_ecliptic(day: Y2000Day) -> HashMap<Body, RectCoords> {
 	let mut planets = heliocentric_ecliptic(day);
 	let earth_pos = planets.get(&Body::Earth).unwrap().clone();
 	for (_, mut planet) in planets.iter_mut() {
@@ -12,9 +12,7 @@ pub fn geocentric_ecliptic(day: Y2000Day) -> HashMap<Body, RectangluarCoords> {
 	}
 	planets
 }
-pub fn heliocentric_ecliptic(
-	day: Y2000Day,
-) -> HashMap<Body, RectangluarCoords> {
+pub fn heliocentric_ecliptic(day: Y2000Day) -> HashMap<Body, RectCoords> {
 	let mut planets = HashMap::with_capacity(Body::COUNT);
 	for body in Body::iter() {
 		planets.insert(body, ecliptic_position(day, body));

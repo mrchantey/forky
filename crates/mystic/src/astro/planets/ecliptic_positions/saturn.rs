@@ -1,12 +1,12 @@
 use super::super::*;
 use super::*;
 
-pub fn saturn(day: Y2000Day) -> RectangluarCoords {
+pub fn saturn(day: Y2000Day) -> RectCoords {
 	let pos = OrbitalElements::position(&SATURN, day);
 	perturb(&pos, day)
 }
 
-fn perturb(pos: &RectangluarCoords, day: Y2000Day) -> RectangluarCoords {
+fn perturb(pos: &RectCoords, day: Y2000Day) -> RectCoords {
 	let mj = OrbitalElements::get_m(&JUPITER_FROM_JPL, day);
 	let ms = OrbitalElements::get_m(&SATURN, day);
 

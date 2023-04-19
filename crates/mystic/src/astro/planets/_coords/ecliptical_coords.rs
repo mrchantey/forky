@@ -11,7 +11,7 @@ impl EclipticalCoords {
 		Self(SphericalCoords::new(longitude, latitude, radius))
 	}
 
-	pub fn from_rect_helio(rect: &RectangluarCoords) -> Self {
+	pub fn from_rect_helio(rect: &RectCoords) -> Self {
 		EclipticalCoords::new(
 			rect.flat_angle() * RAD2DEG,
 			rect.up_angle() * RAD2DEG,
@@ -20,23 +20,23 @@ impl EclipticalCoords {
 	}
 }
 //todo helio
-impl RectangluarCoords {
+impl RectCoords {
 	pub fn to_ecliptical(&self) -> EclipticalCoords {
 		EclipticalCoords::from_rect_helio(self)
 	}
 }
 
 
-// pub fn ecliptical_to_equatorial(&self, obl_ecl: f64) -> RectangluarCoords {
-// 	RectangluarCoords {
+// pub fn ecliptical_to_equatorial(&self, obl_ecl: f64) -> RectCoords {
+// 	RectCoords {
 // 		x: self.x,
 // 		y: self.y * cos_d(obl_ecl) - self.z * sin_d(obl_ecl),
 // 		z: self.y * sin_d(obl_ecl) + self.z * cos_d(obl_ecl),
 // 	}
 // }
 
-// pub fn equatorial_to_ecliptical(&self, obl_ecl: f64) -> RectangluarCoords {
-// 	RectangluarCoords {
+// pub fn equatorial_to_ecliptical(&self, obl_ecl: f64) -> RectCoords {
+// 	RectCoords {
 // 		x: self.x,
 // 		y: self.y * cos_d(-obl_ecl) - self.z * sin_d(-obl_ecl),
 // 		z: self.y * sin_d(-obl_ecl) + self.z * cos_d(-obl_ecl),
