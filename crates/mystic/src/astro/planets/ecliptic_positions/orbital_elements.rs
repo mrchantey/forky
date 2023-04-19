@@ -69,7 +69,7 @@ impl OrbitalElements {
 		}
 	}
 
-	pub fn position(constants: &OrbitalConstants, day: Y2000Day) -> RectCoords {
+	pub fn position(constants: &OrbitalConstants, day: Y2000Day) -> HelioCoords {
 		let OrbitalElements { n, i, w, v, r, .. } =
 			OrbitalElements::new(constants, day);
 
@@ -84,7 +84,7 @@ impl OrbitalElements {
 		let y = r * (sin_n * cos_vw + cos_n * sin_vw * cos_i);
 		let z = r * sin_vw * sin_i;
 
-		RectCoords::new(x, y, z)
+		HelioCoords::new(x, y, z)
 	}
 	///mean anomoly
 	pub fn get_m(constants: &OrbitalConstants, day: Y2000Day) -> f64 {

@@ -1,6 +1,6 @@
 use super::super::*;
 
-pub fn pluto(day: Y2000Day) -> RectCoords {
+pub fn pluto(day: Y2000Day) -> HelioCoords {
 	let s = 50.03 + (0.033459652 * *day);
 	let p = 238.95 + (0.003968789 * *day);
 
@@ -47,5 +47,5 @@ pub fn pluto(day: Y2000Day) -> RectCoords {
 	let yp = r * sinlon * coslat;
 	let zp = r * sinlat;
 
-	RectCoords::new(xp, yp, zp)
+	HelioCoords::new(xp, yp, zp)
 }

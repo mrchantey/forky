@@ -13,11 +13,11 @@ impl SolarSystem {
 	// 	wrap_deg(self.bodies.get(&Body::Sun).unwrap().el.l * DEG2HOURS + 12.)
 	// }
 
-	pub fn geocentric_ecliptic(&self) -> HashMap<Body, RectCoords> {
+	pub fn geocentric_ecliptic(&self) -> HashMap<Body, GeoCoords> {
 		geocentric_ecliptic(self.day)
 	}
 
-	pub fn heliocentric_ecliptic(&self) -> HashMap<Body, RectCoords> {
+	pub fn heliocentric_ecliptic(&self) -> HashMap<Body, HelioCoords> {
 		heliocentric_ecliptic(self.day)
 	}
 	// pub fn equatorial(&self) -> HashMap<Body, EquatorialCoords> {

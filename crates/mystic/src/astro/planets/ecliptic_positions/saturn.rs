@@ -1,12 +1,12 @@
 use super::super::*;
 use super::*;
 
-pub fn saturn(day: Y2000Day) -> RectCoords {
+pub fn saturn(day: Y2000Day) -> HelioCoords {
 	let pos = OrbitalElements::position(&SATURN, day);
 	perturb(&pos, day)
 }
 
-fn perturb(pos: &RectCoords, day: Y2000Day) -> RectCoords {
+fn perturb(pos: &HelioCoords, day: Y2000Day) -> HelioCoords {
 	let mj = OrbitalElements::get_m(&JUPITER_FROM_JPL, day);
 	let ms = OrbitalElements::get_m(&SATURN, day);
 
@@ -18,7 +18,7 @@ fn perturb(pos: &RectCoords, day: Y2000Day) -> RectCoords {
 		+ 0.014 * sin_d(mj - 3. * ms + 32.);
 	ecliptic.latitude += -0.020 * cos_d(2. * mj - 4. * ms - 2.)
 		+ 0.018 * sin_d(2. * mj - 6. * ms - 49.);
-	ecliptic.to_rectangular()
+	ecliptic.to_rectangular().into()
 }
 
 pub const SATURN_FROM_JPL: OrbitalConstants = OrbitalConstants {

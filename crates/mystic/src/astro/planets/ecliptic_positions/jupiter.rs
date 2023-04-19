@@ -1,12 +1,12 @@
 use super::super::*;
 use super::*;
 
-pub fn jupiter(day: Y2000Day) -> RectCoords {
+pub fn jupiter(day: Y2000Day) -> HelioCoords {
 	let pos = OrbitalElements::position(&JUPITER_FROM_JPL, day);
 	perturb(&pos, day)
 }
 
-fn perturb(pos: &RectCoords, day: Y2000Day) -> RectCoords {
+fn perturb(pos: &HelioCoords, day: Y2000Day) -> HelioCoords {
 	let mj = OrbitalElements::get_m(&JUPITER_FROM_JPL, day);
 	//astronomy.js uses saturn, but i think it should be saturn_from_jpl
 	let ms = OrbitalElements::get_m(&SATURN, day);
@@ -20,7 +20,7 @@ fn perturb(pos: &RectCoords, day: Y2000Day) -> RectCoords {
 		+ 0.023 * sin_d(2. * mj - 3. * ms + 52.)
 		- 0.016 * sin_d(mj - 5. * ms - 69.);
 
-	ecliptic.to_rectangular()
+	ecliptic.to_rectangular().into()
 }
 
 pub const JUPITER_FROM_JPL: OrbitalConstants = OrbitalConstants {

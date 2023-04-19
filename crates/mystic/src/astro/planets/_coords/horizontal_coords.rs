@@ -17,7 +17,8 @@ impl HorizontalCoords {
 		day: Y2000Day,
 		position: &GeographicCoords,
 	) -> Self {
-		ecliptic_positions::ecliptic_position_geo(day, body)
+		ecliptic_positions::ecliptic_position(day, body)
+			.to_geo(day)
 			.to_equatorial(day, position.clone())
 			.to_horizontal(position, day)
 	}
@@ -118,9 +119,7 @@ impl EquatorialCoords {
 		position: &GeographicCoords,
 		day: Y2000Day,
 	) -> HorizontalCoords {
-		HorizontalCoords::from_equatorial(
-			self, position, day,
-		)
+		HorizontalCoords::from_equatorial(self, position, day)
 	}
 }
 

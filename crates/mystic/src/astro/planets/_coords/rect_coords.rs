@@ -1,10 +1,3 @@
-use derive_deref::{Deref, DerefMut};
-
-#[derive(Debug, Copy, Clone, PartialEq, Deref, DerefMut)]
-pub struct GeoCoords(pub RectCoords);
-#[derive(Debug, Copy, Clone, PartialEq, Deref, DerefMut)]
-pub struct HelioCoords(pub RectCoords);
-
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct RectCoords {
 	//right
@@ -27,6 +20,7 @@ impl RectCoords {
 	pub fn flat_angle(&self) -> f64 { f64::atan2(self.y, self.x) }
 	pub fn up_angle(&self) -> f64 { f64::atan2(self.z, self.length_xy()) }
 }
+
 impl std::ops::Add for RectCoords {
 	type Output = Self;
 

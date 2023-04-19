@@ -1,12 +1,12 @@
 use super::super::*;
 use super::*;
 
-pub fn uranus(day: Y2000Day) -> RectCoords {
+pub fn uranus(day: Y2000Day) -> HelioCoords {
 	let pos = OrbitalElements::position(&URANUS_FROM_JPL, day);
 	perturb(&pos, day)
 }
 
-fn perturb(pos: &RectCoords, day: Y2000Day) -> RectCoords {
+fn perturb(pos: &HelioCoords, day: Y2000Day) -> HelioCoords {
 	let mj = OrbitalElements::get_m(&JUPITER_FROM_JPL, day);
 	let ms = OrbitalElements::get_m(&SATURN, day);
 	let mu = OrbitalElements::get_m(&URANUS_FROM_JPL, day);
@@ -15,7 +15,7 @@ fn perturb(pos: &RectCoords, day: Y2000Day) -> RectCoords {
 		+ 0.035 * sin_d(ms - 3. * mu + 33.)
 		- 0.015 * sin_d(mj - mu + 20.);
 
-	ecliptic.to_rectangular()
+	ecliptic.to_rectangular().into()
 }
 
 pub const URANUS_FROM_JPL: OrbitalConstants = OrbitalConstants {

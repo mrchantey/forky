@@ -1,7 +1,7 @@
 use super::super::*;
 use super::*;
 
-pub fn neptune(day: Y2000Day) -> RectCoords {
+pub fn neptune(day: Y2000Day) -> HelioCoords {
 	OrbitalElements::position(&NEPTUNE, day)
 }
 

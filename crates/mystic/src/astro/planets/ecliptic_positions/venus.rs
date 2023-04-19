@@ -1,7 +1,7 @@
 use super::super::*;
 use super::*;
 
-pub fn venus(day: Y2000Day) -> RectCoords {
+pub fn venus(day: Y2000Day) -> HelioCoords {
 	OrbitalElements::position(&VENUS, day)
 }
 

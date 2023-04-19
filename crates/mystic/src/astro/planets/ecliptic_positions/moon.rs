@@ -1,13 +1,13 @@
 use super::super::*;
 use super::*;
 
-pub fn moon(day: Y2000Day) -> RectCoords {
+pub fn moon(day: Y2000Day) -> HelioCoords {
 	let pos = OrbitalElements::position(&MOON, day);
 	let pos = perturb(&pos, day);
 	earth(day) + pos
 }
 
-fn perturb(pos: &RectCoords, day: Y2000Day) -> RectCoords {
+fn perturb(pos: &HelioCoords, day: Y2000Day) -> HelioCoords {
 	let ms = OrbitalElements::get_m(&SUN, day);
 	let ws = OrbitalElements::get_w(&SUN, day);
 	let ls = ms + ws;
@@ -43,7 +43,7 @@ fn perturb(pos: &RectCoords, day: Y2000Day) -> RectCoords {
 	ecliptic.radius += (-0.58 * cos_d(mm - 2. * d) - 0.46 * cos_d(2. * d))
 		/ EARTH_RADII_PER_AU;
 
-	ecliptic.to_rectangular()
+	ecliptic.to_rectangular().into()
 }
 
 pub const MOON: OrbitalConstants = OrbitalConstants {
