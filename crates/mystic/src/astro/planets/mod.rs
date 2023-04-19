@@ -5,8 +5,6 @@ pub use self::body::*;
 mod ecliptic_origin;
 pub use self::ecliptic_origin::*;
 pub mod ecliptic_positions;
-mod orbital_body;
-pub use self::orbital_body::*;
 mod solar_system;
 pub use self::solar_system::*;
 mod y2000_day;

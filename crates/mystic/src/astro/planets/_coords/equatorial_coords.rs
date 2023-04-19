@@ -1,9 +1,7 @@
-use std::f64::consts::PI;
-
-use crate::astro::planets::ecliptic_positions::OrbitalElements;
-
 use super::super::*;
 use super::*;
+use crate::astro::planets::ecliptic_positions::OrbitalElements;
+use std::f64::consts::PI;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct EquatorialCoords {
@@ -107,19 +105,18 @@ impl RectangluarCoords {
 		let g = (tan_d(gclat) / cos_h(hour_angle)).atan() * RAD2DEG;
 
 		let top_ra = eq.right_ascention
-			- parallax * RAD2HOURS
-				* rho * cos_d(gclat)
-				* sin_h(hour_angle)
+			- parallax * RAD2HOURS * rho * cos_d(gclat) * sin_h(hour_angle)
 				/ cos_d(eq.declination);
 		let top_dec = if g.abs() < 1.0e-6 {
 			eq.declination
-				- parallax * RAD2DEG
-					* rho * sin_d(-eq.declination)
+				- parallax
+					* RAD2DEG * rho * sin_d(-eq.declination)
 					* cos_h(hour_angle)
 		} else {
 			eq.declination
-				- parallax * RAD2DEG
-					* rho * sin_d(gclat) * sin_d(g - eq.declination)
+				- parallax
+					* RAD2DEG * rho * sin_d(gclat)
+					* sin_d(g - eq.declination)
 					/ sin_d(g)
 		};
 		return EquatorialCoords::new(top_ra, top_dec, eq.radius);
@@ -132,3 +129,13 @@ impl SphericalCoords {
 		EquatorialCoords::from_spherical(self)
 	}
 }
+
+
+//deleteme
+// pub fn to_equatorial_bad(&self) -> EquatorialCoords {
+// 	EquatorialCoords {
+// 		radius: self.length(),
+// 		right_ascention: self.flat_angle() * RAD2HOURS,
+// 		declination: self.up_angle() * RAD2DEG,
+// 	}
+// }

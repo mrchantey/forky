@@ -1,19 +1,44 @@
 use super::super::*;
 use super::*;
+use derive_deref::{Deref, DerefMut};
 
-#[derive(Debug, Copy, Clone, PartialEq)]
-pub struct EclipticalCoords {
-	pub longitude: f64,
-	pub latitude: f64,
-	pub radius: f64,
-}
+#[derive(Debug, Copy, Clone, PartialEq, Deref, DerefMut)]
+pub struct EclipticalCoords(pub SphericalCoords);
+
 
 impl EclipticalCoords {
-	pub fn to_rectangular(&self) -> RectangluarCoords {
-		RectangluarCoords {
-			x: self.radius * cos_d(self.longitude) * cos_d(self.latitude),
-			y: self.radius * sin_d(self.longitude) * cos_d(self.latitude),
-			z: self.radius * sin_d(self.latitude),
-		}
+	pub fn new(longitude: f64, latitude: f64, radius: f64) -> Self {
+		Self(SphericalCoords::new(longitude, latitude, radius))
+	}
+
+	pub fn from_rect_helio(rect: &RectangluarCoords) -> Self {
+		EclipticalCoords::new(
+			rect.flat_angle() * RAD2DEG,
+			rect.up_angle() * RAD2DEG,
+			rect.length(),
+		)
 	}
 }
+//todo helio
+impl RectangluarCoords {
+	pub fn to_ecliptical(&self) -> EclipticalCoords {
+		EclipticalCoords::from_rect_helio(self)
+	}
+}
+
+
+// pub fn ecliptical_to_equatorial(&self, obl_ecl: f64) -> RectangluarCoords {
+// 	RectangluarCoords {
+// 		x: self.x,
+// 		y: self.y * cos_d(obl_ecl) - self.z * sin_d(obl_ecl),
+// 		z: self.y * sin_d(obl_ecl) + self.z * cos_d(obl_ecl),
+// 	}
+// }
+
+// pub fn equatorial_to_ecliptical(&self, obl_ecl: f64) -> RectangluarCoords {
+// 	RectangluarCoords {
+// 		x: self.x,
+// 		y: self.y * cos_d(-obl_ecl) - self.z * sin_d(-obl_ecl),
+// 		z: self.y * sin_d(-obl_ecl) + self.z * cos_d(-obl_ecl),
+// 	}
+// }

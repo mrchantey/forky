@@ -1,25 +1,17 @@
 use super::*;
 use std::collections::HashMap;
-use strum::EnumCount;
 
 #[derive(Debug, Clone)]
 pub struct SolarSystem {
 	pub day: Y2000Day,
-	pub bodies: HashMap<Body, OrbitalBody>,
 }
 
-
-
-
 impl SolarSystem {
-	pub fn new(day: Y2000Day) -> Self {
-		let bodies = HashMap::with_capacity(Body::COUNT);
-		Self { day, bodies }
-	}
+	pub fn new(day: Y2000Day) -> Self { Self { day } }
 
-	pub fn gmst(&self) -> f64 {
-		wrap_deg(self.bodies.get(&Body::Sun).unwrap().el.l * DEG2HOURS + 12.)
-	}
+	// pub fn gmst(&self) -> f64 {
+	// 	wrap_deg(self.bodies.get(&Body::Sun).unwrap().el.l * DEG2HOURS + 12.)
+	// }
 
 	pub fn geocentric_ecliptic(&self) -> HashMap<Body, RectangluarCoords> {
 		geocentric_ecliptic(self.day)

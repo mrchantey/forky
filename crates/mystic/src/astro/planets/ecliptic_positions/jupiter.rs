@@ -10,7 +10,7 @@ fn perturb(pos: &RectangluarCoords, day: Y2000Day) -> RectangluarCoords {
 	let mj = OrbitalElements::get_m(&JUPITER_FROM_JPL, day);
 	//astronomy.js uses saturn, but i think it should be saturn_from_jpl
 	let ms = OrbitalElements::get_m(&SATURN, day);
-	let mut ecliptic = pos.to_ecliptical();
+	let mut ecliptic = pos.to_spherical();
 
 	ecliptic.longitude += -0.332 * sin_d(2. * mj - 5. * ms - 67.6)
 		- 0.056 * sin_d(2. * mj - 2. * ms + 21.)

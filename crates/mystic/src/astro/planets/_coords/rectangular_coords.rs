@@ -1,11 +1,9 @@
-use super::super::*;
-use super::*;
 use derive_deref::{Deref, DerefMut};
 
 #[derive(Debug, Copy, Clone, PartialEq, Deref, DerefMut)]
-pub struct GeoRectCoords(pub RectangluarCoords);
+pub struct GeoCoords(pub RectangluarCoords);
 #[derive(Debug, Copy, Clone, PartialEq, Deref, DerefMut)]
-pub struct HelioRectCoords(pub RectangluarCoords);
+pub struct HelioCoords(pub RectangluarCoords);
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct RectangluarCoords {
@@ -28,39 +26,6 @@ impl RectangluarCoords {
 
 	pub fn flat_angle(&self) -> f64 { f64::atan2(self.y, self.x) }
 	pub fn up_angle(&self) -> f64 { f64::atan2(self.z, self.length_xy()) }
-
-	//deleteme
-	pub fn to_equatorial_bad(&self) -> EquatorialCoords {
-		EquatorialCoords {
-			radius: self.length(),
-			right_ascention: self.flat_angle() * RAD2HOURS,
-			declination: self.up_angle() * RAD2DEG,
-		}
-	}
-	//deleteme
-	pub fn to_ecliptical(&self) -> EclipticalCoords {
-		EclipticalCoords {
-			radius: self.length(),
-			longitude: self.flat_angle() * RAD2DEG,
-			latitude: self.up_angle() * RAD2DEG,
-		}
-	}
-
-	pub fn ecliptical_to_equatorial(&self, obl_ecl: f64) -> RectangluarCoords {
-		RectangluarCoords {
-			x: self.x,
-			y: self.y * cos_d(obl_ecl) - self.z * sin_d(obl_ecl),
-			z: self.y * sin_d(obl_ecl) + self.z * cos_d(obl_ecl),
-		}
-	}
-
-	pub fn equatorial_to_ecliptical(&self, obl_ecl: f64) -> RectangluarCoords {
-		RectangluarCoords {
-			x: self.x,
-			y: self.y * cos_d(-obl_ecl) - self.z * sin_d(-obl_ecl),
-			z: self.y * sin_d(-obl_ecl) + self.z * cos_d(-obl_ecl),
-		}
-	}
 }
 impl std::ops::Add for RectangluarCoords {
 	type Output = Self;
