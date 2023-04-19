@@ -15,7 +15,7 @@ impl HorizontalCoords {
 	pub fn from_position(
 		day: Y2000Day,
 		position: &GeographicCoords,
-		body: Body,
+		body: Planet,
 	) -> Self {
 		ecliptic_positions::ecliptic_position(day, body)
 			.to_geo(day)

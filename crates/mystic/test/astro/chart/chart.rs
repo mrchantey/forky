@@ -19,16 +19,16 @@ sweet! {
 		// }
 
 		//acurate to cafeastrology to within 2 minutes, could be they are ceil and im floor
-		expect(chart[&Body::Sun].sign_angle).to_be(9.872532293896843)?;
-		expect(chart[&Body::Moon].sign_angle).to_be(7.320173004879664)?;
-		expect(chart[&Body::Mercury].sign_angle).to_be(1.1300987894853036)?;
-		expect(chart[&Body::Venus].sign_angle).to_be(0.975554039728352)?;
-		expect(chart[&Body::Mars].sign_angle).to_be(27.58870720890896)?;
-		expect(chart[&Body::Jupiter].sign_angle).to_be(25.254946738346774)?;
-		expect(chart[&Body::Saturn].sign_angle).to_be(10.39831323519355)?;
-		expect(chart[&Body::Uranus].sign_angle).to_be(14.780314883457436)?;
-		expect(chart[&Body::Neptune].sign_angle).to_be(3.1730962372338807)?;
-		expect(chart[&Body::Pluto].sign_angle).to_be(11.4404557412276)?;
+		expect(chart[&Planet::Sun].sign_angle).to_be(9.872532293896843)?;
+		expect(chart[&Planet::Moon].sign_angle).to_be(7.320173004879664)?;
+		expect(chart[&Planet::Mercury].sign_angle).to_be(1.1300987894853036)?;
+		expect(chart[&Planet::Venus].sign_angle).to_be(0.975554039728352)?;
+		expect(chart[&Planet::Mars].sign_angle).to_be(27.58870720890896)?;
+		expect(chart[&Planet::Jupiter].sign_angle).to_be(25.254946738346774)?;
+		expect(chart[&Planet::Saturn].sign_angle).to_be(10.39831323519355)?;
+		expect(chart[&Planet::Uranus].sign_angle).to_be(14.780314883457436)?;
+		expect(chart[&Planet::Neptune].sign_angle).to_be(3.1730962372338807)?;
+		expect(chart[&Planet::Pluto].sign_angle).to_be(11.4404557412276)?;
 
 	}
 }

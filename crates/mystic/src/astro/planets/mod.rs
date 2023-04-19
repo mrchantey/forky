@@ -1,7 +1,7 @@
 mod astro_utils;
 pub use self::astro_utils::*;
-mod body;
-pub use self::body::*;
+mod planet;
+pub use self::planet::*;
 pub mod ecliptic_positions;
 mod solar_system;
 pub use self::solar_system::*;

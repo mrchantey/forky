@@ -2,13 +2,13 @@ use std::collections::HashMap;
 
 use super::*;
 use crate::astro::{
-	planets::{Body, Y2000Day},
+	planets::{Planet, Y2000Day},
 	*,
 };
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Chart {
-	pub positions: HashMap<Body, ZodiacPosition>,
+	pub positions: HashMap<Planet, ZodiacPosition>,
 }
 
 impl Chart {

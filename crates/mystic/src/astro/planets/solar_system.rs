@@ -14,18 +14,20 @@ impl SolarSystem {
 	// 	wrap_deg(self.bodies.get(&Body::Sun).unwrap().el.l * DEG2HOURS + 12.)
 	// }
 
-	pub fn geocentric_ecliptic(day: Y2000Day) -> HashMap<Body, GeoCoords> {
+	pub fn geocentric_ecliptic(day: Y2000Day) -> HashMap<Planet, GeoCoords> {
 		let planets = Self::heliocentric_ecliptic(day);
-		let earth_pos = planets.get(&Body::Earth).unwrap().clone();
+		let earth_pos = planets.get(&Planet::Earth).unwrap().clone();
 		planets
 			.iter()
 			.map(|(key, value)| (*key, value.to_geo_with_earth(earth_pos)))
 			.collect()
 	}
 
-	pub fn heliocentric_ecliptic(day: Y2000Day) -> HashMap<Body, HelioCoords> {
-		let mut planets = HashMap::with_capacity(Body::COUNT);
-		for body in Body::iter() {
+	pub fn heliocentric_ecliptic(
+		day: Y2000Day,
+	) -> HashMap<Planet, HelioCoords> {
+		let mut planets = HashMap::with_capacity(Planet::COUNT);
+		for body in Planet::iter() {
 			planets.insert(body, ecliptic_position(day, body));
 		}
 		planets
