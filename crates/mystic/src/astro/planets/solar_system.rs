@@ -28,33 +28,21 @@ impl SolarSystem {
 	pub fn heliocentric_ecliptic(&self) -> HashMap<Body, RectangluarCoords> {
 		heliocentric_ecliptic(self.day)
 	}
-	pub fn equatorial(&self) -> HashMap<Body, EquatorialCoords> {
-		self.geocentric_ecliptic()
-			.iter()
-			.map(|(key, value)| (*key, value.to_equatorial()))
-			.collect()
-		// geocentric_ecliptic(&self.bodies, self.day)
-	}
+	// pub fn equatorial(&self) -> HashMap<Body, EquatorialCoords> {
+	// 	self.geocentric_ecliptic()
+	// 		.iter()
+	// 		.map(|(key, value)| (*key, value.to_equatorial()))
+	// 		.collect()
+	// 	// geocentric_ecliptic(&self.bodies, self.day)
+	// }
 
-	pub fn topocentric(
-		&self,
-		latitude: f64,
-		longitude: f64,
-	) -> HashMap<Body, TopocentricCoords> {
-		self.equatorial()
-			.iter()
-			.map(|(key, value)| {
-				(
-					*key,
-					TopocentricCoords::from_equatorial(
-						value,
-						latitude,
-						longitude,
-						self.gmst(),
-						self.day.utc_hour(),
-					),
-				)
-			})
-			.collect()
-	}
+	// pub fn horizontal(
+	// 	&self,
+	// 	position: &GeographicCoords,
+	// ) -> HashMap<Body, HorizontalCoords> {
+	// 	self.equatorial()
+	// 		.iter()
+	// 		.map(|(key, value)| (*key, value.to_horizontal(position, self.day)))
+	// 		.collect()
+	// }
 }

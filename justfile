@@ -2,7 +2,8 @@ set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 sh := 'C:/tools/cygwin/bin/'
 
-crates := 'forky forky_cli forky_core forky_play forky_test sweet'
+crates := 'forky forky_cli forky_core forky_play forky_test mystic sweet'
+testable := 'forky_core forky_cli forky_fs forky_play mystic sweet'
 # forky_esp
 backtrace := '0'
 # backtrace := '1'
@@ -41,6 +42,7 @@ clean-repo:
 	rm -rf ./target
 	rm -rf ./Cargo.lock
 	just all clean
+	just test-all
 # rm -rf C:/temp/.embuild
 # rm -rf C:/temp/idf
 # rm -rf ./.embuild
@@ -85,6 +87,11 @@ publish-all:
 start crate: 
 	./target/debug/{{crate}}.exe
 
+
+test-all *args:
+	for file in {{testable}}; do \
+		just test $file {{args}}; \
+	done
 
 test crate *args:
 	RUST_BACKTRACE={{backtrace}} cargo test -p {{crate}} --test sweet -- {{args}}

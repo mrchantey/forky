@@ -89,15 +89,24 @@ impl OrbitalElements {
 
 		RectangluarCoords::new(x, y, z)
 	}
-
+	///mean anomoly
 	pub fn get_m(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
 		constants.m_offset + (*day * constants.m_scalar)
 	}
 	pub fn get_n(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
 		constants.n_offset + (*day * constants.n_scalar)
 	}
+	///argument of perihelion
 	pub fn get_w(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
 		constants.w_offset + (*day * constants.w_scalar)
+	}
+
+	///mean longitude
+	pub fn get_l(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
+		let m = Self::get_m(constants, day);
+		let w = Self::get_w(constants, day);
+		let n = Self::get_n(constants, day);
+		n + w + m
 	}
 }
 

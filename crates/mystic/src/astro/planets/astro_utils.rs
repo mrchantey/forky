@@ -21,8 +21,16 @@ pub fn tan_d(value: f64) -> f64 { f64::tan(value * DEG2RAD) }
 pub fn asin_d(value: f64) -> f64 { f64::asin(value * DEG2RAD) }
 pub fn acos_d(value: f64) -> f64 { f64::acos(value * DEG2RAD) }
 pub fn atan_d(value: f64) -> f64 { f64::atan(value * DEG2RAD) }
-
 pub fn atan2_d(x: f64, y: f64) -> f64 { f64::atan2(x, y) * RAD2DEG }
+
+pub fn sin_h(value: f64) -> f64 { f64::sin(value * HOURS2RAD) }
+pub fn cos_h(value: f64) -> f64 { f64::cos(value * HOURS2RAD) }
+pub fn tan_h(value: f64) -> f64 { f64::tan(value * HOURS2RAD) }
+pub fn asin_h(value: f64) -> f64 { f64::asin(value * HOURS2RAD) }
+pub fn acos_h(value: f64) -> f64 { f64::acos(value * HOURS2RAD) }
+pub fn atan_h(value: f64) -> f64 { f64::atan(value * HOURS2RAD) }
+pub fn atan2_h(x: f64, y: f64) -> f64 { f64::atan2(x, y) * RAD2HOURS }
+
 
 pub fn wrap_rad(value: f64) -> f64 { wrap(value, TAU) }
 pub fn wrap_deg(value: f64) -> f64 { wrap(value, 360.) }

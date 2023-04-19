@@ -10,47 +10,28 @@ use sweet::*;
 sweet! {
 
 	before{
-		let day: Y2000Day = Y2000Day::new(2000, 1, 1);
 	}
 
-	test "sun"{
+	test "ecliptic positions"{
+		let day = DAY_1_JAN_2000;
 		expect(ecliptic_positions::sun())
 			.to_be(RectangluarCoords { x: 0., y: 0., z: 0. })?;
-	}
-	test "moon"{
 		expect(ecliptic_positions::moon(day))
 			.to_be(RectangluarCoords { x: -0.17071703140942265, y: 0.9671373403660894, z: 0.000244455888348224 })?;
-	}
-
-	test "mercury"{
 		expect(ecliptic_positions::mercury(day))
 			.to_be(RectangluarCoords { x: -0.14072937612299719, y: -0.44390213113733545, z: -0.023343754406466743 })?;
-	}
-	test "venus"{
 		expect(ecliptic_positions::venus(day))
 			.to_be(RectangluarCoords { x: -0.7186427978467534, y: -0.022558508614733574, z: 0.041172246944286506 })?;
-	}
-	test "earth"{
 		expect(ecliptic_positions::earth(day))
 			.to_be(RectangluarCoords { x: -0.16859614540661194, y: 0.9687542029346362, z: 0.0 })?;
-	}
-	test "jupiter"{
 		expect(ecliptic_positions::jupiter(day))
 			.to_be(RectangluarCoords { x: 4.004410412346112, y: 2.9373123101736742, z: -0.10175564366099876 })?;
-	}
-	test "saturn"{
 		expect(ecliptic_positions::saturn(day))
 			.to_be(RectangluarCoords { x: 6.407513191982934, y: 6.565128118257096, z: -0.3699571287452595 })?;
-	}
-	test "uranus"{
 		expect(ecliptic_positions::uranus(day))
 			.to_be(RectangluarCoords { x: 14.425425328151979, y: -13.737612206413395, z: -0.23802068662353199 })?;
-	}
-	test "neptune"{
 		expect(ecliptic_positions::neptune(day))
 			.to_be(RectangluarCoords { x: 16.796170232469972, y: -24.982713961883295, z: 0.12733440092952736})?;
-	}
-	test "pluto"{
 		expect(ecliptic_positions::pluto(day))
 			.to_be(RectangluarCoords { x: -9.892380757344934, y: -27.99251636591456, z: 5.858940692166365 })?;
 	}

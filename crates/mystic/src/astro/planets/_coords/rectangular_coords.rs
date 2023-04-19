@@ -29,14 +29,15 @@ impl RectangluarCoords {
 	pub fn flat_angle(&self) -> f64 { f64::atan2(self.y, self.x) }
 	pub fn up_angle(&self) -> f64 { f64::atan2(self.z, self.length_xy()) }
 
-	pub fn to_equatorial(&self) -> EquatorialCoords {
+	//deleteme
+	pub fn to_equatorial_bad(&self) -> EquatorialCoords {
 		EquatorialCoords {
 			radius: self.length(),
 			right_ascention: self.flat_angle() * RAD2HOURS,
 			declination: self.up_angle() * RAD2DEG,
 		}
 	}
-	//yes identical to equatorial except deg instead of hours
+	//deleteme
 	pub fn to_ecliptical(&self) -> EclipticalCoords {
 		EclipticalCoords {
 			radius: self.length(),
