@@ -2,8 +2,6 @@ mod astro_utils;
 pub use self::astro_utils::*;
 mod body;
 pub use self::body::*;
-mod ecliptic_origin;
-pub use self::ecliptic_origin::*;
 pub mod ecliptic_positions;
 mod solar_system;
 pub use self::solar_system::*;

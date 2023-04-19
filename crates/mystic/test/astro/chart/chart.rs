@@ -10,10 +10,7 @@ sweet! {
 
 	}
 	test "all" {
-		let chart = geocentric_ecliptic(day);
-		let chart = chart.iter()
-			.map(|(planet,pos)|(planet,ZodiacPosition::from(pos)))
-			.collect::<HashMap<_,_>>();
+		let chart = Chart::new(day).positions;
 
 		// for (body,zodiac) in chart.iter(){
 		// 	let deg = zodiac.sign_angle.floor();

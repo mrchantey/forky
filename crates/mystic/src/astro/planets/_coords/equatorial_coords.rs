@@ -83,14 +83,11 @@ impl GeoCoords {
 			return eq;
 		}
 		let parallax = parallax.asin();
-		// let hor = eq_spherical.to_horizontal(&position, day, 0.);
 
 		let gclat =
 			EquatorialCoords::oblate_latitude_correction(position.latitude);
 		let rho = EquatorialCoords::oblate_radius_correction(position.latitude);
 
-		// let altitude =
-		// 	hor.altitude - parallaxInRadians * RAD2DEG * cos_d(hor.altitude);
 		let ls = OrbitalElements::get_l(day, &ecliptic_positions::SUN);
 		let gmst0 = (ls + 180.0) * DEG2HOURS;
 		let utc_hour = day.utc_hour();
@@ -117,19 +114,8 @@ impl GeoCoords {
 	}
 }
 
-
 impl SphericalCoords {
 	pub fn to_equatorial(&self) -> EquatorialCoords {
 		EquatorialCoords::from_spherical(self)
 	}
 }
-
-
-//deleteme
-// pub fn to_equatorial_bad(&self) -> EquatorialCoords {
-// 	EquatorialCoords {
-// 		radius: self.length(),
-// 		right_ascention: self.flat_angle() * RAD2HOURS,
-// 		declination: self.up_angle() * RAD2DEG,
-// 	}
-// }
