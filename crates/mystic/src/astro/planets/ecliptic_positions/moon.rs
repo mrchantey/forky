@@ -2,19 +2,19 @@ use super::super::*;
 use super::*;
 
 pub fn moon(day: Y2000Day) -> HelioCoords {
-	let pos = OrbitalElements::position(&MOON, day);
-	let pos = perturb(&pos, day);
+	let pos = OrbitalElements::position(day, &MOON);
+	let pos = perturb(day, &pos);
 	earth(day) + pos
 }
 
-fn perturb(pos: &HelioCoords, day: Y2000Day) -> HelioCoords {
-	let ms = OrbitalElements::get_m(&SUN, day);
-	let ws = OrbitalElements::get_w(&SUN, day);
+fn perturb(day: Y2000Day, pos: &HelioCoords) -> HelioCoords {
+	let ms = OrbitalElements::get_m(day, &SUN);
+	let ws = OrbitalElements::get_w(day, &SUN);
 	let ls = ms + ws;
 
-	let mm = OrbitalElements::get_m(&MOON, day);
-	let nm = OrbitalElements::get_n(&MOON, day);
-	let wm = OrbitalElements::get_w(&MOON, day);
+	let mm = OrbitalElements::get_m(day, &MOON);
+	let nm = OrbitalElements::get_n(day, &MOON);
+	let wm = OrbitalElements::get_w(day, &MOON);
 	let lm = mm + wm + nm;
 
 	let d = lm - ls;

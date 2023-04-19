@@ -40,7 +40,7 @@ pub struct OrbitalElements {
 }
 
 impl OrbitalElements {
-	pub fn new(constants: &OrbitalConstants, day: Y2000Day) -> Self {
+	pub fn new(day: Y2000Day, constants: &OrbitalConstants) -> Self {
 		let a = constants.a_offset + (*day * constants.a_scalar);
 		let e = constants.e_offset + (*day * constants.e_scalar);
 		let m = constants.m_offset + (*day * constants.m_scalar);
@@ -69,9 +69,12 @@ impl OrbitalElements {
 		}
 	}
 
-	pub fn position(constants: &OrbitalConstants, day: Y2000Day) -> HelioCoords {
+	pub fn position(
+		day: Y2000Day,
+		constants: &OrbitalConstants,
+	) -> HelioCoords {
 		let OrbitalElements { n, i, w, v, r, .. } =
-			OrbitalElements::new(constants, day);
+			OrbitalElements::new(day, constants);
 
 		let cos_n = cos_d(n);
 		let sin_n = sin_d(n);
@@ -87,22 +90,22 @@ impl OrbitalElements {
 		HelioCoords::new(x, y, z)
 	}
 	///mean anomoly
-	pub fn get_m(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
+	pub fn get_m(day: Y2000Day, constants: &OrbitalConstants) -> f64 {
 		constants.m_offset + (*day * constants.m_scalar)
 	}
-	pub fn get_n(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
+	pub fn get_n(day: Y2000Day, constants: &OrbitalConstants) -> f64 {
 		constants.n_offset + (*day * constants.n_scalar)
 	}
 	///argument of perihelion
-	pub fn get_w(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
+	pub fn get_w(day: Y2000Day, constants: &OrbitalConstants) -> f64 {
 		constants.w_offset + (*day * constants.w_scalar)
 	}
 
 	///mean longitude
-	pub fn get_l(constants: &OrbitalConstants, day: Y2000Day) -> f64 {
-		let m = Self::get_m(constants, day);
-		let w = Self::get_w(constants, day);
-		let n = Self::get_n(constants, day);
+	pub fn get_l(day: Y2000Day, constants: &OrbitalConstants) -> f64 {
+		let m = Self::get_m(day, constants);
+		let w = Self::get_w(day, constants);
+		let n = Self::get_n(day, constants);
 		n + w + m
 	}
 }

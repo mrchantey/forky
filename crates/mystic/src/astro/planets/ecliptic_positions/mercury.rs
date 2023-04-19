@@ -2,7 +2,7 @@ use super::super::*;
 use super::*;
 
 pub fn mercury(day: Y2000Day) -> HelioCoords {
-	OrbitalElements::position(&MERCURY, day)
+	OrbitalElements::position(day, &MERCURY)
 }
 
 pub const MERCURY: OrbitalConstants = OrbitalConstants {

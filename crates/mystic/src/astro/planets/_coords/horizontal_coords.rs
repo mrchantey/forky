@@ -13,28 +13,28 @@ impl HorizontalCoords {
 	}
 	//bad
 	pub fn from_position(
-		body: Body,
 		day: Y2000Day,
 		position: &GeographicCoords,
+		body: Body,
 	) -> Self {
 		ecliptic_positions::ecliptic_position(day, body)
 			.to_geo(day)
-			.to_equatorial(day, position.clone())
-			.to_horizontal(position, day)
+			.to_equatorial(day, position)
+			.to_horizontal(day, position)
 	}
 
 	pub fn from_equatorial(
-		equatorial: &EquatorialCoords,
-		position: &GeographicCoords,
 		day: Y2000Day,
+		position: &GeographicCoords,
+		equatorial: &EquatorialCoords,
 	) -> Self {
-		Self::from_equatorial_with_correction(equatorial, position, day, -34.0)
+		Self::from_equatorial_with_correction(day, position, equatorial, -34.0)
 	}
 
 	pub fn from_equatorial_with_correction(
-		equatorial: &EquatorialCoords,
-		position: &GeographicCoords,
 		day: Y2000Day,
+		position: &GeographicCoords,
+		equatorial: &EquatorialCoords,
 		horizon_correction_in_arc_minutes: f64,
 	) -> Self {
 		let gst = day.greenwich_sidereal_time_in_hours();
@@ -88,9 +88,9 @@ impl HorizontalCoords {
 
 
 	pub fn from_equatorial2(
-		equatorial: &EquatorialCoords,
-		position: &GeographicCoords,
 		day: Y2000Day,
+		position: &GeographicCoords,
+		equatorial: &EquatorialCoords,
 	) -> HorizontalCoords {
 		let lmst = day.lmst(position.longitude);
 
@@ -116,10 +116,10 @@ impl HorizontalCoords {
 impl EquatorialCoords {
 	pub fn to_horizontal(
 		&self,
-		position: &GeographicCoords,
 		day: Y2000Day,
+		position: &GeographicCoords,
 	) -> HorizontalCoords {
-		HorizontalCoords::from_equatorial(self, position, day)
+		HorizontalCoords::from_equatorial(day, position, self)
 	}
 }
 

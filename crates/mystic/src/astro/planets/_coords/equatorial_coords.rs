@@ -62,7 +62,7 @@ impl GeoCoords {
 	pub fn to_equatorial(
 		&self,
 		day: Y2000Day,
-		position: GeographicCoords,
+		position: &GeographicCoords,
 	) -> EquatorialCoords {
 		let dx = self.x;
 		let dy = self.y;
@@ -91,7 +91,7 @@ impl GeoCoords {
 
 		// let altitude =
 		// 	hor.altitude - parallaxInRadians * RAD2DEG * cos_d(hor.altitude);
-		let ls = OrbitalElements::get_l(&ecliptic_positions::SUN, day);
+		let ls = OrbitalElements::get_l(day, &ecliptic_positions::SUN);
 		let gmst0 = (ls + 180.0) * DEG2HOURS;
 		let utc_hour = day.utc_hour();
 		let lst = gmst0 + utc_hour + position.longitude * DEG2HOURS;

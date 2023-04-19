@@ -2,13 +2,13 @@ use super::super::*;
 use super::*;
 
 pub fn saturn(day: Y2000Day) -> HelioCoords {
-	let pos = OrbitalElements::position(&SATURN, day);
-	perturb(&pos, day)
+	let pos = OrbitalElements::position(day, &SATURN);
+	perturb(day, &pos)
 }
 
-fn perturb(pos: &HelioCoords, day: Y2000Day) -> HelioCoords {
-	let mj = OrbitalElements::get_m(&JUPITER_FROM_JPL, day);
-	let ms = OrbitalElements::get_m(&SATURN, day);
+fn perturb(day: Y2000Day, pos: &HelioCoords) -> HelioCoords {
+	let mj = OrbitalElements::get_m(day, &JUPITER_FROM_JPL);
+	let ms = OrbitalElements::get_m(day, &SATURN);
 
 	let mut ecliptic = pos.to_ecliptical();
 	ecliptic.longitude += 0.812 * sin_d(2. * mj - 5. * ms - 67.6)

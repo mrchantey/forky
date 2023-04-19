@@ -52,7 +52,7 @@ impl Y2000Day {
 	pub fn obl_ecl(&self) -> f64 { EARTH_TILT_DEG - 3.563E-7 * **self }
 
 	pub fn gmst(&self) -> f64 {
-		let l = OrbitalElements::get_l(&ecliptic_positions::SUN, *self);
+		let l = OrbitalElements::get_l(*self, &ecliptic_positions::SUN);
 		wrap_deg(l * DEG2HOURS + 12.)
 	}
 	pub fn lmst(&self, longitude: f64) -> f64 {
