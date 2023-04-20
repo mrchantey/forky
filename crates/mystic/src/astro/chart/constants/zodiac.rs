@@ -1,81 +1,81 @@
 use super::super::*;
 
-pub const ARIES: Zodiac = Zodiac {
+pub const ARIES: SignMeta = SignMeta {
 	sign: Sign::Aries,
 	polarity: Polarity::Positive,
 	element: Element::Fire,
 	mode: Mode::Cardinal,
 };
-pub const TAURUS: Zodiac = Zodiac {
+pub const TAURUS: SignMeta = SignMeta {
 	sign: Sign::Taurus,
 	polarity: Polarity::Negative,
 	element: Element::Earth,
 	mode: Mode::Fixed,
 };
-pub const GEMINI: Zodiac = Zodiac {
+pub const GEMINI: SignMeta = SignMeta {
 	sign: Sign::Gemini,
 	polarity: Polarity::Positive,
 	element: Element::Air,
 	mode: Mode::Mutable,
 };
 
-pub const CANCER: Zodiac = Zodiac {
+pub const CANCER: SignMeta = SignMeta {
 	sign: Sign::Cancer,
 	polarity: Polarity::Negative,
 	element: Element::Water,
 	mode: Mode::Cardinal,
 };
 
-pub const LEO: Zodiac = Zodiac {
+pub const LEO: SignMeta = SignMeta {
 	sign: Sign::Leo,
 	polarity: Polarity::Positive,
 	element: Element::Fire,
 	mode: Mode::Fixed,
 };
 
-pub const VIRGO: Zodiac = Zodiac {
+pub const VIRGO: SignMeta = SignMeta {
 	sign: Sign::Virgo,
 	polarity: Polarity::Negative,
 	element: Element::Earth,
 	mode: Mode::Mutable,
 };
 
-pub const LIBRA: Zodiac = Zodiac {
+pub const LIBRA: SignMeta = SignMeta {
 	sign: Sign::Libra,
 	polarity: Polarity::Positive,
 	element: Element::Air,
 	mode: Mode::Cardinal,
 };
 
-pub const SCORPIO: Zodiac = Zodiac {
+pub const SCORPIO: SignMeta = SignMeta {
 	sign: Sign::Scorpio,
 	polarity: Polarity::Negative,
 	element: Element::Water,
 	mode: Mode::Fixed,
 };
 
-pub const SAGITTARIUS: Zodiac = Zodiac {
+pub const SAGITTARIUS: SignMeta = SignMeta {
 	sign: Sign::Sagittarius,
 	polarity: Polarity::Positive,
 	element: Element::Fire,
 	mode: Mode::Mutable,
 };
 
-pub const CAPRICORN: Zodiac = Zodiac {
+pub const CAPRICORN: SignMeta = SignMeta {
 	sign: Sign::Capricorn,
 	polarity: Polarity::Negative,
 	element: Element::Earth,
 	mode: Mode::Cardinal,
 };
 
-pub const AQUARIUS: Zodiac = Zodiac {
+pub const AQUARIUS: SignMeta = SignMeta {
 	sign: Sign::Aquarius,
 	polarity: Polarity::Positive,
 	element: Element::Air,
 	mode: Mode::Fixed,
 };
 
-pub const PISCES: Zodiac = Zodiac {
+pub const PISCES: SignMeta = SignMeta {
 	sign: Sign::Pisces,
 	polarity: Polarity::Negative,
 	element: Element::Water,

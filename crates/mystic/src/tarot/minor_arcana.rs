@@ -5,7 +5,7 @@ pub const NUM_MINOR_NUMBERS: u8 = 14;
 pub const NUM_MINOR_SUITS: u8 = 4;
 pub const NUM_MINOR_ARCANA: u8 = NUM_MINOR_NUMBERS * NUM_MINOR_SUITS;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct MinorArcana {
 	pub number: MinorNumber,
 	pub suit: MinorSuit,
@@ -27,7 +27,7 @@ impl MinorArcana {
 	}
 }
 
-#[derive(Debug, Clone, Copy, EnumIter, Display)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, Display)]
 pub enum MinorNumber {
 	Ace,
 	Two,
@@ -45,7 +45,7 @@ pub enum MinorNumber {
 	King,
 }
 
-#[derive(Debug, Clone, Copy, EnumIter, Display)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, Display)]
 pub enum MinorSuit {
 	Wands,
 	Cups,

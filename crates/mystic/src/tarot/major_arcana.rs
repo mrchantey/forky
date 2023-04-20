@@ -3,7 +3,7 @@ use strum_macros::{Display, EnumIter};
 
 pub const NUM_MAJOR_ARCANA: u8 = 22;
 
-#[derive(Debug, Clone, Copy, EnumIter, Display)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, Display)]
 #[strum(serialize_all = "title_case")]
 pub enum MajorArcana {
 	// #[strum(serialize = "The Fool")]

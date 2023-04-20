@@ -1,8 +1,8 @@
 mod astro_utils;
 pub use self::astro_utils::*;
+pub mod ecliptic_positions;
 mod planet;
 pub use self::planet::*;
-pub mod ecliptic_positions;
 mod solar_system;
 pub use self::solar_system::*;
 mod y2000_day;

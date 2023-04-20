@@ -5,7 +5,7 @@ use strum_macros::EnumCount;
 
 pub const ZODIAC_ANGLE: f64 = TAU / 12.0;
 
-pub fn get_zodiac() -> HashMap<Sign, Zodiac> {
+pub fn get_zodiac() -> HashMap<Sign, SignMeta> {
 	let mut map = HashMap::with_capacity(Sign::COUNT);
 	map.insert(Sign::Aries, constants::ARIES);
 	map.insert(Sign::Taurus, constants::TAURUS);
@@ -23,7 +23,7 @@ pub fn get_zodiac() -> HashMap<Sign, Zodiac> {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Zodiac {
+pub struct SignMeta {
 	pub sign: Sign,
 	pub polarity: Polarity,
 	pub element: Element,
@@ -31,7 +31,7 @@ pub struct Zodiac {
 }
 
 
-impl Zodiac {
+impl SignMeta {
 	pub fn from_index(index: usize) -> Self {
 		match index {
 			0 => constants::ARIES,
@@ -51,6 +51,26 @@ impl Zodiac {
 	}
 }
 
+
+impl Into<SignMeta> for Sign {
+	fn into(self) -> SignMeta {
+		match self {
+			Sign::Aries => constants::ARIES,
+			Sign::Taurus => constants::TAURUS,
+			Sign::Gemini => constants::GEMINI,
+			Sign::Cancer => constants::CANCER,
+			Sign::Leo => constants::LEO,
+			Sign::Virgo => constants::VIRGO,
+			Sign::Libra => constants::LIBRA,
+			Sign::Scorpio => constants::SCORPIO,
+			Sign::Sagittarius => constants::SAGITTARIUS,
+			Sign::Capricorn => constants::CAPRICORN,
+			Sign::Aquarius => constants::AQUARIUS,
+			Sign::Pisces => constants::PISCES,
+		}
+	}
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumCount)]
 pub enum Sign {
 	Aries,
@@ -65,6 +85,14 @@ pub enum Sign {
 	Capricorn,
 	Aquarius,
 	Pisces,
+}
+
+impl Sign {
+	pub fn meta(&self) -> SignMeta { self.clone().into() }
+	// TODO these could be faster with math
+	pub fn element(&self) -> Element { self.meta().element }
+	pub fn polarity(&self) -> Polarity { self.meta().polarity }
+	pub fn mode(&self) -> Mode { self.meta().mode }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
