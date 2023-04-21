@@ -15,6 +15,11 @@ pub struct TarotDeck {
 
 impl TarotDeck {
 	pub fn new() -> Self { Self::default() }
+	pub fn shuffled() -> Self {
+		let mut deck = Self::default();
+		deck.shuffle();
+		deck
+	}
 
 	pub fn shuffle(&mut self) -> &mut Self {
 		self.cards.shuffle(&mut thread_rng());

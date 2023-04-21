@@ -59,20 +59,31 @@ chatgpt_rs = {version="1.1.1",features=["streams"]}
 
 ### utility ###
 anyhow = "1"
+time = "0.3.20"
+petgraph = "0.6.3"
+
+## Attributes ###
+num-traits = "0.2.15"
+derive_deref = "1.1.1"
+strum = "0.24.1"
+strum_macros = "0.24.1"
+
+### IO ###
 clap = {version="4.2.2",features = ["derive"] }
 colorize = "0.1.0"
 crossterm = "0.25.0"
 dotenv = "0.15.0"
-derive_deref = "1.1.1"
-futures-util = "0.3.28"
 gag = "1.0.0"
 notify = "5.1.0"
-num-traits = "0.2.15"
-petgraph = "0.6.3"
-strum = "0.24.1"
-strum_macros = "0.24.1"
-time = "0.3.20"
-tokio = {version="1.27.0",features = ["rt", "rt-multi-thread"] }
+serde = {version = "1.0.160",features = ["derive"] }
+serde_json = "1.0.96"
+
+### Math ###
+rgb = "0.8.34"
+
+### Async ###
+futures-util = "0.3.28"
+tokio = {version="1.27.0",features = ["macros","rt", "rt-multi-thread"] }
 
 ### compile ###
 inventory = "0.3.2"
@@ -81,9 +92,6 @@ proc-macro2 = "1.0.47"
 syn = {version="1.0.103",features= ["full"] }
 quote = "1.0.21"
 extend = "1.1.2"
-
-### esp ###
-rgb = "0.8.34"
 
 ### wasm ###
 wasmi = "0.20.0"
@@ -143,45 +151,3 @@ features = [
   'XrSystem',
   'console'
 ]
-
-# [patch.crates-io]
-# # latest as of 28/02/23
-# # [patch."https://github.com/bevyengine/bevy"]
-# bevy = { path="../../work-ref/bevy"}
-# bevy_animation ={path="../../work-ref/bevy/crates/bevy_animation"}
-# bevy_app ={path="../../work-ref/bevy/crates/bevy_app"}
-# bevy_asset ={path="../../work-ref/bevy/crates/bevy_asset"}
-# bevy_audio ={path="../../work-ref/bevy/crates/bevy_audio"}
-# bevy_core ={path="../../work-ref/bevy/crates/bevy_core"}
-# bevy_core_pipeline ={path="../../work-ref/bevy/crates/bevy_core_pipeline"}
-# bevy_derive ={path="../../work-ref/bevy/crates/bevy_derive"}
-# bevy_diagnostic ={path="../../work-ref/bevy/crates/bevy_diagnostic"}
-# # bevy_dylib ={path="../../work-ref/bevy/crates/bevy_dylib"}
-# # bevy_dynamic_plugin ={path="../../work-ref/bevy/crates/bevy_dynamic_plugin"}
-# bevy_ecs ={path="../../work-ref/bevy/crates/bevy_ecs"}
-# # bevy_ecs_compile_fail_tests ={path="../../work-ref/bevy/crates/bevy_ecs_compile_fail_tests"}        
-# bevy_encase_derive ={path="../../work-ref/bevy/crates/bevy_encase_derive"}
-# bevy_gilrs ={path="../../work-ref/bevy/crates/bevy_gilrs"}
-# bevy_gltf ={path="../../work-ref/bevy/crates/bevy_gltf"}
-# bevy_hierarchy ={path="../../work-ref/bevy/crates/bevy_hierarchy"}
-# bevy_input ={path="../../work-ref/bevy/crates/bevy_input"}
-# bevy_internal ={path="../../work-ref/bevy/crates/bevy_internal"}
-# bevy_log ={path="../../work-ref/bevy/crates/bevy_log"}
-# bevy_macro_utils ={path="../../work-ref/bevy/crates/bevy_macro_utils"}
-# bevy_math ={path="../../work-ref/bevy/crates/bevy_math"}
-# bevy_mikktspace ={path="../../work-ref/bevy/crates/bevy_mikktspace"}
-# bevy_pbr ={path="../../work-ref/bevy/crates/bevy_pbr"}
-# bevy_ptr ={path="../../work-ref/bevy/crates/bevy_ptr"}
-# bevy_reflect ={path="../../work-ref/bevy/crates/bevy_reflect"}
-# # bevy_reflect_compile_fail_tests ={path="../../work-ref/bevy/crates/bevy_reflect_compile_fail_tests"}    
-# bevy_render ={path="../../work-ref/bevy/crates/bevy_render"}
-# bevy_scene ={path="../../work-ref/bevy/crates/bevy_scene"}
-# bevy_sprite ={path="../../work-ref/bevy/crates/bevy_sprite"}
-# bevy_tasks ={path="../../work-ref/bevy/crates/bevy_tasks"}
-# bevy_text ={path="../../work-ref/bevy/crates/bevy_text"}
-# bevy_time ={path="../../work-ref/bevy/crates/bevy_time"}
-# bevy_transform ={path="../../work-ref/bevy/crates/bevy_transform"}
-# bevy_ui ={path="../../work-ref/bevy/crates/bevy_ui"}
-# bevy_utils ={path="../../work-ref/bevy/crates/bevy_utils"}
-# bevy_window ={path="../../work-ref/bevy/crates/bevy_window"}
-# bevy_winit ={path="../../work-ref/bevy/crates/bevy_winit"}

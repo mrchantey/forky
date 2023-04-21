@@ -16,8 +16,10 @@ clap = {workspace = true}
 derive_deref = {workspace = true}
 forky_core = {workspace = true}
 forky_fs = {workspace = true}
-forky_ai = {workspace = true}
+# forky_ai = {workspace = true}
 rand = {workspace = true}
+serde = {workspace = true}
+serde_json = {workspace = true}
 strum = {workspace = true}
 strum_macros = {workspace = true}
 time = {workspace = true}

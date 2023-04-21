@@ -12,5 +12,3 @@ mod tarot_card_meta;
 pub use self::tarot_card_meta::*;
 mod tarot_deck;
 pub use self::tarot_deck::*;
-mod tarot_interpreter;
-pub use self::tarot_interpreter::*;
