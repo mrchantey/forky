@@ -47,27 +47,30 @@ impl EarthMoment {
 		io::stdin().read_line(&mut input)?;
 		let date: Vec<&str> = input.split('/').collect();
 		let date = Date {
-			day: date[0].parse()?,
-			month: date[1].parse()?,
-			year: date[2].parse()?,
+			day: date[0].trim().parse()?,
+			month: date[1].trim().parse()?,
+			year: date[2].trim().parse()?,
 		};
 		println!(
 			"Enter your UTC birth time in the 24hr format: hh:mm, ie 21:30"
 		);
+		input.clear();
 		io::stdin().read_line(&mut input)?;
 		let time: Vec<&str> = input.split(':').collect();
 		let time = Time {
-			hour: time[0].parse()?,
-			minute: time[1].parse()?,
+			hour: time[0].trim().parse()?,
+			minute: time[1].trim().parse()?,
 			second: 0,
 		};
 		println!(
-			"Enter your birth location in the format lat/long, ie -20.382/150.202"
+			"Enter your birth location in the format lat,long ie -20.382, 150.202.\nhttps://www.latlong.net/"
 		);
-		let location: Vec<&str> = input.split('/').collect();
+		input.clear();
+		io::stdin().read_line(&mut input)?;
+		let location: Vec<&str> = input.split(',').collect();
 		let location = GeographicCoords {
-			latitude: location[0].parse()?,
-			longitude: location[1].parse()?,
+			latitude: location[0].trim().parse()?,
+			longitude: location[1].trim().parse()?,
 			altitude: 0.,
 		};
 

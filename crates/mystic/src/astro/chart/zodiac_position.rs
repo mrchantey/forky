@@ -1,5 +1,5 @@
 use super::*;
-use crate::astro::planets::{wrap_rad, GeoCoords, RAD2DEG};
+use crate::astro::planets::{deg_min_sec, wrap_rad, GeoCoords, RAD2DEG};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct ZodiacPosition {
@@ -24,5 +24,12 @@ impl From<&GeoCoords> for ZodiacPosition {
 			sign_angle: sign_angle * RAD2DEG,
 			zodiac_angle: zodiac_angle * RAD2DEG,
 		}
+	}
+}
+
+impl std::fmt::Display for ZodiacPosition {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let (deg, min, sec) = deg_min_sec(self.sign_angle);
+		write!(f, "{:?} - {}° {}' {}\"", self.sign.sign, deg, min, sec)
 	}
 }

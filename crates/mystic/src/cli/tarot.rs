@@ -1,4 +1,7 @@
-use crate::tarot::spread::{self, TarotSpread};
+use crate::tarot::{
+	spread::{self, TarotSpread},
+	TarotDeck,
+};
 
 use super::Subcommand;
 use anyhow::Result;
@@ -8,21 +11,31 @@ pub struct TarotCommand;
 impl Subcommand for TarotCommand {
 	fn name(&self) -> &'static str { "tarot" }
 	fn about(&self) -> &'static str {
-		"get a tarot reading, defaults to a three card spread."
+		"Get a tarot reading, defaults to a single card."
 	}
 	fn subcommands(&self) -> Vec<Box<dyn Subcommand>> {
-		vec![Box::new(ThreeCard)]
+		vec![Box::new(OneCard), Box::new(ThreeCard)]
 	}
-	fn run(&self, _args: &ArgMatches) -> Result<()> { ThreeCard.run(_args) }
+	fn run(&self, _args: &ArgMatches) -> Result<()> { OneCard.run(_args) }
 }
 
-pub struct ThreeCard;
+struct ThreeCard;
 
 impl Subcommand for ThreeCard {
-	fn name(&self) -> &'static str { "three-card" }
-	fn about(&self) -> &'static str { "Create a three card spread" }
+	fn name(&self) -> &'static str { "three" }
+	fn about(&self) -> &'static str { "Create a three card spread." }
 	fn run(&self, _args: &ArgMatches) -> Result<()> {
 		println!("{}", spread::PastPresentFuture::new());
+		Ok(())
+	}
+}
+struct OneCard;
+
+impl Subcommand for OneCard {
+	fn name(&self) -> &'static str { "one" }
+	fn about(&self) -> &'static str { "Draw a single card." }
+	fn run(&self, _args: &ArgMatches) -> Result<()> {
+		println!("{}", TarotDeck::shuffled().pop().unwrap());
 		Ok(())
 	}
 }

@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, fmt::Display};
 
 use super::*;
 use crate::astro::{
@@ -19,5 +19,18 @@ impl Chart {
 			.collect();
 
 		Chart { positions }
+	}
+}
+
+impl Display for Chart {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let positions = self
+			.positions
+			.iter()
+			.map(|(planet, position)| format!("{:?}: {}", planet, position))
+			.collect::<Vec<String>>()
+			.join("\n");
+
+		f.write_fmt(format_args!("{}", positions))
 	}
 }

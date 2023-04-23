@@ -39,4 +39,12 @@ pub fn wrap_hours(value: f64) -> f64 { wrap(value, 24.) }
 pub fn wrap(value: f64, wrap: f64) -> f64 {
 	value - f64::floor(value / wrap) * wrap
 }
+
+pub fn deg_min_sec(value: f64) -> (i64, i64, f64) {
+	let deg = value.floor() as i64;
+	let min = ((value - deg as f64) * 60.).floor() as i64;
+	let sec = ((value - deg as f64 - min as f64 / 60.) * 3600.).floor() as f64;
+	(deg, min, sec)
+}
+
 // const earthTiltRad = earthTiltDeg * deg2rad

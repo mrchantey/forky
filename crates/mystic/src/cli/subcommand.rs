@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
 use clap::{ArgMatches, Command};
-use std::io;
+use std::{fmt::Error, io};
 
 pub trait Subcommand {
 	fn name(&self) -> &'static str;
@@ -52,6 +52,7 @@ pub trait Subcommand {
 			match self.run(args) {
 				Ok(_) => {}
 				Err(e) => {
+					//TODO only print help if the error is a unimplemented error
 					self.create_command().print_help()?;
 					return Err(e);
 				}
@@ -61,6 +62,7 @@ pub trait Subcommand {
 	}
 
 	fn run(&self, _args: &ArgMatches) -> Result<()> {
+		// Err(unimplemented!("No default function or subcommand entered.."))
 		Err(anyhow!("No default function or subcommand entered.."))
 	}
 

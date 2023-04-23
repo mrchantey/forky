@@ -1,4 +1,4 @@
-use strum_macros::{EnumCount, EnumIter};
+use strum_macros::{EnumCount, EnumIter, EnumString};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, EnumCount, EnumIter)]
 pub enum Planet {
