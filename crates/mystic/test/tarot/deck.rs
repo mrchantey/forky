@@ -15,7 +15,7 @@ sweet! {
 
 		deck.shuffle();
 
-		let spread = tarot::spread::PastPresentFuture::new(&mut deck);
+		// let spread = tarot::spread::PastPresentFuture::new();
 
 
 		// println!("{}", spread.print());

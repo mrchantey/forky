@@ -1,8 +1,4 @@
-use bevy::{
-	prelude::*,
-	reflect::TypeUuid,
-	render::render_resource::{AsBindGroup, ShaderRef},
-};
+use bevy::prelude::*;
 use forky_play::*;
 
 fn main() {

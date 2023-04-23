@@ -1,7 +1,7 @@
 use super::*;
 use std::{collections::HashMap, f64::consts::TAU};
 use strum::EnumCount;
-use strum_macros::{EnumCount, EnumString};
+use strum_macros::EnumCount;
 
 pub const ZODIAC_ANGLE: f64 = TAU / 12.0;
 

@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
 use clap::{ArgMatches, Command};
-use std::{fmt::Error, io};
+use std::io;
 
 pub trait Subcommand {
 	fn name(&self) -> &'static str;
