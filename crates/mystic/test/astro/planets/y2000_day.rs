@@ -11,6 +11,8 @@ sweet! {
 		expect(*Y2000Day::now()).to_be_greater_than(8000.)?;
 		expect(*Y2000Day::now()).to_be_less_than(9000.)?;
 
+		expect (*Y2000Day::from_unix_ms(FIRST_JAN_2000_MILLIS)).to_be(*FIRST_JAN_2000_DAY)?;
+
 
 	}
 }

@@ -13,7 +13,15 @@ where
 		+ Into<f64>,
 {
 	pub fn to_be_close_to(&self, other: T) -> Result<()> {
-		if self.abs_diff(other).into() < EPSILON {
+		self.to_be_close_to_with_epsilon(other, EPSILON)
+	}
+	pub fn to_be_close_to_with_epsilon(
+		&self,
+		other: T,
+		epsilon: f64,
+	) -> Result<()> {
+		let diff:f64 = self.abs_diff(other).into();
+		if diff < epsilon {
 			Ok(())
 		} else {
 			let expect = format!("close to {:?}", other);

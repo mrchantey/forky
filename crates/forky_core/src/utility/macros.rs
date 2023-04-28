@@ -12,13 +12,23 @@ macro_rules! replace_expr {
 // 		$(format!("{} ",$x))+
 // 	};
 // }
+// #[macro_export]
+// macro_rules! log {
+// 	($($x:expr) +) => {
+// 		$(print!("{}",$x));+;
+// 		print!("\n");
+// 	};
+// }
 #[macro_export]
 macro_rules! log {
-	($($x:expr) +) => {
-		$(print!("{}",$x));+;
-		print!("\n");
-	};
+	( $( $t:tt )* ) => {
+			#[cfg(not(target_arch = "wasm32"))]
+			println!($( $t )*);
+			#[cfg(target_arch = "wasm32")]
+			web_sys::console::log_1(&format!( $( $t )* ).into());
+	}
 }
+
 #[macro_export]
 macro_rules! dir {
 	($($x:expr) +) => {

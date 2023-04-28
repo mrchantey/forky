@@ -3,7 +3,7 @@ use sweet::*;
 //http://cosinekitty.com/solar_system.html
 sweet! {
 	it "works" {
-		let day = DAY_1_JAN_2000;
+		let day = FIRST_JAN_2000_DAY;
 		let position = GEOGRAPHIC_COORDS_SYDNEY;
 
 		expect(ecliptic_positions::ecliptic_position(day,Planet::Sun).to_geo(day).to_equatorial(day,&position))

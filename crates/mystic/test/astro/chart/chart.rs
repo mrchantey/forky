@@ -29,7 +29,16 @@ sweet! {
 		expect(chart[&Planet::Uranus].sign_angle).to_be(14.780314883457436)?;
 		expect(chart[&Planet::Neptune].sign_angle).to_be(3.1730962372338807)?;
 		expect(chart[&Planet::Pluto].sign_angle).to_be(11.4404557412276)?;
+	}
 
+	test "utc millis"{
+
+		let day1 = Y2000Day::from_unix_ms(1682647200000);
+		let chart1 = Chart::new(day1);
+		let day2 = Y2000Day::new(2023,4,28).add_utc_time(2, 0, 0);
+		let chart2 = Chart::new(day2);
+		// println!("{},{}",*day1,*day2);
+		expect(chart1.positions[&Planet::Sun].zodiac_angle).to_be_close_to_with_epsilon(chart2.positions[&Planet::Sun].zodiac_angle,0.000000001)?;
 	}
 }
 /*

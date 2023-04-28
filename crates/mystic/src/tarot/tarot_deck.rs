@@ -1,8 +1,7 @@
-use std::ops::{Deref, DerefMut};
-
 use super::*;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
+use std::ops::{Deref, DerefMut};
 use strum::IntoEnumIterator;
 
 

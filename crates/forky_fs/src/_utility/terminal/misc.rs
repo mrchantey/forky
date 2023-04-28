@@ -9,7 +9,7 @@ use std::{
 pub fn clear() { clear_terminal().unwrap(); }
 
 pub fn get_forky() {
-	log!("\n🤘 lets get forky! 🤘\n");
+	println!("\n🤘 lets get forky! 🤘\n");
 }
 
 pub fn show_cursor() {

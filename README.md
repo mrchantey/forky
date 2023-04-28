@@ -21,7 +21,7 @@ Each tool is standalone and can be used independently of the others.
 If this project is of interest to you feel free to have a dig around! 
 
 All commands used are in the `justfile`, for example to run a test:
-```sh
+```shX
 just test forky_core
 ```
 

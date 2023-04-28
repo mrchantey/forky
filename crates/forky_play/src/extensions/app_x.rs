@@ -1,7 +1,7 @@
 use crate::utility;
-use bevy::prelude::*;
+use bevy::{prelude::*, utils::Instant};
 use extend::ext;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 #[ext(name = AppX)]
 pub impl App {

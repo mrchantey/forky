@@ -1,6 +1,5 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
-sh := 'C:/tools/cygwin/bin/'
 
 crates := 'forky forky_cli forky_core forky_play forky_test mystic sweet'
 testable := 'forky_core forky_cli forky_fs forky_play mystic sweet'
@@ -67,21 +66,21 @@ publish crate *args:
 publish-all:
 	cargo set-version --bump patch
 	just publish forky || true
-	{{sh}}sleep 5
+	sleep 5
 	just publish forky_core || true
-	{{sh}}sleep 5
+	sleep 5
 	just publish forky_test || true
-	{{sh}}sleep 5
+	sleep 5
 	just publish forky_fs || true
-	{{sh}}sleep 5
+	sleep 5
 	just publish sweet || true
-	{{sh}}sleep 5
+	sleep 5
 	just publish forky_cli || true
-	{{sh}}sleep 5
+	sleep 5
 	just publish forky_ai || true
-	{{sh}}sleep 5
+	sleep 5
 	just publish mystic || true
-	{{sh}}sleep 5
+	sleep 5
 	just publish forky_play || true
 
 start crate: 

@@ -8,5 +8,5 @@ mod equatorial;
 pub use self::equatorial::*;
 mod horizontal;
 pub use self::horizontal::*;
-mod time;
-pub use self::time::*;
+mod y2000_day;
+pub use self::y2000_day::*;

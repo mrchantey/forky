@@ -69,12 +69,12 @@ pub fn run() -> Result<()> {
 
 	print!("\n");
 	if combined_suite_results.tests == 0 {
-		log!(String::from("No Tests Found\n").red());
+		println!("{}",String::from("No Tests Found\n").red());
 		return Ok(());
 	}
 
 	if combined_suite_results.failed == 0 {
-		log!("All tests passed\n".bold().cyan().underlined());
+		println!("{}","All tests passed\n".bold().cyan().underlined());
 	}
 
 	print_summary(
@@ -127,7 +127,7 @@ fn print_summary(prefix: String, total: u32, failed: u32, skipped: u32) {
 	summaries.push(&total_str);
 
 
-	log!(prefix.bold() summaries.join(", "));
+	println!("{} {}",prefix.bold(),summaries.join(", "));
 }
 
 

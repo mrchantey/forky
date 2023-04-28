@@ -1,8 +1,10 @@
-use std::time::Duration;
-
-use super::{ecliptic_positions::OrbitalElements, *};
+use super::{
+	ecliptic_positions::OrbitalElements,
+	offset_date_time_ext::OffsetDateTimeExt, *,
+};
 use derive_deref::{Deref, DerefMut};
 use forky_core::DurationExt;
+use std::time::Duration;
 use time::{Date, Month, OffsetDateTime};
 
 //millis, seconds, minutes, hours
@@ -15,8 +17,24 @@ const JULIAN_Y2000: f64 = 2451544.;
 // const JULIAN_Y2000: f64 = 2451545.;
 const SECS_IN_DAY: f64 = 86400.;
 
+pub const SECS2MILLIS: f64 = 1000.;
+pub const MINS2MILLIS: f64 = 60. * SECS2MILLIS;
+pub const HOURS2MILLIS: f64 = 60. * MINS2MILLIS;
+pub const DAYS2MILLIS: f64 = 24. * HOURS2MILLIS;
 
-pub const DAY_1_JAN_2000: Y2000Day = Y2000Day(1.);
+pub const MILLIS2SECONDS: f64 = 0.001;
+pub const MILLIS2MINUTES: f64 = MILLIS2SECONDS / 60.;
+pub const MILLIS2HOURS: f64 = MILLIS2MINUTES / 60.;
+pub const MILLIS2DAYS: f64 = MILLIS2HOURS / 24.;
+pub const MILLIS2SECS: f64 = 0.001;
+
+pub const SECS2MINS: f64 = 1. / 60.;
+pub const MINS2HOURS: f64 = 1. / 60.;
+
+
+pub const FIRST_JAN_2000_DAY: Y2000Day = Y2000Day(1.);
+pub const FIRST_JAN_2000_MILLIS: i64 = 946684800000;
+pub const SYDNEY_28TH_APRIL_2023:i64 = 1682647200000;
 
 #[derive(Debug, Clone, Copy, Deref, PartialEq, DerefMut)]
 pub struct Y2000Day(pub f64);
@@ -29,6 +47,13 @@ impl Y2000Day {
 		Y2000Day(julian - JULIAN_Y2000)
 	}
 
+	pub fn from_unix_ms(unix_ms: i64) -> Self {
+		let offset_date =
+			OffsetDateTime::UNIX_EPOCH + time::Duration::milliseconds(unix_ms);
+		let julian = offset_date.to_julian_day_with_time();
+		Y2000Day(julian - JULIAN_Y2000) //add1 because JULIAN_Y2000 is 0/Jan/2000?
+	}
+
 	pub fn add_utc_time(self, hour: u64, minute: u64, second: u64) -> Self {
 		self.add_duration(Duration::from_hms(hour, minute, second))
 	}
@@ -37,14 +62,8 @@ impl Y2000Day {
 	}
 
 	pub fn now() -> Self {
-		let now = OffsetDateTime::now_utc();
-		let (hours, minutes, seconds) = now.to_hms();
-		let day = now.to_julian_day() as f64;
-		Y2000Day((day - JULIAN_Y2000) as f64).add_utc_time(
-			hours as u64,
-			minutes as u64,
-			seconds as u64,
-		)
+		let now = OffsetDateTime::now_utc().to_julian_day_with_time();
+		Y2000Day(now - JULIAN_Y2000)
 	}
 
 	pub fn utc_hour(&self) -> f64 { (**self % 1.0) * 24.0 }
