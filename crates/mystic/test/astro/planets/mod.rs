@@ -2,6 +2,8 @@ mod astro_utils;
 pub use self::astro_utils::*;
 mod coords;
 pub use self::coords::*;
+mod ecliptic;
+pub use self::ecliptic::*;
 mod ecliptic_positions;
 pub use self::ecliptic_positions::*;
 mod equatorial;

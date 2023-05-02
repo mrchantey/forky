@@ -22,7 +22,7 @@ pub fn get_zodiac() -> HashMap<Sign, SignMeta> {
 	map
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub struct SignMeta {
 	pub sign: Sign,
 	pub polarity: Polarity,
@@ -71,8 +71,9 @@ impl Into<SignMeta> for Sign {
 	}
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumCount)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash, EnumCount)]
 pub enum Sign {
+	#[default]
 	Aries,
 	Taurus,
 	Gemini,
@@ -95,21 +96,24 @@ impl Sign {
 	pub fn mode(&self) -> Mode { self.meta().mode }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub enum Polarity {
+	#[default]
 	Positive,
 	Negative,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub enum Element {
+	#[default]
 	Fire,
 	Earth,
 	Air,
 	Water,
 }
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub enum Mode {
+	#[default]
 	Cardinal,
 	Fixed,
 	Mutable,

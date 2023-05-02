@@ -27,27 +27,24 @@ impl SphericalCoords {
 	}
 
 	pub fn from_rectangular(rect: &RectCoords) -> Self {
-		let xy_sq = rect.x * rect.x + rect.y * rect.y;
-		let mut longitude = atan2_d(rect.y, rect.x);
-		if longitude < 0. {
-			longitude += 360.0;
-		}
-		let xy_len = xy_sq.sqrt();
-		let latitude = atan2_d(rect.z, xy_len);
-		let radius = rect.length();
 		SphericalCoords {
-			longitude,
-			latitude,
-			radius,
+			radius: rect.length(),
+			longitude: wrap_deg(atan2_d(rect.y, rect.x)),
+			latitude: atan2_d(rect.z, rect.length_xy()),
 		}
-		// this.Polar = function (x, y, z) {
-		// 	var rho = (x * x) + (y * y);
-		// 	var radius = Math.sqrt(rho + (z * z));
-		// 	var phi = Angle.AtanDeg2(y, x);
-		// 	var rho = Math.sqrt(rho);
-		// 	var theta = Angle.AtanDeg2(z, rho);
-		// 	return new SphericalCoordinates(phi, theta, radius);
-		// }
+	}
+}
+
+impl std::fmt::Display for SphericalCoords {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(
+			f,
+			"longitude: {:.prec$}, latitude: {:.prec$}, radius: {:.prec$})",
+			self.longitude,
+			self.latitude,
+			self.radius,
+			prec = DISPLAY_PRECISION
+		)
 	}
 }
 

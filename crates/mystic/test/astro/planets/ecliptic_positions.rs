@@ -13,7 +13,7 @@ sweet! {
 	}
 
 	test "ecliptic positions"{
-		let day = FIRST_JAN_2000_DAY;
+		let day = Y2000Day::FIRST_JAN_2000;
 		expect(*ecliptic_positions::sun())
 			.to_be(RectCoords { x: 0., y: 0., z: 0. })?;
 		expect(*ecliptic_positions::moon(day))

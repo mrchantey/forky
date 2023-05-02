@@ -3,55 +3,58 @@ use super::*;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct HorizontalCoords {
+	// degrees
 	pub azimuth: f64,
+	// degrees
 	pub altitude: f64,
+	pub distance: f64,
 }
 
 impl HorizontalCoords {
-	pub fn new(azimuth: f64, altitude: f64) -> Self {
-		Self { azimuth, altitude }
-	}
-	//bad
-	pub fn from_position(
-		day: Y2000Day,
-		position: &GeographicCoords,
-		body: Planet,
-	) -> Self {
-		ecliptic_positions::ecliptic_position(day, body)
-			.to_geo(day)
-			.to_equatorial(day, position)
-			.to_horizontal(day, position)
+	pub fn new(azimuth: f64, altitude: f64, distance: f64) -> Self {
+		Self {
+			azimuth,
+			altitude,
+			distance,
+		}
 	}
 
-	pub fn from_equatorial(
-		day: Y2000Day,
-		position: &GeographicCoords,
-		equatorial: &EquatorialCoords,
-	) -> Self {
-		Self::from_equatorial_with_correction(day, position, equatorial, -34.0)
+	pub fn to_rectangular(&self) -> RectCoords {
+		RectCoords::new(
+			self.distance * cos_d(self.azimuth) * cos_d(self.altitude),
+			self.distance * sin_d(self.azimuth) * cos_d(self.altitude),
+			self.distance * sin_d(self.altitude),
+		)
 	}
+
+	pub fn from_rectangular(rect: &RectCoords) -> HorizontalCoords {
+		HorizontalCoords {
+			distance: rect.length(),
+			azimuth: wrap_deg(atan2_d(rect.y, rect.x)),
+			altitude: atan2_d(rect.z, rect.length_xy()),
+		}
+	}
+
 
 	pub fn from_equatorial_with_correction(
 		day: Y2000Day,
 		position: &GeographicCoords,
 		equatorial: &EquatorialCoords,
-		horizon_correction_in_arc_minutes: f64,
 	) -> Self {
-		let gst = day.greenwich_sidereal_time_in_hours();
-		let lst = gst + (position.longitude * DEG2HOURS);
-		let hour_angle = wrap_hours(lst - equatorial.right_ascention);
+		let horizon_correction_in_arc_minutes = -34.0;
+		let hour_angle =
+			day.hour_angle_st(position.longitude, equatorial.right_ascention);
 
 		let sin_lat = sin_d(position.latitude);
 		let cos_lat = cos_d(position.latitude);
 
-		let sin_hour_angle = sin_h(hour_angle);
-		let cos_hour_angle = cos_h(hour_angle);
+		let sin_ha = sin_h(hour_angle);
+		let cos_ha = cos_h(hour_angle);
 
 		let sin_dec = sin_d(equatorial.declination);
 		let cos_dec = cos_d(equatorial.declination);
 
-		let altitude_ratio =
-			(sin_lat * sin_dec) + (cos_lat * cos_dec * cos_hour_angle);
+		let altitude_ratio = (sin_lat * sin_dec) + (cos_lat * cos_dec * cos_ha);
 		let abs_altitude_ratio = altitude_ratio.abs();
 		if abs_altitude_ratio > 1.0 {
 			if abs_altitude_ratio > 1.000001 {
@@ -61,6 +64,7 @@ impl HorizontalCoords {
 				return HorizontalCoords {
 					altitude: if altitude_ratio < 0. { -90.0 } else { 90.0 },
 					azimuth: 180.,
+					distance: equatorial.radius,
 				};
 			}
 		} else {
@@ -78,38 +82,101 @@ impl HorizontalCoords {
 			}
 			HorizontalCoords {
 				azimuth: wrap_deg(atan2_d(
-					-cos_dec * sin_hour_angle,
-					(cos_lat * sin_dec) - (sin_lat * cos_dec * cos_hour_angle),
+					-cos_dec * sin_ha,
+					(cos_lat * sin_dec) - (sin_lat * cos_dec * cos_ha),
 				)),
 				altitude,
+				distance: equatorial.radius,
 			}
 		}
 	}
 
-
-	pub fn from_equatorial2(
+	#[rustfmt::skip]
+	pub fn from_equatorial(
 		day: Y2000Day,
 		position: &GeographicCoords,
 		equatorial: &EquatorialCoords,
 	) -> HorizontalCoords {
-		let lmst = day.lmst(position.longitude);
+		let ha = day.hour_angle_st(position.longitude, equatorial.right_ascention) * HOURS2DEG;
 
-		let ha = (lmst - equatorial.right_ascention) * HOURS2DEG;
+		let sin_lat = sin_d(position.latitude);
+		let cos_lat = cos_d(position.latitude);
 
-		let x_sid = cos_d(ha) * cos_d(equatorial.declination);
-		let y_sid = sin_d(ha) * cos_d(equatorial.declination);
-		let z_sid = sin_d(equatorial.declination);
+		let sin_dec = sin_d(equatorial.declination);
+		let cos_dec = cos_d(equatorial.declination);
 
-		let x_hor =
-			x_sid * sin_d(position.latitude) - z_sid * cos_d(position.latitude);
+		let sin_ha = sin_d(ha);
+		let cos_ha = cos_d(ha);
+
+		let x_sid = cos_ha * cos_dec;
+		let y_sid = sin_ha * cos_dec;
+		let z_sid = sin_dec;
+
+		let x_hor = x_sid * sin_lat - z_sid * cos_lat;
 		let y_hor = y_sid;
-		let z_hor =
-			x_sid * cos_d(position.latitude) + z_sid * sin_d(position.latitude);
+		let z_hor = x_sid * cos_lat + z_sid * sin_lat;
 
 		let azimuth = atan2_d(y_hor, x_hor) + 180.;
 		let altitude = atan2_d(z_hor, f64::sqrt(x_hor * x_hor + y_hor * y_hor));
 
-		HorizontalCoords { altitude, azimuth }
+		HorizontalCoords {
+			azimuth,
+			altitude,
+			distance: equatorial.radius,
+		}
+	}
+
+	pub fn to_equatorial(
+		&self,
+		day: Y2000Day,
+		position: &GeographicCoords,
+	) -> EquatorialCoords {
+		let sin_lat = sin_d(position.latitude);
+		let cos_lat = cos_d(position.latitude);
+
+		let sin_alt = sin_d(self.altitude);
+		let cos_alt = cos_d(self.altitude);
+
+		let ha = (self.azimuth - 180.) * DEG2HOURS;
+		let sin_ha = sin_h(ha);
+		let cos_ha = cos_h(ha);
+
+		let x_hor = cos_alt * cos_ha;
+		let y_hor = cos_alt * sin_ha;
+		let z_hor = sin_alt;
+
+		let x_sid = x_hor * sin_lat + z_hor * cos_lat;
+		let y_sid = y_hor;
+		let z_sid = -x_hor * cos_lat + z_hor * sin_lat;
+
+		let lst = day.lst(position.longitude);
+
+		let right_ascention = wrap_hours(lst - y_sid.atan2(x_sid) * RAD2HOURS);
+		let declination = z_sid.asin() * RAD2DEG;
+
+		EquatorialCoords {
+			right_ascention,
+			declination,
+			radius: self.distance,
+		}
+	}
+}
+
+impl std::fmt::Display for HorizontalCoords {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(
+			f,
+			"azimuth: {:.prec$}, altitude: {:.prec$}",
+			self.azimuth,
+			self.altitude,
+			prec = DISPLAY_PRECISION
+		)
+	}
+}
+
+impl RectCoords {
+	pub fn to_horizontal(&self) -> HorizontalCoords {
+		HorizontalCoords::from_rectangular(self)
 	}
 }
 
@@ -120,6 +187,22 @@ impl EquatorialCoords {
 		position: &GeographicCoords,
 	) -> HorizontalCoords {
 		HorizontalCoords::from_equatorial(day, position, self)
+	}
+
+	pub fn to_horizontal_with_correction(
+		&self,
+		day: Y2000Day,
+		position: &GeographicCoords,
+	) -> HorizontalCoords {
+		HorizontalCoords::from_equatorial_with_correction(day, position, self)
+	}
+
+	pub fn from_horizontal(
+		day: Y2000Day,
+		position: &GeographicCoords,
+		horizontal: &HorizontalCoords,
+	) -> EquatorialCoords {
+		horizontal.to_equatorial(day, position)
 	}
 }
 

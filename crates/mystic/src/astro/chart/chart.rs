@@ -20,6 +20,14 @@ impl Chart {
 
 		Chart { positions }
 	}
+
+	// #[rustfmt::skip]
+	// 	pub fn get_ascendant(day:Y2000Day,position:&GeographicCoords)->ZodiacPosition{
+	// 	let geo = HorizontalCoords::get_eastern_ecliptic_intersection(day, position)
+	// 		.to_equatorial(day, position)
+	// 		.to_geo(day);
+	// 		(&geo).into()
+	// 	}
 }
 
 impl Display for Chart {

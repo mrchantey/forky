@@ -1,6 +1,8 @@
 use std::f64::consts::{PI, TAU};
 
 
+pub const DISPLAY_PRECISION: usize = 6;
+
 
 pub const DEG2RAD: f64 = PI / 180.;
 pub const RAD2DEG: f64 = 180. / PI;
@@ -9,8 +11,6 @@ pub const HOURS2RAD: f64 = PI / 12.;
 pub const DEG2HOURS: f64 = 1. / 15.;
 pub const HOURS2DEG: f64 = 15.;
 
-// pub const earthTiltDeg:f64 = 23.4393;
-pub const EARTH_TILT_DEG: f64 = 23.43656;
 pub const METERS_PER_AU: f64 = 1.4959787e+11;
 pub const METERS_PER_EARTH_RADII: f64 = 6378140.0;
 pub const EARTH_RADII_PER_AU: f64 = METERS_PER_AU / METERS_PER_EARTH_RADII; // 23454.779920164812

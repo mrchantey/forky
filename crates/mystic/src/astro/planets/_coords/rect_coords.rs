@@ -17,7 +17,9 @@ impl RectCoords {
 		f64::sqrt(self.x * self.x + self.y * self.y)
 	}
 
+	/// Returns the angle in radians on the XY plane.
 	pub fn flat_angle(&self) -> f64 { f64::atan2(self.y, self.x) }
+	/// Returns the angle in radians on the XY by Z plane.
 	pub fn up_angle(&self) -> f64 { f64::atan2(self.z, self.length_xy()) }
 }
 

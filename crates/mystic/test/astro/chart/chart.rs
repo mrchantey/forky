@@ -3,13 +3,12 @@ use mystic::astro::planets::*;
 use std::collections::HashMap;
 use sweet::*;
 
+
+
 sweet! {
 
-	before{
-		let day = Y2000Day::new(2000,1,1);
-
-	}
 	test "all" {
+		let day:Y2000Day = Y2000Day::FIRST_JAN_2000;
 		let chart = Chart::new(day).positions;
 
 		// for (body,zodiac) in chart.iter(){
@@ -40,18 +39,23 @@ sweet! {
 		// println!("{},{}",*day1,*day2);
 		expect(chart1.positions[&Planet::Sun].zodiac_angle).to_be_close_to_with_epsilon(chart2.positions[&Planet::Sun].zodiac_angle,0.000000001)?;
 	}
+
 }
 /*
 cafeastrology
 
-Sun		Capricorn	9°52'
-Moon		Scorpio	7°18'
-Mercury		Capricorn	1°08'
-Venus		Sagittarius	0°58'
-Mars		Aquarius	27°35'
-Jupiter		Aries	25°15'
-Saturn		Taurus	10°24'	R
-Uranus		Aquarius	14°48'
-Neptune		Aquarius	3°12'
-Pluto		Sagittarius	11°28'
+Placidus
+
+I ASC		Libra	7°02'
+II		Scorpio	1°44'
+III		Sagittarius	2°36'
+IV		Capricorn	9°10'
+V		Aquarius	14°45'
+VI		Pisces	14°01'
+VII		Aries	7°02'
+VIII		Taurus	1°44'
+IX		Gemini	2°36'
+X MC		Cancer	9°10'
+XI		Leo	14°45'
+XII		Virgo	14°01'
 */

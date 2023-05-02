@@ -7,14 +7,18 @@ pub struct GeographicCoords {
 	pub altitude: f64,
 }
 
-pub const GEOGRAPHIC_COORDS_SYDNEY: GeographicCoords = GeographicCoords {
-	latitude: -33.8688,
-	longitude: 151.2093,
-	altitude: 0.,
-};
-
-
 impl GeographicCoords {
+	pub const GREENWICH:GeographicCoords = GeographicCoords {
+		latitude: 51.477928,
+		longitude: 0.,
+		altitude: 1.,
+	};
+	pub const SYDNEY:GeographicCoords = GeographicCoords {
+		latitude: -33.8688,
+		longitude: 151.2093,
+		altitude: 0.,
+	};
+
 	pub fn new(latitude: f64, longitude: f64, altitude: f64) -> Self {
 		Self {
 			latitude,

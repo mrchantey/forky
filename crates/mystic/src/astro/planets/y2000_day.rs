@@ -31,15 +31,15 @@ pub const MILLIS2SECS: f64 = 0.001;
 pub const SECS2MINS: f64 = 1. / 60.;
 pub const MINS2HOURS: f64 = 1. / 60.;
 
-
-pub const FIRST_JAN_2000_DAY: Y2000Day = Y2000Day(1.);
+// 12pm 1st Jan 2000
 pub const FIRST_JAN_2000_MILLIS: i64 = 946684800000;
-pub const SYDNEY_28TH_APRIL_2023:i64 = 1682647200000;
+pub const SYDNEY_28TH_APRIL_2023: i64 = 1682647200000;
 
 #[derive(Debug, Clone, Copy, Deref, PartialEq, DerefMut)]
 pub struct Y2000Day(pub f64);
 
 impl Y2000Day {
+	pub const FIRST_JAN_2000: Y2000Day = Y2000Day(1.);
 	pub fn new(year: i32, month: u8, day: u8) -> Self {
 		let julian = Date::from_calendar_date(year, u8_to_month(month), day)
 			.unwrap()
@@ -61,43 +61,65 @@ impl Y2000Day {
 		Y2000Day(self.0 + duration.as_secs_f64() / SECS_IN_DAY)
 	}
 
-	pub fn now() -> Self {
-		let now = OffsetDateTime::now_utc().to_julian_day_with_time();
-		Y2000Day(now - JULIAN_Y2000)
-	}
-
-	pub fn utc_hour(&self) -> f64 { (**self % 1.0) * 24.0 }
-	///obliquity of the ecliptic, decreasing
-	pub fn obl_ecl(&self) -> f64 { EARTH_TILT_DEG - 3.563E-7 * **self }
-
-	pub fn gmst(&self) -> f64 {
-		let l = OrbitalElements::get_l(*self, &ecliptic_positions::SUN);
-		wrap_deg(l * DEG2HOURS + 12.)
-	}
-	pub fn lmst(&self, longitude: f64) -> f64 {
-		self.gmst() + self.utc_hour() + longitude
-	}
-
+	
 	pub fn days_since_j2000(&self) -> f64 { **self - 1.5 }
 
 	pub fn centuries_since_j2000(&self) -> f64 {
 		self.days_since_j2000() / 36525.0
 	}
 
-	//how is this different from obl_ecl?
-	pub fn obl_ecl2(&self) -> f64 {
-		let t = self.centuries_since_j2000();
-		23.4392911
-			- ((46.8150 * t) - (0.00059 * t * t) + (0.001813 * t * t * t))
-				/ 3600.0
+	pub fn now() -> Self {
+		let now = OffsetDateTime::now_utc().to_julian_day_with_time();
+		Y2000Day(now - JULIAN_Y2000)
 	}
 
-	pub fn greenwich_sidereal_time_in_hours(&self) -> f64 {
+	pub fn utc_hour(&self) -> f64 { (**self % 1.0) * 24.0 }
+
+	///obliquity of the ecliptic in degreees, decreasing
+	#[rustfmt::skip]
+	pub fn obl_ecl(&self) -> f64 {
+		let t = self.centuries_since_j2000();
+		23.4392911 
+			- (46.8150 * t
+			- 0.00059 * t * t 
+			+ 0.001813 * t * t * t) 
+			/ 3600.0
+	}
+	// pub fn obl_ecl_simple(&self) -> f64 { 23.43656 - 3.563E-7 * **self }
+
+	/// GMST0 = Greenwich Mean Sidereal Time at Midnight
+	pub fn gmst(&self) -> f64 {
+		let l = OrbitalElements::get_l(*self, &ecliptic_positions::SUN);
+		wrap_deg(l * DEG2HOURS + 12.)
+	}
+
+	// Local Mean Siderial Time
+	pub fn lmst(&self, longitude: f64) -> f64 {
+		self.gmst() + self.utc_hour() + longitude * DEG2HOURS
+	}
+
+	// Mean Siderial Time
+	pub fn hour_angle(&self,longitude: f64,right_ascention:f64)->f64{
+		wrap_hours(self.lmst(longitude) - right_ascention)
+	}
+
+
+	/// Greenwich Siderial Time
+	pub fn gst(&self) -> f64 {
 		let midnight = Y2000Day(self.floor());
 		let t0 = midnight.centuries_since_j2000();
 		let tut = (**self - *midnight) * 24.0;
 		let sg = (6.6974 + 2400.0513 * t0) + (366.2422 / 365.2422) * tut;
 		wrap_hours(sg)
+	}
+
+	// Local Sidereal Time
+	pub fn lst(&self,longitude: f64)->f64{
+		self.gst() + (longitude * DEG2HOURS)
+		// let hour_angle = wrap_hours(lst - equatorial.right_ascention);
+	}
+	pub fn hour_angle_st(&self,longitude: f64,right_ascention:f64)->f64{
+		wrap_hours(self.lst(longitude) - right_ascention)
 	}
 }
 

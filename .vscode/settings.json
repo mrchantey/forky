@@ -30,5 +30,8 @@
 		"crates\\bevy_webxr",
 		// "crates\\forky_idf",
 	],
+	"search.exclude": {
+		"**/assets/*": true,
+	},
 	"rust-analyzer.showUnlinkedFileNotification": false,
 }

@@ -1,5 +1,5 @@
-mod ecliptical_coords;
-pub use self::ecliptical_coords::*;
+mod ecliptic_coords;
+pub use self::ecliptic_coords::*;
 mod equatorial_coords;
 pub use self::equatorial_coords::*;
 mod geographic_coords;
