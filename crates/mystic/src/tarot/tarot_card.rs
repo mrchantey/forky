@@ -1,12 +1,8 @@
+use super::{constants::TarotCardEnum, *};
 use crate::astro::{chart::Sign, planets::Planet};
-
-use super::*;
 use std::fmt::{Debug, Display};
 
-
-pub const NUM_TAROT_CARDS: u8 = NUM_MAJOR_ARCANA + NUM_MINOR_ARCANA;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum TarotCard {
 	Minor(MinorArcana),
 	Major(MajorArcana),
@@ -20,12 +16,18 @@ impl Display for TarotCard {
 	}
 }
 
-impl TarotCard {
-	pub fn index(&self) -> u8 {
-		match self {
-			TarotCard::Minor(minor) => minor.index(),
-			TarotCard::Major(major) => major.index(),
-		}
+impl Into<usize> for &TarotCard {
+	fn into(self) -> usize {
+		let value: TarotCardEnum = self.into();
+		value.into()
+	}
+}
+
+
+impl TryFrom<usize> for TarotCard {
+	type Error = ();
+	fn try_from(value: usize) -> Result<Self, Self::Error> {
+		TarotCardEnum::try_from(value).map(|item| item.into())
 	}
 }
 

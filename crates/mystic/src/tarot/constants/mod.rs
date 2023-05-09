@@ -12,3 +12,5 @@ mod meta_wands;
 pub use self::meta_wands::*;
 mod minor_arcana;
 pub use self::minor_arcana::*;
+mod tarot_card_enum;
+pub use self::tarot_card_enum::*;

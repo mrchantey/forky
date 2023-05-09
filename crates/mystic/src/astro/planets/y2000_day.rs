@@ -29,6 +29,7 @@ pub const MILLIS2DAYS: f64 = MILLIS2HOURS / 24.;
 pub const MILLIS2SECS: f64 = 0.001;
 
 pub const SECS2MINS: f64 = 1. / 60.;
+pub const HOURS2SECS: f64 = 1. / 60.;
 pub const MINS2HOURS: f64 = 1. / 60.;
 
 // 12pm 1st Jan 2000
@@ -56,6 +57,9 @@ impl Y2000Day {
 
 	pub fn add_utc_time(self, hour: u64, minute: u64, second: u64) -> Self {
 		self.add_duration(Duration::from_hms(hour, minute, second))
+	}
+	pub fn add_hours(self, hours: f64) -> Self {
+		self.add_duration(Duration::from_millis((hours * HOURS2MILLIS) as u64))
 	}
 	pub fn add_duration(self, duration: Duration) -> Self {
 		Y2000Day(self.0 + duration.as_secs_f64() / SECS_IN_DAY)
@@ -115,11 +119,17 @@ impl Y2000Day {
 
 	// Local Sidereal Time
 	pub fn lst(&self,longitude: f64)->f64{
-		self.gst() + (longitude * DEG2HOURS)
+		self.gst() + longitude * DEG2HOURS
 		// let hour_angle = wrap_hours(lst - equatorial.right_ascention);
 	}
 	pub fn hour_angle_st(&self,longitude: f64,right_ascention:f64)->f64{
 		wrap_hours(self.lst(longitude) - right_ascention)
+	}
+}
+
+impl std::fmt::Display for Y2000Day {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", self.0)
 	}
 }
 

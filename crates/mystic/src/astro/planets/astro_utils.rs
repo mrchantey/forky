@@ -46,5 +46,32 @@ pub fn deg_min_sec(value: f64) -> (i64, i64, f64) {
 	let sec = ((value - deg as f64 - min as f64 / 60.) * 3600.).floor() as f64;
 	(deg, min, sec)
 }
+pub fn deg_min_sec_str(value: f64) -> String {
+	let (deg, min, sec) = deg_min_sec(value);
+	format!("{}° {}' {}\"", deg, min, sec)
+}
+
+//https://stackoverflow.com/questions/1878907/how-can-i-find-the-difference-between-two-angles
+pub fn angle_between_d(a: f64, b: f64) -> f64 {
+	wrap(a - b + 180., 360.) - 180.
+}
+pub fn unsigned_angle_between_d(a: f64, b: f64) -> f64 {
+	f64::abs(angle_between_d(a, b))
+}
+
+
+// https://github.com/CruiserOne/Astrolog/blob/2676d1c63d22c66513c38f032a189e990ad2011e/general.cpp#L284
+// Modulus function for floating point values, in which we bring the given
+// parameter to within the range of 0 to 360.
+// real Mod(real d)
+// {
+//   if (d >= rDegMax)         // In most cases, value is only slightly
+//     d -= rDegMax;           // out of range, so can test for it and
+//   else if (d < 0.0)         // avoid the more complicated arithmetic.
+//     d += rDegMax;
+//   if (d >= 0 && d < rDegMax)
+//     return d;
+//   return (d - RFloor(d/rDegMax)*rDegMax);
+// }
 
 // const earthTiltRad = earthTiltDeg * deg2rad

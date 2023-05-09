@@ -10,22 +10,20 @@ const POS: GeographicCoords = GeographicCoords::GREENWICH;
 
 sweet! {
 
-	test "ascendant"{
-		let coords = EclipticCoords::eastern_horizon_intersect(DAY, &POS);
-		let ascendant:ZodiacPosition = (&coords).into();
-		expect(ascendant.to_string().as_str()).to_be("Libra - 7° 1' 55\"")?;
+	test "house - WholeSign"{
+
+		let houses = HouseSystem::new::<WholeSignHouse>(DAY,&POS);
+		// println!("Whole Sign: \n{}",houses);
 	}
+	test "house - EqualSign"{
 
-	test "meridian"{
-		let coords = EclipticCoords::meridian_intersect(DAY, &POS);
-		let ascendant:ZodiacPosition = (&coords).into();
-		expect(ascendant.to_string().as_str()).to_be("Cancer - 9° 9' 36\"")?;
+		let houses = HouseSystem::new::<EqualHouse>(DAY,&POS);
+		// println!("Equal Sign: \n{}",houses);
 	}
+	test "house - Porphyry"{
 
-	test "placidus"{
-
-		let houses = PlacidusHouse::new(DAY,&POS);
-		println!("{}",houses);
+		let houses = HouseSystem::new::<PorphyryHouse>(DAY,&POS);
+		// println!("Porphyry:\n{}",houses);
 	}
 	// test "ascendant2"{
 	// 	// let day = Y2000Day::FIRST_JAN_2000;

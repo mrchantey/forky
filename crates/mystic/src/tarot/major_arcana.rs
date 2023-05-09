@@ -1,9 +1,10 @@
+use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter};
 
 
 pub const NUM_MAJOR_ARCANA: u8 = 22;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, Display)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, Display, Hash)]
 #[strum(serialize_all = "title_case")]
 pub enum MajorArcana {
 	// #[strum(serialize = "The Fool")]
@@ -47,6 +48,16 @@ pub enum MajorArcana {
 	TheWorld,
 }
 
-impl MajorArcana {
-	pub fn index(&self) -> u8 { *self as u8 }
+impl Into<usize> for &MajorArcana {
+	fn into(self) -> usize { *self as usize }
+}
+impl Into<usize> for MajorArcana {
+	fn into(self) -> usize { self as usize }
+}
+
+impl TryFrom<usize> for MajorArcana {
+	type Error = ();
+	fn try_from(value: usize) -> Result<Self, Self::Error> {
+		Self::iter().nth(value).ok_or(())
+	}
 }

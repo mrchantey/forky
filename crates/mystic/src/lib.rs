@@ -1,6 +1,8 @@
 // #![feature(async_fn_in_trait)]
 
 
+#[cfg(not(target_arch = "wasm32"))]
+pub mod asset_import;
 pub mod astro;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod cli;

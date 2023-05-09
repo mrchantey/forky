@@ -1,5 +1,7 @@
+use mystic::tarot::constants::TarotCardEnum;
 use mystic::tarot::spread::*;
 use mystic::*;
+use strum::EnumCount;
 use sweet::*;
 
 sweet! {
@@ -7,13 +9,13 @@ sweet! {
 
 		let mut deck = tarot::TarotDeck::default();
 
-		expect(deck.len()).to_be(tarot::NUM_TAROT_CARDS.into())?;
+		expect(deck.len()).to_be(TarotCardEnum::COUNT)?;
 
 		for (i,card) in deck.iter().enumerate(){
-			expect(i).to_be(card.index() as usize)?;
+			expect(i).to_be(card.into())?;
 		}
 
-		deck.shuffle();
+		// deck.shuffle();
 
 		// let spread = tarot::spread::PastPresentFuture::new();
 

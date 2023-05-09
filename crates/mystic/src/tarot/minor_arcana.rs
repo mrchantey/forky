@@ -1,11 +1,9 @@
-use super::*;
-use strum_macros::{Display, EnumIter};
+use strum::EnumCount;
+use strum_macros::{Display, EnumCount, EnumIter};
 
-pub const NUM_MINOR_NUMBERS: u8 = 14;
-pub const NUM_MINOR_SUITS: u8 = 4;
-pub const NUM_MINOR_ARCANA: u8 = NUM_MINOR_NUMBERS * NUM_MINOR_SUITS;
+pub const NUM_MINOR_ARCANA: usize = MinorNumber::COUNT * MinorSuit::COUNT;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct MinorArcana {
 	pub number: MinorNumber,
 	pub suit: MinorSuit,
@@ -18,16 +16,9 @@ impl std::fmt::Display for MinorArcana {
 	}
 }
 
-
-impl MinorArcana {
-	pub fn index(&self) -> u8 {
-		NUM_MAJOR_ARCANA
-			+ (self.suit as u8 * NUM_MINOR_NUMBERS)
-			+ (self.number as u8)
-	}
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, Display)]
+#[derive(
+	Debug, Clone, Copy, PartialEq, Eq, EnumIter, EnumCount, Display, Hash,
+)]
 pub enum MinorNumber {
 	Ace,
 	Two,
@@ -45,7 +36,9 @@ pub enum MinorNumber {
 	King,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, Display)]
+#[derive(
+	Debug, Clone, Copy, PartialEq, Eq, EnumIter, EnumCount, Display, Hash,
+)]
 pub enum MinorSuit {
 	Wands,
 	Cups,

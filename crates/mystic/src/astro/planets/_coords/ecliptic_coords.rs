@@ -62,6 +62,17 @@ impl EclipticCoords {
 		ecliptical.longitude += 180.;
 		ecliptical
 	}
+
+	pub fn ascendant_midheaven_time(
+		day: Y2000Day,
+		position: &GeographicCoords,
+	) -> f64 {
+		let asc = EclipticCoords::eastern_horizon_intersect(day, &position);
+		let mc = EclipticCoords::meridian_intersect(day, &position);
+		let asc = asc.to_equatorial();
+		let mc = mc.to_equatorial();
+		(asc.right_ascention - mc.right_ascention)
+	}
 }
 //todo helio
 impl HelioCoords {
