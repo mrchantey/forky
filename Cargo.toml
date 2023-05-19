@@ -13,6 +13,7 @@ members = [
 	"crates/forky_esp",
 	"crates/forky_play",
 	"crates/forky_test",
+	"crates/keera",
 	"crates/mystic",
 	"crates/sweet",
 ]
@@ -107,6 +108,7 @@ wasmi = "0.20.0"
 [workspace.dependencies.web-sys]
 version = "0.3.61"
 features = [
+  'console',
   'Document',
   'Element',
   'Gpu',
@@ -119,6 +121,9 @@ features = [
   'Response',
   'WebGl2RenderingContext',
   'Window',
+	# Sensors
+	'DeviceOrientationEvent',
+	# XR
   'XrBoundedReferenceSpace',
   'XrEye',
   'XrFrame',
@@ -152,5 +157,4 @@ features = [
   'XrWebGlLayer',
   'XrWebGlLayerInit',
   'XrSystem',
-  'console'
 ]

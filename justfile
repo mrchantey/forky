@@ -131,11 +131,24 @@ watch-wasm *args:
 # just watch 'just copy-wasm-assets'
 
 serve-wasm *args:
-	cd ./html && live-server --watch=wasm/bindgen_bg.wasm,index.html {{args}}
+	cd ./html && live-server --host=0.0.0.0 --watch=wasm/bindgen_bg.wasm,index.html {{args}}
+
+serve-https *args:
+	just serve-wasm --https=https.config.js {{args}}
 
 copy-wasm-assets:
 	rm -rf ./html/assets
 	cp -r ./crates/forky_play/assets ./html/assets
+
+ssl:
+	openssl genrsa -out target/client-key.pem 2048
+	openssl req -new -key target/client-key.pem -subj "/CN=$cn\/emailAddress=admin@$cn/C=US/ST=Ohio/L=Columbus/O=Widgets Inc/OU=Some Unit" -out target/client.csr
+	openssl x509 -req -in target/client.csr -signkey target/client-key.pem -out target/client-cert.pem
+
+deploy-keera:
+	rm -rf ./crates/keera/html
+	cp -r ./html ./crates/keera/html
+	cd ./crates/keera && firebase deploy
 
 ### ESP ###
 

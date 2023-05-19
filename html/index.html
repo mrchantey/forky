@@ -11,6 +11,7 @@
 			background-size: 400% 400%;
 			height: 100vh;
 			display: flex;
+			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 		}
@@ -22,7 +23,11 @@
 </head>
 <script type="module">
 	import init from './wasm/bindgen.js'
-	init()
+	init().catch((error) => {
+		if (!error.message.startsWith("Using exceptions for control flow,"))
+			throw error
+	}
+	);
 	// import init, { Runner } from './wasm/bindgen.js'
 	// init().then(() => {
 	// 	var runner = new Runner()

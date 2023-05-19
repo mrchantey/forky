@@ -6,6 +6,16 @@ Each tool is standalone and can be used independently of the others.
 - [Forky Test](./crates/forky_test/README.md)
 - [Forky CLI](./crates/forky_cli/README.md)
 
+
+## Development
+
+### Wasm
+
+1. `just watch-wasm forky_play rotate_cube`
+2. `just ssl`
+	-	create a long-life ssl cert, this command only needs to be run once
+3. `just serve-https`
+
 ## Contributing
 
 If this project is of interest to you feel free to have a dig around! 
