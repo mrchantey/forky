@@ -46,7 +46,7 @@ sweet! {
 		let height = 5;
 		maze.link_randomly();
 		let str = maze.format();
-		log!(str);
+		println!("{str}");
 	}
 	test "options" {
 		let width = 2;

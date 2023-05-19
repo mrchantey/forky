@@ -2,7 +2,7 @@ use super::super::*;
 use super::*;
 use crate::astro::{
 	chart::ZodiacPosition,
-	planets::{GeographicCoords, Y2000Day, DEG2RAD},
+	planets::{GeographicCoords, Y2000Day},
 };
 
 pub struct PlacidusHouse;

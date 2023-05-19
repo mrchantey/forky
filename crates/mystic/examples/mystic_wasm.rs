@@ -1,5 +1,7 @@
-use forky_core::wasm::set_panic_hook;
-pub use mystic::wasm::MysticWasm;
+// use forky_core::wasm::set_panic_hook;
+// pub use mystic::wasm::MysticWasm;
 
 
-fn main() { set_panic_hook(); }
+fn main() {
+	// set_panic_hook();
+}
