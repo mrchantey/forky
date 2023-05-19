@@ -71,7 +71,7 @@ impl EclipticCoords {
 		let mc = EclipticCoords::meridian_intersect(day, &position);
 		let asc = asc.to_equatorial();
 		let mc = mc.to_equatorial();
-		(asc.right_ascention - mc.right_ascention)
+		asc.right_ascention - mc.right_ascention
 	}
 }
 //todo helio
