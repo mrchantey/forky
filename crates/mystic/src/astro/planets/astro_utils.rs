@@ -36,6 +36,8 @@ pub fn wrap_rad(value: f64) -> f64 { wrap(value, TAU) }
 pub fn wrap_deg(value: f64) -> f64 { wrap(value, 360.) }
 pub fn wrap_hours(value: f64) -> f64 { wrap(value, 24.) }
 
+
+//TODO use forky_core wrap
 pub fn wrap(value: f64, wrap: f64) -> f64 {
 	value - f64::floor(value / wrap) * wrap
 }

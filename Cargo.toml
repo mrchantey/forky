@@ -82,6 +82,8 @@ serde_json = "1.0.96"
 rand = {version= "0.8.5" }
 getrandom = {version= "0.2.9", features = ["js"] }
 rgb = "0.8.34"
+plotters = "0.3.4"
+plotters-canvas = "0.3.0"
 
 ### Async ###
 futures-util = "0.3.28"
@@ -107,6 +109,8 @@ wasmi = "0.20.0"
 
 [workspace.dependencies.web-sys]
 version = "0.3.61"
+#https://rustwasm.github.io/wasm-bindgen/api/web_sys/
+#https://github.com/rustwasm/wasm-bindgen/blob/main/crates/web-sys/Cargo.toml
 features = [
   'console',
   'Document',
@@ -123,6 +127,8 @@ features = [
   'Window',
 	# Sensors
 	'DeviceOrientationEvent',
+	'DeviceMotionEvent',
+	'DeviceAcceleration',
 	# XR
   'XrBoundedReferenceSpace',
   'XrEye',

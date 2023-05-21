@@ -11,6 +11,14 @@ pub const PI: f32 = HALF_TAU;
 
 pub const GRAVITY: f32 = -9.81;
 
+
+pub const DEG2RAD: f32 = PI / 180.;
+pub const RAD2DEG: f32 = 180. / PI;
+pub const RAD2HOURS: f32 = 12. / PI;
+pub const HOURS2RAD: f32 = PI / 12.;
+pub const DEG2HOURS: f32 = 1. / 15.;
+pub const HOURS2DEG: f32 = 15.;
+
 // pub type F = f32;
 pub fn f<T>(val: T) -> f32
 where
