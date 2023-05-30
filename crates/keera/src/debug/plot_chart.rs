@@ -1,4 +1,4 @@
-use std::{default, ops::Range};
+use std::ops::Range;
 
 use super::*;
 use anyhow::Result;
@@ -111,7 +111,7 @@ impl PlotChart {
 			.position(SeriesLabelPosition::UpperRight)
 			.background_style(&WHITE.mix(0.1))
 			.border_style(&WHITE)
-.label_font(label_style)
+			.label_font(label_style)
 			.draw()?;
 		Ok(())
 	}

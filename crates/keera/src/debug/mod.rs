@@ -4,6 +4,8 @@ mod device_accelerometer;
 pub use self::device_accelerometer::*;
 mod device_gyroscope;
 pub use self::device_gyroscope::*;
+mod device_orientation;
+pub use self::device_orientation::*;
 mod gyroscope;
 pub use self::gyroscope::*;
 mod orientation;

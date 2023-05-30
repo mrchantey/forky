@@ -38,7 +38,7 @@ impl PlotLine {
 
 	pub fn push(&mut self, y: f32) {
 		let now = Date::now();
-		self.push_with_time((now - self.started) as f32, y);
+		self.push_with_time((now - self.started) as f32 * 0.001, y);
 	}
 
 	fn get_displayble<'a>(&'a self) -> &'a [(f32, f32)] {
