@@ -1,8 +1,6 @@
-use bevy::prelude::*;
-
-
-
 use crate::*;
+use bevy::prelude::*;
+use bevy::render::camera::ManualTextureViewHandle;
 
 
 pub struct WebXrPlugin {
@@ -35,7 +33,7 @@ impl Plugin for WebXrPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
 			.add_plugin(bevy_utils::WebXrBasePlugin)
-			.insert_resource(bevy_utils::FramebufferTextureViewId(self.framebuffer_id))
+			.insert_resource(bevy_utils::FramebufferTextureViewId(ManualTextureViewHandle(self.framebuffer_id)))
 			.insert_non_send_resource(self.session_mode)
 			.insert_non_send_resource(xr_utils::unwrap_reference_space_type(&self.session_mode, self.reference_space_type))
 			.configure_sets(PreUpdate,(

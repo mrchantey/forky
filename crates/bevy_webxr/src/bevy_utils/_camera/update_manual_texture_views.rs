@@ -1,6 +1,6 @@
 use crate::*;
 use bevy::prelude::*;
-use bevy::render::camera::ManualTextureViews;
+use bevy::render::camera::{ManualTextureView, ManualTextureViews};
 use bevy::render::renderer::RenderDevice;
 
 pub fn update_manual_texture_views(
@@ -14,11 +14,14 @@ pub fn update_manual_texture_views(
 		&gl_layer,
 	);
 
-	let resolution =
+	let size =
 		UVec2::new(gl_layer.framebuffer_width(), gl_layer.framebuffer_height());
 
-	let view =
-		dest_texture.create_view(&wgpu::TextureViewDescriptor::default());
+	let descriptor = wgpu::TextureViewDescriptor::default();
+	let view = dest_texture.create_view(&descriptor);
 
-	manual_tex_view.insert(**texture_id, (view.into(), resolution));
+	manual_tex_view.insert(
+		**texture_id,
+		ManualTextureView::with_default_format(view.into(), size),
+	);
 }

@@ -1,11 +1,12 @@
 use crate::*;
+use bevy::render::camera::ManualTextureViewHandle;
 use bevy::{prelude::*, render::extract_resource::ExtractResource};
 
 
 use super::BevyXrView;
 
 #[derive(Resource, Clone, Deref, DerefMut, ExtractResource)]
-pub struct FramebufferTextureViewId(pub u32);
+pub struct FramebufferTextureViewId(pub ManualTextureViewHandle);
 
 pub fn update_views(
 	mut commands: Commands,
