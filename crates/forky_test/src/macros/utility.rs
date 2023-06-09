@@ -24,7 +24,7 @@ pub fn parse_error(span: Span, msg: &str) -> TokenStream {
 	Error::new(span, msg).to_compile_error()
 }
 
-pub fn parse_func<I>(func: &Ident, iter: &mut I) -> TokenStream
+pub fn parse_group<I>(func: &Ident, iter: &mut I) -> TokenStream
 where
 	I: Iterator<Item = TokenTree>,
 {

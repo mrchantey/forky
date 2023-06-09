@@ -108,11 +108,11 @@ impl SuiteParser {
 						true
 					}
 					"before" => {
-						self.before = parse_func(ident, iter);
+						self.before = parse_group(ident, iter);
 						true
 					}
 					"after" => {
-						self.after = parse_func(ident, iter);
+						self.after = parse_group(ident, iter);
 						true
 					}
 					_ => false,

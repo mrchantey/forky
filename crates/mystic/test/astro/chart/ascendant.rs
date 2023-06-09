@@ -30,10 +30,7 @@ sweet! {
 		let day2 = day.add_hours(time);
 		let mc1 = EclipticCoords::meridian_intersect(day, &pos).longitude;
 		let mc2 = EclipticCoords::eastern_horizon_intersect(day2, &pos).longitude - 180.;
-		println!("mc1: {:?}, mc2: {:?}",mc1,mc2);
-		// println!("mc2: {:?}",mc2);
-		// println!("day: {}, day2: {}",day,day2);
-
+		// println!("mc1: {:?}, mc2: {:?}",mc1,mc2);
 		}
 		// let day = Y2000Day::new(1992,2,20).add_utc_time(9, 0, 0);
 		// let time = EclipticCoords::ascendant_midheaven_time(day, &POS);

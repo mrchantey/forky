@@ -12,7 +12,7 @@ impl Parse for Sweet {
 
 		let out = SuiteParser::parse(&mut stream);
 
-		Ok(Sweet { out })
+		Ok(Self { out })
 	}
 }
 
