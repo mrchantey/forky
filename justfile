@@ -3,6 +3,7 @@ set positional-arguments
 
 crates := 'forky forky_cli forky_core forky_play forky_test mystic sweet'
 testable := 'forky_core forky_cli forky_fs forky_play mystic sweet'
+features := 'forky_play/shader_debug'
 # forky_esp
 backtrace := '0'
 # backtrace := '1'
@@ -17,7 +18,7 @@ default:
 	done
 
 run crate example *args:
-	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} {{args}}
+	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} --features {{features}} {{args}}
 
 fix crate *args:
 	cargo fix --allow-dirty --lib -p {{crate}} {{args}}
@@ -100,7 +101,7 @@ test-w crate *args:
 
 #https://crates.io/crates/cargo-watch
 watch command:
-	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat}' --ignore 'html*' -- {{command}}
+	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat,wgsl}' --ignore 'html*' -- {{command}}
 
 ### PLAY ###
 

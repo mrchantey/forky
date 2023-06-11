@@ -1,3 +1,4 @@
+use super::SHADER_ID_START;
 use bevy::{
 	pbr::{MaterialPipeline, MaterialPipelineKey},
 	prelude::*,
@@ -10,6 +11,10 @@ use bevy::{
 		},
 	},
 };
+
+
+pub const UNLIT_SHADER_HANDLE: HandleUntyped =
+	HandleUntyped::weak_from_u64(Shader::TYPE_UUID, SHADER_ID_START + 1);
 
 
 
@@ -32,7 +37,13 @@ impl From<Color> for UnlitMaterial {
 }
 
 impl Material for UnlitMaterial {
-	fn fragment_shader() -> ShaderRef { "shaders/unlit.wgsl".into() }
+	fn fragment_shader() -> ShaderRef { 
+		if cfg!(feature = "shader_debug"){
+			"shaders/unlit.wgsl".into()
+		}else{
+			UNLIT_SHADER_HANDLE.typed().into()
+		}
+	 }
 
 	fn alpha_mode(&self) -> AlphaMode { self.alpha_mode }
 	fn specialize(

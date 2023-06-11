@@ -12,6 +12,10 @@ impl Plugin for CustomDefaultPlugin {
 		app.__()
 			.add_plugins(
 				DefaultPlugins
+					.set(AssetPlugin {
+						watch_for_changes: true,
+						..Default::default()
+					})
 					.set(WindowPlugin {
 						primary_window: Some(Window {
 							resolution: WindowResolution::from((1000., 800.)),

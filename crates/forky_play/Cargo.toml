@@ -9,6 +9,9 @@ readme = {workspace=true}
 description = {workspace=true}
 repository = {workspace=true}
 
+[features]
+shader_debug = []
+
 [dependencies]
 ### Internal ###
 forky_core = {workspace = true }
