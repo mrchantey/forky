@@ -13,7 +13,6 @@ members = [
 	"crates/forky_esp",
 	"crates/forky_play",
 	"crates/forky_test",
-	"crates/keera",
 	"crates/mystic",
 	"crates/sweet",
 ]
@@ -97,16 +96,16 @@ syn = {version="1.0.103",features= ["full"] }
 quote = "1.0.21"
 extend = "1.1.2"
 
+
+### esp ###
+wasmi = "0.20.0"
+
 ### wasm ###
 futures = "0.3.26"
 js-sys = "0.3.61"
 wasm-bindgen = "0.2.84"
 wasm-bindgen-futures = "0.4.34"
 console_error_panic_hook = "0.1.7"
-
-### esp ###
-wasmi = "0.20.0"
-
 [workspace.dependencies.web-sys]
 version = "0.3.61"
 #https://rustwasm.github.io/wasm-bindgen/api/web_sys/
