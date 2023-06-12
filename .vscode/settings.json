@@ -12,7 +12,7 @@
 		//optional
 		"LICENSE": true,
 		"**/.embuild/": true,
-		"**/.cargo/": true,
+		// "**/.cargo/": true,
 		"**/Cargo.lock": true,
 		"**/mod.rs": true,
 		// "out/": true,

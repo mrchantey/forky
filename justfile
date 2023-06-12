@@ -146,11 +146,6 @@ ssl:
 	openssl req -new -key target/client-key.pem -subj "/CN=$cn\/emailAddress=admin@$cn/C=US/ST=Ohio/L=Columbus/O=Widgets Inc/OU=Some Unit" -out target/client.csr
 	openssl x509 -req -in target/client.csr -signkey target/client-key.pem -out target/client-cert.pem
 
-deploy-keera:
-	rm -rf ./crates/keera/html
-	cp -r ./html ./crates/keera/html
-	cd ./crates/keera && firebase deploy
-
 ### ESP ###
 
 port := 'COM3'

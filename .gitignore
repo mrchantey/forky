@@ -1,9 +1,5 @@
 moment.json
 
-# keera
-crates/keera/html
-crates/keera/.firebase/*
-
 # assets
 html/wasm*
 html/assets*
