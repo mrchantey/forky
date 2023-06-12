@@ -1,4 +1,3 @@
-use forky_core::graph::NodeGraph;
 pub use forky_core::graph::*;
 
 pub struct MazeShadow<'a> {

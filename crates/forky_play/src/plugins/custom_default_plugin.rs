@@ -14,6 +14,9 @@ impl Plugin for CustomDefaultPlugin {
 				DefaultPlugins
 					.set(AssetPlugin {
 						watch_for_changes: true,
+						// watch_for_changes: ChangeWatcher::with_delay(
+						// 	Duration::from_millis(200),
+						// )
 						..Default::default()
 					})
 					.set(WindowPlugin {
