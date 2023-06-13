@@ -124,6 +124,8 @@ features = [
   'Response',
   'WebGl2RenderingContext',
   'Window',
+	'Location',
+	'Performance',
 	# Sensors
 	'DeviceOrientationEvent',
 	'DeviceMotionEvent',
