@@ -3,7 +3,8 @@ set positional-arguments
 
 crates := 'forky forky_cli forky_core forky_play forky_test mystic sweet'
 testable := 'forky_core forky_cli forky_fs forky_play mystic sweet'
-features := 'forky_play/shader_debug'
+features := '--features forky_play/shader_debug'
+# features := ''
 # forky_esp
 backtrace := '0'
 # backtrace := '1'
@@ -18,7 +19,7 @@ default:
 	done
 
 run crate example *args:
-	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} --features {{features}} {{args}}
+	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} {{features}} {{args}}
 
 fix crate *args:
 	cargo fix --allow-dirty --lib -p {{crate}} {{args}}

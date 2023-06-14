@@ -1,34 +1,15 @@
-use crate::{
-	materials::{UNLIT_SHADER_HANDLE, UV_SHADER_HANDLE},
-	*,
-};
-use bevy::{asset::load_internal_asset, prelude::*};
-
-pub const SHADER_ID_START: u64 = 7_000_000_000_000_000;
+use super::*;
+use crate::*;
+use bevy::prelude::*;
 
 pub struct ForkyMaterialPlugin;
 
 impl Plugin for ForkyMaterialPlugin {
 	fn build(&self, app: &mut App) {
-		if cfg!(not(feature = "shader_debug")) {
-			println!("shader_debug enabled");
-			load_internal_asset!(
-				app,
-				UNLIT_SHADER_HANDLE,
-				"../../assets/shaders/unlit.wgsl",
-				Shader::from_wgsl
-			);
-			load_internal_asset!(
-				app,
-				UV_SHADER_HANDLE,
-				"../../assets/shaders/uv.wgsl",
-				Shader::from_wgsl
-			);
-		}
-
+		load_shaders(app);
 		app.__()
-			.add_plugin(MaterialPlugin::<materials::UvMaterial>::default())
-			.add_plugin(MaterialPlugin::<materials::UnlitMaterial>::default())
+			.add_plugin(MaterialPlugin::<UvMaterial>::default())
+			.add_plugin(MaterialPlugin::<UnlitMaterial>::default())
 			.__();
 	}
 }

@@ -27,6 +27,8 @@ bevy_mod_debugdump = {workspace = true}
 wgpu = {workspace = true}
 
 ### Utility ###
+strum = {workspace = true}
+strum_macros = {workspace = true}
 extend = {workspace = true}
 anyhow = {workspace = true}
 petgraph = {workspace = true}

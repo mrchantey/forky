@@ -1,5 +1,9 @@
 mod forky_material_plugin;
 pub use self::forky_material_plugin::*;
+mod forky_shader;
+pub use self::forky_shader::*;
+mod load_shaders;
+pub use self::load_shaders::*;
 mod render_bundle;
 pub use self::render_bundle::*;
 mod unlit_material;

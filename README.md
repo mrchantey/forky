@@ -16,6 +16,12 @@ Each tool is standalone and can be used independently of the others.
 	-	create a long-life ssl cert, this command only needs to be run once
 3. `just serve-https`
 
+
+### Useful Tools
+
+- `cargo install uuid-generate`
+- `uuid-generate` can be used for bevy assets etc
+
 ## Contributing
 
 If this project is of interest to you feel free to have a dig around! 
