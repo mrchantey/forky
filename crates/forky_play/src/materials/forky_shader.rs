@@ -6,7 +6,7 @@ use bevy::render::render_resource::ShaderRef;
 macro_rules! forky_shader {
 	($name:expr,$id:expr,$root:expr,$local:expr) => {
 		ForkyShader {
-			is_static: false,
+			inline: false,
 			name: $name,
 			id: $id,
 			handle: HandleUntyped::weak_from_u64(
@@ -32,7 +32,7 @@ macro_rules! forky_shader {
 // const A: ForkyShader = forky_shader!("utility", 0);
 
 pub struct ForkyShader {
-	pub is_static: bool,
+	pub inline: bool,
 	pub name: &'static str,
 	pub id: u64,
 	pub handle: HandleUntyped,
@@ -41,12 +41,22 @@ pub struct ForkyShader {
 }
 
 impl ForkyShader {
-	pub const fn as_static(mut self) -> Self {
-		self.is_static = true;
+	pub fn is_inline(&self) -> bool {
+		self.inline || !cfg!(feature = "shader_debug")
+	}
+
+	pub const fn as_inline(mut self) -> Self {
+		self.inline = true;
 		self
 	}
-	pub fn try_load_internal(&self, app: &mut App) {
-		if self.is_static || cfg!(feature = "shader_debug") == false {
+	pub const fn as_internal(mut self) -> Self {
+		if !cfg!(feature = "shader_debug_internal") {
+			self.inline = true;
+		}
+		self
+	}
+	pub fn try_load_inline(&self, app: &mut App) {
+		if self.is_inline() {
 			(self.load_asset)(app, self.handle.clone());
 		}
 	}
@@ -54,10 +64,10 @@ impl ForkyShader {
 
 impl From<ForkyShader> for ShaderRef {
 	fn from(value: ForkyShader) -> Self {
-		if cfg!(feature = "shader_debug") {
-			value.asset_path.into()
-		} else {
+		if value.is_inline() {
 			value.handle.typed().into()
+		} else {
+			value.asset_path.into()
 		}
 	}
 }

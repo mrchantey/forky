@@ -9,8 +9,12 @@ pub struct ForkyDebugPlugin {
 }
 
 impl ForkyDebugPlugin {
-	pub fn without_debug_cameras(&mut self) -> &mut Self {
+	pub fn without_debug_cameras(mut self) -> Self {
 		self.debug_cameras = false;
+		self
+	}
+	pub fn without_debug_grid(mut self) -> Self {
+		self.debug_grid = false;
 		self
 	}
 }

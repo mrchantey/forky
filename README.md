@@ -22,6 +22,10 @@ Each tool is standalone and can be used independently of the others.
 - `cargo install uuid-generate`
 - `uuid-generate` can be used for bevy assets etc
 
+### Shader debugging
+- dependent crates: `--features forky_play/shader_debug`
+- internal: `--features forky_play/shader_debug_internal`
+
 ## Contributing
 
 If this project is of interest to you feel free to have a dig around! 
