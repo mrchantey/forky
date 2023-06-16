@@ -4,6 +4,7 @@ use bevy::prelude::*;
 
 #[derive(Bundle)]
 pub struct OrbitCameraBundle {
+	name:Name,
 	camera: Camera3dBundle,
 	parent: CameraParent,
 	view_type: CameraViewType,
@@ -18,6 +19,7 @@ impl OrbitCameraBundle {
 	pub fn new(position: Vec3) -> Self {
 		let radius = position.length();
 		Self {
+			name: "Orbit Camera".into(),
 			camera: Camera3dBundle {
 				transform: Transform::from_translation(position)
 					.looking_at(Vec3::ZERO, Vec3::Y),

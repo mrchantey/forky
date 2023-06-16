@@ -5,6 +5,7 @@ use bevy::prelude::*;
 
 #[derive(Bundle)]
 pub struct FlyCameraBundle {
+	name: Name,
 	camera: Camera3dBundle,
 	view_type: CameraViewType,
 	transform_controller: input::TransformController,
@@ -16,8 +17,13 @@ impl Default for FlyCameraBundle {
 }
 
 impl FlyCameraBundle {
-	pub fn new(transform: Transform, view_type: CameraViewType) -> Self {
+	pub fn new(
+		name: &'static str,
+		transform: Transform,
+		view_type: CameraViewType,
+	) -> Self {
 		Self {
+			name: name.into(),
 			camera: Camera3dBundle {
 				transform,
 				..default()
@@ -32,6 +38,7 @@ impl FlyCameraBundle {
 
 	pub fn right() -> Self {
 		Self::new(
+			"Right Camera",
 			Transform::from_translation(Vec3::new(10., 0., 0.))
 				.with_rotation(Quat::from_right()),
 			CameraViewType::Right,
@@ -39,6 +46,7 @@ impl FlyCameraBundle {
 	}
 	pub fn forward() -> Self {
 		Self::new(
+			"Forward Camera",
 			Transform::from_translation(Vec3::new(0., 0., 10.))
 				.with_rotation(Quat::from_forward()),
 			CameraViewType::Front,
@@ -47,6 +55,7 @@ impl FlyCameraBundle {
 
 	pub fn up() -> Self {
 		Self::new(
+			"Up Camera",
 			Transform::from_translation(Vec3::new(0., 10., 0.))
 				.with_rotation(Quat::from_up()),
 			CameraViewType::Top,

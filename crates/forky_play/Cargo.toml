@@ -11,6 +11,7 @@ repository = {workspace=true}
 
 [features]
 shader_debug = []
+shader_debug_internal = []
 
 [dependencies]
 ### Internal ###

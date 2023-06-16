@@ -6,7 +6,7 @@ use bevy::render::render_resource::ShaderRef;
 macro_rules! forky_shader {
 	($name:expr,$id:expr,$root:expr,$local:expr) => {
 		ForkyShader {
-			inline: false,
+			inline: LoadMode::External,
 			name: $name,
 			id: $id,
 			handle: HandleUntyped::weak_from_u64(
@@ -32,7 +32,7 @@ macro_rules! forky_shader {
 // const A: ForkyShader = forky_shader!("utility", 0);
 
 pub struct ForkyShader {
-	pub inline: bool,
+	pub inline: LoadMode,
 	pub name: &'static str,
 	pub id: u64,
 	pub handle: HandleUntyped,
@@ -40,20 +40,23 @@ pub struct ForkyShader {
 	pub load_asset: fn(&mut App, HandleUntyped),
 }
 
-impl ForkyShader {
-	pub fn is_inline(&self) -> bool {
-		self.inline || !cfg!(feature = "shader_debug")
-	}
+pub enum LoadMode {
+	External,
+	Inline,
+	Internal,
+}
 
-	pub const fn as_inline(mut self) -> Self {
-		self.inline = true;
+impl ForkyShader {
+	pub const fn mode(mut self,mode:LoadMode) -> Self {
+		self.inline = mode;
 		self
 	}
-	pub const fn as_internal(mut self) -> Self {
-		if !cfg!(feature = "shader_debug_internal") {
-			self.inline = true;
+	pub fn is_inline(&self) -> bool {
+		match self.inline{
+			LoadMode::External => !cfg!(feature = "shader_debug"),
+			LoadMode::Inline =>true,
+			LoadMode::Internal => !cfg!(feature = "shader_debug_internal"),
 		}
-		self
 	}
 	pub fn try_load_inline(&self, app: &mut App) {
 		if self.is_inline() {

@@ -12,7 +12,7 @@ use bevy::{
 	},
 };
 
-#[derive(AsBindGroup, TypeUuid, Debug, Clone, Default)]
+#[derive(Reflect, AsBindGroup, TypeUuid, Debug, Clone, Default)]
 #[uuid = "f1b849ae-a498-4059-9e46-16b7e3f66722"]
 pub struct UvMaterial {
 	#[uniform(0)]

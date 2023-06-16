@@ -13,7 +13,6 @@ pub fn spawn_camera_at_position(position: Vec3) -> impl FnMut(Commands) {
 	}
 }
 
-
 pub fn spawn_default_lights(mut commands: Commands) {
 	commands.insert_resource(AmbientLight {
 		// color: Color::WHITE,
@@ -21,26 +20,32 @@ pub fn spawn_default_lights(mut commands: Commands) {
 		..default()
 	});
 
-	commands.spawn(PointLightBundle {
-		transform: Transform::from_xyz(-5., 5., 3.),
-		point_light: PointLight {
-			intensity: 1000.,
-			// color: Color::FUCHSIA,
-			shadows_enabled: true,
+	commands.spawn((
+		Name::new("Left Light"),
+		PointLightBundle {
+			transform: Transform::from_xyz(-5., 5., 3.),
+			point_light: PointLight {
+				intensity: 1000.,
+				// color: Color::FUCHSIA,
+				shadows_enabled: true,
+				..default()
+			},
 			..default()
 		},
-		..default()
-	});
-	commands.spawn(PointLightBundle {
-		transform: Transform::from_xyz(3., 5., -5.),
-		point_light: PointLight {
-			intensity: 1000.,
-			shadows_enabled: true,
-			// color: Color::CYAN,
+	));
+	commands.spawn((
+		Name::new("Right Light"),
+		PointLightBundle {
+			transform: Transform::from_xyz(3., 5., -5.),
+			point_light: PointLight {
+				intensity: 1000.,
+				shadows_enabled: true,
+				// color: Color::CYAN,
+				..default()
+			},
 			..default()
 		},
-		..default()
-	});
+	));
 }
 
 

@@ -3,7 +3,7 @@ set positional-arguments
 
 crates := 'forky forky_cli forky_core forky_play forky_test mystic sweet'
 testable := 'forky_core forky_cli forky_fs forky_play mystic sweet'
-features := '--features forky_play/shader_debug'
+features := '--features forky_play/shader_debug_internal'
 # features := ''
 # forky_esp
 backtrace := '0'
