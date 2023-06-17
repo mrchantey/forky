@@ -124,8 +124,10 @@ features = [
   'Response',
   'WebGl2RenderingContext',
   'Window',
-	'Location',
 	'Performance',
+	# Url
+	'Location',
+	'UrlSearchParams',
 	# Sensors
 	'DeviceOrientationEvent',
 	'DeviceMotionEvent',

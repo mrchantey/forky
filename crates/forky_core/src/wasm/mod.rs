@@ -4,5 +4,7 @@ mod lifecycle;
 pub use self::lifecycle::*;
 mod loop_utils;
 pub use self::loop_utils::*;
+mod url;
+pub use self::url::*;
 mod utils;
 pub use self::utils::*;
