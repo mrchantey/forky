@@ -1,5 +1,5 @@
 use crate::*;
-use bevy::asset::{AssetIo, AssetIoError, BoxedFuture};
+use bevy::asset::{AssetIo, AssetIoError, BoxedFuture, ChangeWatcher};
 use std::{
 	path::{Path, PathBuf},
 	sync::{Arc, RwLock},
@@ -107,7 +107,7 @@ impl AssetIo for WebAssetIo {
 		}
 	}
 
-	fn watch_for_changes(&self) -> Result<(), AssetIoError> {
+	fn watch_for_changes(&self, _: &ChangeWatcher) -> Result<(), AssetIoError> {
 		// self.filesystem_watcher is created in `web_asset_plugin.rs`
 		Ok(()) // This could create self.network_watcher
 	}

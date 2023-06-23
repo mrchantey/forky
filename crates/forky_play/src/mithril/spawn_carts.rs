@@ -1,8 +1,7 @@
+use super::*;
 use crate::spline::{
 	ecs_graph::EcsSplineGraphLookup, physics::SplinePhysicsBundle,
 };
-
-use super::*;
 use bevy::prelude::*;
 use std::time::Duration;
 

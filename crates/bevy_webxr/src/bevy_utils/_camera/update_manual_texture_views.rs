@@ -10,7 +10,7 @@ pub fn update_manual_texture_views(
 	mut manual_tex_view: ResMut<ManualTextureViews>,
 ) {
 	let dest_texture = xr_utils::create_framebuffer_texture(
-		&render_device.wgpu_device(),
+		render_device.wgpu_device(),
 		&gl_layer,
 	);
 

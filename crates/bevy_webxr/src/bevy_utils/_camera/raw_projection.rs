@@ -13,8 +13,8 @@ impl Plugin for RawProjectionPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
 		.add_plugin(CameraProjectionPlugin::<bevy_utils::RawProjection>::default())
-		.add_system(update_frusta::<bevy_utils::RawProjection>
-			.in_set(VisibilitySystems::UpdatePerspectiveFrusta)
+		.add_systems(PostUpdate,update_frusta::<bevy_utils::RawProjection>
+    	.after(VisibilitySystems::UpdatePerspectiveFrusta)
 			.after(camera_system::<bevy_utils::RawProjection>)
 			.after(TransformSystem::TransformPropagate)
 			.ambiguous_with(update_frusta::<Projection>)

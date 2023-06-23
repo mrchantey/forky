@@ -1,10 +1,8 @@
 use std::f32::consts::TAU;
 
-use bevy::{
-	prelude::*,
-};
+use bevy::prelude::*;
 
-use crate::{*};
+use crate::*;
 
 const SCENE_Z: f32 = -5.0;
 
@@ -15,13 +13,13 @@ impl Plugin for DemoScenePlugin {
 		app.__()
 			.insert_resource(Speed(0.25))
 			// .insert_resource(ClearColor(Color::rgba(0., 0., 0., 0.)))
-			.add_startup_system(spawn_cube)
-			.add_startup_system(spawn_ground)
-			.add_startup_system(spawn_logo)
-			// .add_startup_system(spawn_cubes)
-			.add_startup_system(spawn_camera)
-			.add_startup_system(spawn_lights)
-			.add_system(rotate)
+			.add_systems(Startup, spawn_cube)
+			.add_systems(Startup, spawn_ground)
+			.add_systems(Startup, spawn_logo)
+			// .add_systems(Startup,spawn_cubes)
+			.add_systems(Startup, spawn_camera)
+			.add_systems(Startup, spawn_lights)
+			.add_systems(Update, rotate)
 			.__();
 	}
 }
@@ -114,7 +112,7 @@ pub fn spawn_lights(mut commands: Commands) {
 		},
 		..default()
 	});
-	commands.spawn(PointLightBundle { 
+	commands.spawn(PointLightBundle {
 		transform: Transform::from_xyz(3., 5., -5.),
 		point_light: PointLight {
 			intensity: 10000., //10x for xr?

@@ -1,7 +1,7 @@
 use bevy::{
 	pbr::{MaterialPipeline, MaterialPipelineKey},
 	prelude::*,
-	reflect::TypeUuid,
+	reflect::{TypeUuid, TypePath},
 	render::{
 		mesh::MeshVertexBufferLayout,
 		render_resource::{
@@ -12,7 +12,7 @@ use bevy::{
 };
 
 // This is the struct that will be passed to your shader
-#[derive(AsBindGroup, TypeUuid, Debug, Clone)]
+#[derive(AsBindGroup, TypeUuid,TypePath, Debug, Clone)]
 #[uuid = "9c11a0a4-7f97-4564-9634-cf0c741ae170"]
 pub struct UnlitTextureMaterial {
 	#[uniform(0)]

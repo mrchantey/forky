@@ -18,8 +18,12 @@ impl std::fmt::Display for Url {
 
 #[derive(Debug, Clone, Copy)]
 pub struct Ip {
-	pub port: u16,
 	pub ip: [u8; 4],
+	pub port: u16,
+}
+
+impl Ip {
+	pub fn new(ip: [u8; 4], port: u16) -> Self { Self { ip, port } }
 }
 
 impl Default for Ip {

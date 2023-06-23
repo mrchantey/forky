@@ -116,7 +116,6 @@ features = [
   'Element',
   'Gpu',
   'Headers',
-  'HtmlCanvasElement',
   'Navigator',
   'Request',
   'RequestInit',
@@ -125,7 +124,24 @@ features = [
   'WebGl2RenderingContext',
   'Window',
 	'Performance',
+	'ResizeObserver',
+	'ResizeObserverBoxOptions',
+	'ResizeObserverEntry',
+	'ResizeObserverOptions',
+	'ResizeObserverSize',
+	# Blob
+	'Blob',
+	'BlobEvent',
+	'BlobEventInit',
+	'BlobPropertyBag',
+	# Elements
+	'HtmlAnchorElement',
+  'HtmlCanvasElement',
+  'HtmlInputElement',
+	'File',
+	'FileList',
 	# Url
+	'Url',
 	'Location',
 	'UrlSearchParams',
 	# Sensors
@@ -133,6 +149,13 @@ features = [
 	'DeviceMotionEvent',
 	'DeviceAcceleration',
 	'DeviceRotationRate',
+	# Sockets
+	'BinaryType',
+	'FileReader',
+	'ErrorEvent',
+	'MessageEvent', 
+	'ProgressEvent', 
+	'WebSocket',
 	# XR
   'XrBoundedReferenceSpace',
   'XrEye',

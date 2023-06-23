@@ -24,7 +24,7 @@ pub fn create_input_sources(
 			continue;
 		}
 		//wait for asset path to be loaded
-		let asset_path = match input_source_asset_lookup.get(&hash) {
+		let asset_path = match input_source_asset_lookup.get(hash) {
 			Some(value) => value,
 			None => continue,
 		};
