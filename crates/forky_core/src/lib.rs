@@ -1,3 +1,4 @@
+#![feature(async_closure)]
 mod extensions;
 pub mod graph;
 pub mod math;

@@ -38,7 +38,7 @@ pub fn input_source_asset_loader(
 		"inputsourceschange",
 		f.as_ref().unchecked_ref(),
 	)?;
-	f.forget();
+	f.forget();//terrible, memory leak
 	Ok(())
 }
 

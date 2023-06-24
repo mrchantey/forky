@@ -142,6 +142,7 @@ features = [
 	'FileList',
 	# Url
 	'Url',
+	'History',
 	'Location',
 	'UrlSearchParams',
 	# Sensors

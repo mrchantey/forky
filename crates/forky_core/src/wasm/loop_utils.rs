@@ -1,6 +1,17 @@
 use js_sys::Promise;
-use wasm_bindgen_futures::JsFuture;
+use wasm_bindgen::JsValue;
+use wasm_bindgen_futures::{future_to_promise, JsFuture};
 
+
+pub fn block_forever() {
+	let _ = future_to_promise(loop_forever_wasm());
+	loop {}
+}
+
+async fn loop_forever_wasm() -> Result<JsValue, JsValue> {
+	loop_forever().await;
+	Ok(JsValue::UNDEFINED)
+}
 
 pub async fn loop_forever() -> ! {
 	loop {
