@@ -4,6 +4,8 @@ mod elements;
 pub use self::elements::*;
 mod file;
 pub use self::file::*;
+mod html_event_listener;
+pub use self::html_event_listener::*;
 mod lifecycle;
 pub use self::lifecycle::*;
 mod loop_utils;

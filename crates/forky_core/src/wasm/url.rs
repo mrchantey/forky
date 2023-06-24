@@ -28,9 +28,12 @@ impl SearchParams {
 	}
 
 	pub fn remove(key: &str) {
-		let search = window().unwrap().location().search().unwrap();
+		let loc = window().unwrap().location();
+		let search = loc.search().unwrap();
 		let params = UrlSearchParams::new_with_str(search.as_str()).unwrap();
 		params.delete(key);
+		let params = params.to_string().as_string().unwrap();
+		loc.set_search(params.as_str()).unwrap();
 	}
 }
 
@@ -72,5 +75,10 @@ impl History {
 			.unwrap()
 			.replace_state_with_url(&JsValue::UNDEFINED, path, Some(path))
 			.unwrap();
+	}
+
+	pub fn replace_params(params:UrlSearchParams){
+		
+
 	}
 }
