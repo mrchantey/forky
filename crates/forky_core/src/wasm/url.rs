@@ -77,8 +77,8 @@ impl History {
 			.unwrap();
 	}
 
-	pub fn replace_params(params:UrlSearchParams){
-		
+	// pub fn replace_params(params:UrlSearchParams){
 
-	}
+
+	// }
 }
