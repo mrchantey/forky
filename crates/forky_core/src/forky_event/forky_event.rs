@@ -13,8 +13,13 @@ pub struct ForkyEvent<T> {
 	pub listeners: Vec<Box<dyn Fn(&T)>>,
 }
 
-
 impl<T> ForkyEvent<T> {
+	pub fn new() -> Self {
+		Self {
+			listeners: Vec::new(),
+		}
+	}
+
 	pub fn trigger(&self, val: &T) {
 		for listener in self.listeners.iter() {
 			listener(val);

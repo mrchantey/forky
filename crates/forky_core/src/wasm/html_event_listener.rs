@@ -1,5 +1,3 @@
-use crate::log;
-
 use super::*;
 use wasm_bindgen::{convert::FromWasmAbi, prelude::Closure, JsCast};
 use web_sys::window;
@@ -12,7 +10,7 @@ pub struct HtmlEventListener<T> {
 impl<T> HtmlEventListener<T> {
 	pub fn new<F>(name: &'static str, f: F) -> Self
 	where
-		F: FnMut(T) + Send + 'static,
+		F: FnMut(T) + 'static,
 		T: FromWasmAbi + 'static,
 	{
 		let closure = Closure::wrap(Box::new(f) as Box<dyn FnMut(_)>);
@@ -29,7 +27,6 @@ impl<T> HtmlEventListener<T> {
 
 impl<T> Drop for HtmlEventListener<T> {
 	fn drop(&mut self) {
-		log!("dropped event");
 		window()
 			.unwrap()
 			.remove_event_listener_with_callback(
