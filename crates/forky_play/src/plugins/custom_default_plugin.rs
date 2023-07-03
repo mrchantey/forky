@@ -32,6 +32,10 @@ impl Plugin for CustomDefaultPlugin {
 							// winit
 							present_mode: PresentMode::AutoVsync,
 							position: WindowPosition::At(IVec2::new(-1440, 0)),
+							canvas: Some(
+								"canvas[data-bevy=\"primary_window\"]"
+									.to_string(),
+							),
 							..Default::default()
 						}),
 						..Default::default()

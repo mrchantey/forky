@@ -1,6 +1,10 @@
-use mystic::astro::{chart::{Chart, ZodiacPosition}, planets::*};
+use mystic::astro::{
+	chart::{Chart, ZodiacPosition},
+	planets::*,
+};
 use sweet::*;
 //http://cosinekitty.com/solar_system.html
+//https://frostydrew.org/utilities.dc/convert/tool-he_coordinates/
 const DAY: Y2000Day = Y2000Day::FIRST_JAN_2000;
 const POS: GeographicCoords = GeographicCoords::SYDNEY;
 
