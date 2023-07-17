@@ -34,4 +34,9 @@ pub impl Quat {
 		self.clone_from(&self.slerp(rhs, t));
 		return self;
 	}
+
+	fn euler_xyz(&self) -> Vec3 {
+		let (x, y, z) = self.to_euler(EulerRot::XYZ);
+		Vec3::new(x, y, z)
+	}
 }
