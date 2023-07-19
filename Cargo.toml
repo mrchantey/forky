@@ -111,24 +111,43 @@ version = "0.3.61"
 #https://rustwasm.github.io/wasm-bindgen/api/web_sys/
 #https://github.com/rustwasm/wasm-bindgen/blob/main/crates/web-sys/Cargo.toml
 features = [
-  'console',
+	# HTML
+  'Headers',
   'Document',
   'Element',
-  'Gpu',
-  'Headers',
-  'Navigator',
-  'Request',
-  'RequestInit',
-  'RequestMode',
-  'Response',
-  'WebGl2RenderingContext',
   'Window',
-	'Performance',
 	'ResizeObserver',
 	'ResizeObserverBoxOptions',
 	'ResizeObserverEntry',
 	'ResizeObserverOptions',
 	'ResizeObserverSize',
+	# Events
+	'MouseEvent',
+	'KeyboardEvent',
+	# JS
+  'Gpu',
+  'console',
+  'Navigator',
+	'Performance',
+  'WebGl2RenderingContext',
+	# Audio
+	'AudioContext',
+  'AudioDestinationNode',
+  'AudioNode',
+  'AudioParam',
+	'BiquadFilterNode',
+	'BiquadFilterOptions',
+	'BiquadFilterType',
+	'DelayNode',
+	'DelayOptions',
+  'GainNode',
+  'OscillatorNode',
+  'OscillatorType',
+	# Fetch
+  'Request',
+  'RequestInit',
+  'RequestMode',
+  'Response',
 	# Blob
 	'Blob',
 	'BlobEvent',

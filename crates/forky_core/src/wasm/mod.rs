@@ -1,5 +1,7 @@
 mod animation_frame;
 pub use self::animation_frame::*;
+mod document_interaction_listener;
+pub use self::document_interaction_listener::*;
 mod elements;
 pub use self::elements::*;
 mod file;

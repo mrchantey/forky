@@ -1,7 +1,7 @@
 mod action;
 pub use self::action::*;
-pub mod backtracer;
 mod backtrace_file;
+pub mod backtracer;
 pub use self::backtrace_file::*;
 mod macros;
 pub use self::macros::*;
@@ -9,8 +9,6 @@ mod main_func;
 pub use self::main_func::*;
 mod panic;
 pub use self::panic::*;
-mod redirect_io;
-pub use self::redirect_io::*;
 pub mod test_runner;
 mod test_suite;
 pub use self::test_suite::*;
