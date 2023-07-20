@@ -10,3 +10,9 @@ description = {workspace=true}
 repository = {workspace=true}
 
 [dependencies]
+sweet = {workspace = true}
+
+[[test]]
+name = "sweet"
+path = "test/sweet.rs"
+harness = false
