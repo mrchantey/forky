@@ -9,26 +9,23 @@ pub struct TestRunnerNative;
 
 impl TestRunnerNative {
 	pub fn run() -> Result<()> {
-		let args = parse_args();
-		if args.watch {
+		let config = TestRunnerConfig::from_cli_args();
+		if config.watch {
 			terminal::clear()
 		}
 
 		println!("\n🤘 sweet as! 🤘\n");
-		if args.files.len() > 0 {
-			println!("matching: {}\n", args.files.to_string());
+		if config.files.len() > 0 {
+			println!("matching: {}\n", config.files.to_string());
 		}
 
 		let start_time = Instant::now();
 		let mut results_suites = TestSuiteResult::new();
 
-		let suites = TestFile::collect();
-		let results_cases_arr = suites
-			.iter()
-			.filter(|s| suite_passes_filter(s.file, &args.files))
-			.map(|s| s.run());
+		let suites = TestSuiteCollection::new();
+		let results_cases_arr = suites.run_parallel(&config);
 
-		let results_cases = results_cases_arr.fold(
+		let results_cases = results_cases_arr.iter().fold(
 			TestSuiteResult::default(),
 			|mut acc, item| {
 				acc.tests += item.tests;
@@ -56,7 +53,7 @@ impl TestRunnerNative {
 		results_cases.log_summary("Tests:\t\t");
 		TestLogger::log_time(start_time.elapsed());
 
-		if args.watch {
+		if config.watch {
 			return Ok(());
 		}
 		terminal::show_cursor();
@@ -74,34 +71,6 @@ impl TestRunnerNative {
 		}
 	}
 }
-
-
-struct Args {
-	watch: bool,
-	files: Vec<String>,
-}
-
-fn parse_args() -> Args {
-	let mut args = cli_args::get();
-
-	let watch = tern!(vec_contains_str("-w", &args);true;false);
-	args.retain(|v| !arr_contains_str(v, FLAGS));
-	Args { watch, files: args }
-}
-
-fn suite_passes_filter(path: &str, files: &Vec<String>) -> bool {
-	let matchable_path = path.replace('\\', "/");
-	files.len() == 0 || files.iter().any(|a| matchable_path.contains(a))
-}
-
-fn vec_contains_str(path: &str, args: &Vec<String>) -> bool {
-	args.iter().any(|a| a == path)
-}
-fn arr_contains_str(path: &str, arr: &[&str]) -> bool {
-	arr.iter().any(|a| *a == path)
-}
-
-const FLAGS: &'static [&str] = &["-w"];
 
 /*
 Test Suites: 3 skipped, 42 passed, 42 of 45 total

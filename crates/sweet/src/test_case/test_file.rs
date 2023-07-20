@@ -1,7 +1,6 @@
 use super::*;
 use crate::TestLogger;
 use crate::TestSuiteResult;
-use std::collections::HashMap;
 
 #[derive(Default, Debug, Clone)]
 pub struct TestFile {
@@ -20,27 +19,6 @@ impl TestFile {
 			contains_only: false,
 			config: TestCaseConfig::Default,
 		}
-	}
-
-	pub fn collect() -> Vec<TestFile> {
-		let mut files: HashMap<&'static str, TestFile> = HashMap::new();
-		for case in inventory::iter::<TestCaseDesc> {
-			let case: &TestCaseDesc = case;
-			if !files.contains_key(case.file) {
-				files.insert(case.file, TestFile::new(case.file));
-			}
-			files.get_mut(case.file).unwrap().tests.push(case.clone());
-		}
-
-		let mut files = files.iter().map(|f| f.1.clone()).collect::<Vec<_>>();
-		files.sort_by(|a, b| a.file.cmp(&b.file));
-
-		for file in files.iter_mut() {
-			file.contains_only =
-				file.tests.iter().any(|t| t.config == TestCaseConfig::Only);
-		}
-
-		files
 	}
 
 	fn should_skip(&self, test: &TestCaseDesc) -> bool {

@@ -1,4 +1,4 @@
-use super::super::backtracer;
+use crate::logging::file_context_depth;
 use anyhow::anyhow;
 use colorize::*;
 use std::fmt;
@@ -34,7 +34,7 @@ impl MatcherError {
 			expected.green(),
 			"\nReceived: ",
 			received.red(),
-			backtracer::file_context_depth(backtrace_depth + 3),
+			file_context_depth(backtrace_depth + 3),
 		))
 	}
 }
