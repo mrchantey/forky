@@ -121,6 +121,7 @@ features = [
 	'ResizeObserverEntry',
 	'ResizeObserverOptions',
 	'ResizeObserverSize',
+	'DomRectReadOnly',
 	# Events
 	'MouseEvent',
 	'KeyboardEvent',

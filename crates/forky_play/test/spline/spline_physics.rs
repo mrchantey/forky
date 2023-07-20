@@ -6,7 +6,7 @@ use forky_play::{
 use sweet::*;
 sweet! {
 
-	before {
+	// before {
 		// let mut app = App::new();
 		// app.__()
 		// 	.insert_test_timer()
@@ -26,7 +26,7 @@ sweet! {
 		// 		p3: Vec3::new(1.,1.,0.),
 		// 	}),
 		// )).id();
-	}
+	// }
 
 	test skip "spline physics" {
 		// expect(app.world.get::<Transform>(player_id).unwrap().translation.y)

@@ -1,19 +1,22 @@
 use bevy::prelude::*;
-use forky_play::{physics::*, *};
+use forky_play::physics::*;
+use forky_play::*;
 use sweet::*;
 
 
+fn setup() -> App {
+	let mut app = App::new();
+	app.__()
+		.insert_test_timer()
+		.add_plugin(physics::EulerPhysicsPlugin)
+		.__();
+	app
+}
+
 sweet! {
 
-	before {
-		let mut app = App::new();
-		app.__()
-			.insert_test_timer()
-			.add_plugin(physics::EulerPhysicsPlugin)
-			.__();
-	}
-
 	test "velocity" {
+		let mut app = setup();
 		let player_id = app.world.spawn((
 			Transform::default(),
 			Velocity(Vec3::RIGHT),
@@ -24,9 +27,10 @@ sweet! {
 
 		app.update_with_tick(1.);
 		expect(app.world.get::<Transform>(player_id).unwrap().translation.x)
-			.to_be(1.)?;
+		.to_be(1.)?;
 	}
 	test "velocity" {
+		let mut app = setup();
 		let player_id = app.world.spawn((
 			Transform::default(),
 			Velocity(Vec3::RIGHT),
@@ -42,6 +46,7 @@ sweet! {
 	}
 
 	test "acceleration - impulse"{
+		let mut app = setup();
 		let player_id = app.world.spawn((
 			Transform::default(),
 			AccelerationImpulse(Vec3::RIGHT),
@@ -55,6 +60,7 @@ sweet! {
 			.to_be(2.)?;
 	}
 	test "acceleration - force"{
+		let mut app = setup();
 		let player_id = app.world.spawn((
 			Transform::default(),
 			AccelerationForce(Vec3::RIGHT),

@@ -1,27 +1,31 @@
 #![allow(unused, unused_mut)]
 use forky_core::*;
-use forky_play::maze::{rect_maze::RectMaze, *};
+use forky_play::maze::rect_maze::RectMaze;
+use forky_play::maze::*;
 use sweet::*;
+
+fn setup() -> RectMaze {
+	let width = 5;
+	let height = 3;
+	RectMaze::new(width, height)
+}
 
 sweet! {
 
-	before {
-		let width = 5;
-		let height = 3;
-		let mut maze = RectMaze::new(width,height);
-	}
-
 	test "indices"{
+		let mut maze = setup();
 		let str = maze.format_indices();
 		expect(&str[..]).to_be("0\t1\t2\t3\t4\t\n5\t6\t7\t8\t9\t\n10\t11\t12\t13\t14\t\n")?;
 	}
 
 	test "grid"{
+		let mut maze = setup();
 		let str = maze.format_grid();
 		expect(&str[..]).to_be("┌┬┬┬┬┐\n├┼┼┼┼┤\n├┼┼┼┼┤\n└┴┴┴┴┘\n")?;
 	}
 
 	test "maze" {
+		let mut maze = setup();
 		maze.paths.link(0,1);
 		maze.paths.link(0,5);
 		maze.paths.link(3,4);
@@ -34,6 +38,7 @@ sweet! {
 	}
 
 	test "tail"{
+		let mut maze = setup();
 		expect(&maze.format()[..]).to_be("┌┬┬┬┬┐\n├┼┼┼┼┤\n├┼┼┼┼┤\n└┴┴┴┘╵\n")?;
 		maze.tail = 13;
 		expect(&maze.format()[..]).to_be("┌┬┬┬┬┐\n├┼┼┼┼┤\n├┼┼┼┼┤\n└┴┴┘└┘\n")?;
@@ -42,13 +47,13 @@ sweet! {
 	}
 
 	test skip "random" {
-		let width = 10;
-		let height = 5;
+		let mut maze = setup();
 		maze.link_randomly();
 		let str = maze.format();
 		println!("{str}");
 	}
 	test "options" {
+
 		let width = 2;
 		let height = 2;
 

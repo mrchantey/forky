@@ -9,9 +9,6 @@ use sweet::*;
 //calculator: http://cosinekitty.com/solar_system.html
 sweet! {
 
-	before{
-	}
-
 	test "ecliptic positions"{
 		let day = Y2000Day::FIRST_JAN_2000;
 		expect(*ecliptic_positions::sun())

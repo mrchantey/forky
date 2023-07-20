@@ -3,10 +3,10 @@
 
 pub use sweet::*;
 
-sweet! {"banana"
-	let mut a = 1;
-
+sweet! {
+	
 	before{
+		let mut a = 1;
 		a = 0;
 	}
 

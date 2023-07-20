@@ -13,7 +13,8 @@ repository = {workspace=true}
 [dependencies]
 forky_core = {workspace = true}
 crossterm = {workspace = true}
-
+gag = {workspace = true}
+anyhow = {workspace = true}
 
 [target.'cfg(windows)'.dev-dependencies]
 sweet = {workspace = true}

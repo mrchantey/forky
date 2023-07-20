@@ -1,8 +1,10 @@
 use js_sys::Array;
-use wasm_bindgen::{prelude::Closure, JsCast};
-use web_sys::{
-	Element, HtmlCanvasElement, ResizeObserver, ResizeObserverEntry,
-};
+use wasm_bindgen::prelude::Closure;
+use wasm_bindgen::JsCast;
+use web_sys::Element;
+use web_sys::HtmlCanvasElement;
+use web_sys::ResizeObserver;
+use web_sys::ResizeObserverEntry;
 
 pub struct ResizeListener {
 	pub observer: ResizeObserver,
