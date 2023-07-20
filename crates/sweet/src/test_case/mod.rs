@@ -1,9 +1,9 @@
 mod test_case_desc;
 pub use self::test_case_desc::*;
-mod test_file;
-pub use self::test_file::*;
 mod test_runner_config;
 pub use self::test_runner_config::*;
+mod test_suite;
+pub use self::test_suite::*;
 mod test_suite_collection;
 pub use self::test_suite_collection::*;
 mod test_suite_result;

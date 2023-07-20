@@ -23,7 +23,7 @@ impl TestRunnerNative {
 		let mut results_suites = TestSuiteResult::new();
 
 		let suites = TestSuiteCollection::new();
-		let results_cases_arr = suites.run_parallel(&config);
+		let results_cases_arr = suites.run(&config);
 
 		let results_cases = results_cases_arr.iter().fold(
 			TestSuiteResult::default(),

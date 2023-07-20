@@ -6,15 +6,15 @@ use std::collections::HashMap;
 // use futures::StreamExt;
 
 
-pub struct TestSuiteCollection(pub Vec<TestFile>);
+pub struct TestSuiteCollection(pub Vec<TestSuite>);
 
 impl TestSuiteCollection {
 	pub fn new() -> Self {
-		let mut files: HashMap<&'static str, TestFile> = HashMap::new();
+		let mut files: HashMap<&'static str, TestSuite> = HashMap::new();
 		for case in inventory::iter::<TestCaseDesc> {
 			let case: &TestCaseDesc = case;
 			if !files.contains_key(case.file) {
-				files.insert(case.file, TestFile::new(case.file));
+				files.insert(case.file, TestSuite::new(case.file));
 			}
 			files.get_mut(case.file).unwrap().tests.push(case.clone());
 		}
@@ -33,26 +33,16 @@ impl TestSuiteCollection {
 
 	pub fn run(&self, config: &TestRunnerConfig) -> Vec<TestSuiteResult> {
 		//TODO parallel
-		self.0
+		let to_run = self
+			.0
 			.iter()
 			.filter(|s| config.suite_passes_filter(s.file))
-			.map(|s| s.run())
-			.collect::<Vec<_>>()
-	}
-
-	#[cfg(not(target_arch = "wasm32"))]
-	pub fn run_parallel(
-		&self,
-		config: &TestRunnerConfig,
-	) -> Vec<TestSuiteResult> {
-		self.0
-			.iter()
-			.filter(|s| config.suite_passes_filter(s.file))
-			.map(|s| {
-				let s = s.clone();
-				std::thread::spawn(move || s.run())
-			})
-			.map(|h| h.join().unwrap())
-			.collect::<Vec<_>>()
+			.collect::<Vec<_>>();
+		if config.parallel {
+			use rayon::prelude::*;
+			to_run.par_iter().map(|s| s.run(config)).collect::<Vec<_>>()
+		} else {
+			to_run.iter().map(|s| s.run(config)).collect::<Vec<_>>()
+		}
 	}
 }

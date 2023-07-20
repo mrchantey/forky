@@ -1,5 +1,6 @@
 pub struct TestRunnerConfig {
 	pub watch: bool,
+	pub parallel: bool,
 	pub files: Vec<String>,
 }
 
@@ -9,7 +10,11 @@ impl TestRunnerConfig {
 		let mut args = forky_fs::cli_args::get();
 		let watch = vec_contains_str("-w", &args);
 		args.retain(|v| !arr_contains_str(v, FLAGS));
-		Self { watch, files: args }
+		Self {
+			watch,
+			parallel: true,
+			files: args,
+		}
 	}
 
 	pub fn suite_passes_filter(&self, path: &str) -> bool {

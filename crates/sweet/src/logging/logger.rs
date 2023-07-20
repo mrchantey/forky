@@ -11,6 +11,7 @@ use std::time::Duration;
 
 
 pub struct TestLogger {
+	pub running_indicator: bool,
 	filename: &'static str,
 	#[cfg(not(target_arch = "wasm32"))]
 	stdout: Result<gag::BufferRedirect>,
@@ -20,9 +21,12 @@ pub struct TestLogger {
 }
 
 impl TestLogger {
-	pub fn start(file: &'static str) -> Self {
-		Self::log_start(file);
+	pub fn start(file: &'static str, running_indicator: bool) -> Self {
+		if running_indicator {
+			Self::log_start(file);
+		}
 		let logger = TestLogger {
+			running_indicator,
 			filename: file,
 			log: String::new(),
 			#[cfg(not(target_arch = "wasm32"))]
@@ -60,9 +64,10 @@ impl TestLogger {
 		let mut stdout = stdout();
 
 		#[cfg(not(target_arch = "wasm32"))]
-		stdout.execute(crossterm::cursor::MoveUp(1)).unwrap();
-		#[cfg(not(target_arch = "wasm32"))]
-		stdout.execute(crossterm::cursor::MoveToColumn(0)).unwrap();
+		if self.running_indicator {
+			stdout.execute(crossterm::cursor::MoveUp(1)).unwrap();
+			stdout.execute(crossterm::cursor::MoveToColumn(0)).unwrap();
+		}
 
 		let prefix = if result.failed == 0 {
 			" PASS ".black().bold().greenb()
