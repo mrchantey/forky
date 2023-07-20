@@ -2,10 +2,6 @@ use super::*;
 use crate::TestSuiteResult;
 use std::collections::HashMap;
 
-// use futures::stream::FuturesUnordered;
-// use futures::StreamExt;
-
-
 pub struct TestSuiteCollection(pub Vec<TestSuite>);
 
 impl TestSuiteCollection {
