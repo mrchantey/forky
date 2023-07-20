@@ -14,6 +14,8 @@ mod wasm;
 pub fn main() -> anyhow::Result<()> {
 	#[cfg(target_arch = "wasm32")]
 	forky_core::wasm::set_panic_hook();
+	#[cfg(target_arch = "wasm32")]
+	return Ok(());
 	#[cfg(not(target_arch = "wasm32"))]
 	crate::native::TestRunnerNative::run()
 }

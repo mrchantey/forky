@@ -1,10 +1,9 @@
+#![allow(unused_mut)]
 use crate::TestSuiteResult;
 use colorize::*;
 #[cfg(not(target_arch = "wasm32"))]
 use crossterm::*;
 use std::io::stdout;
-use std::io::Read;
-// use std::io::Read;
 use std::io::Write;
 use std::time::Duration;
 
@@ -39,8 +38,9 @@ impl TestLogger {
 	}
 
 	fn log_start(filename: &str) {
-		#[cfg(target_arch = "wasm32")]
-		return;
+		if cfg!(target_arch = "wasm32") {
+			return;
+		}
 		let prefix = " RUNS ".black().bold().yellowb();
 		let path = pretty_path(filename);
 		println!("{prefix} {path}");
@@ -48,25 +48,26 @@ impl TestLogger {
 
 
 	pub fn end(mut self, result: &TestSuiteResult) {
-		#[cfg(not(target_arch = "wasm32"))]
-		if self.stdout.is_ok() {
-			let mut bb = self.stdout.unwrap();
-			bb.read_to_string(&mut self.log).unwrap();
-			drop(bb);
-		}
-
-		#[cfg(not(target_arch = "wasm32"))]
-		if self.stderr.is_ok() {
-			let mut bb = self.stderr.unwrap();
-			bb.read_to_string(&mut self.log).unwrap();
-			drop(bb);
-		}
 		let mut stdout = stdout();
-
 		#[cfg(not(target_arch = "wasm32"))]
-		if self.running_indicator {
-			stdout.execute(crossterm::cursor::MoveUp(1)).unwrap();
-			stdout.execute(crossterm::cursor::MoveToColumn(0)).unwrap();
+		{
+			use std::io::Read;
+			if self.stdout.is_ok() {
+				let mut bb = self.stdout.unwrap();
+				bb.read_to_string(&mut self.log).unwrap();
+				drop(bb);
+			}
+			if self.stderr.is_ok() {
+				let mut bb = self.stderr.unwrap();
+				bb.read_to_string(&mut self.log).unwrap();
+				drop(bb);
+			}
+
+			if self.running_indicator {
+				stdout.execute(crossterm::cursor::MoveUp(1)).unwrap();
+				stdout.execute(crossterm::cursor::MoveToColumn(0)).unwrap();
+			}
+
 		}
 
 		let prefix = if result.failed == 0 {
