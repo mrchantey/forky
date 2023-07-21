@@ -22,12 +22,13 @@
 	</style>
 </head>
 <script type="module">
-	import init from './wasm/bindgen.js'
-	init().catch((error) => {
-		if (!error.message.startsWith("Using exceptions for control flow,"))
-			throw error
-	}
-	);
+	import init, * as mod from './wasm/bindgen.js'
+	window._sweet_wasm = mod
+	init()
+		.catch((error) => {
+			if (!error.message.startsWith("Using exceptions for control flow,"))
+				throw error
+		});
 	// import init, { Runner } from './wasm/bindgen.js'
 	// init().then(() => {
 	// 	var runner = new Runner()

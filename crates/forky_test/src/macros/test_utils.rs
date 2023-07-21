@@ -1,4 +1,3 @@
-use proc_macro2::Literal;
 use proc_macro2::TokenStream;
 use proc_macro2::TokenTree;
 use quote::quote;
@@ -28,32 +27,4 @@ where
 		}
 	};
 	quote! {sweet::TestCaseConfig::Default}
-}
-
-
-pub fn to_inventory_wrap_func(
-	name: Literal,
-	func: TokenStream,
-	config: TokenStream,
-) -> TokenStream {
-	let func = quote!(||->anyhow::Result<()>{
-		#func
-		Ok(())
-	});
-	to_inventory(name, func, config)
-}
-
-pub fn to_inventory(
-	name: Literal,
-	func: TokenStream,
-	config: TokenStream,
-) -> TokenStream {
-	quote!(
-		inventory::submit!(sweet::TestCaseDesc {
-			name: #name,
-			func: #func,
-			file: file!(),
-			config: #config
-		});
-	)
 }

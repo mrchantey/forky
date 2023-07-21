@@ -51,8 +51,8 @@ clean-repo:
 
 
 # required: cargo binstall cargo-expand
-expand crate example:
-	just watch 'cargo expand -p {{crate}} --example {{example}}'
+expand crate example *args:
+	just watch 'cargo expand -p {{crate}} --example {{example}} {{args}}'
 
 example crate example *args:
 	just watch 'cargo run -p {{crate}} --example {{example}} {{args}}'
