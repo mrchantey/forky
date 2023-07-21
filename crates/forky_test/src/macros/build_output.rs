@@ -40,8 +40,8 @@ pub fn to_inventory(
 		#[cfg(target_arch = "wasm32")]
 		#[wasm_bindgen]
 		pub fn #wasm_export_name() -> JsValue {
-			use js_sys::*;
 			use wasm_bindgen::prelude::*;
+			use js_sys::*;
 
 			let obj = Object::new();
 			let func: Closure<dyn Fn() -> JsValue> = Closure::new(|| {
@@ -50,11 +50,12 @@ pub fn to_inventory(
 					Err(e)=> e.to_string().into()
 				}
 			});
+			let config = #config.to_i32();
 			let func = func.into_js_value();
 			Reflect::set(&obj, &"name".into(), &#name.into()).unwrap();
 			Reflect::set(&obj, &"file".into(), &file!().into()).unwrap();
 			Reflect::set(&obj, &"func".into(), &func).unwrap();
-			Reflect::set(&obj, &"config".into(), &"foo".into()).unwrap();
+			Reflect::set(&obj, &"config".into(), &config.into()).unwrap();
 			obj.into()
 		}
 	)
