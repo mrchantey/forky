@@ -1,12 +1,10 @@
 use crate::*;
 use anyhow::Result;
-use js_sys::Array;
 use js_sys::Function;
-use js_sys::Object;
 use js_sys::Reflect;
 use wasm_bindgen::prelude::*;
-use web_sys::window;
 
+#[derive(Debug, Clone)]
 pub struct TestCaseWasm {
 	pub file: String,
 	pub name: String,
@@ -29,8 +27,13 @@ impl TestCaseWasm {
 			config,
 		})
 	}
+}
 
-	fn run_wasm(&self) -> Result<()> {
+impl TestCase for TestCaseWasm {
+	fn file(&self) -> &str { self.file.as_str() }
+	fn name(&self) -> &str { self.name.as_str() }
+	fn config(&self) -> &TestCaseConfig { &self.config }
+	fn run_func(&self) -> Result<()> {
 		let result = self.func.call0(&JsValue::NULL).unwrap();
 		if result.is_string() {
 			anyhow::bail!(result.as_string().unwrap())
@@ -38,11 +41,4 @@ impl TestCaseWasm {
 			Ok(())
 		}
 	}
-}
-
-impl TestCase for TestCaseWasm {
-	fn file(&self) -> &str { self.file.as_str() }
-	fn name(&self) -> &str { self.name.as_str() }
-	fn config(&self) -> &TestCaseConfig { &self.config }
-	fn run_func(&self) -> Result<()> { self.run_wasm() }
 }

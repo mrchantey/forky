@@ -1,10 +1,7 @@
-use crate::BacktraceFile;
 use backtrace::Backtrace;
-
 
 const PREFIX_STACK_FRAMES: usize = 6;
 // const RUST_INTERNAL_FILE: &str = "library\\core\\src\\ops\\function.rs";
-
 
 #[cfg(target_arch = "wasm32")]
 pub fn file_context_depth(_: usize) -> String { String::new() }
@@ -15,7 +12,7 @@ pub fn file_context_depth(frame_depth: usize) -> String {
 	let min_frame = PREFIX_STACK_FRAMES + frame_depth;
 	let frame = &bt.frames()[min_frame..][0];
 	let symbol = &frame.symbols()[0];
-	if let Some(file) = BacktraceFile::new(symbol) {
+	if let Some(file) = crate::BacktraceFile::new(symbol) {
 		return file.file_context().unwrap_or_default();
 	}
 	String::new()

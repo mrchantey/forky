@@ -1,5 +1,4 @@
 use super::*;
-use crate::*;
 use anyhow::Result;
 use leptos::*;
 
@@ -8,7 +7,7 @@ pub struct TestRunnerWasm;
 impl TestRunnerWasm {
 	pub fn run() -> Result<()> {
 		forky_core::wasm::set_panic_hook();
-		collect_tests();
+		let collector = TestCollectorWasm::new();
 
 		// let config = TestRunnerConfig::from_search_params();
 
