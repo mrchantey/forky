@@ -27,11 +27,10 @@ pub trait TestCase {
 		anyhow::anyhow!(val)
 	}
 
-	fn func(&self) -> Box<dyn Fn() -> Result<()>>;
+	fn run_func(&self) -> Result<()>;
 
 	fn run(&self) -> Result<()> {
-		let func = self.func();
-		let panic_res = panic::catch_unwind(AssertUnwindSafe(|| func()));
+		let panic_res = panic::catch_unwind(AssertUnwindSafe(|| self.run_func()));
 		// let panic_res = panic::catch_unwind(AssertUnwindSafe(|| (self.func)()));
 		let _ = panic::take_hook();
 		match panic_res {

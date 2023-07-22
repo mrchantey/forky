@@ -30,8 +30,8 @@ impl TestCaseWasm {
 		})
 	}
 
-	pub fn run(&self) -> Result<()> {
-		let result = func.call0(&JsValue::NULL).unwrap();
+	fn run_wasm(&self) -> Result<()> {
+		let result = self.func.call0(&JsValue::NULL).unwrap();
 		if result.is_string() {
 			anyhow::bail!(result.as_string().unwrap())
 		} else {
@@ -41,8 +41,8 @@ impl TestCaseWasm {
 }
 
 impl TestCase for TestCaseWasm {
-	fn file(&self) -> &str { self.file() }
-	fn name(&self) -> &str { todo!() }
-	fn config(&self) -> TestCaseConfig { self.config }
-	fn func(&self) -> Box<dyn Fn() -> Result<()>> { Box::new(|| self.run()) }
+	fn file(&self) -> &str { self.file.as_str() }
+	fn name(&self) -> &str { self.name.as_str() }
+	fn config(&self) -> &TestCaseConfig { &self.config }
+	fn run_func(&self) -> Result<()> { self.run_wasm() }
 }

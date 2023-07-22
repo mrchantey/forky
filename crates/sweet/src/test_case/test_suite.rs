@@ -6,7 +6,7 @@ use rayon::prelude::*;
 #[derive(Default, Debug, Clone)]
 pub struct TestSuite<T>
 where
-	T: TestCase + Send + Sync,
+	T: TestCase,
 {
 	pub file: &'static str,
 	pub tests: Vec<T>,
@@ -16,7 +16,7 @@ where
 
 impl<T> TestSuite<T>
 where
-	T: TestCase + Send + Sync,
+	T: TestCase,
 {
 	pub fn new(file: &'static str) -> Self {
 		Self {
@@ -26,7 +26,12 @@ where
 			config: TestCaseConfig::Default,
 		}
 	}
+}
 
+impl<T> TestSuite<T>
+where
+	T: TestCase + Send + Sync,
+{
 	fn should_skip(&self, test: &T) -> bool {
 		*test.config() == TestCaseConfig::Skip
 			|| self.config == TestCaseConfig::Skip

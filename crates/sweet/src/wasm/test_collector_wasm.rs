@@ -4,7 +4,8 @@ use js_sys::Object;
 use js_sys::Reflect;
 use wasm_bindgen::prelude::*;
 use web_sys::window;
-
+use super::*;
+use crate::*;
 
 pub struct TestCollectorWasm(pub Vec<TestSuite<TestCaseWasm>>);
 
