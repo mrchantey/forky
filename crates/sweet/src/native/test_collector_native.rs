@@ -1,14 +1,16 @@
 use super::*;
-use crate::TestSuiteResult;
+use crate::*;
 use std::collections::HashMap;
 
-pub struct TestSuiteCollection(pub Vec<TestSuite>);
+type TestSuiteNative = TestSuite<TestCaseNative>;
 
-impl TestSuiteCollection {
+pub struct TestCollectorNative(pub Vec<TestSuiteNative>);
+
+impl TestCollectorNative {
 	pub fn new() -> Self {
-		let mut files: HashMap<&'static str, TestSuite> = HashMap::new();
-		for case in inventory::iter::<TestCaseDesc> {
-			let case: &TestCaseDesc = case;
+		let mut files: HashMap<&'static str, TestSuiteNative> = HashMap::new();
+		for case in inventory::iter::<TestCaseNative> {
+			let case: &TestCaseNative = case;
 			if !files.contains_key(case.file) {
 				files.insert(case.file, TestSuite::new(case.file));
 			}
@@ -28,7 +30,6 @@ impl TestSuiteCollection {
 
 
 	pub fn run(&self, config: &TestRunnerConfig) -> Vec<TestSuiteResult> {
-		//TODO parallel
 		let to_run = self
 			.0
 			.iter()

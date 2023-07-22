@@ -22,7 +22,7 @@ impl TestRunnerNative {
 		let start_time = Instant::now();
 		let mut results_suites = TestSuiteResult::new();
 
-		let suites = TestSuiteCollection::new();
+		let suites = TestCollectorNative::new();
 		let results_cases_arr = suites.run(&config);
 
 		let results_cases = results_cases_arr.iter().fold(

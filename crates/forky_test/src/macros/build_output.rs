@@ -29,7 +29,7 @@ pub fn to_inventory(
 
 	quote!(
 		#[cfg(not(target_arch = "wasm32"))]
-		inventory::submit!(sweet::TestCaseDesc {
+		inventory::submit!(sweet::TestCaseNative {
 			name: #name,
 			func: #func,
 			file: file!(),

@@ -4,15 +4,20 @@ use crate::TestSuiteResult;
 use rayon::prelude::*;
 
 #[derive(Default, Debug, Clone)]
-pub struct TestSuite {
+pub struct TestSuite<T>
+where
+	T: TestCase + Send + Sync,
+{
 	pub file: &'static str,
-	pub tests: Vec<TestCaseDesc>,
+	pub tests: Vec<T>,
 	pub contains_only: bool,
 	pub config: TestCaseConfig,
 }
 
-
-impl TestSuite {
+impl<T> TestSuite<T>
+where
+	T: TestCase + Send + Sync,
+{
 	pub fn new(file: &'static str) -> Self {
 		Self {
 			file,
@@ -22,10 +27,10 @@ impl TestSuite {
 		}
 	}
 
-	fn should_skip(&self, test: &TestCaseDesc) -> bool {
-		test.config == TestCaseConfig::Skip
+	fn should_skip(&self, test: &T) -> bool {
+		*test.config() == TestCaseConfig::Skip
 			|| self.config == TestCaseConfig::Skip
-			|| (self.contains_only && test.config != TestCaseConfig::Only)
+			|| (self.contains_only && *test.config() != TestCaseConfig::Only)
 	}
 
 	pub fn run(&self, config: &TestRunnerConfig) -> TestSuiteResult {
