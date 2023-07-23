@@ -10,9 +10,10 @@ pub struct TestRunnerWasm;
 impl TestRunnerWasm {
 	pub fn run() -> Result<()> {
 		forky_core::wasm::set_panic_hook();
-		let _collector = TestCollectorWasm::new();
 
 		let config = TestRunnerConfig::from_search_params();
+		let _collector = TestCollectorWasm::new();
+
 		let results = _collector.run(&config);
 		for result in results {
 			forky_core::log!("result: {:?}", result);

@@ -2,10 +2,13 @@
 
 *Write many tests quickly and cleanly.*
 
-> Very early stage warning! No ongoing maintenance is guaranteed
+## Features
+
+- :fire:  Parallel - Test cases are run in parallel by default
+- :earth_africa: WASM - Run tests in-browser with an interactive harness
+- :rainbow: Pretty - Jest inspired matchers and outputs
 
 
-Basically a [jest](https://jestjs.io/) clone, the `sweet` crate will set you up with a beautiful test harness and intuitive matchers that are easy on the eyes.
 
 ```rust
 pub use sweet::*;
@@ -14,7 +17,8 @@ sweet! {
   it "works" {
     assert!("regular assertions and panics".len() > 0);
 
-    expect("custom matchers").to_contain("custom")?;
+    expect(true).to_be_false()?;
+    expect("string matchers").to_contain("this string")?;
   }
 }
 ```
@@ -56,49 +60,7 @@ sweet! {
 		- ![progress](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/progress.png)
 	- Failure
 		- ![failure](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/failure.png)
-## Features - Runner
-- Mutable globals
-	- When writing lots of tests its helpful to have access to an outer scope
-	```rust
-	sweet! {
-		let mut a = 0;
-		before {
-			a = a + 1;
-		}
-		test "before" {
-			expect(a).to_be(1)?;
-		}
-	}
-	```
 
-- Automatic suite names
-	- Unless otherwise defined, sweet suites will be named after the files:
-	```rust
-	//named after file
-	sweet!{
-	  it "works"{}
-	}
-	//custom name
-	sweet!{ "My Test"
-		it "works"{}
-	}
-	```
-- Nested Tests
-	- Sweet is designed to collect and run all tests in one go. All tests exposed in the `sweet.rs` file will be run:
-		```rust
-		//test/sub_dir/some_test.rs
-		sweet!{
-		  it "works" {
-		    expect(true).to_be_true();
-		  }
-		}
-		//test/sub_dir/mod.rs
-		mod some_test
-		//test/sweet.rs
-		#![feature(imported_main)]
-		pub use sweet::*;
-		mod sub_dir;
-		```
 ## Features - CLI
 - Run 
 	- `cargo test --test sweet`
@@ -119,4 +81,3 @@ sweet! {
 
 
 ## TODO
-- Handle panics and errors outside of tests, ie inside setup/teardown

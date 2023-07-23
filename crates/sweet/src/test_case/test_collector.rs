@@ -41,39 +41,30 @@ where
 		files
 	}
 
-	fn run(&self, config: &TestRunnerConfig) -> Vec<TestSuiteResult> {
+	fn run(&self, config: &TestRunnerConfig) -> ResultSummary {
 		self.suites_to_run(config)
 			.iter()
 			.map(|s| s.run(config, TestSuite::<T>::run_strategy))
 			.collect::<Vec<_>>()
+			.into()
 	}
 }
 
 
-// impl<T> dyn TestCollector<T>
-// where
-// 	T: TestCase + Clone + Send + Sync,
-// {
-pub fn run_parallel<T>(
-	collector: &impl TestCollector<T>,
-	config: &TestRunnerConfig,
-) -> Vec<TestSuiteResult>
+pub trait TestCollectorParallel<T>: TestCollector<T>
 where
 	T: TestCase + Clone + Send + Sync,
 {
-	if config.parallel {
-		use rayon::prelude::*;
-		collector
-			.suites_to_run(config)
-			.par_iter()
-			.map(|s| s.run(config, TestSuite::<T>::run_parallel_strategy))
-			.collect::<Vec<_>>()
-	} else {
-		collector
-			.suites_to_run(config)
-			.iter()
-			.map(|s| s.run(config, TestSuite::<T>::run_strategy))
-			.collect::<Vec<_>>()
+	fn run_parallel(&self, config: &TestRunnerConfig) -> ResultSummary {
+		if config.parallel {
+			use rayon::prelude::*;
+			self.suites_to_run(config)
+				.par_iter()
+				.map(|s| s.run(config, TestSuite::<T>::run_parallel_strategy))
+				.collect::<Vec<_>>()
+				.into()
+		} else {
+			self.run(config)
+		}
 	}
 }
-// }

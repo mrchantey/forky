@@ -81,13 +81,13 @@ impl<'a> TestLogger<'a> {
 		stdout.write(out.as_bytes()).unwrap();
 	}
 
-	pub fn log_time(duration: Duration) {
+	pub fn log_time(duration: Duration)->String {
 		let millis = duration.as_millis();
 		let prefix = "Time:\t\t".bold();
 		if millis < 100 {
-			println!("{}{} ms\n\n", prefix, millis);
+			format!("{}{} ms\n\n", prefix, millis)
 		} else {
-			println!("{}{:.2} s\n\n", prefix, millis as f32 * 0.001);
+			format!("{}{:.2} s\n\n", prefix, millis as f32 * 0.001)
 		}
 	}
 }

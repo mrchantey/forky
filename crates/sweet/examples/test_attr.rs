@@ -9,11 +9,12 @@ fn foobar() -> Result<()> {
 	expect(true).to_be_true()?;
 	Ok(())
 }
-#[sweet_test]
-fn fails() -> Result<()> {
-	expect(true).to_be_false()?;
-	Ok(())
-}
+// #[sweet_test]
+// fn fails() -> Result<()> {
+// 	expect(true).to_be_false()?;
+// 	Ok(())
+// }
+
 // #[sweet_test]
 // fn panics() -> Result<()> {
 // 	panic!("oh no!");

@@ -1,7 +1,42 @@
 use colorize::*;
 
 
+#[derive(Debug, Default)]
+pub struct ResultSummary {
+	pub suites_arr: Vec<TestSuiteResult>,
+	pub suites: TestSuiteResult,
+	pub cases: TestSuiteResult,
+}
 
+impl Into<ResultSummary> for Vec<TestSuiteResult> {
+	fn into(self) -> ResultSummary { ResultSummary::from_suites_arr(self) }
+}
+
+impl ResultSummary {
+	fn from_suites_arr(suites_arr: Vec<TestSuiteResult>) -> Self {
+		let mut suites = TestSuiteResult::new();
+		let cases = suites_arr.iter().fold(
+			TestSuiteResult::default(),
+			|mut acc, item| {
+				acc.tests += item.tests;
+				acc.failed += item.failed;
+				acc.skipped += item.skipped;
+
+				suites.tests += 1;
+				if item.failed > 0 {
+					suites.failed += 1;
+				}
+
+				acc
+			},
+		);
+		ResultSummary {
+			suites_arr,
+			suites,
+			cases,
+		}
+	}
+}
 
 #[derive(Debug, Default)]
 pub struct TestSuiteResult {
@@ -19,7 +54,7 @@ impl TestSuiteResult {
 			skipped: 0,
 		}
 	}
-	pub fn log_summary(&self, prefix: &'static str) {
+	pub fn pretty_print(&self, prefix: &'static str) -> String {
 		let TestSuiteResult {
 			tests,
 			failed,
@@ -43,6 +78,6 @@ impl TestSuiteResult {
 		}
 		summaries.push(&passed_str);
 		summaries.push(&total_str);
-		println!("{}{}", prefix.bold(), summaries.join(", "));
+		format!("{}{}", prefix.bold(), summaries.join(", "))
 	}
 }

@@ -18,5 +18,5 @@ impl TestCase for TestCaseNative {
 	fn file(&self) -> &str { self.file }
 	fn name(&self) -> &str { self.name }
 	fn config(&self) -> &TestCaseConfig { &self.config }
-	fn run_func(&self) -> anyhow::Result<()> { self.func() }
+	fn run_func(&self) -> anyhow::Result<()> { (self.func)() }
 }
