@@ -6,6 +6,12 @@ type TestSuiteNative = TestSuite<TestCaseNative>;
 
 pub struct TestCollectorNative(pub Vec<TestSuiteNative>);
 
+// impl TestCollector for TestCollectorNative{
+
+
+// }
+
+
 impl TestCollectorNative {
 	pub fn new() -> Self {
 		let mut files: HashMap<&'static str, TestSuiteNative> = HashMap::new();

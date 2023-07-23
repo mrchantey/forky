@@ -1,7 +1,9 @@
+mod test_case;
+pub use self::test_case::*;
 mod test_case_config;
 pub use self::test_case_config::*;
-mod test_case_desc;
-pub use self::test_case_desc::*;
+mod test_collector;
+pub use self::test_collector::*;
 mod test_runner_config;
 pub use self::test_runner_config::*;
 mod test_suite;

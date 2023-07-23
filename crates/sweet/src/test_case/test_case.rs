@@ -30,8 +30,10 @@ pub trait TestCase {
 	fn run_func(&self) -> Result<()>;
 
 	fn run(&self) -> Result<()> {
-		let panic_res = panic::catch_unwind(AssertUnwindSafe(|| self.run_func()));
-		// let panic_res = panic::catch_unwind(AssertUnwindSafe(|| (self.func)()));
+		let panic_res =
+			panic::catch_unwind(AssertUnwindSafe(|| self.run_func()));
+
+		#[cfg(not(target_arch = "wasm32"))]
 		let _ = panic::take_hook();
 		match panic_res {
 			Ok(matcher_res) => match matcher_res {

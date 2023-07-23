@@ -3,7 +3,7 @@ use colorize::*;
 
 
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct TestSuiteResult {
 	pub tests: usize,
 	pub failed: usize,

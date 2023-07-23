@@ -9,9 +9,9 @@ use std::time::Duration;
 
 
 
-pub struct TestLogger {
+pub struct TestLogger<'a> {
 	pub running_indicator: bool,
-	filename: &'static str,
+	filename: &'a str,
 	#[cfg(not(target_arch = "wasm32"))]
 	stdout: Result<gag::BufferRedirect>,
 	#[cfg(not(target_arch = "wasm32"))]
@@ -19,8 +19,8 @@ pub struct TestLogger {
 	pub log: String,
 }
 
-impl TestLogger {
-	pub fn start(file: &'static str, running_indicator: bool) -> Self {
+impl<'a> TestLogger<'a> {
+	pub fn start(file: &'a str, running_indicator: bool) -> Self {
 		if running_indicator {
 			Self::log_start(file);
 		}
