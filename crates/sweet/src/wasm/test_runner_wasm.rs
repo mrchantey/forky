@@ -1,8 +1,8 @@
+use std::time::Duration;
 use super::*;
-use crate::TestCollector;
-use crate::TestRunnerConfig;
+use crate::*;
 use anyhow::Result;
-use forky_core::*;
+use forky_core::wasm::*;
 use leptos::*;
 
 pub struct TestRunnerWasm;
@@ -10,28 +10,19 @@ pub struct TestRunnerWasm;
 impl TestRunnerWasm {
 	pub fn run() -> Result<()> {
 		forky_core::wasm::set_panic_hook();
-
 		let config = TestRunnerConfig::from_search_params();
-		let _collector = TestCollectorWasm::new();
 
-		let results = _collector.run(&config);
-		for result in results {
-			forky_core::log!("result: {:?}", result);
-		}
+		let intro = TestRunner::pretty_print_intro(&config);
+		log!("{intro}");
+		
+		let start_time = performance_now();
 
-		// let suites = TestSuiteCollection::new();
-		// let val = suites
-		// 	.0
-		// 	.iter()
-		// 	.fold(String::new(), |s, t| s + t.file.to_string().as_str());
-		// log!("suites: {}, tests: {}", suites.0.len(), val);
-		// let results_cases_arr = suites.run(&config);
-		// let result = results_cases_arr
-		// 	.iter()
-		// 	.fold(String::new(), |s, t| s + t.failed.to_string().as_str());
-		// log!("result: {}", result);
+		let collector = TestCollectorWasm::new();
+		let results = collector.run(&config);
+		let duration = Duration::from_millis((performance_now() - start_time) as u64);
+		let summary = TestRunner::pretty_print_summary(&results, duration);
 
-		// results_cases_arr
+		log!("{summary}");
 
 		mount_to_body(|cx| view! {cx,<Root/>});
 		Ok(())

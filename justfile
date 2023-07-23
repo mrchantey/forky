@@ -43,7 +43,7 @@ clean-repo:
 	rm -rf ./target
 	rm -rf ./Cargo.lock
 	just all clean
-	just test-all
+#just test-all
 # rm -rf C:/temp/.embuild
 # rm -rf C:/temp/idf
 # rm -rf ./.embuild

@@ -18,12 +18,12 @@ impl TestRunnerNative {
 
 		let start_time = Instant::now();
 
-		let suites = TestCollectorNative::new();
-		let results = suites.run_parallel(&config);
+		let collector = TestCollectorNative::new();
+		let results = collector.run_parallel(&config);
 		let duration = start_time.elapsed();
-		let post_run = TestRunner::pretty_print_summary(&results, duration);
+		let summary = TestRunner::pretty_print_summary(&results, duration);
 
-		println!("{post_run}");
+		println!("{summary}");
 
 		let no_tests = results.cases.tests == 0;
 		if config.watch || no_tests {
