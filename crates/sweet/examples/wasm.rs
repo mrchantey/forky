@@ -1,6 +1,5 @@
 #![feature(imported_main)]
 use anyhow::Result;
-use forky_core::*;
 use leptos::*;
 pub use sweet::*;
 

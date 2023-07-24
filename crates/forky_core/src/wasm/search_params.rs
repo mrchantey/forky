@@ -11,6 +11,11 @@ impl SearchParams {
 		params.get(key)
 	}
 	pub fn set(key: &str, value: &str) {
+		if let Some(curr) = Self::get(key) {
+			if curr == value {
+				return;
+			}
+		}
 		let loc = window().unwrap().location();
 		let params = loc.search().unwrap();
 		let params = UrlSearchParams::new_with_str(params.as_str()).unwrap();
@@ -28,6 +33,9 @@ impl SearchParams {
 	}
 
 	pub fn remove(key: &str) {
+		if let None = Self::get(key) {
+			return;
+		}
 		let loc = window().unwrap().location();
 		let search = loc.search().unwrap();
 		let params = UrlSearchParams::new_with_str(search.as_str()).unwrap();

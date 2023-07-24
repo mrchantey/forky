@@ -1,7 +1,5 @@
-use super::*;
 use crate::*;
 use forky_core::wasm::SearchParams;
-
 
 impl TestRunnerConfig {
 	pub fn from_search_params() -> Self {

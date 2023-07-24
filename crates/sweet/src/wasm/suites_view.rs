@@ -3,7 +3,10 @@ use crate::*;
 use leptos::*;
 
 #[component]
-pub fn SuitesView(cx: Scope) -> impl IntoView {
+pub fn SuitesView<F>(cx: Scope, set_file: F) -> impl IntoView
+where
+	F: Fn(Option<String>) + 'static + Copy,
+{
 	let config = TestRunnerConfig::default();
 	let collector = TestCollectorWasm::new();
 
@@ -13,14 +16,16 @@ pub fn SuitesView(cx: Scope) -> impl IntoView {
 		.map(|s| (*s).clone())
 		.collect::<Vec<_>>();
 
-
 	view! {cx,
 	<div class="sweet-contents">
 	<h3>"Suites"</h3>
-		<a href="http://127.0.0.1:8080">"Home"</a>
+		<div
+			class="sweet-suite"
+			on:click= move|_|set_file(None)
+			>"Home"</div>
 		<br/>
 		{suites.iter()
-			.map(|suite|view!{cx,<SuiteView suite/>})
+			.map(|suite|view!{cx,<SuiteView suite set_file/>})
 			.collect::<Vec<_>>()
 		}
 	</div>
@@ -28,18 +33,22 @@ pub fn SuitesView(cx: Scope) -> impl IntoView {
 }
 
 #[component]
-pub fn SuiteView<'a>(
+pub fn SuiteView<'a, F>(
 	cx: Scope,
+	set_file: F,
 	suite: &'a TestSuite<TestCaseWasm>,
-) -> impl IntoView {
+) -> impl IntoView
+where
+	F: Fn(Option<String>) + 'static,
+{
 	let file = suite.file.clone();
 	let pretty = file.replace("\\", " > ").replace(".rs", "");
-	let href = format!("?file={}", file);
+	// let href = format!("?file={}", file);
 	view! {cx,
-	<a
-		href=href
+	<div class="sweet-suite"
+		on:click=move|_|set_file(Some(file.clone()))
 	>
 		{pretty}
-	</a>
+	</div>
 	}
 }

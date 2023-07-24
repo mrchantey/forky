@@ -5,6 +5,23 @@ use web_sys::Url;
 pub struct History;
 
 impl History {
+	pub fn set_param(key: &str, value: &str) {
+		let url = window().unwrap().location().href().unwrap();
+		let url = Url::new(&url).unwrap();
+		let params = url.search_params();
+		params.set(key, value);
+		let url = url.href();
+		Self::push(&url);
+	}
+	pub fn remove_param(key: &str) {
+		let url = window().unwrap().location().href().unwrap();
+		let url = Url::new(&url).unwrap();
+		let params = url.search_params();
+		params.delete(key);
+		let url = url.href();
+		Self::push(&url);
+	}
+
 	pub fn push(path: &str) {
 		window()
 			.unwrap()

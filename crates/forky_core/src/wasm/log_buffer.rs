@@ -40,18 +40,14 @@ impl LogBuffer {
 	}
 	fn get_func(name: &str) -> Function {
 		let window = web_sys::window().unwrap();
-		unsafe {
-			let console = Reflect::get(&window, &"console".into()).unwrap();
-			let func = Reflect::get(&console, &name.into()).unwrap();
-			func.into()
-		}
+		let console = Reflect::get(&window, &"console".into()).unwrap();
+		let func = Reflect::get(&console, &name.into()).unwrap();
+		func.into()
 	}
 	fn set_func(name: &str, func: JsValue) {
 		let window = web_sys::window().unwrap();
-		unsafe {
-			let console = Reflect::get(&window, &"console".into()).unwrap();
-			Reflect::set(&console, &name.into(), &func).unwrap();
-		}
+		let console = Reflect::get(&window, &"console".into()).unwrap();
+		Reflect::set(&console, &name.into(), &func).unwrap();
 	}
 
 	pub fn end(self) -> String { (*self.log.borrow()).clone() }
