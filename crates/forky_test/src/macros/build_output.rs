@@ -17,12 +17,31 @@ pub fn to_inventory_wrap_func(
 	func: TokenStream,
 	config: TokenStream,
 ) -> TokenStream {
-	let func = quote!(|| -> sweet::exports::Result<()> {
-		async fn func_async ()->sweet::exports::Result<()>{
-			#func
-			Ok(())
-		};
-		sweet::exports::block_on(func_async())
+	let func = quote!({
+		#[cfg(not(target_arch = "wasm32"))]
+		{|| -> sweet::exports::Result<()> {
+			async fn func_async ()->sweet::exports::Result<()>{
+				#func
+				Ok(())
+			};
+			sweet::exports::block_on(func_async())
+		}}
+		#[cfg(target_arch = "wasm32")]
+		{|| -> sweet::exports::Promise {
+			async fn func_async ()->sweet::exports::Result<()>{
+				#func
+				Ok(())
+			};
+			async fn func_to_js()->sweet::exports::Result<sweet::exports::JsValue,sweet::exports::JsValue>{
+				match func_async().await{
+					Ok(_)=> Ok(sweet::exports::JsValue::NULL),
+					Err(e)=> Err(e.to_string().into())
+				}
+			}
+
+			sweet::exports::future_to_promise(func_to_js())
+		}
+	}
 	});
 	to_inventory(name, func, config)
 }
@@ -55,14 +74,11 @@ pub fn to_inventory(
 			use js_sys::*;
 
 			let obj = Object::new();
-			let func: Closure<dyn Fn() -> JsValue> = Closure::new(|| {
-				match #func(){
-					Ok(_)=> JsValue::NULL,
-					Err(e)=> e.to_string().into()
-				}
-			});
 			let config = #config.to_i32();
+
+			let func: Closure<dyn Fn() -> Promise> = Closure::new(#func);
 			let func = func.into_js_value();
+
 			Reflect::set(&obj, &"name".into(), &#name.into()).unwrap();
 			Reflect::set(&obj, &"file".into(), &file!().into()).unwrap();
 			Reflect::set(&obj, &"func".into(), &func).unwrap();

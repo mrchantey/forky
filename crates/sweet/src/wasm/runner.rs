@@ -1,5 +1,4 @@
 use super::*;
-use crate::*;
 use leptos::*;
 use web_sys::UrlSearchParams;
 
@@ -34,15 +33,18 @@ pub fn RunnerContainer(
 			)
 			.into_any()
 		} else {
-			view!(cx, <h2>"Select a suite to run..."</h2>).into_any()
+			view!(cx,
+				<div class = "center-parent">
+					<h2>"🤘 sweet as! 🤘"</h2>
+				</div>
+			)
+			.into_any()
 		}
 	}
 }
 
 #[component]
 pub fn Runner(_cx: Scope) -> impl IntoView {
-	let config = TestRunnerConfig::from_search_params();
-	let collector = TestCollectorWasm::new();
-	run_tests_wasm(&collector, &config);
+	run_tests_wasm();
 	""
 }

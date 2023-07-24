@@ -32,8 +32,7 @@ where
 			|| (self.contains_only && *test.config() != TestCaseConfig::Only)
 	}
 
-	//not currently using async here, but maybe useful in the *hehe* future
-	pub async fn run<Logger, Runner>(
+	pub fn run<Logger, Runner>(
 		&self,
 		config: &TestRunnerConfig,
 	) -> TestSuiteResult
@@ -72,11 +71,11 @@ where
 {
 	fn run_cases(to_run: Vec<&Case>, _: &TestRunnerConfig) -> Vec<Error>;
 }
-pub struct TestSuiteRunnerDefault<Case> {
+pub struct TestSuiteRunnerSeries<Case> {
 	_case: std::marker::PhantomData<Case>,
 }
 
-impl<Case> TestSuiteRunner<Case> for TestSuiteRunnerDefault<Case>
+impl<Case> TestSuiteRunner<Case> for TestSuiteRunnerSeries<Case>
 where
 	Case: TestCase,
 {

@@ -20,17 +20,21 @@ pub use wasm::*;
 pub fn main() -> anyhow::Result<()> { wasm::TestRunnerWasm::run() }
 
 #[cfg(not(target_arch = "wasm32"))]
-#[tokio::main]
-pub async fn main() -> anyhow::Result<()> {
-	native::TestRunnerNative::run().await
-}
+// #[tokio::main]
+pub fn main() -> anyhow::Result<()> { native::TestRunnerNative::run() }
 
 
-pub mod exports{
-	pub use inventory;
+pub mod exports {
 	pub use anyhow::Result;
 	//i guess pub use async_std bad for treeshake
 	pub use async_std::task::block_on;
+	pub use inventory;
+	#[cfg(target_arch = "wasm32")]
+	pub use js_sys::Promise;
+	#[cfg(target_arch = "wasm32")]
+	pub use wasm_bindgen::JsValue;
+	#[cfg(target_arch = "wasm32")]
+	pub use wasm_bindgen_futures::future_to_promise;
 }
 
 // fn sync_function() -> i32 {

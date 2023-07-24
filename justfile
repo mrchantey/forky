@@ -53,6 +53,8 @@ clean-repo:
 # required: cargo binstall cargo-expand
 expand crate example *args:
 	just watch 'cargo expand -p {{crate}} --example {{example}} {{args}}'
+expand-wasm crate example *args:
+	just expand {{crate}} {{example}} --target wasm32-unknown-unknown {{args}}
 
 example crate example *args:
 	just watch 'cargo run -p {{crate}} --example {{example}} {{args}}'

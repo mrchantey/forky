@@ -21,7 +21,6 @@ colorize = {workspace = true}
 backtrace = {workspace = true}
 
 ### async ###
-tokio = {workspace = true}
 rayon = {workspace = true}
 futures = {workspace = true}
 async-std = {workspace = true}
@@ -35,6 +34,7 @@ leptos = {workspace = true}
 leptos_router = {workspace = true}
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+# tokio = {workspace = true}
 forky_fs = {workspace = true}
 crossterm = {workspace = true}
 gag = {workspace = true}
