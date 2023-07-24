@@ -52,7 +52,7 @@ where
 		let mut results = Vec::with_capacity(to_run.len());
 		for suite in to_run {
 			let result = suite
-				.run::<Logger>(config, TestSuite::<Case>::run_strategy)
+				.run::<Logger, TestSuiteRunnerDefault<Case>>(config)
 				.await;
 			results.push(result);
 		}
@@ -74,9 +74,8 @@ where
 				.suites_to_run(config)
 				.par_iter()
 				.map(move |s| {
-					s.run::<Logger>(
+					s.run::<Logger, TestSuiteRunnerParallel<Case>>(
 						config,
-						TestSuite::<Case>::run_parallel_strategy,
 					)
 				})
 				.collect::<Vec<_>>();

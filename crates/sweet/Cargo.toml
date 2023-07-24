@@ -24,6 +24,7 @@ backtrace = {workspace = true}
 tokio = {workspace = true}
 rayon = {workspace = true}
 futures = {workspace = true}
+async-std = {workspace = true}
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 js-sys = {workspace = true}

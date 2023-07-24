@@ -3,7 +3,7 @@ use colorize::*;
 
 pub trait SuiteLogger
 where
-	Self: Sized,
+	Self: Sized + Send + Sync,
 {
 	fn log(val: &str);
 	fn get_log(&mut self) -> &mut String;
