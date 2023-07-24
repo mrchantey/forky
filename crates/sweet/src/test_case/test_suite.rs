@@ -32,6 +32,7 @@ where
 			|| (self.contains_only && *test.config() != TestCaseConfig::Only)
 	}
 
+	//not currently using async here, but maybe useful in the *hehe* future
 	pub async fn run<Logger, Runner>(
 		&self,
 		config: &TestRunnerConfig,

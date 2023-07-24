@@ -5,14 +5,24 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use std::sync::atomic::*;
 
+
+
+// fn wrap_async(func: TokenStream) -> TokenStream {
+// 	quote!(async move { #func }.await)
+// }
+
+
 pub fn to_inventory_wrap_func(
 	name: Literal,
 	func: TokenStream,
 	config: TokenStream,
 ) -> TokenStream {
-	let func = quote!(||->anyhow::Result<()>{
-		#func
-		Ok(())
+	let func = quote!(|| -> anyhow::Result<()> {
+		async fn func_async ()->anyhow::Result<()>{
+			#func
+			Ok(())
+		};
+		async_std::task::block_on(func_async())
 	});
 	to_inventory(name, func, config)
 }
@@ -24,7 +34,8 @@ pub fn to_inventory(
 	func: TokenStream,
 	config: TokenStream,
 ) -> TokenStream {
-	let wasm_export_name = format!("_sweet_{}", CNT.fetch_add(1, Ordering::SeqCst));
+	let wasm_export_name =
+		format!("_sweet_{}", CNT.fetch_add(1, Ordering::SeqCst));
 	let wasm_export_name = Ident::new(&wasm_export_name, Span::call_site());
 
 	quote!(
