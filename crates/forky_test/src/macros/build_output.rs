@@ -17,12 +17,12 @@ pub fn to_inventory_wrap_func(
 	func: TokenStream,
 	config: TokenStream,
 ) -> TokenStream {
-	let func = quote!(|| -> anyhow::Result<()> {
-		async fn func_async ()->anyhow::Result<()>{
+	let func = quote!(|| -> sweet::exports::Result<()> {
+		async fn func_async ()->sweet::exports::Result<()>{
 			#func
 			Ok(())
 		};
-		async_std::task::block_on(func_async())
+		sweet::exports::block_on(func_async())
 	});
 	to_inventory(name, func, config)
 }
@@ -40,7 +40,7 @@ pub fn to_inventory(
 
 	quote!(
 		#[cfg(not(target_arch = "wasm32"))]
-		inventory::submit!(sweet::TestCaseNative {
+		sweet::exports::inventory::submit!(sweet::TestCaseNative {
 			name: #name,
 			func: #func,
 			file: file!(),

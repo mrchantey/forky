@@ -4,7 +4,6 @@ mod logging;
 mod test_case;
 pub use self::_matchers::*;
 pub use forky_test::*;
-pub use inventory;
 pub use logging::*;
 pub use test_case::*;
 #[cfg(not(target_arch = "wasm32"))]
@@ -26,6 +25,13 @@ pub async fn main() -> anyhow::Result<()> {
 	native::TestRunnerNative::run().await
 }
 
+
+pub mod exports{
+	pub use inventory;
+	pub use anyhow::Result;
+	//i guess pub use async_std bad for treeshake
+	pub use async_std::task::block_on;
+}
 
 // fn sync_function() -> i32 {
 // 	// Create a tokio runtime to run the async task
