@@ -1,5 +1,5 @@
-mod logger_native;
-pub use self::logger_native::*;
+mod suite_logger_native;
+pub use self::suite_logger_native::*;
 mod test_case_native;
 pub use self::test_case_native::*;
 mod test_collector_native;

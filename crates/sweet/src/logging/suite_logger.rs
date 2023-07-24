@@ -6,7 +6,7 @@ where
 	Self: Sized,
 {
 	fn log(val: &str);
-	fn append_log(&mut self, val: &str);
+	fn get_log(&mut self) -> &mut String;
 	fn on_start() -> Self;
 	fn on_end(self, running_indicator: bool);
 
@@ -29,7 +29,7 @@ where
 
 
 	fn end(
-		self,
+		mut self,
 		file: &str,
 		running_indicator: bool,
 		result: &TestSuiteResult,
@@ -38,7 +38,7 @@ where
 		self.on_end(running_indicator);
 	}
 
-	fn log_end(&self, file: &str, result: &TestSuiteResult) {
+	fn log_end(&mut self, file: &str, result: &TestSuiteResult) {
 		let mut prefix = if result.failed == 0 {
 			" PASS ".black().bold().greenb()
 		} else {
@@ -46,7 +46,9 @@ where
 		};
 		prefix += " ";
 		prefix += pretty_path(file).as_str();
-		Self::log(prefix.as_str());
+		prefix += "\n";
+		self.get_log().insert_str(0, prefix.as_str());
+		// Self::log(prefix.as_str());
 	}
 }
 

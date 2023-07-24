@@ -4,6 +4,18 @@ use crate::TestSuiteResult;
 use anyhow::Error;
 use rayon::prelude::*;
 
+
+// pub trait TestSuiteImpl<Logger>
+// where
+// 	Self: Sized,
+// 	Logger: SuiteLogger,
+// {
+
+
+
+// }
+
+
 #[derive(Default, Debug, Clone)]
 pub struct TestSuite<T>
 where
@@ -59,7 +71,8 @@ where
 		let msg = failed
 			.iter()
 			.fold(String::new(), |val, err| val + err.to_string().as_str());
-		logger.append_log(&msg.as_str());
+		Logger::log(&msg.as_str());
+		// logger.get_log().push_str(&msg.as_str());
 
 		let result = TestSuiteResult {
 			tests: self.tests.len(),

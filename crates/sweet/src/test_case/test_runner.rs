@@ -31,7 +31,7 @@ impl TestRunner {
 				"All tests passed\n".bold().cyan().underlined().as_str();
 		}
 
-		post_run += results.suites.pretty_print("Test Suites:\t").as_str();
+		post_run += results.suites.pretty_print("Suites:\t\t").as_str();
 		post_run.push('\n');
 		post_run += results.cases.pretty_print("Tests:\t\t").as_str();
 		post_run.push('\n');

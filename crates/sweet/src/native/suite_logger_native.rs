@@ -4,9 +4,9 @@ use std::io::stdout;
 use std::io::Write;
 
 pub struct SuiteLoggerNative {
+	pub log: String,
 	stdout: std::io::Result<gag::BufferRedirect>,
 	stderr: std::io::Result<gag::BufferRedirect>,
-	pub log: String,
 }
 
 
@@ -15,7 +15,7 @@ impl SuiteLogger for SuiteLoggerNative {
 		let mut stdout = stdout();
 		stdout.write(val.as_bytes()).unwrap();
 	}
-	fn append_log(&mut self, val: &str) { self.log.push_str(val); }
+	fn get_log(&mut self) -> &mut String{ &mut self.log }
 
 	fn on_start() -> Self {
 		SuiteLoggerNative {
