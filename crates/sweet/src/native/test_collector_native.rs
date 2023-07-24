@@ -9,9 +9,12 @@ impl TestCollectorNative {
 	pub fn new() -> Self { Self(Self::collect_suites()) }
 }
 
-impl TestCollectorParallel<TestCaseNative> for TestCollectorNative {}
+impl TestCollectorParallel<TestCaseNative, SuiteLoggerNative>
+	for TestCollectorNative
+{
+}
 
-impl TestCollector<TestCaseNative> for TestCollectorNative {
+impl TestCollector<TestCaseNative, SuiteLoggerNative> for TestCollectorNative {
 	fn suites(&self) -> &Vec<TestSuite<TestCaseNative>> { &self.0 }
 
 	fn collect_cases() -> Vec<TestCaseNative> {

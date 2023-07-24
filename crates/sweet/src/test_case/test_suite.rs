@@ -1,5 +1,5 @@
 use super::*;
-use crate::TestLogger;
+use crate::SuiteLogger;
 use crate::TestSuiteResult;
 use anyhow::Error;
 use rayon::prelude::*;
@@ -40,13 +40,16 @@ where
 			.filter_map(|result| result.err())
 			.collect::<Vec<_>>()
 	}
-	pub fn run(
+	pub fn run<Logger>(
 		&self,
 		config: &TestRunnerConfig,
 		run_strategy: fn(Vec<&T>) -> Vec<Error>,
-	) -> TestSuiteResult {
-		let mut logger =
-			TestLogger::start(self.file.as_str(), !config.parallel);
+	) -> TestSuiteResult
+	where
+		Logger: SuiteLogger,
+	{
+		let running_indicator = !config.parallel;
+		let mut logger = Logger::start(self.file.as_str(), running_indicator);
 
 		let (to_run, skipped): (Vec<_>, Vec<_>) =
 			self.tests.iter().partition(|t| !self.should_skip(t));
@@ -56,14 +59,14 @@ where
 		let msg = failed
 			.iter()
 			.fold(String::new(), |val, err| val + err.to_string().as_str());
-		logger.log.push_str(&msg.to_string());
+		logger.append_log(&msg.as_str());
 
 		let result = TestSuiteResult {
 			tests: self.tests.len(),
 			failed: failed.len(),
 			skipped: skipped.len(),
 		};
-		logger.end(&result);
+		logger.end(&self.file, running_indicator, &result);
 		result
 	}
 }

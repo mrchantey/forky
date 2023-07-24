@@ -1,23 +1,28 @@
 use super::*;
+use crate::SuiteLogger;
 use std::collections::HashMap;
 
 
-pub trait TestCollector<T>
+pub trait TestCollector<Case, Logger>
 where
-	T: TestCase + Clone + Sized,
+	Case: TestCase + Clone + Sized,
+	Logger: SuiteLogger,
 {
-	fn suites(&self) -> &Vec<TestSuite<T>>;
-	fn suites_to_run(&self, config: &TestRunnerConfig) -> Vec<&TestSuite<T>> {
+	fn suites(&self) -> &Vec<TestSuite<Case>>;
+	fn suites_to_run(
+		&self,
+		config: &TestRunnerConfig,
+	) -> Vec<&TestSuite<Case>> {
 		self.suites()
 			.iter()
 			.filter(|s| config.suite_passes_filter(s.file.as_str()))
 			.collect::<Vec<_>>()
 	}
 
-	fn collect_cases() -> Vec<T>;
+	fn collect_cases() -> Vec<Case>;
 
-	fn collect_suites() -> Vec<TestSuite<T>> {
-		let mut files: HashMap<String, TestSuite<T>> = HashMap::new();
+	fn collect_suites() -> Vec<TestSuite<Case>> {
+		let mut files: HashMap<String, TestSuite<Case>> = HashMap::new();
 		let cases = Self::collect_cases();
 		for case in cases.iter() {
 			// let case: &T = &case;
@@ -44,23 +49,27 @@ where
 	fn run(&self, config: &TestRunnerConfig) -> ResultSummary {
 		self.suites_to_run(config)
 			.iter()
-			.map(|s| s.run(config, TestSuite::<T>::run_strategy))
+			.map(|s| s.run::<Logger>(config, TestSuite::<Case>::run_strategy))
 			.collect::<Vec<_>>()
 			.into()
 	}
 }
 
 
-pub trait TestCollectorParallel<T>: TestCollector<T>
+pub trait TestCollectorParallel<Case, Logger>:
+	TestCollector<Case, Logger>
 where
-	T: TestCase + Clone + Send + Sync,
+	Case: TestCase + Clone + Send + Sync,
+	Logger: SuiteLogger,
 {
 	fn run_parallel(&self, config: &TestRunnerConfig) -> ResultSummary {
 		if config.parallel {
 			use rayon::prelude::*;
 			self.suites_to_run(config)
 				.par_iter()
-				.map(|s| s.run(config, TestSuite::<T>::run_parallel_strategy))
+				.map(|s| {
+					s.run::<Logger>(config, TestSuite::<Case>::run_parallel_strategy)
+				})
 				.collect::<Vec<_>>()
 				.into()
 		} else {

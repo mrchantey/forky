@@ -1,13 +1,11 @@
 use super::*;
-use crate::*;
 use colorize::*;
-use std::time::Duration;
 use forky_core::*;
+use std::time::Duration;
 
 pub struct TestRunner;
 
 impl TestRunner {
-
 	pub fn pretty_print_intro(config: &TestRunnerConfig) -> String {
 		let mut pre_run = String::from("\n🤘 sweet as! 🤘\n");
 
@@ -37,7 +35,17 @@ impl TestRunner {
 		post_run.push('\n');
 		post_run += results.cases.pretty_print("Tests:\t\t").as_str();
 		post_run.push('\n');
-		post_run += TestLogger::log_time(duration).as_str();
+		post_run += Self::print_time(duration).as_str();
 		post_run
+	}
+
+	fn print_time(duration: Duration) -> String {
+		let millis = duration.as_millis();
+		let prefix = "Time:\t\t".bold();
+		if millis < 100 {
+			format!("{}{} ms\n\n", prefix, millis)
+		} else {
+			format!("{}{:.2} s\n\n", prefix, millis as f32 * 0.001)
+		}
 	}
 }

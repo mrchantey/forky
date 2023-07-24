@@ -1,3 +1,5 @@
+mod logger_native;
+pub use self::logger_native::*;
 mod test_case_native;
 pub use self::test_case_native::*;
 mod test_collector_native;
