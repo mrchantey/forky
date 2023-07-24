@@ -61,7 +61,7 @@ where
 		Logger: SuiteLogger,
 	{
 		let running_indicator = !config.parallel;
-		let mut logger = Logger::start(self.file.as_str(), running_indicator);
+		let logger = Logger::start(self.file.as_str(), running_indicator);
 
 		let (to_run, skipped): (Vec<_>, Vec<_>) =
 			self.tests.iter().partition(|t| !self.should_skip(t));

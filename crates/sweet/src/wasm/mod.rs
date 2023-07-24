@@ -1,5 +1,7 @@
 mod root;
 pub use self::root::*;
+mod suites_view;
+pub use self::suites_view::*;
 mod suite_logger_wasm;
 pub use self::suite_logger_wasm::*;
 mod test_case_wasm;

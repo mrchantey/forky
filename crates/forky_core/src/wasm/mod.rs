@@ -1,7 +1,5 @@
 mod animation_frame;
 pub use self::animation_frame::*;
-mod log_buffer;
-pub use self::log_buffer::*;
 mod document_interaction_listener;
 pub use self::document_interaction_listener::*;
 mod elements;
@@ -12,6 +10,8 @@ mod html_event_listener;
 pub use self::html_event_listener::*;
 mod lifecycle;
 pub use self::lifecycle::*;
+mod log_buffer;
+pub use self::log_buffer::*;
 mod loop_utils;
 pub use self::loop_utils::*;
 mod resize_listener;

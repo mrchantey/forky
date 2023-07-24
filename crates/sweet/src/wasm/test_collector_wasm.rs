@@ -7,13 +7,14 @@ use js_sys::Reflect;
 use wasm_bindgen::prelude::*;
 use web_sys::window;
 
+#[derive(Debug, Clone)]
 pub struct TestCollectorWasm(pub Vec<TestSuite<TestCaseWasm>>);
 
 impl TestCollectorWasm {
 	pub fn new() -> Self { Self(Self::collect_suites()) }
 }
 
-impl TestCollector<TestCaseWasm,SuiteLoggerWasm> for TestCollectorWasm {
+impl TestCollector<TestCaseWasm, SuiteLoggerWasm> for TestCollectorWasm {
 	fn suites(&self) -> &Vec<TestSuite<TestCaseWasm>> { &self.0 }
 	fn collect_cases() -> Vec<TestCaseWasm> {
 		let window = window().unwrap();
