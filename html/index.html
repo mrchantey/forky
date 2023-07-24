@@ -2,24 +2,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<style>
-		body {
-			overflow: hidden;
-			margin: 0;
-			background: black;
-			color: white;
-			background-size: 400% 400%;
-			height: 100vh;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-		}
-
-		canvas {
-			background-color: darkblue;
-		}
-	</style>
+	<link rel="stylesheet" href="style.css">
 </head>
 <script type="module">
 	import init, * as mod from './wasm/bindgen.js'
@@ -29,13 +12,6 @@
 			if (!error.message.startsWith("Using exceptions for control flow,"))
 				throw error
 		});
-	// import init, { Runner } from './wasm/bindgen.js'
-	// init().then(() => {
-	// 	var runner = new Runner()
-	// 	setInterval(() => {
-	// 		runner.set_speed(performance.now() * 0.0001)
-	// 	}, 10);
-	// })
 </script>
 
 </html>

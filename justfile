@@ -134,7 +134,7 @@ watch-wasm *args:
 # just watch 'just copy-wasm-assets'
 
 serve-wasm *args:
-	cd ./html && live-server --host=0.0.0.0 --watch=wasm/bindgen_bg.wasm,index.html {{args}}
+	cd ./html && live-server --host=0.0.0.0 --watch=wasm/bindgen_bg.wasm,index.html,style.css {{args}}
 
 serve-https *args:
 	just serve-wasm --https=https.config.js {{args}}
