@@ -1,3 +1,4 @@
+#![feature(async_fn_in_trait, async_closure)]
 mod _matchers;
 mod logging;
 mod test_case;
@@ -15,15 +16,14 @@ mod wasm;
 #[cfg(target_arch = "wasm32")]
 pub use wasm::*;
 
-pub fn main() -> anyhow::Result<()> {
-	#[cfg(target_arch = "wasm32")]
-	{
-		wasm::TestRunnerWasm::run()
-	}
-	#[cfg(not(target_arch = "wasm32"))]
-	{
-		native::TestRunnerNative::run()
-	}
+
+#[cfg(target_arch = "wasm32")]
+pub fn main() -> anyhow::Result<()> { wasm::TestRunnerWasm::run() }
+
+#[cfg(not(target_arch = "wasm32"))]
+#[tokio::main]
+pub async fn main() -> anyhow::Result<()> {
+	native::TestRunnerNative::run().await
 }
 
 

@@ -46,7 +46,7 @@ where
 		};
 		prefix += " ";
 		prefix += pretty_path(file).as_str();
-		prefix += "\n";
+		// prefix += "\n";
 		self.get_log().insert_str(0, prefix.as_str());
 		// Self::log(prefix.as_str());
 	}

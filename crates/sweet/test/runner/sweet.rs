@@ -7,6 +7,7 @@ sweet! {
 		expect(true).to_be_true()?;
 	}
 	it "works" {
+		// println!("foobar");
 		expect(true).to_be_true()?;
 	}
 }

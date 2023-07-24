@@ -19,8 +19,11 @@ anyhow = {workspace = true}
 inventory = {workspace = true}
 colorize = {workspace = true}
 backtrace = {workspace = true}
-# tokio = {workspace = true}
+
+### async ###
+tokio = {workspace = true}
 rayon = {workspace = true}
+futures = {workspace = true}
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 js-sys = {workspace = true}

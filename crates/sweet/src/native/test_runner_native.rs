@@ -7,7 +7,7 @@ use std::time::Instant;
 pub struct TestRunnerNative;
 
 impl TestRunnerNative {
-	pub fn run() -> Result<()> {
+	pub async fn run() -> Result<()> {
 		let config = TestRunnerConfig::from_cli_args();
 		if config.watch {
 			terminal::clear()
@@ -19,7 +19,7 @@ impl TestRunnerNative {
 		let start_time = Instant::now();
 
 		let collector = TestCollectorNative::new();
-		let results = collector.run_parallel(&config);
+		let results = collector.run_parallel(&config).await;
 		let duration = start_time.elapsed();
 		let summary = TestRunner::pretty_print_summary(&results, duration);
 

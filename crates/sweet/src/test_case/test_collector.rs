@@ -1,5 +1,6 @@
 use super::*;
 use crate::SuiteLogger;
+use futures::future::join_all;
 use std::collections::HashMap;
 
 
@@ -46,12 +47,16 @@ where
 		files
 	}
 
-	fn run(&self, config: &TestRunnerConfig) -> ResultSummary {
-		self.suites_to_run(config)
-			.iter()
-			.map(|s| s.run::<Logger>(config, TestSuite::<Case>::run_strategy))
-			.collect::<Vec<_>>()
-			.into()
+	async fn run(&self, config: &TestRunnerConfig) -> ResultSummary {
+		let to_run = self.suites_to_run(config);
+		let mut results = Vec::with_capacity(to_run.len());
+		for suite in to_run {
+			let result = suite
+				.run::<Logger>(config, TestSuite::<Case>::run_strategy)
+				.await;
+			results.push(result);
+		}
+		results.into()
 	}
 }
 
@@ -62,18 +67,22 @@ where
 	Case: TestCase + Clone + Send + Sync,
 	Logger: SuiteLogger,
 {
-	fn run_parallel(&self, config: &TestRunnerConfig) -> ResultSummary {
+	async fn run_parallel(&self, config: &TestRunnerConfig) -> ResultSummary {
 		if config.parallel {
 			use rayon::prelude::*;
-			self.suites_to_run(config)
+			let futures = self
+				.suites_to_run(config)
 				.par_iter()
-				.map(|s| {
-					s.run::<Logger>(config, TestSuite::<Case>::run_parallel_strategy)
+				.map(move |s| {
+					s.run::<Logger>(
+						config,
+						TestSuite::<Case>::run_parallel_strategy,
+					)
 				})
-				.collect::<Vec<_>>()
-				.into()
+				.collect::<Vec<_>>();
+			join_all(futures).await.into()
 		} else {
-			self.run(config)
+			self.run(config).await
 		}
 	}
 }

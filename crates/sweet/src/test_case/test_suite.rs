@@ -52,7 +52,7 @@ where
 			.filter_map(|result| result.err())
 			.collect::<Vec<_>>()
 	}
-	pub fn run<Logger>(
+	pub async fn run<Logger>(
 		&self,
 		config: &TestRunnerConfig,
 		run_strategy: fn(Vec<&T>) -> Vec<Error>,
