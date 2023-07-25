@@ -1,6 +1,7 @@
 use super::*;
 use crate::*;
 use anyhow::Result;
+use async_std::task::block_on;
 use forky_fs::*;
 use std::time::Instant;
 
@@ -20,6 +21,7 @@ impl TestRunnerNative {
 
 		let collector = TestCollectorNative::new();
 		let results = collector.run_parallel(&config);
+		let results = block_on(results);
 		let duration = start_time.elapsed();
 		let summary = TestRunner::pretty_print_summary(&results, duration);
 

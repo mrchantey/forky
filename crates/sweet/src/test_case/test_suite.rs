@@ -32,7 +32,7 @@ where
 			|| (self.contains_only && *test.config() != TestCaseConfig::Only)
 	}
 
-	pub fn run<Logger, Runner>(
+	pub async fn run<Logger, Runner>(
 		&self,
 		config: &TestRunnerConfig,
 	) -> TestSuiteResult
@@ -46,7 +46,7 @@ where
 		let (to_run, skipped): (Vec<_>, Vec<_>) =
 			self.tests.iter().partition(|t| !self.should_skip(t));
 
-		let failed = Runner::run_cases(to_run, config);
+		let failed = Runner::run_cases(to_run, config).await;
 
 		let msg = failed
 			.iter()
@@ -69,7 +69,7 @@ where
 	Self: Sized,
 	Case: TestCase,
 {
-	fn run_cases(to_run: Vec<&Case>, _: &TestRunnerConfig) -> Vec<Error>;
+	async fn run_cases(to_run: Vec<&Case>, _: &TestRunnerConfig) -> Vec<Error>;
 }
 pub struct TestSuiteRunnerSeries<Case> {
 	_case: std::marker::PhantomData<Case>,
@@ -79,30 +79,13 @@ impl<Case> TestSuiteRunner<Case> for TestSuiteRunnerSeries<Case>
 where
 	Case: TestCase,
 {
-	fn run_cases(to_run: Vec<&Case>, _: &TestRunnerConfig) -> Vec<Error> {
-		to_run
-			.iter()
-			.map(|t| t.run())
-			.filter_map(|result| result.err())
-			.collect::<Vec<_>>()
-	}
-}
-
-
-pub struct TestSuiteRunnerParallel<Case> {
-	_case: std::marker::PhantomData<Case>,
-}
-
-impl<Case> TestSuiteRunner<Case> for TestSuiteRunnerParallel<Case>
-where
-	Case: TestCase + Send + Sync,
-{
-	fn run_cases(to_run: Vec<&Case>, _: &TestRunnerConfig) -> Vec<Error> {
-		use rayon::prelude::*;
-		to_run
-			.par_iter()
-			.map(move |t| t.run())
-			.filter_map(|result| result.err())
-			.collect::<Vec<_>>()
+	async fn run_cases(to_run: Vec<&Case>, _: &TestRunnerConfig) -> Vec<Error> {
+		let mut results = Vec::with_capacity(to_run.len());
+		for case in to_run {
+			if let Err(result) = case.run().await {
+				results.push(result);
+			}
+		}
+		results
 	}
 }

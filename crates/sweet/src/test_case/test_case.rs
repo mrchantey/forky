@@ -27,16 +27,16 @@ pub trait TestCase {
 		anyhow::anyhow!(val)
 	}
 
-	fn run_func(&self) -> Result<()>;
+	async fn run_func(&self) -> Result<()>;
 
-	fn run(&self) -> Result<()> {
+	async fn run(&self) -> Result<()> {
 		let panic_res =
-			panic::catch_unwind(AssertUnwindSafe(|| self.run_func()));
+			panic::catch_unwind(AssertUnwindSafe(async || self.run_func().await));
 
 		#[cfg(not(target_arch = "wasm32"))]
 		let _ = panic::take_hook();
 		match panic_res {
-			Ok(matcher_res) => match matcher_res {
+			Ok(matcher_res) => match matcher_res.await {
 				Ok(()) => Ok(()),
 				Err(err) => Err(self.format_error(&err.to_string().as_str())),
 			},

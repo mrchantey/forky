@@ -1,8 +1,10 @@
 use crate::*;
 use anyhow::Result;
 use js_sys::Function;
+use js_sys::Promise;
 use js_sys::Reflect;
 use wasm_bindgen::prelude::*;
+use wasm_bindgen_futures::JsFuture;
 
 #[derive(Debug, Clone)]
 pub struct TestCaseWasm {
@@ -33,12 +35,21 @@ impl TestCase for TestCaseWasm {
 	fn file(&self) -> &str { self.file.as_str() }
 	fn name(&self) -> &str { self.name.as_str() }
 	fn config(&self) -> &TestCaseConfig { &self.config }
-	fn run_func(&self) -> Result<()> {
+	async fn run_func(&self) -> Result<()> {
 		let result = self.func.call0(&JsValue::NULL).unwrap();
-		if result.is_string() {
-			anyhow::bail!(result.as_string().unwrap())
-		} else {
-			Ok(())
+		let result = JsFuture::from(Promise::unchecked_from_js(result)).await;
+
+		match result {
+			Ok(_) => Ok(()),
+			Err(e) => anyhow::bail!(e
+				.as_string()
+				.unwrap_or("Sweet - Failed to unwrap error".to_string())),
 		}
+		//TODO into promise
+		// if result.is_string() {
+		//
+		// } else {
+		// Ok(())
+		// }
 	}
 }

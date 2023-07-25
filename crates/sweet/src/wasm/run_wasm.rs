@@ -14,7 +14,7 @@ pub fn run_tests_wasm() {
 		log!("{intro}");
 
 		let start_time = performance_now();
-		let results = collector.run(&config);
+		let results = collector.run(&config).await;
 		let duration =
 			Duration::from_millis((performance_now() - start_time) as u64);
 		let summary = TestRunner::pretty_print_summary(&results, duration);

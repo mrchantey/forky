@@ -1,3 +1,5 @@
+mod parallel;
+pub use self::parallel::*;
 mod suite_logger_native;
 pub use self::suite_logger_native::*;
 mod test_case_native;
