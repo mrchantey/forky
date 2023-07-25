@@ -42,7 +42,24 @@ where
 	F: Fn(Option<String>) + 'static,
 {
 	let file = suite.file.clone();
-	let pretty = file.replace("\\", " > ").replace(".rs", "");
+	let pretty = file
+		.split("\\")
+		.collect::<Vec<_>>()
+		.iter()
+		.rev()
+		.take(3)
+		.rev()
+		.fold(String::new(), |mut acc, val| {
+			acc.push_str(*val);
+			acc.push_str(" > ");
+			acc
+		})
+		.replace(".rs > ", "");
+
+	// .collect::<Vec<_>>()
+
+
+	// .join(" > ").replace(".rs", "");
 	// let href = format!("?file={}", file);
 	view! {cx,
 	<div class="sweet-suite"

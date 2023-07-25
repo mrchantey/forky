@@ -3,6 +3,7 @@ use crate::*;
 use forky_core::wasm::*;
 use leptos::*;
 use std::time::Duration;
+use web_sys::console;
 
 
 pub fn run_tests_wasm() {
@@ -11,6 +12,7 @@ pub fn run_tests_wasm() {
 		let collector = TestCollectorWasm::new();
 
 		let intro = TestRunner::pretty_print_intro(&config);
+		console::clear();
 		log!("{intro}");
 
 		let start_time = performance_now();
