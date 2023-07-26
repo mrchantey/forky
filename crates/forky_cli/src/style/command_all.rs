@@ -17,11 +17,9 @@ impl Subcommand for StyleCommandAll {
 
 	fn run(&self, _args: &ArgMatches) -> Result<()> {
 		forky_fs::watch_path(
-			&WatchConfig {
-				watch: vec![glob::Pattern::new("**/*.css").unwrap()],
-				ignore: vec![glob::Pattern::new("**/html/style.css").unwrap()],
-				..Default::default()
-			},
+			&WatchConfig::new()
+				.with_watch("**/*.css")
+				.with_ignore("**/html/style.css"),
 			|_| {
 				terminal::clear();
 				terminal::print_forky();

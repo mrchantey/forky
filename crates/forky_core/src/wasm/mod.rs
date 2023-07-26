@@ -20,5 +20,7 @@ mod resize_listener;
 pub use self::resize_listener::*;
 mod search_params;
 pub use self::search_params::*;
+mod style_g;
+pub use self::style_g::*;
 mod utils;
 pub use self::utils::*;

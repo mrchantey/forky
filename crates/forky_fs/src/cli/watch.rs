@@ -1,17 +1,11 @@
 use anyhow::Result;
 use notify::*;
+use notify_debouncer_full::new_debouncer;
 use notify_debouncer_full::notify::Watcher;
-// use notify::*;
-use notify_debouncer_full::{
-	new_debouncer,
-	DebouncedEvent,
-};
+use notify_debouncer_full::DebouncedEvent;
 use std::path::Path;
 use std::path::PathBuf;
 use std::time::Duration;
-
-
-// pub type WatchFunc = Fn(notify::Event);
 
 #[derive(Debug)]
 pub struct WatchConfig {
@@ -37,6 +31,15 @@ impl Default for WatchConfig {
 }
 
 impl WatchConfig {
+	pub fn new() -> Self { Self::default() }
+	pub fn with_watch(mut self, watch: &str) -> Self {
+		self.watch.push(glob::Pattern::new(watch).unwrap());
+		self
+	}
+	pub fn with_ignore(mut self, watch: &str) -> Self {
+		self.ignore.push(glob::Pattern::new(watch).unwrap());
+		self
+	}
 	pub fn passes(&self, path: &Path) -> bool {
 		self.passes_watch(path) && self.passes_ignore(path)
 	}
