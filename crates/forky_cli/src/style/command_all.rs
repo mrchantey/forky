@@ -37,14 +37,7 @@ impl Subcommand for StyleCommandAll {
 				let path_out = parent.join(file_name).with_extension("rs");
 
 				println!("out: {:?}", path_out);
-				// let path_out = parent.join(path)
 			});
-		// for entry in  {
-		// 	match entry {
-		// 		Ok(path) => println!("{:?}", path.display()),
-		// 		Err(e) => println!("{:?}", e),
-		// 	}
-		// }
 		//TODO get all css files
 		// create corresponding rust file
 		// wrap in mod with same name as file
