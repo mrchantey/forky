@@ -1,23 +1,28 @@
 [package]
 name = "forky_cli"
-version = {workspace=true}
-edition = {workspace=true}
-authors = {workspace=true}
-documentation = {workspace=true}
-license-file = {workspace=true}
-readme = {workspace=true}
-description = {workspace=true}
-repository = {workspace=true}
+version = { workspace = true }
+edition = { workspace = true }
+authors = { workspace = true }
+documentation = { workspace = true }
+license-file = { workspace = true }
+readme = { workspace = true }
+description = { workspace = true }
+repository = { workspace = true }
 
 [dependencies]
-forky_core = {workspace = true}
-forky_fs = {workspace = true}
-notify = {workspace = true}
-anyhow = {workspace = true}
-clap = {workspace = true}
+forky_core = { workspace = true }
+forky_fs = { workspace = true }
+notify = { workspace = true }
+anyhow = { workspace = true }
+clap = { workspace = true }
+## Style
+cssparser = { workspace = true }
+# syn = { workspace = true }
+# quote = { workspace = true }
+# proc-macro2 = { workspace = true }
 
 [target.'cfg(windows)'.dev-dependencies]
-sweet = {workspace = true}
+sweet = { workspace = true }
 
 [[test]]
 name = "sweet"

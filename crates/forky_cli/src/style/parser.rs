@@ -1,17 +1,16 @@
-use cssparser::Parser;
-use cssparser::ParserInput;
-use cssparser::Token;
-use proc_macro2::Ident;
-use proc_macro2::TokenStream;
-use quote::*;
+use cssparser::*;
+use forky_core::StringX;
 use std::collections::HashSet;
-use std::fs;
+// use std::fs;
+// use proc_macro2::Ident;
+// use proc_macro2::TokenStream;
+// use quote::*;
 
-pub fn get_stylesheet(path: proc_macro::TokenStream) -> String {
-	let file_path = path.to_string();
-	let file_path = file_path.trim_matches('"');
-	fs::read_to_string(&file_path).expect("Expected to read file")
-}
+// pub fn get_stylesheet(path: proc_macro::TokenStream) -> String {
+// 	let file_path = path.to_string();
+// 	let file_path = file_path.trim_matches('"');
+// 	fs::read_to_string(&file_path).expect("Expected to read file")
+// }
 
 pub fn get_classes(css_content: &str) -> HashSet<String> {
 	let mut class_names = HashSet::new();
@@ -44,15 +43,25 @@ fn kebab_to_screaming_snake_case(input: &str) -> String {
 		.to_uppercase()
 }
 
-pub fn classes_to_tokens(classes: HashSet<String>) -> TokenStream {
-	let mut stream = TokenStream::new();
+pub fn classes_to_rust(classes: HashSet<String>) -> String {
+	let mut stream = String::new();
 	for class in classes {
 		let key = kebab_to_screaming_snake_case(&class);
-		let ident = Ident::new(&key, proc_macro2::Span::call_site());
-		let next = quote!(
-			pub const #ident: &str = #class;
-		);
-		stream.append_all(next)
+		stream.push_string(&format!("pub const {key}: &str = \"{class}\";\n"));
 	}
 	stream
 }
+
+
+// pub fn classes_to_tokens(classes: HashSet<String>) -> TokenStream {
+// 	let mut stream = TokenStream::new();
+// 	for class in classes {
+// 		let key = kebab_to_screaming_snake_case(&class);
+// 		let ident = Ident::new(&key, proc_macro2::Span::call_site());
+// 		let next = quote!(
+// 			pub const #ident: &str = #class;
+// 		);
+// 		stream.append_all(next)
+// 	}
+// 	stream
+// }

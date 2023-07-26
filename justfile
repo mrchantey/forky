@@ -63,7 +63,7 @@ example crate example *args:
 	echo {{argument}}
 
 mod: 
-	just watch 'cargo run -p forky_cli'
+	just watch 'cargo run -p forky_cli mod'
 
 publish crate *args:
 	cargo publish -p {{crate}} --allow-dirty {{args}}
@@ -149,6 +149,17 @@ ssl:
 	openssl genrsa -out target/client-key.pem 2048
 	openssl req -new -key target/client-key.pem -subj "/CN=$cn\/emailAddress=admin@$cn/C=US/ST=Ohio/L=Columbus/O=Widgets Inc/OU=Some Unit" -out target/client.csr
 	openssl x509 -req -in target/client.csr -signkey target/client-key.pem -out target/client-cert.pem
+
+watch-css crate:
+	cargo watch -q -w './crates/{{crate}}/src/style' -- just css {{crate}}
+
+css crate:
+	just lightning './crates/{{crate}}/src/style/style.css' './html/style.css'
+# cargo run -p forky_cli style ./html/style.css ./crates/{{crate}}/src/style_g.rs
+
+lightning in out *args:
+	npx lightningcss {{in}} --bundle -m -o {{out}} {{args}}
+
 
 ### ESP ###
 
