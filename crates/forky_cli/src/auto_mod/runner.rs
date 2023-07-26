@@ -20,13 +20,9 @@ pub fn run() -> Result<()> {
 }
 
 pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
-	let acc: Vec<PathBuf> = Vec::new();
-	_read_dir_recursive(acc, path)
+	_read_dir_recursive(Vec::new(), path)
 }
-pub fn _read_dir_recursive(
-	mut acc: Vec<PathBuf>,
-	path: PathBuf,
-) -> Vec<PathBuf> {
+fn _read_dir_recursive(mut acc: Vec<PathBuf>, path: PathBuf) -> Vec<PathBuf> {
 	if !path.is_dir() {
 		return acc;
 	}
@@ -79,7 +75,11 @@ pub fn run_for_crate(path: PathBuf) {
 
 fn save_to_file(path: &PathBuf, content: String) {
 	// let file_name = "mod.rs";
-	let file_name = tern!(path.file_name().str() == "src" ; "lib.rs"; "mod.rs");
+	let file_name = if path.file_name().str() == "src" {
+		"lib.rs"
+	} else {
+		"mod.rs"
+	};
 	let mut mod_path = path.clone();
 	mod_path.push(file_name);
 	fs::write(&mod_path, content).unwrap();

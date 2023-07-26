@@ -17,7 +17,7 @@ pub fn parse_to_file(path_in: &str, path_out: &str) -> Result<()> {
 	Ok(())
 }
 
-pub fn get_classes(css_content: &str) -> HashSet<String> {
+pub fn get_classes(css_content: &str) -> Vec<String> {
 	let mut class_names = HashSet::new();
 
 	let mut parser_input = ParserInput::new(&css_content);
@@ -38,6 +38,8 @@ pub fn get_classes(css_content: &str) -> HashSet<String> {
 			_ => (),
 		}
 	}
+	let mut class_names = class_names.into_iter().collect::<Vec<_>>();
+	class_names.sort();
 	class_names
 }
 fn kebab_to_screaming_snake_case(input: &str) -> String {
@@ -48,13 +50,12 @@ fn kebab_to_screaming_snake_case(input: &str) -> String {
 		.to_uppercase()
 }
 
-pub fn classes_to_rust(classes: HashSet<String>) -> String {
-	let mut stream = String::new();
-	for class in classes {
+pub fn classes_to_rust(classes: Vec<String>) -> String {
+	classes.iter().fold(String::new(), |mut acc, class| {
 		let key = kebab_to_screaming_snake_case(&class);
-		stream.push_string(&format!("pub const {key}: &str = \"{class}\";\n"));
-	}
-	stream
+		acc.push_string(&format!("pub const {key}: &str = \"{class}\";\n"));
+		acc
+	})
 }
 
 // pub fn classes_to_tokens(classes: HashSet<String>) -> TokenStream {
