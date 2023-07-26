@@ -1,7 +1,4 @@
-// use super::*;
-// use super::*;
-// use clap::Arg;
-// use std::fs;
+use super::parse_to_file;
 use anyhow::Result;
 use clap::ArgMatches;
 use forky_fs::terminal;
@@ -20,24 +17,7 @@ impl Subcommand for StyleCommandAll {
 
 	fn run(&self, _args: &ArgMatches) -> Result<()> {
 		terminal::print_forky();
-		glob("**/*_g.rs").unwrap().for_each(|path| {
-			fs::remove_file(path.unwrap()).unwrap();
-		});
-
-		glob("**/src/**/*.css")
-			.unwrap()
-			.filter_map(|val| val.ok())
-			.for_each(|path_in| {
-				let path_in = PathBuf::from(path_in);
-				let parent = path_in.parent().unwrap_or_else(|| Path::new(""));
-				let mut file_name = path_in.file_name().unwrap();
-				file_name = Path::new(file_name).file_stem().unwrap();
-				let mut file_name = file_name.to_os_string();
-				file_name.push("_g");
-				let path_out = parent.join(file_name).with_extension("rs");
-
-				println!("out: {:?}", path_out);
-			});
+		create_style_type_files()?;
 		//TODO get all css files
 		// create corresponding rust file
 		// wrap in mod with same name as file
@@ -45,4 +25,34 @@ impl Subcommand for StyleCommandAll {
 
 		Ok(())
 	}
+}
+
+
+fn create_style_type_files() -> Result<()> {
+	glob("**/*_g.rs")
+		.unwrap()
+		.map(|path| fs::remove_file(path.unwrap()))
+		.collect::<std::io::Result<()>>()?;
+
+	glob("**/src/**/*.css")
+		.unwrap()
+		.filter_map(|val| val.ok())
+		.map(|path_in| {
+			let path_in = PathBuf::from(path_in);
+			let parent = path_in.parent().unwrap_or_else(|| Path::new(""));
+			let mut file_name = path_in.file_name().unwrap();
+			file_name = Path::new(file_name).file_stem().unwrap();
+			let mut file_name = file_name.to_os_string();
+			file_name.push("_g");
+			let path_out = parent.join(file_name).with_extension("rs");
+
+			parse_to_file(
+				path_in.to_str().unwrap(),
+				path_out.to_str().unwrap(),
+			)?;
+			Ok(())
+		})
+		.collect::<Result<()>>()?;
+
+	Ok(())
 }

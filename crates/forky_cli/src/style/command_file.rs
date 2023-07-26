@@ -23,8 +23,6 @@ impl Subcommand for StyleCommandFile {
 		let path_in = args.get_one::<String>("in").unwrap();
 		let path_out = args.get_one::<String>("out").unwrap();
 		parse_to_file(&path_in, &path_out)?;
-
-		println!("wrote style types to {path_out}");
 		Ok(())
 	}
 }

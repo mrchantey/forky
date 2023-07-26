@@ -14,6 +14,7 @@ pub fn parse(path: &str) -> String {
 pub fn parse_to_file(path_in: &str, path_out: &str) -> Result<()> {
 	let out = parse(path_in);
 	fs::write(path_out, out)?;
+	println!("created style types: {path_out}");
 	Ok(())
 }
 

@@ -105,7 +105,7 @@ test-w crate *args:
 
 #https://crates.io/crates/cargo-watch
 watch command:
-	cargo watch -q --ignore '{**/mod.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat,wgsl}' --ignore 'html*' -- {{command}}
+	cargo watch -q --ignore '{**/mod.rs,**/*_g.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat,wgsl,css}' --ignore 'html*' -- {{command}}
 
 ### PLAY ###
 
@@ -150,8 +150,8 @@ ssl:
 	openssl req -new -key target/client-key.pem -subj "/CN=$cn\/emailAddress=admin@$cn/C=US/ST=Ohio/L=Columbus/O=Widgets Inc/OU=Some Unit" -out target/client.csr
 	openssl x509 -req -in target/client.csr -signkey target/client-key.pem -out target/client-cert.pem
 
-watch-css crate:
-	cargo watch --ignore 'justfile,.gitignore' --ignore '**.{rs,txt,md,wasm,wat,wgsl}' --ignore './html/style.css' -- just css {{crate}}
+watch-css *args:
+	cargo watch --why --ignore 'justfile,.gitignore' --ignore '**.{rs,txt,md,wasm,wat,wgsl}' --ignore './html/style.css' -- {{args}}
 
 css crate:
 	just lightning ./crates/{{crate}}/src/style/style.css ./html/style.css
