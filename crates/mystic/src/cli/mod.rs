@@ -4,7 +4,5 @@ mod earth_moment;
 pub use self::earth_moment::*;
 mod mystic;
 pub use self::mystic::*;
-mod subcommand;
-pub use self::subcommand::*;
 mod tarot;
 pub use self::tarot::*;

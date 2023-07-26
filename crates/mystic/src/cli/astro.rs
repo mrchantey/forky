@@ -1,6 +1,8 @@
-use super::Subcommand;
-use crate::astro::{chart::Chart, serde::EarthMoment};
+use crate::astro::chart::Chart;
+use crate::astro::serde::EarthMoment;
 use anyhow::Result;
+use forky_fs::Subcommand;
+
 pub struct AstroCommand;
 
 impl Subcommand for AstroCommand {

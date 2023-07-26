@@ -1,11 +1,10 @@
-use crate::tarot::{
-	spread::{self, TarotSpread},
-	TarotDeck,
-};
-
-use super::Subcommand;
+use crate::tarot::spread;
+use crate::tarot::spread::TarotSpread;
+use crate::tarot::TarotDeck;
 use anyhow::Result;
 use clap::ArgMatches;
+use forky_fs::Subcommand;
+
 pub struct TarotCommand;
 
 impl Subcommand for TarotCommand {

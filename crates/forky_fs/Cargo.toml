@@ -1,23 +1,24 @@
 [package]
 name = "forky_fs"
-version = {workspace=true}
-edition = {workspace=true}
-authors = {workspace=true}
-documentation = {workspace=true}
-license-file = {workspace=true}
-readme = {workspace=true}
-description = {workspace=true}
-repository = {workspace=true}
+version = { workspace = true }
+edition = { workspace = true }
+authors = { workspace = true }
+documentation = { workspace = true }
+license-file = { workspace = true }
+readme = { workspace = true }
+description = { workspace = true }
+repository = { workspace = true }
 
 
 [dependencies]
-forky_core = {workspace = true}
-crossterm = {workspace = true}
-gag = {workspace = true}
-anyhow = {workspace = true}
+forky_core = { workspace = true }
+crossterm = { workspace = true }
+gag = { workspace = true }
+clap = { workspace = true }
+anyhow = { workspace = true }
 
 [target.'cfg(windows)'.dev-dependencies]
-sweet = {workspace = true}
+sweet = { workspace = true }
 
 [[test]]
 name = "sweet"

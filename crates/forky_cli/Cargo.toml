@@ -14,6 +14,7 @@ forky_core = {workspace = true}
 forky_fs = {workspace = true}
 notify = {workspace = true}
 anyhow = {workspace = true}
+clap = {workspace = true}
 
 [target.'cfg(windows)'.dev-dependencies]
 sweet = {workspace = true}
