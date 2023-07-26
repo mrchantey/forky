@@ -3,11 +3,12 @@ use anyhow::Result;
 use clap::ArgMatches;
 use forky_fs::terminal;
 use forky_fs::Subcommand;
+use forky_fs::WatchConfig;
 use glob::*;
+use std::default;
 use std::fs;
 use std::path::Path;
 use std::path::PathBuf;
-
 
 pub struct StyleCommandAll;
 
@@ -17,7 +18,12 @@ impl Subcommand for StyleCommandAll {
 
 	fn run(&self, _args: &ArgMatches) -> Result<()> {
 		terminal::print_forky();
-		create_style_type_files()?;
+
+		forky_fs::watch_path_log(WatchConfig {
+			watch: Some(glob::Pattern::new("**/*.css").unwrap()),
+			..Default::default()
+		})?;
+		// create_style_type_files()?;
 		//TODO get all css files
 		// create corresponding rust file
 		// wrap in mod with same name as file
@@ -28,7 +34,7 @@ impl Subcommand for StyleCommandAll {
 }
 
 
-fn create_style_type_files() -> Result<()> {
+fn _create_style_type_files() -> Result<()> {
 	glob("**/*_g.rs")
 		.unwrap()
 		.map(|path| fs::remove_file(path.unwrap()))

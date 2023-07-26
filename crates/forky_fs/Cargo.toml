@@ -14,6 +14,8 @@ repository = { workspace = true }
 forky_core = { workspace = true }
 crossterm = { workspace = true }
 gag = { workspace = true }
+glob = { workspace = true }
+notify = { workspace = true }
 clap = { workspace = true }
 anyhow = { workspace = true }
 

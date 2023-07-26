@@ -17,6 +17,7 @@ forky_fs = { workspace = true }
 ## fs
 glob = { workspace = true }
 notify = { workspace = true }
+notify-debouncer-full = { workspace = true }
 ## cli
 clap = { workspace = true }
 ## Style
