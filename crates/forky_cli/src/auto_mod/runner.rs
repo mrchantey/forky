@@ -1,11 +1,13 @@
 use anyhow::Result;
 use forky_core::*;
 use forky_fs::terminal;
-use std::{env, fs, path::PathBuf};
+use std::env;
+use std::fs;
+use std::path::PathBuf;
 
 pub fn run() -> Result<()> {
 	terminal::clear();
-	terminal::get_forky();
+	terminal::print_forky();
 	match fs::read_dir("crates") {
 		Ok(dirs) => dirs
 			.map(|e| e.unwrap().path())

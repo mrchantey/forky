@@ -1,14 +1,13 @@
 use crossterm::*;
 use forky_core::*;
-use std::{
-	fmt::Display,
-	io::{stdout, Write},
-};
+use std::fmt::Display;
+use std::io::stdout;
+use std::io::Write;
 
 
 pub fn clear() { clear_terminal().unwrap(); }
 
-pub fn get_forky() {
+pub fn print_forky() {
 	println!("\n🤘 lets get forky! 🤘\n");
 }
 

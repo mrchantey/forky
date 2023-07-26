@@ -155,7 +155,7 @@ watch-css crate:
 
 css crate:
 	just lightning ./crates/{{crate}}/src/style/style.css ./html/style.css
-	cargo run -p forky_cli style ./html/style.css ./crates/{{crate}}/src/style/style_g.rs
+	cargo run -p forky_cli style file ./html/style.css ./crates/{{crate}}/src/style/style_g.rs
 
 lightning in out *args:
 	lightningcss {{in}} --bundle -m -o {{out}} {{args}}

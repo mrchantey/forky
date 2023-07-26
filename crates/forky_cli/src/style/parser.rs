@@ -1,16 +1,21 @@
+use anyhow::Result;
 use cssparser::*;
 use forky_core::StringX;
 use std::collections::HashSet;
-// use std::fs;
-// use proc_macro2::Ident;
-// use proc_macro2::TokenStream;
-// use quote::*;
+use std::fs;
 
-// pub fn get_stylesheet(path: proc_macro::TokenStream) -> String {
-// 	let file_path = path.to_string();
-// 	let file_path = file_path.trim_matches('"');
-// 	fs::read_to_string(&file_path).expect("Expected to read file")
-// }
+pub fn parse(path: &str) -> String {
+	let stylesheet = fs::read_to_string(path).expect("Expected to read file");
+	let classes = get_classes(&stylesheet);
+	let out = classes_to_rust(classes);
+	out
+}
+
+pub fn parse_to_file(path_in: &str, path_out: &str) -> Result<()> {
+	let out = parse(path_in);
+	fs::write(path_out, out)?;
+	Ok(())
+}
 
 pub fn get_classes(css_content: &str) -> HashSet<String> {
 	let mut class_names = HashSet::new();
@@ -51,7 +56,6 @@ pub fn classes_to_rust(classes: HashSet<String>) -> String {
 	}
 	stream
 }
-
 
 // pub fn classes_to_tokens(classes: HashSet<String>) -> TokenStream {
 // 	let mut stream = TokenStream::new();
