@@ -12,6 +12,7 @@ members = [
 	"crates/forky_core",
 	"crates/forky_esp",
 	"crates/forky_play",
+	"crates/forky_style",
 	"crates/forky_test",
 	"crates/mystic",
 	"crates/sweet",
@@ -30,23 +31,24 @@ repository = "https://github.com/mrchantey/forky"
 
 [workspace.dependencies]
 ### internal ###
-forky = {path = "./crates/forky", version = "0.*" }
-forky_ai = {path = "./crates/forky_ai", version = "0.*" }
-forky_cli = {path = "./crates/forky_cli", version = "0.*" }
-forky_core = {path = "./crates/forky_core", version = "0.*" }
-forky_fs = {path = "./crates/forky_fs", version = "0.*" }
-forky_esp = {path = "./crates/forky_esp", version = "0.*" }
-forky_play = {path = "./crates/forky_play", version = "0.*" }
-forky_test = {path = "./crates/forky_test", version = "0.*" }
-sweet = {path = "./crates/sweet", version = "0.*" }
+forky = { path = "./crates/forky", version = "0.*" }
+forky_ai = { path = "./crates/forky_ai", version = "0.*" }
+forky_cli = { path = "./crates/forky_cli", version = "0.*" }
+forky_core = { path = "./crates/forky_core", version = "0.*" }
+forky_fs = { path = "./crates/forky_fs", version = "0.*" }
+forky_esp = { path = "./crates/forky_esp", version = "0.*" }
+forky_play = { path = "./crates/forky_play", version = "0.*" }
+forky_style = { path = "./crates/forky_style", version = "0.*" }
+forky_test = { path = "./crates/forky_test", version = "0.*" }
+sweet = { path = "./crates/sweet", version = "0.*" }
 
 ### game ###
 
 bevy = { version = "0.10.0" }
 bevy-inspector-egui = "0.18.0"
 bevy_mod_debugdump = "0.7.0"
-bevy_rapier3d = {version = "0.21.0", features=["debug-render-3d"]}
-bevy_prototype_debug_lines = {version = "0.10.0", features = ["3d"]}
+bevy_rapier3d = { version = "0.21.0", features = ["debug-render-3d"] }
+bevy_prototype_debug_lines = { version = "0.10.0", features = ["3d"] }
 bevy_easings = "0.10.0"
 wgpu = { version = "0.15.0" }
 # wgpu-hal = {version = "0.15.2",features = ["gles"]}
@@ -54,7 +56,7 @@ wgpu = { version = "0.15.0" }
 
 ### AI ###
 
-chatgpt_rs = {version="1.1.1",features=["streams"]}
+chatgpt_rs = { version = "1.1.1", features = ["streams"] }
 
 ### utility ###
 anyhow = "1"
@@ -68,18 +70,18 @@ strum = "0.24.1"
 strum_macros = "0.24.1"
 
 ### IO ###
-clap = {version="4.2.2",features = ["derive"] }
+clap = { version = "4.2.2", features = ["derive"] }
 colorize = "0.1.0"
 crossterm = "0.25.0"
 dotenv = "0.15.0"
 gag = "1.0.0"
 notify = "5.1.0"
-serde = {version = "1.0.160",features = ["derive"] }
+serde = { version = "1.0.160", features = ["derive"] }
 serde_json = "1.0.96"
 
 ### Math ###
-rand = {version= "0.8.5" }
-getrandom = {version= "0.2.9", features = ["js"] }
+rand = { version = "0.8.5" }
+getrandom = { version = "0.2.9", features = ["js"] }
 rgb = "0.8.34"
 plotters = "0.3.4"
 plotters-canvas = "0.3.0"
@@ -87,7 +89,7 @@ plotters-canvas = "0.3.0"
 ### Async ###
 futures = "0.3.28"
 futures-util = "0.3.28"
-tokio = {version="1.27.0",features = ["macros","rt", "rt-multi-thread"] }
+tokio = { version = "1.27.0", features = ["macros", "rt", "rt-multi-thread"] }
 rayon = "1.7.0"
 async-std = "1.12.0"
 
@@ -95,7 +97,7 @@ async-std = "1.12.0"
 inventory = "0.3.2"
 backtrace = "0.3.66"
 proc-macro2 = "1.0.47"
-syn = {version="1.0.103",features= ["full"] }
+syn = { version = "1.0.103", features = ["full"] }
 quote = "1.0.21"
 extend = "1.1.2"
 
@@ -109,17 +111,19 @@ wasm-bindgen = "0.2.86"
 wasm-bindgen-futures = "0.4.36"
 console_error_panic_hook = "0.1.7"
 leptos = "0.3.1"
-leptos_router = {version="0.3.1",features = ["csr"]}
-[workspace.dependencies.web-sys]
-version = "0.3.61"
+leptos_router = { version = "0.3.1", features = ["csr"] }
+cssparser = "0.31.2"
+
 #https://rustwasm.github.io/wasm-bindgen/api/web_sys/
 #https://github.com/rustwasm/wasm-bindgen/blob/main/crates/web-sys/Cargo.toml
+[workspace.dependencies.web-sys]
+version = "0.3.61"
 features = [
 	# HTML
-  'Headers',
-  'Document',
-  'Element',
-  'Window',
+	'Headers',
+	'Document',
+	'Element',
+	'Window',
 	'ResizeObserver',
 	'ResizeObserverBoxOptions',
 	'ResizeObserverEntry',
@@ -130,29 +134,29 @@ features = [
 	'MouseEvent',
 	'KeyboardEvent',
 	# JS
-  'Gpu',
-  'console',
-  'Navigator',
+	'Gpu',
+	'console',
+	'Navigator',
 	'Performance',
-  'WebGl2RenderingContext',
+	'WebGl2RenderingContext',
 	# Audio
 	'AudioContext',
-  'AudioDestinationNode',
-  'AudioNode',
-  'AudioParam',
+	'AudioDestinationNode',
+	'AudioNode',
+	'AudioParam',
 	'BiquadFilterNode',
 	'BiquadFilterOptions',
 	'BiquadFilterType',
 	'DelayNode',
 	'DelayOptions',
-  'GainNode',
-  'OscillatorNode',
-  'OscillatorType',
+	'GainNode',
+	'OscillatorNode',
+	'OscillatorType',
 	# Fetch
-  'Request',
-  'RequestInit',
-  'RequestMode',
-  'Response',
+	'Request',
+	'RequestInit',
+	'RequestMode',
+	'Response',
 	# Blob
 	'Blob',
 	'BlobEvent',
@@ -160,8 +164,8 @@ features = [
 	'BlobPropertyBag',
 	# Elements
 	'HtmlAnchorElement',
-  'HtmlCanvasElement',
-  'HtmlInputElement',
+	'HtmlCanvasElement',
+	'HtmlInputElement',
 	'File',
 	'FileList',
 	# Url
@@ -178,41 +182,41 @@ features = [
 	'BinaryType',
 	'FileReader',
 	'ErrorEvent',
-	'MessageEvent', 
-	'ProgressEvent', 
+	'MessageEvent',
+	'ProgressEvent',
 	'WebSocket',
 	# XR
-  'XrBoundedReferenceSpace',
-  'XrEye',
-  'XrFrame',
-  'XrHandedness',
-  'XrInputSource',
-  'XrInputSourceArray',
-  'XrInputSourceEvent',
-  'XrInputSourceEventInit',
-  'XrInputSourcesChangeEvent',
-  'XrJointPose',
-  'XrJointSpace',
-  'XrPose',
-  'XrReferenceSpace',
-  'XrReferenceSpaceEvent',
-  'XrReferenceSpaceEventInit',
-  'XrReferenceSpaceType',
-  'XrRenderState',
-  'XrRenderStateInit',
-  'XrRigidTransform',
-  'XrSession',
-  'XrSessionEvent',
-  'XrSessionEventInit',
-  'XrSessionInit',
-  'XrSessionMode',
-  'XrSpace',
-  'XrTargetRayMode',
-  'XrView',
-  'XrViewerPose',
-  'XrViewport',
-  'XrVisibilityState',
-  'XrWebGlLayer',
-  'XrWebGlLayerInit',
-  'XrSystem',
+	'XrBoundedReferenceSpace',
+	'XrEye',
+	'XrFrame',
+	'XrHandedness',
+	'XrInputSource',
+	'XrInputSourceArray',
+	'XrInputSourceEvent',
+	'XrInputSourceEventInit',
+	'XrInputSourcesChangeEvent',
+	'XrJointPose',
+	'XrJointSpace',
+	'XrPose',
+	'XrReferenceSpace',
+	'XrReferenceSpaceEvent',
+	'XrReferenceSpaceEventInit',
+	'XrReferenceSpaceType',
+	'XrRenderState',
+	'XrRenderStateInit',
+	'XrRigidTransform',
+	'XrSession',
+	'XrSessionEvent',
+	'XrSessionEventInit',
+	'XrSessionInit',
+	'XrSessionMode',
+	'XrSpace',
+	'XrTargetRayMode',
+	'XrView',
+	'XrViewerPose',
+	'XrViewport',
+	'XrVisibilityState',
+	'XrWebGlLayer',
+	'XrWebGlLayerInit',
+	'XrSystem',
 ]

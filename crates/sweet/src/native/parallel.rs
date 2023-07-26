@@ -40,6 +40,7 @@ where
 		// use futures::future::join_all;
 		use rayon::prelude::*;
 		//TODO is it not possible to await join_all?
+		//TODO block_on also used in the test case func, we're just satsifying traits here
 		to_run
 			.par_iter()
 			.map(move |t| block_on(t.run()))

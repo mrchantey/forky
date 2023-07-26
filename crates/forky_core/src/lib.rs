@@ -12,3 +12,5 @@ pub use self::utils::*;
 pub mod net;
 #[cfg(target_arch = "wasm32")]
 pub mod wasm;
+#[cfg(target_arch = "wasm32")]
+pub use forky_style::*;

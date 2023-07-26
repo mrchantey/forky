@@ -1,0 +1,13 @@
+:root {
+	--foobar: red;
+}
+
+.foo {
+	color: var(--foobar);
+}
+
+.piddle-doo {
+	background-color: black;
+}
+
+.foo>div {}
