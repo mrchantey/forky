@@ -24,24 +24,9 @@ impl Subcommand for StyleCommand {
 			fs::read_to_string(&path_in).expect("Expected to read file");
 		let classes = get_classes(&stylesheet);
 		let out = classes_to_rust(classes);
-		println!("{:?}", out);
+		// println!("{:?}", out);
 		fs::write(path_out, out)?;
-		// println!("generating style types\nin\t{path_in}\nout\t{path_out}");
-
-		// let
-		// let stylesheet = get_stylesheet(input);
-		// let classes = get_classes(&stylesheet);
-		// classes_to_tokens(classes).into();
-
+		println!("wrote style types to {path_out}");
 		Ok(())
 	}
-
-	// fn subcommands(&self) -> Vec<Box<dyn Subcommand>> {
-	// 	vec![Box::new(TarotCommand), Box::new(AstroCommand)]
-	// }
 }
-
-
-
-
-pub fn style() {}

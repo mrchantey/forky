@@ -4,6 +4,8 @@ moment.json
 html/wasm*
 html/assets*
 
+**/*/style_g.rs
+
 # rust
 /target/
 Cargo.lock

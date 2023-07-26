@@ -151,14 +151,14 @@ ssl:
 	openssl x509 -req -in target/client.csr -signkey target/client-key.pem -out target/client-cert.pem
 
 watch-css crate:
-	cargo watch -q -w './crates/{{crate}}/src/style' -- just css {{crate}}
+	cargo watch -q -w './crates/{{crate}}/src/style' --ignore '{**/*.rs}' -- just css {{crate}}
 
 css crate:
-	just lightning './crates/{{crate}}/src/style/style.css' './html/style.css'
-# cargo run -p forky_cli style ./html/style.css ./crates/{{crate}}/src/style_g.rs
+	just lightning ./crates/{{crate}}/src/style/style.css ./html/style.css
+	cargo run -p forky_cli style ./html/style.css ./crates/{{crate}}/src/style/style_g.rs
 
 lightning in out *args:
-	npx lightningcss {{in}} --bundle -m -o {{out}} {{args}}
+	lightningcss {{in}} --bundle -m -o {{out}} {{args}}
 
 
 ### ESP ###
