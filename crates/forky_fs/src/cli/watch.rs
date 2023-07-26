@@ -1,8 +1,13 @@
 use anyhow::Result;
-use notify::Config;
-use notify::PollWatcher;
 use notify::*;
+use notify_debouncer_full::notify::Watcher;
+// use notify::*;
+use notify_debouncer_full::{
+	new_debouncer,
+	DebouncedEvent,
+};
 use std::path::Path;
+use std::path::PathBuf;
 use std::time::Duration;
 
 
@@ -13,9 +18,9 @@ pub struct WatchConfig {
 	pub path: String,
 	pub interval: Duration,
 	/// glob for watch pattern
-	pub watch: Option<glob::Pattern>,
+	pub watch: Vec<glob::Pattern>,
 	/// glob for ignore pattern
-	pub ignore: Option<glob::Pattern>,
+	pub ignore: Vec<glob::Pattern>,
 }
 
 impl Default for WatchConfig {
@@ -23,8 +28,8 @@ impl Default for WatchConfig {
 		Self {
 			path: String::from("./"),
 			interval: Duration::from_millis(500),
-			watch: None,
-			ignore: None,
+			watch: Vec::new(),
+			ignore: Vec::new(),
 		}
 	}
 }
@@ -35,45 +40,47 @@ impl WatchConfig {
 	}
 
 	pub fn passes_watch(&self, path: &Path) -> bool {
-		match &self.watch {
-			Some(watch) => watch.matches_path(path),
-			None => true,
-		}
+		self.watch.iter().any(|watch| watch.matches_path(path))
 	}
 
 	pub fn passes_ignore(&self, path: &Path) -> bool {
-		match &self.ignore {
-			Some(ignore) => !ignore.matches_path(path),
-			None => true,
-		}
+		!self.ignore.iter().any(|watch| watch.matches_path(path))
 	}
 }
 
-pub fn watch_path_log(config: WatchConfig) -> Result<()> {
+pub fn watch_path_log(config: &WatchConfig) -> Result<()> {
 	watch_path(config, |e| println!("changed: {:?}", e))
 }
 
 pub fn watch_path(
-	config: WatchConfig,
-	on_change: impl Fn(notify::Event),
-) -> Result<()> {
-	watch_path_only(&config, |e| {
-		if let Some(watch) = &config.watch {
-			if e.paths.iter().any(|path| watch.matches_path(path)) {
-				on_change(e)
-			}
-		}
-	})
-}
-
-pub fn watch_path_only(
 	config: &WatchConfig,
-	on_change: impl Fn(notify::Event),
+	on_change: impl Fn(&str),
 ) -> Result<()> {
 	let (tx, rx) = std::sync::mpsc::channel();
-	let w_config = Config::default()
-		.with_poll_interval(config.interval)
-		.with_compare_contents(true);
+	let path = Path::new(&config.path);
+	let mut debouncer = new_debouncer(Duration::from_secs(2), None, tx)?;
+	let watcher = debouncer.watcher().watch(path, RecursiveMode::Recursive)?;
+	debouncer.cache().add_root(path, RecursiveMode::Recursive);
+
+	for res in rx {
+		match res {
+			Ok(e) => {
+				e.iter()
+					.flat_map(|p| p.paths.clone())
+					.filter(|path| config.passes(&path))
+					.for_each(|e| on_change(e.to_str().unwrap()));
+			}
+			Err(e) => println!("watch error: {:?}", e),
+		}
+	}
+	Ok(())
+}
+pub fn watch_path_poll(
+	config: &WatchConfig,
+	on_change: impl Fn(&PathBuf),
+) -> Result<()> {
+	let (tx, rx) = std::sync::mpsc::channel();
+	let w_config = Config::default().with_poll_interval(config.interval);
 	let mut watcher = RecommendedWatcher::new(tx, w_config)?;
 	// let mut watcher = PollWatcher::new(tx, config).unwrap();
 	let path = Path::new(config.path.as_str());
@@ -81,7 +88,12 @@ pub fn watch_path_only(
 
 	for res in rx {
 		match res {
-			Ok(e) => on_change(e),
+			Ok(e) => {
+				e.paths
+					.iter()
+					.filter(|path| config.passes(path))
+					.for_each(|e| on_change(e));
+			}
 			Err(e) => println!("watch error: {:?}", e),
 		}
 	}

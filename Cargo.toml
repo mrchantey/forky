@@ -74,7 +74,7 @@ crossterm = "0.25.0"
 dotenv = "0.15.0"
 gag = "1.0.0"
 glob = "0.3.1"
-notify = "5.1.0"
+notify = "6.0.1"
 notify-debouncer-full = "0.2.0"
 serde = { version = "1.0.160", features = ["derive"] }
 serde_json = "1.0.96"

@@ -16,6 +16,7 @@ crossterm = { workspace = true }
 gag = { workspace = true }
 glob = { workspace = true }
 notify = { workspace = true }
+notify-debouncer-full = { workspace = true }
 clap = { workspace = true }
 anyhow = { workspace = true }
 
