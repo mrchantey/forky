@@ -151,7 +151,7 @@ ssl:
 	openssl x509 -req -in target/client.csr -signkey target/client-key.pem -out target/client-cert.pem
 
 watch-css crate:
-	cargo watch -q -w './crates/{{crate}}/src/style' --ignore '{**/*.rs}' -- just css {{crate}}
+	cargo watch --ignore 'justfile,.gitignore' --ignore '**.{rs,txt,md,wasm,wat,wgsl}' --ignore './html/style.css' -- just css {{crate}}
 
 css crate:
 	just lightning ./crates/{{crate}}/src/style/style.css ./html/style.css
