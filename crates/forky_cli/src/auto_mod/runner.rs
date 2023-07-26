@@ -107,10 +107,10 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 				is_mod = !is_mod;
 			}
 			if is_mod {
-				str.push_str(&["pub mod ", &name[..], ";\n"].join("")[..]);
+				str.push_str(&format!("pub mod {name};\n"));
 			} else {
 				#[rustfmt::skip]
-				str.push_str(&["mod ", &name[..], ";\npub use self::", &name[..], "::*;\n"].join("")[..]);
+				str.push_str(&format!("mod {name};\npub use self::{name}::*;\n"));
 			}
 		});
 	str
