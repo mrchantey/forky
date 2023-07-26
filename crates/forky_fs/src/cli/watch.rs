@@ -17,6 +17,7 @@ use std::time::Duration;
 pub struct WatchConfig {
 	pub path: String,
 	pub interval: Duration,
+	pub run_on_start: bool,
 	/// glob for watch pattern
 	pub watch: Vec<glob::Pattern>,
 	/// glob for ignore pattern
@@ -26,8 +27,9 @@ pub struct WatchConfig {
 impl Default for WatchConfig {
 	fn default() -> Self {
 		Self {
+			run_on_start: true,
 			path: String::from("./"),
-			interval: Duration::from_millis(500),
+			interval: Duration::from_millis(10),
 			watch: Vec::new(),
 			ignore: Vec::new(),
 		}
@@ -56,6 +58,10 @@ pub fn watch_path(
 	config: &WatchConfig,
 	on_change: impl Fn(&str),
 ) -> Result<()> {
+	if config.run_on_start {
+		on_change("");
+	}
+
 	let (tx, rx) = std::sync::mpsc::channel();
 	let path = Path::new(&config.path);
 	let mut debouncer = new_debouncer(Duration::from_secs(2), None, tx)?;

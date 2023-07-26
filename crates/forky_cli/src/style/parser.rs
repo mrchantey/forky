@@ -3,18 +3,21 @@ use cssparser::*;
 use forky_core::StringX;
 use std::collections::HashSet;
 use std::fs;
+use std::path::Path;
 
 pub fn parse(path: &str) -> String {
 	let stylesheet = fs::read_to_string(path).expect("Expected to read file");
 	let classes = get_classes(&stylesheet);
-	let out = classes_to_rust(classes);
-	out
+	let file_name = Path::new(path).file_stem().unwrap();
+	let file_name = file_name.to_string_lossy();
+	let classes = classes_to_rust(classes);
+	format!("pub mod {} {{\n{}}}", file_name, classes)
 }
 
 pub fn parse_to_file(path_in: &str, path_out: &str) -> Result<()> {
 	let out = parse(path_in);
 	fs::write(path_out, out)?;
-	println!("created style types: {path_out}");
+	println!("created: {path_out}");
 	Ok(())
 }
 
@@ -54,7 +57,7 @@ fn kebab_to_screaming_snake_case(input: &str) -> String {
 pub fn classes_to_rust(classes: Vec<String>) -> String {
 	classes.iter().fold(String::new(), |mut acc, class| {
 		let key = kebab_to_screaming_snake_case(&class);
-		acc.push_string(&format!("pub const {key}: &str = \"{class}\";\n"));
+		acc.push_string(&format!("\tpub const {key}: &str = \"{class}\";\n"));
 		acc
 	})
 }

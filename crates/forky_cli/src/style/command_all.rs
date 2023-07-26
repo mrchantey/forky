@@ -16,22 +16,20 @@ impl Subcommand for StyleCommandAll {
 	fn about(&self) -> &'static str { "Apply to all style directories." }
 
 	fn run(&self, _args: &ArgMatches) -> Result<()> {
-		terminal::print_forky();
-
 		forky_fs::watch_path(
 			&WatchConfig {
 				watch: vec![glob::Pattern::new("**/*.css").unwrap()],
 				ignore: vec![glob::Pattern::new("**/html/style.css").unwrap()],
 				..Default::default()
 			},
-			|_| create_style_type_files().unwrap(),
+			|_| {
+				terminal::clear();
+				terminal::print_forky();
+				create_style_type_files().unwrap()
+			},
 		)?;
 		// create_style_type_files()?;
-		//TODO get all css files
-		// create corresponding rust file
-		// wrap in mod with same name as file
-		// use marker, ie _g_.rs for .gitignore
-
+		//TODO index.css
 		Ok(())
 	}
 }
