@@ -1,6 +1,7 @@
 use anyhow::Result;
 use forky_core::*;
-use forky_fs::terminal;
+use forky_fs::*;
+use forky_fs::fs::read_dir_recursive;
 use std::env;
 use std::fs;
 use std::path::PathBuf;
@@ -19,19 +20,6 @@ pub fn run() -> Result<()> {
 	Ok(())
 }
 
-pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
-	_read_dir_recursive(Vec::new(), path)
-}
-fn _read_dir_recursive(mut acc: Vec<PathBuf>, path: PathBuf) -> Vec<PathBuf> {
-	if !path.is_dir() {
-		return acc;
-	}
-	let children = fs::read_dir(&path).unwrap();
-	acc.push(path);
-	children
-		.map(|c| c.unwrap().path())
-		.fold(acc, _read_dir_recursive)
-}
 
 fn filename_starts_with_underscore(p: &PathBuf) -> bool {
 	p.file_name().str().first() == '_'

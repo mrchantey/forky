@@ -23,13 +23,22 @@ impl Subcommand for StyleCommandAll {
 			|_| {
 				terminal::clear();
 				terminal::print_forky();
-				create_style_type_files().unwrap()
+				create_style_type_files().unwrap();
+				create_style_index_files().unwrap();
 			},
 		)?;
 		// create_style_type_files()?;
 		//TODO index.css
 		Ok(())
 	}
+}
+
+fn create_style_index_files() -> Result<()> {
+	glob("**/*.index.css")
+		.unwrap()
+		.map(|path| fs::remove_file(path.unwrap()))
+		.collect::<std::io::Result<()>>()?;
+	Ok(())
 }
 
 
