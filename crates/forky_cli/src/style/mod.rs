@@ -6,5 +6,5 @@ mod command_file;
 pub use self::command_file::*;
 mod index_files;
 pub use self::index_files::*;
-mod parser;
-pub use self::parser::*;
+mod type_files;
+pub use self::type_files::*;

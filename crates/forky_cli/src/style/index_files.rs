@@ -8,6 +8,7 @@ use std::fs;
 use std::path::PathBuf;
 
 pub fn create_index_files() -> Result<()> {
+	println!("\nstyle: creating index files...\n");
 	remove_all_index_files()?;
 	for_all_crates()?;
 	Ok(())
@@ -26,9 +27,9 @@ fn for_all_crates() -> Result<()> {
 		.iter()
 		.flat_map(|path| parents(path))
 		.collect::<HashSet<PathBuf>>();
-	dirs_with_css
-		.iter()
-		.for_each(|val| println!("css dir: {:?}", val));
+	// dirs_with_css
+	// 	.iter()
+	// 	.for_each(|val| println!("css dir: {:?}", val));
 	match fs::read_dir("crates") {
 		Ok(dirs) => dirs
 			.map(|e| e.unwrap().path())
@@ -79,8 +80,9 @@ pub fn create_index_text(
 fn save_to_disk(path: &PathBuf, content: String) -> Result<()> {
 	let mut path = path.clone();
 	path.push("index.css");
-	println!("path: {:?}\n{}", path, content);
+	println!("created: {:?}", path);
+	// println!("path: {:?}\n{}", path, content);
 	// path.set_extension("index.css");
-	// fs::write(path, content)?;
+	fs::write(path, content)?;
 	Ok(())
 }
