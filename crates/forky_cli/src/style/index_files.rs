@@ -23,24 +23,41 @@ pub fn create_index_files() -> Result<()> {
 
 fn for_all_crates() -> Result<()> {
 	match fs::read_dir("crates") {
-		Ok(dirs) => dirs.map(|e| e.unwrap().path()).for_each(|p| for_crate(p)),
-		_ => for_crate(env::current_dir()?),
+		Ok(dirs) => dirs
+			.map(|e| e.unwrap().path())
+			.map(|p| for_crate(p))
+			.collect::<Result<()>>()?,
+		_ => for_crate(env::current_dir()?)?,
 	}
 	Ok(())
 }
 
-fn for_crate(path: PathBuf) {
+fn for_crate(path: PathBuf) -> Result<()> {
 	let path = PathBuf::push_with(&path, "src");
 	read_dir_recursive(path)
 		.into_iter()
-		.map(|p| create_index_text(&p))
-		.for_each(|p| println!("file: {:?}", p));
+		//TODO filter by directories that contain any css
+		.map(|p| (create_index_text(&p).unwrap(), p))
+		.map(|(content, path)| save_to_disk(&path, content))
+		.collect()
 }
-pub fn create_index_text(path: &PathBuf) -> String {
-	fs::read_dir(&path)
+
+// this looks slow
+fn dir_contains_css(path: &PathBuf) -> bool {
+	let pattern = Pattern::new("**/*.css").unwrap();
+	glob::glob(&pattern.to_string())
+		.unwrap()
+		.filter_map(|val| val.ok())
+		.any(|val| val.parent().unwrap() == path)
+}
+
+pub fn create_index_text(path: &PathBuf) -> Result<String> {
+	let ignore_files = Pattern::new("**/*/index.css").unwrap();
+
+	let out = fs::read_dir(&path)
 		.unwrap()
 		.map(|p| p.unwrap().path())
-		// .filter(|c| !filename_included(c, IGNORE_FILES))
+		.filter(|c| !ignore_files.matches(c.to_str().unwrap()))
 		.filter(|c| is_dir_or_extension(c, "css"))
 		.map(|c| {
 			let stem = c.file_stem().unwrap();
@@ -51,9 +68,15 @@ pub fn create_index_text(path: &PathBuf) -> String {
 				format!("@import './{name}.css';")
 			}
 		})
-		.collect()
-	// .fold(String::new(), |mut acc, val| {
-	// 	acc.push_str(&val);
-	// 	acc
-	// })
+		.collect();
+	Ok(out)
+}
+
+
+fn save_to_disk(path: &PathBuf, content: String) -> Result<()> {
+	// let mut path = path.clone();
+	println!("path: {:?}\n{}", path, content);
+	// path.set_extension("index.css");
+	// fs::write(path, content)?;
+	Ok(())
 }

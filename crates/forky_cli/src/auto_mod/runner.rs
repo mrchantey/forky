@@ -40,20 +40,6 @@ pub fn run_for_crate_folder(path: PathBuf) {
 		.for_each(|(c, p)| save_to_file(&p, c))
 }
 
-
-fn save_to_file(path: &PathBuf, content: String) {
-	// let file_name = "mod.rs";
-	let file_name = if path.file_name().str() == "src" {
-		"lib.rs"
-	} else {
-		"mod.rs"
-	};
-	let mut mod_path = path.clone();
-	mod_path.push(file_name);
-	fs::write(&mod_path, content).unwrap();
-	println!("created mod file: {}", &mod_path.to_str().unwrap());
-}
-
 pub fn create_mod_text(path: &PathBuf) -> String {
 	let parent_is_double_underscore =
 		filename_contains_double_underscore(&path);
@@ -77,13 +63,20 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 			}
 		})
 		.collect()
-	// .fold(String::new(), |mut acc, val| {
-	// 	acc.push_str(&val);
-	// 	acc
-	// })
 }
 
-
+fn save_to_file(path: &PathBuf, content: String) {
+	// let file_name = "mod.rs";
+	let file_name = if path.file_name().str() == "src" {
+		"lib.rs"
+	} else {
+		"mod.rs"
+	};
+	let mut mod_path = path.clone();
+	mod_path.push(file_name);
+	fs::write(&mod_path, content).unwrap();
+	println!("created mod file: {}", &mod_path.to_str().unwrap());
+}
 
 // fn filename_starts_with_uppercase(p: &PathBuf) -> bool {
 // 	p.file_name().str().first().is_ascii_uppercase()
