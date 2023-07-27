@@ -6,6 +6,8 @@ mod elements;
 pub use self::elements::*;
 mod file;
 pub use self::file::*;
+mod foobar_g;
+pub use self::foobar_g::*;
 mod history;
 pub use self::history::*;
 mod html_event_listener;

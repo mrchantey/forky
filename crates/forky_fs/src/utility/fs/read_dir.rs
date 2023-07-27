@@ -1,7 +1,10 @@
 use anyhow::Result;
+use glob::*;
+use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
 
+/// read directory and return all sub directories
 pub fn read_dir_recursive(path: PathBuf) -> Vec<PathBuf> {
 	_read_dir_recursive(Vec::new(), path)
 }
@@ -15,3 +18,53 @@ fn _read_dir_recursive(mut acc: Vec<PathBuf>, path: PathBuf) -> Vec<PathBuf> {
 		.map(|c| c.unwrap().path())
 		.fold(acc, _read_dir_recursive)
 }
+
+pub fn is_dir_or_extension(path: &PathBuf, ext: &str) -> bool {
+	match path.extension() {
+		Some(value) => value.to_str().unwrap() == ext,
+		None => path.is_dir(),
+	}
+}
+
+pub fn is_dir_or_pattern(path: &PathBuf, pattern: &str) -> bool {
+	path.is_dir()
+		|| Pattern::new(pattern)
+			.unwrap()
+			.matches(path.to_str().unwrap())
+}
+
+/// get all directories matching a glob pattern, removing duplicates
+pub fn directories_matching(pattern: &str) -> Vec<PathBuf> {
+	glob(pattern)
+		.unwrap()
+		.filter_map(|val| val.ok())
+		.map(|val| {
+			if val.is_dir() {
+				val
+			} else {
+				val.parent().unwrap().to_path_buf()
+			}
+		})
+		.fold(HashSet::new(), |mut acc, val| {
+			acc.insert(val);
+			acc
+		})
+		.iter()
+		.map(|path| path.clone())
+		.collect::<Vec<_>>()
+}
+
+// pub fn dir_contains(path: PathBuf, pattern: &str) -> bool {
+// 	let pattern = Pattern::new(pattern).unwrap();
+// 	glob::glob_with(
+// 		&pattern.to_string(),
+// 		glob::MatchOptions {
+// 			case_sensitive: false,
+// 			require_literal_separator: false,
+// 			require_literal_leading_dot: false,
+// 		},
+// 	)
+// 	read_dir_recursive(path)
+// 		.iter()
+// 		.any(|p| pattern. p.to_str().unwrap().contains(pattern))
+// }

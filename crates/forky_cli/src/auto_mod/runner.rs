@@ -1,5 +1,6 @@
 use anyhow::Result;
 use forky_core::*;
+use forky_fs::fs::is_dir_or_extension;
 use forky_fs::fs::read_dir_recursive;
 use forky_fs::*;
 use std::env;
@@ -53,19 +54,16 @@ fn save_to_file(path: &PathBuf, content: String) {
 	println!("created mod file: {}", &mod_path.to_str().unwrap());
 }
 
-const PREFIX: &str = "";
-
 pub fn create_mod_text(path: &PathBuf) -> String {
-	let children = fs::read_dir(&path).unwrap();
 	let parent_is_double_underscore =
 		filename_contains_double_underscore(&path);
 
-	let mut str = String::new();
-	children
+	fs::read_dir(&path)
+		.unwrap()
 		.map(|p| p.unwrap().path())
 		.filter(|c| !filename_included(c, IGNORE_FILES))
-		.filter(|c| is_dir_or_rustfile(c))
-		.for_each(|c| {
+		.filter(|c| is_dir_or_extension(c, "rs"))
+		.map(|c| {
 			let stem = c.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
 			let mut is_mod = c.is_dir() || parent_is_double_underscore;
@@ -73,13 +71,16 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 				is_mod = !is_mod;
 			}
 			if is_mod {
-				str.push_str(&format!("pub mod {name};\n"));
+				format!("pub mod {name};\n")
 			} else {
-				#[rustfmt::skip]
-				str.push_str(&format!("mod {name};\npub use self::{name}::*;\n"));
+				format!("mod {name};\npub use self::{name}::*;\n")
 			}
-		});
-	str
+		})
+		.collect()
+	// .fold(String::new(), |mut acc, val| {
+	// 	acc.push_str(&val);
+	// 	acc
+	// })
 }
 
 
@@ -95,10 +96,4 @@ fn filename_starts_with_underscore(p: &PathBuf) -> bool {
 }
 fn filename_contains_double_underscore(p: &PathBuf) -> bool {
 	p.file_name().str().contains("__")
-}
-fn is_dir_or_rustfile(p: &PathBuf) -> bool {
-	match p.extension() {
-		Some(value) => value.to_str().unwrap() == "rs",
-		None => p.is_dir(),
-	}
 }

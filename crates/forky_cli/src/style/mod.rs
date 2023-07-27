@@ -4,5 +4,7 @@ mod command_all;
 pub use self::command_all::*;
 mod command_file;
 pub use self::command_file::*;
+mod index_files;
+pub use self::index_files::*;
 mod parser;
 pub use self::parser::*;
