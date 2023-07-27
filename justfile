@@ -154,8 +154,8 @@ watch-css *args:
 	cargo watch --why --ignore '{justfile,.gitignore}' --ignore '**.{rs,txt,md,wasm,wat,wgsl}' --ignore './html/style.css' -- {{args}}
 
 css crate:
-	just lightning ./crates/{{crate}}/src/style/style.css ./html/style.css
-	cargo run -p forky_cli style file ./html/style.css ./crates/{{crate}}/src/style/style_g.rs
+	just lightning ./crates/{{crate}}/src/index.css ./html/style.css
+# cargo run -p forky_cli style file ./html/style.css ./crates/{{crate}}/src/style/style_g.rs
 
 lightning in out *args:
 	lightningcss {{in}} --bundle -m -o {{out}} {{args}}
