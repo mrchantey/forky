@@ -1,10 +1,14 @@
 use anyhow::Result;
 use forky_core::*;
-use forky_fs::*;
 use forky_fs::fs::read_dir_recursive;
+use forky_fs::*;
 use std::env;
 use std::fs;
 use std::path::PathBuf;
+
+const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
+const IGNORE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
+const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib"];
 
 pub fn run() -> Result<()> {
 	terminal::clear();
@@ -20,27 +24,12 @@ pub fn run() -> Result<()> {
 	Ok(())
 }
 
-
-fn filename_starts_with_underscore(p: &PathBuf) -> bool {
-	p.file_name().str().first() == '_'
+pub fn run_for_crate(path: PathBuf) {
+	CRATE_FOLDERS
+		.iter()
+		.map(|s| PathBuf::push_with(&path, s))
+		.for_each(run_for_crate_folder)
 }
-fn filename_contains_double_underscore(p: &PathBuf) -> bool {
-	p.file_name().str().contains("__")
-}
-fn is_dir_or_rustfile(p: &PathBuf) -> bool {
-	match p.extension() {
-		Some(value) => value.to_str().unwrap() == "rs",
-		None => p.is_dir(),
-	}
-}
-// fn filename_starts_with_uppercase(p: &PathBuf) -> bool {
-// 	p.file_name().str().first().is_ascii_uppercase()
-// }
-
-fn filename_included(p: &PathBuf, arr: &[&str]) -> bool {
-	arr.iter().any(|f| p.file_stem().unwrap() == *f)
-}
-
 
 pub fn run_for_crate_folder(path: PathBuf) {
 	read_dir_recursive(path)
@@ -50,16 +39,6 @@ pub fn run_for_crate_folder(path: PathBuf) {
 		.for_each(|(c, p)| save_to_file(&p, c))
 }
 
-const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
-const IGNORE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
-const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib"];
-
-pub fn run_for_crate(path: PathBuf) {
-	CRATE_FOLDERS
-		.iter()
-		.map(|s| PathBuf::push_with(&path, s))
-		.for_each(run_for_crate_folder)
-}
 
 fn save_to_file(path: &PathBuf, content: String) {
 	// let file_name = "mod.rs";
@@ -75,14 +54,13 @@ fn save_to_file(path: &PathBuf, content: String) {
 }
 
 const PREFIX: &str = "";
-// "#![cfg_attr(debug_assertions, allow(dead_code, unused_imports,unused_mut, unused_variables,unused_parens))]\n\n";
 
 pub fn create_mod_text(path: &PathBuf) -> String {
 	let children = fs::read_dir(&path).unwrap();
 	let parent_is_double_underscore =
 		filename_contains_double_underscore(&path);
 
-	let mut str = String::from(PREFIX);
+	let mut str = String::new();
 	children
 		.map(|p| p.unwrap().path())
 		.filter(|c| !filename_included(c, IGNORE_FILES))
@@ -102,4 +80,25 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 			}
 		});
 	str
+}
+
+
+
+// fn filename_starts_with_uppercase(p: &PathBuf) -> bool {
+// 	p.file_name().str().first().is_ascii_uppercase()
+// }
+fn filename_included(p: &PathBuf, arr: &[&str]) -> bool {
+	arr.iter().any(|f| p.file_stem().unwrap() == *f)
+}
+fn filename_starts_with_underscore(p: &PathBuf) -> bool {
+	p.file_name().str().first() == '_'
+}
+fn filename_contains_double_underscore(p: &PathBuf) -> bool {
+	p.file_name().str().contains("__")
+}
+fn is_dir_or_rustfile(p: &PathBuf) -> bool {
+	match p.extension() {
+		Some(value) => value.to_str().unwrap() == "rs",
+		None => p.is_dir(),
+	}
 }
