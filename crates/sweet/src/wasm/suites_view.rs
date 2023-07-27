@@ -1,6 +1,9 @@
 use super::*;
 use crate::*;
+use forky_core::wasm::forky_style;
+use forky_core::*;
 use leptos::*;
+use web_sys::console;
 
 #[component]
 pub fn SuitesView<F>(cx: Scope, set_file: F) -> impl IntoView
@@ -17,12 +20,14 @@ where
 		.collect::<Vec<_>>();
 
 	view! {cx,
-	<div class="sweet-contents">
-	<h3>"Suites"</h3>
-		<div
-			class="sweet-suite"
-			on:click= move|_|set_file(None)
-			>"Home"</div>
+	<div class=sweet_style::SWEET_CONTENTS>
+	<h3
+		class=forky_style::BUTTON_LIKE
+		on:click= move|_|{
+			console::clear();
+			set_file(None)
+		}
+	>"Suites"</h3>
 		<br/>
 		{suites.iter()
 			.map(|suite|view!{cx,<SuiteView suite set_file/>})
@@ -55,14 +60,8 @@ where
 			acc
 		})
 		.replace(".rs > ", "");
-
-	// .collect::<Vec<_>>()
-
-
-	// .join(" > ").replace(".rs", "");
-	// let href = format!("?file={}", file);
 	view! {cx,
-	<div class="sweet-suite"
+	<div class=spacecat!(forky_style::BUTTON_LIKE,sweet_style::SWEET_SUITE)
 		on:click=move|_|set_file(Some(file.clone()))
 	>
 		{pretty}

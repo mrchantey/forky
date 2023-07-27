@@ -19,7 +19,7 @@ pub fn Root(cx: Scope) -> impl IntoView {
 
 	if interactive_mode() {
 		view! {cx,
-		<div class="sweet-root">
+		<div class=sweet_style::SWEET_ROOT>
 			<SuitesView set_file/>
 			<RunnerContainer file/>
 		</div>

@@ -24,3 +24,12 @@ canvas {
 	justify-content: center;
 	align-items: center;
 }
+
+.button-like {
+	cursor: pointer;
+	padding: 0.3em;
+}
+
+.button-like:hover {
+	background-color: #444;
+}

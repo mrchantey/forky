@@ -150,12 +150,14 @@ ssl:
 	openssl req -new -key target/client-key.pem -subj "/CN=$cn\/emailAddress=admin@$cn/C=US/ST=Ohio/L=Columbus/O=Widgets Inc/OU=Some Unit" -out target/client.csr
 	openssl x509 -req -in target/client.csr -signkey target/client-key.pem -out target/client-cert.pem
 
-watch-css *args:
-	cargo watch --why --ignore '{justfile,.gitignore}' --ignore '**.{rs,txt,md,wasm,wat,wgsl}' --ignore './html/style.css' -- {{args}}
+watch-css crate *args:
+	cargo watch --ignore '{justfile,.gitignore}' --ignore '**.{rs,txt,md,wasm,wat,wgsl}' --ignore './html/style.css' -- just build-css {{crate}} {{args}}
 
-css crate:
-	just lightning ./crates/{{crate}}/src/index.css ./html/style.css
-# cargo run -p forky_cli style file ./html/style.css ./crates/{{crate}}/src/style/style_g.rs
+css:
+	just run forky_cli cli -- style all
+
+@build-css crate *args:
+	just lightning ./crates/{{crate}}/src/index.css ./html/style.css {{args}}
 
 lightning in out *args:
 	lightningcss {{in}} --bundle -m -o {{out}} {{args}}

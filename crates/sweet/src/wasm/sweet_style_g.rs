@@ -1,4 +1,4 @@
-pub mod style {
+pub mod sweet_style {
 	pub const FULL_SIZE: &str = "full-size";
 	pub const HIDDEN: &str = "hidden";
 	pub const SWEET_CONTENTS: &str = "sweet-contents";

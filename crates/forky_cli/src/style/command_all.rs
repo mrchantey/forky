@@ -15,6 +15,7 @@ impl Subcommand for StyleCommandAll {
 		forky_fs::watch_path(
 			&WatchConfig::new()
 				.with_watch("**/*.css")
+				.with_ignore("**/*/index.css")
 				.with_ignore("**/html/style.css"),
 			|_| {
 				terminal::clear();
