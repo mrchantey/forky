@@ -1,71 +1,74 @@
 use anyhow::Result;
 use forky_core::PathBufX;
-use forky_fs::fs::is_dir_or_extension;
-use forky_fs::fs::read_dir_recursive;
+use forky_fs::fs::*;
 use glob::*;
+use std::collections::HashSet;
 use std::env;
 use std::fs;
 use std::path::PathBuf;
 
 pub fn create_index_files() -> Result<()> {
+	remove_all_index_files()?;
+	for_all_crates()?;
+	Ok(())
+}
+
+fn remove_all_index_files() -> Result<()> {
 	glob("**/*.index.css")
 		.unwrap()
 		.map(|path| fs::remove_file(path.unwrap()))
 		.collect::<std::io::Result<()>>()?;
-
-	for_all_crates()?;
-	// directories_matching("**/src/**/*.css")
-	// 	.iter()
-	// 	.for_each(|val| println!("dir: {:?}", val));
-
 	Ok(())
 }
 
 fn for_all_crates() -> Result<()> {
+	let dirs_with_css = directories_matching("**/src/**/*.css")
+		.iter()
+		.flat_map(|path| parents(path))
+		.collect::<HashSet<PathBuf>>();
+	dirs_with_css
+		.iter()
+		.for_each(|val| println!("css dir: {:?}", val));
 	match fs::read_dir("crates") {
 		Ok(dirs) => dirs
 			.map(|e| e.unwrap().path())
-			.map(|p| for_crate(p))
+			.map(|p| for_crate(p, &dirs_with_css))
 			.collect::<Result<()>>()?,
-		_ => for_crate(env::current_dir()?)?,
+		_ => for_crate(env::current_dir()?, &dirs_with_css)?,
 	}
 	Ok(())
 }
 
-fn for_crate(path: PathBuf) -> Result<()> {
+fn for_crate(path: PathBuf, dirs_with_css: &HashSet<PathBuf>) -> Result<()> {
 	let path = PathBuf::push_with(&path, "src");
 	read_dir_recursive(path)
 		.into_iter()
+		.filter(|p| dirs_with_css.contains(p))
 		//TODO filter by directories that contain any css
-		.map(|p| (create_index_text(&p).unwrap(), p))
+		.map(|p| (create_index_text(&p, dirs_with_css).unwrap(), p))
 		.map(|(content, path)| save_to_disk(&path, content))
 		.collect()
 }
 
-// this looks slow
-fn dir_contains_css(path: &PathBuf) -> bool {
-	let pattern = Pattern::new("**/*.css").unwrap();
-	glob::glob(&pattern.to_string())
-		.unwrap()
-		.filter_map(|val| val.ok())
-		.any(|val| val.parent().unwrap() == path)
-}
-
-pub fn create_index_text(path: &PathBuf) -> Result<String> {
+pub fn create_index_text(
+	path: &PathBuf,
+	dirs_with_css: &HashSet<PathBuf>,
+) -> Result<String> {
 	let ignore_files = Pattern::new("**/*/index.css").unwrap();
 
 	let out = fs::read_dir(&path)
 		.unwrap()
 		.map(|p| p.unwrap().path())
-		.filter(|c| !ignore_files.matches(c.to_str().unwrap()))
-		.filter(|c| is_dir_or_extension(c, "css"))
-		.map(|c| {
-			let stem = c.file_stem().unwrap();
+		.filter(|p| !ignore_files.matches(p.to_str().unwrap()))
+		.filter(|p| is_dir_or_extension(p, "css"))
+		.filter(|p| p.is_file() || dirs_with_css.contains(p))
+		.map(|p| {
+			let stem = p.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
-			if c.is_dir() {
-				format!("@import './{name}/index.css';")
+			if p.is_dir() {
+				format!("@import './{name}/index.css';\n")
 			} else {
-				format!("@import './{name}.css';")
+				format!("@import './{name}.css';\n")
 			}
 		})
 		.collect();
@@ -74,7 +77,8 @@ pub fn create_index_text(path: &PathBuf) -> Result<String> {
 
 
 fn save_to_disk(path: &PathBuf, content: String) -> Result<()> {
-	// let mut path = path.clone();
+	let mut path = path.clone();
+	path.push("index.css");
 	println!("path: {:?}\n{}", path, content);
 	// path.set_extension("index.css");
 	// fs::write(path, content)?;

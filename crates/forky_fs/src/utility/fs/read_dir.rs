@@ -26,6 +26,19 @@ pub fn is_dir_or_extension(path: &PathBuf, ext: &str) -> bool {
 	}
 }
 
+pub fn parents(path: &PathBuf) -> Vec<PathBuf> {
+	let mut acc = Vec::new();
+	let mut current = path.clone();
+	if path.is_dir() {
+		acc.push(path.clone());
+	}
+	while let Some(parent) = current.parent() {
+		acc.push(parent.to_path_buf());
+		current = parent.to_path_buf();
+	}
+	acc
+}
+
 pub fn is_dir_or_pattern(path: &PathBuf, pattern: &str) -> bool {
 	path.is_dir()
 		|| Pattern::new(pattern)
@@ -45,10 +58,11 @@ pub fn directories_matching(pattern: &str) -> Vec<PathBuf> {
 				val.parent().unwrap().to_path_buf()
 			}
 		})
-		.fold(HashSet::new(), |mut acc, val| {
-			acc.insert(val);
-			acc
-		})
+		.collect::<HashSet<PathBuf>>()
+		// .fold(HashSet::new(), |mut acc, val| {
+		// 	acc.insert(val);
+		// 	acc
+		// })
 		.iter()
 		.map(|path| path.clone())
 		.collect::<Vec<_>>()
