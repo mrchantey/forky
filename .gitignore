@@ -5,8 +5,6 @@ html/wasm*
 html/assets*
 html/style.css
 
-**/*/style_g.rs
-
 # rust
 /target/
 Cargo.lock
