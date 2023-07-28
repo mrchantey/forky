@@ -48,33 +48,42 @@ impl Subcommand for WatchCommand {
 			.unwrap_or_default()
 			.map(|s| s.to_str())
 			.collect::<Vec<_>>();
+
+		// println!("watch\ncommand:{:?}", cmd);
 		FsWatcher::default()
+			// .with_dont_clear()
 			.with_watches(watches)
 			.with_ignores(ignores)
 			.watch(|_| run(&cmd))
 	}
 }
 
+fn get_command() -> Command {
+	let is_windows = cfg!(target_os = "windows");
+	let (cmd, arg) = if is_windows {
+		// ("cmd", "\\C")
+		("powershell", "-Command")
+	} else {
+		("sh", "-c")
+	};
+	let mut cmd = Command::new(cmd);
+	cmd.arg(arg);
+	cmd
+}
+
 /// Run a command and print the output. Returns error only if execution failed, not if it returns error
 pub fn run(command: &Vec<&str>) -> Result<()> {
-	let output = if cfg!(target_os = "windows") {
-		// command.insert(0, &"\\C");
-		// Command::new("cmd")
-		// command.insert(0, &"-Command");
-		Command::new("powershell")
-			.arg("-Command")
-			.args(command)
-			.output()
-	} else {
-		// command.insert(0, &"-c");
-		Command::new("sh").arg("-c").args(command).output()
-	}?;
-	if output.status.success() {
-		let stdout = String::from_utf8_lossy(&output.stdout);
-		println!("{}", stdout);
-	} else {
-		let stderr = String::from_utf8_lossy(&output.stderr);
-		eprintln!("{}", stderr);
-	}
+	let _ = get_command()
+		.args(command)
+		.stdout(std::process::Stdio::inherit())
+		.stderr(std::process::Stdio::inherit())
+		.output()?;
+	// if output.status.success() {
+	// let stdout = String::from_utf8_lossy(&output.stdout);
+	// println!("{}", stdout);
+	// } else {
+	// let stderr = String::from_utf8_lossy(&output.stderr);
+	// eprintln!("{}", stderr);
+	// }
 	Ok(())
 }

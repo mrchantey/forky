@@ -12,7 +12,6 @@ const IGNORE_FOLDERS: &'static [&str] = &["src", "examples"];
 const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib", "sweet"];
 
 pub fn run() -> Result<()> {
-	terminal::print_forky();
 	match fs::read_dir("crates") {
 		Ok(dirs) => dirs
 			.map(|e| e.unwrap().path())
@@ -45,7 +44,7 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 	fs::read_dir(&path)
 		.unwrap()
 		.map(|p| p.unwrap().path())
-		.filter(|c| !filename_included(c, IGNORE_FILES))
+		.filter(|c| c.is_dir() || !filename_included(c, IGNORE_FILES))
 		.filter(|c| is_dir_or_extension(c, "rs"))
 		.map(|c| {
 			let stem = c.file_stem().unwrap();

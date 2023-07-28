@@ -18,3 +18,5 @@ mod test_runner_config_wasm;
 pub use self::test_runner_config_wasm::*;
 mod test_runner_wasm;
 pub use self::test_runner_wasm::*;
+mod _matchers;
+pub use self::_matchers::*;

@@ -16,14 +16,16 @@ use std::time::Duration;
 pub struct FsWatcher {
 	pub path: String,
 	pub interval: Duration,
+	// pub debounce: Duration,
 	pub run_on_start: bool,
 	pub clear_on_change: bool,
 	pub log_changed_file: bool,
+	pub once_per_tick: bool,
 	/// glob for watch patterns
-	pub watch: Vec<glob::Pattern>,
+	pub watches: Vec<glob::Pattern>,
 	pub mutex: Option<ArcMut<()>>,
 	/// glob for ignore patterns
-	pub ignore: Vec<glob::Pattern>,
+	pub ignores: Vec<glob::Pattern>,
 }
 
 impl Default for FsWatcher {
@@ -33,10 +35,11 @@ impl Default for FsWatcher {
 			run_on_start: true,
 			clear_on_change: true,
 			log_changed_file: true,
+			once_per_tick: true,
 			path: String::from("./"),
 			interval: Duration::from_millis(10),
-			watch: Vec::new(),
-			ignore: Vec::new(),
+			watches: Vec::new(),
+			ignores: Vec::new(),
 		}
 	}
 }
@@ -44,19 +47,24 @@ impl Default for FsWatcher {
 impl FsWatcher {
 	pub fn new() -> Self { Self::default() }
 
+	pub fn with_dont_clear(mut self) -> Self {
+		self.clear_on_change = false;
+		self
+	}
+
 	pub fn with_mutex(mut self, mutex: ArcMut<()>) -> Self {
 		self.mutex = Some(mutex);
 		self
 	}
 	pub fn with_watches(mut self, watch: Vec<&str>) -> Self {
-		self.watch = watch
+		self.watches = watch
 			.iter()
 			.map(|w| glob::Pattern::new(w).unwrap())
 			.collect();
 		self
 	}
 	pub fn with_ignores(mut self, ignore: Vec<&str>) -> Self {
-		self.ignore = ignore
+		self.ignores = ignore
 			.iter()
 			.map(|w| glob::Pattern::new(w).unwrap())
 			.collect();
@@ -64,11 +72,11 @@ impl FsWatcher {
 	}
 
 	pub fn with_watch(mut self, watch: &str) -> Self {
-		self.watch.push(glob::Pattern::new(watch).unwrap());
+		self.watches.push(glob::Pattern::new(watch).unwrap());
 		self
 	}
 	pub fn with_ignore(mut self, watch: &str) -> Self {
-		self.ignore.push(glob::Pattern::new(watch).unwrap());
+		self.ignores.push(glob::Pattern::new(watch).unwrap());
 		self
 	}
 	pub fn passes(&self, path: &Path) -> bool {
@@ -76,11 +84,12 @@ impl FsWatcher {
 	}
 
 	pub fn passes_watch(&self, path: &Path) -> bool {
-		self.watch.iter().any(|watch| watch.matches_path(path))
+		self.watches.iter().any(|watch| watch.matches_path(path))
+			|| self.watches.is_empty()
 	}
 
 	pub fn passes_ignore(&self, path: &Path) -> bool {
-		!self.ignore.iter().any(|watch| watch.matches_path(path))
+		!self.ignores.iter().any(|watch| watch.matches_path(path))
 	}
 	pub fn watch_log(&self) -> Result<()> {
 		self.watch(|e| {
@@ -91,8 +100,13 @@ impl FsWatcher {
 	fn prep_terminal(&self) {
 		if self.clear_on_change {
 			terminal::clear();
+			terminal::print_forky();
+			println!(
+				"watching...\nwatching: {:?}\nignoring: {:?}\n",
+				self.watches.iter().map(|w| w.as_str()).collect::<Vec<_>>(),
+				self.ignores.iter().map(|w| w.as_str()).collect::<Vec<_>>()
+			);
 		}
-		terminal::print_forky();
 	}
 	fn lock(&self) -> Option<MutexGuard<()>> {
 		self.mutex.as_ref().map(|m| m.lock().unwrap())
@@ -107,26 +121,41 @@ impl FsWatcher {
 
 		let (tx, rx) = std::sync::mpsc::channel();
 		let path = Path::new(&self.path);
-		let mut debouncer = new_debouncer(Duration::from_secs(2), None, tx)?;
+		let mut debouncer = new_debouncer(self.interval, None, tx)?;
 		let watcher =
 			debouncer.watcher().watch(path, RecursiveMode::Recursive)?;
 		debouncer.cache().add_root(path, RecursiveMode::Recursive);
+
+		let start = std::time::Instant::now();
+		let mut last_run = start;
 
 		for res in rx {
 			match res {
 				Ok(e) => {
 					let _mutex = self.lock();
+					let last_run2 = last_run;
 					e.iter()
+						.filter(|e| {
+							e.time.duration_since(last_run2) >= self.interval
+						})
 						.flat_map(|e| {
 							e.paths.iter().map(move |p| (p.clone(), e))
 						})
 						.filter(|(path, e)| self.passes(&path))
+						.take(if self.once_per_tick { 1 } else { usize::MAX })
 						.map(|(path, e)| {
 							self.prep_terminal();
 							if self.log_changed_file {
-								println!("{:?}: {:?}", e.kind, path)
+								println!(
+									"{:.2}: {:?}: {:?}\n",
+									e.time.duration_since(start).as_secs_f32(),
+									e.kind,
+									path.file_name().unwrap()
+								)
 							}
-							on_change(path.to_str().ok()?)
+							on_change(path.to_str().ok()?)?;
+							last_run = std::time::Instant::now();
+							Ok(())
 						})
 						.collect::<Result<()>>()?;
 				}
