@@ -65,7 +65,7 @@ example crate example *args:
 auto-fs:
 	cargo run -p forky_cli auto-fs
 
-mod: 
+mod:
 	cargo run -p forky_cli mod
 
 publish crate *args:
@@ -152,6 +152,9 @@ ssl:
 	openssl genrsa -out target/client-key.pem 2048
 	openssl req -new -key target/client-key.pem -subj "/CN=$cn\/emailAddress=admin@$cn/C=US/ST=Ohio/L=Columbus/O=Widgets Inc/OU=Some Unit" -out target/client.csr
 	openssl x509 -req -in target/client.csr -signkey target/client-key.pem -out target/client-cert.pem
+
+style:
+	cargo run -p forky_cli style all
 
 watch-css crate *args:
 	cargo watch --ignore '{justfile,.gitignore}' --ignore '**.{rs,txt,md,wasm,wat,wgsl}' --ignore './html/style.css' -- just build-css {{crate}} {{args}}
