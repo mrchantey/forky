@@ -26,7 +26,10 @@ fn create_all() -> Result<()> {
 	glob("**/src/**/*.css")
 		.unwrap()
 		.filter_map(|val| val.ok())
-		.filter(|path| path.file_stem().unwrap() != "index")
+		.filter(|path| {
+			let stem = path.file_stem().unwrap();
+			stem != "index" && stem != "lib"
+		})
 		.map(|path_in| (create_type_text(&path_in), path_in))
 		.map(|(content, path_in)| {
 			write_to_disk(&get_path_out(&path_in), &content)

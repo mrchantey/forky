@@ -4,9 +4,10 @@
 
 ## Features
 
-- :fire:  Parallel - Test cases are run in parallel by default
-- :earth_africa: WASM - Run tests in-browser with an interactive harness
-- :rainbow: Pretty - Jest inspired matchers and outputs
+- 🔥  Parallel - Test cases are run in parallel by default
+- 🕙 Async - 
+- 🌍 WASM - Run tests in-browser with an interactive runner
+- 🌈 Pretty - Jest inspired matchers and outputs
 
 
 
@@ -46,11 +47,13 @@ sweet! {
 	  }
 	}
 	```
-2. run these commands
-	```sh
-	cargo test --test sweet
-	```
+2. run `cargo test --test sweet`
 
+
+## Quickstart - WASM
+
+1. Follow quickstart ^
+2. create a binary `examples/test.rs`
 
 ## Features - Summary
 - Pretty Messages

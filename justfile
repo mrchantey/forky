@@ -156,12 +156,6 @@ ssl:
 watch-css crate *args:
 	cargo watch --ignore '{justfile,.gitignore}' --ignore '**.{rs,txt,md,wasm,wat,wgsl}' --ignore './html/style.css' -- just build-css {{crate}} {{args}}
 
-css:
-	just run forky_cli cli -- style all
-
-mod-css:
-	just mod & just css
-
 @build-css crate *args:
 	just lightning ./crates/{{crate}}/src/index.css ./html/style.css {{args}}
 
