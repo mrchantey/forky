@@ -1,3 +1,4 @@
 #![feature(imported_main)]
 pub use sweet::*;
-mod chat;
+#[path = "./mod.rs"]
+mod tests;

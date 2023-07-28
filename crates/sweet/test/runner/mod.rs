@@ -6,7 +6,5 @@ mod matcher;
 pub use self::matcher::*;
 mod multithreaded;
 pub use self::multithreaded::*;
-mod sweet;
-pub use self::sweet::*;
 mod test_suite;
 pub use self::test_suite::*;

@@ -8,8 +8,8 @@ use std::fs;
 use std::path::PathBuf;
 
 const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
-const IGNORE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
-const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib"];
+const IGNORE_FOLDERS: &'static [&str] = &["src", "examples"];
+const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib", "sweet"];
 
 pub fn run() -> Result<()> {
 	terminal::print_forky();
