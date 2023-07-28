@@ -1,12 +1,14 @@
-use anyhow::{anyhow, Result};
-use clap::{ArgMatches, Command};
+use anyhow::anyhow;
+use anyhow::Result;
+use clap::ArgMatches;
+use clap::Command;
 use std::io;
 
 pub trait Subcommand {
 	fn name(&self) -> &'static str;
 	fn about(&self) -> &'static str;
 	fn append_command(&self, command: Command) -> Command { command }
-	
+
 	fn create_command(&self) -> Command {
 		let mut cmd = Command::new(self.name())
 			.about(self.about())

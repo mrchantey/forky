@@ -63,7 +63,7 @@ example crate example *args:
 	echo {{argument}}
 
 mod: 
-	just watch 'cargo run -p forky_cli mod'
+	cargo run -p forky_cli mod
 
 publish crate *args:
 	cargo publish -p {{crate}} --allow-dirty {{args}}
@@ -155,6 +155,9 @@ watch-css crate *args:
 
 css:
 	just run forky_cli cli -- style all
+
+mod-css:
+	just mod & just css
 
 @build-css crate *args:
 	just lightning ./crates/{{crate}}/src/index.css ./html/style.css {{args}}

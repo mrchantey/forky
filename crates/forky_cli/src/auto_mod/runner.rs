@@ -12,7 +12,6 @@ const IGNORE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
 const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib"];
 
 pub fn run() -> Result<()> {
-	terminal::clear();
 	terminal::print_forky();
 	match fs::read_dir("crates") {
 		Ok(dirs) => dirs
@@ -20,7 +19,6 @@ pub fn run() -> Result<()> {
 			.for_each(|p| run_for_crate(p)),
 		_ => run_for_crate(env::current_dir()?),
 	}
-	// .unwrap();
 	terminal::show_cursor();
 	Ok(())
 }

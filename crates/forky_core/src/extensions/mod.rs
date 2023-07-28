@@ -4,6 +4,8 @@ mod generic;
 pub use self::generic::*;
 mod num_x;
 pub use self::num_x::*;
+mod option;
+pub use self::option::*;
 mod path;
 pub use self::path::*;
 mod string;

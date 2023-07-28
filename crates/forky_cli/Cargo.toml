@@ -11,6 +11,7 @@ repository = { workspace = true }
 
 [dependencies]
 anyhow = { workspace = true }
+rayon = { workspace = true }
 ## forky
 forky_core = { workspace = true }
 forky_fs = { workspace = true }
