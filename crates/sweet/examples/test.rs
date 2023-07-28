@@ -1,5 +1,4 @@
 #![feature(imported_main)]
-#[path = "../test/runner/mod.rs"]
-mod runner;
-pub use runner::*;
+#[path = "../test/mod.rs"]
+mod tests;
 pub use sweet::*;
