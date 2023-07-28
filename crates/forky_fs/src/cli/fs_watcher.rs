@@ -85,6 +85,7 @@ impl FsWatcher {
 
 	pub fn watch(&self, on_change: impl Fn(&str) -> Result<()>) -> Result<()> {
 		if self.run_on_start {
+			let _mutex = self.lock();
 			self.prep_terminal();
 			on_change("")?;
 		}
@@ -99,7 +100,7 @@ impl FsWatcher {
 		for res in rx {
 			match res {
 				Ok(e) => {
-					let _ = self.lock();
+					let _mutex = self.lock();
 					e.iter()
 						.flat_map(|e| {
 							e.paths.iter().map(move |p| (p.clone(), e))
