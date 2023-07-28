@@ -7,6 +7,9 @@ use notify_debouncer_full::notify::Watcher;
 use notify_debouncer_full::DebouncedEvent;
 use std::path::Path;
 use std::path::PathBuf;
+use std::sync::Arc;
+use std::sync::Mutex;
+use std::sync::MutexGuard;
 use std::time::Duration;
 
 #[derive(Debug)]
@@ -18,6 +21,7 @@ pub struct FsWatcher {
 	pub log_changed_file: bool,
 	/// glob for watch patterns
 	pub watch: Vec<glob::Pattern>,
+	pub mutex: Option<ArcMut<()>>,
 	/// glob for ignore patterns
 	pub ignore: Vec<glob::Pattern>,
 }
@@ -25,6 +29,7 @@ pub struct FsWatcher {
 impl Default for FsWatcher {
 	fn default() -> Self {
 		Self {
+			mutex: None,
 			run_on_start: true,
 			clear_on_change: true,
 			log_changed_file: true,
@@ -39,6 +44,10 @@ impl Default for FsWatcher {
 impl FsWatcher {
 	pub fn new() -> Self { Self::default() }
 
+	pub fn with_mutex(mut self, mutex: ArcMut<()>) -> Self {
+		self.mutex = Some(mutex);
+		self
+	}
 	pub fn with_watch(mut self, watch: &str) -> Self {
 		self.watch.push(glob::Pattern::new(watch).unwrap());
 		self
@@ -70,6 +79,9 @@ impl FsWatcher {
 		}
 		terminal::print_forky();
 	}
+	fn lock(&self) -> Option<MutexGuard<()>> {
+		self.mutex.as_ref().map(|m| m.lock().unwrap())
+	}
 
 	pub fn watch(&self, on_change: impl Fn(&str) -> Result<()>) -> Result<()> {
 		if self.run_on_start {
@@ -87,6 +99,7 @@ impl FsWatcher {
 		for res in rx {
 			match res {
 				Ok(e) => {
+					let _ = self.lock();
 					e.iter()
 						.flat_map(|e| {
 							e.paths.iter().map(move |p| (p.clone(), e))

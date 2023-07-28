@@ -1,3 +1,4 @@
+use super::*;
 use crate::*;
 use forky_fs::Subcommand;
 
@@ -9,7 +10,7 @@ impl Subcommand for ForkyCli {
 
 	fn subcommands(&self) -> Vec<Box<dyn Subcommand>> {
 		vec![
-			// Box::new(AutoFs),
+			Box::new(AutoFs),
 			Box::new(style::StyleCommand),
 			Box::new(auto_mod::AutoModCommand),
 		]
