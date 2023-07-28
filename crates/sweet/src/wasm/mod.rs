@@ -8,8 +8,6 @@ mod suites_view;
 pub use self::suites_view::*;
 mod suite_logger_wasm;
 pub use self::suite_logger_wasm::*;
-mod sweet_style_g;
-pub use self::sweet_style_g::*;
 mod test_case_wasm;
 pub use self::test_case_wasm::*;
 mod test_collector_wasm;

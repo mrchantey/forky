@@ -13,17 +13,17 @@ impl Subcommand for ForkyCli {
 
 	fn subcommands(&self) -> Vec<Box<dyn Subcommand>> {
 		vec![
-			Box::new(ForkyAuto),
+			Box::new(AutoFs),
 			Box::new(style::StyleCommand),
 			Box::new(auto_mod::AutoModCommand),
 		]
 	}
 }
 
-pub struct ForkyAuto;
+pub struct AutoFs;
 
-impl Subcommand for ForkyAuto {
-	fn name(&self) -> &'static str { "auto" }
+impl Subcommand for AutoFs {
+	fn name(&self) -> &'static str { "auto-fs" }
 	fn about(&self) -> &'static str { "generate mod and css files" }
 
 	fn run(&self, args: &clap::ArgMatches) -> Result<()> {
