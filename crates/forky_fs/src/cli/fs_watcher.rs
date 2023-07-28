@@ -48,6 +48,21 @@ impl FsWatcher {
 		self.mutex = Some(mutex);
 		self
 	}
+	pub fn with_watches(mut self, watch: Vec<&str>) -> Self {
+		self.watch = watch
+			.iter()
+			.map(|w| glob::Pattern::new(w).unwrap())
+			.collect();
+		self
+	}
+	pub fn with_ignores(mut self, ignore: Vec<&str>) -> Self {
+		self.ignore = ignore
+			.iter()
+			.map(|w| glob::Pattern::new(w).unwrap())
+			.collect();
+		self
+	}
+
 	pub fn with_watch(mut self, watch: &str) -> Self {
 		self.watch.push(glob::Pattern::new(watch).unwrap());
 		self

@@ -11,6 +11,7 @@ impl Subcommand for ForkyCli {
 	fn subcommands(&self) -> Vec<Box<dyn Subcommand>> {
 		vec![
 			Box::new(AutoFs),
+			Box::new(watch::WatchCommand),
 			Box::new(style::StyleCommand),
 			Box::new(auto_mod::AutoModCommand),
 		]
