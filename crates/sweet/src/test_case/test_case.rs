@@ -1,11 +1,12 @@
 use crate::TestCaseConfig;
 use anyhow::Result;
 use colorize::*;
-use std::any::Any;
-use std::panic::AssertUnwindSafe;
-use std::panic::{self,};
+use std::panic::RefUnwindSafe;
 
-pub trait TestCase {
+pub trait TestCase
+where
+	Self: RefUnwindSafe,
+{
 	fn file(&self) -> &str;
 	fn name(&self) -> &str;
 	fn config(&self) -> &TestCaseConfig;
@@ -29,28 +30,5 @@ pub trait TestCase {
 
 	async fn run_func(&self) -> Result<()>;
 
-	async fn run(&self) -> Result<()> {
-		let panic_res =
-			panic::catch_unwind(AssertUnwindSafe(async || self.run_func().await));
-
-		#[cfg(not(target_arch = "wasm32"))]
-		let _ = panic::take_hook();
-		match panic_res {
-			Ok(matcher_res) => match matcher_res.await {
-				Ok(()) => Ok(()),
-				Err(err) => Err(self.format_error(&err.to_string().as_str())),
-			},
-			Err(e) => Err(self.format_error(&panic_info(e).as_str())),
-		}
-	}
-}
-
-fn panic_info(e: Box<dyn Any + Send>) -> String {
-	match e.downcast::<String>() {
-		Ok(v) => *v,
-		Err(e) => match e.downcast::<&str>() {
-			Ok(v) => v.to_string(),
-			_ => "Unknown Source of Error".to_owned(),
-		},
-	}
+	async fn run(&self) -> Result<()> { self.run_func().await }
 }

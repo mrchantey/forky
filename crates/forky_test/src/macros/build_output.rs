@@ -19,12 +19,21 @@ pub fn to_inventory_wrap_func(
 ) -> TokenStream {
 	let func = quote!({
 		#[cfg(not(target_arch = "wasm32"))]
-		{|| -> sweet::exports::Result<()> {
+	{|| {
+			use sweet::exports::FutureExt;
 			async fn func_async ()->sweet::exports::Result<()>{
 				#func
 				Ok(())
 			};
-			sweet::exports::block_on(func_async())
+			async fn panic_caught()->sweet::exports::Result<()>{
+				let result = func_async().catch_unwind();
+				sweet::unwrap_panic_catch(result).await
+			}
+			// let panic_res = func_async.catch_unwind();
+			// Box::pin(func_async)
+			Box::pin(panic_caught())
+			// Box::pin(func_async.catch_unwind())
+			// sweet::exports::block_on(func_async())
 		}}
 		#[cfg(target_arch = "wasm32")]
 		{|| -> sweet::exports::Promise {

@@ -15,7 +15,7 @@ impl SuiteLogger for SuiteLoggerNative {
 		let mut stdout = stdout();
 		stdout.write(val.as_bytes()).unwrap();
 	}
-	fn get_log(&mut self) -> &mut String{ &mut self.log }
+	fn get_log(&mut self) -> &mut String { &mut self.log }
 
 	fn on_start() -> Self {
 		SuiteLoggerNative {

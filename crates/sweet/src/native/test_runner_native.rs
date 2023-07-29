@@ -3,12 +3,16 @@ use crate::*;
 use anyhow::Result;
 use async_std::task::block_on;
 use forky_fs::*;
+use std::panic;
 use std::time::Instant;
 
 pub struct TestRunnerNative;
 
 impl TestRunnerNative {
 	pub fn run() -> Result<()> {
+		// dont exit program on panic?
+		let _ = panic::take_hook();
+
 		let config = TestRunnerConfig::from_cli_args();
 		if config.watch {
 			terminal::clear()

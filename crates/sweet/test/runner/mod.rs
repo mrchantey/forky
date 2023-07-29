@@ -6,5 +6,7 @@ mod matcher;
 pub use self::matcher::*;
 mod multithreaded;
 pub use self::multithreaded::*;
+mod panic;
+pub use self::panic::*;
 mod test_suite;
 pub use self::test_suite::*;

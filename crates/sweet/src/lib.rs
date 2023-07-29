@@ -28,6 +28,8 @@ pub mod exports {
 	pub use anyhow::Result;
 	//i guess pub use async_std bad for treeshake
 	pub use async_std::task::block_on;
+	pub use futures::FutureExt;
+	pub use futures::future::CatchUnwind;
 	pub use inventory;
 	#[cfg(target_arch = "wasm32")]
 	pub use js_sys::Promise;

@@ -1,3 +1,5 @@
+mod panic;
+pub use self::panic::*;
 mod parallel;
 pub use self::parallel::*;
 mod suite_logger_native;

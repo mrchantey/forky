@@ -19,12 +19,15 @@ where
 
 	fn log_start(file: &str) {
 		if cfg!(target_arch = "wasm32") {
+			// TODO test this
+			// Move the cursor up one line and clear the line content
+			// console.log('\x1b[1A\x1b[2K');
 			return;
 		}
 		let mut prefix = " RUNS ".black().bold().yellowb();
 		prefix += " ";
 		prefix += pretty_path(file).as_str();
-		Self::log(prefix.as_str());
+		println!("{prefix}");
 	}
 
 
