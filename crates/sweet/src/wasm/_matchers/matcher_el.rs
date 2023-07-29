@@ -22,12 +22,9 @@ impl Matcher<HtmlElement> {
 		receive: &str,
 		expect_suffix: &str,
 	) -> Result<()> {
-		if receive.contains(other) {
-			Ok(())
-		} else {
-			let expect = format!("contains {} {}", expect_suffix, other);
-			let receive = receive.chars().take(30).collect::<String>();
-			Err(MatcherError::new(expect, receive, 0))
-		}
+		let result = receive.contains(other);
+		let received = receive.chars().take(100).collect::<String>();
+		let expected = format!("contains {}: {}", expect_suffix, other);
+		self.assert_correct_with_received(result, &expected, &received)
 	}
 }

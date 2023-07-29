@@ -1,16 +1,15 @@
-use std::cmp;
-use std::fmt;
-use std::fmt::Debug;
+pub fn expect<T>(value: T) -> Matcher<T> { Matcher::new(value) }
 
-pub fn expect<T>(value: T) -> Matcher<T>
-where
-	T: cmp::PartialEq + fmt::Debug + std::marker::Copy,
-{
-	Matcher::new(value)
-}
-
-
-pub struct Matcher<T: cmp::PartialEq + Debug> {
+pub struct Matcher<T> {
 	pub value: T,
 	pub negated: bool,
+}
+
+impl<T> Matcher<T> {
+	pub fn new(value: T) -> Matcher<T> {
+		Matcher {
+			value,
+			negated: false,
+		}
+	}
 }

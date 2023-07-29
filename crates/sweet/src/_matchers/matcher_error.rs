@@ -1,27 +1,42 @@
 use crate::logging::file_context_depth;
+use crate::Matcher;
 use anyhow::anyhow;
 use colorize::*;
-use std::fmt;
+use std::fmt::Debug;
 
-
-#[derive(Debug, Clone)]
-pub struct MatcherError;
-
-impl MatcherError {
-	pub fn new<T1: fmt::Debug, T2: fmt::Debug>(
-		expected: T1,
-		received: T2,
-		backtrace_depth: usize,
-	) -> anyhow::Error {
-		Self::new_with_not(expected, received, false, backtrace_depth)
+impl<T> Matcher<T>
+where
+	T: Debug,
+{
+	pub fn to_error<T2: Debug>(&self, expected: &T2) -> anyhow::Error {
+		self.to_error_with_received_and_backtrace(expected, &self.value, 0)
 	}
-	pub fn new_with_not<T1: fmt::Debug, T2: fmt::Debug>(
-		expected: T1,
-		received: T2,
-		not: bool,
+	pub fn to_error_with_backtrace<T2: Debug>(
+		&self,
+		expected: &T2,
 		backtrace_depth: usize,
 	) -> anyhow::Error {
-		let expected = if not {
+		self.to_error_with_received_and_backtrace(
+			expected,
+			&self.value,
+			backtrace_depth,
+		)
+	}
+	pub fn to_error_with_received<T2: Debug, T3: Debug>(
+		&self,
+		expected: &T2,
+		received: &T3,
+	) -> anyhow::Error {
+		self.to_error_with_received_and_backtrace(expected, received, 0)
+	}
+
+	pub fn to_error_with_received_and_backtrace<T2: Debug, T3: Debug>(
+		&self,
+		expected: &T2,
+		received: &T3,
+		backtrace_depth: usize,
+	) -> anyhow::Error {
+		let expected = if self.negated {
 			format!("Not {:?}", expected)
 		} else {
 			format!("{:?}", expected)
@@ -34,13 +49,7 @@ impl MatcherError {
 			expected.green(),
 			"\nReceived: ",
 			received.red(),
-			file_context_depth(backtrace_depth + 3),
+			file_context_depth(4 + backtrace_depth),
 		))
 	}
 }
-
-// impl fmt::Display for MatcherError {
-// 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-// 		write!(f, "Message: {}", self.message)
-// 	}
-// }

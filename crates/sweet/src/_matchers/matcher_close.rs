@@ -17,17 +17,13 @@ where
 	}
 	pub fn to_be_close_to_with_epsilon(
 		&self,
-		other: T,
+		expected: T,
 		epsilon: f64,
 	) -> Result<()> {
-		let diff:f64 = self.abs_diff(other).into();
-		if diff < epsilon {
-			Ok(())
-		} else {
-			let expect = format!("close to {:?}", other);
-			let receive = format!("{:?}", self.value);
-			Err(MatcherError::new(expect, receive, 0))
-		}
+		let diff: f64 = self.abs_diff(expected).into();
+		let result = diff < epsilon;
+		let expected = format!("close to {:?}", expected);
+		self.assert_correct(result, &expected)
 	}
 
 	fn abs_diff(&self, other: T) -> T {

@@ -1,4 +1,4 @@
 #![feature(imported_main)]
-#[path = "./mod.rs"]
-mod tests;
+// #[path = "./mod.rs"]
+mod runner;
 pub use sweet::*;
