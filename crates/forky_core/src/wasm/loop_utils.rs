@@ -32,3 +32,19 @@ pub async fn wait_for_millis(millis: i32) {
 	});
 	JsFuture::from(promise).await.unwrap();
 }
+
+pub async fn run_on_timeout<F>(f: F)
+where
+	F: FnOnce() + 'static,
+{
+	let promise = Promise::new(&mut |resolve, _reject| {
+		web_sys::window()
+			.unwrap()
+			.set_timeout_with_callback_and_timeout_and_arguments_0(
+				&resolve, 0,
+			)
+			.expect("Should register `setTimeout`.");
+	});
+	JsFuture::from(promise).await.unwrap();
+	f();
+}
