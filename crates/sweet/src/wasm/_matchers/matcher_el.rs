@@ -24,7 +24,7 @@ impl Matcher<HtmlElement> {
 	) -> Result<()> {
 		let result = receive.contains(other);
 		let received = receive.chars().take(100).collect::<String>();
-		let expected = format!("contains {}: {}", expect_suffix, other);
+		let expected = format!("to contain {} '{}'", expect_suffix, other);
 		self.assert_correct_with_received(result, &expected, &received)
 	}
 }

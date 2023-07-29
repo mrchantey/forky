@@ -29,7 +29,7 @@ sweet! {
 		expect(result.is_ok()).to_be_true()?;
 		let result = expect(10).to_be_greater_than(11);
 		expect(result.is_ok()).to_be_false()?;
-	
+
 		let result = expect(10).not().to_be_greater_than(11);
 		expect(result.is_ok()).to_be_true()?;
 	}
@@ -52,5 +52,6 @@ sweet! {
 		expect(result.is_ok()).to_be(false)?;
 		let result = expect(true).not().to_be(false);
 		expect(result.is_ok()).to_be(true)?;
+
 	}
 }
