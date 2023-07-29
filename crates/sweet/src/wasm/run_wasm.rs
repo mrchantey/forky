@@ -8,6 +8,9 @@ use web_sys::console;
 
 pub fn run_tests_wasm() {
 	spawn_local(async move {
+		//doesnt work?
+		forky_web::set_panic_hook();
+
 		let config = TestRunnerConfig::from_search_params();
 		let collector = TestCollectorWasm::new();
 

@@ -17,18 +17,20 @@ where
 		String::from(f)
 	}
 	fn format_error(&self, msg: &str) -> anyhow::Error {
-		let mut val = String::from(
-			&["\n● ", &self.filename(), " > ", self.name(), "\n\n"]
-				.concat()
-				.red()
-				.bold()[..],
-		);
-		val.push_str(msg);
-		val.push_str("\n\n");
+		let location = format!("\n● {} > {}", self.filename(), self.name())
+			.red()
+			.bold();
+		let val = format!("{location}\n\n{msg}\n");
 		anyhow::anyhow!(val)
 	}
 
 	async fn run_func(&self) -> Result<()>;
 
-	async fn run(&self) -> Result<()> { self.run_func().await }
+	async fn run(&self) -> Result<()> {
+		let result = self.run_func().await;
+		match result {
+			Ok(_) => Ok(()),
+			Err(e) => Err(self.format_error(&e.to_string())),
+		}
+	}
 }

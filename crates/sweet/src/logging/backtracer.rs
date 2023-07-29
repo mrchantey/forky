@@ -4,7 +4,10 @@ const PREFIX_STACK_FRAMES: usize = 6;
 // const RUST_INTERNAL_FILE: &str = "library\\core\\src\\ops\\function.rs";
 
 #[cfg(target_arch = "wasm32")]
-pub fn file_context_depth(_: usize) -> String { String::new() }
+pub fn file_context_depth(_: usize) -> String {
+	String::new()
+	// String::from("backtrace not yet supported in wasm..").grey()
+}
 
 #[cfg(not(target_arch = "wasm32"))]
 pub fn file_context_depth(frame_depth: usize) -> String {
