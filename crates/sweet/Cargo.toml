@@ -46,6 +46,6 @@ name = "sweet"
 path = "test/sweet.rs"
 harness = false
 
-[[bin]]
-name = "sweet_bin"
-path = "test/sweet.rs"
+# [[bin]]
+# name = "sweet_bin"
+# path = "test/sweet.rs"

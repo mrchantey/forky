@@ -1,0 +1,13 @@
+.slider-container {
+	width: 100%;
+	min-width: 100%;
+}
+
+.slider-text-input {
+	width: 5em;
+}
+
+.slider-range-input {
+	flex-grow: 1;
+	width: 5em;
+}
