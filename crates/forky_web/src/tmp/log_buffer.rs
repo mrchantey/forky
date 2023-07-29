@@ -1,4 +1,4 @@
-use crate::*;
+use forky_core::*;
 use js_sys::Function;
 use js_sys::Reflect;
 use wasm_bindgen::prelude::Closure;

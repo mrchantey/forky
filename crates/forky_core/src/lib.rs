@@ -12,5 +12,3 @@ pub use self::utils::*;
 mod macros;
 pub use self::macros::*;
 pub mod net;
-#[cfg(target_arch = "wasm32")]
-pub mod wasm;

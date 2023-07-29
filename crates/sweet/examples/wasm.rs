@@ -1,5 +1,5 @@
 #![feature(imported_main)]
-use forky_core::wasm::wait_for_millis;
+use forky_web::wait_for_millis;
 use leptos::*;
 pub use sweet::*;
 

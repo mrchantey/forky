@@ -15,7 +15,7 @@ pub fn create_index_files() -> Result<()> {
 }
 
 fn remove_all_index_files() -> Result<()> {
-	glob("**/*.index.css")
+	glob("**/index.css")
 		.unwrap()
 		.map(|path| fs::remove_file(path.unwrap()))
 		.collect::<std::io::Result<()>>()?;

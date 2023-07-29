@@ -1,4 +1,4 @@
-use crate::*;
+use forky_core::*;
 use wasm_bindgen::prelude::*;
 use web_sys::window;
 

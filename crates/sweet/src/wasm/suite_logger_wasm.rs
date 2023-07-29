@@ -1,6 +1,6 @@
 use crate::*;
-use forky_core::wasm::LogBuffer;
 use forky_core::*;
+use forky_web::LogBuffer;
 
 pub struct SuiteLoggerWasm {
 	pub log: String,

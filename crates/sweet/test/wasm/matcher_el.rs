@@ -1,7 +1,7 @@
-use forky_core::wasm::*;
+use forky_web::*;
 use leptos::*;
-use sweet::*;
 use std::time::Duration;
+use sweet::*;
 
 sweet! {
 	it "works" {
@@ -21,7 +21,7 @@ sweet! {
 	}
 
 	test "async"{
-		
+
 		let _handle = set_timeout(||{
 			mount(|cx|view!{cx,<div>"hello world!"</div>});
 		},Duration::from_millis(100));

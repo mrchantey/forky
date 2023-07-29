@@ -1,5 +1,5 @@
 use super::*;
-use forky_core::wasm::*;
+use forky_web::*;
 use leptos::*;
 
 pub fn interactive_mode() -> bool { !SearchParams::get_flag("run") }

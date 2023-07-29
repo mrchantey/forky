@@ -1,7 +1,7 @@
 use crate::Matcher;
 use anyhow::Result;
-use forky_core::wasm::performance_now;
-use forky_core::wasm::wait_for_millis;
+use forky_web::performance_now;
+use forky_web::wait_for_millis;
 use std::time::Duration;
 use web_sys::HtmlElement;
 

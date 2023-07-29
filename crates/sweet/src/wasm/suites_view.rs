@@ -1,7 +1,7 @@
 use super::*;
 use crate::*;
-use forky_core::wasm::forky_style;
 use forky_core::*;
+use forky_web::forky_style;
 use leptos::*;
 use web_sys::console;
 

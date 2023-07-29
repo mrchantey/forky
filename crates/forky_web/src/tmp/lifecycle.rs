@@ -1,5 +1,5 @@
 use super::*;
-use crate::*;
+use forky_core::*;
 use std::future::Future;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::future_to_promise;

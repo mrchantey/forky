@@ -1,6 +1,6 @@
 use super::*;
 use crate::*;
-use forky_core::wasm::*;
+use forky_web::*;
 use leptos::*;
 use std::time::Duration;
 use web_sys::console;

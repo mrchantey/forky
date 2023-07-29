@@ -1,5 +1,5 @@
 use crate::*;
-use forky_core::wasm::SearchParams;
+use forky_web::SearchParams;
 
 impl TestRunnerConfig {
 	pub fn from_search_params() -> Self {
