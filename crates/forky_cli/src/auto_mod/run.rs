@@ -44,6 +44,7 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 		.unwrap()
 		.map(|p| p.unwrap().path())
 		.filter(|p| p.is_dir() || !filename_included(p, IGNORE_FILES))
+		.filter(|p| !filestem_ends_with_double_underscore(p))
 		.filter(|p| is_dir_or_extension(p, "rs"))
 		.map(|p| {
 			let stem = p.file_stem().unwrap();
