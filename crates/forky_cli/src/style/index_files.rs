@@ -26,6 +26,7 @@ fn for_all_crates() -> Result<()> {
 	let dirs_with_css = directories_matching("**/src/**/*.css")
 		.iter()
 		.flat_map(|path| parents(path))
+		.filter(|p| !filename_ends_with_underscore(p))
 		.collect::<HashSet<PathBuf>>();
 	// dirs_with_css
 	// 	.iter()

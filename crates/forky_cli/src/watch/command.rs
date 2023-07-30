@@ -1,9 +1,9 @@
-use super::*;
 use anyhow::Result;
 use clap::Arg;
 use clap::ArgAction;
 use clap::Command;
 use forky_core::StringX;
+use forky_fs::process::spawn_command;
 use forky_fs::FsWatcher;
 use forky_fs::Subcommand;
 

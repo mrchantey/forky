@@ -1,6 +1,7 @@
 use anyhow::Result;
 use cssparser::*;
 use forky_core::StringX;
+use forky_fs::fs::*;
 use glob::*;
 use std::collections::HashSet;
 use std::fs;
@@ -9,12 +10,12 @@ use std::path::PathBuf;
 
 pub fn create_type_files() -> Result<()> {
 	println!("\nstyle: creating type files...\n");
-	remove_all_type_files()?;
+	remove_all()?;
 	create_all()?;
 	Ok(())
 }
 
-fn remove_all_type_files() -> Result<()> {
+fn remove_all() -> Result<()> {
 	glob("**/*_g.rs")
 		.unwrap()
 		.map(|path| fs::remove_file(path.unwrap()))
@@ -26,6 +27,11 @@ fn create_all() -> Result<()> {
 	glob("**/src/**/*.css")
 		.unwrap()
 		.filter_map(|val| val.ok())
+		.filter(|p| {
+			!filename_ends_with_underscore(
+				&p.parent().unwrap_or_else(|| Path::new("")).to_path_buf(),
+			)
+		})
 		.filter(|path| {
 			let stem = path.file_stem().unwrap();
 			stem != "index" && stem != "lib"

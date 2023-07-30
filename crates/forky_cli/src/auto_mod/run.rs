@@ -1,7 +1,6 @@
 use anyhow::Result;
 use forky_core::*;
-use forky_fs::fs::is_dir_or_extension;
-use forky_fs::fs::read_dir_recursive;
+use forky_fs::fs::*;
 use forky_fs::*;
 use std::env;
 use std::fs;
@@ -44,13 +43,14 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 	fs::read_dir(&path)
 		.unwrap()
 		.map(|p| p.unwrap().path())
-		.filter(|c| c.is_dir() || !filename_included(c, IGNORE_FILES))
-		.filter(|c| is_dir_or_extension(c, "rs"))
-		.map(|c| {
-			let stem = c.file_stem().unwrap();
+		.filter(|p| p.is_dir() || !filename_included(p, IGNORE_FILES))
+		.filter(|p| is_dir_or_extension(p, "rs"))
+		.filter(|p| !filename_ends_with_underscore(p))
+		.map(|p| {
+			let stem = p.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
-			let mut is_mod = c.is_dir() || parent_is_double_underscore;
-			if filename_starts_with_underscore(&c) {
+			let mut is_mod = p.is_dir() || parent_is_double_underscore;
+			if filename_starts_with_underscore(&p) {
 				is_mod = !is_mod;
 			}
 			if is_mod {
@@ -73,17 +73,4 @@ fn save_to_file(path: &PathBuf, content: String) {
 	mod_path.push(file_name);
 	fs::write(&mod_path, content).unwrap();
 	println!("created mod file: {}", &mod_path.to_str().unwrap());
-}
-
-// fn filename_starts_with_uppercase(p: &PathBuf) -> bool {
-// 	p.file_name().str().first().is_ascii_uppercase()
-// }
-fn filename_included(p: &PathBuf, arr: &[&str]) -> bool {
-	arr.iter().any(|f| p.file_stem().unwrap() == *f)
-}
-fn filename_starts_with_underscore(p: &PathBuf) -> bool {
-	p.file_name().str().first() == '_'
-}
-fn filename_contains_double_underscore(p: &PathBuf) -> bool {
-	p.file_name().str().contains("__")
 }
