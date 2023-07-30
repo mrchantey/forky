@@ -54,6 +54,10 @@ impl Default for FsWatcher {
 impl FsWatcher {
 	pub fn new() -> Self { Self::default() }
 
+	pub fn with_path(mut self, path: String) -> Self {
+		self.path = path;
+		self
+	}
 	pub fn with_dont_clear(mut self) -> Self {
 		self.clear_on_change = false;
 		self
@@ -250,7 +254,6 @@ impl FsWatcher {
 		)?;
 		let path = Path::new(&self.path);
 		watcher.watch(path, RecursiveMode::Recursive)?;
-
 
 		Ok((watcher, rx))
 	}

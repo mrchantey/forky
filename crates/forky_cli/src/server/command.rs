@@ -31,10 +31,5 @@ impl Subcommand for ServerCommand {
 		// ServerConfig::
 		// let server = Server::default();
 		Server::serve_forever(|| Server::default())
-		// FsWatcher::default()
-		// 	// .with_dont_clear()
-		// 	.with_watches(watches)
-		// 	.with_ignores(ignores)
-		// 	.watch(|_| run(&cmd))
 	}
 }

@@ -62,8 +62,10 @@ impl Subcommand for WatchCommand {
 
 		if args.get_flag("block") {
 			watcher.block()?;
+			// futures::executor::block_on(watcher.block_async())?;
 			spawn_command(&cmd)
 		} else {
+			// futures::executor::block_on(watcher.watch_async(|_| spawn_command(&cmd)))
 			watcher.watch(|_| spawn_command(&cmd))
 		}
 	}

@@ -1,7 +1,7 @@
+use forky_fs::FsWatcher;
 // use forky_fs::FsWatcher;
 use futures::Future;
 use std::pin::Pin;
-use std::time::Duration;
 
 // #[derive(Clone)]
 pub struct Server {
@@ -24,8 +24,26 @@ impl Default for Server {
 		let host = "0.0.0.0".to_string();
 		let port = 3030;
 
+		let dir2 = dir.clone();
 		let shutdown = async || {
-			tokio::time::sleep(Duration::from_secs(10000)).await;
+			FsWatcher::new()
+				.with_path(dir2)
+				.block_async()
+				.await
+				.unwrap();
+			// std::thread::spawn(|| {
+			// 	FsWatcher::new().with_path(dir2).block().unwrap();
+			// 	println!("it changed!");
+			// let rt = tokio::runtime::Runtime::new().unwrap();
+			// rt.spawn(async {
+			// 		.unwrap();
+			// 	println!("it changed!");
+			// });
+			// rt.block_on(async {});
+			// })
+			// .join()
+			// .unwrap();
+			// tokio::time::sleep(Duration::from_secs(10000)).await;
 		};
 		let shutdown = Box::pin(shutdown());
 		Self {
