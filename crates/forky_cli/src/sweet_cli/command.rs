@@ -1,7 +1,7 @@
 use super::*;
-// use forky_core::ArcMut;
-// use forky_fs::FsWatcher;
 use forky_fs::Subcommand;
+// use forky_core::ArcMut;
+use forky_fs::*;
 
 pub struct SweetCommand;
 
@@ -12,7 +12,10 @@ impl Subcommand for SweetCommand {
 	fn about(&self) -> &'static str { ABOUT }
 
 	fn run(&self, _args: &clap::ArgMatches) -> anyhow::Result<()> {
+		terminal::clear();
+		terminal::print_forky();
 		println!("sweet");
-		run()
+		let config = SweetCliConfig::default();
+		run(&config)
 	}
 }
