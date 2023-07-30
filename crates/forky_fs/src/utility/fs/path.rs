@@ -22,15 +22,13 @@ pub fn filestem_ends_with_double_underscore(p: &PathBuf) -> bool {
 
 pub fn parent_ends_with_underscore(p: &PathBuf) -> bool {
 	match p.parent() {
-		Some(parent) => filestem_ends_with_underscore(&parent.to_path_buf()),
+		Some(parent) => parent.to_path_buf().file_name().str().last() == '_',
 		None => false,
 	}
 }
 pub fn parent_ends_with_double_underscore(p: &PathBuf) -> bool {
 	match p.parent() {
-		Some(parent) => {
-			filestem_ends_with_double_underscore(&parent.to_path_buf())
-		}
+		Some(parent) => parent.to_path_buf().file_name().str().ends_with("__"),
 		None => false,
 	}
 }
