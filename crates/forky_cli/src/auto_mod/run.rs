@@ -45,7 +45,7 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 		.map(|p| p.unwrap().path())
 		.filter(|p| p.is_dir() || !filename_included(p, IGNORE_FILES))
 		.filter(|p| is_dir_or_extension(p, "rs"))
-		.filter(|p| !filename_ends_with_underscore(p))
+		.filter(|p| !parent_ends_with_underscore(p))
 		.map(|p| {
 			let stem = p.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();

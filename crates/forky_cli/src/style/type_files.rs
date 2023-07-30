@@ -27,11 +27,7 @@ fn create_all() -> Result<()> {
 	glob("**/src/**/*.css")
 		.unwrap()
 		.filter_map(|val| val.ok())
-		.filter(|p| {
-			!filename_ends_with_underscore(
-				&p.parent().unwrap_or_else(|| Path::new("")).to_path_buf(),
-			)
-		})
+		.filter(|p| !parent_ends_with_underscore(p))
 		.filter(|path| {
 			let stem = path.file_stem().unwrap();
 			stem != "index" && stem != "lib"
