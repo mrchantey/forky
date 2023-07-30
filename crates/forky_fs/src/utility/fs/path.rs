@@ -19,6 +19,13 @@ pub fn filestem_ends_with_underscore(p: &PathBuf) -> bool {
 pub fn filestem_ends_with_double_underscore(p: &PathBuf) -> bool {
 	p.file_stem().str().ends_with("__")
 }
+pub fn filestem_contains_double_underscore(p: &PathBuf) -> bool {
+	p.file_stem().str().contains("__")
+}
+
+pub fn filestem_ends_with_triple_underscore(p: &PathBuf) -> bool {
+	p.file_stem().str().ends_with("___")
+}
 
 pub fn parent_ends_with_underscore(p: &PathBuf) -> bool {
 	match p.parent() {
