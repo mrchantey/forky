@@ -12,6 +12,7 @@ impl Subcommand for ForkyCli {
 		vec![
 			Box::new(AutoFs),
 			Box::new(watch::WatchCommand),
+			Box::new(server::ServerCommand),
 			Box::new(style::StyleCommand),
 			Box::new(auto_mod::AutoModCommand),
 		]

@@ -16,7 +16,7 @@ fn watcher() -> FsWatcher {
 
 impl AutoModCommand {
 	pub fn run_with_mutex(&self, mutex: ArcMut<()>) -> anyhow::Result<()> {
-		watcher().with_mutex(mutex).watch(|_| runner::run())
+		watcher().with_mutex(mutex).watch(|_| run::run())
 	}
 }
 
@@ -25,7 +25,7 @@ impl Subcommand for AutoModCommand {
 	fn about(&self) -> &'static str { "generate mod files for your project" }
 
 	fn run(&self, _args: &clap::ArgMatches) -> anyhow::Result<()> {
-		watcher().watch(|_| runner::run())
+		watcher().watch(|_| run::run())
 		// .watch_log()
 	}
 }

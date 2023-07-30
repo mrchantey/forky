@@ -11,7 +11,13 @@ repository = { workspace = true }
 
 [dependencies]
 anyhow = { workspace = true }
+
+## async
+futures = { workspace = true }
 rayon = { workspace = true }
+tokio = { workspace = true }
+async-std = { workspace = true }
+
 ## forky
 forky_core = { workspace = true }
 forky_fs = { workspace = true }
@@ -19,8 +25,14 @@ forky_fs = { workspace = true }
 glob = { workspace = true }
 ## cli
 clap = { workspace = true }
-## Style
+## style
 cssparser = { workspace = true }
+
+## serve
+axum = { workspace = true }
+tower = { workspace = true }
+tower-http = { workspace = true }
+tower-livereload = { workspace = true }
 
 [target.'cfg(windows)'.dev-dependencies]
 sweet = { workspace = true }

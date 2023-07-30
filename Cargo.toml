@@ -43,7 +43,6 @@ forky_web = { path = "./crates/forky_web", version = "0.*" }
 sweet = { path = "./crates/sweet", version = "0.*" }
 
 ### game ###
-
 bevy = { version = "0.10.0" }
 bevy-inspector-egui = "0.18.0"
 bevy_mod_debugdump = "0.7.0"
@@ -54,7 +53,6 @@ wgpu = { version = "0.15.0" }
 # wgpu-hal = {version = "0.15.2",features = ["gles"]}
 
 ### AI ###
-
 chatgpt_rs = { version = "1.1.1", features = ["streams"] }
 
 ### utility ###
@@ -104,6 +102,12 @@ extend = "1.1.2"
 
 ### esp ###
 wasmi = "0.20.0"
+
+### server ###
+axum = "0.6.19"
+tower = "0.4.13"
+tower-http = { version = "0.4.3", features = ["fs"] }
+tower-livereload = "0.8.0"
 
 ### wasm ###
 js-sys = "0.3.63"
