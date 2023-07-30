@@ -37,7 +37,7 @@ pub fn run_for_crate_folder(path: PathBuf) {
 }
 
 pub fn create_mod_text(path: &PathBuf) -> String {
-	let parent_is_underscore = parent_ends_with_underscore(&path);
+	let treat_as_mod = parent_ends_with_underscore(&path);
 
 	fs::read_dir(&path)
 		.unwrap()
@@ -50,8 +50,8 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 		.map(|p| {
 			let stem = p.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
-			let mut is_mod = p.is_dir() || parent_is_underscore;
-			if filename_starts_with_underscore(&p) {
+			let mut is_mod = p.is_dir() || treat_as_mod;
+			if !treat_as_mod && filename_starts_with_underscore(&p) {
 				is_mod = !is_mod;
 			}
 			if is_mod {
