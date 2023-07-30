@@ -1,4 +1,4 @@
-use forky_fs::FsWatcher;
+// use forky_fs::FsWatcher;
 use futures::Future;
 use std::pin::Pin;
 use std::time::Duration;
@@ -12,12 +12,10 @@ pub struct Server {
 	pub shutdown: Pin<Box<dyn Future<Output = ()>>>,
 }
 
-impl Server{
-
-	pub fn dir_watch_shutdown(dir:&str){
-		// FsWatcher::default().
-
-	}
+impl Server {
+	// pub fn dir_watch_shutdown(dir: &str) {
+	// 	// FsWatcher::default().
+	// }
 }
 
 impl Default for Server {

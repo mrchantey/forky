@@ -21,7 +21,7 @@ impl Subcommand for ServerCommand {
 		// )
 	}
 
-	fn run(&self, args: &clap::ArgMatches) -> Result<()> {
+	fn run(&self, _args: &clap::ArgMatches) -> Result<()> {
 		// let dir = *args.get_one::<&str>("dir").unwrap_or(&"html");
 		// let watches = args
 		// 	.get_many::<String>("watch")

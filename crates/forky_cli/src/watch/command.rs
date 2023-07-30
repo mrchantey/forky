@@ -30,6 +30,13 @@ impl Subcommand for WatchCommand {
 					.long("ignore")
 					.action(ArgAction::Append),
 			)
+			.arg(
+				Arg::new("block")
+					.required(false)
+					.short('b')
+					.long("block")
+					.action(ArgAction::SetTrue),
+			)
 	}
 
 	fn run(&self, args: &clap::ArgMatches) -> Result<()> {
@@ -49,11 +56,15 @@ impl Subcommand for WatchCommand {
 			.map(|s| s.to_str())
 			.collect::<Vec<_>>();
 
-		// println!("watch\ncommand:{:?}", cmd);
-		FsWatcher::default()
-			// .with_dont_clear()
+		let watcher = FsWatcher::default()
 			.with_watches(watches)
-			.with_ignores(ignores)
-			.watch(|_| spawn_command(&cmd))
+			.with_ignores(ignores);
+
+		if args.get_flag("block") {
+			watcher.block()?;
+			spawn_command(&cmd)
+		} else {
+			watcher.watch(|_| spawn_command(&cmd))
+		}
 	}
 }

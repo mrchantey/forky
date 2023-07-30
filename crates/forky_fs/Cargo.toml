@@ -19,6 +19,8 @@ notify = { workspace = true }
 notify-debouncer-full = { workspace = true }
 clap = { workspace = true }
 anyhow = { workspace = true }
+## async
+futures = { workspace = true }
 
 [target.'cfg(windows)'.dev-dependencies]
 sweet = { workspace = true }

@@ -1,9 +1,15 @@
 use crate::terminal;
 use anyhow::Result;
 use forky_core::*;
+use futures::SinkExt;
+use futures::StreamExt;
+use notify::Config;
+use notify::Event;
+use notify::RecommendedWatcher;
+use notify::RecursiveMode;
+use notify::Watcher;
 use notify::*;
 use notify_debouncer_full::new_debouncer;
-use notify_debouncer_full::notify::Watcher;
 use notify_debouncer_full::DebouncedEvent;
 use std::path::Path;
 use std::path::PathBuf;
@@ -11,6 +17,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 use std::sync::MutexGuard;
 use std::time::Duration;
+use std::time::Instant;
 
 #[derive(Debug)]
 pub struct FsWatcher {
@@ -37,7 +44,7 @@ impl Default for FsWatcher {
 			log_changed_file: true,
 			once_per_tick: true,
 			path: String::from("./"),
-			interval: Duration::from_millis(10),
+			interval: Duration::from_secs(1),
 			watches: Vec::new(),
 			ignores: Vec::new(),
 		}
@@ -112,77 +119,146 @@ impl FsWatcher {
 		self.mutex.as_ref().map(|m| m.lock().unwrap())
 	}
 
+	fn handle_rx(
+		&self,
+		res: Result<Event, Error>,
+		(start, last_run): &mut (Instant, Instant),
+		on_change: impl Fn(&str) -> Result<()>,
+	) -> Result<()> {
+		let now = Instant::now();
+		let last_elapsed = now.duration_since(*last_run);
+		if last_elapsed < self.interval {
+			return Ok(());
+		}
+
+		match res {
+			Ok(e) => {
+				let _mutex = self.lock();
+				let last_run2 = last_run;
+				let start_elapsed = now.duration_since(*start).as_secs_f32();
+				e.paths
+					.iter()
+					.filter(|path| self.passes(&path))
+					.take(if self.once_per_tick { 1 } else { usize::MAX })
+					.map(|path| {
+						self.prep_terminal();
+						if self.log_changed_file {
+							println!(
+								"{:.2}: {}\n",
+								start_elapsed,
+								path.file_name().unwrap().to_str().unwrap()
+							)
+						}
+						on_change(path.to_str().ok()?)?;
+						// now after on_change in case its long
+						*last_run2 = Instant::now();
+						Ok(())
+					})
+					.collect::<Result<()>>()?;
+			}
+			Err(e) => println!("watch error: {:?}", e),
+		}
+		Ok(())
+	}
+
+	pub fn block(&self) -> Result<()> {
+		let (_watcher, rx) = self.watcher()?;
+		let mut timers = timers();
+
+		for res in rx {
+			self.handle_rx(res, &mut timers, |_| Ok(()))?;
+			return Ok(());
+		}
+		Ok(())
+	}
+	pub async fn block_async(&self) -> Result<()> {
+		let (_watcher, mut rx) = self.watcher_async()?;
+		let mut timers = timers();
+
+		while let Some(res) = rx.next().await {
+			self.handle_rx(res, &mut timers, |_| Ok(()))?;
+			return Ok(());
+		}
+		Ok(())
+	}
+
 	pub fn watch(&self, on_change: impl Fn(&str) -> Result<()>) -> Result<()> {
+		self.try_run_on_start(&on_change)?;
+		let (_watcher, rx) = self.watcher()?;
+		let mut timers = timers();
+
+		for res in rx {
+			self.handle_rx(res, &mut timers, &on_change)?;
+		}
+		Ok(())
+	}
+	pub async fn watch_async(
+		&self,
+		on_change: impl Fn(&str) -> Result<()>,
+	) -> Result<()> {
+		self.try_run_on_start(&on_change)?;
+		let (_watcher, mut rx) = self.watcher_async()?;
+		let mut timers = timers();
+
+		while let Some(res) = rx.next().await {
+			self.handle_rx(res, &mut timers, &on_change)?;
+		}
+		Ok(())
+	}
+
+	fn try_run_on_start(
+		&self,
+		on_change: impl Fn(&str) -> Result<()>,
+	) -> Result<()> {
 		if self.run_on_start {
 			let _mutex = self.lock();
 			self.prep_terminal();
 			on_change("")?;
 		}
-
-		let (tx, rx) = std::sync::mpsc::channel();
-		let path = Path::new(&self.path);
-		let mut debouncer = new_debouncer(self.interval, None, tx)?;
-		let watcher =
-			debouncer.watcher().watch(path, RecursiveMode::Recursive)?;
-		debouncer.cache().add_root(path, RecursiveMode::Recursive);
-
-		let start = std::time::Instant::now();
-		let mut last_run = start;
-
-		for res in rx {
-			match res {
-				Ok(e) => {
-					let _mutex = self.lock();
-					let last_run2 = last_run;
-					e.iter()
-						.filter(|e| {
-							e.time.duration_since(last_run2) >= self.interval
-						})
-						.flat_map(|e| {
-							e.paths.iter().map(move |p| (p.clone(), e))
-						})
-						.filter(|(path, e)| self.passes(&path))
-						.take(if self.once_per_tick { 1 } else { usize::MAX })
-						.map(|(path, e)| {
-							self.prep_terminal();
-							if self.log_changed_file {
-								println!(
-									"{:.2}: {:?}: {:?}\n",
-									e.time.duration_since(start).as_secs_f32(),
-									e.kind,
-									path.file_name().unwrap()
-								)
-							}
-							on_change(path.to_str().ok()?)?;
-							last_run = std::time::Instant::now();
-							Ok(())
-						})
-						.collect::<Result<()>>()?;
-				}
-				Err(e) => println!("watch error: {:?}", e),
-			}
-		}
 		Ok(())
 	}
-	// pub fn watch_poll(&self, on_change: impl Fn(&PathBuf)) -> Result<()> {
-	// 	let (tx, rx) = std::sync::mpsc::channel();
-	// 	let w_config = Config::default().with_poll_interval(self.interval);
-	// 	let mut watcher = RecommendedWatcher::new(tx, w_config)?;
-	// 	// let mut watcher = PollWatcher::new(tx, config).unwrap();
-	// 	let path = Path::new(config.path.as_str());
-	// 	watcher.watch(path, RecursiveMode::Recursive)?;
 
-	// 	for res in rx {
-	// 		match res {
-	// 			Ok(e) => {
-	// 				e.paths
-	// 					.iter()
-	// 					.filter(|path| self.passes(path))
-	// 					.for_each(|e| on_change(e));
-	// 			}
-	// 			Err(e) => println!("watch error: {:?}", e),
-	// 		}
-	// 	}
-	// 	Ok(())
-	// }
+	fn watcher(
+		&self,
+	) -> Result<(
+		RecommendedWatcher,
+		std::sync::mpsc::Receiver<notify::Result<Event>>,
+	)> {
+		let path = Path::new(&self.path);
+
+		let (tx, rx) = std::sync::mpsc::channel();
+		let mut watcher = RecommendedWatcher::new(tx, Config::default())?;
+		watcher.watch(path, RecursiveMode::Recursive)?;
+
+		Ok((watcher, rx))
+	}
+
+	fn watcher_async(
+		&self,
+	) -> Result<(
+		RecommendedWatcher,
+		futures::channel::mpsc::Receiver<notify::Result<Event>>,
+	)> {
+		let (mut tx, rx) = futures::channel::mpsc::channel(1);
+		let mut watcher = RecommendedWatcher::new(
+			move |res| {
+				futures::executor::block_on(async {
+					tx.send(res).await.unwrap();
+				})
+			},
+			Config::default(),
+		)?;
+		let path = Path::new(&self.path);
+		watcher.watch(path, RecursiveMode::Recursive)?;
+
+
+		Ok((watcher, rx))
+	}
+}
+
+
+fn timers() -> (Instant, Instant) {
+	let start = Instant::now();
+	let last_run = start;
+	(start, last_run)
 }
