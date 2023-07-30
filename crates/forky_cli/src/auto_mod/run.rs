@@ -37,19 +37,20 @@ pub fn run_for_crate_folder(path: PathBuf) {
 }
 
 pub fn create_mod_text(path: &PathBuf) -> String {
-	let parent_is_double_underscore =
-		filename_contains_double_underscore(&path);
+	let parent_is_underscore = parent_ends_with_underscore(&path);
 
 	fs::read_dir(&path)
 		.unwrap()
 		.map(|p| p.unwrap().path())
 		.filter(|p| p.is_dir() || !filename_included(p, IGNORE_FILES))
 		.filter(|p| is_dir_or_extension(p, "rs"))
-		.filter(|p| !parent_ends_with_underscore(p))
+		// .filter(|p| {
+		// 	!parent_ends_with_underscore(p) && !filename_ends_with_underscore(p)
+		// })
 		.map(|p| {
 			let stem = p.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
-			let mut is_mod = p.is_dir() || parent_is_double_underscore;
+			let mut is_mod = p.is_dir() || parent_is_underscore;
 			if filename_starts_with_underscore(&p) {
 				is_mod = !is_mod;
 			}

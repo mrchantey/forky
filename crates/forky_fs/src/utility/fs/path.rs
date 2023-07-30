@@ -16,13 +16,21 @@ pub fn filename_starts_with_underscore(p: &PathBuf) -> bool {
 pub fn filename_ends_with_underscore(p: &PathBuf) -> bool {
 	p.file_name().str().last() == '_'
 }
+pub fn filename_ends_with_double_underscore(p: &PathBuf) -> bool {
+	p.file_name().str().ends_with("__")
+}
+
 pub fn parent_ends_with_underscore(p: &PathBuf) -> bool {
 	match p.parent() {
 		Some(parent) => filename_ends_with_underscore(&parent.to_path_buf()),
 		None => false,
 	}
 }
-
-pub fn filename_contains_double_underscore(p: &PathBuf) -> bool {
-	p.file_name().str().contains("__")
+pub fn parent_ends_with_double_underscore(p: &PathBuf) -> bool {
+	match p.parent() {
+		Some(parent) => {
+			filename_ends_with_double_underscore(&parent.to_path_buf())
+		}
+		None => false,
+	}
 }
