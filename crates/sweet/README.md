@@ -19,15 +19,18 @@ sweet! {
   it "works" {
 		//use regular assertions
 		assert!(true == false);
-		//or
+		//or matchers
 		expect(true).to_be_false()?;
+		expect("some string").not().to_start_with("some")?;
   }
 }
 ```
 
 # Native
 
-Sweet supports running tests natively.
+The Sweet harness has two main adavantages over [default tests](https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html).
+- Suites - Organize your tests into collections
+- Matchers - the `expect` approach provides intuitive matchers and pretty outputs
 
 ## Quickstart
 
@@ -69,6 +72,10 @@ Sweet supports running tests natively.
 
 ## WASM
 
+The wasm test harness has different priorities from [wasm-bindgen-test](https://rustwasm.github.io/wasm-bindgen/wasm-bindgen-test/index.html)
+- UI - Tests are run in a **mostly* isolated iframe (see TODO)
+- Interactive - the runner will list all tests and they can be run at-will in the browser.
+
 ### Quickstart
 
 1. Follow quickstart ^
@@ -95,5 +102,5 @@ Or do, thats ok too. Currently you'll get the prettiest output by using the prov
 - WASM runner inspired by [cypress](https://www.cypress.io/)
 
 ## TODO
+- seperate interactive wasm runner from tests, currently the runner code, css etc is included.
 - catch wasm panics in test, like how wasm-bindgen-test [does it](https://github.com/rustwasm/wasm-bindgen/blob/74bfc1f85ead6a3e0c37a86e5f93df3e692e217a/crates/test/src/rt/mod.rs#L227-L240)
-- seperate wasm runner from tests, currently css etc is all bundled in.
