@@ -16,6 +16,6 @@ impl Subcommand for SweetCommand {
 		terminal::print_forky();
 		println!("sweet");
 		let config = SweetCliConfig::default();
-		run(&config)
+		run(config)
 	}
 }

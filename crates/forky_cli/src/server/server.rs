@@ -8,14 +8,14 @@ pub struct Server {
 	pub dir: String,
 	pub host: String,
 	pub port: u16,
-	// pub shutdown: Pin<Box<dyn Fn() -> dyn Future<Output = ()>>>,
 	pub shutdown: Pin<Box<dyn Future<Output = ()>>>,
 }
 
 impl Server {
-	// pub fn dir_watch_shutdown(dir: &str) {
-	// 	// FsWatcher::default().
-	// }
+	pub fn with_dir(mut self, dir: &str) -> Self {
+		self.dir = dir.to_string();
+		self
+	}
 }
 
 impl Default for Server {

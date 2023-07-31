@@ -21,7 +21,7 @@ impl Server {
 			self.host.as_str()
 		};
 		let addr = format!("http://{host}:{}", self.port);
-		println!("serving at {addr}");
+		println!("serving '{}' at {addr}", self.dir);
 	}
 
 	#[tokio::main]

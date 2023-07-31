@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <script type="module">
-	import init, * as mod from './wasm/bindgen.js'
+	import init, * as mod from './bindgen.js'
 	window._sweet_wasm = mod
 	init()
 		.catch((error) => {

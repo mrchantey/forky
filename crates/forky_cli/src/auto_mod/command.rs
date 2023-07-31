@@ -9,6 +9,7 @@ fn watcher() -> FsWatcher {
 	FsWatcher::default()
 		.with_watch("**/*.rs")
 		.with_ignore("{justfile,.gitignore,target,html}")
+		//i think you can remove all except target, im debouncing already
 		.with_ignore("**/*_g.rs")
 		.with_ignore("**/mod.rs")
 }
