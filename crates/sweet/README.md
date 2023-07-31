@@ -78,7 +78,7 @@ The wasm test harness has different priorities from [wasm-bindgen-test](https://
 
 ### Quickstart
 
-1. Follow quickstart ^
+1. Follow native quickstart
 2. install the cli
    - `cargo install forky_cli`
 3. `forky_cli sweet`
