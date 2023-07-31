@@ -19,7 +19,7 @@ use std::sync::MutexGuard;
 use std::time::Duration;
 use std::time::Instant;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct FsWatcher {
 	pub path: String,
 	pub interval: Duration,

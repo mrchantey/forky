@@ -1,35 +1,18 @@
+use super::*;
 use crate::server::Server;
 use anyhow::Result;
 use forky_core::OptionTExt;
-use forky_core::PathX;
 use forky_fs::fs::copy_recursive;
 use forky_fs::process::spawn_command;
 use forky_fs::FsWatcher;
 use forky_fs::*;
-use std::fmt::Display;
+use futures::Future;
 use std::path::Path;
+use std::pin::Pin;
 
 const SRC_HTML_DIR: &str = "html___";
 const DST_HTML_DIR: &str = "target/sweet";
 const DST_CARGO_DIR: &str = "target/sweet-tmp";
-
-#[derive(Debug, Clone)]
-pub struct SweetCliConfig {
-	pub package: Option<String>,
-}
-impl Default for SweetCliConfig {
-	fn default() -> Self { Self { package: None } }
-}
-
-impl Display for SweetCliConfig {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		if let Some(package) = &self.package {
-			write!(f, "package: {package}")?;
-		}
-		Ok(())
-	}
-}
-
 
 pub fn run(config: SweetCliConfig) -> Result<()> {
 	copy_html()?;
@@ -37,33 +20,31 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 
 	let port = 7777;
 
-	let handle_build =
-		std::thread::spawn(move || {
-			FsWatcher::default().with_watch("**/*.rs").watch(|_| {
-				println!("building..\n{config}\n");
-				cargo_run(&config)?;
-				wasm_bingen(&config)?;
-				println!("\nbuild succeeded!\nServer running at http://127.0.0.1:{port}");
-				Ok(())
-			})
-		});
+	let shutdown = move || -> Pin<Box<dyn Future<Output = ()>>> {
+		Box::pin(async move {
+			FsWatcher::default()
+				.with_watch("**/*.rs")
+				.block_async()
+				.await
+				.unwrap();
+		})
+	};
 
-	let handle_serve = std::thread::spawn(move || -> Result<()> {
-		let _server = Server {
+	loop {
+		println!("building..\n{config}\n");
+		cargo_run(&config)?;
+		wasm_bingen(&config)?;
+		println!(
+			"\nbuild succeeded!\nServer running at http://127.0.0.1:{port}"
+		);
+		Server {
 			port,
 			quiet: true,
 			dir: DST_HTML_DIR.to_string(),
 			..Default::default()
 		}
-		.serve_forever()?;
-		Ok(())
-	});
-
-	//creates race condition if all files arent copied at exactly the same time
-	handle_build.join().unwrap()?;
-	handle_serve.join().unwrap()?;
-
-	Ok(())
+		.serve_with_shutdown(shutdown())?;
+	}
 }
 
 fn cargo_run(config: &SweetCliConfig) -> Result<()> {

@@ -40,9 +40,25 @@ impl Server {
 			self.serve()?;
 		}
 	}
+	pub fn serve_forever_with_shutdown(
+		&self,
+		shutdown: impl Fn() -> Pin<Box<dyn Future<Output = ()>>>,
+	) -> Result<()> {
+		loop {
+			self.serve_with_shutdown(shutdown())?;
+		}
+	}
+	pub fn serve(&self) -> Result<()> {
+		loop {
+			self.serve_with_shutdown(self.get_shutdown())?;
+		}
+	}
 
 	#[tokio::main]
-	pub async fn serve(&self) -> Result<()> {
+	pub async fn serve_with_shutdown(
+		&self,
+		shutdown: impl Future<Output = ()>,
+	) -> Result<()> {
 		let app = Router::new()
 			.nest_service("/", ServeDir::new(self.dir.as_str()))
 			.layer(LiveReloadLayer::new());
@@ -51,7 +67,7 @@ impl Server {
 		let addr = format!("{}:{}", self.host, self.port);
 		axum::Server::bind(&addr.parse()?)
 			.serve(app.into_make_service())
-			.with_graceful_shutdown(self.get_shutdown())
+			.with_graceful_shutdown(shutdown)
 			.await?;
 		Ok(())
 	}
