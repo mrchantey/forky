@@ -91,11 +91,9 @@ Sweet supports running tests natively.
 Or do, thats ok too. Currently you'll get the prettiest output by using the provided matchers that return results intstead of panicing, *especially* in wasm as `panic=unwind` isnt yet supported for wasm.
 
 ## Reference
-
-
 - Matchers inspired by [jest](https://jestjs.io/)
 - WASM runner inspired by [cypress](https://www.cypress.io/)
 
 ## TODO
-- prettier wasm panics
+- catch wasm panics in test, like how wasm-bindgen-test [does it](https://github.com/rustwasm/wasm-bindgen/blob/74bfc1f85ead6a3e0c37a86e5f93df3e692e217a/crates/test/src/rt/mod.rs#L227-L240)
 - seperate wasm runner from tests, currently css etc is all bundled in.
