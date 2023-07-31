@@ -102,5 +102,7 @@ Or do, thats ok too. Currently you'll get the prettiest output by using the prov
 - WASM runner inspired by [cypress](https://www.cypress.io/)
 
 ## TODO
-- seperate interactive wasm runner from tests, currently the runner code, css etc is included.
-- catch wasm panics in test, like how wasm-bindgen-test [does it](https://github.com/rustwasm/wasm-bindgen/blob/74bfc1f85ead6a3e0c37a86e5f93df3e692e217a/crates/test/src/rt/mod.rs#L227-L240)
+- wasm
+	- node & headless support
+	- seperate interactive runner from tests, currently the runner code, css etc is included.
+	- catch panics in test, like how wasm-bindgen-test [does it](https://github.com/rustwasm/wasm-bindgen/blob/74bfc1f85ead6a3e0c37a86e5f93df3e692e217a/crates/test/src/rt/mod.rs#L227-L240)
