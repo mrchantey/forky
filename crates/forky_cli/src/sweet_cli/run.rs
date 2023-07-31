@@ -25,7 +25,6 @@ impl Default for SweetCliConfig {
 
 pub fn run(config: SweetCliConfig) -> Result<()> {
 	copy_html()?;
-	//loop
 	let handle_build = std::thread::spawn(move || {
 		FsWatcher::default().with_watch("**/*.rs").watch(|_| {
 			cargo_run(&config)?;
@@ -35,7 +34,7 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 	});
 
 	let handle_serve = std::thread::spawn(move || {
-		Server::serve_forever(|| Server::default().with_dir(DST_HTML_DIR))
+		Server::default().with_dir(DST_HTML_DIR).serve_forever()
 	});
 
 	handle_build.join().unwrap()?;

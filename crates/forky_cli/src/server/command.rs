@@ -16,6 +16,6 @@ impl Subcommand for ServerCommand {
 
 	fn run(&self, args: &clap::ArgMatches) -> Result<()> {
 		let dir = args.get_one::<String>("dir").ok()?;
-		Server::serve_forever(|| Server::default().with_dir(dir))
+		Server::default().with_dir(dir).serve_forever()
 	}
 }
