@@ -1,9 +1,11 @@
 use crate::server::Server;
 use anyhow::Result;
 use forky_core::OptionTExt;
+use forky_core::PathX;
 use forky_fs::fs::copy_recursive;
 use forky_fs::process::spawn_command;
 use forky_fs::FsWatcher;
+use forky_fs::*;
 use std::fmt::Display;
 use std::path::Path;
 
@@ -31,6 +33,8 @@ impl Display for SweetCliConfig {
 
 pub fn run(config: SweetCliConfig) -> Result<()> {
 	copy_html()?;
+	std::fs::create_dir_all(DST_CARGO_DIR)?;
+
 	let port = 7777;
 
 	let handle_build =
@@ -55,8 +59,7 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 		Ok(())
 	});
 
-	//TODO is this ok?
-	//may create small race condition if all files arent copied at exactly the same time
+	//creates race condition if all files arent copied at exactly the same time
 	handle_build.join().unwrap()?;
 	handle_serve.join().unwrap()?;
 
@@ -128,8 +131,15 @@ pub fn wasm_bingen(_config: &SweetCliConfig) -> Result<()> {
 }
 
 fn copy_html() -> Result<()> {
-	let src = Path::new(&file!()).parent().unwrap().join(SRC_HTML_DIR);
+	//TODO this may break when publishing, probably use file_abs!() instead
+	let file = file_abs_workspace!();
+	let dir = file.parent().unwrap();
+	let src = dir.join(SRC_HTML_DIR);
+	if !src.exists() {
+		panic!("src doesnt exist: {:?}", src);
+	}
 	let dst = Path::new(&DST_HTML_DIR);
+	println!("copying files\nsrc: {:?}\ndst: {:?}", src, dst);
 	copy_recursive(src, dst)?;
 
 	Ok(())

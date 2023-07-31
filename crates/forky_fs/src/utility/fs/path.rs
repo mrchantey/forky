@@ -39,3 +39,9 @@ pub fn parent_ends_with_double_underscore(p: &PathBuf) -> bool {
 		None => false,
 	}
 }
+pub fn pop_first_two_path_components(path: &str) -> PathBuf {
+	let mut components = Path::new(path).components();
+	components.next();
+	components.next();
+	components.as_path().to_path_buf()
+}
