@@ -75,7 +75,6 @@ pub fn copy_recursive(
 ) -> Result<()> {
 	fs::create_dir_all(&destination)?;
 	for entry in fs::read_dir(source)? {
-		println!("ok");
 		let entry = entry?;
 		let filetype = entry.file_type()?;
 		if filetype.is_dir() {

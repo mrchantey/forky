@@ -31,7 +31,6 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 	};
 
 	loop {
-		println!("building..\n{config}\n");
 		cargo_run(&config)?;
 		wasm_bingen(&config)?;
 		println!(
