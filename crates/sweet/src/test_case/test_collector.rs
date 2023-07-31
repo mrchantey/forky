@@ -50,6 +50,7 @@ where
 		let to_run = self.suites_to_run(config);
 		let mut results = Vec::with_capacity(to_run.len());
 		for suite in to_run {
+
 			let result = suite
 				.run::<Logger, TestSuiteRunnerSeries<Case>>(config)
 				.await;

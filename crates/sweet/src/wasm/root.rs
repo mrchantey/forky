@@ -2,7 +2,6 @@ use super::*;
 use forky_web::*;
 use leptos::*;
 
-pub fn interactive_mode() -> bool { !SearchParams::get_flag("run") }
 
 pub fn get_file() -> Option<String> { SearchParams::get("file") }
 
@@ -17,15 +16,10 @@ pub fn Root(cx: Scope) -> impl IntoView {
 		}
 	});
 
-	if interactive_mode() {
-		view! {cx,
+	view! {cx,
 		<div class=sweet_style::SWEET_ROOT>
 			<SuitesView set_file/>
 			<RunnerContainer file/>
 		</div>
-		}
-		.into_view(cx)
-	} else {
-		view! {cx, <Runner/>}.into_view(cx)
 	}
 }

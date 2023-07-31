@@ -12,7 +12,8 @@ pub struct LogBuffer {
 }
 
 impl LogBuffer {
-	pub fn new_err() -> Self { Self::new("error") }
+	// this breaks panics
+	// pub fn new_err() -> Self { Self::new("error") }
 	pub fn new_log() -> Self { Self::new("log") }
 	pub fn get_log(&self) -> std::cell::RefMut<'_, String> {
 		self.log.borrow_mut()

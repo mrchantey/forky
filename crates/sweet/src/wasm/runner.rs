@@ -42,9 +42,3 @@ pub fn RunnerContainer(
 		}
 	}
 }
-
-#[component]
-pub fn Runner(_cx: Scope) -> impl IntoView {
-	run_tests_wasm();
-	""
-}

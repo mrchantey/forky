@@ -1,14 +1,13 @@
 use super::*;
 use crate::*;
+use forky_core::*;
 use forky_web::*;
-use leptos::*;
 use std::time::Duration;
 use web_sys::console;
 
 
 pub fn run_tests_wasm() {
-	spawn_local(async move {
-		//doesnt work?
+	wasm_bindgen_futures::spawn_local(async move {
 		forky_web::set_panic_hook();
 
 		let config = TestRunnerConfig::from_search_params();

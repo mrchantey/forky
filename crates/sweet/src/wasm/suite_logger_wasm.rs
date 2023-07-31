@@ -5,7 +5,7 @@ use forky_web::LogBuffer;
 pub struct SuiteLoggerWasm {
 	pub log: String,
 	pub buffer_log: LogBuffer,
-	pub buffer_err: LogBuffer,
+	// pub buffer_err: LogBuffer,
 }
 
 
@@ -19,7 +19,7 @@ impl SuiteLogger for SuiteLoggerWasm {
 		SuiteLoggerWasm {
 			log: String::from("\n"),
 			buffer_log: LogBuffer::new_log(),
-			buffer_err: LogBuffer::new_err(),
+			// buffer_err: LogBuffer::new_err(),
 		}
 	}
 
