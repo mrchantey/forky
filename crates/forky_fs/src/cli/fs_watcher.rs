@@ -25,8 +25,7 @@ pub struct FsWatcher {
 	pub interval: Duration,
 	// pub debounce: Duration,
 	pub run_on_start: bool,
-	pub clear_on_change: bool,
-	pub log_changed_file: bool,
+	pub quiet: bool,
 	pub once_per_tick: bool,
 	/// glob for watch patterns
 	pub watches: Vec<glob::Pattern>,
@@ -40,8 +39,7 @@ impl Default for FsWatcher {
 		Self {
 			mutex: None,
 			run_on_start: true,
-			clear_on_change: true,
-			log_changed_file: true,
+			quiet: false,
 			once_per_tick: true,
 			path: String::from("./"),
 			interval: Duration::from_secs(1),
@@ -58,8 +56,8 @@ impl FsWatcher {
 		self.path = path;
 		self
 	}
-	pub fn with_dont_clear(mut self) -> Self {
-		self.clear_on_change = false;
+	pub fn with_quiet(mut self, quiet: bool) -> Self {
+		self.quiet = quiet;
 		self
 	}
 
@@ -109,7 +107,7 @@ impl FsWatcher {
 		})
 	}
 	fn prep_terminal(&self) {
-		if self.clear_on_change {
+		if !self.quiet {
 			terminal::clear();
 			terminal::print_forky();
 			println!(
@@ -146,9 +144,9 @@ impl FsWatcher {
 					.take(if self.once_per_tick { 1 } else { usize::MAX })
 					.map(|path| {
 						self.prep_terminal();
-						if self.log_changed_file {
+						if !self.quiet {
 							println!(
-								"{:.2}: {}\n",
+								"{:.2} - file changed: {}\n",
 								start_elapsed,
 								path.file_name().unwrap().to_str().unwrap()
 							)
@@ -160,7 +158,7 @@ impl FsWatcher {
 					})
 					.collect::<Result<()>>()?;
 			}
-			Err(e) => println!("watch error: {:?}", e),
+			Err(e) => eprintln!("watch error: {:?}", e),
 		}
 		Ok(())
 	}
@@ -247,7 +245,9 @@ impl FsWatcher {
 		let mut watcher = RecommendedWatcher::new(
 			move |res| {
 				futures::executor::block_on(async {
-					tx.send(res).await.unwrap();
+					if let Err(err) = tx.send(res).await {
+						eprintln!("{:?}", err);
+					}
 				})
 			},
 			Config::default(),

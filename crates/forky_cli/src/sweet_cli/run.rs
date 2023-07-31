@@ -4,6 +4,7 @@ use forky_core::OptionTExt;
 use forky_fs::fs::copy_recursive;
 use forky_fs::process::spawn_command;
 use forky_fs::FsWatcher;
+use std::fmt::Display;
 use std::path::Path;
 
 const SRC_HTML_DIR: &str = "html___";
@@ -12,31 +13,50 @@ const DST_CARGO_DIR: &str = "target/sweet-tmp";
 
 #[derive(Debug, Clone)]
 pub struct SweetCliConfig {
-	pub bin_name: String,
+	pub package: Option<String>,
 }
 impl Default for SweetCliConfig {
-	fn default() -> Self {
-		Self {
-			bin_name: "test".to_string(),
+	fn default() -> Self { Self { package: None } }
+}
+
+impl Display for SweetCliConfig {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		if let Some(package) = &self.package {
+			write!(f, "package: {package}")?;
 		}
+		Ok(())
 	}
 }
 
 
 pub fn run(config: SweetCliConfig) -> Result<()> {
 	copy_html()?;
-	let handle_build = std::thread::spawn(move || {
-		FsWatcher::default().with_watch("**/*.rs").watch(|_| {
-			cargo_run(&config)?;
-			wasm_bingen(&config)?;
-			Ok(())
-		})
+	let port = 7777;
+
+	let handle_build =
+		std::thread::spawn(move || {
+			FsWatcher::default().with_watch("**/*.rs").watch(|_| {
+				println!("building..\n{config}\n");
+				cargo_run(&config)?;
+				wasm_bingen(&config)?;
+				println!("\nbuild succeeded!\nServer running at http://127.0.0.1:{port}");
+				Ok(())
+			})
+		});
+
+	let handle_serve = std::thread::spawn(move || -> Result<()> {
+		let _server = Server {
+			port,
+			quiet: true,
+			dir: DST_HTML_DIR.to_string(),
+			..Default::default()
+		}
+		.serve_forever()?;
+		Ok(())
 	});
 
-	let handle_serve = std::thread::spawn(move || {
-		Server::default().with_dir(DST_HTML_DIR).serve_forever()
-	});
-
+	//TODO is this ok?
+	//may create small race condition if all files arent copied at exactly the same time
 	handle_build.join().unwrap()?;
 	handle_serve.join().unwrap()?;
 
@@ -44,27 +64,46 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 }
 
 fn cargo_run(config: &SweetCliConfig) -> Result<()> {
-	// let tmp_out = DST_CARGO_DIR.to_string() + "/temp";
-	println!("running cargo rustc");
-	let cmd = vec![
+	let tmp_out = DST_CARGO_DIR.to_string() + "/temp";
+	println!("running cargo build");
+
+	let mut cmd = vec![
 		"cargo",
-		"build",
-		// "rustc",
-		"-p",
+		"rustc",
+		"--test",
 		"sweet",
-		"--example",
-		&config.bin_name,
 		"--release",
 		"--target",
 		"wasm32-unknown-unknown",
-		"-Z unstable-options",
-		"--out-dir",
-		&DST_CARGO_DIR,
-		// "--",
-		// "-o",
-		// &tmp_out,
-		// DST_HTML_DIR,
 	];
+	if let Some(package) = &config.package {
+		cmd.push("-p");
+		cmd.push(package);
+	}
+	cmd.extend(vec![
+		"--",
+		"-o",
+		&tmp_out,
+		// "target/sweet-foo",
+		"-Z",
+		"unstable-options",
+	]);
+
+	// let cmd = vec![
+	// 	"cargo",
+	// 	"rustc",
+	// 	"-p",
+	// 	"sweet",
+	// 	// "--example",
+	// 	// &config.bin_name,
+	// 	"-Z unstable-options",
+	// 	"--out-dir",
+	// 	&DST_CARGO_DIR,
+	// 	// "--",
+	// 	// "-o",
+	// 	// &tmp_out,
+	// 	// DST_HTML_DIR,
+	// ];
 	spawn_command(&cmd)?;
 	Ok(())
 }
@@ -72,7 +111,7 @@ fn cargo_run(config: &SweetCliConfig) -> Result<()> {
 pub fn wasm_bingen(_config: &SweetCliConfig) -> Result<()> {
 	let tmp_file = get_rustc_wasm()?;
 
-	println!("running wasm bindgen for {tmp_file}");
+	println!("running wasm bindgen for {tmp_file}..");
 	let cmd = vec![
 		"wasm-bindgen",
 		"--out-dir",
@@ -104,3 +143,31 @@ fn get_rustc_wasm() -> Result<String> {
 		.ok()
 		.map(|e| e.path().to_str().unwrap().to_string())
 }
+
+
+/*
+
+	let cmd = vec![
+		"cargo",
+		"build",
+		"rustc",
+		"-p",
+		"sweet",
+		"--test",
+		"sweet",
+		// "--example",
+		// &config.bin_name,
+		"--release",
+		"--target",
+		"wasm32-unknown-unknown",
+		"-Z unstable-options",
+		"--out-dir",
+		&DST_CARGO_DIR,
+		// "--",
+		// "-o",
+		// &tmp_out,
+		// DST_HTML_DIR,
+	];
+
+
+*/

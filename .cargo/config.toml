@@ -12,18 +12,16 @@ rustflags = "-A incomplete_features"
 #  "--cfg","web_sys_unstable_apis"
 # ]
 
-[target.wasm32-unknown-unknown]
-runner = "wasm-server-runner"
-rustflags = [
- "--cfg","web_sys_unstable_apis",
-]
+# [target.wasm32-unknown-unknown]
+# runner = "wasm-server-runner"
+# rustflags = [
+#  "--cfg","web_sys_unstable_apis",
+# ]
 ### ESP32 ###
 
 [target.riscv32imc-unknown-none-elf]
 runner = "espflash --monitor"
-rustflags = [
-  "-C", "link-arg=-Tlinkall.x"
-]
+rustflags = ["-C", "link-arg=-Tlinkall.x"]
 
 # for testing: you can specify this target to see atomic emulation in action
 [target.riscv32imac-unknown-none-elf]

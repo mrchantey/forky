@@ -12,11 +12,27 @@ pub struct Server {
 	pub dir: String,
 	pub host: String,
 	pub port: u16,
+	pub quiet: bool,
+}
+
+impl Default for Server {
+	fn default() -> Self {
+		Self {
+			dir: "html".to_string(),
+			host: "0.0.0.0".to_string(),
+			port: 3030,
+			quiet: false,
+		}
+	}
 }
 
 impl Server {
 	pub fn with_dir(mut self, dir: &str) -> Self {
 		self.dir = dir.to_string();
+		self
+	}
+	pub fn quietly(mut self) -> Self {
+		self.quiet = true;
 		self
 	}
 	pub fn serve_forever(&self) -> Result<()> {
@@ -42,13 +58,21 @@ impl Server {
 
 	fn get_shutdown(&self) -> Pin<Box<dyn Future<Output = ()>>> {
 		let dir = self.dir.clone();
-		let shutdown = async || {
-			FsWatcher::new().with_path(dir).block_async().await.unwrap();
-		};
-		Box::pin(shutdown())
+		let quiet = self.quiet;
+		Box::pin(async move {
+			FsWatcher::new()
+				.with_path(dir)
+				.with_quiet(quiet)
+				.block_async()
+				.await
+				.unwrap();
+		})
 	}
 
 	fn print_start(&self) {
+		if self.quiet {
+			return;
+		}
 		terminal::clear();
 		terminal::print_forky();
 		let host = if self.host == "0.0.0.0" {
@@ -58,14 +82,5 @@ impl Server {
 		};
 		let addr = format!("http://{host}:{}", self.port);
 		println!("serving '{}' at {addr}", self.dir);
-	}
-}
-
-impl Default for Server {
-	fn default() -> Self {
-		let dir = "html".to_string();
-		let host = "0.0.0.0".to_string();
-		let port = 3030;
-		Self { dir, host, port }
 	}
 }
