@@ -12,13 +12,21 @@ repository = { workspace = true }
 
 [dependencies]
 forky_core = { workspace = true }
+## utils
+glob = { workspace = true }
+anyhow = { workspace = true }
+extend = { workspace = true }
+
+## terminal
 crossterm = { workspace = true }
 gag = { workspace = true }
-glob = { workspace = true }
+
+## cli
+clap = { workspace = true }
+
+## fs
 notify = { workspace = true }
 notify-debouncer-full = { workspace = true }
-clap = { workspace = true }
-anyhow = { workspace = true }
 ## async
 futures = { workspace = true }
 

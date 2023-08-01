@@ -3,7 +3,7 @@ use clap::Arg;
 use clap::ArgAction;
 use clap::Command;
 use forky_core::StringX;
-use forky_fs::process::spawn_command;
+use forky_fs::process::spawn_command_blocking;
 use forky_fs::FsWatcher;
 use forky_fs::Subcommand;
 
@@ -63,10 +63,10 @@ impl Subcommand for WatchCommand {
 		if args.get_flag("block") {
 			watcher.block()?;
 			// futures::executor::block_on(watcher.block_async())?;
-			spawn_command(&cmd)
+			spawn_command_blocking(&cmd)
 		} else {
 			// futures::executor::block_on(watcher.watch_async(|_| spawn_command(&cmd)))
-			watcher.watch(|_| spawn_command(&cmd))
+			watcher.watch(|_| spawn_command_blocking(&cmd))
 		}
 	}
 }

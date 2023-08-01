@@ -1,9 +1,17 @@
 use anyhow::Result;
+use forky_core::OptionTExt;
+use futures::lock::Mutex;
+use std::process::Child;
 use std::process::Command;
 use std::process::Output;
 
 /// Run a command and pipe the output to stdio. Returns error only if execution failed, not if it returns error
-pub fn spawn_command(command: &Vec<&str>) -> Result<()> {
+pub fn spawn_command(command: &Vec<&str>) -> Result<Child> {
+	let child = get_command().args(command).spawn()?;
+	Ok(child)
+}
+
+pub fn spawn_command_blocking(command: &Vec<&str>) -> Result<()> {
 	let _ = get_command()
 		.args(command)
 		.stdout(std::process::Stdio::inherit())

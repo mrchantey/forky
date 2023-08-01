@@ -4,11 +4,16 @@ use anyhow::Result;
 use forky_core::OptionTExt;
 use forky_fs::fs::copy_recursive;
 use forky_fs::process::spawn_command;
+use forky_fs::process::spawn_command_blocking;
+use forky_fs::process::ChildExt;
 use forky_fs::FsWatcher;
 use forky_fs::*;
 use futures::Future;
 use std::path::Path;
 use std::pin::Pin;
+use std::sync::Arc;
+use tokio::sync::Mutex;
+// use std::sync::Mutex;
 
 const SRC_HTML_DIR: &str = "html___";
 const DST_HTML_DIR: &str = "target/sweet";
@@ -20,18 +25,37 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 
 	let port = 7777;
 
+
+	//TODO fswatcher interupts build
+	let kill = Arc::new(Mutex::new(()));
+	let kill2 = kill.clone();
+
 	let shutdown = move || -> Pin<Box<dyn Future<Output = ()>>> {
+		let kill2 = kill2.clone();
 		Box::pin(async move {
-			FsWatcher::default()
-				.with_watch("**/*.rs")
-				.block_async()
-				.await
-				.unwrap();
+			let _guard = kill2.lock().await;
+			// FsWatcher::default()
+			// 	.with_watch("**/*.rs")
+			// 	.block_async()
+			// 	.await
+			// 	.unwrap();
 		})
 	};
 
+	let kill_poll = || -> bool { kill.try_lock().is_ok() };
+
 	loop {
-		cargo_run(&config)?;
+		let kill2 = kill.clone();
+		std::thread::spawn(move || -> Result<()> {
+			let kill = kill2.blocking_lock();
+			FsWatcher::default().with_watch("**/*.rs").block()?;
+			drop(kill);
+			Ok(())
+		})
+		.join()
+		.unwrap()?;
+
+		cargo_run(&config, kill_poll)?;
 		wasm_bingen(&config)?;
 		println!(
 			"\nbuild succeeded!\nServer running at http://127.0.0.1:{port}"
@@ -46,7 +70,7 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 	}
 }
 
-fn cargo_run(config: &SweetCliConfig) -> Result<()> {
+fn cargo_run(config: &SweetCliConfig, kill: impl Fn() -> bool) -> Result<()> {
 	let tmp_out = DST_CARGO_DIR.to_string() + "/temp";
 	println!("running cargo build");
 
@@ -72,22 +96,9 @@ fn cargo_run(config: &SweetCliConfig) -> Result<()> {
 		"unstable-options",
 	]);
 
-	// let cmd = vec![
-	// 	"cargo",
-	// 	"rustc",
-	// 	"-p",
-	// 	"sweet",
-	// 	// "--example",
-	// 	// &config.bin_name,
-	// 	"-Z unstable-options",
-	// 	"--out-dir",
-	// 	&DST_CARGO_DIR,
-	// 	// "--",
-	// 	// "-o",
-	// 	// &tmp_out,
-	// 	// DST_HTML_DIR,
-	// ];
-	spawn_command(&cmd)?;
+	let child = spawn_command(&cmd)?;
+	child.wait_killable(kill)?;
+	// spawn_command_blocking(&cmd)?;
 	Ok(())
 }
 
@@ -106,7 +117,7 @@ pub fn wasm_bingen(_config: &SweetCliConfig) -> Result<()> {
 		"--no-typescript",
 		&tmp_file, // "./target/wasm32-unknown-unknown/release/examples/test.wasm",
 	];
-	spawn_command(&cmd)?;
+	spawn_command_blocking(&cmd)?;
 	Ok(())
 }
 
