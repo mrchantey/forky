@@ -8,13 +8,12 @@ use forky_fs::process::ChildExt;
 use forky_fs::process::ChildProcessStatus;
 use forky_fs::FsWatcher;
 use forky_fs::*;
-use futures::Future;
 use std::path::Path;
-use std::pin::Pin;
 use std::process::Child;
 use std::sync::Arc;
 use std::time::Duration;
 use tokio::sync::Mutex;
+use tower_livereload::LiveReloadLayer;
 // use std::sync::Mutex;
 
 const SRC_HTML_DIR: &str = "html___";
@@ -28,26 +27,30 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 	let port = 7777;
 
 
-	//TODO fswatcher interupts build
+	let livereload = LiveReloadLayer::new();
+	let reload = livereload.reloader();
+
+	let _server_handle = std::thread::spawn(move || -> Result<()> {
+		let server = Server {
+			port,
+			quiet: true,
+			dir: DST_HTML_DIR.to_string(),
+			..Default::default()
+		};
+		server.serve_with_reload(livereload)
+	});
+
+	// let shutdown = move || -> Pin<Box<dyn Future<Output = ()>>> {
+	// 	let kill2 = kill2.clone();
+	// 	Box::pin(async move {
+	// 		let _guard = kill2.lock().await;
+	// 	})
+	// };
+
 	let kill = Arc::new(Mutex::new(()));
-	let kill2 = kill.clone();
-
-	let shutdown = move || -> Pin<Box<dyn Future<Output = ()>>> {
-		let kill2 = kill2.clone();
-		Box::pin(async move {
-			let _guard = kill2.lock().await;
-		})
-	};
-
 	let kill2 = kill.clone();
 	let kill_unlocked = move || -> bool { kill2.try_lock().is_ok() };
 
-	let server = Server {
-		port,
-		quiet: true,
-		dir: DST_HTML_DIR.to_string(),
-		..Default::default()
-	};
 
 	loop {
 		let kill2 = kill.clone();
@@ -82,11 +85,13 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 		println!(
 			"\nbuild succeeded!\nServer running at http://127.0.0.1:{port}"
 		);
-		if let Err(err) = server.serve_with_shutdown(shutdown()) {
-			eprintln!("sweet cli: server failed: {}", err);
-		}
+		// if let Err(err) = server.serve_with_shutdown(shutdown()) {
+		// 	eprintln!("sweet cli: server failed: {}", err);
+		// }
+		reload.reload();
 		change_listener.join().unwrap()?;
 	}
+	// server_handle.join().unwrap()?;
 }
 
 fn cargo_run(config: &SweetCliConfig) -> Result<Child> {
