@@ -126,11 +126,12 @@ impl FsWatcher {
 		res: Result<Event, Error>,
 		(start, last_run): &mut (Instant, Instant),
 		on_change: impl Fn(&str) -> Result<()>,
-	) -> Result<()> {
+	) -> Result<bool> {
+		let mut changed = false;
 		let now = Instant::now();
 		let last_elapsed = now.duration_since(*last_run);
 		if last_elapsed < self.interval {
-			return Ok(());
+			return Ok(changed);
 		}
 
 		match res {
@@ -154,13 +155,14 @@ impl FsWatcher {
 						on_change(path.to_str().ok()?)?;
 						// now after on_change in case its long
 						*last_run2 = Instant::now();
+						changed = true;
 						Ok(())
 					})
 					.collect::<Result<()>>()?;
 			}
 			Err(e) => eprintln!("watch error: {:?}", e),
 		}
-		Ok(())
+		Ok(changed)
 	}
 
 	pub fn block(&self) -> Result<()> {
@@ -168,8 +170,9 @@ impl FsWatcher {
 		let mut timers = timers();
 
 		for res in rx {
-			self.handle_rx(res, &mut timers, |_| Ok(()))?;
-			return Ok(());
+			if self.handle_rx(res, &mut timers, |_| Ok(()))? {
+				return Ok(());
+			}
 		}
 		Ok(())
 	}
@@ -178,8 +181,9 @@ impl FsWatcher {
 		let mut timers = timers();
 
 		while let Some(res) = rx.next().await {
-			self.handle_rx(res, &mut timers, |_| Ok(()))?;
-			return Ok(());
+			if self.handle_rx(res, &mut timers, |_| Ok(()))? {
+				return Ok(());
+			}
 		}
 		Ok(())
 	}

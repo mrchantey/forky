@@ -4,14 +4,16 @@ use anyhow::Result;
 use forky_core::OptionTExt;
 use forky_fs::fs::copy_recursive;
 use forky_fs::process::spawn_command;
-use forky_fs::process::spawn_command_blocking;
 use forky_fs::process::ChildExt;
+use forky_fs::process::ChildProcessStatus;
 use forky_fs::FsWatcher;
 use forky_fs::*;
 use futures::Future;
 use std::path::Path;
 use std::pin::Pin;
+use std::process::Child;
 use std::sync::Arc;
+use std::time::Duration;
 use tokio::sync::Mutex;
 // use std::sync::Mutex;
 
@@ -34,45 +36,62 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 		let kill2 = kill2.clone();
 		Box::pin(async move {
 			let _guard = kill2.lock().await;
-			// FsWatcher::default()
-			// 	.with_watch("**/*.rs")
-			// 	.block_async()
-			// 	.await
-			// 	.unwrap();
 		})
 	};
 
-	let kill_poll = || -> bool { kill.try_lock().is_ok() };
+	let kill2 = kill.clone();
+	let kill_unlocked = move || -> bool { kill2.try_lock().is_ok() };
+
+	let server = Server {
+		port,
+		quiet: true,
+		dir: DST_HTML_DIR.to_string(),
+		..Default::default()
+	};
 
 	loop {
 		let kill2 = kill.clone();
-		std::thread::spawn(move || -> Result<()> {
-			let kill = kill2.blocking_lock();
+		let change_listener = std::thread::spawn(move || -> Result<()> {
+			let kill_lock = kill2.blocking_lock();
 			FsWatcher::default().with_watch("**/*.rs").block()?;
-			drop(kill);
+			drop(kill_lock);
 			Ok(())
-		})
-		.join()
-		.unwrap()?;
+		});
+		// wait until fswatcher ready
+		while kill_unlocked() {
+			std::thread::sleep(Duration::from_millis(1))
+		}
 
-		cargo_run(&config, kill_poll)?;
-		wasm_bingen(&config)?;
+		match cargo_run(&config)?.wait_killable(kill_unlocked.clone()) {
+			Ok(ChildProcessStatus::ExitSuccess) => {}
+			other => {
+				eprintln!("sweet cli: cargo run failed: {:?}", other);
+				change_listener.join().unwrap()?;
+				continue;
+			}
+		}
+
+		match wasm_bingen(&config)?.wait_killable(kill_unlocked.clone()) {
+			Ok(ChildProcessStatus::ExitSuccess) => {}
+			other => {
+				eprintln!("sweet cli: wasm bindgen failed: {:?}", other);
+				change_listener.join().unwrap()?;
+				continue;
+			}
+		}
 		println!(
 			"\nbuild succeeded!\nServer running at http://127.0.0.1:{port}"
 		);
-		Server {
-			port,
-			quiet: true,
-			dir: DST_HTML_DIR.to_string(),
-			..Default::default()
+		if let Err(err) = server.serve_with_shutdown(shutdown()) {
+			eprintln!("sweet cli: server failed: {}", err);
 		}
-		.serve_with_shutdown(shutdown())?;
+		change_listener.join().unwrap()?;
 	}
 }
 
-fn cargo_run(config: &SweetCliConfig, kill: impl Fn() -> bool) -> Result<()> {
+fn cargo_run(config: &SweetCliConfig) -> Result<Child> {
 	let tmp_out = DST_CARGO_DIR.to_string() + "/temp";
-	println!("running cargo build");
+	println!("🤘 running cargo build");
 
 	let mut cmd = vec![
 		"cargo",
@@ -95,17 +114,13 @@ fn cargo_run(config: &SweetCliConfig, kill: impl Fn() -> bool) -> Result<()> {
 		"-Z",
 		"unstable-options",
 	]);
-
-	let child = spawn_command(&cmd)?;
-	child.wait_killable(kill)?;
-	// spawn_command_blocking(&cmd)?;
-	Ok(())
+	spawn_command(&cmd)
 }
 
-pub fn wasm_bingen(_config: &SweetCliConfig) -> Result<()> {
+pub fn wasm_bingen(_config: &SweetCliConfig) -> Result<Child> {
 	let tmp_file = get_rustc_wasm()?;
 
-	println!("running wasm bindgen for {tmp_file}..");
+	println!("\n🤘 running wasm bindgen for {tmp_file}..");
 	let cmd = vec![
 		"wasm-bindgen",
 		"--out-dir",
@@ -117,8 +132,7 @@ pub fn wasm_bingen(_config: &SweetCliConfig) -> Result<()> {
 		"--no-typescript",
 		&tmp_file, // "./target/wasm32-unknown-unknown/release/examples/test.wasm",
 	];
-	spawn_command_blocking(&cmd)?;
-	Ok(())
+	spawn_command(&cmd)
 }
 
 fn copy_html() -> Result<()> {
@@ -127,7 +141,7 @@ fn copy_html() -> Result<()> {
 	let dir = file.parent().unwrap();
 	let src = dir.join(SRC_HTML_DIR);
 	if !src.exists() {
-		panic!("src doesnt exist: {:?}", src);
+		anyhow::bail!("src doesnt exist: {:?}", src);
 	}
 	let dst = Path::new(&DST_HTML_DIR);
 	println!("copying files\nsrc: {:?}\ndst: {:?}", src, dst);

@@ -1,7 +1,11 @@
 use js_sys::Uint8Array;
-use wasm_bindgen::{JsCast, JsValue};
+use wasm_bindgen::JsCast;
+use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
-use web_sys::{Blob, BlobPropertyBag, HtmlInputElement, Url};
+use web_sys::Blob;
+use web_sys::BlobPropertyBag;
+use web_sys::HtmlInputElement;
+use web_sys::Url;
 
 const TYPE_BIN: &str = "application/octet-stream";
 
