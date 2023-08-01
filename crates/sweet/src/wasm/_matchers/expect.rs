@@ -1,16 +1,12 @@
 use crate::Matcher;
 use anyhow::Result;
-use forky_web::performance_now;
-use forky_web::wait_for_millis;
+use forky_web::*;
 use std::time::Duration;
-use web_sys::HtmlElement;
+use web_sys::*;
 
 pub fn expect_body() -> Matcher<HtmlElement> {
-	let document = web_sys::window().unwrap().document().unwrap();
-	let body = document.body().unwrap();
-	Matcher::new(body)
+	Matcher::new(Document::x_body())
 }
-
 
 pub async fn poll_ok(f: impl Fn() -> Result<()>) -> Result<()> {
 	poll_ok_with_timeout(f, Duration::from_secs(4)).await

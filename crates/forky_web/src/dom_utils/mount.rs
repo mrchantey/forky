@@ -1,5 +1,7 @@
 use super::*;
+use crate::DocumentExt;
 use leptos::*;
+use web_sys::Document;
 
 pub fn mount<F, N>(f: F)
 where
@@ -23,12 +25,5 @@ where
 pub struct Mount;
 
 impl Drop for Mount {
-	fn drop(&mut self) { clear_body() }
-}
-
-fn clear_body() {
-	let body = document_body();
-	while let Some(child) = body.first_child() {
-		body.remove_child(&child).unwrap();
-	}
+	fn drop(&mut self) { Document::x_clear() }
 }

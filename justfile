@@ -26,6 +26,9 @@ fix crate *args:
 fix-all *args:
 	cargo fix --allow-dirty --workspace {{args}}
 
+cli *args:
+	cargo run -p forky_cli {{args}}
+
 run-w *args:
 	just watch 'just run {{args}}'
 

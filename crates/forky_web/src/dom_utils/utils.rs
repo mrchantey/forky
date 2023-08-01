@@ -11,7 +11,3 @@ pub fn set_panic_hook() { console_error_panic_hook::set_once(); }
 pub fn performance_now() -> f64 {
 	window().unwrap().performance().unwrap().now()
 }
-pub fn document_body() -> HtmlElement {
-	let window = window().unwrap();
-	window.document().unwrap().body().unwrap()
-}

@@ -1,18 +1,15 @@
+use crate::DocumentExt;
 use js_sys::Uint8Array;
-use wasm_bindgen::JsCast;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::Blob;
 use web_sys::BlobPropertyBag;
-use web_sys::HtmlInputElement;
+use web_sys::Document;
 use web_sys::Url;
 
 const TYPE_BIN: &str = "application/octet-stream";
 
 pub async fn download_binary(bytes: &[u8]) -> Result<(), JsValue> {
-	let window = web_sys::window().unwrap();
-	let document = window.document().unwrap();
-	let body = document.body().unwrap();
 	let bytes: JsValue = Uint8Array::from(bytes).into();
 	let blob = Blob::new_with_u8_array_sequence_and_options(
 		&bytes,
@@ -20,14 +17,10 @@ pub async fn download_binary(bytes: &[u8]) -> Result<(), JsValue> {
 	)
 	.unwrap();
 	let url = Url::create_object_url_with_blob(&blob).unwrap();
-	let anchor = document
-		.create_element("a")
-		.unwrap()
-		.dyn_into::<web_sys::HtmlAnchorElement>()
-		.unwrap();
+	let anchor = Document::x_create_anchor();
 	anchor.set_attribute("href", &url).unwrap();
 	anchor.set_attribute("download", "file.bin").unwrap();
-	body.append_child(&anchor).unwrap();
+	Document::x_append_child(&anchor);
 	anchor.click();
 	anchor.remove();
 	Url::revoke_object_url(&url).unwrap();
@@ -35,17 +28,14 @@ pub async fn download_binary(bytes: &[u8]) -> Result<(), JsValue> {
 }
 
 pub async fn upload_binary() -> Result<Vec<u8>, JsValue> {
-	let window = web_sys::window().unwrap();
-	let document = window.document().unwrap();
-	let body = document.body().unwrap();
-	let input = document.create_element("input")?;
+	let body = Document::x_body();
+	let input = Document::x_create_input();
 	input.set_attribute("type", "file").unwrap();
 	input.set_attribute("accept", TYPE_BIN).unwrap();
 	input.set_attribute("style", "display:none")?;
 	body.append_child(&input)?;
 	let promise = input
 		.clone()
-		.dyn_into::<HtmlInputElement>()?
 		.files()
 		.unwrap()
 		.get(0)

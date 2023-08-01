@@ -35,5 +35,4 @@
 		"**/assets/*": true,
 		"**.svg": true
 	},
-	"rust-analyzer.showUnlinkedFileNotification": false,
 }
