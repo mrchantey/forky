@@ -149,7 +149,7 @@ impl FsWatcher {
 							println!(
 								"{:.2} - file changed: {}\n",
 								start_elapsed,
-								path.file_name().unwrap().to_str().unwrap()
+								path.to_str().unwrap_or("")
 							)
 						}
 						on_change(path.to_str().ok()?)?;

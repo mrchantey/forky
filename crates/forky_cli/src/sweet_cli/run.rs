@@ -1,7 +1,7 @@
 use super::*;
 use crate::server::Server;
 use anyhow::Result;
-use forky_core::OptionTExt;
+use forky_core::*;
 use forky_fs::fs::copy_recursive;
 use forky_fs::process::spawn_command;
 use forky_fs::process::ChildExt;
@@ -51,7 +51,10 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 		let kill2 = kill.clone();
 		let change_listener = std::thread::spawn(move || -> Result<()> {
 			let kill_lock = kill2.blocking_lock();
-			FsWatcher::default().with_watch("**/*.rs").block()?;
+			FsWatcher::default()
+				.with_watch("**/*.rs")
+				.with_ignore("target/**/*")
+				.block()?;
 			drop(kill_lock);
 			Ok(())
 		});
@@ -87,46 +90,45 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 	}
 }
 
+#[rustfmt::skip]
 fn cargo_run(config: &SweetCliConfig) -> Result<Child> {
+	//TODO ideally this is done once, we need to remove the hash from the output file
+	std::fs::remove_dir_all(DST_CARGO_DIR).ok();
+	std::fs::create_dir_all(DST_CARGO_DIR)?;
+
 	let tmp_out = DST_CARGO_DIR.to_string() + "/temp";
 	println!("🤘 running cargo build");
 
 	let mut cmd = vec![
-		"cargo",
-		"rustc",
-		"--test",
-		"sweet",
+		"cargo", "rustc",
+		"--test", "sweet",
+		"--target", "wasm32-unknown-unknown",
 		"--release",
-		"--target",
-		"wasm32-unknown-unknown",
 	];
+	
 	if let Some(package) = &config.package {
-		cmd.push("-p");
-		cmd.push(package);
+		cmd.extend(vec!["-p", package]);
 	}
+
+	#[rustfmt::skip]
 	cmd.extend(vec![
-		"--",
-		"-o",
-		&tmp_out,
-		// "target/sweet-foo",
-		"-Z",
-		"unstable-options",
+		"--", 
+		"-o", &tmp_out, 
+		"-Z", "unstable-options"
 	]);
 	spawn_command(&cmd)
 }
 
+#[rustfmt::skip]
 pub fn wasm_bingen(_config: &SweetCliConfig) -> Result<Child> {
 	let tmp_file = get_rustc_wasm()?;
 
 	println!("\n🤘 running wasm bindgen for {tmp_file}..");
 	let cmd = vec![
 		"wasm-bindgen",
-		"--out-dir",
-		&DST_HTML_DIR,
-		"--out-name",
-		"bindgen",
-		"--target",
-		"web",
+		"--out-dir", &DST_HTML_DIR,
+		"--out-name", "bindgen",
+		"--target", "web",
 		"--no-typescript",
 		&tmp_file, // "./target/wasm32-unknown-unknown/release/examples/test.wasm",
 	];
@@ -150,11 +152,15 @@ fn copy_html() -> Result<()> {
 
 
 fn get_rustc_wasm() -> Result<String> {
-	std::fs::read_dir(DST_CARGO_DIR)?
+	let file = std::fs::read_dir(DST_CARGO_DIR)?
 		.filter_map(|e| e.ok())
-		.find(|e| e.file_name().to_str().unwrap().ends_with("wasm"))
-		.ok()
-		.map(|e| e.path().to_str().unwrap().to_string())
+		.find(|e| e.file_name().to_str().unwrap().ends_with("wasm"));
+	match file {
+		Some(file) => Ok(file.path().to_str().unwrap().to_string()),
+		None => anyhow::bail!("no wasm file found in {:?}", DST_CARGO_DIR),
+	}
+	// .ok()
+	// .map(|e| e.path().to_str().unwrap().to_string());
 }
 
 

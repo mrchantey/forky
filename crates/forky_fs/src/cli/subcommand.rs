@@ -55,8 +55,11 @@ pub trait Subcommand {
 			match self.run(args) {
 				Ok(_) => {}
 				Err(e) => {
-					//TODO only print help if the error is a unimplemented error
-					self.create_command().print_help()?;
+					if e.to_string()
+						== "No default function or subcommand entered.."
+					{
+						self.create_command().print_help()?;
+					}
 					return Err(e);
 				}
 			}

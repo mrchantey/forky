@@ -5,6 +5,15 @@ use std::fmt::Display;
 pub struct SweetCliConfig {
 	pub package: Option<String>,
 }
+
+
+impl SweetCliConfig {
+	pub fn set_package(&mut self, package: String) -> &mut Self {
+		self.package = Some(package);
+		self
+	}
+}
+
 impl Default for SweetCliConfig {
 	fn default() -> Self { Self { package: None } }
 }
