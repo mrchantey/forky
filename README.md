@@ -1,11 +1,10 @@
 # Forky Rust Utilities
 
-> *At this stage these crates are really experimental, do not use seriously!*
+> *Very early stage warning, do not use seriously!*
 
 Each tool is standalone and can be used independently of the others.
-- [Forky Test](./crates/forky_test/README.md)
 - [Forky CLI](./crates/forky_cli/README.md)
-
+- [Sweet](./crates/sweet/README.md)
 
 ## Development
 

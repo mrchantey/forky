@@ -13,9 +13,6 @@ use std::sync::Arc;
 use std::sync::Mutex;
 use std::time::Duration;
 use tower_livereload::LiveReloadLayer;
-// use std::sync::Mutex;
-
-// const DST_CARGO_DIR: &str = "target/sweet-tmp";
 
 impl SweetCli {
 	pub fn run(&self) -> Result<()> {
@@ -36,9 +33,8 @@ impl SweetCli {
 		let kill2 = kill.clone();
 		let kill_unlocked = move || -> bool { kill2.try_lock().is_ok() };
 
-		// copy html just before wasm-bindgen so runner still works during a new build
-		let mut first_run = true;
 		loop {
+			self.copy_html()?;
 			let kill2 = kill.clone();
 			let change_listener = std::thread::spawn(move || -> Result<()> {
 				let kill_lock = kill2.lock().unwrap();
@@ -61,11 +57,6 @@ impl SweetCli {
 					change_listener.join().unwrap()?;
 					continue;
 				}
-			}
-
-			if first_run {
-				self.copy_html()?;
-				first_run = false;
 			}
 
 			match self.wasm_bingen()?.wait_killable(kill_unlocked.clone()) {

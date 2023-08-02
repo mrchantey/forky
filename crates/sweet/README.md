@@ -1,6 +1,7 @@
 # sweet
-
 Write many tests quickly and cleanly.
+
+> *Very early stage warning, do not use seriously!*
 
 ## Features
 
@@ -9,34 +10,7 @@ Write many tests quickly and cleanly.
 - 🌍 WASM UI tests
 - ☮️ Intuitive matchers
 - 🌈 Pretty output
-
-```rust
-pub use sweet::*;
-
-sweet! {
-  it "works" {
-		// use regular assertions
-		assert!(true == false);
-		// or pretty matchers
-		expect(true).to_be_false()?;
-		expect("some string").not().to_start_with("some")?;
-  }
-}
-```
-
-# Native
-
-The Sweet runner has a couple of advantages over [default tests](https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html).
-- Suites - Organize your tests into collections
-- Matchers - Matchers specific to a type enables a runner to output more intuitive results instead of an opaque `panic!`
-	- ```rs
-		expect("foo").not().to_start_with("bar")
-		//expected: NOT to start with 'bar'
-		//received: 'foo'
-		```
-- Single Binary - The default intergration test approach creates a seperate binary for each test, which ramps up compile times, see [this blog](https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html) for more info.
-
-## Quickstart
+## Quickstart - Native
 
 1. edit `cargo.toml`
 	```toml
@@ -47,65 +21,93 @@ The Sweet runner has a couple of advantages over [default tests](https://doc.rus
 	name = "sweet"
 	path = "test/sweet.rs"
 	```
-2. create file `test/sweet.rs`
+1. create file `test/sweet.rs`
 	```rust
 	#![feature(imported_main)]
 	pub use sweet::*;
 
 	sweet! {
 	  it "works" {
-	    expect(true).to_be_false()?;
+			// use assertions
+			assert!(true == false);
+			// or pretty matchers
+			expect(true).to_be_false()?;
+			expect("some string").not().to_start_with("some")?;
 	  }
 	}
 	```
-3. run `cargo run --example sweet`
+1. run `cargo run --example sweet`
 
-note: we're using `[[example]]` here for compatability with the wasm test runner, but feel free to use `[[test]]` with `harness=false` if only running native tests
-## Features - CLI
-- Run 
-	- `cargo run --example sweet`
-- With watch
+## Quickstart - WASM
+
+1. Follow native quickstart
+1. install the helper cli: `cargo install forky_cli`
+2. add some wasm matchers to your test
+	```rust
+	mount(|cx|view!{cx,<h1>"This is a heading"</h1>});
+	expect_el("h1")?.to_contain_text("This is a heading")?;
+	```
+1. run `forky sweet`
+
+## Features
+
+### Performance
+
+Sweet produces a single binary for each crate. The default rust intergration test runner creates a seperate binary for each test, which ramps up compile times, see [this blog](https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html) for more info.
+
+The wasm runner 
+
+### Args (native)
+- filter by filename: `cargo run --example sweet -- some_dir/my_test`
+- `-w` argument
 	- `cargo watch -q -x 'run --example sweet -- -w'`
 	- Clears terminal on each run
 	- Returns an exit code zero (cleaner output)
-- Specify filename
-	- `cargo run --example sweet -- my_test`
-	- Use forward-slash `/` to specify directories
-		- `cargo run --example sweet -- my_dir/my_test`
 
-## WASM
+### Matchers
+Instead of an opaque `panic!`, matchers provide the runner with enough info to produce a highly descriptive failure:
+```rs
+expect("foobar").not().to_start_with("foo")?;
+/*
+Expected: NOT to start with 'foo'
+Received: foobar
+*/
+```
 
-The wasm test harness has different priorities from [wasm-bindgen-test](https://rustwasm.github.io/wasm-bindgen/wasm-bindgen-test/index.html)
-- UI - Tests are run in a **mostly* isolated iframe (see TODO)
+### Async Matchers
+Lots of web stuff happens at weird times, so we've got helpers like `poll_ok`, which will wait for 4 seconds before failing.
+
+```rs
+let _handle = set_timeout(||{
+	mount(|cx|view!{cx,<div>"hello world!"</div>});
+},Duration::from_millis(100));
+
+poll_ok(||expect_el("div")).await?
+	.to_contain_text("hello world!")?;
+```
+
+### Informative outputs
+- Long running tests show which suite is hanging
+	- ![progress](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/progress.png)
+- Failures are highly descriptive 
+	- ![failure](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/failure.png)
+
+## Misc
+
+### Why use `[[example]]` instead of `[[test]]`
+This makes it easier for the wasm test runner to produce cleaner output, but if you're only running native tests feel free to use `[[test]]` with `harness=false`.
+
+### What about wasm-bindgen-test?
+Sweet has different priorities from [wasm-bindgen-test](https://rustwasm.github.io/wasm-bindgen/wasm-bindgen-test/index.html) in its current state.
 - Interactive - the runner will list all tests and they can be run at-will in the browser.
+- UI - Tests are run in a *mostly* isolated iframe (see TODO)
 
-### Quickstart
-
-1. Follow native quickstart
-2. install the cli
-   - `cargo install forky_cli`
-3. `forky_cli sweet`
-   - or for workspaces `forky_cli sweet -p my_package`
-
-## Features - Summary
-- Pretty Messages
-	- Success
-		- ![success](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/success.png)
-	- In progress
-		- ![progress](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/progress.png)
-	- Failure
-		- ![failure](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/failure.png)
-
-## Dont Panic
-
-Or do, thats ok too. Currently you'll get the prettiest output by using the provided matchers that return results intstead of panicing, *especially* in wasm as `panic=unwind` isnt yet supported for wasm.
-
-## Reference
-- Matchers inspired by [jest](https://jestjs.io/)
-- WASM runner inspired by [cypress](https://www.cypress.io/)
-
-## TODO
+### TODO
 - wasm
 	- node & headless support
 	- seperate interactive runner from tests, currently the runner code, css etc is included.
-	- catch panics in test, like how wasm-bindgen-test [does it](https://github.com/rustwasm/wasm-bindgen/blob/74bfc1f85ead6a3e0c37a86e5f93df3e692e217a/crates/test/src/rt/mod.rs#L227-L240)
+
+### Reference
+- Matchers inspired by [jest](https://jestjs.io/)
+- WASM runner inspired by [cypress](https://www.cypress.io/)
+
