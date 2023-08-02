@@ -1,6 +1,6 @@
 mod command;
 pub use self::command::*;
-mod config;
-pub use self::config::*;
+mod sweet_cli;
+pub use self::sweet_cli::*;
 mod run;
 pub use self::run::*;

@@ -37,9 +37,9 @@ impl Subcommand for SweetCommand {
 		terminal::clear();
 		terminal::print_forky();
 		println!("sweet");
-		let mut config = SweetCliConfig::default();
-		config.package = args.get_one::<String>("package").cloned();
-		config.server.address.secure = args.get_flag("secure");
-		run(config)
+		let mut cli = SweetCli::default();
+		cli.package = args.get_one::<String>("package").cloned();
+		cli.server.address.secure = args.get_flag("secure");
+		cli.run()
 	}
 }

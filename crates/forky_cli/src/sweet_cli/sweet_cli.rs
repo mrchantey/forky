@@ -2,32 +2,20 @@ use crate::server::*;
 use std::fmt::Display;
 
 #[derive(Debug, Clone)]
-pub struct SweetCliConfig {
+pub struct SweetCli {
 	pub package: Option<String>,
 	pub server: Server,
 }
 
 
-impl SweetCliConfig {
+impl SweetCli {
 	pub fn set_package(&mut self, package: String) -> &mut Self {
 		self.package = Some(package);
 		self
 	}
-
-
-
-
-
-
-
-
-
-
-
-	
 }
 
-impl Default for SweetCliConfig {
+impl Default for SweetCli {
 	fn default() -> Self {
 		Self {
 			package: None,
@@ -40,7 +28,7 @@ impl Default for SweetCliConfig {
 	}
 }
 
-impl Display for SweetCliConfig {
+impl Display for SweetCli {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		if let Some(package) = &self.package {
 			write!(f, "package: {package}")?;
