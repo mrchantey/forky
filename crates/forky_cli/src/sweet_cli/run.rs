@@ -1,13 +1,14 @@
 use super::*;
 use crate::server::Server;
 use anyhow::Result;
-use forky_core::*;
+// use forky_core::*;
 use forky_fs::fs::copy_recursive;
 use forky_fs::process::spawn_command;
 use forky_fs::process::ChildExt;
 use forky_fs::process::ChildProcessStatus;
 use forky_fs::FsWatcher;
 use forky_fs::*;
+use std::fs::DirEntry;
 use std::path::Path;
 use std::process::Child;
 use std::sync::Arc;
@@ -18,6 +19,7 @@ use tower_livereload::LiveReloadLayer;
 
 const SRC_HTML_DIR: &str = "html___";
 const DST_HTML_DIR: &str = "target/sweet";
+const DST_HTML_FILE: &str = "target/sweet/index.html";
 const DST_CARGO_DIR: &str = "target/sweet-tmp";
 
 pub fn run(config: SweetCliConfig) -> Result<()> {
@@ -64,7 +66,7 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 		}
 
 		match cargo_run(&config)?.wait_killable(kill_unlocked.clone()) {
-			Ok(ChildProcessStatus::ExitSuccess) => {}
+			Ok(ChildProcessStatus::ExitSuccess(_)) => {}
 			other => {
 				eprintln!("sweet cli: cargo run failed: {:?}", other);
 				change_listener.join().unwrap()?;
@@ -73,7 +75,7 @@ pub fn run(config: SweetCliConfig) -> Result<()> {
 		}
 
 		match wasm_bingen(&config)?.wait_killable(kill_unlocked.clone()) {
-			Ok(ChildProcessStatus::ExitSuccess) => {}
+			Ok(ChildProcessStatus::ExitSuccess(_)) => {}
 			other => {
 				eprintln!("sweet cli: wasm bindgen failed: {:?}", other);
 				change_listener.join().unwrap()?;
@@ -104,17 +106,16 @@ fn cargo_run(config: &SweetCliConfig) -> Result<Child> {
 		"--test", "sweet",
 		"--target", "wasm32-unknown-unknown",
 		"--release",
-	];
-	
-	if let Some(package) = &config.package {
+		];
+		
+		if let Some(package) = &config.package {
 		cmd.extend(vec!["-p", package]);
 	}
 
-	#[rustfmt::skip]
 	cmd.extend(vec![
 		"--", 
 		"-o", &tmp_out, 
-		"-Z", "unstable-options"
+		"-Z", "unstable-options",
 	]);
 	spawn_command(&cmd)
 }
@@ -122,15 +123,19 @@ fn cargo_run(config: &SweetCliConfig) -> Result<Child> {
 #[rustfmt::skip]
 pub fn wasm_bingen(_config: &SweetCliConfig) -> Result<Child> {
 	let tmp_file = get_rustc_wasm()?;
+	let path =  tmp_file.path();
+	let stem = path.file_stem().unwrap();
+	let path_str = path.to_str().unwrap();
+	replace_html_hash(stem.to_str().unwrap())?;
 
-	println!("\n🤘 running wasm bindgen for {tmp_file}..");
+	println!("\n🤘 running wasm bindgen for {path_str}..");
 	let cmd = vec![
 		"wasm-bindgen",
 		"--out-dir", &DST_HTML_DIR,
-		"--out-name", "bindgen",
+		// "--out-name", "bindgen",
 		"--target", "web",
 		"--no-typescript",
-		&tmp_file, // "./target/wasm32-unknown-unknown/release/examples/test.wasm",
+		&path_str, // "./target/wasm32-unknown-unknown/release/examples/test.wasm",
 	];
 	spawn_command(&cmd)
 }
@@ -145,24 +150,30 @@ fn copy_html() -> Result<()> {
 	}
 	let dst = Path::new(&DST_HTML_DIR);
 	println!("copying files\nsrc: {:?}\ndst: {:?}", src, dst);
-	copy_recursive(src, dst)?;
+	std::fs::remove_dir_all(&dst).ok();
+	copy_recursive(&src, &dst)?;
 
 	Ok(())
 }
 
-
-fn get_rustc_wasm() -> Result<String> {
+fn get_rustc_wasm() -> Result<DirEntry> {
 	let file = std::fs::read_dir(DST_CARGO_DIR)?
 		.filter_map(|e| e.ok())
 		.find(|e| e.file_name().to_str().unwrap().ends_with("wasm"));
 	match file {
-		Some(file) => Ok(file.path().to_str().unwrap().to_string()),
+		Some(file) => Ok(file),
 		None => anyhow::bail!("no wasm file found in {:?}", DST_CARGO_DIR),
 	}
 	// .ok()
 	// .map(|e| e.path().to_str().unwrap().to_string());
 }
 
+fn replace_html_hash(name: &str) -> Result<()> {
+	let html = std::fs::read_to_string(DST_HTML_FILE)?;
+	let html = html.replace("__BINDGEN_FILE__", name);
+	std::fs::write(DST_HTML_FILE, html)?;
+	Ok(())
+}
 
 /*
 

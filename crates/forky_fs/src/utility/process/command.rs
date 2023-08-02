@@ -5,17 +5,20 @@ use futures::lock::Mutex;
 use std::process::Child;
 use std::process::Command;
 use std::process::Output;
+use std::process::Stdio;
 
 /// Run a command and pipe the output to stdio. Returns error only if execution failed, not if it returns error
 pub fn spawn_command(args: &Vec<&str>) -> Result<Child> {
-	let child = get_command(args).spawn()?;
+	let child = get_command(args)
+		// .stdout(Stdio::piped())
+		.spawn()?;
 	Ok(child)
 }
 
 pub fn spawn_command_blocking(args: &Vec<&str>) -> Result<()> {
 	let _ = get_command(args)
-		.stdout(std::process::Stdio::inherit())
-		.stderr(std::process::Stdio::inherit())
+		.stdout(Stdio::inherit())
+		.stderr(Stdio::inherit())
 		.output()?;
 	Ok(())
 }

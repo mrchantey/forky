@@ -6,13 +6,17 @@ use std::sync::Mutex;
 use std::thread;
 use std::time::Duration;
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum ChildProcessStatus {
 	Killed,
-	ExitSuccess,
+	ExitSuccess(i32),
 	ExitFail(i32),
 }
 
+
+fn foobar(child: Child) {
+	// child.wait_with_output()
+}
 
 #[ext]
 pub impl Child {
@@ -29,7 +33,8 @@ pub impl Child {
 			match self.try_wait() {
 				Ok(Some(status)) => match status.success() {
 					true => {
-						return Ok(ChildProcessStatus::ExitSuccess);
+						// println!("output: {:?}", self.wait_with_output());
+						return Ok(ChildProcessStatus::ExitSuccess(0));
 					}
 					false => {
 						return Ok(ChildProcessStatus::ExitFail(
