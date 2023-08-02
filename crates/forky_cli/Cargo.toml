@@ -9,6 +9,10 @@ readme = { workspace = true }
 description = { workspace = true }
 repository = { workspace = true }
 
+[[bin]]
+name = "forky"
+path = "src/main.rs"
+
 [dependencies]
 anyhow = { workspace = true }
 
@@ -30,11 +34,12 @@ cssparser = { workspace = true }
 
 ## serve
 axum = { workspace = true }
+axum-server = { workspace = true }
 tower = { workspace = true }
 tower-http = { workspace = true }
 tower-livereload = { workspace = true }
 
-[target.'cfg(windows)'.dev-dependencies]
+[dev-dependencies]
 sweet = { workspace = true }
 
 [[test]]

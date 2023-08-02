@@ -10,16 +10,14 @@
 - ☮️ Intuitive matchers
 - 🌈 Pretty output
 
-
-
 ```rust
 pub use sweet::*;
 
 sweet! {
   it "works" {
-		//use regular assertions
+		// use regular assertions
 		assert!(true == false);
-		//or matchers
+		// or pretty matchers
 		expect(true).to_be_false()?;
 		expect("some string").not().to_start_with("some")?;
   }
@@ -28,9 +26,15 @@ sweet! {
 
 # Native
 
-The Sweet harness has two main adavantages over [default tests](https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html).
+The Sweet harness has a couple of advantages over [default tests](https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html).
 - Suites - Organize your tests into collections
-- Matchers - the `expect` approach provides intuitive matchers and pretty outputs
+- Matchers - Matchers specific to a type enables a harness to output more intuitive results instead of an opaque `panic!`
+	- ```rs
+		expect("foo").not().to_start_with("bar")
+		//expected: NOT to start with 'bar'
+		//received: 'foo'
+		```
+- Single Binary - The default intergration test approach creates a seperate binary for each test, which ramps up compile times, see [this blog](https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html) for more info.
 
 ## Quickstart
 

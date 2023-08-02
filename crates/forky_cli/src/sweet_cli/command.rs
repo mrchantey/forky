@@ -26,6 +26,12 @@ impl Subcommand for SweetCommand {
 					.short('p')
 					.long("package"),
 			)
+			.arg(
+				Arg::new("secure")
+					.required(false)
+					.long("secure")
+					.action(ArgAction::SetTrue),
+			)
 	}
 	fn run(&self, args: &clap::ArgMatches) -> anyhow::Result<()> {
 		terminal::clear();
@@ -33,6 +39,7 @@ impl Subcommand for SweetCommand {
 		println!("sweet");
 		let mut config = SweetCliConfig::default();
 		config.package = args.get_one::<String>("package").cloned();
+		config.server.address.secure = args.get_flag("secure");
 		run(config)
 	}
 }

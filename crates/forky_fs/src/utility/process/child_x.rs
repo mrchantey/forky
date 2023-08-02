@@ -1,8 +1,6 @@
 use anyhow::Result;
 use extend::ext;
 use std::process::Child;
-use std::sync::Arc;
-use std::sync::Mutex;
 use std::thread;
 use std::time::Duration;
 
@@ -11,11 +9,6 @@ pub enum ChildProcessStatus {
 	Killed,
 	ExitSuccess(i32),
 	ExitFail(i32),
-}
-
-
-fn foobar(child: Child) {
-	// child.wait_with_output()
 }
 
 #[ext]

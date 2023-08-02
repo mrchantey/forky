@@ -30,7 +30,7 @@ notify-debouncer-full = { workspace = true }
 ## async
 futures = { workspace = true }
 
-[target.'cfg(windows)'.dev-dependencies]
+[dev-dependencies]
 sweet = { workspace = true }
 
 [[test]]

@@ -1,7 +1,4 @@
 use anyhow::Result;
-use forky_core::GenericVecExt;
-use forky_core::OptionTExt;
-use futures::lock::Mutex;
 use std::process::Child;
 use std::process::Command;
 use std::process::Output;

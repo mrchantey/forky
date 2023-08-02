@@ -1,4 +1,3 @@
-use std::env;
 
 pub fn get() -> Vec<String> {
 	let mut args: Vec<String> = std::env::args().collect();

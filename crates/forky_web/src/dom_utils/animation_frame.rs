@@ -6,9 +6,9 @@ pub struct AnimationFrame(pub RcCell<i32>);
 
 
 impl AnimationFrame {
-	pub fn new<F>(on_frame: F) -> Self
+	pub fn new<F>(mut on_frame: F) -> Self
 	where
-		F: Fn() + 'static,
+		F: FnMut() + 'static,
 	{
 		let f = rccell(None);
 		let handle = rccell(0);

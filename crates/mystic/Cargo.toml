@@ -35,7 +35,7 @@ clap = {workspace = true}
 tokio = {workspace = true}
 forky_fs = {workspace = true}
 
-[target.'cfg(windows)'.dev-dependencies]
+[dev-dependencies]
 sweet = {workspace = true}
 
 [[test]]

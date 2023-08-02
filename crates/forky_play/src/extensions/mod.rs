@@ -1,3 +1,5 @@
+mod app_res;
+pub use self::app_res::*;
 mod app_x;
 pub use self::app_x::*;
 mod bundle;

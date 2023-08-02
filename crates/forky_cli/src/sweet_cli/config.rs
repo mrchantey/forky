@@ -1,9 +1,10 @@
+use crate::server::*;
 use std::fmt::Display;
-
 
 #[derive(Debug, Clone)]
 pub struct SweetCliConfig {
 	pub package: Option<String>,
+	pub server: Server,
 }
 
 
@@ -12,10 +13,31 @@ impl SweetCliConfig {
 		self.package = Some(package);
 		self
 	}
+
+
+
+
+
+
+
+
+
+
+
+	
 }
 
 impl Default for SweetCliConfig {
-	fn default() -> Self { Self { package: None } }
+	fn default() -> Self {
+		Self {
+			package: None,
+			server: Server {
+				quiet: true,
+				dir: "target/sweet".to_string(),
+				..Server::default()
+			},
+		}
+	}
 }
 
 impl Display for SweetCliConfig {

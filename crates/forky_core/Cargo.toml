@@ -25,7 +25,7 @@ web-sys = { workspace = true }
 console_error_panic_hook = { workspace = true }
 leptos = { workspace = true }
 
-[target.'cfg(windows)'.dev-dependencies]
+[dev-dependencies]
 sweet = { workspace = true }
 
 [[test]]

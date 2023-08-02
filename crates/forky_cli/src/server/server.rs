@@ -1,3 +1,4 @@
+use super::*;
 use anyhow::Result;
 use axum::Router;
 use forky_fs::terminal;
@@ -8,11 +9,10 @@ use std::thread::JoinHandle;
 use tower_http::services::ServeDir;
 use tower_livereload::LiveReloadLayer;
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Server {
 	pub dir: String,
-	pub host: String,
-	pub port: u16,
+	pub address: Address,
 	pub clear: bool,
 	pub quiet: bool,
 }
@@ -20,9 +20,8 @@ pub struct Server {
 impl Default for Server {
 	fn default() -> Self {
 		Self {
-			dir: "html".to_string(),
-			host: "0.0.0.0".to_string(),
-			port: 3030,
+			dir: "dist".to_string(),
+			address: Address::default(),
 			clear: true,
 			quiet: false,
 		}
@@ -39,57 +38,54 @@ impl Server {
 		self
 	}
 
-	pub fn serve(&self) -> Result<()> {
-		loop {
-			self.serve_with_shutdown(self.default_shutdown())?;
-		}
-	}
-
-	#[tokio::main]
-	pub async fn serve_with_shutdown(
+	pub fn serve_with_shutdown(
 		&self,
 		shutdown: impl Future<Output = ()>,
 	) -> Result<()> {
-		let app =
-			Router::new().nest_service("/", ServeDir::new(self.dir.as_str()));
-
-		self.print_start();
-		let addr = format!("{}:{}", self.host, self.port);
-		axum::Server::bind(&addr.parse()?)
-			.serve(app.into_make_service())
-			.with_graceful_shutdown(shutdown)
-			.await?;
-		Ok(())
-	}
-
-	#[tokio::main]
-	pub async fn serve_with_reload(
-		&self,
-		livereload: LiveReloadLayer,
-	) -> Result<()> {
-		let app = Router::new()
-			.nest_service("/", ServeDir::new(self.dir.as_str()))
-			.layer(livereload);
-
-		self.print_start();
-		let addr = format!("{}:{}", self.host, self.port);
-		axum::Server::bind(&addr.parse()?)
-			.serve(app.into_make_service())
-			.await?;
-		Ok(())
+		self.serve_with_callbacks(Some(shutdown), None)
 	}
 
 	pub fn serve_with_default_reload(&self) -> Result<()> {
-		let (livereload, _handle) = self.default_relaod();
+		let (livereload, _handle) = self.default_reload();
 		self.serve_with_reload(livereload)
 	}
 
-	fn default_relaod(&self) -> (LiveReloadLayer, JoinHandle<Result<()>>) {
+	pub fn serve_with_reload(&self, livereload: LiveReloadLayer) -> Result<()> {
+		#[allow(unused_assignments)]
+		let mut shutdown = Some(self.default_shutdown());
+		shutdown = None;
+		self.serve_with_callbacks(shutdown, Some(livereload))
+	}
+
+	#[tokio::main]
+	#[rustfmt::skip]
+	pub async fn serve_with_callbacks(
+		&self,
+		// unused for now
+		_shutdown: Option<impl Future<Output = ()>>,
+		livereload: Option<LiveReloadLayer>,
+	) -> Result<()> {
+		self.print_start();
+
+		let mut router = Router::new()
+			.nest_service("/", ServeDir::new(self.dir.as_str()));
+
+		if let Some(livereload) = livereload {
+			router = router.layer(livereload);
+		}
+
+		if self.address.secure{
+			self.serve_secure(router).await?;
+		}else{
+		self.serve_insecure(router).await?;
+		}
+		Ok(())
+	}
+
+	fn default_reload(&self) -> (LiveReloadLayer, JoinHandle<Result<()>>) {
 		let livereload = LiveReloadLayer::new();
 		let reload = livereload.reloader();
 		let this = self.clone();
-		// let dir = self.dir.clone();
-		// let quiet = self.quiet;
 		let reload_handle = std::thread::spawn(move || -> Result<()> {
 			let mut this2 = this.clone();
 			this2.clear = false;
@@ -127,12 +123,6 @@ impl Server {
 			terminal::clear();
 			terminal::print_forky();
 		}
-		let host = if self.host == "0.0.0.0" {
-			"127.0.0.1"
-		} else {
-			self.host.as_str()
-		};
-		let addr = format!("http://{host}:{}", self.port);
-		println!("serving '{}' at {addr}", self.dir);
+		println!("serving '{}' at {}", self.dir, self.address);
 	}
 }

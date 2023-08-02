@@ -1,6 +1,9 @@
+use super::*;
 use crate::utility;
-use bevy::{prelude::*, utils::Instant};
+use bevy::prelude::*;
+use bevy::utils::Instant;
 use extend::ext;
+use forky_core::RcCell;
 use std::time::Duration;
 
 #[ext(name = AppX)]
@@ -29,5 +32,14 @@ pub impl App {
 		);
 		self.update();
 		self
+	}
+
+	fn with_app_res(self) -> RcCell<Self> { AppRes::init(self) }
+
+	#[cfg(target_arch = "wasm32")]
+	fn run_on_animation_frame(mut self) -> forky_web::AnimationFrame {
+		forky_web::AnimationFrame::new(move || {
+			self.update();
+		})
 	}
 }

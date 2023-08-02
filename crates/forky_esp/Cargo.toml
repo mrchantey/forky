@@ -44,8 +44,7 @@ esp-hal-common   = { version = "0.2.0",  features = ["esp32c3"] }
 smart-leds        = "0.3.0"
 fugit = "0.3.6"
 
-
-[target.'cfg(windows)'.dev-dependencies]
+[dev-dependencies]
 sweet = {workspace = true}
 
 [features]

@@ -1,5 +1,4 @@
 #![feature(imported_main)]
-#![allow(unused_assignments)]
 
 pub use sweet::*;
 
