@@ -4,8 +4,10 @@ pub use sweet::*;
 sweet! {
 
 	it "passes"{
-		expect(true).to_be_true()?;
+		expect("foobar").not().to_start_with("foo")?;
 	}
+
+
 	it skip "fails"{
 		expect(true).to_be_false()?;
 	}

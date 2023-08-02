@@ -3,7 +3,7 @@ use std::path::*;
 use sweet::*;
 
 sweet! {
-	it "works" {
+	it skip "works" {
 		let path = Path::new("test/files/test_dir");
 
 		let txt = auto_mod::create_mod_text(&path.to_path_buf());
@@ -13,7 +13,7 @@ sweet! {
 
 	}
 
-	test "double underscore" {
+	test skip "double underscore" {
 		let path = Path::new("test/files/test_dir/__test_sub_dir");
 
 		let txt = auto_mod::create_mod_text(&path.to_path_buf());

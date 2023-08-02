@@ -5,7 +5,7 @@ edition = { workspace = true }
 authors = { workspace = true }
 documentation = { workspace = true }
 license-file = { workspace = true }
-readme = { workspace = true }
+readme = "README.md"
 description = { workspace = true }
 repository = { workspace = true }
 
@@ -43,7 +43,6 @@ tower-livereload = { workspace = true }
 [dev-dependencies]
 sweet = { workspace = true }
 
-[[test]]
+[[example]]
 name = "sweet"
 path = "test/sweet.rs"
-harness = false

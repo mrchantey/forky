@@ -104,15 +104,17 @@ test-all *args:
 	done
 
 test crate *args:
-	RUST_BACKTRACE={{backtrace}} cargo test -p {{crate}} --test sweet -- {{args}}
+	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example sweet -- {{args}}
 
 test-w crate *args:
 	RUST_BACKTRACE={{backtrace}} just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'
 
-#https://crates.io/crates/cargo-watch
 watch command:
-	cargo watch -c -q --ignore '{**/mod.rs,**/*_g.rs,justfile,.gitignore}' --ignore '**.{txt,md,wasm,wat,wgsl,css}' --ignore 'html*' -- {{command}}
-
+	forky watch {{command}} \
+	-w '**/*.rs' \
+	-i '{.git,target,html}/**/*' \
+	-i '**/mod.rs' \
+	-i '**/*_g.rs' \
 ### PLAY ###
 
 vis:
@@ -160,7 +162,10 @@ style:
 	cargo run -p forky_cli style all
 
 watch-css crate *args:
-	cargo watch --ignore '{justfile,.gitignore}' --ignore '**.{rs,txt,md,wasm,wat,wgsl}' --ignore './html/style.css' -- just build-css {{crate}} {{args}}
+	forky watch \
+	just build-css {{crate}} {{args}} \
+	-w '**/*.css' \
+	-i '{.git,target,html}/**/*' \
 
 @build-css crate *args:
 	just lightning ./crates/{{crate}}/src/index.css ./html/style.css {{args}}

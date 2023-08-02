@@ -35,7 +35,6 @@ futures = { workspace = true }
 [dev-dependencies]
 sweet = { workspace = true }
 
-[[test]]
+[[example]]
 name = "sweet"
 path = "test/sweet.rs"
-harness = false

@@ -1,29 +1,12 @@
 #![feature(imported_main)]
-use anyhow::Result;
-use forky_core::*;
 pub use sweet::*;
+// use anyhow::Result;
+// use forky_core::*;
 
-#[sweet_test]
-fn foobar() -> Result<()> {
-	log!("woah!");
-	expect(true).to_be_true()?;
-	Ok(())
-}
+// will probably deprecate test attribute
 // #[sweet_test]
-// fn fails() -> Result<()> {
-// 	log!("here1!");
-// 	expect(true).to_be_false()?;
-// 	Ok(())
-// }
-
-// #[sweet_test]
-// fn panics() -> Result<()> {
-// 	panic!("oh no!");
-// 	Ok(())
-// }
-// #[sweet_test]
-// fn it_sleeps() -> Result<()> {
-// 	std::thread::sleep(std::time::Duration::from_millis(1000));
+// fn foobar() -> Result<()> {
+// 	log!("woah!");
 // 	expect(true).to_be_true()?;
 // 	Ok(())
 // }

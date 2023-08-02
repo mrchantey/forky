@@ -42,10 +42,9 @@ forky_web = { workspace = true }
 sweet = { workspace = true }
 # forky_fs = {workspace = true }
 
-[[test]]
+[[example]]
 name = "sweet"
 path = "test/sweet.rs"
-harness = false
 # rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 
 

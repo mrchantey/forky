@@ -1,12 +1,12 @@
 # sweet
 
-*Write many tests quickly and cleanly.*
+Write many tests quickly and cleanly.
 
 ## Features
 
 - 🔥 Parallel
 - 🕙 Async
-- 🌍 WASM
+- 🌍 WASM UI tests
 - ☮️ Intuitive matchers
 - 🌈 Pretty output
 
@@ -26,9 +26,9 @@ sweet! {
 
 # Native
 
-The Sweet harness has a couple of advantages over [default tests](https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html).
+The Sweet runner has a couple of advantages over [default tests](https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html).
 - Suites - Organize your tests into collections
-- Matchers - Matchers specific to a type enables a harness to output more intuitive results instead of an opaque `panic!`
+- Matchers - Matchers specific to a type enables a runner to output more intuitive results instead of an opaque `panic!`
 	- ```rs
 		expect("foo").not().to_start_with("bar")
 		//expected: NOT to start with 'bar'
@@ -43,12 +43,11 @@ The Sweet harness has a couple of advantages over [default tests](https://doc.ru
 	[dev-dependencies]
 	sweet = # current version here
 
-	[[test]]
+	[[example]]
 	name = "sweet"
 	path = "test/sweet.rs"
-	harness = false
 	```
-1. create file `test/sweet.rs`
+2. create file `test/sweet.rs`
 	```rust
 	#![feature(imported_main)]
 	pub use sweet::*;
@@ -59,20 +58,20 @@ The Sweet harness has a couple of advantages over [default tests](https://doc.ru
 	  }
 	}
 	```
-2. run `cargo test --test sweet`
+3. run `cargo run --example sweet`
 
-
+note: we're using `[[example]]` here for compatability with the wasm test runner, but feel free to use `[[test]]` with `harness=false` if only running native tests
 ## Features - CLI
 - Run 
-	- `cargo test --test sweet`
+	- `cargo run --example sweet`
 - With watch
-	- `cargo watch -q -x 'test --test sweet -- -w'`
+	- `cargo watch -q -x 'run --example sweet -- -w'`
 	- Clears terminal on each run
 	- Returns an exit code zero (cleaner output)
 - Specify filename
-	- `cargo test --test sweet -- my_test`
+	- `cargo run --example sweet -- my_test`
 	- Use forward-slash `/` to specify directories
-		- `cargo test --test sweet -- my_dir/my_test`
+		- `cargo run --example sweet -- my_dir/my_test`
 
 ## WASM
 
