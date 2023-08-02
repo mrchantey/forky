@@ -49,6 +49,8 @@ Write many tests quickly and cleanly.
 	```
 1. run `forky sweet`
 
+![wasm-runner](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/wasm-runner.png)
+
 ## Features
 
 ### Performance
