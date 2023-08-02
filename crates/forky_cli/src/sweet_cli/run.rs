@@ -32,12 +32,12 @@ impl SweetCli {
 			server2.serve_with_reload(livereload)
 		});
 
-		self.copy_html()?;
-
 		let kill = Arc::new(Mutex::new(()));
 		let kill2 = kill.clone();
 		let kill_unlocked = move || -> bool { kill2.try_lock().is_ok() };
 
+		// copy html just before wasm-bindgen so runner still works during a new build
+		let mut first_run = true;
 		loop {
 			let kill2 = kill.clone();
 			let change_listener = std::thread::spawn(move || -> Result<()> {
@@ -61,6 +61,11 @@ impl SweetCli {
 					change_listener.join().unwrap()?;
 					continue;
 				}
+			}
+
+			if first_run {
+				self.copy_html()?;
+				first_run = false;
 			}
 
 			match self.wasm_bingen()?.wait_killable(kill_unlocked.clone()) {
@@ -122,7 +127,7 @@ impl SweetCli {
 		let dst = Path::new(&self.server.dir);
 		std::fs::remove_dir_all(&dst).ok();
 		std::fs::create_dir_all(&dst)?;
-		println!("copying files to {:?}", dst);
+		println!("copying html to {:?}", dst);
 
 		std::fs::write(
 			dst.join("index.html"),
