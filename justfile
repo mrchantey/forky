@@ -1,8 +1,8 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_cli forky_core forky_play forky_test mystic sweet'
-testable := 'forky_core forky_cli forky_fs forky_play mystic sweet'
+crates := 'forky forky_cli forky_core forky_play forky_test sweet'
+testable := 'forky_core forky_cli forky_fs forky_play sweet'
 # features := '--features forky_play/shader_debug_internal'
 features := ''
 # forky_esp
@@ -80,17 +80,17 @@ publish-all:
 	sleep 5
 	just publish forky_core || true
 	sleep 5
-	just publish forky_test || true
-	sleep 5
 	just publish forky_fs || true
+	sleep 5
+	just publish forky_web || true
+	sleep 5
+	just publish forky_test || true
 	sleep 5
 	just publish sweet || true
 	sleep 5
 	just publish forky_cli || true
 	sleep 5
 	just publish forky_ai || true
-	sleep 5
-	just publish mystic || true
 	sleep 5
 	just publish forky_play || true
 

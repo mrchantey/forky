@@ -14,7 +14,6 @@ members = [
 	"crates/forky_play",
 	"crates/forky_test",
 	"crates/forky_web",
-	"crates/mystic",
 	"crates/sweet",
 ]
 exclude = ["crates/bevy_webxr"]

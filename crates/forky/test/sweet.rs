@@ -16,7 +16,5 @@ pub use sweet::*;
 // mod forky_fs;
 // #[path = "../../forky_play/test/sweet.rs"]
 // mod forky_play;
-// #[path = "../../mystic/test/sweet.rs"]
-// mod mystic;
 // #[path = "../../sweet/test/sweet.rs"]
 // mod sweet;
