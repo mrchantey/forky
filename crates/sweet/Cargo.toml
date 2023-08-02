@@ -41,10 +41,10 @@ crossterm = { workspace = true }
 gag = { workspace = true }
 
 
-[[test]]
+[[example]]
 name = "sweet"
 path = "test/sweet.rs"
-harness = false
+# harness = false
 
 # [[bin]]
 # name = "sweet_bin"

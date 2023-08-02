@@ -29,6 +29,7 @@ forky_fs = { workspace = true }
 glob = { workspace = true }
 ## cli
 clap = { workspace = true }
+colorize = { workspace = true }
 ## style
 cssparser = { workspace = true }
 

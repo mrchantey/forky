@@ -5,6 +5,7 @@ use std::fmt::Display;
 pub struct SweetCli {
 	pub package: Option<String>,
 	pub server: Server,
+	pub release: bool,
 }
 
 
@@ -24,6 +25,7 @@ impl Default for SweetCli {
 				dir: "target/sweet".to_string(),
 				..Server::default()
 			},
+			release: false,
 		}
 	}
 }

@@ -3,8 +3,6 @@ use clap::Arg;
 use clap::ArgAction;
 use clap::Command;
 use forky_fs::Subcommand;
-// use forky_core::ArcMut;
-use forky_fs::*;
 
 pub struct SweetCommand;
 
@@ -27,6 +25,12 @@ impl Subcommand for SweetCommand {
 					.long("package"),
 			)
 			.arg(
+				Arg::new("release")
+					.required(false)
+					.long("release")
+					.action(ArgAction::SetTrue),
+			)
+			.arg(
 				Arg::new("secure")
 					.required(false)
 					.long("secure")
@@ -34,12 +38,10 @@ impl Subcommand for SweetCommand {
 			)
 	}
 	fn run(&self, args: &clap::ArgMatches) -> anyhow::Result<()> {
-		terminal::clear();
-		terminal::print_forky();
-		println!("sweet");
 		let mut cli = SweetCli::default();
 		cli.package = args.get_one::<String>("package").cloned();
 		cli.server.address.secure = args.get_flag("secure");
+		cli.release = args.get_flag("release");
 		cli.run()
 	}
 }

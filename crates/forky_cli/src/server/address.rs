@@ -1,3 +1,4 @@
+use colorize::AnsiColor;
 use std::fmt::Display;
 
 #[derive(Debug, Clone, Copy)]
@@ -56,10 +57,14 @@ impl Display for Address {
 		} else {
 			("http://", self.port)
 		};
-		write!(
-			f,
+
+		let str = format!(
 			"{}{}.{}.{}.{}:{}",
 			prefix, host[0], host[1], host[2], host[3], port
 		)
+		.b_cyan()
+		.underlined()
+		.bold();
+		write!(f, "{str}")
 	}
 }

@@ -16,6 +16,8 @@ forky_core = { workspace = true }
 glob = { workspace = true }
 anyhow = { workspace = true }
 extend = { workspace = true }
+sha2 = { workspace = true }
+hex = { workspace = true }
 
 ## terminal
 crossterm = { workspace = true }
