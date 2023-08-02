@@ -1,7 +1,17 @@
+//TODO extension methods
+use extend::ext;
 use forky_core::OsStrOptionX;
 use forky_core::StrX;
 use std::path::Path;
 use std::path::PathBuf;
+
+#[ext]
+pub impl Path {
+	fn to_forward_slash(&self) -> String {
+		self.to_str().unwrap_or_default().replace("\\", "/")
+	}
+}
+//TODO extension methods
 
 pub fn filename_starts_with_uppercase(p: &PathBuf) -> bool {
 	p.file_name().str().first().is_ascii_uppercase()

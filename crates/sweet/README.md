@@ -44,10 +44,12 @@ Write many tests quickly and cleanly.
 1. install the helper cli: `cargo install forky_cli`
 2. add some wasm matchers to your test
 	```rust
+	//mount a div in a framework of your choice, we'll use leptos here :)
 	mount(|cx|view!{cx,<h1>"This is a heading"</h1>});
 	expect_el("h1")?.to_contain_text("This is a heading")?;
 	```
-1. run `forky sweet`
+3. run `forky sweet`
+	- requires [wasm-bindgen-cli](https://rustwasm.github.io/wasm-bindgen/reference/cli.html)
 
 ![wasm-runner](https://raw.githubusercontent.com/mrchantey/forky/main/docs/images/wasm-runner.png)
 

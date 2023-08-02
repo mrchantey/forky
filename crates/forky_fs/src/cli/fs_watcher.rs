@@ -1,3 +1,4 @@
+use crate::fs::PathExt;
 use crate::terminal;
 use anyhow::Result;
 use forky_core::*;
@@ -18,7 +19,6 @@ use std::time::Instant;
 pub struct FsWatcher {
 	pub path: String,
 	pub interval: Duration,
-	// pub debounce: Duration,
 	pub run_on_start: bool,
 	pub quiet: bool,
 	pub once_per_tick: bool,
@@ -84,16 +84,17 @@ impl FsWatcher {
 		self
 	}
 	pub fn passes(&self, path: &Path) -> bool {
-		self.passes_watch(path) && self.passes_ignore(path)
+		let path = path.to_forward_slash();
+		self.passes_watch(&path) && self.passes_ignore(&path)
 	}
 
-	pub fn passes_watch(&self, path: &Path) -> bool {
-		self.watches.iter().any(|watch| watch.matches_path(path))
+	pub fn passes_watch(&self, path: &str) -> bool {
+		self.watches.iter().any(|watch| watch.matches(path))
 			|| self.watches.is_empty()
 	}
 
-	pub fn passes_ignore(&self, path: &Path) -> bool {
-		!self.ignores.iter().any(|watch| watch.matches_path(path))
+	pub fn passes_ignore(&self, path: &str) -> bool {
+		false == self.ignores.iter().any(|watch| watch.matches(path))
 	}
 	pub fn watch_log(&self) -> Result<()> {
 		self.watch(|e| {

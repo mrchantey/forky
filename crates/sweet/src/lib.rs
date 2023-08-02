@@ -26,27 +26,19 @@ pub fn main() -> anyhow::Result<()> { native::TestRunnerNative::run() }
 
 pub mod exports {
 	pub use anyhow::Result;
-	//i guess pub use async_std bad for treeshake
 	pub use async_std::task::block_on;
-	pub use futures::FutureExt;
 	pub use futures::future::CatchUnwind;
+	pub use futures::FutureExt;
 	pub use inventory;
+	//is full exports like this bad form?
+	// #[cfg(target_arch = "wasm32")]
+	// pub use js_sys;
 	#[cfg(target_arch = "wasm32")]
-	pub use js_sys::Promise;
+	pub use js_sys::*;
 	#[cfg(target_arch = "wasm32")]
-	pub use wasm_bindgen::JsValue;
+	pub use wasm_bindgen;
+	#[cfg(target_arch = "wasm32")]
+	pub use wasm_bindgen::prelude::*;
 	#[cfg(target_arch = "wasm32")]
 	pub use wasm_bindgen_futures::future_to_promise;
 }
-
-// fn sync_function() -> i32 {
-// 	// Create a tokio runtime to run the async task
-// 	let rt = Runtime::new().unwrap();
-
-// 	// Block the synchronous function until the async function is complete
-// 	let result = rt.block_on(async {
-// 			async_operation().await
-// 	});
-
-// 	result
-// }

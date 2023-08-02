@@ -40,7 +40,7 @@ impl SweetCli {
 				let kill_lock = kill2.lock().unwrap();
 				FsWatcher::default()
 					.with_watch("**/*.rs")
-					.with_ignore("target")
+					.with_ignore("**/target/**/*")
 					.block()?;
 				drop(kill_lock);
 				Ok(())
