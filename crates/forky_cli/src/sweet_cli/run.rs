@@ -1,12 +1,10 @@
 use super::*;
 use anyhow::Result;
 // use forky_core::*;
-use forky_fs::fs::copy_recursive;
 use forky_fs::process::spawn_command;
 use forky_fs::process::ChildExt;
 use forky_fs::process::ChildProcessStatus;
 use forky_fs::FsWatcher;
-use forky_fs::*;
 use std::fs::DirEntry;
 use std::path::Path;
 use std::process::Child;
@@ -16,7 +14,6 @@ use tokio::sync::Mutex;
 use tower_livereload::LiveReloadLayer;
 // use std::sync::Mutex;
 
-const SRC_HTML_DIR: &str = "html___";
 const DST_CARGO_DIR: &str = "target/sweet-tmp";
 
 impl SweetCli {
@@ -133,17 +130,19 @@ impl SweetCli {
 
 	fn copy_html(&self) -> Result<()> {
 		//TODO this may break when publishing, probably use file_abs!() instead
-		let file = file_abs_workspace!();
-		let dir = file.parent().unwrap();
-		let src = dir.join(SRC_HTML_DIR);
-		if !src.exists() {
-			anyhow::bail!("src doesnt exist: {:?}", src);
-		}
-		let dst = &self.server.dir;
-		// let dst = Path::new(&DST_HTML_DIR);
-		println!("copying files\nsrc: {:?}\ndst: {:?}", src, dst);
+		let dst = Path::new(&self.server.dir);
 		std::fs::remove_dir_all(&dst).ok();
-		copy_recursive(&src, &dst)?;
+		std::fs::create_dir_all(&dst)?;
+		println!("copying files to {:?}", dst);
+
+		std::fs::write(
+			dst.join("index.html"),
+			include_bytes!("html___/index.html"),
+		)?;
+		std::fs::write(
+			dst.join("style.css"),
+			include_bytes!("html___/style.css"),
+		)?;
 
 		Ok(())
 	}
@@ -156,8 +155,6 @@ impl SweetCli {
 			Some(file) => Ok(file),
 			None => anyhow::bail!("no wasm file found in {:?}", DST_CARGO_DIR),
 		}
-		// .ok()
-		// .map(|e| e.path().to_str().unwrap().to_string());
 	}
 
 	fn replace_html_hash(&self, name: &str) -> Result<()> {

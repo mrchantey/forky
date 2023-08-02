@@ -8,7 +8,6 @@ use axum::response::Redirect;
 use axum::BoxError;
 use axum::Router;
 use axum_server::tls_rustls::RustlsConfig;
-use forky_fs::file_abs_workspace;
 use std::net::SocketAddr;
 
 impl Server {
@@ -20,17 +19,11 @@ impl Server {
 	}
 
 	pub async fn serve_secure(&self, router: Router) -> Result<()> {
-		// tokio::spawn(redirect_http_to_https(self.address));
-		let dir = file_abs_workspace!()
-			.parent()
-			.unwrap()
-			.join("self_signed_certs___");
+		let cert = include_bytes!("self_signed_certs___/cert.pem");
+		let key = include_bytes!("self_signed_certs___/key.pem");
 
-		let config = RustlsConfig::from_pem_file(
-			dir.join("cert.pem"),
-			dir.join("key.pem"),
-		)
-		.await?;
+		let config =
+			RustlsConfig::from_pem(cert.to_vec(), key.to_vec()).await?;
 
 		axum_server::bind_rustls(self.address.to_socket_addr_tls(), config)
 			.serve(router.into_make_service())

@@ -1,6 +1,7 @@
 use crate::*;
 use extend::ext;
-use std::{fmt::Display, slice::SliceIndex};
+use std::fmt::Display;
+use std::slice::SliceIndex;
 
 #[ext(name = OrderableVecExt)]
 pub impl<T: Ord> Vec<T> {
