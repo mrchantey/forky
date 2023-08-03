@@ -1,7 +1,7 @@
+use super::settings::Settings;
 use super::*;
 use forky_web::*;
 use leptos::*;
-
 
 pub fn get_file() -> Option<String> { SearchParams::get("file") }
 
@@ -18,7 +18,10 @@ pub fn Root(cx: Scope) -> impl IntoView {
 
 	view! {cx,
 		<div class=sweet_style::SWEET_ROOT>
-			<SuitesView set_file/>
+			<div class=sweet_style::SWEET_CONTENTS>
+				<Settings/>
+				<SuitesView set_file/>
+			</div>
 			<RunnerContainer file/>
 		</div>
 	}

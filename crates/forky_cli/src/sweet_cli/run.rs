@@ -40,7 +40,7 @@ impl SweetCli {
 				let kill_lock = kill2.lock().unwrap();
 				FsWatcher::default()
 					.with_watch("**/*.rs")
-					.with_ignore("**/target/**/*")
+					.with_ignore("**/target/**")
 					.block()?;
 				drop(kill_lock);
 				Ok(())
@@ -125,8 +125,8 @@ impl SweetCli {
 			include_bytes!("html___/index.html"),
 		)?;
 		std::fs::write(
-			dst.join("style.css"),
-			include_bytes!("html___/style.css"),
+			dst.join("sweet-style.css"),
+			include_bytes!("html___/sweet-style.css"),
 		)?;
 
 		Ok(())

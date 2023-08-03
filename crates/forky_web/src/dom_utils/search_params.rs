@@ -23,7 +23,12 @@ impl SearchParams {
 		let params = params.to_string().as_string().unwrap();
 		loc.set_search(params.as_str()).unwrap();
 	}
-	pub fn get_flag(key: &str) -> bool { Self::get(key).is_some() }
+	pub fn get_flag(key: &str) -> bool {
+		match Self::get(key) {
+			Some(val) => val != "0" && val != "false",
+			None => false,
+		}
+	}
 	pub fn set_flag(key: &str, val: bool) {
 		if val {
 			Self::set(key, "1");

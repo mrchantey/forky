@@ -5,6 +5,14 @@ use web_sys::Url;
 pub struct History;
 
 impl History {
+	/// set search param without page reload
+	pub fn set_flag(key: &str, value: bool) {
+		if value {
+			Self::set_param(key, "1");
+		} else {
+			Self::remove_param(key);
+		}
+	}
 	pub fn set_param(key: &str, value: &str) {
 		let url = window().unwrap().location().href().unwrap();
 		let url = Url::new(&url).unwrap();

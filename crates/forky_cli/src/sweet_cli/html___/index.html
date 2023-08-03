@@ -2,7 +2,14 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<link rel="stylesheet" href="style.css">
+	<script>
+		if (false == location.search.includes("run=1")) {
+			const link = document.createElement("link");
+			link.rel = "stylesheet";
+			link.href = "sweet-style.css";
+			document.head.appendChild(link);
+		}
+	</script>
 </head>
 <script type="module">
 	import init, * as mod from './__BINDGEN_FILE__.js'

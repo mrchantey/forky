@@ -26,8 +26,9 @@ impl Subcommand for StyleCommandAll {
 fn watcher() -> FsWatcher {
 	FsWatcher::default()
 		.with_watch("**/*.css")
-		.with_ignore("**/*/index.css")
-		.with_ignore("**/html/style.css")
+		.with_ignore("**/index.css")
+		.with_ignore("**/html/**")
+		.with_ignore("**/target/**")
 }
 
 fn run() -> Result<()> {

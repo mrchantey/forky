@@ -20,7 +20,6 @@ where
 		.collect::<Vec<_>>();
 
 	view! {cx,
-	<div class=sweet_style::SWEET_CONTENTS>
 	<h3
 		class=forky_style::BUTTON_LIKE
 		on:click= move|_|{
@@ -28,12 +27,11 @@ where
 			set_file(None)
 		}
 	>"Suites"</h3>
-		<br/>
-		{suites.iter()
-			.map(|suite|view!{cx,<SuiteView suite set_file/>})
-			.collect::<Vec<_>>()
-		}
-	</div>
+	<br/>
+	{suites.iter()
+		.map(|suite|view!{cx,<SuiteView suite set_file/>})
+		.collect::<Vec<_>>()
+	}
 	}
 }
 

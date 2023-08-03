@@ -112,7 +112,7 @@ test-w crate *args:
 watch command:
 	forky watch {{command}} \
 	-w '**/*.rs' \
-	-i '{.git,target,html}/**/*' \
+	-i '{.git,target,html}/**' \
 	-i '**/mod.rs' \
 	-i '**/*_g.rs' \
 ### PLAY ###
@@ -165,7 +165,7 @@ watch-css crate *args:
 	forky watch \
 	just build-css {{crate}} {{args}} \
 	-w '**/*.css' \
-	-i '{.git,target,html}/**/*' \
+	-i '{.git,target,html}/**' \
 
 @build-css crate *args:
 	just lightning ./crates/{{crate}}/src/index.css ./html/style.css {{args}}

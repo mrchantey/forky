@@ -19,12 +19,12 @@
 		// "**/target/": true,
 		"**/sdkconfig.defaults": true,
 		"**/build.rs": true,
-		"html/assets/**/*": true,
+		"html/assets/**": true,
 	},
 	// "rust-analyzer.cargo.features": [
 	// 	"web_sys_unstable_apis"
 	// ],
-	// "rust-analyzer.cargo.target": "wasm32-unknown-unknown",
+	"rust-analyzer.cargo.target": "wasm32-unknown-unknown",
 	"rust-analyzer.files.excludeDirs": [
 		// "crates\\forky_test\\src\\utility\\shoosh",
 		////these seem to break red squigglies
