@@ -1,37 +1,39 @@
-use super::*;
+use super::StyleAllCli;
 use anyhow::Result;
+use clap::Arg;
+use clap::ArgAction;
 use clap::ArgMatches;
-use forky_core::ArcMut;
-use forky_fs::FsWatcher;
+use clap::Command;
 use forky_fs::Subcommand;
 
 pub struct StyleCommandAll;
-
-
-impl StyleCommandAll {
-	pub fn run_with_mutex(&self, mutex: ArcMut<()>) -> anyhow::Result<()> {
-		watcher().with_mutex(mutex).watch(|_| run())
-	}
-}
 
 impl Subcommand for StyleCommandAll {
 	fn name(&self) -> &'static str { "all" }
 	fn about(&self) -> &'static str { "Apply to all style directories." }
 
-	fn run(&self, _args: &ArgMatches) -> Result<()> {
-		watcher().watch(|_| run())
+	fn append_command(&self, command: Command) -> Command {
+		command
+			.arg(
+				Arg::new("lightning")
+					.help("specify directory for lightning to run")
+					.required(false)
+					.short('l')
+					.long("lightning")
+					.action(ArgAction::Set),
+			)
+			.arg(
+				Arg::new("package")
+					.help("package to find index.css file in")
+					.required(false)
+					.short('p')
+					.long("package")
+					.action(ArgAction::Set),
+			)
 	}
-}
 
-fn watcher() -> FsWatcher {
-	FsWatcher::default()
-		.with_watch("**/*.css")
-		.with_ignore("**/index.css")
-		.with_ignore("**/html/**")
-		.with_ignore("**/target/**")
-}
-
-fn run() -> Result<()> {
-	create_type_files()?;
-	create_index_files()
+	fn run(&self, args: &ArgMatches) -> Result<()> {
+		let cli: StyleAllCli = args.into();
+		cli.run()
+	}
 }

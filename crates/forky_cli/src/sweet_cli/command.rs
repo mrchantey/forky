@@ -20,8 +20,8 @@ impl Subcommand for SweetCommand {
 			)
 			.arg(
 				Arg::new("package")
-					.required(false)
 					.help("pass the --package flag to cargo run")
+					.required(false)
 					.short('p')
 					.long("package"),
 			)
