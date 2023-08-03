@@ -1,6 +1,7 @@
 use super::*;
 use anyhow::Result;
 use colorize::*;
+use forky_fs::fs::copy_recursive;
 use forky_fs::fs::hash_file_to_string;
 use forky_fs::process::spawn_command;
 use forky_fs::process::ChildExt;
@@ -34,7 +35,7 @@ impl SweetCli {
 		let kill_unlocked = move || -> bool { kill2.try_lock().is_ok() };
 
 		loop {
-			self.copy_html()?;
+			self.copy_static()?;
 			let kill2 = kill.clone();
 			let change_listener = std::thread::spawn(move || -> Result<()> {
 				let kill_lock = kill2.lock().unwrap();
@@ -114,11 +115,11 @@ impl SweetCli {
 		spawn_command(&cmd)
 	}
 
-	fn copy_html(&self) -> Result<()> {
+	fn copy_static(&self) -> Result<()> {
 		let dst = Path::new(&self.server.dir);
 		std::fs::remove_dir_all(&dst).ok();
 		std::fs::create_dir_all(&dst)?;
-		println!("copying html to {:?}", dst);
+		println!("copying runner files to {:?}", dst);
 
 		std::fs::write(
 			dst.join("index.html"),
@@ -128,6 +129,11 @@ impl SweetCli {
 			dst.join("sweet-style.css"),
 			include_bytes!("html___/sweet-style.css"),
 		)?;
+
+		if let Some(static_dir) = &self.static_dir {
+			println!("copying static files from {:?}", static_dir);
+			copy_recursive(static_dir, dst)?;
+		}
 
 		Ok(())
 	}

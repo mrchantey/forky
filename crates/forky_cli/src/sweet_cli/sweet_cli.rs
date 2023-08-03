@@ -6,6 +6,7 @@ pub struct SweetCli {
 	pub package: Option<String>,
 	pub server: Server,
 	pub release: bool,
+	pub static_dir:Option<String>
 }
 
 
@@ -20,6 +21,7 @@ impl Default for SweetCli {
 	fn default() -> Self {
 		Self {
 			package: None,
+			static_dir: None,
 			server: Server {
 				quiet: true,
 				dir: "target/sweet".to_string(),

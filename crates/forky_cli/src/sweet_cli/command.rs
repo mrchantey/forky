@@ -21,25 +21,36 @@ impl Subcommand for SweetCommand {
 			.arg(
 				Arg::new("package")
 					.required(false)
+					.help("pass the --package flag to cargo run")
 					.short('p')
 					.long("package"),
 			)
 			.arg(
 				Arg::new("release")
 					.required(false)
+					.help("pass the --release flag to cargo run")
 					.long("release")
 					.action(ArgAction::SetTrue),
 			)
 			.arg(
 				Arg::new("secure")
 					.required(false)
+					.help("run the dev server with https")
 					.long("secure")
 					.action(ArgAction::SetTrue),
+			)
+			.arg(
+				Arg::new("static")
+					.required(false)
+					.help("directory for static files (ie .css) that should be served")
+					.long("static")
+					.action(ArgAction::Set),
 			)
 	}
 	fn run(&self, args: &clap::ArgMatches) -> anyhow::Result<()> {
 		let mut cli = SweetCli::default();
 		cli.package = args.get_one::<String>("package").cloned();
+		cli.static_dir = args.get_one::<String>("static").cloned();
 		cli.server.address.secure = args.get_flag("secure");
 		cli.release = args.get_flag("release");
 		cli.run()
