@@ -15,6 +15,7 @@ impl StyleAllCli {
 
 	pub fn watch(&self) -> Result<()> { Self::watcher().watch(|_| self.run()) }
 
+	//TODO only update changed files
 	fn watcher() -> FsWatcher {
 		FsWatcher::default()
 			.with_watch("**/*.css")

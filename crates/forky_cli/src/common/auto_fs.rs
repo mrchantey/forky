@@ -19,7 +19,6 @@ impl Subcommand for AutoFs {
 	}
 
 	fn run(&self, args: &ArgMatches) -> Result<()> {
-		// todo!("doesnt work,race condition, style removes css then mod doesnt see it");
 		let mutex = Arc::new(Mutex::new(()));
 		let mutex1 = mutex.clone();
 		let mutex2 = mutex.clone();

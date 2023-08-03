@@ -24,10 +24,13 @@ fn remove_all() -> Result<()> {
 }
 
 fn create_all() -> Result<()> {
+	let ignore = Pattern::new("**/target/**").unwrap();
+
 	glob("**/src/**/*.css")
 		.unwrap()
 		.filter_map(|val| val.ok())
 		.filter(|p| !parent_ends_with_underscore(p))
+		.filter(|p| !ignore.matches_path(p))
 		.filter(|path| {
 			let stem = path.file_stem().unwrap();
 			stem != "index" && stem != "lib"

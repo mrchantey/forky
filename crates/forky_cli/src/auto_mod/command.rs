@@ -17,7 +17,9 @@ fn watcher() -> FsWatcher {
 
 impl AutoModCommand {
 	pub fn run_with_mutex(&self, mutex: ArcMut<()>) -> anyhow::Result<()> {
-		watcher().with_mutex(mutex).watch(|_| run::run())
+		let mut watcher = watcher();
+		watcher.quiet = true;
+		watcher.with_mutex(mutex).watch(|_| run::run())
 	}
 }
 

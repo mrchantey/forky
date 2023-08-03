@@ -1,5 +1,9 @@
 use anyhow::Result;
-use forky_fs::process::spawn_command_blocking;
+use forky_core::OptionTExt;
+// use forky_fs::process::spawn_command_blocking;
+use forky_fs::process::spawn_command_with_shell_blocking;
+use std::fs::create_dir_all;
+use std::path::Path;
 
 pub struct Lightning {
 	pub src: String,
@@ -8,15 +12,21 @@ pub struct Lightning {
 impl Lightning {
 	#[rustfmt::skip]
 	pub fn run(&self) -> Result<()>{
+		create_dir_all(Path::new(&self.dst).parent().ok()?)?;
+
 		println!("\nstyle: running lightningcss\n");
 		let cmd = vec![
-			"lightningcss", &self.src,
+			"npx", "lightningcss", &self.src,
 			"--bundle", 
 			"--minify", 								
 			"--nesting",						
 			"--sourcemap",
 			"-o", &self.dst
 			];
-		spawn_command_blocking(&cmd)
+		// let cmd = vec![
+		// 	"lightningcss"
+		// 	];
+		// spawn_command_blocking(&cmd)
+		spawn_command_with_shell_blocking(&cmd)
 	}
 }

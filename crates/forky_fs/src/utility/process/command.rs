@@ -30,18 +30,28 @@ fn get_command(args: &Vec<&str>) -> Command {
 	cmd.args(args[1..].iter());
 	cmd
 }
-// fn get_command(command: &Vec<&str>) -> Command {
-// 	let is_windows = cfg!(target_os = "windows");
-// 	let (cmd, arg) = if is_windows {
-// 		// ("cmd", "\\C")
-// 		("powershell", "-Command")
-// 	} else {
-// 		("sh", "-c")
-// 	};
-// 	let mut cmd = Command::new(cmd);
-// 	cmd.arg(arg);
-// 	cmd
-// }
+
+pub fn spawn_command_with_shell_blocking(args: &Vec<&str>) -> Result<()> {
+	let _ = get_command_with_shell(args)
+		.stdout(Stdio::inherit())
+		.stderr(Stdio::inherit())
+		.output()?;
+	Ok(())
+}
+
+fn get_command_with_shell(args: &Vec<&str>) -> Command {
+	let is_windows = cfg!(target_os = "windows");
+	let (cmd, arg) = if is_windows {
+		// ("cmd", "\\C")
+		("powershell", "-Command")
+	} else {
+		("sh", "-c")
+	};
+	let mut cmd = Command::new(cmd);
+	cmd.arg(arg);
+	cmd.args(args);
+	cmd
+}
 
 pub struct CommandOutput {
 	pub success: bool,
