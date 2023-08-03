@@ -1,6 +1,9 @@
 # Forky CLI
 
-> *At this stage Forky is really just a proof of concept, do not use seriously!*
+> *Very early stage warning:*
+> - breaking changes on patch versions
+> - continued development not guaranteed
+> - bugs ahoy
 
 Various utilities to ease some of the repetitious work that comes with managing crates.
 
@@ -13,7 +16,6 @@ Its current incarnation is zero config and opinionated so you may want to play a
 - All files are modules *unless*
 	- They start with an underscore
 	- Their parent contains a double underscore
-
 
 ie
 ```

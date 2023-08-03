@@ -7,6 +7,13 @@ pub struct AppRes(pub RcCell<App>);
 impl AppRes {
 	pub fn new() -> RcCell<App> { Self::init(App::new()) }
 
+
+	pub fn build(func: impl FnOnce(&mut App)) -> RcCell<App> {
+		let mut app = App::new();
+		func(&mut app);
+		Self::init(app)
+	}
+
 	pub fn init(app: App) -> RcCell<App> {
 		let app = rccell(app);
 		let app2 = app.clone();
@@ -22,5 +29,11 @@ pub impl RcCell<App> {
 		forky_web::AnimationFrame::new(move || {
 			self.borrow_mut().update();
 		})
+	}
+
+	#[cfg(target_arch = "wasm32")]
+	async fn run_forever(self) {
+		let _frame = self.run_on_animation_frame();
+		forky_web::loop_forever().await;
 	}
 }

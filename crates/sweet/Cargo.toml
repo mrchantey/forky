@@ -1,7 +1,8 @@
 [package]
 name = "sweet"
-description = "Declarative testing framework"
+description = "Declarative native & web ui test framework."
 categories = ["development-tools::testing"]
+keywords = ["test", "wasm", "interactive", "jest", "cypress"]
 readme = "README.md"
 version = { workspace = true }
 edition = { workspace = true }

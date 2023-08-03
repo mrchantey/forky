@@ -1,7 +1,10 @@
 # sweet
-Write many tests quickly and cleanly.
+Sweet is a declarative native & web ui test framework with a focus on a sweet dev experience.
 
-> *Very early stage warning, do not use seriously!*
+> *Very early stage warning:*
+> - breaking changes on patch versions
+> - continued development not guaranteed
+> - lots of unwraps, if you get stuck please create an issue and I'll have a look
 
 ## Features
 
@@ -22,7 +25,7 @@ Write many tests quickly and cleanly.
 	path = "test/sweet.rs"
 	```
 1. create file `test/sweet.rs`
-	```rust
+	```rs
 	#![feature(imported_main)]
 	pub use sweet::*;
 
@@ -42,10 +45,12 @@ Write many tests quickly and cleanly.
 
 1. Follow native quickstart
 1. install the helper cli: `cargo install forky_cli`
-2. add some wasm matchers to your test
-	```rust
-	//mount a div in a framework of your choice, we'll use leptos here :)
-	mount(|cx|view!{cx,<h1>"This is a heading"</h1>});
+2. mount some html and add some wasm matchers to your test
+	```rs
+	web_sys::window().unwrap()
+			.document().unwrap()
+			.body().unwrap()
+			.set_inner_html("<h1>This is a heading</h1>");
 	expect_el("h1")?.to_contain_text("This is a heading")?;
 	```
 3. run `forky sweet`
@@ -55,15 +60,24 @@ Write many tests quickly and cleanly.
 
 ## Features
 
+### Macros
+
+```rs
+sweet!{
+	it "works"{}
+	test "is an alias for it"{}
+	it skip "wont run"{}
+	it only "will exclude non-onlys in this suite"{}
+}
+```
 ### Performance
 
-Sweet produces a single binary for each crate. The default rust intergration test runner creates a seperate binary for each test, which ramps up compile times, see [this blog](https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html) for more info.
-
-The wasm runner 
+- Single Binary - The default rust intergration test runner creates a seperate binary for each test, which ramps up compile times, see [this blog](https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html) for more info.
+- Very Hot Reload - The wasm cli tool features a lightweight dev server that uses `tower-livereload` instead of shutting down and restarting.
 
 ### Args (native)
 - filter by filename: `cargo run --example sweet -- some_dir/my_test`
-- `-w` argument
+- watch mode `-w`
 	- `cargo watch -q -x 'run --example sweet -- -w'`
 	- Clears terminal on each run
 	- Returns an exit code zero (cleaner output)
@@ -82,12 +96,14 @@ Received: foobar
 Lots of web stuff happens at weird times, so we've got helpers like `poll_ok`, which will wait for 4 seconds before failing.
 
 ```rs
-let _handle = set_timeout(||{
-	mount(|cx|view!{cx,<div>"hello world!"</div>});
-},Duration::from_millis(100));
+let _handle = set_timeout(|| {
+		mount(|cx| view!{cx,
+			<div>"sweet as!"</div>
+		});
+	}, Duration::from_millis(100));
 
-poll_ok(||expect_el("div")).await?
-	.to_contain_text("hello world!")?;
+poll_ok(|| expect_el("div")).await?
+	.to_contain_text("sweet as!")?;
 ```
 
 ### Informative outputs
@@ -102,14 +118,15 @@ poll_ok(||expect_el("div")).await?
 This makes it easier for the wasm test runner to produce cleaner output, but if you're only running native tests feel free to use `[[test]]` with `harness=false`.
 
 ### What about wasm-bindgen-test?
-Sweet has different priorities from [wasm-bindgen-test](https://rustwasm.github.io/wasm-bindgen/wasm-bindgen-test/index.html) in its current state.
-- Interactive - the runner will list all tests and they can be run at-will in the browser.
-- UI - Tests are run in a *mostly* isolated iframe (see TODO)
+Sweet has different priorities from [wasm-bindgen-test](https://rustwasm.github.io/wasm-bindgen/wasm-bindgen-test/index.html) in its current state, namely the focus is on UI & interactivity.
 
 ### TODO
 - wasm
-	- node & headless support
-	- seperate interactive runner from tests, currently the runner code, css etc is included.
+	- cli - allow user to include static files in build step, ie css
+	- node & headless support?
+	- tests return Result<(),JsValue>?
+- native
+	- use clap & expose parallel flag
 
 ### Reference
 - Matchers inspired by [jest](https://jestjs.io/)
