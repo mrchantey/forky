@@ -24,7 +24,7 @@ impl Subcommand for StyleCommandAll {
 			)
 			.arg(
 				Arg::new("package")
-					.help("package to find index.css file in")
+					.help("package to find lib.css file in")
 					.required(false)
 					.short('p')
 					.long("package")

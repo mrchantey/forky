@@ -44,9 +44,9 @@ impl From<&ArgMatches> for StyleAllCli {
 		let lightning = match lightning {
 			Some(dst) => {
 				let src = if let Some(package) = package {
-					format!("crates/{}/src/index.css", package)
+					format!("crates/{}/src/lib.css", package)
 				} else {
-					"src/index.css".to_string()
+					"src/lib.css".to_string()
 				};
 				Some(Lightning { src, dst })
 			}
