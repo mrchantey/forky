@@ -107,9 +107,9 @@ test crate *args:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example sweet -- {{args}}
 
 test-w crate *args:
-	RUST_BACKTRACE={{backtrace}} just watch 'cargo test -p {{crate}} --test sweet -- -w {{args}}'
+	RUST_BACKTRACE={{backtrace}} just watch -- cargo run -p {{crate}} --example sweet -- -w {{args}}
 
-watch command:
+watch *command:
 	forky watch {{command}} \
 	-w '**/*.rs' \
 	-i '{.git,target,html}/**' \
