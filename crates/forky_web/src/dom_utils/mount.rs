@@ -27,3 +27,17 @@ pub struct Mount;
 impl Drop for Mount {
 	fn drop(&mut self) { Document::x_clear() }
 }
+
+
+
+pub fn is_mounted(cx: Scope) -> impl Fn() -> bool {
+	let (mounted, _) = create_signal(cx, ());
+	move || -> bool { mounted.try_get_untracked().is_some() }
+}
+
+pub async fn loop_while_mounted(cx: Scope) {
+	let mounted = is_mounted(cx);
+	while mounted() {
+		wait_for_16_millis().await;
+	}
+}

@@ -37,6 +37,7 @@ bytemuck = { workspace = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 forky_web = { workspace = true }
+leptos = { workspace = true }
 
 [dev-dependencies]
 sweet = { workspace = true }

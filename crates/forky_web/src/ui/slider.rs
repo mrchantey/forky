@@ -25,11 +25,23 @@ pub fn Slider(
 #[component]
 pub fn TextSlider(
 	cx: Scope,
+	#[prop(default = 0.)] min: f32,
+	#[prop(default = 1.)] max: f32,
+	#[prop(default = 0.01)] step: f32,
 	#[prop(into)] value: ReadSignal<f32>,
 	#[prop(into)] set_value: WriteSignal<f32>,
 ) -> impl IntoView {
 	// let (value, set_value) = create_signal(cx, 50.);
 
+	let text_value = move || {
+		let value = value();
+		let rounded_value = (value / step).round() * step;
+		if rounded_value.fract() == 0. {
+			format!("{}", rounded_value as i32)
+		} else {
+			format!("{:.2}", rounded_value)
+		}
+	};
 	view! {cx,
 		<div class=ui_style::SLIDER_CONTAINER>
 		<input
@@ -40,10 +52,13 @@ pub fn TextSlider(
 					set_value(value);
 				}
 			}
-			prop:value=value
+			prop:value=text_value
 			/>
 		<input
 			type="range"
+			min=min
+			max=max
+			step=step
 			class=ui_style::SLIDER_RANGE_INPUT
 			on:input=move |ev| {
 				if let Ok(value) = event_target_value(&ev).parse::<f32>() {

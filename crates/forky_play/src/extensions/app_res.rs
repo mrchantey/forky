@@ -36,4 +36,17 @@ pub impl RcCell<App> {
 		let _frame = self.run_on_animation_frame();
 		forky_web::loop_forever().await;
 	}
+
+	#[cfg(target_arch = "wasm32")]
+	fn run_while_mounted(self, cx: leptos::Scope) {
+		leptos::spawn_local(async move {
+			let mounted = forky_web::is_mounted(cx);
+			let _frame = forky_web::AnimationFrame::new(move || {
+				if mounted() {
+					self.borrow_mut().update();
+				}
+			});
+			forky_web::loop_while_mounted(cx).await;
+		})
+	}
 }
