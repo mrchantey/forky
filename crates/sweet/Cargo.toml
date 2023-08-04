@@ -2,7 +2,16 @@
 name = "sweet"
 description = "Declarative native & web ui test framework."
 categories = ["development-tools::testing"]
-keywords = ["test", "wasm", "interactive", "jest", "cypress"]
+keywords = [
+	"unit",
+	"e2e",
+	"test",
+	"web",
+	"wasm",
+	"interactive",
+	"jest",
+	"cypress",
+]
 readme = "README.md"
 version = { workspace = true }
 edition = { workspace = true }

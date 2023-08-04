@@ -1,5 +1,5 @@
 # sweet
-Sweet is a declarative native & web ui test framework with a focus on a sweet dev experience.
+Sweet is a declarative native & web ui test framework delivering a sweet dev experience.
 
 > *Very early stage warning:*
 > - breaking changes on patch versions

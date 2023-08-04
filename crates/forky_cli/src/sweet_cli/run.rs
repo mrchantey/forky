@@ -100,8 +100,9 @@ impl SweetCli {
 
 	#[rustfmt::skip]
 	fn wasm_bingen(&self) -> Result<Child> {
-		let file = "target/wasm32-unknown-unknown/debug/examples/sweet.wasm";
-		let hash = hash_file_to_string(file)?;
+		let mode = if self.release { "release" } else { "debug" };
+		let file = format!("target/wasm32-unknown-unknown/{mode}/examples/sweet.wasm");
+		let hash = hash_file_to_string(&file)?;
 		let out_file = format!("sweet-{hash}");
 		self.replace_html_hash(&out_file)?;
 		println!("\nrunning wasm bindgen for {out_file}");
