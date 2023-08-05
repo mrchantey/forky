@@ -12,18 +12,13 @@ homepage = "https://github.com/mrchantey/forky/tree/main/crates/bevy_webxr"
 documentation = "https://github.com/mrchantey/forky/tree/main/crates/bevy_webxr"
 repository = "https://github.com/mrchantey/forky/tree/main/crates/bevy_webxr"
 
-# [lib]
-# crate-type = ["cdylib"]
-
 [dependencies]
-# RENDER
-# Copied from https://github.com/bevyengine/bevy/blob/main/crates/bevy_asset/Cargo.toml
-# bevy_web_asset = {git = "https://github.com/johanhelsing/bevy_web_asset.git", branch="bevy-0.10" }
-crossbeam-channel = "0.5.0"
+# MISC
 notify = "5.0.0"
-
-# bevy = "0.10.0"
-# bevy = {version = "0.11.0-dev", path = "../../../../work-ref/bevy"}
+crossbeam-channel = "0.5.0"
+anyhow = "1.0.4"
+extend = "1.1.2"
+# GAME
 bevy = "0.11.0"
 wgpu = "0.16.0"
 wgpu-types = { version = "0.16.0" }
@@ -35,10 +30,6 @@ wasm-bindgen-futures = "0.4"
 futures = "0.3.26"
 js-sys = "0.3"
 console_error_panic_hook = "0.1.6"
-# MISC
-anyhow = "1.0.4"
-extend = "1.1.2"
-
 [dependencies.web-sys]
 version = "0.3.61"
 features = [
