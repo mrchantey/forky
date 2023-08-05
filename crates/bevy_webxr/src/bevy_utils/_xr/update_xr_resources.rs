@@ -1,12 +1,5 @@
-
-
-
-
 use bevy::prelude::*;
-
-
 use web_sys::*;
-
 
 pub fn insert_gl_layer(world: &mut World) {
 	let gl_layer = world

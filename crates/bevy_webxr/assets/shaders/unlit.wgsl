@@ -1,3 +1,5 @@
+#import bevy_pbr::mesh_vertex_output MeshVertexOutput
+
 struct UnlitMaterial {
     color: vec4<f32>,
 };
@@ -6,8 +8,6 @@ struct UnlitMaterial {
 var<uniform> material: UnlitMaterial;
 
 @fragment
-fn fragment(
-    #import bevy_pbr::mesh_vertex_output
-) -> @location(0) vec4<f32> {
+fn fragment(in: MeshVertexOutput) -> @location(0) vec4<f32> {
     return material.color;
 }

@@ -1,12 +1,7 @@
 #![cfg(web_sys_unstable_apis)]
-
-use anyhow::{Result};
-
-
-
-
+use anyhow::Result;
 use wasm_bindgen::prelude::*;
-use wasm_bindgen_futures::{JsFuture};
+use wasm_bindgen_futures::JsFuture;
 use web_sys::*;
 
 

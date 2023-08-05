@@ -1,5 +1,4 @@
 use crate::*;
-use bevy::ecs::schedule::ScheduleLabel;
 use bevy::prelude::*;
 use bevy::render::camera::ManualTextureViewHandle;
 
@@ -22,7 +21,7 @@ impl Default for WebXrPlugin {
 		}
 	}
 }
-#[derive(Debug, Hash, PartialEq, Eq, Clone, SystemSet, ScheduleLabel)]
+#[derive(Debug, Hash, PartialEq, Eq, Clone, SystemSet)]
 pub enum WebXrSet {
 	PrePrepare,
 	Prepare,
@@ -42,23 +41,23 @@ impl Plugin for WebXrPlugin {
 				WebXrSet::Prepare, 
 				WebXrSet::Tracking
 				))
-			.configure_set(Update,WebXrSet::Prepare.after(WebXrSet::PrePrepare))
-			.configure_set(Update,WebXrSet::Tracking.after(WebXrSet::Prepare))
+			.configure_set(PreUpdate,WebXrSet::Prepare.after(WebXrSet::PrePrepare))
+			.configure_set(PreUpdate,WebXrSet::Tracking.after(WebXrSet::Prepare))
 			//Config
 			.add_systems(Startup,xr_utils::set_canvas_size)
-			.add_systems(WebXrSet::PrePrepare, bevy_utils::insert_gl_layer)
+			.add_systems(PreUpdate, bevy_utils::insert_gl_layer.in_set(WebXrSet::PrePrepare))
 			//Cameras
 			// .add_plugins(ExtractResourcePlugin::<bevy_utils::FramebufferTextureViewId>::default())
-			.add_systems(WebXrSet::Prepare,bevy_utils::update_manual_texture_views)
-			.add_systems(WebXrSet::Prepare,bevy_utils::insert_views)
-			.add_systems(WebXrSet::Tracking,bevy_utils::create_views)
-			.add_systems(WebXrSet::Tracking,bevy_utils::update_views
+			.add_systems(PreUpdate,bevy_utils::update_manual_texture_views.in_set(WebXrSet::Prepare))
+			.add_systems(PreUpdate,bevy_utils::insert_views.in_set(WebXrSet::Prepare))
+			.add_systems(PreUpdate,bevy_utils::create_views.in_set(WebXrSet::Tracking))
+			.add_systems(PreUpdate,bevy_utils::update_views.in_set(WebXrSet::Tracking)
 				.after(bevy_utils::create_views))			
 			//Input Sources
 			.insert_resource(bevy_utils::InputSourceAssetLookup::default())
-			.add_systems(WebXrSet::Prepare,bevy_utils::insert_input_sources)
-			.add_systems(WebXrSet::Tracking,bevy_utils::create_input_sources)
-			.add_systems(WebXrSet::Tracking,bevy_utils::update_input_sources
+			.add_systems(PreUpdate,bevy_utils::insert_input_sources.in_set(WebXrSet::Prepare))
+			.add_systems(PreUpdate,bevy_utils::create_input_sources.in_set(WebXrSet::Tracking))
+			.add_systems(PreUpdate,bevy_utils::update_input_sources.in_set(WebXrSet::Tracking)
 				.after(bevy_utils::create_input_sources))
 			.__();
 	}

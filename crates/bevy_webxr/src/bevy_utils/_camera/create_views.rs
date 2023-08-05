@@ -1,18 +1,10 @@
+use super::{BevyXrView, FramebufferTextureViewId};
 use crate::*;
 use bevy::{
-	core_pipeline::{
-		clear_color::ClearColorConfig,
-	},
-	prelude::*,
-	render::{
-		camera::{
-			RenderTarget,
-		},
-	},
-	utils::HashSet,
+	core_pipeline::clear_color::ClearColorConfig, prelude::*,
+	render::camera::RenderTarget, utils::HashSet,
 };
 use web_sys::*;
-use super::{BevyXrView, FramebufferTextureViewId};
 
 
 pub fn create_views(

@@ -20,10 +20,8 @@ pub fn run_bevy_webxr(app: App) {
 }
 pub async fn run_bevy_webxr_async(mut app: App) -> Result<(), JsValue> {
 	set_panic_hook();
-	if !app.is_plugin_added::<bevy_utils::WebXrPlugin>() {
-		// app.add_plugins(WebXrPlugin::default());
-	}
 	let (session, _) = init_xr_render(&mut app).await?;
+	app.finish();
 	let app = Arc::new(Mutex::new(app));
 	bevy_utils::input_source_asset_loader(&session, app.clone())?;
 	xr_utils::run_xr_loop(&session, move |_time: f64, frame: XrFrame| {
