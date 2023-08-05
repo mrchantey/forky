@@ -37,7 +37,7 @@ copy-wasm-assets:
 	cp -r ./assets ./html/assets
 
 serve *args:
-	cd ./html && live-server --watch=wasm/bindgen_bg.wasm {{args}}
+	cd ./html && live-server --host=0.0.0.0 --watch=wasm/bindgen_bg.wasm {{args}}
 serve-https:
 	just serve --https=https.config.js
 

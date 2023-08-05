@@ -1,14 +1,21 @@
-#![cfg(web_sys_unstable_apis)]
-
-use anyhow::{Result};
-
 use std::cell::RefCell;
 use std::rc::Rc;
-
 use wasm_bindgen::prelude::*;
-use wasm_bindgen_futures::{future_to_promise};
+use wasm_bindgen_futures::future_to_promise;
 use web_sys::*;
 
+pub fn init_and_run_xr<F>(f: F)
+where
+	F: Fn(f64, XrFrame) + 'static,
+{
+	let _ = future_to_promise(async {
+		let gl = super::create_webgl_context(true)?;
+		let session = super::create_xr_session(&gl).await?;
+		// log!("WebXR - {}",result.as_string().unwrap());
+		run_xr_loop(&session, f);
+		Ok(JsValue::UNDEFINED)
+	});
+}
 
 pub fn run_xr_loop<F>(session: &XrSession, on_frame: F)
 where
@@ -32,20 +39,3 @@ fn request_animation_frame_xr(
 }
 
 
-pub fn init_and_run_xr<F>(f: F)
-where
-	F: Fn(f64, XrFrame) + 'static,
-{
-	let _ = future_to_promise(init_and_run_xr_async(f));
-}
-
-pub async fn init_and_run_xr_async<F>(f: F) -> Result<JsValue, JsValue>
-where
-	F: Fn(f64, XrFrame) + 'static,
-{
-	let gl = super::create_webgl_context(true).unwrap();
-	let session = super::create_xr_session(&gl).await.unwrap();
-	// log!("WebXR - {}",result.as_string().unwrap());
-	run_xr_loop(&session, f);
-	Ok(JsValue::TRUE)
-}

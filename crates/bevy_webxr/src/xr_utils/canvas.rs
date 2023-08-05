@@ -1,6 +1,4 @@
-#![cfg(web_sys_unstable_apis)]
-
-use anyhow::{Result};
+use anyhow::Result;
 
 
 

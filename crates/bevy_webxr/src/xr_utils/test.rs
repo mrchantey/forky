@@ -1,17 +1,10 @@
 use crate::*;
-
-
-
-
-
-
-
 use web_sys::*;
-
 
 
 pub fn run_xr_test() {
 	log!("WebXR - Starting...");
+	xr_utils::create_default_canvas().unwrap();
 	set_panic_hook();
 	let _ = xr_utils::init_and_run_xr(move |_time: f64, _frame: XrFrame| {
 		log!("frame");
@@ -40,13 +33,13 @@ pub fn render_test_scene(
 		WebGl2RenderingContext::FRAMEBUFFER,
 		framebuffer.as_ref(),
 	);
-	
+
 	let mut i = 0;
 	let pose = frame.get_viewer_pose(&reference_space).unwrap();
 	pose.views().iter().for_each(|view| {
 		gl.enable(WebGl2RenderingContext::SCISSOR_TEST);
 		let (x, y, width, height) =
-		viewport_rect(&gl_layer.get_viewport(&view.into()).unwrap().into());
+			viewport_rect(&gl_layer.get_viewport(&view.into()).unwrap().into());
 		// log!("viewport: x:{x},y:{y},width:{width},height:{height}");
 		// gl.viewport(x, y, width, height); //for vertices
 		gl.scissor(x, y, width, height); //for clear
@@ -57,7 +50,7 @@ pub fn render_test_scene(
 		}
 		gl.clear(
 			WebGl2RenderingContext::COLOR_BUFFER_BIT
-			| WebGl2RenderingContext::DEPTH_BUFFER_BIT,
+				| WebGl2RenderingContext::DEPTH_BUFFER_BIT,
 		);
 		gl.disable(WebGl2RenderingContext::SCISSOR_TEST);
 		i += 1;

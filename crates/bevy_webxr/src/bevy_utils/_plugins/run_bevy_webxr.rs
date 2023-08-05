@@ -1,4 +1,3 @@
-// #![cfg(web_sys_unstable_apis)]
 use crate::*;
 use anyhow::Result;
 use bevy::prelude::*;
