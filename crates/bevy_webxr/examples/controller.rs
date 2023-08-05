@@ -7,10 +7,10 @@ fn main() {
 	set_panic_hook();
 	App::new()
 		.add_plugins(bevy_utils::WebXrBasePlugin)
-		.add_startup_system(demo::spawn_camera)
-		.add_startup_system(demo::spawn_ground)
-		.add_startup_system(demo::spawn_lights)
-		.add_startup_system(spawn_controller)
+		.add_systems(Startup, demo::spawn_camera)
+		.add_systems(Startup, demo::spawn_ground)
+		.add_systems(Startup, demo::spawn_lights)
+		.add_systems(Startup, spawn_controller)
 		.run();
 }
 

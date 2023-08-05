@@ -6,12 +6,10 @@ pub struct CameraPlugin;
 impl Plugin for CameraPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-			.add_system(orbit_camera_controller)
-			.add_system(orbit_keyboard_controller)
-			.add_system(camera_view_toggle)
-			.add_startup_system(
-				toggle_startup_camera.in_base_set(StartupSet::PostStartup),
-			)
+			.add_systems(Update, orbit_camera_controller)
+			.add_systems(Update, orbit_keyboard_controller)
+			.add_systems(Update, camera_view_toggle)
+			.add_systems(PostStartup, toggle_startup_camera)
 			.__();
 	}
 }
@@ -22,7 +20,7 @@ impl Plugin for DebugCameraPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
 			.insert_resource(CameraViewType::Orbit)
-			.add_startup_system(spawn_all_cameras)
+			.add_systems(Startup, spawn_all_cameras)
 			.__();
 	}
 }

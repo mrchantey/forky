@@ -12,7 +12,7 @@ pub fn on_edge_modified(
 	mut query: Query<(&EcsSplineGraphId, &SplineEdge), Changed<SplineEdge>>,
 ) {
 	for (graph_id, edge) in query.iter_mut() {
-		let graph = graph_lookup.get_mut(graph_id).unwrap();
+		let graph = graph_lookup.get_mut(&graph_id.0).unwrap();
 		graph.update_edge_mesh(&mut commands, &edge.id, &mut meshes);
 	}
 }

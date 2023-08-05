@@ -10,7 +10,7 @@ sweet! {
 	it "works" {
 		// App::new()
 		// .add_plugins(DefaultPlugins)
-		// .add_system(utility::create_exit_after_system(3))
+		// .add_systems(Update,utility::create_exit_after_system(3))
 		// .run();
 
 		// expect(true).to_be(false)?;

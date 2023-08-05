@@ -3,11 +3,11 @@ use forky_play::*;
 
 fn main() {
 	App::new()
-		.add_plugin(plugins::ForkyDebugPlugin::default())
-		.add_plugin(plugins::RotateCubePlugin)
-		// .add_plugin(graph::BlitGraphPlugin)
-		// .add_plugin(graph::ClearGraphPlugin)
-		.add_plugin(render_graph::CustomPipelinePlugin)
-		.add_system(utility::create_exit_after_system(4.))
+		.add_plugins(plugins::ForkyDebugPlugin::default())
+		.add_plugins(plugins::RotateCubePlugin)
+		// .add_plugins(graph::BlitGraphPlugin)
+		// .add_plugins(graph::ClearGraphPlugin)
+		.add_plugins(render_graph::CustomPipelinePlugin)
+		.add_systems(Update, utility::create_exit_after_system(4.))
 		.run();
 }

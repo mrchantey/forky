@@ -8,16 +8,16 @@ use sweet::*;
 sweet! {
 	it skip "works" {
 		App::new()
-			.add_plugin(plugins::ForkyFullPlugin::default())
-			.add_startup_system(surrender_focus)
+			.add_plugins(plugins::ForkyFullPlugin::default())
+			.add_systems(Startup, surrender_focus)
 			.insert_resource(RapierConfiguration::with_gravity_scalar(10.))
 			.add_event::<RespawnEvent>()
 			.add_event::<DespawnEvent>()
-			.add_system(maze_3d::respawn)
-			.add_system(maze_3d::despawn)
-			.add_system(ball::respawn)
-			.add_system(ball::despawn_on_ball_fall)
-			.add_startup_system(spawn)
+			.add_systems(Update,maze_3d::respawn)
+			.add_systems(Update,maze_3d::despawn)
+			.add_systems(Update,ball::respawn)
+			.add_systems(Update,ball::despawn_on_ball_fall)
+			.add_systems(Startup, spawn)
 			.run();
 	}
 }

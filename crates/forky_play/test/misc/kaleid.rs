@@ -3,12 +3,12 @@ use sweet::*;
 sweet! {
 	it "works" {
 		// App::new()
-		// .add_plugin(Kaleid)
-		// // .add_plugin(BasicPlugin)
-		// .add_startup_system(BasicPlugin::spawn_camera)
-		// .add_startup_system(||{})
+		// .add_plugins(Kaleid)
+		// // .add_plugins(BasicPlugin)
+		// .add_systems(Startup, BasicPlugin::spawn_camera)
+		// .add_systems(Startup, ||{})
 
-		// 	// .add_system(create_exit_after_system(3))
+		// 	// .add_systems(Update,create_exit_after_system(3))
 		// 	.run();
 
 	}

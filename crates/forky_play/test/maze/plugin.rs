@@ -6,9 +6,9 @@ sweet! {
 
 	it skip "works" {
 		App::new()
-			.add_plugin(plugins::ForkyFullPlugin::default())
-			.add_plugin(maze::MazePlugin)
-			.add_startup_system(utility::surrender_focus)
+			.add_plugins(plugins::ForkyFullPlugin::default())
+			.add_plugins(maze::MazePlugin)
+			.add_systems(Startup, utility::surrender_focus)
 			.forky_exit_after(2.)
 			.run();
 

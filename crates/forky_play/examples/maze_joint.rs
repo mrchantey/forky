@@ -1,14 +1,17 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 // use forky_core::{math::*, *};
-use forky_play::{maze::*, *};
+use forky_play::{
+	maze::*,
+	*,
+};
 
 fn main() {
 	App::new()
-		.add_plugin(plugins::ForkyFullPlugin::default())
+		.add_plugins(plugins::ForkyFullPlugin::default())
 		.insert_resource(board_joint::MazeJointParams::default())
-		.add_startup_system(spawn)
-		.add_system(board_joint::force_controller)
+		.add_systems(Startup, spawn)
+		.add_systems(Update, board_joint::force_controller)
 		.run();
 }
 

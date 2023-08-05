@@ -39,7 +39,7 @@ pub fn create_spline_node(
 			.entity(entity)
 			.remove::<(Selected, PrimaryInteracted)>();
 
-		let graph = graphs.get_mut(&graph_id).unwrap();
+		let graph = graphs.get_mut(&graph_id.0).unwrap();
 
 		if **graph_id != *graph.id {
 			continue;

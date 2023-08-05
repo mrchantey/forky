@@ -35,4 +35,4 @@ impl Plugin for WebXrBasePlugin {
 			.__();
 	}
 }
-// .add_system(bevy_utils::replace_standard_material.in_base_set(CoreSet::PostUpdate))
+// .add_systems(PostUpdate,bevy_utils::replace_standard_material)

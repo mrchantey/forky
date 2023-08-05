@@ -1,7 +1,6 @@
+use crate::base::*;
 use bevy::prelude::*;
 use forky_core::math::*;
-
-use crate::base::*;
 
 pub struct Kaleid;
 
@@ -9,8 +8,8 @@ pub struct KaleidNode {}
 
 impl Plugin for Kaleid {
 	fn build(&self, app: &mut App) {
-		app.add_startup_system(Self::spawn_meshes)
-			.add_system(Self::rotate_cube);
+		app.add_systems(Startup, Self::spawn_meshes)
+			.add_systems(Update, Self::rotate_cube);
 	}
 }
 

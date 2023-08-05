@@ -10,11 +10,11 @@ use std::time::Duration;
 pub impl App {
 	fn __(&mut self) -> &mut Self { self }
 	fn forky_surrender_focus(&mut self) -> &mut Self {
-		self.add_startup_system(utility::surrender_focus);
+		self.add_systems(Startup, utility::surrender_focus);
 		self
 	}
 	fn forky_exit_after(&mut self, secs: f64) -> &mut Self {
-		self.add_system(utility::create_exit_after_system(secs));
+		self.add_systems(Update, utility::create_exit_after_system(secs));
 		self
 	}
 	fn insert_test_timer(&mut self) -> &mut Self {

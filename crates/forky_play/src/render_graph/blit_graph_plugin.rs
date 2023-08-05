@@ -1,17 +1,14 @@
-use std::f32::consts::TAU;
-
+use super::*;
+use crate::TransformExt;
 use bevy::core_pipeline::clear_color::ClearColorConfig;
 use bevy::prelude::*;
 use bevy::render::camera::RenderTarget;
 use bevy::render::texture::BevyDefault;
 use bevy::render::RenderApp;
+use std::f32::consts::TAU;
 use wgpu::Extent3d;
 use wgpu::TextureDimension;
 use wgpu::TextureFormat;
-
-use crate::TransformExt;
-
-use super::*;
 
 pub struct BlitGraphPlugin;
 
@@ -110,7 +107,7 @@ impl Plugin for BlitGraphPlugin {
 			..default()
 		});
 
-		// app.add_system(log_image);
+		// app.add_systems(Update,log_image);
 		let render_app = app.get_sub_app_mut(RenderApp).unwrap();
 		render_app.insert_resource(BlitImageHandle {
 			src: src_image_handle.clone(),

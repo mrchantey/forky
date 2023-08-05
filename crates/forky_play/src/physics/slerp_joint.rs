@@ -1,4 +1,5 @@
-use crate::{QuatExt, Vec3Ext};
+use crate::QuatExt;
+use crate::Vec3Ext;
 use bevy::prelude::*;
 
 #[derive(Resource)]
@@ -20,8 +21,8 @@ impl Plugin for SlerpJointPlugin {
 			1.,
 			TimerMode::Repeating,
 		)))
-		// .add_startup_system(add_people)
-		.add_system(update_slerp);
+		// .add_systems(Startup, add_people)
+		.add_systems(Update, update_slerp);
 	}
 }
 

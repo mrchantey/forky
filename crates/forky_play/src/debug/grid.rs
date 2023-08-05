@@ -9,8 +9,8 @@ pub struct GridPlugin;
 impl Plugin for GridPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-			.add_startup_system(draw_grid)
-			.add_startup_system(draw_grid_axis)
+			.add_systems(Startup, draw_grid)
+			.add_systems(Startup, draw_grid_axis)
 			.__();
 	}
 }
@@ -44,22 +44,7 @@ fn draw_grid(mut lines: ResMut<DebugLines>) {
 
 
 fn draw_grid_axis(mut lines: ResMut<DebugLines>) {
-	lines.line_colored(
-		Vec3::ZERO,
-		Vec3::X,
-		DURATION,
-		Color::RED,
-	);
-	lines.line_colored(
-		Vec3::ZERO,
-		Vec3::Y,
-		DURATION,
-		Color::GREEN,
-	);
-	lines.line_colored(
-		Vec3::ZERO,
-		Vec3::Z,
-		DURATION,
-		Color::BLUE,
-	);
+	lines.line_colored(Vec3::ZERO, Vec3::X, DURATION, Color::RED);
+	lines.line_colored(Vec3::ZERO, Vec3::Y, DURATION, Color::GREEN);
+	lines.line_colored(Vec3::ZERO, Vec3::Z, DURATION, Color::BLUE);
 }

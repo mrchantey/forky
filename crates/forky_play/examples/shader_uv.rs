@@ -4,8 +4,8 @@ use forky_play::*;
 
 fn main() {
 	App::new()
-		.add_plugin(plugins::ForkyDebugPlugin::default())
-		.add_startup_system(setup)
+		.add_plugins(plugins::ForkyDebugPlugin::default())
+		.add_systems(Startup, setup)
 		.run();
 }
 

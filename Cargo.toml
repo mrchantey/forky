@@ -42,13 +42,13 @@ forky_web = { path = "./crates/forky_web", version = "0.*" }
 sweet = { path = "./crates/sweet", version = "0.*" }
 
 ### game ###
-bevy = { version = "0.10.0" }
-bevy-inspector-egui = "0.18.0"
-bevy_mod_debugdump = "0.7.0"
-bevy_rapier3d = { version = "0.21.0", features = ["debug-render-3d"] }
-bevy_prototype_debug_lines = { version = "0.10.0", features = ["3d"] }
-bevy_easings = "0.10.0"
-wgpu = { version = "0.15.0" }
+bevy = { version = "0.11.0" }
+bevy-inspector-egui = "0.19.0"
+bevy_mod_debugdump = "0.8.0"
+bevy_rapier3d = { version = "0.22.0", features = ["debug-render-3d"] }
+bevy_prototype_debug_lines = { version = "0.11.1", features = ["3d"] }
+bevy_easings = "0.11.1"
+wgpu = { version = "0.16.0" }
 # wgpu-hal = {version = "0.15.2",features = ["gles"]}
 
 ### AI ###

@@ -9,7 +9,8 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
 	commands
 		.spawn(NodeBundle {
 			style: Style {
-				size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
+				width: Val::Percent(100.0),
+				height: Val::Percent(100.0),
 				justify_content: JustifyContent::FlexStart,
 				flex_direction: FlexDirection::Column,
 				align_items: AlignItems::FlexStart,

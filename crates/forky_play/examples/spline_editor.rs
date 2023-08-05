@@ -4,9 +4,9 @@ use forky_play::*;
 fn main() {
 	let mut app = App::new();
 	app.__()
-		.add_plugin(plugins::ForkyFullPlugin::default())
-		.add_plugin(spline::SplinePlugin)
-		.add_startup_system(setup)
+		.add_plugins(plugins::ForkyFullPlugin::default())
+		.add_plugins(spline::SplinePlugin)
+		.add_systems(Startup, setup)
 		.run();
 }
 fn setup(

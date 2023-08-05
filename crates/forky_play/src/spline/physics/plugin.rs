@@ -8,7 +8,7 @@ pub struct SplinePhysicsPlugin;
 impl Plugin for SplinePhysicsPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-			.add_systems((
+			.add_systems(PostUpdate,(
 				update_velocity_from_impulse,
 				update_velocity_from_force,
 				update_velocity_from_friction,
@@ -16,9 +16,7 @@ impl Plugin for SplinePhysicsPlugin {
 				update_current_edge,//these two can be parallel
 				update_current_edge_ecs,//these two can be parallel
 				update_transform_position,
-				)
-				.in_set(physics::EulerPhysicsSet::Update)
-				.chain()
+				).chain().in_set(physics::EulerPhysicsSet::Update)
 			)
 			.__();
 	}

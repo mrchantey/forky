@@ -4,6 +4,6 @@ use forky_play::mithril;
 #[rustfmt::skip]
 fn main() { 
 	App::new()
-		.add_plugin(mithril::MithrilPlugin)
+		.add_plugins(mithril::MithrilPlugin)
 		.run(); 
 }

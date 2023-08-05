@@ -1,17 +1,18 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use forky_core::math::*;
-use forky_play::{utility::surrender_focus, *};
+use forky_play::utility::surrender_focus;
+use forky_play::*;
 use sweet::*;
 
 sweet! {
 	it skip "works" {
 
 		App::new()
-			.add_plugin(plugins::ForkyFullPlugin::default())
-			.add_startup_system(surrender_focus)
-			.add_startup_system(my_startup_system)
-			.add_system(my_system)
+			.add_plugins(plugins::ForkyFullPlugin::default())
+			.add_systems(Startup, surrender_focus)
+			.add_systems(Startup, my_startup_system)
+			.add_systems(Update, my_system)
 			.run();
 	}
 }

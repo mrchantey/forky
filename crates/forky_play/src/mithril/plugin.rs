@@ -8,7 +8,7 @@ pub struct MithrilPlugin;
 impl Plugin for MithrilPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-			.add_plugin(plugins::ForkyFullPlugin {
+			.add_plugins(plugins::ForkyFullPlugin {
 				debug_plugin: plugins::ForkyDebugPlugin {
 					debug_cameras: false,
 					debug_grid: false,
@@ -21,11 +21,11 @@ impl Plugin for MithrilPlugin {
 				},
 				..default()
 			})
-			.add_plugin(spline::SplinePlugin)
-			.add_startup_system(spawn_camera)
-			.add_startup_system(spawn_initial_graph)
-			.add_startup_system(spawn_cart_settings)
-			.add_system(spawn_carts.in_base_set(CoreSet::PreUpdate))
+			.add_plugins(spline::SplinePlugin)
+			.add_systems(Startup, spawn_camera)
+			.add_systems(Startup, spawn_initial_graph)
+			.add_systems(Startup, spawn_cart_settings)
+			.add_systems(PreUpdate, spawn_carts)
 			.__();
 	}
 }

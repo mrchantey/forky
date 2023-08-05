@@ -12,16 +12,13 @@ pub struct EulerPhysicsPlugin;
 impl Plugin for EulerPhysicsPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-			.configure_set(EulerPhysicsSet::Update
-				.in_base_set(CoreSet::PostUpdate))
-			.add_systems((
+			.configure_set(PostUpdate, EulerPhysicsSet::Update)
+			.add_systems(PostUpdate,(
 				update_velocity_from_impulse,
 				update_velocity_from_force,
 				update_velocity_from_friction,
 				update_position,
-			)
-			.in_set(EulerPhysicsSet::Update)
-				.chain()
+			).chain().in_set(EulerPhysicsSet::Update)
 		)
 			.__();
 	}

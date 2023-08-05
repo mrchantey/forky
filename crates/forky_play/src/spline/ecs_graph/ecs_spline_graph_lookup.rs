@@ -1,9 +1,14 @@
 use super::*;
 use crate::*;
 use bevy::prelude::*;
+use std::borrow::Borrow;
 
 #[derive(Component, Debug, Deref, DerefMut, Clone, Copy)]
 pub struct EcsSplineGraphId(pub u64);
+
+impl Borrow<u64> for EcsSplineGraphId {
+	fn borrow(&self) -> &u64 { &self.0 }
+}
 
 #[derive(Resource, Deref, DerefMut)]
 pub struct EcsSplineGraphLookup(pub IdHashMap<EcsSplineGraph>);

@@ -9,7 +9,7 @@ sweet! {
 		let mut app = App::new();
 		app.__()
 			.forky_exit_after(3.)
-			.add_plugin(plugins::ForkyDebugPlugin::default())
+			.add_plugins(plugins::ForkyDebugPlugin::default())
 			.__()
 			.run();
 	}

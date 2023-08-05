@@ -40,7 +40,7 @@ pub fn update_current_edge(
 	)>,
 ) {
 	for (entity, position, edge, graph_id) in query.iter_mut() {
-		let graph = graph_lookup.get(&graph_id).unwrap();
+		let graph = graph_lookup.get(&graph_id.0).unwrap();
 		update_edge(&mut commands, entity, position, edge, graph);
 	}
 }
@@ -56,7 +56,7 @@ pub fn update_current_edge_ecs(
 	)>,
 ) {
 	for (entity, position, edge, graph_id) in query.iter_mut() {
-		let graph = graph_lookup.get(&graph_id).unwrap();
+		let graph = graph_lookup.get(&graph_id.0).unwrap();
 		update_edge(&mut commands, entity, position, edge, &graph.graph);
 	}
 }

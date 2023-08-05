@@ -1,11 +1,16 @@
 use super::*;
 use crate::spline::Spline;
 use bevy::prelude::*;
+use std::borrow::Borrow;
 
 #[derive(
 	Component, Debug, Deref, DerefMut, Clone, Copy, Eq, PartialEq, Hash,
 )]
 pub struct SplineEdgeId(pub u64);
+
+impl Borrow<u64> for SplineEdgeId {
+	fn borrow(&self) -> &u64 { &self.0 }
+}
 
 #[derive(Component, Debug, Copy, Clone, PartialEq)]
 pub struct SplineEdge {

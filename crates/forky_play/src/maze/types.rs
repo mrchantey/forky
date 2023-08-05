@@ -7,7 +7,7 @@ pub struct MazeGame {
 	pub score: usize,
 }
 
-
+#[derive(Event)]
 pub struct RespawnEvent {
 	pub level: usize,
 	pub num_cols: usize,
@@ -17,7 +17,7 @@ pub struct RespawnEvent {
 	pub wall_height: f32,
 }
 
-#[derive(PartialEq)]
+#[derive(Event, PartialEq)]
 pub enum DespawnEvent {
 	Success,
 	Reset,

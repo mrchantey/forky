@@ -15,7 +15,7 @@ pub fn on_node_moved(
 	>,
 ) {
 	for (transform, graph_id, node) in query.iter_mut() {
-		let graph = graph_lookup.get_mut(&graph_id).unwrap();
+		let graph = graph_lookup.get_mut(&graph_id.0).unwrap();
 		graph.update_node_position(
 			&mut commands,
 			&mut meshes,

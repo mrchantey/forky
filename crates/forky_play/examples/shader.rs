@@ -3,9 +3,9 @@ use forky_play::*;
 
 fn main() {
 	App::new()
-		.add_plugin(plugins::ForkyDebugPlugin::default())
-		.add_plugin(MaterialPlugin::<render_graph::CustomMaterial>::default())
-		.add_startup_system(setup)
+		.add_plugins(plugins::ForkyDebugPlugin::default())
+		.add_plugins(MaterialPlugin::<render_graph::CustomMaterial>::default())
+		.add_systems(Startup, setup)
 		.run();
 }
 

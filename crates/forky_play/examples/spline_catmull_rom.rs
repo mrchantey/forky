@@ -5,9 +5,9 @@ fn main() {
 	let mut app = App::new();
 	app.__()
 		// .forky_exit_after(10.)
-		.add_plugin(plugins::ForkyFullPlugin::default())
-		.add_plugin(spline::SplinePlugin)
-		.add_startup_system(setup)
+		.add_plugins(plugins::ForkyFullPlugin::default())
+		.add_plugins(spline::SplinePlugin)
+		.add_systems(Startup, setup)
 		.run();
 }
 

@@ -1,15 +1,16 @@
 use bevy::prelude::*;
-use forky_play::{utility::surrender_focus, *};
+use forky_play::utility::surrender_focus;
+use forky_play::*;
 use sweet::*;
 
 sweet! {
 	it skip "works" {
 
 		App::new()
-			.add_plugin(plugins::ForkyFullPlugin::default())
-			.add_plugin(physics::SlerpJointPlugin)
-			.add_startup_system(surrender_focus)
-			.add_startup_system(my_startup_system)
+			.add_plugins(plugins::ForkyFullPlugin::default())
+			.add_plugins(physics::SlerpJointPlugin)
+			.add_systems(Startup, surrender_focus)
+			.add_systems(Startup, my_startup_system)
 			.run();
 	}
 }

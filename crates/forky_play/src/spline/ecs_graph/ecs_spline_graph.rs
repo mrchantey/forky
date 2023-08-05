@@ -1,9 +1,9 @@
 use super::*;
-use crate::{
-	materials::UvMaterial,
-	spline::{graph::*, *},
-};
-use bevy::{prelude::*, utils::HashMap};
+use crate::materials::UvMaterial;
+use crate::spline::graph::*;
+use crate::spline::*;
+use bevy::prelude::*;
+use bevy::utils::HashMap;
 use petgraph::data::Build;
 
 #[derive(Debug, Clone)]
@@ -195,7 +195,7 @@ impl EcsSplineGraph {
 		position: Vec3,
 		handle_index: &SplineHandleIndex,
 	) {
-		let ecs_edge = self.edges.get_mut(&edge_id).unwrap();
+		let ecs_edge = self.edges.get_mut(&edge_id.0).unwrap();
 		self.graph
 			.edge_weight_mut(ecs_edge.node1, ecs_edge.node2)
 			.unwrap()

@@ -26,7 +26,7 @@ pub fn link_spline_nodes(
 		if **graph_id1 != **graph_id2 {
 			continue;
 		}
-		let graph = graphs.get_mut(&graph_id1).unwrap();
+		let graph = graphs.get_mut(&graph_id1.0).unwrap();
 		if graph.graph.contains_edge(*node1, *node2) {
 			continue;
 		}
@@ -34,7 +34,7 @@ pub fn link_spline_nodes(
 			transform1.translation,
 			transform2.translation,
 		));
-		
+
 		graph.create_edge_with_spline(&mut commands, *node1, *node2, spline);
 
 		// let new_node = graph.add_node(node.position);

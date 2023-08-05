@@ -8,8 +8,8 @@ impl Plugin for RotateCubePlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
 			.insert_resource(Speed(0.25))
-			.add_startup_system(spawn_cube)
-			.add_system(rotate)
+			.add_systems(Startup, spawn_cube)
+			.add_systems(Update, rotate)
 			.__();
 	}
 }

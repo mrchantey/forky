@@ -10,7 +10,7 @@ pub fn select_entities(
 	mouse: Res<Input<MouseButton>>,
 	selected: Query<Entity, With<Selected>>,
 ) {
-	let multi_select = keys.any_pressed([KeyCode::LControl, KeyCode::RControl]);
+	let multi_select = keys.any_pressed([KeyCode::ControlLeft, KeyCode::ControlRight]);
 
 /*
 if ray hit

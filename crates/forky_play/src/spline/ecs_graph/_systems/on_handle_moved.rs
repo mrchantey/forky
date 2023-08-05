@@ -18,7 +18,7 @@ pub fn on_handle_moved(
 	>,
 ) {
 	for (transform, handle_index, edge_id, graph_id) in query.iter_mut() {
-		let graph = graph_lookup.get_mut(&graph_id).unwrap();
+		let graph = graph_lookup.get_mut(&graph_id.0).unwrap();
 		graph.update_edge_from_handle(
 			&mut commands,
 			&mut meshes,

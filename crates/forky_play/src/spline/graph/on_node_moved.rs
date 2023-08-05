@@ -8,7 +8,7 @@ pub fn on_node_moved(
 	query: Query<(&Transform, &SplineNode, &SplineGraphId), Changed<Transform>>,
 ) {
 	for (transform, node, graph_id) in query.iter() {
-		let _graph = graph_lookup.get_mut(&graph_id).unwrap();
+		let _graph = graph_lookup.get_mut(&graph_id.0).unwrap();
 
 		// graph.get_
 		println!("Node {} moved to {:?}", **node, transform.translation);

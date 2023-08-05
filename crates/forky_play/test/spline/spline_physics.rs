@@ -1,8 +1,7 @@
 use bevy::prelude::*;
-use forky_play::{
-	spline::{CubicSpline, Spline},
-	*,
-};
+use forky_play::spline::CubicSpline;
+use forky_play::spline::Spline;
+use forky_play::*;
 use sweet::*;
 sweet! {
 
@@ -10,8 +9,8 @@ sweet! {
 		// let mut app = App::new();
 		// app.__()
 		// 	.insert_test_timer()
-		// 	.add_plugin(plugins::ForkyFullPlugin::default())
-		// 	.add_plugin(spline::SplinePlugin)
+		// 	.add_plugins(plugins::ForkyFullPlugin::default())
+		// 	.add_plugins(spline::SplinePlugin)
 		// 	.__();
 
 		// let player_id = app.world.spawn((

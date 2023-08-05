@@ -8,7 +8,7 @@ fn setup() -> App {
 	let mut app = App::new();
 	app.__()
 		.insert_test_timer()
-		.add_plugin(physics::EulerPhysicsPlugin)
+		.add_plugins(physics::EulerPhysicsPlugin)
 		.__();
 	app
 }
@@ -79,9 +79,9 @@ sweet! {
 	test skip "acceleration - force - visualize"{
 		App::new()
 		.forky_exit_after(4.)
-		.add_plugin(plugins::ForkyDebugPlugin::default())
-		.add_plugin(physics::EulerPhysicsPlugin)
-		.add_startup_system(spawn_falling_cube)
+		.add_plugins(plugins::ForkyDebugPlugin::default())
+		.add_plugins(physics::EulerPhysicsPlugin)
+		.add_systems(Startup, spawn_falling_cube)
 		.run();
 
 	}

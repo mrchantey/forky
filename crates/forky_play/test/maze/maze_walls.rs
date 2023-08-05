@@ -1,18 +1,17 @@
 use bevy::prelude::*;
-use forky_play::{
-	maze::{maze_wall, mesh_shape},
-	utility::surrender_focus,
-	*,
-};
+use forky_play::maze::maze_wall;
+use forky_play::maze::mesh_shape;
+use forky_play::utility::surrender_focus;
+use forky_play::*;
 use sweet::*;
 
 sweet! {
 	it skip "works" {
 		App::new()
-			.add_plugin(plugins::ForkyFullPlugin::default())
-			// .add_plugin(maze::MazePlugin)
-			.add_startup_system(spawn_all_walls)
-			.add_startup_system(surrender_focus)
+			.add_plugins(plugins::ForkyFullPlugin::default())
+			// .add_plugins(maze::MazePlugin)
+			.add_systems(Startup, spawn_all_walls)
+			.add_systems(Startup, surrender_focus)
 			// .forky_exit_after(2)
 			.run();
 	}
