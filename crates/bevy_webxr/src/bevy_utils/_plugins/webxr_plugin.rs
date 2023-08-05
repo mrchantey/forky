@@ -33,10 +33,10 @@ pub enum WebXrSet {
 impl Plugin for WebXrPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-			.add_plugin(bevy_utils::WebXrBasePlugin)
-			.insert_resource(bevy_utils::FramebufferTextureViewId(ManualTextureViewHandle(self.framebuffer_id)))
 			.insert_non_send_resource(self.session_mode)
 			.insert_non_send_resource(xr_utils::unwrap_reference_space_type(&self.session_mode, self.reference_space_type))
+			.add_plugins(bevy_utils::WebXrBasePlugin)
+			.insert_resource(bevy_utils::FramebufferTextureViewId(ManualTextureViewHandle(self.framebuffer_id)))
 			.configure_sets(PreUpdate,(
 				WebXrSet::PrePrepare,
 				WebXrSet::Prepare, 
@@ -48,7 +48,7 @@ impl Plugin for WebXrPlugin {
 			.add_systems(Startup,xr_utils::set_canvas_size)
 			.add_systems(WebXrSet::PrePrepare, bevy_utils::insert_gl_layer)
 			//Cameras
-			// .add_plugin(ExtractResourcePlugin::<bevy_utils::FramebufferTextureViewId>::default())
+			// .add_plugins(ExtractResourcePlugin::<bevy_utils::FramebufferTextureViewId>::default())
 			.add_systems(WebXrSet::Prepare,bevy_utils::update_manual_texture_views)
 			.add_systems(WebXrSet::Prepare,bevy_utils::insert_views)
 			.add_systems(WebXrSet::Tracking,bevy_utils::create_views)

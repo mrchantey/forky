@@ -1,7 +1,4 @@
-use bevy::{
-	log::LogPlugin,
-	prelude::*,
-};
+use bevy::{log::LogPlugin, prelude::*};
 
 use crate::*;
 
@@ -13,7 +10,7 @@ impl Plugin for WebXrBasePlugin {
 		xr_utils::create_default_canvas().unwrap();
 
 		app.__()
-			.add_plugin(bevy_web_asset::WebAssetPlugin::default())
+			.add_plugins(bevy_web_asset::WebAssetPlugin::default())
 			.add_plugins(
 				DefaultPlugins
 					.set(WindowPlugin {
@@ -32,10 +29,10 @@ impl Plugin for WebXrBasePlugin {
 					.build()
 					.disable::<AssetPlugin>()//use webassetplugin
 			)
-			.add_plugin(bevy_utils::RawProjectionPlugin)
-			.add_plugin(MaterialPlugin::<bevy_utils::UnlitMaterial>::default())
-			.add_plugin(MaterialPlugin::<bevy_utils::UnlitTextureMaterial>::default())
-			// .add_system(bevy_utils::replace_standard_material.in_base_set(CoreSet::PostUpdate))
+			.add_plugins(bevy_utils::RawProjectionPlugin)
+			.add_plugins(MaterialPlugin::<bevy_utils::UnlitMaterial>::default())
+			.add_plugins(MaterialPlugin::<bevy_utils::UnlitTextureMaterial>::default())
 			.__();
 	}
 }
+// .add_system(bevy_utils::replace_standard_material.in_base_set(CoreSet::PostUpdate))

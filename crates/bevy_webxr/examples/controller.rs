@@ -6,7 +6,7 @@ use bevy_webxr::*;
 fn main() {
 	set_panic_hook();
 	App::new()
-		.add_plugin(bevy_utils::WebXrBasePlugin)
+		.add_plugins(bevy_utils::WebXrBasePlugin)
 		.add_startup_system(demo::spawn_camera)
 		.add_startup_system(demo::spawn_ground)
 		.add_startup_system(demo::spawn_lights)

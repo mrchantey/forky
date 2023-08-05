@@ -3,5 +3,5 @@ use bevy_webxr::*;
 
 fn main() {
 	set_panic_hook();
-	App::new().add_plugin(demo::DemoScenePlugin).run();
+	App::new().add_plugins(demo::DemoScenePlugin).run();
 }

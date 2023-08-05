@@ -21,7 +21,7 @@ use super::WebAssetIo;
 /// // The web asset plugin should be added instead of the `AssetPlugin`
 /// // Internally, WebAssetPlugin will create an AssetPlugin and hook into
 /// // it in the right places
-/// app.add_plugin(WebAssetPlugin::default());
+/// app.add_plugins(WebAssetPlugin::default());
 /// app.add_plugins(DefaultPlugins.build().disable::<AssetPlugin>());
 /// ```
 ///});
@@ -67,7 +67,7 @@ impl Plugin for WebAssetPlugin {
 		app.insert_resource(AssetServer::new(asset_io));
 
 		// Add the asset plugin
-		app.add_plugin(asset_plugin);
+		app.add_plugins(asset_plugin);
 
 		// Optionally add the filesystem watcher system
 		if let Some(_) = self.asset_plugin.watch_for_changes {

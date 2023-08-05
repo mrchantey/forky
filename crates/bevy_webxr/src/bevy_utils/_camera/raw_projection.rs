@@ -12,7 +12,7 @@ pub struct RawProjectionPlugin;
 impl Plugin for RawProjectionPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-		.add_plugin(CameraProjectionPlugin::<bevy_utils::RawProjection>::default())
+		.add_plugins(CameraProjectionPlugin::<bevy_utils::RawProjection>::default())
 		.add_systems(PostUpdate,update_frusta::<bevy_utils::RawProjection>
     	.after(VisibilitySystems::UpdatePerspectiveFrusta)
 			.after(camera_system::<bevy_utils::RawProjection>)
@@ -23,7 +23,7 @@ impl Plugin for RawProjectionPlugin {
 	}
 }
 
-#[derive(Component, Debug, Clone, Reflect, FromReflect)]
+#[derive(Component, Debug, Clone, Reflect)]
 #[reflect(Component, Default)]
 pub struct RawProjection {
 	pub mat: Mat4,

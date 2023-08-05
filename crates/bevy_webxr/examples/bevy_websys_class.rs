@@ -18,7 +18,7 @@ impl Runner {
 		let mut app = App::new();
 		app
 			// .add_plugins(DefaultPlugins.build().disable::<WinitPlugin>())
-			.add_plugin(demo::DemoScenePlugin);
+			.add_plugins(demo::DemoScenePlugin);
 		// .run();
 		// .update();
 

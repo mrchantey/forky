@@ -6,7 +6,7 @@ VERY early-stage standalone WebXR renderer for the Bevy Engine.
 ### Terminal 1.
 I'm using npm `live-server` because I know how to do https (required for webxr) with that but feel free to use whatever you like.
 ```sh
-just ssh
+just ssl
 just serve
 ```
 ### Terminal 2
@@ -23,8 +23,8 @@ use bevy_webxr::{demo::DemoScenePlugin, bevy_utils::WebXrPlugin};
 fn main() {
 	let mut app = App::new();
 	app
-		.add_plugin(DemoScenePlugin)
-		.add_plugin(WebXrPlugin)
+		.add_plugins(DemoScenePlugin)
+		.add_plugins(WebXrPlugin)
 	// custom run method hooks into session.requestAnimationFrame
 	app.run_webxr();
 }

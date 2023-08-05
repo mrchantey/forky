@@ -10,7 +10,7 @@ use bevy::prelude::*;
 use std::sync::{Arc, Mutex};
 
 use wasm_bindgen::JsValue;
-use wasm_bindgen_futures::{spawn_local};
+use wasm_bindgen_futures::spawn_local;
 use web_sys::*;
 
 // use super::{add_input_source_event, WebXrPlugin};
@@ -21,7 +21,7 @@ pub fn run_bevy_webxr(app: App) {
 pub async fn run_bevy_webxr_async(mut app: App) -> Result<(), JsValue> {
 	set_panic_hook();
 	if !app.is_plugin_added::<bevy_utils::WebXrPlugin>() {
-		// app.add_plugin(WebXrPlugin::default());
+		// app.add_plugins(WebXrPlugin::default());
 	}
 	let (session, _) = init_xr_render(&mut app).await?;
 	let app = Arc::new(Mutex::new(app));
@@ -46,8 +46,7 @@ pub async fn init_xr_render(
 
 	let _gl_layer = xr_utils::create_xr_gl_layer(&session, &gl)?;
 	let reference_space =
-		xr_utils::get_reference_space(&session, reference_space_type)
-			.await?;
+		xr_utils::get_reference_space(&session, reference_space_type).await?;
 
 	app.__()
 		.insert_non_send_resource(session.clone())
