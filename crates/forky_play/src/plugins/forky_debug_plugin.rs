@@ -47,7 +47,6 @@ impl Plugin for ForkyDebugPlugin {
 		}
 		if cfg!(debug_assertions) {
 			app.__()
-				.add_plugins(bevy_prototype_debug_lines::DebugLinesPlugin::with_depth_test(true))
 				.add_plugins(WorldInspectorPlugin::default().run_if(
 					bevy::input::common_conditions::input_toggle_active(
 						false,

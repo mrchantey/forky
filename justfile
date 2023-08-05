@@ -30,7 +30,7 @@ cli *args:
 	cargo run -p forky_cli {{args}}
 
 run-w *args:
-	just watch 'just run {{args}}'
+	just watch just run {{args}}
 
 build crate example:
 	RUST_BACKTRACE={{backtrace}} cargo build -p {{crate}} --example {{example}}
@@ -128,7 +128,6 @@ bevy-deps:
 	cargo search bevy-inspector-egui 
 	cargo search bevy_mod_debugdump 
 	cargo search bevy_rapier3d 
-	cargo search bevy_prototype_debug_lines 
 	cargo search bevy_easings
 
 
