@@ -7,14 +7,7 @@ Rust utilities to do some of the heavy lifting for devs.
 > - continued development not guaranteed
 > - bugs ahoy
 
-
-
-
-
-## Contents
-
-
-
+## Crates
 - [Forky CLI](./crates/forky_cli/README.md)
 - [Sweet](./crates/sweet/README.md)
 - [Bevy WebXR Demo](./crates/bevy_webxr/README.md)

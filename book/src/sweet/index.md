@@ -1,5 +1,4 @@
-# sweet
-Sweet is a declarative native & web ui test framework delivering a sweet dev experience.
+# Sweet
 
 > *Very early stage warning:*
 > - breaking changes on patch versions
@@ -56,7 +55,7 @@ Sweet is a declarative native & web ui test framework delivering a sweet dev exp
 3. run `forky sweet`
 	- requires [wasm-bindgen-cli](https://rustwasm.github.io/wasm-bindgen/reference/cli.html)
 
-![wasm-runner](https://raw.githubusercontent.com/mrchantey/forky/main/book/sweet/images/wasm-runner.png)
+![wasm-runner](images/wasm-runner.png)
 
 ## Features
 
@@ -108,9 +107,9 @@ poll_ok(|| expect_el("div")).await?
 
 ### Informative outputs
 - Long running tests show which suite is hanging
-	- ![progress](https://raw.githubusercontent.com/mrchantey/forky/main/book/sweet/images/progress.png)
+	- ![progress](images/progress.png)
 - Failures are highly descriptive 
-	- ![failure](https://raw.githubusercontent.com/mrchantey/forky/main/book/sweet/images/failure.png)
+	- ![failure](images/failure.png)
 
 ## Misc
 
