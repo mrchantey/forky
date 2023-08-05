@@ -88,8 +88,9 @@ fn do_thing(frame: NonSend<web_sys::XrFrame>){
 - Oculus Quest
 	- Standard Materials broken on Android/Quest web, [issue](https://github.com/bevyengine/bevy/issues/4582)
 		- Thus controllers currently dont render
-	- **Help Wanted** - Subtle issue with projection matrix, ie rotating head seems to translate meshes slightly
+	- **Help Wanted** - Subtle issue with projection matrix, ie tilting head seems to translate meshes slightly
 - No other devices have been tested
+
 ### Contributing
 
 - I know this is a little unconventional, but I auto-generate `mod.rs` files based on directory layout. The default rules are that any file and directory with a `_` prefix is exposed as-is. Otherwise directories are treated as 'namespaces'. The `lib.rs` file is not auto-generated 
