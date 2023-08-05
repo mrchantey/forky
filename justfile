@@ -97,7 +97,6 @@ publish-all:
 start crate: 
 	./target/debug/{{crate}}.exe
 
-
 test-all *args:
 	for file in {{testable}}; do \
 		just test $file {{args}}; \
@@ -107,14 +106,15 @@ test crate *args:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example sweet -- {{args}}
 
 test-w crate *args:
-	RUST_BACKTRACE={{backtrace}} just watch -- cargo run -p {{crate}} --example sweet -- -w {{args}}
+	RUST_BACKTRACE={{backtrace}} just watch cargo run -p {{crate}} --example sweet -- -w {{args}}
 
 watch *command:
-	forky watch {{command}} \
+	forky watch \
 	-w '**/*.rs' \
 	-i '{.git,target,html}/**' \
 	-i '**/mod.rs' \
 	-i '**/*_g.rs' \
+	-- {{command}}
 ### PLAY ###
 
 vis:
@@ -122,6 +122,15 @@ vis:
 	just dot-to-svg target/render_graph.dot
 dot-to-svg target:
 	dot -Tsvg -O {{target}}
+
+bevy-deps:
+	cargo search bevy
+	cargo search bevy-inspector-egui 
+	cargo search bevy_mod_debugdump 
+	cargo search bevy_rapier3d 
+	cargo search bevy_prototype_debug_lines 
+	cargo search bevy_easings
+
 
 ### WASM ###
 

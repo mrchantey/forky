@@ -22,7 +22,7 @@ impl Subcommand for WatchCommand {
 				Arg::new("cmd")
 					.help(format!(
 						"the space seperated command to run, ie {}",
-						"forky watch echo howdy".green().bold()
+						"forky watch -- echo howdy".green().bold()
 					))
 					.required(true)
 					.action(ArgAction::Append),
@@ -47,7 +47,6 @@ impl Subcommand for WatchCommand {
 				Arg::new("once")
 					.help("only run once instead of watching indefinitely")
 					.required(false)
-					.short('b')
 					.long("once")
 					.action(ArgAction::SetTrue),
 			)
