@@ -19,7 +19,6 @@ impl SuiteLogger for SuiteLoggerWasm {
 		SuiteLoggerWasm {
 			log: String::from("\n"),
 			// buffer_log: LogBuffer::new_log(),
-			// buffer_err: LogBuffer::new_err(),
 		}
 	}
 
