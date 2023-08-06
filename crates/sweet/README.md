@@ -22,3 +22,13 @@
 
   <sub>Built with ❤️ by mrchantey</a></sub>
 </div>
+
+## Usage
+
+```rs
+sweet! {
+  it "works" {
+		expect("some string").not().to_start_with("foo")?;
+  }
+}
+```

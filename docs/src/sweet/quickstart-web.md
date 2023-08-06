@@ -2,6 +2,7 @@
 
 1. Follow native quickstart
 1. install the helper cli: `cargo install forky_cli`
+	- More details on the [cli page](../forky_cli/sweet.md)
 2. mount some html and add some wasm matchers to your test
 	```rs
 	web_sys::window().unwrap()
