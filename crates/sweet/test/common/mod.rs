@@ -8,5 +8,7 @@ mod multithreaded;
 pub use self::multithreaded::*;
 mod panic;
 pub use self::panic::*;
+mod test_case;
+pub use self::test_case::*;
 mod test_suite;
 pub use self::test_suite::*;

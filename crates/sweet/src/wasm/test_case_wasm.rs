@@ -45,11 +45,5 @@ impl TestCase for TestCaseWasm {
 				.as_string()
 				.unwrap_or("Sweet - Failed to unwrap error".to_string())),
 		}
-		//TODO into promise
-		// if result.is_string() {
-		//
-		// } else {
-		// Ok(())
-		// }
 	}
 }

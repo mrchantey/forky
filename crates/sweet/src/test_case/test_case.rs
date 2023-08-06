@@ -1,4 +1,4 @@
-use crate::TestCaseConfig;
+use super::*;
 use anyhow::Result;
 use colorize::*;
 use std::panic::RefUnwindSafe;

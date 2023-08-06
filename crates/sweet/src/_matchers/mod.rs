@@ -10,5 +10,7 @@ mod matcher_error;
 pub use self::matcher_error::*;
 mod matcher_ord;
 pub use self::matcher_ord::*;
+mod matcher_result;
+pub use self::matcher_result::*;
 mod matcher_str;
 pub use self::matcher_str::*;

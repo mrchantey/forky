@@ -5,13 +5,6 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use std::sync::atomic::*;
 
-
-
-// fn wrap_async(func: TokenStream) -> TokenStream {
-// 	quote!(async move { #func }.await)
-// }
-
-
 pub fn to_inventory_wrap_func(
 	name: Literal,
 	func: TokenStream,
@@ -20,15 +13,10 @@ pub fn to_inventory_wrap_func(
 	let func = quote!({
 		#[cfg(not(target_arch = "wasm32"))]
 		{|| {
-			async fn func_async ()->Result<()>{
+			Box::pin(async {
 				#func
 				Ok(())
-			};
-			async fn panic_caught()->Result<()>{
-				let result = func_async().catch_unwind();
-				sweet::unwrap_panic_catch(result).await
-			}
-			Box::pin(panic_caught())
+			})
 		}}
 		#[cfg(target_arch = "wasm32")]
 		{|| -> Promise {

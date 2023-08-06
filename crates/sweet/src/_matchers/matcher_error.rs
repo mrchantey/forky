@@ -1,11 +1,26 @@
 use crate::logging::file_context_depth;
 use crate::Matcher;
 use anyhow::anyhow;
+use anyhow::Result;
 use colorize::*;
 use std::fmt::Debug;
 
-
 impl<T> Matcher<T> {
+	// useful as seperate from to_be, preserves backtrace depth
+
+	pub fn assert_correct_with_received<T2: Debug, T3: Debug>(
+		&self,
+		result: bool,
+		expected: &T2,
+		received: &T3,
+	) -> Result<()> {
+		if self.is_true_with_negated(result) {
+			Ok(())
+		} else {
+			Err(self.to_error_with_received(expected, received))
+		}
+	}
+
 	pub fn to_error_with_received<T2: Debug, T3: Debug>(
 		&self,
 		expected: &T2,
@@ -45,6 +60,19 @@ impl<T> Matcher<T>
 where
 	T: Debug,
 {
+	/// Ensure result is true, and check negated
+	pub fn assert_correct<T2: Debug>(
+		&self,
+		result: bool,
+		expected: &T2,
+	) -> Result<()> {
+		if self.is_true_with_negated(result) {
+			Ok(())
+		} else {
+			Err(self.to_error(expected))
+		}
+	}
+
 	pub fn to_error<T2: Debug>(&self, expected: &T2) -> anyhow::Error {
 		self.to_error_with_received_and_backtrace(expected, &self.value, 0)
 	}

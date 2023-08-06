@@ -1,14 +1,18 @@
 use anyhow::Error;
 use anyhow::Result;
-use futures::future::CatchUnwind;
 use futures::Future;
+use futures::FutureExt;
 use std::any::Any;
+use std::panic::UnwindSafe;
+use std::pin::Pin;
 
-pub async fn unwrap_panic_catch<T>(catch: CatchUnwind<T>) -> Result<()>
-where
-	T: Future<Output = Result<(), Error>> + std::panic::UnwindSafe,
-{
-	match catch.await {
+
+pub async fn unwrap_panic_async(
+	pinned_future: Pin<
+		Box<dyn UnwindSafe + Future<Output = Result<(), Error>>>,
+	>,
+) -> Result<()> {
+	match pinned_future.catch_unwind().await {
 		Ok(matcher_res) => match matcher_res {
 			Ok(()) => Ok(()),
 			Err(err) => Err(anyhow::anyhow!(err.to_string())),

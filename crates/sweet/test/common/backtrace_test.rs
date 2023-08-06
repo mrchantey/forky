@@ -15,11 +15,11 @@ fn declarative_level(err: Error) -> Result<()> {
 }
 
 fn assertion_level(err: Error) -> Result<()> {
-	expect(err.to_string().as_str()).to_contain("catch_unwind.rs")
+	expect(err.to_string().as_str()).not().to_contain(".rs")
 }
 
 fn error_level(err: Error) -> Result<()> {
-	expect(err.to_string().as_str()).not().to_contain(".rs")
+	expect(err.to_string().as_str()).to_contain("catch_unwind.rs")
 }
 
 sweet! {

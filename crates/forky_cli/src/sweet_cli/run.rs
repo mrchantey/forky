@@ -81,7 +81,6 @@ impl SweetCli {
 
 	#[rustfmt::skip]
 	fn cargo_run(&self) -> Result<Child> {
-		println!("running cargo build\n");
 		
 		let mut cmd = vec![
 			"cargo", "build",
@@ -105,13 +104,12 @@ impl SweetCli {
 		let hash = hash_file_to_string(&file)?;
 		let out_file = format!("sweet-{hash}");
 		self.replace_html_hash(&out_file)?;
-		println!("\nrunning wasm bindgen for {out_file}");
 		let cmd = vec![
 			"wasm-bindgen", &file,
+			"--no-typescript",
+			"--target", "web",
 			"--out-dir", &self.server.dir,
 			"--out-name", &out_file,
-			"--target", "web",
-			"--no-typescript",
 		];
 		spawn_command(&cmd)
 	}

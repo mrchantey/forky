@@ -1,4 +1,4 @@
-use super::*;
+use crate::*;
 use colorize::*;
 use forky_core::*;
 use std::time::Duration;

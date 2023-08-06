@@ -12,4 +12,17 @@ impl<T> Matcher<T> {
 			negated: false,
 		}
 	}
+
+	pub fn not(&mut self) -> &mut Self {
+		self.negated = !self.negated;
+		self
+	}
+
+	pub fn is_true_with_negated(&self, received: bool) -> bool {
+		if self.negated {
+			!received
+		} else {
+			received
+		}
+	}
 }

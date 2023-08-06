@@ -6,6 +6,10 @@ pub use self::_matchers::*;
 pub use forky_test::*;
 pub use logging::*;
 pub use test_case::*;
+mod test_suite;
+pub use test_suite::*;
+mod test_runner;
+pub use test_runner::*;
 #[cfg(not(target_arch = "wasm32"))]
 mod native;
 #[cfg(not(target_arch = "wasm32"))]
