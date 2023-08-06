@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-
+    paths:
+      - 'docs/**'
 jobs:
   deploy:
     runs-on: ubuntu-20.04
