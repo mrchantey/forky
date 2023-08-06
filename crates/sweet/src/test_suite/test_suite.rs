@@ -9,7 +9,7 @@ where
 	pub file: String,
 	pub tests: Vec<T>,
 	pub contains_only: bool,
-	pub config: TestCaseConfig,
+	pub config: TestSuiteConfig,
 }
 
 impl<T> TestSuite<T>
@@ -21,12 +21,12 @@ where
 			file,
 			tests: Vec::new(),
 			contains_only: false,
-			config: TestCaseConfig::Default,
+			config: Default::default(),
 		}
 	}
 	fn should_skip(&self, test: &T) -> bool {
 		*test.config() == TestCaseConfig::Skip
-			|| self.config == TestCaseConfig::Skip
+			|| self.config.skip
 			|| (self.contains_only && *test.config() != TestCaseConfig::Only)
 	}
 
