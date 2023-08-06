@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Forky</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cli/index.html"><strong aria-hidden="true">1.1.</strong> Command Line Interface</a></li><li class="chapter-item expanded "><a href="sweet/index.html"><strong aria-hidden="true">1.2.</strong> Sweet</a></li><li class="chapter-item expanded "><a href="demos/index.html"><strong aria-hidden="true">1.3.</strong> Demos</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="demos/bevy-webxr.html"><strong aria-hidden="true">1.3.1.</strong> Bevy WebXR</a></li></ol></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cli/mod.html"><strong aria-hidden="true">1.1.</strong> mod</a></li></ol></li><li class="chapter-item expanded "><a href="sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/quickstart-native.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li class="chapter-item expanded "><a href="sweet/quickstart-web.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li class="chapter-item expanded "><a href="sweet/features.html"><strong aria-hidden="true">2.3.</strong> Features</a></li><li class="chapter-item expanded "><a href="sweet/faq.html"><strong aria-hidden="true">2.4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="sweet/misc.html"><strong aria-hidden="true">2.5.</strong> Misc</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="demos/bevy-webxr.html"><strong aria-hidden="true">3.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="other/contributing.html"><strong aria-hidden="true">4.</strong> Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -176,60 +176,17 @@
 <li>continued development not guaranteed</li>
 <li>bugs ahoy</li>
 </ul>
+<p><br/></p>
 </blockquote>
 <h2 id="contents"><a class="header" href="#contents">Contents</a></h2>
 <ul>
-<li><a href="./cli">CLI</a></li>
+<li><a href="./forky_cli">CLI</a></li>
 <li><a href="./sweet/">Sweet</a></li>
 <li><a href="./demos/">Demos</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="command-line-interface"><a class="header" href="#command-line-interface">Command Line Interface</a></h1>
-<h3 id="installation"><a class="header" href="#installation">Installation</a></h3>
-<pre><code>cargo install forky_cli
-</code></pre>
-<h3 id="usage"><a class="header" href="#usage">Usage</a></h3>
-<pre><code>Usage: forky.exe [COMMAND]
-
-Commands:
-  auto-fs  generate mod and css files
-  watch    execute command on file change
-  serve    serve static files
-  style    Generate types for styles
-  mod      generate mod files for your project
-  sweet    build the wasm sweet runner and start a dev server
-</code></pre>
-<h2 id="watch"><a class="header" href="#watch">Watch</a></h2>
-<pre><code>Usage: forky.exe watch [OPTIONS] &lt;cmd&gt;...
-
-Arguments:
-  &lt;cmd&gt;...  the space seperated command to run, ie forky watch -- echo howdy
-
-Options:
-  -w, --watch &lt;watch&gt;    paths to watch
-  -i, --ignore &lt;ignore&gt;  paths to ignore
-      --once             only run once instead of watching indefinitely
-</code></pre>
-<h2 id="sweet"><a class="header" href="#sweet">Sweet</a></h2>
-<pre><code>Usage: forky.exe sweet [OPTIONS] [specify-suite]...
-
-Arguments:
-  [specify-suite]...
-
-Options:
-  -p, --package &lt;package&gt;  pass the --package flag to cargo run
-      --release            pass the --release flag to cargo run
-      --secure             run the dev server with https
-      --static &lt;static&gt;    directory for static files (ie .css) that should be served  
-</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="sweet-1"><a class="header" href="#sweet-1">Sweet</a></h1>
-<blockquote>
-<p><em>Very early stage warning:</em></p>
-<ul>
-<li>breaking changes on patch versions</li>
-<li>continued development not guaranteed</li>
-<li>lots of unwraps, if you get stuck please create an issue and I'll have a look</li>
-</ul>
-</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mod"><a class="header" href="#mod">mod</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sweet"><a class="header" href="#sweet">Sweet</a></h1>
 <h2 id="features"><a class="header" href="#features">Features</a></h2>
 <ul>
 <li>🔥 Parallel</li>
@@ -238,7 +195,7 @@ Options:
 <li>☮️ Intuitive matchers</li>
 <li>🌈 Pretty output</li>
 </ul>
-<h2 id="quickstart---native"><a class="header" href="#quickstart---native">Quickstart - Native</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart---native"><a class="header" href="#quickstart---native">Quickstart - Native</a></h1>
 <ol>
 <li>edit <code>cargo.toml</code>
 <pre><code class="language-toml">[dev-dependencies]
@@ -259,14 +216,27 @@ sweet! {
 		assert!(true == false);
 		// or pretty matchers
 		expect(true).to_be_false()?;
-		expect(&quot;some string&quot;).not().to_start_with(&quot;some&quot;)?;
+		expect(&quot;some string&quot;).not().to_start_with(&quot;foo&quot;)?;
   }
 }
 </code></pre>
 </li>
 <li>run <code>cargo run --example sweet</code></li>
 </ol>
-<h2 id="quickstart---wasm"><a class="header" href="#quickstart---wasm">Quickstart - WASM</a></h2>
+<p>Here's an example output of a runner with a few tests:</p>
+<p><img src="sweet/images/success.png" alt="native-runner" /></p>
+<h2 id="passing-arguments"><a class="header" href="#passing-arguments">Passing arguments</a></h2>
+<ul>
+<li>filter by filename: <code>cargo run --example sweet -- some_dir/my_test</code></li>
+<li>watch mode <code>-w</code>
+<ul>
+<li><code>cargo watch -q -x 'run --example sweet -- -w'</code></li>
+<li>Clears terminal on each run</li>
+<li>Returns an exit code zero (cleaner output)</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart---web"><a class="header" href="#quickstart---web">Quickstart - Web</a></h1>
 <ol>
 <li>Follow native quickstart</li>
 <li>install the helper cli: <code>cargo install forky_cli</code></li>
@@ -284,9 +254,10 @@ expect_el(&quot;h1&quot;)?.to_contain_text(&quot;This is a heading&quot;)?;
 </ul>
 </li>
 </ol>
+<p>Here's an example of a runner with a few tests:</p>
 <p><img src="sweet/images/wasm-runner.png" alt="wasm-runner" /></p>
-<h2 id="features-1"><a class="header" href="#features-1">Features</a></h2>
-<h3 id="macros"><a class="header" href="#macros">Macros</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="features-1"><a class="header" href="#features-1">Features</a></h1>
+<h2 id="macros"><a class="header" href="#macros">Macros</a></h2>
 <pre><code class="language-rs">sweet!{
 	it &quot;works&quot;{}
 	test &quot;is an alias for it&quot;{}
@@ -294,23 +265,12 @@ expect_el(&quot;h1&quot;)?.to_contain_text(&quot;This is a heading&quot;)?;
 	it only &quot;will exclude non-onlys in this suite&quot;{}
 }
 </code></pre>
-<h3 id="performance"><a class="header" href="#performance">Performance</a></h3>
+<h2 id="performance"><a class="header" href="#performance">Performance</a></h2>
 <ul>
 <li>Single Binary - The default rust intergration test runner creates a seperate binary for each test, which ramps up compile times, see <a href="https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html">this blog</a> for more info.</li>
 <li>Very Hot Reload - The wasm cli tool features a lightweight dev server that uses <code>tower-livereload</code> instead of shutting down and restarting.</li>
 </ul>
-<h3 id="args-native"><a class="header" href="#args-native">Args (native)</a></h3>
-<ul>
-<li>filter by filename: <code>cargo run --example sweet -- some_dir/my_test</code></li>
-<li>watch mode <code>-w</code>
-<ul>
-<li><code>cargo watch -q -x 'run --example sweet -- -w'</code></li>
-<li>Clears terminal on each run</li>
-<li>Returns an exit code zero (cleaner output)</li>
-</ul>
-</li>
-</ul>
-<h3 id="matchers"><a class="header" href="#matchers">Matchers</a></h3>
+<h2 id="matchers"><a class="header" href="#matchers">Matchers</a></h2>
 <p>Instead of an opaque <code>panic!</code>, matchers provide the runner with enough info to produce a highly descriptive failure:</p>
 <pre><code class="language-rs">expect(&quot;foobar&quot;).not().to_start_with(&quot;foo&quot;)?;
 /*
@@ -318,7 +278,7 @@ Expected: NOT to start with 'foo'
 Received: foobar
 */
 </code></pre>
-<h3 id="async-matchers"><a class="header" href="#async-matchers">Async Matchers</a></h3>
+<h2 id="async-matchers"><a class="header" href="#async-matchers">Async Matchers</a></h2>
 <p>Lots of web stuff happens at weird times, so we've got helpers like <code>poll_ok</code>, which will wait for 4 seconds before failing.</p>
 <pre><code class="language-rs">let _handle = set_timeout(|| {
 		mount(|cx| view!{cx,
@@ -329,7 +289,7 @@ Received: foobar
 poll_ok(|| expect_el(&quot;div&quot;)).await?
 	.to_contain_text(&quot;sweet as!&quot;)?;
 </code></pre>
-<h3 id="informative-outputs"><a class="header" href="#informative-outputs">Informative outputs</a></h3>
+<h2 id="informative-outputs"><a class="header" href="#informative-outputs">Informative outputs</a></h2>
 <ul>
 <li>Long running tests show which suite is hanging
 <ul>
@@ -342,11 +302,12 @@ poll_ok(|| expect_el(&quot;div&quot;)).await?
 </ul>
 </li>
 </ul>
-<h2 id="misc"><a class="header" href="#misc">Misc</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
 <h3 id="why-use-example-instead-of-test"><a class="header" href="#why-use-example-instead-of-test">Why use <code>[[example]]</code> instead of <code>[[test]]</code></a></h3>
 <p>This makes it easier for the wasm test runner to produce cleaner output, but if you're only running native tests feel free to use <code>[[test]]</code> with <code>harness=false</code>.</p>
 <h3 id="what-about-wasm-bindgen-test"><a class="header" href="#what-about-wasm-bindgen-test">What about wasm-bindgen-test?</a></h3>
 <p>Sweet has different priorities from <a href="https://rustwasm.github.io/wasm-bindgen/wasm-bindgen-test/index.html">wasm-bindgen-test</a> in its current state, namely the focus is on UI &amp; interactivity.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="misc"><a class="header" href="#misc">Misc</a></h1>
 <h3 id="todo"><a class="header" href="#todo">TODO</a></h3>
 <ul>
 <li>wasm
@@ -367,15 +328,192 @@ poll_ok(|| expect_el(&quot;div&quot;)).await?
 <li>Matchers inspired by <a href="https://jestjs.io/">jest</a></li>
 <li>WASM runner inspired by <a href="https://www.cypress.io/">cypress</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="demos"><a class="header" href="#demos">Demos</a></h1>
-<ul>
-<li><a href="demos/./bevy-webxr.html">Bevy WebXR</a></li>
-</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-webxr"><a class="header" href="#bevy-webxr">Bevy WebXR</a></h1>
-<p>A proof-of-concept for WebXR in Bevy <code>0.11.0</code></p>
+<p>A proof-of-concept for WebXR in Bevy <code>0.11.0</code>. Visit this page in your Oculus Quest to see it in action!</p>
 <div style="text-align:center">
 	<iframe src="../../demos/bevy-webxr" width="80%" height="500px"/></iframe>
 </div>
+<h2 id="issues"><a class="header" href="#issues">Issues</a></h2>
+<ul>
+<li>Lighting seems about 10x darker than regular rendering</li>
+<li>Oculus Quest
+<ul>
+<li>Standard Materials broken on Android/Quest web, <a href="https://github.com/bevyengine/bevy/issues/4582">issue</a>
+<ul>
+<li>Thus controllers currently dont render</li>
+</ul>
+</li>
+<li><strong>Help Wanted</strong> - Subtle issue with projection matrix, ie tilting head on z axis seems to translate meshes slightly</li>
+</ul>
+</li>
+<li>No other devices have been tested</li>
+</ul>
+<p>The source is pretty messy and im using a few non-conventional build steps so only try running locally if you're feeling brave.
+That said it may serve as a reference for anybody trying to implement their own webxr crates.</p>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>If you <em>are</em> feeling brave here are some notes:</p>
+<h3 id="terminal-1"><a class="header" href="#terminal-1">Terminal 1.</a></h3>
+<p>I'm using npm <code>live-server</code> because I know how to do https (required for webxr) with that but feel free to use whatever you like.</p>
+<pre><code class="language-sh">just ssl
+just serve
+</code></pre>
+<h3 id="terminal-2"><a class="header" href="#terminal-2">Terminal 2</a></h3>
+<pre><code class="language-sh">just build-w bevy_webxr
+</code></pre>
+<h3 id="code"><a class="header" href="#code">Code</a></h3>
+<pre><code class="language-rs">use bevy::prelude::*;
+use bevy_webxr::{demo::DemoScenePlugin, bevy_utils::WebXrPlugin};
+
+fn main() {
+	let mut app = App::new();
+	app
+		.add_plugins(DemoScenePlugin)
+		.add_plugins(WebXrPlugin)
+	// custom run method hooks into session.requestAnimationFrame
+	app.run_webxr();
+}
+</code></pre>
+<h3 id="non-rust-dependencies"><a class="header" href="#non-rust-dependencies">Non-rust Dependencies</a></h3>
+<p>These are all pretty much dev's choice for running commands, servers etc. but this is how I do it.</p>
+<ul>
+<li>
+<p><a href="https://github.com/casey/just">just</a></p>
+<ul>
+<li>Command runner</li>
+<li>Alternatively copy/paste commands from <a href="demos/./justfile">justfile</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://www.cygwin.com/">cygwin</a></p>
+<ul>
+<li>Bash shell for Windows</li>
+</ul>
+</li>
+<li>
+<p><a href="https://www.npmjs.com/package/live-server">live-server</a></p>
+<ul>
+<li>feel free to use any server you're used to</li>
+</ul>
+</li>
+<li>
+<p><a href="https://www.openssl.org/">openssl</a></p>
+<ul>
+<li>https cert key generation</li>
+</ul>
+</li>
+<li>
+<p>not required, but good idea to use the <a href="https://chrome.google.com/webstore/detail/webxr-api-emulator/mjddjgeghkdijejnciaefnkjmkafnnje?hl=en">WebXR API Emulator</a> for testing</p>
+</li>
+</ul>
+<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
+<ul>
+<li>JsValues
+<ul>
+<li><code>XrFrame</code></li>
+<li><code>XrReferenceSpace</code></li>
+<li><code>XrReferenceSpaceType</code></li>
+<li><code>XrSession</code></li>
+<li><code>XrSessionMode</code></li>
+<li><code>XrWebGlLayer</code></li>
+</ul>
+</li>
+<li>Additional
+<ul>
+<li><code>BevyXrViewLookup</code></li>
+<li><code>BevyInputSourceLookup</code></li>
+<li><code>FramebufferTextureViewId</code></li>
+</ul>
+</li>
+</ul>
+<p>JsValue Resources can be accesed via <code>NonSend</code>, ie:</p>
+<pre><code class="language-rs">fn do_thing(frame: NonSend&lt;web_sys::XrFrame&gt;){
+	...
+}
+</code></pre>
+<h2 id="components"><a class="header" href="#components">Components</a></h2>
+<ul>
+<li><code>BevyXrView</code>
+<ul>
+<li>Added to each camera</li>
+<li><code>LeftCamera</code>/<code>RightCamera</code></li>
+</ul>
+</li>
+<li><code>BevyXrInputSource</code>
+<ul>
+<li>Added to each controller/hand</li>
+</ul>
+</li>
+<li>Handedness
+<ul>
+<li>Used for controllers and views</li>
+<li><code>LeftHandedness</code></li>
+<li><code>RightHandedness</code></li>
+<li><code>NoneHandedness</code></li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
+<p>If this project is of interest to you feel free to have a dig around! </p>
+<p>Everything is very early days so there are no doubt lots of bugs and missing features. If you find something that could be improved please open an issue or PR.</p>
+<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
+<p>Most of this is for my own reference, but you may find it useful:</p>
+<ol>
+<li>Install Rust
+<ul>
+<li><a href="https://www.rust-lang.org/tools/install">Installer</a></li>
+<li>Use powershell and be sure to carefully follow steps for build tools</li>
+</ul>
+</li>
+<li>Install Depedencies
+<ul>
+<li>
+<pre><code class="language-sh">  	choco install just
+  	choco install cygwin
+  	# check
+  	just all check
+  	# tools
+  	cargo install cargo-watch
+  	rustup toolchain install nightly
+  	rustup component add rustfmt --toolchain nightly
+  	cargo +nightly fmt
+  	rustup default nightly
+  	# test - compilation will take several minutes
+  	just all test
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="cygwin"><a class="header" href="#cygwin">Cygwin</a></h2>
+<p>Justfiles require cygwin to work on windows.</p>
+<ol>
+<li>install cygwin</li>
+<li>add to path: <code>C:\tools\cygwin\bin</code></li>
+</ol>
+<h2 id="wasm"><a class="header" href="#wasm">Wasm</a></h2>
+<ul>
+<li>follow the <a href="https://bevy-cheatbook.github.io/platforms/wasm.html">bevy guide</a></li>
+<li>setup
+<pre><code class="language-sh">rustup target install wasm32-unknown-unknown
+cargo install wasm-server-runner
+cargo install -f wasm-bindgen-cli
+#.cargo/config.toml
+[target.wasm32-unknown-unknown]
+runner = &quot;wasm-server-runner&quot;
+</code></pre>
+</li>
+<li>run
+<pre><code class="language-sh">#run
+cargo run -p forky_play --example maze --target wasm32-unknown-unknown
+#compile
+cargo build -p forky_play --example maze --release --target wasm32-unknown-unknown
+#build bindings
+wasm-bindgen --out-dir ./html/maze --target web ./target/wasm32-unknown-unknown/release/examples/maze.wasm
+cd html &amp;&amp; live-server
+</code></pre>
+</li>
+</ul>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

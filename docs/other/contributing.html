@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Sweet - Forky</title>
+        <title>Contributing - Forky</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="../cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cli/mod.html"><strong aria-hidden="true">1.1.</strong> mod</a></li></ol></li><li class="chapter-item expanded "><a href="../sweet/index.html" class="active"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sweet/quickstart-native.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li class="chapter-item expanded "><a href="../sweet/quickstart-web.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li class="chapter-item expanded "><a href="../sweet/features.html"><strong aria-hidden="true">2.3.</strong> Features</a></li><li class="chapter-item expanded "><a href="../sweet/faq.html"><strong aria-hidden="true">2.4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../sweet/misc.html"><strong aria-hidden="true">2.5.</strong> Misc</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="../demos/bevy-webxr.html"><strong aria-hidden="true">3.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="../other/contributing.html"><strong aria-hidden="true">4.</strong> Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="../cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cli/mod.html"><strong aria-hidden="true">1.1.</strong> mod</a></li></ol></li><li class="chapter-item expanded "><a href="../sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sweet/quickstart-native.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li class="chapter-item expanded "><a href="../sweet/quickstart-web.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li class="chapter-item expanded "><a href="../sweet/features.html"><strong aria-hidden="true">2.3.</strong> Features</a></li><li class="chapter-item expanded "><a href="../sweet/faq.html"><strong aria-hidden="true">2.4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../sweet/misc.html"><strong aria-hidden="true">2.5.</strong> Misc</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="../demos/bevy-webxr.html"><strong aria-hidden="true">3.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="../other/contributing.html" class="active"><strong aria-hidden="true">4.</strong> Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -166,27 +166,76 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="sweet"><a class="header" href="#sweet">Sweet</a></h1>
-<h2 id="features"><a class="header" href="#features">Features</a></h2>
+                        <h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
+<p>If this project is of interest to you feel free to have a dig around! </p>
+<p>Everything is very early days so there are no doubt lots of bugs and missing features. If you find something that could be improved please open an issue or PR.</p>
+<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
+<p>Most of this is for my own reference, but you may find it useful:</p>
+<ol>
+<li>Install Rust
 <ul>
-<li>🔥 Parallel</li>
-<li>🕙 Async</li>
-<li>🌍 WASM UI tests</li>
-<li>☮️ Intuitive matchers</li>
-<li>🌈 Pretty output</li>
+<li><a href="https://www.rust-lang.org/tools/install">Installer</a></li>
+<li>Use powershell and be sure to carefully follow steps for build tools</li>
+</ul>
+</li>
+<li>Install Depedencies
+<ul>
+<li>
+<pre><code class="language-sh">  	choco install just
+  	choco install cygwin
+  	# check
+  	just all check
+  	# tools
+  	cargo install cargo-watch
+  	rustup toolchain install nightly
+  	rustup component add rustfmt --toolchain nightly
+  	cargo +nightly fmt
+  	rustup default nightly
+  	# test - compilation will take several minutes
+  	just all test
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="cygwin"><a class="header" href="#cygwin">Cygwin</a></h2>
+<p>Justfiles require cygwin to work on windows.</p>
+<ol>
+<li>install cygwin</li>
+<li>add to path: <code>C:\tools\cygwin\bin</code></li>
+</ol>
+<h2 id="wasm"><a class="header" href="#wasm">Wasm</a></h2>
+<ul>
+<li>follow the <a href="https://bevy-cheatbook.github.io/platforms/wasm.html">bevy guide</a></li>
+<li>setup
+<pre><code class="language-sh">rustup target install wasm32-unknown-unknown
+cargo install wasm-server-runner
+cargo install -f wasm-bindgen-cli
+#.cargo/config.toml
+[target.wasm32-unknown-unknown]
+runner = &quot;wasm-server-runner&quot;
+</code></pre>
+</li>
+<li>run
+<pre><code class="language-sh">#run
+cargo run -p forky_play --example maze --target wasm32-unknown-unknown
+#compile
+cargo build -p forky_play --example maze --release --target wasm32-unknown-unknown
+#build bindings
+wasm-bindgen --out-dir ./html/maze --target web ./target/wasm32-unknown-unknown/release/examples/maze.wasm
+cd html &amp;&amp; live-server
+</code></pre>
+</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../cli/mod.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../demos/bevy-webxr.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../sweet/quickstart-native.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -194,13 +243,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../cli/mod.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../demos/bevy-webxr.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../sweet/quickstart-native.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

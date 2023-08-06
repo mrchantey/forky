@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Sweet - Forky</title>
+        <title>Features - Forky</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="../cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cli/mod.html"><strong aria-hidden="true">1.1.</strong> mod</a></li></ol></li><li class="chapter-item expanded "><a href="../sweet/index.html" class="active"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sweet/quickstart-native.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li class="chapter-item expanded "><a href="../sweet/quickstart-web.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li class="chapter-item expanded "><a href="../sweet/features.html"><strong aria-hidden="true">2.3.</strong> Features</a></li><li class="chapter-item expanded "><a href="../sweet/faq.html"><strong aria-hidden="true">2.4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../sweet/misc.html"><strong aria-hidden="true">2.5.</strong> Misc</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="../demos/bevy-webxr.html"><strong aria-hidden="true">3.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="../other/contributing.html"><strong aria-hidden="true">4.</strong> Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="../cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cli/mod.html"><strong aria-hidden="true">1.1.</strong> mod</a></li></ol></li><li class="chapter-item expanded "><a href="../sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sweet/quickstart-native.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li class="chapter-item expanded "><a href="../sweet/quickstart-web.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li class="chapter-item expanded "><a href="../sweet/features.html" class="active"><strong aria-hidden="true">2.3.</strong> Features</a></li><li class="chapter-item expanded "><a href="../sweet/faq.html"><strong aria-hidden="true">2.4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../sweet/misc.html"><strong aria-hidden="true">2.5.</strong> Misc</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="../demos/bevy-webxr.html"><strong aria-hidden="true">3.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="../other/contributing.html"><strong aria-hidden="true">4.</strong> Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -166,25 +166,62 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="sweet"><a class="header" href="#sweet">Sweet</a></h1>
-<h2 id="features"><a class="header" href="#features">Features</a></h2>
+                        <h1 id="features"><a class="header" href="#features">Features</a></h1>
+<h2 id="macros"><a class="header" href="#macros">Macros</a></h2>
+<pre><code class="language-rs">sweet!{
+	it &quot;works&quot;{}
+	test &quot;is an alias for it&quot;{}
+	it skip &quot;wont run&quot;{}
+	it only &quot;will exclude non-onlys in this suite&quot;{}
+}
+</code></pre>
+<h2 id="performance"><a class="header" href="#performance">Performance</a></h2>
 <ul>
-<li>🔥 Parallel</li>
-<li>🕙 Async</li>
-<li>🌍 WASM UI tests</li>
-<li>☮️ Intuitive matchers</li>
-<li>🌈 Pretty output</li>
+<li>Single Binary - The default rust intergration test runner creates a seperate binary for each test, which ramps up compile times, see <a href="https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html">this blog</a> for more info.</li>
+<li>Very Hot Reload - The wasm cli tool features a lightweight dev server that uses <code>tower-livereload</code> instead of shutting down and restarting.</li>
+</ul>
+<h2 id="matchers"><a class="header" href="#matchers">Matchers</a></h2>
+<p>Instead of an opaque <code>panic!</code>, matchers provide the runner with enough info to produce a highly descriptive failure:</p>
+<pre><code class="language-rs">expect(&quot;foobar&quot;).not().to_start_with(&quot;foo&quot;)?;
+/*
+Expected: NOT to start with 'foo'
+Received: foobar
+*/
+</code></pre>
+<h2 id="async-matchers"><a class="header" href="#async-matchers">Async Matchers</a></h2>
+<p>Lots of web stuff happens at weird times, so we've got helpers like <code>poll_ok</code>, which will wait for 4 seconds before failing.</p>
+<pre><code class="language-rs">let _handle = set_timeout(|| {
+		mount(|cx| view!{cx,
+			&lt;div&gt;&quot;sweet as!&quot;&lt;/div&gt;
+		});
+	}, Duration::from_millis(100));
+
+poll_ok(|| expect_el(&quot;div&quot;)).await?
+	.to_contain_text(&quot;sweet as!&quot;)?;
+</code></pre>
+<h2 id="informative-outputs"><a class="header" href="#informative-outputs">Informative outputs</a></h2>
+<ul>
+<li>Long running tests show which suite is hanging
+<ul>
+<li><img src="images/progress.png" alt="progress" /></li>
+</ul>
+</li>
+<li>Failures are highly descriptive 
+<ul>
+<li><img src="images/failure.png" alt="failure" /></li>
+</ul>
+</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../cli/mod.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../sweet/quickstart-web.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../sweet/quickstart-native.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../sweet/faq.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -194,11 +231,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../cli/mod.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../sweet/quickstart-web.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../sweet/quickstart-native.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../sweet/faq.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
