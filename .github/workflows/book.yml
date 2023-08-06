@@ -20,7 +20,7 @@ jobs:
 
       - name: Build
         run: mdbook build
-        working-directory: ./book
+        working-directory: ./docs
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
@@ -28,5 +28,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: pages
-          publish_dir: ./book/book
-          destination_dir: book
+          publish_dir: ./docs/book
+          destination_dir: docs
