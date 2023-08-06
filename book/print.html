@@ -1,0 +1,399 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Forky</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Forky</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cli/index.html"><strong aria-hidden="true">1.1.</strong> Command Line Interface</a></li><li class="chapter-item expanded "><a href="sweet/index.html"><strong aria-hidden="true">1.2.</strong> Sweet</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Forky</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="forky"><a class="header" href="#forky">Forky</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="command-line-interface"><a class="header" href="#command-line-interface">Command Line Interface</a></h1>
+<h3 id="installation"><a class="header" href="#installation">Installation</a></h3>
+<pre><code>cargo install forky_cli
+</code></pre>
+<h3 id="usage"><a class="header" href="#usage">Usage</a></h3>
+<pre><code>Usage: forky.exe [COMMAND]
+
+Commands:
+  auto-fs  generate mod and css files
+  watch    execute command on file change
+  serve    serve static files
+  style    Generate types for styles
+  mod      generate mod files for your project
+  sweet    build the wasm sweet runner and start a dev server
+</code></pre>
+<h2 id="watch"><a class="header" href="#watch">Watch</a></h2>
+<pre><code>Usage: forky.exe watch [OPTIONS] &lt;cmd&gt;...
+
+Arguments:
+  &lt;cmd&gt;...  the space seperated command to run, ie forky watch -- echo howdy
+
+Options:
+  -w, --watch &lt;watch&gt;    paths to watch
+  -i, --ignore &lt;ignore&gt;  paths to ignore
+      --once             only run once instead of watching indefinitely
+</code></pre>
+<h2 id="sweet"><a class="header" href="#sweet">Sweet</a></h2>
+<pre><code>Usage: forky.exe sweet [OPTIONS] [specify-suite]...
+
+Arguments:
+  [specify-suite]...
+
+Options:
+  -p, --package &lt;package&gt;  pass the --package flag to cargo run
+      --release            pass the --release flag to cargo run
+      --secure             run the dev server with https
+      --static &lt;static&gt;    directory for static files (ie .css) that should be served  
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sweet-1"><a class="header" href="#sweet-1">Sweet</a></h1>
+<blockquote>
+<p><em>Very early stage warning:</em></p>
+<ul>
+<li>breaking changes on patch versions</li>
+<li>continued development not guaranteed</li>
+<li>lots of unwraps, if you get stuck please create an issue and I'll have a look</li>
+</ul>
+</blockquote>
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
+<ul>
+<li>🔥 Parallel</li>
+<li>🕙 Async</li>
+<li>🌍 WASM UI tests</li>
+<li>☮️ Intuitive matchers</li>
+<li>🌈 Pretty output</li>
+</ul>
+<h2 id="quickstart---native"><a class="header" href="#quickstart---native">Quickstart - Native</a></h2>
+<ol>
+<li>edit <code>cargo.toml</code>
+<pre><code class="language-toml">[dev-dependencies]
+sweet = # current version here
+
+[[example]]
+name = &quot;sweet&quot;
+path = &quot;test/sweet.rs&quot;
+</code></pre>
+</li>
+<li>create file <code>test/sweet.rs</code>
+<pre><code class="language-rs">#![feature(imported_main)]
+pub use sweet::*;
+
+sweet! {
+  it &quot;works&quot; {
+		// use assertions
+		assert!(true == false);
+		// or pretty matchers
+		expect(true).to_be_false()?;
+		expect(&quot;some string&quot;).not().to_start_with(&quot;some&quot;)?;
+  }
+}
+</code></pre>
+</li>
+<li>run <code>cargo run --example sweet</code></li>
+</ol>
+<h2 id="quickstart---wasm"><a class="header" href="#quickstart---wasm">Quickstart - WASM</a></h2>
+<ol>
+<li>Follow native quickstart</li>
+<li>install the helper cli: <code>cargo install forky_cli</code></li>
+<li>mount some html and add some wasm matchers to your test
+<pre><code class="language-rs">web_sys::window().unwrap()
+		.document().unwrap()
+		.body().unwrap()
+		.set_inner_html(&quot;&lt;h1&gt;This is a heading&lt;/h1&gt;&quot;);
+expect_el(&quot;h1&quot;)?.to_contain_text(&quot;This is a heading&quot;)?;
+</code></pre>
+</li>
+<li>run <code>forky sweet</code>
+<ul>
+<li>requires <a href="https://rustwasm.github.io/wasm-bindgen/reference/cli.html">wasm-bindgen-cli</a></li>
+</ul>
+</li>
+</ol>
+<p><img src="sweet/images/wasm-runner.png" alt="wasm-runner" /></p>
+<h2 id="features-1"><a class="header" href="#features-1">Features</a></h2>
+<h3 id="macros"><a class="header" href="#macros">Macros</a></h3>
+<pre><code class="language-rs">sweet!{
+	it &quot;works&quot;{}
+	test &quot;is an alias for it&quot;{}
+	it skip &quot;wont run&quot;{}
+	it only &quot;will exclude non-onlys in this suite&quot;{}
+}
+</code></pre>
+<h3 id="performance"><a class="header" href="#performance">Performance</a></h3>
+<ul>
+<li>Single Binary - The default rust intergration test runner creates a seperate binary for each test, which ramps up compile times, see <a href="https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html">this blog</a> for more info.</li>
+<li>Very Hot Reload - The wasm cli tool features a lightweight dev server that uses <code>tower-livereload</code> instead of shutting down and restarting.</li>
+</ul>
+<h3 id="args-native"><a class="header" href="#args-native">Args (native)</a></h3>
+<ul>
+<li>filter by filename: <code>cargo run --example sweet -- some_dir/my_test</code></li>
+<li>watch mode <code>-w</code>
+<ul>
+<li><code>cargo watch -q -x 'run --example sweet -- -w'</code></li>
+<li>Clears terminal on each run</li>
+<li>Returns an exit code zero (cleaner output)</li>
+</ul>
+</li>
+</ul>
+<h3 id="matchers"><a class="header" href="#matchers">Matchers</a></h3>
+<p>Instead of an opaque <code>panic!</code>, matchers provide the runner with enough info to produce a highly descriptive failure:</p>
+<pre><code class="language-rs">expect(&quot;foobar&quot;).not().to_start_with(&quot;foo&quot;)?;
+/*
+Expected: NOT to start with 'foo'
+Received: foobar
+*/
+</code></pre>
+<h3 id="async-matchers"><a class="header" href="#async-matchers">Async Matchers</a></h3>
+<p>Lots of web stuff happens at weird times, so we've got helpers like <code>poll_ok</code>, which will wait for 4 seconds before failing.</p>
+<pre><code class="language-rs">let _handle = set_timeout(|| {
+		mount(|cx| view!{cx,
+			&lt;div&gt;&quot;sweet as!&quot;&lt;/div&gt;
+		});
+	}, Duration::from_millis(100));
+
+poll_ok(|| expect_el(&quot;div&quot;)).await?
+	.to_contain_text(&quot;sweet as!&quot;)?;
+</code></pre>
+<h3 id="informative-outputs"><a class="header" href="#informative-outputs">Informative outputs</a></h3>
+<ul>
+<li>Long running tests show which suite is hanging
+<ul>
+<li><img src="sweet/images/progress.png" alt="progress" /></li>
+</ul>
+</li>
+<li>Failures are highly descriptive 
+<ul>
+<li><img src="sweet/images/failure.png" alt="failure" /></li>
+</ul>
+</li>
+</ul>
+<h2 id="misc"><a class="header" href="#misc">Misc</a></h2>
+<h3 id="why-use-example-instead-of-test"><a class="header" href="#why-use-example-instead-of-test">Why use <code>[[example]]</code> instead of <code>[[test]]</code></a></h3>
+<p>This makes it easier for the wasm test runner to produce cleaner output, but if you're only running native tests feel free to use <code>[[test]]</code> with <code>harness=false</code>.</p>
+<h3 id="what-about-wasm-bindgen-test"><a class="header" href="#what-about-wasm-bindgen-test">What about wasm-bindgen-test?</a></h3>
+<p>Sweet has different priorities from <a href="https://rustwasm.github.io/wasm-bindgen/wasm-bindgen-test/index.html">wasm-bindgen-test</a> in its current state, namely the focus is on UI &amp; interactivity.</p>
+<h3 id="todo"><a class="header" href="#todo">TODO</a></h3>
+<ul>
+<li>wasm
+<ul>
+<li>cli - allow user to include static files in build step, ie css</li>
+<li>node &amp; headless support?</li>
+<li>tests return Result&lt;(),JsValue&gt;?</li>
+</ul>
+</li>
+<li>native
+<ul>
+<li>use clap &amp; expose parallel flag</li>
+</ul>
+</li>
+</ul>
+<h3 id="reference"><a class="header" href="#reference">Reference</a></h3>
+<ul>
+<li>Matchers inspired by <a href="https://jestjs.io/">jest</a></li>
+<li>WASM runner inspired by <a href="https://www.cypress.io/">cypress</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
