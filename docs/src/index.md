@@ -8,8 +8,7 @@ Rust utilities to do some of the heavy lifting for devs.
 > - bugs ahoy
 > <p><br/></p>
 
-## Contents
+## Crates
 
 - [CLI](./forky_cli)
-- [Sweet](./sweet/)
-- [Demos](./demos/)
+- [Sweet](./sweet)
