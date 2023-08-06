@@ -136,10 +136,10 @@ bevy-deps:
 run-wasm crate example:
 	cargo run -p {{crate}} --example {{example}} --target wasm32-unknown-unknown
 
-build-wasm crate example:
+build-wasm crate example *args:
 	echo building
 	just copy-wasm-assets
-	cargo build -p {{crate}} --example {{example}} --release --target wasm32-unknown-unknown
+	cargo build -p {{crate}} --example {{example}} --release --target wasm32-unknown-unknown {{args}}
 	RUST_BACKTRACE={{backtrace}} wasm-bindgen \
 	--out-dir ./html/wasm \
 	--out-name bindgen \

@@ -6,6 +6,7 @@ use std::process::Stdio;
 
 /// Run a command and pipe the output to stdio. Returns error only if execution failed, not if it returns error
 pub fn spawn_command(args: &Vec<&str>) -> Result<Child> {
+	println!("{}", args.join(" "));
 	let child = get_command(args)
 		// .stdout(Stdio::piped())
 		.spawn()?;

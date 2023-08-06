@@ -26,8 +26,11 @@ pub fn main() -> anyhow::Result<()> { native::TestRunnerNative::run() }
 
 pub mod exports {
 	pub use anyhow::Result;
+	#[cfg(not(target_arch = "wasm32"))]
 	pub use async_std::task::block_on;
+	#[cfg(not(target_arch = "wasm32"))]
 	pub use futures::future::CatchUnwind;
+	#[cfg(not(target_arch = "wasm32"))]
 	pub use futures::FutureExt;
 	pub use inventory;
 	//is full exports like this bad form?

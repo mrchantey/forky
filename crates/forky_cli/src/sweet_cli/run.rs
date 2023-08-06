@@ -82,18 +82,18 @@ impl SweetCli {
 	#[rustfmt::skip]
 	fn cargo_run(&self) -> Result<Child> {
 		println!("running cargo build\n");
-
+		
 		let mut cmd = vec![
 			"cargo", "build",
 			"--example", "sweet",
 			"--target", "wasm32-unknown-unknown",
 			];
-
+			
+		if let Some(package) = &self.package {
+				cmd.extend(vec!["-p", package]);
+		}
 		if self.release {
 				cmd.push("--release");
-		}
-		if let Some(package) = &self.package {
-			cmd.extend(vec!["-p", package]);
 		}
 		spawn_command(&cmd)
 	}
