@@ -1,8 +1,5 @@
 # Bevy Editor
 
-
-This is a playground crate for experimenting with techniques for a bevy editor implementation.
-
 ## Objectives
 
 The first objective is to run games inside of the editor process. I'd like to try the shared memory technique first.

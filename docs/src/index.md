@@ -6,9 +6,10 @@ Rust utilities to do some of the heavy lifting for devs.
 > - breaking changes on patch versions
 > - continued development not guaranteed
 > - bugs ahoy
+> <p><br/></p>
 
 ## Contents
 
-- [CLI](./cli)
+- [CLI](./forky_cli)
 - [Sweet](./sweet/)
 - [Demos](./demos/)

@@ -1,33 +1,24 @@
 # Forky CLI
 
-> *Very early stage warning:*
-> - breaking changes on patch versions
-> - continued development not guaranteed
-> - bugs ahoy
+<div align="center">
 
-Various utilities to ease some of the repetitious work that comes with managing crates.
+  <p>
+    <strong>CLI for various forky utilities.</strong>
+  </p>
 
-```auto_mod```
+  <p>
+    <a href="https://crates.io/crates/forky_cli"><img src="https://img.shields.io/crates/v/forky_cli.svg?style=flat-square" alt="Crates.io version" /></a>
+    <a href="https://crates.io/crates/forky_cli"><img src="https://img.shields.io/crates/d/forky_cli.svg?style=flat-square" alt="Download" /></a>
+    <a href="https://docs.rs/forky_cli"><img src="https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square" alt="docs.rs docs" /></a>
+  </p>
 
-Its current incarnation is zero config and opinionated so you may want to play around with it on an empty project before integrating with existing codebases.
+  <h3>
+    <a href="https://mrchantey.github.io/forky/docs/forky_cli">Guide</a>
+    <span> | </span>
+    <a href="https://docs.rs/forky_cli">API Docs</a>
+    <span> | </span>
+    <a href="https://mrchantey.github.io/forky/docs/other/contributing.html">Contributing</a>
+  </h3>
 
-## Rules
-
-- All files are modules *unless*
-	- They start with an underscore
-	- Their parent contains a double underscore
-
-ie
-```
-test_dir
-	__test_sub_dur
-		_test_use.rs
-		test_mod.rs
-	_test_use.rs
-	test_mod.rs
-```
-```rs
-//test_dir.rs
-
-
-```
+  <sub>Built with ❤️ by mrchantey</a></sub>
+</div>
