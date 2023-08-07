@@ -16,8 +16,8 @@ impl TestRunnerConfig {
 		args.retain(|v| !arr_contains_str(v, FLAGS));
 		Self {
 			watch,
-			parallel: false,
-			// parallel: true,
+			// parallel: false,
+			parallel: true,
 			files: args,
 		}
 	}

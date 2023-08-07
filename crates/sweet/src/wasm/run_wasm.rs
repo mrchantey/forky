@@ -18,7 +18,12 @@ pub fn run_tests_wasm() {
 		log!("{intro}");
 
 		let start_time = performance_now();
-		let results = collector.run(&config).await;
+		let to_run = collector.suites_to_run(&config);
+		let results = TestRunner::run_group_series::<
+			SuiteLoggerWasm,
+			TestCaseWasm,
+		>(to_run, &config)
+		.await;
 		let duration =
 			Duration::from_millis((performance_now() - start_time) as u64);
 		let summary = TestRunner::pretty_print_summary(&results, duration);
