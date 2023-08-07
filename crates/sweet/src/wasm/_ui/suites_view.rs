@@ -6,10 +6,10 @@ use leptos::*;
 use web_sys::console;
 
 #[component]
-pub fn SuitesView<F>(cx: Scope, set_file: F) -> impl IntoView
-where
-	F: Fn(Option<String>) + 'static + Copy,
-{
+pub fn SuitesView(
+	cx: Scope,
+	#[prop(into)] set_file: WriteSignal<Option<String>>,
+) -> impl IntoView {
 	let config = TestRunnerConfig::default();
 	let collector = TestCollectorWasm::new();
 
@@ -27,7 +27,11 @@ where
 			set_file(None)
 		}
 	>"Suites"</h3>
-	<br/>
+	<SuiteButton
+		name="all".to_string()
+		matcher="*".to_string()
+		set_file
+	/>
 	{suites.iter()
 		.map(|suite|view!{cx,<SuiteView suite set_file/>})
 		.collect::<Vec<_>>()
@@ -36,14 +40,11 @@ where
 }
 
 #[component]
-pub fn SuiteView<'a, F>(
+pub fn SuiteView<'a>(
 	cx: Scope,
-	set_file: F,
+	#[prop(into)] set_file: WriteSignal<Option<String>>,
 	suite: &'a TestSuiteWasm,
-) -> impl IntoView
-where
-	F: Fn(Option<String>) + 'static,
-{
+) -> impl IntoView {
 	let file = suite.file.clone();
 	let pretty = file
 		.split("\\")
@@ -63,6 +64,22 @@ where
 		on:click=move|_|set_file(Some(file.clone()))
 	>
 		{pretty}
+	</div>
+	}
+}
+
+#[component]
+pub fn SuiteButton(
+	cx: Scope,
+	name: String,
+	matcher: String,
+	#[prop(into)] set_file: WriteSignal<Option<String>>,
+) -> impl IntoView {
+	view! {cx,
+	<div class=spacecat!(forky_style::BUTTON_LIKE,sweet_style::SWEET_SUITE)
+		on:click=move|_|set_file(Some(matcher.clone()))
+	>
+		{name}
 	</div>
 	}
 }
