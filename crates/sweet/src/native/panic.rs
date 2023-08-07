@@ -1,4 +1,3 @@
-use anyhow::Error;
 use anyhow::Result;
 use futures::Future;
 use futures::FutureExt;
@@ -9,7 +8,7 @@ use std::pin::Pin;
 
 pub async fn unwrap_panic_async(
 	pinned_future: Pin<
-		Box<dyn UnwindSafe + Future<Output = Result<(), Error>>>,
+		Box<dyn Send + Sync + UnwindSafe + Future<Output = Result<()>>>,
 	>,
 ) -> Result<()> {
 	match pinned_future.catch_unwind().await {

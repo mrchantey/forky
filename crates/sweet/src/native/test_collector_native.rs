@@ -1,21 +1,21 @@
 use super::*;
 use crate::*;
 
-type TestSuiteNative = TestSuite<TestCaseNative>;
-
 pub struct TestCollectorNative(pub Vec<TestSuiteNative>);
 
 impl TestCollectorNative {
 	pub fn new() -> Self { Self(Self::collect_cases_to_suites()) }
 }
 
-impl TestCollectorParallel<TestCaseNative, SuiteLoggerNative>
+impl TestCollectorParallel<TestCaseNative, SuiteLoggerNoop, TestSuiteNative>
 	for TestCollectorNative
 {
 }
 
-impl TestCollector<TestCaseNative, SuiteLoggerNative> for TestCollectorNative {
-	fn suites(&self) -> &Vec<TestSuite<TestCaseNative>> { &self.0 }
+impl TestCollector<TestCaseNative, SuiteLoggerNoop, TestSuiteNative>
+	for TestCollectorNative
+{
+	fn suites(&self) -> &Vec<TestSuiteNative> { &self.0 }
 
 	fn collect_cases() -> Vec<TestCaseNative> {
 		let mut cases = Vec::new();

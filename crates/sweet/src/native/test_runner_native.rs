@@ -1,14 +1,14 @@
 use super::*;
 use crate::*;
 use anyhow::Result;
-use async_std::task::block_on;
 use forky_fs::*;
 use std::time::Instant;
 
 pub struct TestRunnerNative;
 
 impl TestRunnerNative {
-	pub fn run() -> Result<()> {
+	#[tokio::main]
+	pub async fn run() -> Result<()> {
 		// dont exit program on panic?
 		// let _ = std::panic::take_hook();
 
@@ -23,8 +23,8 @@ impl TestRunnerNative {
 		let start_time = Instant::now();
 
 		let collector = TestCollectorNative::new();
-		let results = collector.run_parallel(&config);
-		let results = block_on(results);
+		// let results = collector.run(&config);
+		let results = collector.run_parallel_maybe(&config).await;
 		let duration = start_time.elapsed();
 		let summary = TestRunner::pretty_print_summary(&results, duration);
 

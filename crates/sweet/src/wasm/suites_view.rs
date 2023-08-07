@@ -39,7 +39,7 @@ where
 pub fn SuiteView<'a, F>(
 	cx: Scope,
 	set_file: F,
-	suite: &'a TestSuite<TestCaseWasm>,
+	suite: &'a TestSuiteWasm,
 ) -> impl IntoView
 where
 	F: Fn(Option<String>) + 'static,

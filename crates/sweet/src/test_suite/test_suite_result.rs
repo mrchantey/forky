@@ -38,7 +38,7 @@ impl ResultSummary {
 	}
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct TestSuiteResult {
 	pub tests: usize,
 	pub failed: usize,

@@ -9,8 +9,9 @@ use std::pin::Pin;
 
 inventory::collect!(TestCaseNative);
 
-pub type TestCaseNativeFn =
-	fn() -> Pin<Box<dyn UnwindSafe + Future<Output = Result<()>>>>;
+pub type TestCaseNativeFn = fn() -> Pin<
+	Box<dyn Send + Sync + UnwindSafe + Future<Output = Result<()>>>,
+>;
 
 #[derive(Debug, Clone)]
 pub struct TestCaseNative {
@@ -30,5 +31,12 @@ impl TestCase for TestCaseNative {
 		let result = unwrap_panic_async(fut).await;
 		let _ = std::panic::take_hook();
 		result
+	}
+	async fn run(&self) -> Result<()> {
+		let result = self.run_func().await;
+		match result {
+			Ok(_) => Ok(()),
+			Err(e) => Err(self.format_error(&e.to_string())),
+		}
 	}
 }

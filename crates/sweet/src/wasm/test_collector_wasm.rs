@@ -8,14 +8,14 @@ use wasm_bindgen::prelude::*;
 use web_sys::window;
 
 #[derive(Debug, Clone)]
-pub struct TestCollectorWasm(pub Vec<TestSuite<TestCaseWasm>>);
+pub struct TestCollectorWasm(pub Vec<TestSuiteWasm>);
 
 impl TestCollectorWasm {
 	pub fn new() -> Self { Self(Self::collect_cases_to_suites()) }
 }
 
 impl TestCollector<TestCaseWasm, SuiteLoggerWasm> for TestCollectorWasm {
-	fn suites(&self) -> &Vec<TestSuite<TestCaseWasm>> { &self.0 }
+	fn suites(&self) -> &Vec<TestSuiteWasm> { &self.0 }
 	fn collect_cases() -> Vec<TestCaseWasm> {
 		let window = window().unwrap();
 		let instance = Reflect::get(&window, &"_sweet_wasm".into()).unwrap();

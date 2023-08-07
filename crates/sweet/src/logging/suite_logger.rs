@@ -64,6 +64,8 @@ fn pretty_path(val: &str) -> String {
 	format!("{path}{middle}{file}")
 }
 
+
+
 // fn get_now() -> Duration {
 // 	#[cfg(target_arch = "wasm32")]
 // 	return Duration::from_millis(

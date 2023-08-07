@@ -2,40 +2,41 @@ use crate::*;
 use std::collections::HashMap;
 
 
-pub trait TestCollector<Case, Logger>
+pub trait TestCollector<Case, Logger, Suite>
 where
 	Case: TestCase + Clone + Sized,
 	Logger: SuiteLogger,
+	Suite: TestSuiteTrait<Case>,
 {
-	fn suites(&self) -> &Vec<TestSuite<Case>>;
-	fn suites_to_run(
-		&self,
-		config: &TestRunnerConfig,
-	) -> Vec<&TestSuite<Case>> {
+	fn suites(&self) -> &Vec<Suite>;
+	fn suites_to_run(&self, config: &TestRunnerConfig) -> Vec<&Suite> {
 		self.suites()
 			.iter()
-			.filter(|s| config.suite_passes_filter(s.file.as_str()))
+			.filter(|s| config.suite_passes_filter(s.file()))
 			.collect::<Vec<_>>()
 	}
 
 	fn collect_cases() -> Vec<Case>;
 
-	fn collect_cases_to_suites() -> Vec<TestSuite<Case>> {
-		let mut suites: HashMap<String, TestSuite<Case>> = HashMap::new();
+	fn collect_cases_to_suites() -> Vec<Suite> {
+		let mut suites: HashMap<String, Suite> = HashMap::new();
 		let cases = Self::collect_cases();
 		for case in cases.iter() {
 			let path = case.path();
 			let path = path.to_str().unwrap();
 			if !suites.contains_key(path) {
 				let file = String::from(path);
-				suites.insert(file.clone(), TestSuite::new(file));
+				suites.insert(file.clone(), Suite::new(file));
 			}
-			suites.get_mut(path).unwrap().tests.push(case.clone());
+			suites.get_mut(path).unwrap().push_test(case.clone());
 		}
-
-		let mut suites = suites.iter().map(|f| f.1.clone()).collect::<Vec<_>>();
-		suites.sort_by(|a, b| a.file.cmp(&b.file));
-		suites
+		let mut suites2 = Vec::with_capacity(suites.len());
+		for (_, suite) in suites {
+			suites2.push(suite);
+		}
+		// let mut suites = suites.iter().collect::<Vec<Suite>>();
+		suites2.sort_by(|a, b| a.file().cmp(&b.file()));
+		suites2
 	}
 
 	async fn run(&self, config: &TestRunnerConfig) -> ResultSummary {
@@ -43,7 +44,7 @@ where
 		let mut results = Vec::with_capacity(to_run.len());
 		for suite in to_run {
 			let result = suite
-				.run::<Logger, TestSuiteRunnerSeries<Case>>(config)
+				.run::<Logger>(config)
 				.await;
 			results.push(result);
 		}
