@@ -11,7 +11,7 @@ use web_sys::window;
 pub struct TestCollectorWasm(pub Vec<TestSuite<TestCaseWasm>>);
 
 impl TestCollectorWasm {
-	pub fn new() -> Self { Self(Self::collect_suites()) }
+	pub fn new() -> Self { Self(Self::collect_cases_to_suites()) }
 }
 
 impl TestCollector<TestCaseWasm, SuiteLoggerWasm> for TestCollectorWasm {

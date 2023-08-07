@@ -12,3 +12,5 @@ mod test_runner_config_native;
 pub use self::test_runner_config_native::*;
 mod test_runner_native;
 pub use self::test_runner_native::*;
+mod test_suite_native;
+pub use self::test_suite_native::*;

@@ -2,19 +2,26 @@ use crate::*;
 use anyhow::Error;
 
 #[derive(Default, Debug, Clone)]
-pub struct TestSuite<T>
+pub struct TestSuite<Case>
 where
-	T: TestCase,
+	Case: TestCase,
 {
 	pub file: String,
-	pub tests: Vec<T>,
+	pub tests: Vec<Case>,
 	pub contains_only: bool,
 	pub config: TestSuiteConfig,
 }
 
-impl<T> TestSuite<T>
+// pub trait TestSuite<Case>{
+
+
+
+// }
+
+
+impl<Case> TestSuite<Case>
 where
-	T: TestCase,
+	Case: TestCase,
 {
 	pub fn new(file: String) -> Self {
 		Self {
@@ -24,7 +31,7 @@ where
 			config: Default::default(),
 		}
 	}
-	fn should_skip(&self, test: &T) -> bool {
+	fn should_skip(&self, test: &Case) -> bool {
 		*test.config() == TestCaseConfig::Skip
 			|| self.config.skip
 			|| (self.contains_only && *test.config() != TestCaseConfig::Only)
@@ -36,7 +43,7 @@ where
 	) -> TestSuiteResult
 	where
 		Logger: SuiteLogger,
-		Runner: TestSuiteRunner<T>,
+		Runner: TestSuiteRunner<Case>,
 	{
 		let running_indicator = !config.parallel;
 		let logger = Logger::start(self.file.as_str(), running_indicator);

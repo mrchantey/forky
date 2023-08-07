@@ -20,29 +20,33 @@ where
 
 	fn collect_cases() -> Vec<Case>;
 
-	fn collect_suites() -> Vec<TestSuite<Case>> {
-		let mut files: HashMap<String, TestSuite<Case>> = HashMap::new();
+	fn collect_cases_to_suites() -> Vec<TestSuite<Case>> {
+		let mut suites: HashMap<String, TestSuite<Case>> = HashMap::new();
 		let cases = Self::collect_cases();
 		for case in cases.iter() {
 			// let case: &T = &case;
-			if !files.contains_key(case.file()) {
+			if !suites.contains_key(case.file()) {
 				let file = String::from(case.file());
-				files.insert(file.clone(), TestSuite::new(file));
+				suites.insert(file.clone(), TestSuite::new(file));
 			}
-			files.get_mut(case.file()).unwrap().tests.push(case.clone());
+			suites
+				.get_mut(case.file())
+				.unwrap()
+				.tests
+				.push(case.clone());
 		}
 
-		let mut files = files.iter().map(|f| f.1.clone()).collect::<Vec<_>>();
-		files.sort_by(|a, b| a.file.cmp(&b.file));
+		let mut suites = suites.iter().map(|f| f.1.clone()).collect::<Vec<_>>();
+		suites.sort_by(|a, b| a.file.cmp(&b.file));
 
-		for file in files.iter_mut() {
-			file.contains_only = file
+		for suite in suites.iter_mut() {
+			suite.contains_only = suite
 				.tests
 				.iter()
 				.any(|t| *t.config() == TestCaseConfig::Only);
 		}
 
-		files
+		suites
 	}
 
 	async fn run(&self, config: &TestRunnerConfig) -> ResultSummary {
