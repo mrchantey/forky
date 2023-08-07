@@ -21,6 +21,7 @@ impl History {
 		let url = url.href();
 		Self::push(&url);
 	}
+	
 	pub fn remove_param(key: &str) {
 		let url = window().unwrap().location().href().unwrap();
 		let url = Url::new(&url).unwrap();

@@ -22,7 +22,7 @@ impl TestRunner {
 	}
 
 	pub fn pretty_print_intro(config: &TestRunnerConfig) -> String {
-		format!("\n🤘 sweet as! 🤘\n\n{config}\n")
+		format!("\n🤘 sweet as! 🤘\n\n{config}")
 	}
 
 	pub fn pretty_print_summary(
