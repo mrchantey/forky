@@ -5,53 +5,34 @@ pub trait SuiteLogger
 where
 	Self: Sized,
 {
-	fn log(val: &str);
-	fn get_log(&mut self) -> &mut String;
-	fn on_start() -> Self;
-	fn on_end(self, running_indicator: bool);
+	fn on_start(start_str: String) -> Self;
+	fn on_end(self, end_str: String);
 
-	fn start(file: &str, running_indicator: bool) -> Self {
-		if running_indicator {
-			Self::log_start(file);
-		}
-		Self::on_start()
+	fn start(file: &str) -> Self { Self::on_start(Self::in_progress_str(file)) }
+
+	fn end(self, file: &str, result: &TestSuiteResult, message: String) {
+		let mut end_str = Self::end_str(file, result);
+		end_str += &message;
+		self.on_end(end_str);
 	}
 
-	fn log_start(file: &str) {
-		if cfg!(target_arch = "wasm32") {
-			// TODO test this
-			// Move the cursor up one line and clear the line content
-			// console.log('\x1b[1A\x1b[2K');
-			return;
-		}
-		let mut prefix = " RUNS ".black().bold().yellowb();
-		prefix += " ";
-		prefix += pretty_path(file).as_str();
-		println!("{prefix}");
+	fn in_progress_str(file: &str) -> String {
+		let mut value = " RUNS ".black().bold().yellowb();
+		value += " ";
+		value += pretty_path(file).as_str();
+		value
 	}
 
 
-	fn end(
-		mut self,
-		file: &str,
-		running_indicator: bool,
-		result: &TestSuiteResult,
-	) {
-		self.log_end(file, result);
-		self.on_end(running_indicator);
-	}
-
-	fn log_end(&mut self, file: &str, result: &TestSuiteResult) {
-		let mut prefix = if result.failed == 0 {
+	fn end_str(file: &str, result: &TestSuiteResult) -> String {
+		let mut val = if result.failed == 0 {
 			" PASS ".black().bold().greenb()
 		} else {
 			" FAIL ".black().bold().redb()
 		};
-		prefix += " ";
-		prefix += pretty_path(file).as_str();
-		// prefix += "\n";
-		self.get_log().insert_str(0, prefix.as_str());
-		// Self::log(prefix.as_str());
+		val += " ";
+		val += pretty_path(file).as_str();
+		val
 	}
 }
 
@@ -63,8 +44,6 @@ fn pretty_path(val: &str) -> String {
 	let middle = "\\".to_string().faint();
 	format!("{path}{middle}{file}")
 }
-
-
 
 // fn get_now() -> Duration {
 // 	#[cfg(target_arch = "wasm32")]

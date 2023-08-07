@@ -1,5 +1,4 @@
 use crate::*;
-use futures::future::join_all;
 
 #[derive(Default, Debug, Clone)]
 pub struct TestSuiteNative {
@@ -27,31 +26,9 @@ impl TestSuiteTrait<TestCaseNative> for TestSuiteNative {
 		config: &TestRunnerConfig,
 	) -> Vec<anyhow::Error> {
 		if config.parallel {
-			let futs = to_run
-				.iter()
-				.map(move |t| {
-					let t = *t;
-					let t = t.clone();
-					tokio::spawn(async move { t.run().await })
-				})
-				.collect::<Vec<_>>();
-			let results = join_all(futs).await;
-
-			let mut collected = Vec::with_capacity(results.len());
-			for join_result in results {
-				match join_result {
-					Ok(test_result) => match test_result {
-						Ok(_) => {}
-						Err(e) => collected.push(e),
-					},
-					Err(e) => {
-						panic!("Join Error, this shouldnt happen:\n{:?}", e)
-					}
-				}
-			}
-			collected
+			run_cases_parallel(to_run, config).await
 		} else {
-			run_cases_series::<TestCaseNative>(to_run, config).await
+			run_cases_series(to_run, config).await
 		}
 	}
 }

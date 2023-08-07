@@ -2,10 +2,9 @@ use crate::*;
 use std::collections::HashMap;
 
 
-pub trait TestCollector<Case, Logger, Suite>
+pub trait TestCollector<Case, Suite>
 where
 	Case: TestCase + Clone + Sized,
-	Logger: SuiteLogger,
 	Suite: TestSuiteTrait<Case>,
 {
 	fn suites(&self) -> &Vec<Suite>;
@@ -39,20 +38,4 @@ where
 		suites2
 	}
 
-	async fn run(&self, config: &TestRunnerConfig) -> ResultSummary {
-		let to_run = self.suites_to_run(config);
-		let mut results = Vec::with_capacity(to_run.len());
-		for suite in to_run {
-			let result = suite
-				.run::<Logger>(config)
-				.await;
-			results.push(result);
-		}
-		results.into()
-		// self.suites_to_run(config)
-		// 	.iter()
-		// 	.map(move |s| s.run::<Logger, TestSuiteRunnerSeries<Case>>(config))
-		// 	.collect::<Vec<_>>()
-		// 	.into()
-	}
 }

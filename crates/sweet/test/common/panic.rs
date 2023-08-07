@@ -8,7 +8,6 @@ sweet! {
 
 	it skip "handles panics"{
 		assert!(true ==false);
-				// panic!("YESSS");
 	}
 	it skip "fails"{
 		// expect(true).to_be_false()?;

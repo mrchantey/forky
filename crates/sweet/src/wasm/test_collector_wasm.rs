@@ -14,7 +14,9 @@ impl TestCollectorWasm {
 	pub fn new() -> Self { Self(Self::collect_cases_to_suites()) }
 }
 
-impl TestCollector<TestCaseWasm, SuiteLoggerWasm> for TestCollectorWasm {
+impl TestCollector<TestCaseWasm, TestSuiteWasm>
+	for TestCollectorWasm
+{
 	fn suites(&self) -> &Vec<TestSuiteWasm> { &self.0 }
 	fn collect_cases() -> Vec<TestCaseWasm> {
 		let window = window().unwrap();

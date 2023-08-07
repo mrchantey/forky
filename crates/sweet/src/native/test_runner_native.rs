@@ -23,8 +23,19 @@ impl TestRunnerNative {
 		let start_time = Instant::now();
 
 		let collector = TestCollectorNative::new();
-		// let results = collector.run(&config);
-		let results = collector.run_parallel_maybe(&config).await;
+
+		let to_run = collector.suites_to_run(&config);
+		let results = if config.parallel {
+			TestRunner::run_group_parallel::<SuiteLoggerNoop, TestCaseNative>(
+				to_run, &config,
+			)
+			.await
+		} else {
+			TestRunner::run_group_series::<SuiteLoggerNative, TestCaseNative>(
+				to_run, &config,
+			)
+			.await
+		};
 		let duration = start_time.elapsed();
 		let summary = TestRunner::pretty_print_summary(&results, duration);
 

@@ -6,6 +6,22 @@ use std::time::Duration;
 pub struct TestRunner;
 
 impl TestRunner {
+	pub async fn run_group_series<Logger, Case>(
+		to_run: Vec<&impl TestSuiteTrait<Case>>,
+		config: &TestRunnerConfig,
+	) -> ResultSummary
+	where
+		Case: TestCase,
+		Logger: SuiteLogger,
+	{
+		let mut results = Vec::with_capacity(to_run.len());
+		for suite in to_run {
+			let result = suite.run::<Logger>(config).await;
+			results.push(result);
+		}
+		results.into()
+	}
+
 	pub fn pretty_print_intro(config: &TestRunnerConfig) -> String {
 		let mut pre_run = String::from("\n🤘 sweet as! 🤘\n");
 

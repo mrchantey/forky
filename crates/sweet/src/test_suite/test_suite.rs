@@ -2,7 +2,7 @@ use crate::*;
 use anyhow::Error;
 
 
-pub async fn run_cases_series<T>(
+pub async fn run_cases_series(
 	to_run: Vec<&impl TestCase>,
 	_: &TestRunnerConfig,
 ) -> Vec<Error> {
@@ -36,7 +36,7 @@ where
 		to_run: Vec<&Case>,
 		config: &TestRunnerConfig,
 	) -> Vec<Error> {
-		run_cases_series::<Case>(to_run, config).await
+		run_cases_series(to_run, config).await
 	}
 
 	async fn run<Logger>(&self, config: &TestRunnerConfig) -> TestSuiteResult
@@ -45,8 +45,7 @@ where
 	{
 		let tests = self.tests();
 		let file = self.file();
-		let running_indicator = !config.parallel;
-		let logger = Logger::start(file, running_indicator);
+		let logger = Logger::start(file);
 
 		let contains_only =
 			tests.iter().any(|t| *t.config() == TestCaseConfig::Only);
@@ -60,15 +59,13 @@ where
 		let msg = failed
 			.iter()
 			.fold(String::new(), |val, err| val + err.to_string().as_str());
-		Logger::log(&msg.as_str());
-		// logger.get_log().push_str(&msg.as_str());
 
 		let result = TestSuiteResult {
 			tests: tests.len(),
 			failed: failed.len(),
 			skipped: skipped.len(),
 		};
-		logger.end(file, running_indicator, &result);
+		logger.end(file, &result, msg);
 		result
 	}
 }
