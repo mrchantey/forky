@@ -17,8 +17,10 @@ impl Subcommand for RunTestsNativeCommand {
 	fn append_command(&self, command: Command) -> Command {
 		command
 			.arg(
-				Arg::new("filter")
-					.help("filter by path glob, ie. `*/test1.rs */e2e/*`")
+				Arg::new("match")
+					.help(
+						"filter suites by path glob, ie. `*/test1.rs */e2e/*`",
+					)
 					.required(false)
 					.action(ArgAction::Append),
 			)

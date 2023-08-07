@@ -1,6 +1,5 @@
 use crate::*;
 use colorize::*;
-use forky_core::*;
 use std::time::Duration;
 
 pub struct TestRunner;
@@ -23,14 +22,7 @@ impl TestRunner {
 	}
 
 	pub fn pretty_print_intro(config: &TestRunnerConfig) -> String {
-		let mut pre_run = String::from("\n🤘 sweet as! 🤘\n");
-
-		if config.files.len() > 0 {
-			pre_run +=
-				format!("\nmatching: {}\n", config.files.to_string()).as_str();
-		}
-
-		pre_run
+		format!("\n🤘 sweet as! 🤘\n\n{config}\n")
 	}
 
 	pub fn pretty_print_summary(
