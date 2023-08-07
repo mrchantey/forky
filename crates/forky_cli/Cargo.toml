@@ -44,5 +44,5 @@ tower-livereload = { workspace = true }
 sweet = { workspace = true }
 
 [[example]]
-name = "sweet"
+name = "sweet_forky_cli"
 path = "test/sweet.rs"

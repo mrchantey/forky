@@ -43,7 +43,7 @@ sweet = { workspace = true }
 # forky_fs = {workspace = true }
 
 [[example]]
-name = "sweet"
+name = "sweet_forky_play"
 path = "test/sweet.rs"
 # rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 

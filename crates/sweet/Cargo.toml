@@ -52,7 +52,7 @@ gag = { workspace = true }
 
 
 [[example]]
-name = "sweet"
+name = "sweet_sweet"
 path = "test/sweet.rs"
 # harness = false
 

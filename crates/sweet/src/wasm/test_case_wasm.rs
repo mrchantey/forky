@@ -1,8 +1,11 @@
 use crate::*;
 use anyhow::Result;
+use forky_core::*;
 use js_sys::Function;
 use js_sys::Promise;
 use js_sys::Reflect;
+use std::path::Path;
+use std::path::PathBuf;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::JsFuture;
 
@@ -32,7 +35,8 @@ impl TestCaseWasm {
 }
 
 impl TestCase for TestCaseWasm {
-	fn file(&self) -> &str { self.file.as_str() }
+	// fn path(&self) -> &str { self.file.as_str() }
+	fn path(&self) -> PathBuf { Path::new(&self.file).to_forward_slash() }
 	fn name(&self) -> &str { self.name.as_str() }
 	fn config(&self) -> &TestCaseConfig { &self.config }
 	async fn run_func(&self) -> Result<()> {

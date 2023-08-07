@@ -84,23 +84,35 @@ impl SweetCli {
 		
 		let mut cmd = vec![
 			"cargo", "build",
-			"--example", "sweet",
 			"--target", "wasm32-unknown-unknown",
-			];
+		];
 			
 		if let Some(package) = &self.package {
-				cmd.extend(vec!["-p", package]);
-		}
+			cmd.extend(vec!["-p", package]);
+		};
+		
+		let example = self.example_name();
+		cmd.extend(vec!["--example", &example]);
 		if self.release {
 				cmd.push("--release");
 		}
+		
 		spawn_command(&cmd)
+	}
+
+	fn example_name(&self)->String{
+		if let Some(package) = &self.package {
+			format!("sweet_{}", package)
+		}else{
+			"sweet".to_string()
+		}
 	}
 
 	#[rustfmt::skip]
 	fn wasm_bingen(&self) -> Result<Child> {
 		let mode = if self.release { "release" } else { "debug" };
-		let file = format!("target/wasm32-unknown-unknown/{mode}/examples/sweet.wasm");
+		let example = self.example_name();
+		let file = format!("target/wasm32-unknown-unknown/{mode}/examples/{example}.wasm");
 		let hash = hash_file_to_string(&file)?;
 		let out_file = format!("sweet-{hash}");
 		self.replace_html_hash(&out_file)?;

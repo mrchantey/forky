@@ -8,10 +8,3 @@ license = { workspace = true }
 readme = { workspace = true }
 description = { workspace = true }
 repository = { workspace = true }
-
-[dependencies]
-sweet = { workspace = true }
-
-[[example]]
-name = "sweet"
-path = "test/sweet.rs"

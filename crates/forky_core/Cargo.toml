@@ -29,5 +29,5 @@ leptos = { workspace = true }
 sweet = { workspace = true }
 
 [[example]]
-name = "sweet"
+name = "sweet_forky_core"
 path = "test/sweet.rs"

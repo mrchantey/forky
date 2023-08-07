@@ -5,7 +5,6 @@
 resolver = "2"
 members = [
 	# "crates/*"
-	"crates/bevy_editor",
 	"crates/forky",
 	"crates/forky_ai",
 	"crates/forky_cli",
