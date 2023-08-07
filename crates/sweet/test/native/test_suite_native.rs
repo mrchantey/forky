@@ -3,7 +3,7 @@ use sweet::*;
 
 pub fn suite(cases: Vec<TestCaseNative>) -> TestSuiteNative {
 	TestSuiteNative {
-		file: String::from("some/path.rs"),
+		file: "some/path.rs",
 		tests: cases,
 		config: Default::default(),
 	}

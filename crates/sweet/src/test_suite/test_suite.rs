@@ -11,31 +11,21 @@ where
 	pub config: TestSuiteConfig,
 }
 
-pub trait TestSuiteTrait<Case>{
-	fn file(&self) -> &str;
-	fn config(&self) -> &TestSuiteConfig;
-	fn tests(&self) -> &Vec<Case>;
-}
-
-
-impl<Case> TestSuite<Case>
+pub trait TestSuiteTrait<Case>
 where
 	Case: TestCase,
 {
-	pub fn new(file: String) -> Self {
-		Self {
-			file,
-			tests: Vec::new(),
-			config: Default::default(),
-		}
-	}
+	fn file(&self) -> &str;
+	fn config(&self) -> &TestSuiteConfig;
+	fn tests(&self) -> &Vec<Case>;
+
 	fn should_skip(&self, test: &Case, contains_only: bool) -> bool {
 		*test.config() == TestCaseConfig::Skip
-			|| self.config.skip
+			|| self.config().skip
 			|| (contains_only && *test.config() != TestCaseConfig::Only)
 	}
 
-	pub async fn run<Logger, Runner>(
+	async fn run<Logger, Runner>(
 		&self,
 		config: &TestRunnerConfig,
 	) -> TestSuiteResult
@@ -43,17 +33,17 @@ where
 		Logger: SuiteLogger,
 		Runner: TestSuiteRunner<Case>,
 	{
+		let tests = self.tests();
+		let file = self.file();
 		let running_indicator = !config.parallel;
-		let logger = Logger::start(self.file.as_str(), running_indicator);
-
-		let contains_only = self
-			.tests
-			.iter()
-			.any(|t| *t.config() == TestCaseConfig::Only);
+		let logger = Logger::start(file, running_indicator);
 
 
-		let (to_run, skipped): (Vec<_>, Vec<_>) = self
-			.tests
+		let contains_only =
+			tests.iter().any(|t| *t.config() == TestCaseConfig::Only);
+
+
+		let (to_run, skipped): (Vec<_>, Vec<_>) = tests
 			.iter()
 			.partition(|t| !self.should_skip(t, contains_only));
 
@@ -67,12 +57,35 @@ where
 		// logger.get_log().push_str(&msg.as_str());
 
 		let result = TestSuiteResult {
-			tests: self.tests.len(),
+			tests: tests.len(),
 			failed: failed.len(),
 			skipped: skipped.len(),
 		};
-		logger.end(&self.file, running_indicator, &result);
+		logger.end(file, running_indicator, &result);
 		result
+	}
+}
+
+impl<Case> TestSuiteTrait<Case> for TestSuite<Case>
+where
+	Case: TestCase,
+{
+	fn file(&self) -> &str { self.file.as_str() }
+	fn config(&self) -> &TestSuiteConfig { &self.config }
+	fn tests(&self) -> &Vec<Case> { &self.tests }
+}
+
+
+impl<Case> TestSuite<Case>
+where
+	Case: TestCase,
+{
+	pub fn new(file: String) -> Self {
+		Self {
+			file,
+			tests: Vec::new(),
+			config: Default::default(),
+		}
 	}
 }
 
