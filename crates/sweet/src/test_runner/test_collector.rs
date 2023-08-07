@@ -24,7 +24,6 @@ where
 		let mut suites: HashMap<String, TestSuite<Case>> = HashMap::new();
 		let cases = Self::collect_cases();
 		for case in cases.iter() {
-			// let case: &T = &case;
 			if !suites.contains_key(case.file()) {
 				let file = String::from(case.file());
 				suites.insert(file.clone(), TestSuite::new(file));
@@ -38,14 +37,6 @@ where
 
 		let mut suites = suites.iter().map(|f| f.1.clone()).collect::<Vec<_>>();
 		suites.sort_by(|a, b| a.file.cmp(&b.file));
-
-		for suite in suites.iter_mut() {
-			suite.contains_only = suite
-				.tests
-				.iter()
-				.any(|t| *t.config() == TestCaseConfig::Only);
-		}
-
 		suites
 	}
 

@@ -6,7 +6,6 @@ pub fn suite(cases: Vec<TestCaseNative>) -> TestSuiteNative {
 		file: String::from("some/path.rs"),
 		// name: "works",
 		tests: cases,
-		contains_only: false,
 		config: Default::default(),
 	}
 }

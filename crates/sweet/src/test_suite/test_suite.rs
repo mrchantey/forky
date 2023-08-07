@@ -8,7 +8,6 @@ where
 {
 	pub file: String,
 	pub tests: Vec<Case>,
-	pub contains_only: bool,
 	pub config: TestSuiteConfig,
 }
 
@@ -27,14 +26,13 @@ where
 		Self {
 			file,
 			tests: Vec::new(),
-			contains_only: false,
 			config: Default::default(),
 		}
 	}
-	fn should_skip(&self, test: &Case) -> bool {
+	fn should_skip(&self, test: &Case, contains_only: bool) -> bool {
 		*test.config() == TestCaseConfig::Skip
 			|| self.config.skip
-			|| (self.contains_only && *test.config() != TestCaseConfig::Only)
+			|| (contains_only && *test.config() != TestCaseConfig::Only)
 	}
 
 	pub async fn run<Logger, Runner>(
@@ -48,8 +46,16 @@ where
 		let running_indicator = !config.parallel;
 		let logger = Logger::start(self.file.as_str(), running_indicator);
 
-		let (to_run, skipped): (Vec<_>, Vec<_>) =
-			self.tests.iter().partition(|t| !self.should_skip(t));
+		let contains_only = self
+			.tests
+			.iter()
+			.any(|t| *t.config() == TestCaseConfig::Only);
+
+
+		let (to_run, skipped): (Vec<_>, Vec<_>) = self
+			.tests
+			.iter()
+			.partition(|t| !self.should_skip(t, contains_only));
 
 
 		let failed = Runner::run_cases(to_run, config).await;
