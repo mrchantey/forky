@@ -273,16 +273,19 @@ sweet! {
 <p>Here's an example output of a runner with a few tests:</p>
 <p><img src="sweet/images/success.png" alt="native-runner" /></p>
 <h2 id="passing-arguments"><a class="header" href="#passing-arguments">Passing arguments</a></h2>
-<ul>
-<li>filter by filename: <code>cargo run --example sweet -- some_dir/my_test</code></li>
-<li>watch mode <code>-w</code>
-<ul>
-<li><code>cargo watch -q -x 'run --example sweet -- -w'</code></li>
-<li>Clears terminal on each run</li>
-<li>Returns an exit code zero (cleaner output)</li>
-</ul>
-</li>
-</ul>
+<p>The binary is isself a mini cli with options, to see them all try:</p>
+<p><code>cargo run --example sweet --help</code></p>
+<pre><code>Native runner for your tests.
+
+Usage: sweet_sweet.exe [OPTIONS] [filter]...
+
+Arguments:
+  [filter]...  filter by directory or path name, ie. `/test1.rs /e2e/`
+
+Options:
+  -w, --watch     clears screen and does not return error
+  -p, --parallel  run tests in parallel
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart---web"><a class="header" href="#quickstart---web">Quickstart - Web</a></h1>
 <ol>
 <li>Follow native quickstart</li>
