@@ -24,6 +24,6 @@ impl SuiteLogger for SuiteLoggerWasm {
 
 	fn on_end(self, _running_indicator: bool) {
 		// self.log.push_str(self.buffer_log.end().as_str());
-		// log!("{}", self.log);
+		log!("{}", self.log);
 	}
 }
