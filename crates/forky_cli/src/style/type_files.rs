@@ -1,7 +1,6 @@
 use anyhow::Result;
 use cssparser::*;
-use forky_core::StringX;
-use forky_fs::fs::*;
+use forky_core::*;
 use glob::*;
 use std::collections::HashSet;
 use std::fs;
@@ -29,7 +28,7 @@ fn create_all() -> Result<()> {
 	glob("**/src/**/*.css")
 		.unwrap()
 		.filter_map(|val| val.ok())
-		.filter(|p| !parent_ends_with_underscore(p))
+		.filter(|p| !p.parent_ends_with_underscore())
 		.filter(|p| !ignore.matches_path(p))
 		.filter(|path| {
 			let stem = path.file_stem().unwrap();

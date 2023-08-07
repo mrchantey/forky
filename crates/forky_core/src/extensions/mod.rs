@@ -8,6 +8,8 @@ mod option;
 pub use self::option::*;
 mod path;
 pub use self::path::*;
+mod path_buf;
+pub use self::path_buf::*;
 mod string;
 pub use self::string::*;
 mod str_x;

@@ -11,11 +11,11 @@ where
 	pub config: TestSuiteConfig,
 }
 
-// pub trait TestSuite<Case>{
-
-
-
-// }
+pub trait TestSuiteTrait<Case>{
+	fn file(&self) -> &str;
+	fn config(&self) -> &TestSuiteConfig;
+	fn tests(&self) -> &Vec<Case>;
+}
 
 
 impl<Case> TestSuite<Case>

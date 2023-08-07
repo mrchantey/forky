@@ -4,7 +4,6 @@ use sweet::*;
 pub fn suite(cases: Vec<TestCaseNative>) -> TestSuiteNative {
 	TestSuiteNative {
 		file: String::from("some/path.rs"),
-		// name: "works",
 		tests: cases,
 		config: Default::default(),
 	}

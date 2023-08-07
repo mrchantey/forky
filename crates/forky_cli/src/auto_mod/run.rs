@@ -31,26 +31,26 @@ pub fn run_for_crate(path: PathBuf) {
 pub fn run_for_crate_folder(path: PathBuf) {
 	read_dir_recursive(path)
 		.into_iter()
-		.filter(|p| !filename_included(p, IGNORE_FOLDERS))
-		.filter(|p| !filestem_ends_with_triple_underscore(p))
+		.filter(|p| !p.filename_included(IGNORE_FOLDERS))
+		.filter(|p| !p.filestem_ends_with_triple_underscore())
 		.map(|p| (create_mod_text(&p), p))
 		.for_each(|(c, p)| save_to_file(&p, c))
 }
 
 pub fn create_mod_text(path: &PathBuf) -> String {
-	let treat_as_mod = filestem_contains_double_underscore(&path);
+	let treat_as_mod = path.filestem_contains_double_underscore();
 
 	fs::read_dir(&path)
 		.unwrap()
 		.map(|p| p.unwrap().path())
-		.filter(|p| p.is_dir() || !filename_included(p, IGNORE_FILES))
-		.filter(|p| !filestem_ends_with_triple_underscore(p))
-		.filter(|p| is_dir_or_extension(p, "rs"))
+		.filter(|p| p.is_dir() || !p.filename_included(IGNORE_FILES))
+		.filter(|p| !p.filestem_ends_with_triple_underscore())
+		.filter(|p| p.is_dir_or_extension("rs"))
 		.map(|p| {
 			let stem = p.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
 			let mut is_mod = p.is_dir() || treat_as_mod;
-			if filestem_starts_with_underscore(&p) {
+			if p.filestem_starts_with_underscore() {
 				is_mod = !is_mod;
 			}
 			if is_mod {

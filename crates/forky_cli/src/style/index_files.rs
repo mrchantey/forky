@@ -1,5 +1,5 @@
 use anyhow::Result;
-use forky_core::PathBufX;
+use forky_core::*;
 use forky_fs::fs::*;
 use glob::*;
 use std::collections::HashSet;
@@ -25,8 +25,8 @@ fn remove_all_index_files() -> Result<()> {
 fn for_all_crates() -> Result<()> {
 	let dirs_with_css = directories_matching("**/src/**/*.css")
 		.iter()
-		.flat_map(|path| parents(path))
-		.filter(|p| !filestem_ends_with_underscore(p))
+		.flat_map(|p| p.parents())
+		.filter(|p| !p.filestem_ends_with_underscore())
 		.collect::<HashSet<PathBuf>>();
 	// dirs_with_css
 	// 	.iter()
@@ -62,7 +62,7 @@ pub fn create_index_text(
 		.unwrap()
 		.map(|p| p.unwrap().path())
 		.filter(|p| !ignore_files.matches(p.to_str().unwrap()))
-		.filter(|p| is_dir_or_extension(p, "css"))
+		.filter(|p| p.is_dir_or_extension("css"))
 		.filter(|p| p.is_file() || dirs_with_css.contains(p))
 		.map(|p| {
 			let stem = p.file_stem().unwrap();

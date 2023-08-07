@@ -24,15 +24,13 @@ where
 		let mut suites: HashMap<String, TestSuite<Case>> = HashMap::new();
 		let cases = Self::collect_cases();
 		for case in cases.iter() {
-			if !suites.contains_key(case.file()) {
-				let file = String::from(case.file());
+			let path = case.path();
+			let path = path.to_str().unwrap();
+			if !suites.contains_key(path) {
+				let file = String::from(path);
 				suites.insert(file.clone(), TestSuite::new(file));
 			}
-			suites
-				.get_mut(case.file())
-				.unwrap()
-				.tests
-				.push(case.clone());
+			suites.get_mut(path).unwrap().tests.push(case.clone());
 		}
 
 		let mut suites = suites.iter().map(|f| f.1.clone()).collect::<Vec<_>>();

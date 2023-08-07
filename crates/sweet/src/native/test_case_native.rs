@@ -1,7 +1,10 @@
 use crate::*;
 use anyhow::Result;
+use forky_core::*;
 use futures::Future;
 use std::panic::UnwindSafe;
+use std::path::Path;
+use std::path::PathBuf;
 use std::pin::Pin;
 
 inventory::collect!(TestCaseNative);
@@ -18,7 +21,7 @@ pub struct TestCaseNative {
 }
 
 impl TestCase for TestCaseNative {
-	fn file(&self) -> &str { self.file }
+	fn path(&self) -> PathBuf { Path::new(self.file).to_forward_slash() }
 	fn name(&self) -> &str { self.name }
 	fn config(&self) -> &TestCaseConfig { &self.config }
 	async fn run_func(&self) -> Result<()> {

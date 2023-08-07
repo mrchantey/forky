@@ -1,4 +1,3 @@
-use crate::fs::PathExt;
 use crate::terminal;
 use anyhow::Result;
 use forky_core::*;
@@ -84,7 +83,7 @@ impl FsWatcher {
 		self
 	}
 	pub fn passes(&self, path: &Path) -> bool {
-		let path = path.to_forward_slash();
+		let path = path.to_forward_slash_str();
 		self.passes_watch(&path) && self.passes_ignore(&path)
 	}
 
