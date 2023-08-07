@@ -99,15 +99,14 @@ start crate:
 
 test-all *args:
 	for file in {{testable}}; do \
-		just test $file {{args}}; \
+		just test $file {{args}} -p; \
 	done
 
 test crate *args:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example sweet_{{crate}} -- {{args}}
 
 test-w crate *args:
-	just watch just test {{crate}} {{args}}
-# RUST_BACKTRACE={{backtrace}} just watch cargo run -p {{crate}} --example sweet -- -w {{args}}
+	just watch just test {{crate}} -w {{args}}
 
 docs:
 	cd docs && mdbook serve

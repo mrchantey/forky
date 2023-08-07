@@ -25,7 +25,10 @@ pub fn main() -> anyhow::Result<()> { wasm::TestRunnerWasm::run() }
 
 #[cfg(not(target_arch = "wasm32"))]
 // #[tokio::main]
-pub fn main() -> anyhow::Result<()> { native::TestRunnerNative::run() }
+pub fn main() -> anyhow::Result<()> {
+	use forky_fs::*;
+	RunTestsNativeCommand.run_with_cli_args()
+}
 
 
 pub mod exports {

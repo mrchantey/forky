@@ -6,13 +6,12 @@ use std::time::Instant;
 
 pub struct TestRunnerNative;
 
+
 impl TestRunnerNative {
 	#[tokio::main]
-	pub async fn run() -> Result<()> {
+	pub async fn run(config:&TestRunnerConfig) -> Result<()> {
 		// dont exit program on panic?
 		// let _ = std::panic::take_hook();
-
-		let config = TestRunnerConfig::from_cli_args();
 		if config.watch {
 			terminal::clear()
 		}

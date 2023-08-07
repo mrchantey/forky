@@ -1,5 +1,5 @@
 use crate::*;
-
+use clap::ArgMatches;
 
 impl TestRunnerConfig {
 	pub fn from_cli_args() -> Self {
@@ -19,6 +19,24 @@ impl TestRunnerConfig {
 			// parallel: false,
 			parallel: true,
 			files: args,
+		}
+	}
+}
+
+impl From<&ArgMatches> for TestRunnerConfig {
+	fn from(value: &ArgMatches) -> Self {
+		let watch = value.get_flag("watch");
+		let parallel = value.get_flag("parallel");
+		let filters = value
+			.get_many::<String>("filter")
+			.unwrap_or_default()
+			.map(|s| s.clone())
+			.collect::<Vec<_>>();
+
+		Self {
+			watch,
+			parallel,
+			files: filters,
 		}
 	}
 }
