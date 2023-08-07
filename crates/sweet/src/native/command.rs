@@ -18,7 +18,7 @@ impl Subcommand for RunTestsNativeCommand {
 		command
 			.arg(
 				Arg::new("filter")
-					.help("filter by directory or path name, ie. `/test1.rs /e2e/`")
+					.help("filter by path glob, ie. `*/test1.rs */e2e/*`")
 					.required(false)
 					.action(ArgAction::Append),
 			)
@@ -41,7 +41,7 @@ impl Subcommand for RunTestsNativeCommand {
 	}
 
 	fn run(&self, args: &ArgMatches) -> Result<()> {
-		let config: TestRunnerConfig = args.into();
+		let config = TestRunnerConfig::from_arg_matchers(args)?;
 		TestRunnerNative::run(&config)
 	}
 }

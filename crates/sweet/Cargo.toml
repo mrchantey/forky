@@ -30,6 +30,8 @@ inventory = { workspace = true }
 colorize = { workspace = true }
 backtrace = { workspace = true }
 
+glob = { workspace = true }
+
 ### async ###
 rayon = { workspace = true }
 futures = { workspace = true }

@@ -65,12 +65,6 @@ example crate example *args:
 @log argument:
 	echo {{argument}}
 
-auto-fs:
-	cargo run -p forky_cli auto-fs
-
-mod:
-	cargo run -p forky_cli mod
-
 publish crate *args:
 	cargo publish -p {{crate}} --allow-dirty {{args}}
 
