@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="forky_cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="forky_cli/sweet.html"><strong aria-hidden="true">1.1.</strong> sweet</a></li><li class="chapter-item expanded "><a href="forky_cli/watch.html"><strong aria-hidden="true">1.2.</strong> watch</a></li><li class="chapter-item expanded "><a href="forky_cli/mod.html"><strong aria-hidden="true">1.3.</strong> mod</a></li></ol></li><li class="chapter-item expanded "><a href="sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/quickstart-native.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li class="chapter-item expanded "><a href="sweet/quickstart-web.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li class="chapter-item expanded "><a href="sweet/features.html"><strong aria-hidden="true">2.3.</strong> Features</a></li><li class="chapter-item expanded "><a href="sweet/faq.html"><strong aria-hidden="true">2.4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="sweet/misc.html"><strong aria-hidden="true">2.5.</strong> Misc</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="demos/bevy-webxr.html"><strong aria-hidden="true">3.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="other/contributing.html"><strong aria-hidden="true">4.</strong> Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="forky_cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="forky_cli/sweet.html"><strong aria-hidden="true">1.1.</strong> sweet</a></li><li class="chapter-item expanded "><a href="forky_cli/watch.html"><strong aria-hidden="true">1.2.</strong> watch</a></li><li class="chapter-item expanded "><a href="forky_cli/mod.html"><strong aria-hidden="true">1.3.</strong> mod</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/quickstart-native.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li class="chapter-item expanded "><a href="sweet/quickstart-web.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li class="chapter-item expanded "><a href="sweet/features.html"><strong aria-hidden="true">2.3.</strong> Features</a></li><li class="chapter-item expanded "><a href="sweet/workspaces.html"><strong aria-hidden="true">2.4.</strong> Workspaces</a></li><li class="chapter-item expanded "><a href="sweet/faq.html"><strong aria-hidden="true">2.5.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="sweet/misc.html"><strong aria-hidden="true">2.6.</strong> Misc</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="demos/bevy-webxr.html"><strong aria-hidden="true">3.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="other/contributing.html"><strong aria-hidden="true">4.</strong> Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -226,6 +226,7 @@ Options:
 <p>I like to organize projects by <em>many</em> small files and including them becomes a headache so I use a cli to auto-generate mod files that include all files in a directory.</p>
 <p>Its current incarnation is zero config and opinionated so you may want to play around with it on an empty project before integrating with existing codebases.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sweet-1"><a class="header" href="#sweet-1">Sweet</a></h1>
+<p>Sweet is an authoring-first testing framework for rust. With an ergonomic native runner and an interactive web runner, you're gonna have a sweet dev experience.</p>
 <h2 id="features"><a class="header" href="#features">Features</a></h2>
 <ul>
 <li>🔥 Parallel</li>
@@ -352,6 +353,27 @@ poll_ok(|| expect_el(&quot;div&quot;)).await?
 </ul>
 </li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="workspaces"><a class="header" href="#workspaces">Workspaces</a></h1>
+<p>Workspaces are fully supported by Sweet, here's a few notes:</p>
+<h2 id="duplicate-binaries"><a class="header" href="#duplicate-binaries">Duplicate Binaries</a></h2>
+<p>As per <a href="https://github.com/rust-lang/cargo/pull/6308">this PR</a> crates that contain identical example names is not supported. For this reason it is recommended to update your <code>Cargo.toml</code>.</p>
+<pre><code class="language-diff">[[example]]
+- name = &quot;sweet&quot;
++ name = &quot;sweet_crate_a&quot;
+path = &quot;test/sweet.rs&quot;
+</code></pre>
+<p>This will achieve two things:</p>
+<ul>
+<li>Avoid weird bugs where running <code>crate_a</code> actually runs <code>crate_b</code></li>
+<li>Reduce unneseccary recompilation.</li>
+</ul>
+<p>Running <code>cargo run -p crate_a --example sweet_crate_a</code> is a bit of a mouthfull, I solve this with <a href="https://github.com/casey/just">just</a>:</p>
+<pre><code class="language-sh">#justfile
+test crate *args:
+	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example sweet_{{crate}} -- {{args}}
+</code></pre>
+<p>Now you can run:
+<code>just test crate_a</code></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
 <h3 id="why-use-example-instead-of-test"><a class="header" href="#why-use-example-instead-of-test">Why use <code>[[example]]</code> instead of <code>[[test]]</code></a></h3>
 <p>This makes it easier for the wasm test runner to produce cleaner output, but if you're only running native tests feel free to use <code>[[test]]</code> with <code>harness=false</code>.</p>
@@ -377,6 +399,7 @@ poll_ok(|| expect_el(&quot;div&quot;)).await?
 <ul>
 <li>Matchers inspired by <a href="https://jestjs.io/">jest</a></li>
 <li>WASM runner inspired by <a href="https://www.cypress.io/">cypress</a></li>
+<li><a href="https://playwright.dev/">Playwright</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-webxr"><a class="header" href="#bevy-webxr">Bevy WebXR</a></h1>
 <p>A proof-of-concept for WebXR in Bevy <code>0.11.0</code>. Visit this page in your Oculus Quest to see it in action!</p>
