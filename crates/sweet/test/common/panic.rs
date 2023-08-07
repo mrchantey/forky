@@ -6,6 +6,7 @@ use sweet::*;
 
 sweet! {
 
+	//TODO should panic
 	it skip "handles panics"{
 		assert!(true ==false);
 	}

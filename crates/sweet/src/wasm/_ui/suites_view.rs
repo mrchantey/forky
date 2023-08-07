@@ -8,7 +8,7 @@ use web_sys::console;
 #[component]
 pub fn SuitesView(
 	cx: Scope,
-	#[prop(into)] set_file: WriteSignal<Option<String>>,
+	#[prop(into)] set_matches: WriteSignal<Vec<String>>,
 ) -> impl IntoView {
 	let config = TestRunnerConfig::default();
 	let collector = TestCollectorWasm::new();
@@ -24,16 +24,16 @@ pub fn SuitesView(
 		class=forky_style::BUTTON_LIKE
 		on:click= move|_|{
 			console::clear();
-			set_file(None)
+			set_matches(vec!["!".to_string()])
 		}
 	>"Suites"</h3>
 	<SuiteButton
 		name="all".to_string()
 		matcher="*".to_string()
-		set_file
+		set_matches
 	/>
 	{suites.iter()
-		.map(|suite|view!{cx,<SuiteView suite set_file/>})
+		.map(|suite|view!{cx,<SuiteView suite set_matches/>})
 		.collect::<Vec<_>>()
 	}
 	}
@@ -42,7 +42,7 @@ pub fn SuitesView(
 #[component]
 pub fn SuiteView<'a>(
 	cx: Scope,
-	#[prop(into)] set_file: WriteSignal<Option<String>>,
+	#[prop(into)] set_matches: WriteSignal<Vec<String>>,
 	suite: &'a TestSuiteWasm,
 ) -> impl IntoView {
 	let file = suite.file.clone();
@@ -61,7 +61,7 @@ pub fn SuiteView<'a>(
 		.replace(".rs > ", "");
 	view! {cx,
 	<div class=spacecat!(forky_style::BUTTON_LIKE,sweet_style::SWEET_SUITE)
-		on:click=move|_|set_file(Some(file.clone()))
+		on:click=move|_|set_matches(vec![file.clone()])
 	>
 		{pretty}
 	</div>
@@ -73,11 +73,11 @@ pub fn SuiteButton(
 	cx: Scope,
 	name: String,
 	matcher: String,
-	#[prop(into)] set_file: WriteSignal<Option<String>>,
+	#[prop(into)] set_matches: WriteSignal<Vec<String>>,
 ) -> impl IntoView {
 	view! {cx,
 	<div class=spacecat!(forky_style::BUTTON_LIKE,sweet_style::SWEET_SUITE)
-		on:click=move|_|set_file(Some(matcher.clone()))
+		on:click=move|_|set_matches(vec![matcher.clone()])
 	>
 		{name}
 	</div>

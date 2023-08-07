@@ -1,4 +1,5 @@
 use super::settings::*;
+use crate::{MATCHES_KEY, suite_matches_none};
 use forky_web::*;
 use leptos::html::Iframe;
 use leptos::*;
@@ -7,21 +8,22 @@ use web_sys::UrlSearchParams;
 #[component]
 pub fn RunnerContainer(
 	cx: Scope,
-	#[prop(into)] file: Signal<Option<String>>,
+	#[prop(into)] suite_matches: Signal<Vec<String>>,
 ) -> impl IntoView {
 	// let file_unwrapped = move || file().unwrap();
 	move || {
-		if let Some(file) = file() {
-			view! {cx,<RunnerContainerActual file=file/>}
-			// view! {cx,<RunnerContainerActual file=Signal::derive(cx, file_unwrapped)/>}
-				.into_view(cx)
-		} else {
+		let suite_matches = suite_matches();
+		if suite_matches_none(&suite_matches) {
 			view!(cx,
 				<div class = "center-parent">
 					<h2>"🤘 sweet as! 🤘"</h2>
 				</div>
 			)
 			.into_view(cx)
+		} else {
+			view! {cx,<RunnerContainerActual suite_matches/>}
+				// view! {cx,<RunnerContainerActual file=Signal::derive(cx, file_unwrapped)/>}
+				.into_view(cx)
 		}
 	}
 }
@@ -30,7 +32,7 @@ pub fn RunnerContainer(
 #[component]
 pub fn RunnerContainerActual(
 	cx: Scope,
-	#[prop(into)] file: String,
+	#[prop(into)] suite_matches: Vec<String>,
 	// #[prop(into)] file: Signal<String>,
 ) -> impl IntoView {
 	let (loaded, set_loaded) = create_signal(cx, false);
@@ -46,17 +48,6 @@ pub fn RunnerContainerActual(
 			"full-size hidden"
 		}
 	};
-
-	let url = move || {
-		// let file = file();
-		let params = UrlSearchParams::new().unwrap();
-		params.set("run", "1");
-		params.set("file", &file);
-		let mut params = params.to_string().as_string().unwrap();
-		params.insert_str(0, "?");
-		params
-	};
-
 	//iframe body is inheriting #000 not sure why, below will force default white but result in flash
 	//TODO this is all very messy, will need rework when doing proper light/dark mode
 	let style = if dark_iframe {
@@ -64,6 +55,19 @@ pub fn RunnerContainerActual(
 	} else {
 		"background: #FFFFFF;"
 	};
+
+	let url = move || {
+		// let file = file();
+		let params = UrlSearchParams::new().unwrap();
+		params.set("run", "1");
+		for matcher in suite_matches.iter() {
+			params.append(MATCHES_KEY, matcher);
+		}
+		let mut params = params.to_string().as_string().unwrap();
+		params.insert_str(0, "?");
+		params
+	};
+
 
 	let iframe_view = move || {
 		let url = url();

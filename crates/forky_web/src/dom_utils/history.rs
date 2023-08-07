@@ -21,7 +21,15 @@ impl History {
 		let url = url.href();
 		Self::push(&url);
 	}
-	
+	pub fn append_param(key: &str, value: &str) {
+		let url = window().unwrap().location().href().unwrap();
+		let url = Url::new(&url).unwrap();
+		let params = url.search_params();
+		params.append(key, value);
+		let url = url.href();
+		Self::push(&url);
+	}
+
 	pub fn remove_param(key: &str) {
 		let url = window().unwrap().location().href().unwrap();
 		let url = Url::new(&url).unwrap();

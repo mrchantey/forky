@@ -1,6 +1,6 @@
+use crate::*;
 use web_sys::window;
 use web_sys::UrlSearchParams;
-
 
 pub struct SearchParams;
 
@@ -10,6 +10,12 @@ impl SearchParams {
 		let params = UrlSearchParams::new_with_str(search.as_str()).unwrap();
 		params.get(key)
 	}
+	pub fn get_all(key: &str) -> Vec<String> {
+		let search = window().unwrap().location().search().unwrap();
+		let params = UrlSearchParams::new_with_str(search.as_str()).unwrap();
+		params.get_all(key).to_vec_str()
+	}
+
 	pub fn set(key: &str, value: &str) {
 		if let Some(curr) = Self::get(key) {
 			if curr == value {
