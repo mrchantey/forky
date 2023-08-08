@@ -76,4 +76,28 @@ impl HtmlEventListener<JsValue> {
 		drop(listener);
 		result
 	}
+	pub async fn wait_with_window_and_while_listening(
+		name: &'static str,
+		window: Window,
+		mut while_listening: impl FnMut() + 'static,
+	) -> JsValue {
+		let listener: RcCell<Option<HtmlEventListener<JsValue>>> = rccell(None);
+
+		let listener2 = listener.clone();
+		let promise = Promise::new(&mut move |resolve, _reject| {
+			let window = window.clone();
+			*listener2.borrow_mut() =
+				Some(HtmlEventListener::<JsValue>::new_with_window(
+					name,
+					move |value| {
+						resolve.call1(&JsValue::NULL, &value).unwrap();
+					},
+					window,
+				));
+			while_listening();
+		});
+		let result = JsFuture::from(promise).await.unwrap();
+		drop(listener);
+		result
+	}
 }

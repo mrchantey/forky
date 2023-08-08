@@ -1,4 +1,5 @@
 use crate::*;
+use anyhow::Ok;
 use forky_web::*;
 use web_sys::HtmlIFrameElement;
 use web_sys::MessageEvent;
@@ -10,45 +11,6 @@ pub struct TestSuiteWasm {
 	pub tests: Vec<TestCaseWasm>,
 	pub config: TestSuiteConfig,
 	pub iframe: Option<HtmlIFrameElement>,
-}
-impl TestSuiteWasm {
-	async fn run_cases_unit(
-		&self,
-		to_run: Vec<&TestCaseWasm>,
-	) -> Vec<anyhow::Error> {
-		if let Some(iframe) = &self.iframe {
-			let mut results = Vec::with_capacity(to_run.len());
-			for case in to_run {
-				let params = UrlSearchParams::new().unwrap();
-				params.set("testid", &case.id.to_string());
-				let mut url = params.to_string().as_string().unwrap();
-				url.insert_str(0, "?");
-				iframe.set_src(&url);
-				let ev = HtmlEventListener::wait("message").await;
-				let ev: MessageEvent = ev.into();
-				let data = ev.data();
-				if data.is_string() {
-					results.push(anyhow::anyhow!(data.as_string().unwrap()));
-				}
-			}
-			results
-		} else {
-			panic!("iframe not set");
-		}
-	}
-	async fn run_cases_e2e(
-		&self,
-		to_run: Vec<&TestCaseWasm>,
-	) -> Vec<anyhow::Error> {
-		if let Some(iframe) = &self.iframe {
-			run_cases_series_with_before(to_run, async move |_| {
-				iframe.x_reload();
-			})
-			.await
-		} else {
-			panic!("iframe not set");
-		}
-	}
 }
 
 impl TestSuiteTrait<TestCaseWasm> for TestSuiteWasm {
@@ -70,14 +32,47 @@ impl TestSuiteTrait<TestCaseWasm> for TestSuiteWasm {
 		to_run: Vec<&TestCaseWasm>,
 		_runner_config: &TestRunnerConfig,
 	) -> Vec<anyhow::Error> {
-		match self.config.cases.context {
-			TestRunEnvironment::Unit => self.run_cases_unit(to_run).await,
-			TestRunEnvironment::EndToEnd => self.run_cases_e2e(to_run).await,
+		let mut results = Vec::with_capacity(to_run.len());
+		if let Some(iframe) = &self.iframe {
+			for case in to_run {
+				#[rustfmt::skip]
+			let is_e2e = self.config.cases.context == TestRunEnvironment::EndToEnd
+				|| case.config.context == TestRunEnvironment::EndToEnd;
+
+				let result = if is_e2e {
+					iframe.x_reload();
+					//TODO await reload
+					// iframe.x_reload_async().await;
+					case.run().await
+				} else {
+					run_case_unit(&iframe, case).await
+				};
+				if let Err(result) = result {
+					results.push(result);
+				}
+			}
+		} else {
+			panic!("iframe not set");
 		}
-		// if self.config.
-		// if config.parallel {
-		// 	run_cases_parallel(to_run, config).await
-		// } else {
-		// }
+		results
+	}
+}
+
+async fn run_case_unit(
+	iframe: &HtmlIFrameElement,
+	case: &TestCaseWasm,
+) -> anyhow::Result<()> {
+	let params = UrlSearchParams::new().unwrap();
+	params.set("testid", &case.id.to_string());
+	let mut url = params.to_string().as_string().unwrap();
+	url.insert_str(0, "?");
+	iframe.set_src(&url);
+	let ev = HtmlEventListener::wait("message").await;
+	let ev: MessageEvent = ev.into();
+	let data = ev.data();
+	if data.is_string() {
+		Err(anyhow::anyhow!(data.as_string().unwrap()))
+	} else {
+		Ok(())
 	}
 }

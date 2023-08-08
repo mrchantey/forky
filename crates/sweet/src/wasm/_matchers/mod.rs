@@ -1,5 +1,7 @@
 mod expect;
 pub use self::expect::*;
+mod matcher_e2e;
+pub use self::matcher_e2e::*;
 mod matcher_el;
 pub use self::matcher_el::*;
 mod matcher_selector;
