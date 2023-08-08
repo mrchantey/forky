@@ -22,6 +22,7 @@ impl TestSuiteTrait<TestCaseNative> for TestSuiteNative {
 	fn tests_mut(&mut self) -> &mut Vec<TestCaseNative> { &mut self.tests }
 
 	async fn run_cases(
+		&self,
 		to_run: Vec<&TestCaseNative>,
 		config: &TestRunnerConfig,
 	) -> Vec<anyhow::Error> {

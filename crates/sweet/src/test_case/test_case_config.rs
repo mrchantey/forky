@@ -1,4 +1,3 @@
-use crate::TestSuiteContext;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -9,5 +8,12 @@ pub struct TestCaseConfig {
 	#[serde(default)]
 	pub only: bool,
 	#[serde(default)]
-	pub context: Option<TestSuiteContext>,
+	pub context: TestRunEnvironment,
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
+pub enum TestRunEnvironment {
+	#[default]
+	Unit,
+	EndToEnd,
 }

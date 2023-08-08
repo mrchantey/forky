@@ -70,9 +70,9 @@ impl TestSuiteTrait<TestCaseWasm> for TestSuiteWasm {
 		to_run: Vec<&TestCaseWasm>,
 		_runner_config: &TestRunnerConfig,
 	) -> Vec<anyhow::Error> {
-		match self.config.context {
-			TestSuiteContext::Unit => self.run_cases_unit(to_run).await,
-			TestSuiteContext::EndToEnd => self.run_cases_e2e(to_run).await,
+		match self.config.cases.context {
+			TestRunEnvironment::Unit => self.run_cases_unit(to_run).await,
+			TestRunEnvironment::EndToEnd => self.run_cases_e2e(to_run).await,
 		}
 		// if self.config.
 		// if config.parallel {

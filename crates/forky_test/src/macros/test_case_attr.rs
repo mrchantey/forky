@@ -29,7 +29,7 @@ impl Parse for TestCaseAttr {
 		let submit = to_inventory(
 			Literal::string(&name_str.as_str()),
 			func_ident,
-			quote!(sweet::TestCaseConfig::Default),
+			quote!(sweet::TestCaseConfig::default()),
 		);
 		let out = quote!(#func_out #submit).into();
 		Ok(Self { out })

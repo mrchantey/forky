@@ -3,7 +3,7 @@ use proc_macro2::TokenTree;
 use quote::quote;
 use std::iter::Peekable;
 
-pub fn parse_config<I>(
+pub fn parse_case_config<I>(
 	iter: &mut Peekable<I>,
 ) -> syn::parse::Result<TokenStream>
 where
@@ -11,7 +11,7 @@ where
 {
 	let mut skip = false;
 	let mut only = false;
-	let mut context = quote!(None);
+	let mut context = quote!(sweet::TestRunEnvironment::Unit);
 
 
 	while let Some(t) = iter.peek() {
@@ -30,7 +30,7 @@ where
 					"e2e" => {
 						let _ = iter.next().unwrap();
 						context =
-							quote! {Some(sweet::TestSuiteContext::EndToEnd)};
+							quote! {sweet::TestRunEnvironment::EndToEnd};
 					}
 					_ => {
 						return Err(syn::parse::Error::new(

@@ -8,7 +8,7 @@ pub fn case(func: TestCaseNativeFn) -> TestCaseNative {
 		file: "some/path.rs",
 		name: "works",
 		func,
-		config: TestCaseConfig::Default,
+		config: TestCaseConfig::default(),
 	}
 }
 

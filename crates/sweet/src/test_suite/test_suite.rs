@@ -44,7 +44,7 @@ where
 
 	fn should_skip(&self, test: &Case, contains_only: bool) -> bool {
 		test.config().skip
-			|| self.config().skip
+			|| self.config().cases.skip
 			|| (contains_only && !test.config().only)
 	}
 
