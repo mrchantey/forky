@@ -1,6 +1,7 @@
 use forky_core::*;
 use js_sys::Function;
 use js_sys::Reflect;
+use wasm_bindgen::JsCast;
 use wasm_bindgen::prelude::Closure;
 use wasm_bindgen::JsValue;
 
@@ -22,7 +23,7 @@ impl LogBuffer {
 		let log = rccell(String::new());
 		let log2 = log.clone();
 
-		let _closure: Closure<dyn FnMut(JsValue)> =
+		let closure: Closure<dyn FnMut(JsValue)> =
 			Closure::new(move |val: JsValue| {
 				if let Some(mut val) = val.as_string() {
 					val.push('\n');
@@ -30,7 +31,7 @@ impl LogBuffer {
 				}
 			});
 		let func = Self::get_func(name);
-		Self::set_func(name, _closure.into_js_value());
+		Self::set_func(name, closure.as_ref().unchecked_ref());
 
 		Self {
 			name,
@@ -45,15 +46,15 @@ impl LogBuffer {
 		let func = Reflect::get(&console, &name.into()).unwrap();
 		func.into()
 	}
-	fn set_func(name: &str, func: JsValue) {
+	fn set_func(name: &str, func: &JsValue) {
 		let window = web_sys::window().unwrap();
 		let console = Reflect::get(&window, &"console".into()).unwrap();
-		Reflect::set(&console, &name.into(), &func).unwrap();
+		Reflect::set(&console, &name.into(), func).unwrap();
 	}
 
 	pub fn end(self) -> String { (*self.log.borrow()).clone() }
 }
 
 impl Drop for LogBuffer {
-	fn drop(&mut self) { Self::set_func(self.name, self.func.clone().into()); }
+	fn drop(&mut self) { Self::set_func(self.name, &self.func.clone().into()); }
 }

@@ -19,6 +19,25 @@
 			if (!error.message.startsWith("Using exceptions for control flow,"))
 				throw error
 		});
+
+	let replaceLog = (name, ignores) => {
+		let log = console[name];
+		console[name] = (...args) => {
+			if (args.length != 1
+				|| false == ignores.some(ignore => args[0].startsWith(ignore)))
+				log(...args)
+		}
+	}
+
+	replaceLog("log", [
+		"[tower-livereload]",
+		"WebXR emulator extension overrides native WebXR API with polyfill."
+	])
+
+	// replaceLog("warn", [
+	// 	"Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'browsing-topics'."
+	// ])
+
 </script>
 
 </html>

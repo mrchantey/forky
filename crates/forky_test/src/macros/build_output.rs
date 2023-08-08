@@ -45,10 +45,7 @@ pub fn to_inventory(
 	func: TokenStream,
 	config: TokenStream,
 ) -> TokenStream {
-	let wasm_export_name =
-		format!("_sweet_{}", CNT.fetch_add(1, Ordering::SeqCst));
-	let wasm_export_name = Ident::new(&wasm_export_name, Span::call_site());
-
+	let wasm = to_inventory_wasm(&name, &func, &config);
 	quote!(
 		use sweet::exports::*;
 		#[cfg(not(target_arch = "wasm32"))]
@@ -58,20 +55,36 @@ pub fn to_inventory(
 			file: file!(),
 			config: #config
 		});
+		#wasm
+	)
+}
+
+
+fn to_inventory_wasm(
+	name: &Literal,
+	func: &TokenStream,
+	config: &TokenStream,
+) -> TokenStream {
+	let id = CNT.fetch_add(1, Ordering::SeqCst);
+	let wasm_export_name = format!("_sweet_{id}");
+	let wasm_export_name = Ident::new(&wasm_export_name, Span::call_site());
+
+	quote!(
 		#[cfg(target_arch = "wasm32")]
-		#[wasm_bindgen]
-		pub fn #wasm_export_name() -> JsValue {
+			#[wasm_bindgen]
+			pub fn #wasm_export_name() -> JsValue {
 
-			let config = #config.to_i32();
-			let func: Closure<dyn Fn() -> Promise> = Closure::new(#func);
-			let func = func.into_js_value();
+				let config = #config.to_i32();
+				let func: Closure<dyn Fn() -> Promise> = Closure::new(#func);
+				let func = func.into_js_value();
 
-			sweet::build_test_case(
-				&#name.into(),
-				&file!().into(),
-				&func,
-				&config.into(),
-			)
-		}
+				sweet::build_test_case(
+					&#id.into(),
+					&#name.into(),
+					&file!().into(),
+					&func,
+					&config.into(),
+				)
+			}
 	)
 }

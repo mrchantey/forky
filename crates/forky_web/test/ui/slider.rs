@@ -27,4 +27,9 @@ sweet! {
 		expect_body().to_contain_text("value: 50")?;
 
 	}
+
+	it "fails"{
+
+		expect(true).to_be_false()?;
+	}
 }

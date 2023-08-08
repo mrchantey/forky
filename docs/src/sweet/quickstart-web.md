@@ -17,3 +17,6 @@
 Here's an example of a runner with a few tests:
 
 ![wasm-runner](images/wasm-runner.png)
+
+
+> Note: to disable a few messy warnings its helpful to enable [this chrome feature](chrome://flags/#privacy-sandbox-ads-apis)

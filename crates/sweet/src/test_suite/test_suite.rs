@@ -1,13 +1,29 @@
 use crate::*;
 use anyhow::Error;
+use futures::Future;
 
 
-pub async fn run_cases_series(
-	to_run: Vec<&impl TestCase>,
-	_: &TestRunnerConfig,
-) -> Vec<Error> {
+pub async fn run_cases_series(to_run: Vec<&impl TestCase>) -> Vec<Error> {
 	let mut results = Vec::with_capacity(to_run.len());
 	for case in to_run {
+		if let Err(result) = case.run().await {
+			results.push(result);
+		}
+	}
+	results
+}
+
+pub async fn run_cases_series_with_before<Case, Fut>(
+	to_run: Vec<&Case>,
+	mut before: impl FnMut(&Case) -> Fut,
+) -> Vec<Error>
+where
+	Case: TestCase,
+	Fut: Future<Output = ()>,
+{
+	let mut results = Vec::with_capacity(to_run.len());
+	for case in to_run {
+		before(case).await;
 		if let Err(result) = case.run().await {
 			results.push(result);
 		}
@@ -33,10 +49,11 @@ where
 	}
 
 	async fn run_cases(
+		&self,
 		to_run: Vec<&Case>,
-		config: &TestRunnerConfig,
+		_config: &TestRunnerConfig,
 	) -> Vec<Error> {
-		run_cases_series(to_run, config).await
+		run_cases_series(to_run).await
 	}
 
 	async fn run<Logger>(&self, config: &TestRunnerConfig) -> TestSuiteResult
@@ -54,7 +71,7 @@ where
 			.iter()
 			.partition(|t| !self.should_skip(t, contains_only));
 
-		let failed = Self::run_cases(to_run, config).await;
+		let failed = self.run_cases(to_run, config).await;
 
 		let msg = failed
 			.iter()

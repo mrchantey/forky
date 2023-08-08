@@ -1,5 +1,4 @@
-use super::*;
-use crate::DocumentExt;
+use crate::*;
 use leptos::*;
 use web_sys::Document;
 

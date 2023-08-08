@@ -1,9 +1,11 @@
 use super::settings::*;
-use crate::{MATCHES_KEY, suite_matches_none};
+use crate::suite_matches_none;
+use crate::TestRunnerConfig;
+use crate::TestRunnerWasm;
 use forky_web::*;
 use leptos::html::Iframe;
 use leptos::*;
-use web_sys::UrlSearchParams;
+use web_sys::HtmlIFrameElement;
 
 #[component]
 pub fn RunnerContainer(
@@ -21,7 +23,7 @@ pub fn RunnerContainer(
 			)
 			.into_view(cx)
 		} else {
-			view! {cx,<RunnerContainerActual suite_matches/>}
+			view! {cx,<Runner _suite_matches=suite_matches/>}
 				// view! {cx,<RunnerContainerActual file=Signal::derive(cx, file_unwrapped)/>}
 				.into_view(cx)
 		}
@@ -30,15 +32,25 @@ pub fn RunnerContainer(
 
 
 #[component]
-pub fn RunnerContainerActual(
+pub fn Runner(
 	cx: Scope,
-	#[prop(into)] suite_matches: Vec<String>,
+	#[prop(into)] _suite_matches: Vec<String>,
 	// #[prop(into)] file: Signal<String>,
 ) -> impl IntoView {
 	let (loaded, set_loaded) = create_signal(cx, false);
 	let dark_iframe = SearchParams::get_flag(DARK_IFRAME_KEY);
 
 	let iframe: NodeRef<Iframe> = create_node_ref(cx);
+
+	create_effect(cx, move |_| {
+		if let Some(iframe) = iframe() {
+			let iframe: &HtmlIFrameElement = &iframe;
+			let config = TestRunnerConfig::from_search_params();
+			TestRunnerWasm::run(&config, iframe.clone())
+		}
+	});
+
+
 
 	//avoid load flash of iframe
 	let class = move || {
@@ -56,34 +68,18 @@ pub fn RunnerContainerActual(
 		"background: #FFFFFF;"
 	};
 
-	let url = move || {
-		// let file = file();
-		let params = UrlSearchParams::new().unwrap();
-		params.set("run", "1");
-		for matcher in suite_matches.iter() {
-			params.append(MATCHES_KEY, matcher);
-		}
-		let mut params = params.to_string().as_string().unwrap();
-		params.insert_str(0, "?");
-		params
-	};
-
-
-	let iframe_view = move || {
-		let url = url();
-		view!(cx,<iframe
-			style=style
-			class=class
-			src=url
-			node_ref=iframe
-			frameBorder="0"
-			on:load= move |_| {set_loaded(true)}
-			/>)
-	};
-
 	view!(cx,
 		<div class="full-size" style=style>
-			{iframe_view}
+			<iframe
+				allow-same-origin
+			  // allow="browsing-topics"
+				style=style
+				class=class
+				// src=url
+				node_ref=iframe
+				frameBorder="0"
+				on:load= move |_| {set_loaded(true)}
+			/>
 		</div>
 	)
 }

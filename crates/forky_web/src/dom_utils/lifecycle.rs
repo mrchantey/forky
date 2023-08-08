@@ -1,4 +1,3 @@
-use super::*;
 use forky_core::*;
 use std::future::Future;
 use wasm_bindgen::prelude::*;
@@ -22,7 +21,6 @@ pub fn run_async<F>(fut: F)
 where
 	F: Future<Output = Result<JsValue, JsValue>> + 'static,
 {
-	set_panic_hook();
 	let _ = future_to_promise(fut).catch(&Closure::new(|val| {
 		log!("Wasm Error: {:?}", val);
 	}));

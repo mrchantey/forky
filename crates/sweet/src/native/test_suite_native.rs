@@ -28,7 +28,7 @@ impl TestSuiteTrait<TestCaseNative> for TestSuiteNative {
 		if config.parallel {
 			run_cases_parallel(to_run, config).await
 		} else {
-			run_cases_series(to_run, config).await
+			run_cases_series(to_run).await
 		}
 	}
 }

@@ -21,6 +21,7 @@ pub use wasm::*;
 
 
 #[cfg(target_arch = "wasm32")]
+// pub fn main() -> anyhow::Result<()> { wasm::sweet_wasm_entry() }
 pub fn main() -> anyhow::Result<()> { wasm::sweet_wasm_entry() }
 
 #[cfg(not(target_arch = "wasm32"))]
