@@ -28,7 +28,7 @@ sweet! {
 
 	}
 
-	it "fails"{
+	it skip "fails"{
 
 		expect(true).to_be_false()?;
 	}

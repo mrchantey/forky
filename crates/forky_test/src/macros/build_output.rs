@@ -74,7 +74,7 @@ fn to_inventory_wasm(
 			#[wasm_bindgen]
 			pub fn #wasm_export_name() -> JsValue {
 
-				let config = #config.to_i32();
+				let config = serde_json::to_string(&#config).unwrap();
 				let func: Closure<dyn Fn() -> Promise> = Closure::new(#func);
 				let func = func.into_js_value();
 

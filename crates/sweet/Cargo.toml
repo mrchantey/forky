@@ -24,12 +24,17 @@ repository = { workspace = true }
 forky_core = { workspace = true }
 forky_test = { workspace = true }
 
-getrandom = { workspace = true }
 anyhow = { workspace = true }
+getrandom = { workspace = true }
 inventory = { workspace = true }
+
+## console ###
 colorize = { workspace = true }
 backtrace = { workspace = true }
 
+## parse ###
+serde = { workspace = true }
+serde_json = { workspace = true }
 glob = { workspace = true }
 
 ### async ###

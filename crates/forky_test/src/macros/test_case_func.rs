@@ -12,9 +12,9 @@ pub struct TestCaseFunc {
 impl Parse for TestCaseFunc {
 	fn parse(stream: ParseStream) -> Result<Self> {
 		let mut iter = into_peekable(stream)?;
+		let config = parse_config(&mut iter)?;
 		let name = parse_name(&mut iter);
 		try_remove_comma(&mut iter);
-		let config = parse_config(&mut iter);
 		try_remove_comma(&mut iter);
 
 		let mut func = TokenStream::new();

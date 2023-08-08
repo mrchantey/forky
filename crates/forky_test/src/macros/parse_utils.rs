@@ -19,10 +19,8 @@ where
 	let mut name = Literal::string("undefined");
 	if let Some(t) = iter.peek() {
 		if let TokenTree::Literal(_lit) = t {
-			let n = iter.next().unwrap();
-			if let TokenTree::Literal(n) = n {
-				name = n;
-			}
+			name = _lit.clone();
+			let _ = iter.next().unwrap();
 		}
 	};
 	name

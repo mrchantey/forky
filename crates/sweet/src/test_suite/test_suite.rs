@@ -43,9 +43,9 @@ where
 	fn push_test(&mut self, test: Case) { self.tests_mut().push(test) }
 
 	fn should_skip(&self, test: &Case, contains_only: bool) -> bool {
-		*test.config() == TestCaseConfig::Skip
+		test.config().skip
 			|| self.config().skip
-			|| (contains_only && *test.config() != TestCaseConfig::Only)
+			|| (contains_only && !test.config().only)
 	}
 
 	async fn run_cases(
@@ -64,8 +64,7 @@ where
 		let file = self.file();
 		let logger = Logger::start(file);
 
-		let contains_only =
-			tests.iter().any(|t| *t.config() == TestCaseConfig::Only);
+		let contains_only = tests.iter().any(|t| t.config().only);
 
 		let (to_run, skipped): (Vec<_>, Vec<_>) = tests
 			.iter()

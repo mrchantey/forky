@@ -21,8 +21,10 @@ pub struct TestCaseWasm {
 
 impl TestCaseWasm {
 	pub fn from_jsvalue(test: JsValue) -> Result<Self, JsValue> {
-		let config = Reflect::get(&test, &"config".into())?.as_f64().unwrap();
-		let config = TestCaseConfig::from_i32(config as i32);
+		let config =
+			Reflect::get(&test, &"config".into())?.as_string().unwrap();
+		// // let config = TestCaseConfig::from_i32(config);
+		let config = serde_json::from_str(&config).unwrap_throw();
 		let id = Reflect::get(&test, &"id".into())?.as_f64().unwrap() as usize;
 		let name = Reflect::get(&test, &"name".into())?.as_string().unwrap();
 		let file = Reflect::get(&test, &"file".into())?.as_string().unwrap();

@@ -8,6 +8,7 @@ use syn::parse::Parse;
 use syn::parse::ParseStream;
 use syn::parse::Result;
 
+
 pub struct SuiteFunc {
 	pub out: proc_macro::TokenStream,
 }
@@ -35,8 +36,20 @@ fn parse_next(
 			let i_str = ident.to_string();
 			match i_str.as_str() {
 				"test" | "it" => {
-					let config = parse_config(iter);
+					let config = parse_config(iter)?;
 					let name = parse_name(iter);
+					/*
+					TODO assert that next token is a group
+					TokenTree::Group(_) => {
+						break;
+					}
+					tree => {
+						return Err(syn::parse::Error::new(
+							tree.span(),
+							"Expected curly braces",
+						));
+					}
+							*/
 					let func = iter.next().unwrap();
 					Ok(to_inventory_wrap_func(name, func.into(), config))
 				}
