@@ -190,7 +190,7 @@ expect(page).to_contain_text(&quot;sweet as!&quot;)?;
 	p.to_contain_text(&quot;sweet as!&quot;)).await?;
 </code></pre>
 <p>We can also retrieve child elements via polling</p>
-<pre><code class="language-rs">expect(page).poll(|p| p.get(&quot;p&quot;)).await?
+<pre><code class="language-rs">expect(page).poll(|p| p.get(&quot;div&quot;)).await?
 	.to_contain_text(&quot;sweet as!&quot;)?;
 </code></pre>
 

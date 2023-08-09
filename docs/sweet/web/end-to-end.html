@@ -167,15 +167,32 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="end-to-end"><a class="header" href="#end-to-end">End-To-End</a></h1>
-<p>By default web tests run <em>inside</em> the iframe. This is great for testing components, but when we want to test a page provided by the server we need an end-to-end approach.</p>
+<p>By default web tests run <em>inside</em> the iframe. This is great for testing components, but when we want to test a page provided by the server we need a different approach.</p>
 <p>Test cases marked as <code>e2e</code> will run in the parent process instead of inside the iframe. The child <code>iframe</code> can be retrieved via <code>visit()</code>, at which point you can interact with the underlying document just like with unit tests.</p>
+<p>Testing iframes from different origins, ie another port on localhost, is <a href="https://docs.cypress.io/guides/guides/web-security#:~:text=To%20get%20around%20these%20restrictions,rules%20of%20same%2Dorigin%20policy.">hard</a>. To make this easier, sweet provides a reverse proxy that will serve your iframe content from the same origin. Its been tested on simple sites like these docs, but if you encounter any problems please create an issue.</p>
+<h3 id="visit"><a class="header" href="#visit"><code>visit()</code></a></h3>
+<p>visit does three things:</p>
+<ol>
+<li>Points the proxy to the provided url</li>
+<li>Sets the iframe <code>src</code> to the proxy url
+<ul>
+<li>fyi this is will be something like <code>/_proxy_/http://localhost:3000</code></li>
+</ul>
+</li>
+<li>awaits the iframe <code>load</code> event</li>
+</ol>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<p>Here's an example of an end-to-end test running on these docs:</p>
 <pre><code class="language-rs">sweet!{
-	it e2e &quot;works&quot;{
-		let page = visit(&quot;localhost:7777&quot;).await; 
-		expect(page).to_contain_text(&quot;sweet as!&quot;)?;
+	test e2e &quot;docs origin&quot; {
+		let page = visit(&quot;http://localhost:3000&quot;).await?;
+		expect(page)
+			.poll(|p|p.to_contain_text(&quot;Forky&quot;)).await?;
 	}
 }
 </code></pre>
+<p>And the output looks like this:</p>
+<p><img src="../images/end-to-end.png" alt="end-to-end" /></p>
 
                     </main>
 
