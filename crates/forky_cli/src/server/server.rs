@@ -1,11 +1,13 @@
 use super::*;
 use anyhow::Result;
+use axum::http::Method;
 use axum::Router;
 use forky_fs::terminal;
 use forky_fs::FsWatcher;
 use futures::Future;
 use std::pin::Pin;
 use std::thread::JoinHandle;
+use tower_http::cors::CorsLayer;
 use tower_http::services::ServeDir;
 use tower_livereload::LiveReloadLayer;
 
@@ -15,6 +17,7 @@ pub struct Server {
 	pub address: Address,
 	pub clear: bool,
 	pub quiet: bool,
+	pub any_origin: bool,
 }
 
 impl Default for Server {
@@ -24,6 +27,7 @@ impl Default for Server {
 			address: Address::default(),
 			clear: true,
 			quiet: false,
+			any_origin: false,
 		}
 	}
 }
@@ -72,6 +76,12 @@ impl Server {
 
 		if let Some(livereload) = livereload {
 			router = router.layer(livereload);
+		}
+		if self.any_origin{
+			let cors = CorsLayer::new()
+			.allow_methods([Method::GET, Method::POST])
+			.allow_origin(tower_http::cors::Any);
+			router = router.layer(cors);
 		}
 
 		if self.address.secure{
@@ -123,6 +133,11 @@ impl Server {
 			terminal::clear();
 			terminal::print_forky();
 		}
-		println!("serving '{}' at {}", self.dir, self.address);
+		let any_origin = if self.any_origin {
+			"\nany-origin: true"
+		} else {
+			""
+		};
+		println!("serving '{}' at {}{any_origin}", self.dir, self.address);
 	}
 }

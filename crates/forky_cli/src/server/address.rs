@@ -1,4 +1,5 @@
 use colorize::AnsiColor;
+use forky_core::OptionTExt;
 use std::fmt::Display;
 
 #[derive(Debug, Clone, Copy)]
@@ -10,6 +11,14 @@ pub struct Address {
 }
 
 impl Address {
+	pub fn host_from_str(host: &str) -> anyhow::Result<[u8; 4]> {
+		let mut parts = host.split('.');
+		let v1 = parts.next().ok()?.parse::<u8>()?;
+		let v2 = parts.next().ok()?.parse::<u8>()?;
+		let v3 = parts.next().ok()?.parse::<u8>()?;
+		let v4 = parts.next().ok()?.parse::<u8>()?;
+		Ok([v1, v2, v3, v4])
+	}
 	pub fn is_all(&self) -> bool {
 		self.host[0] == 0
 			&& self.host[1] == 0

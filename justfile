@@ -29,6 +29,9 @@ fix-all *args:
 cli *args:
 	cargo run -p forky_cli {{args}}
 
+install-cli *args:
+	cargo install --path ./crates/forky_cli {{args}}
+
 run-w *args:
 	just watch just run {{args}}
 
