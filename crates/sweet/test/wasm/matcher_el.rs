@@ -42,7 +42,7 @@ sweet! {
 		expect(window).not().get("div")?;
 
 		expect(window).poll(|w|w.get("div")).await?
-			// .not().to_contain_text("hello world!")?;
 			.to_contain_text("hello world!")?;
+		// .not().to_contain_text("hello world!")?;
 	}
 }

@@ -20,7 +20,8 @@ impl TestRunnerWasm {
 			let window = window().unwrap();
 			let parent = window.parent().unwrap().unwrap();
 			let is_iframe = parent != window;
-			let origin = parent.origin();
+			// let origin = parent.origin();
+			let origin = "*";
 
 			match case.run().await {
 				Ok(_) => {

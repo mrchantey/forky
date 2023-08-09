@@ -48,3 +48,4 @@ where
 	JsFuture::from(promise).await.unwrap();
 	f();
 }
+

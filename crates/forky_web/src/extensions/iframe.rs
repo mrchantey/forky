@@ -1,4 +1,4 @@
-use crate::HtmlEventListener;
+use crate::*;
 use extend::ext;
 use wasm_bindgen::JsCast;
 use web_sys::HtmlIFrameElement;
@@ -12,6 +12,9 @@ pub impl HtmlIFrameElement {
 	async fn x_set_source_async(&self, url: &str) {
 		self.set_src(url);
 		self.x_wait_for_load().await;
+		if self.content_document().is_none() {
+			panic!("iframe content document is null, this is likely a cors issue");
+		}
 	}
 
 	async fn x_reload_async(&self) {
