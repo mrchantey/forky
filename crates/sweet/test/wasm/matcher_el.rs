@@ -25,18 +25,23 @@ sweet! {
 		expect(window).not().to_contain_visible_text("This is hidden")?;
 		expect(window).to_contain_html("<div><h1>This is a heading</h1>")?;
 	}
-	test "expect_get" {
+	test "get" {
+		expect(window).not().get("div")?;
 		create_view();
-		expect_el("h1")?.to_contain_text("This is a heading")?;
+		expect(window).get("div")?;
+		expect(window).get("h1")?
+			.to_contain_text("This is a heading")?;
 	}
 
 	test "async"{
 
 		let _handle = set_timeout(||{
 			mount(|cx|view!{cx,<div>"hello world!"</div>});
-		},Duration::from_millis(100));
+		},Duration::from_millis(10));
 
-		poll_ok(||expect_el("div")).await?
+		expect(window).not().get("div")?;
+
+		poll_ok(||expect(window).get("div")).await?
 			.to_contain_text("hello world!")?;
 
 	}

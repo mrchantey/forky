@@ -4,5 +4,7 @@ mod closure;
 pub use self::closure::*;
 mod document;
 pub use self::document::*;
+mod element;
+pub use self::element::*;
 mod iframe;
 pub use self::iframe::*;

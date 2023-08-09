@@ -19,7 +19,7 @@ where
 
 
 pub async fn poll_ok<T>(f: impl Fn() -> Result<T>) -> Result<T> {
-	poll_ok_with_timeout(f, Duration::from_secs(4)).await
+	poll_ok_with_timeout(f, Duration::from_secs(2)).await
 }
 
 pub async fn poll_ok_with_timeout<T>(

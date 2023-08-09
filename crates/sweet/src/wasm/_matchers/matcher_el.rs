@@ -1,19 +1,12 @@
 use crate::*;
 use anyhow::Result;
+use forky_web::*;
 use web_sys::HtmlElement;
 
 
 pub trait IntoHtmlElement {
 	fn into_html_element(&self) -> HtmlElement;
 }
-// impl<T> IntoHtmlElement for &T
-// where
-// 	T: IntoHtmlElement + Clone,
-// {
-// 	fn into_html_element(&self) -> HtmlElement {
-// 		self.clone().into_html_element()
-// 	}
-// }
 
 impl<T> IntoHtmlElement for Option<T>
 where
@@ -32,8 +25,21 @@ where
 		self().unwrap().into_html_element()
 	}
 }
+// impl<T> IntoHtmlElement for fn() -> Option<T>
+// where
+// 	T: IntoHtmlElement,
+// {
+// 	fn into_html_element(&self) -> HtmlElement {
+// 		self().unwrap().into_html_element()
+// 	}
+// }
+// impl<T> IntoHtmlElement for T
+// where
+// 	T: IntoHtmlElement,
+// {
+// 	fn into_html_element(&self) -> HtmlElement { (*self).into_html_element() }
+// }
 
-/// this is a noop
 impl IntoHtmlElement for web_sys::HtmlElement {
 	fn into_html_element(&self) -> HtmlElement { self.clone() }
 }
@@ -56,6 +62,20 @@ pub trait MatcherHtml<T>: MatcherTrait<T>
 where
 	T: IntoHtmlElement,
 {
+	fn get(&self, selector: &str) -> Result<Matcher<Option<HtmlElement>>> {
+		let matcher = self.get_matcher();
+		let parent = matcher.value.into_html_element();
+		let expected = format!(
+			"element {} to contain selector '{selector}'",
+			parent.tag_name()
+		);
+		let received = parent.x_query_selector::<HtmlElement>(selector);
+		match matcher.assert_option_with_received(&expected, received) {
+			Ok(value) => Ok(Matcher::new(value)),
+			Err(e) => Err(e),
+		}
+	}
+
 	fn to_contain_text(&self, other: &str) -> Result<()> {
 		let receive = self
 			.get_value()

@@ -8,6 +8,32 @@ use std::fmt::Debug;
 impl<T> Matcher<T> {
 	// useful as seperate from to_be, preserves backtrace depth
 
+	pub fn assert_option_with_received<T2: Debug, T3: Debug>(
+		&self,
+		expected: &T2,
+		received: Option<T3>,
+	) -> Result<Option<T3>>
+	where
+		T3: Debug,
+	{
+		match received {
+			Some(received) => {
+				if self.negated {
+					Err(self.to_error_with_received(expected, &received))
+				} else {
+					Ok(Some(received))
+				}
+			}
+			None => {
+				if self.negated {
+					Ok(None)
+				} else {
+					Err(self.to_error_with_received(expected, &received))
+				}
+			}
+		}
+	}
+
 	pub fn assert_correct_with_received<T2: Debug, T3: Debug>(
 		&self,
 		result: bool,
