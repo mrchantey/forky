@@ -10,10 +10,13 @@ pub impl Result<Response<Body>> {
 	fn to_response(self) -> Response<Body> {
 		match self {
 			Ok(res) => res,
-			Err(e) => Response::builder()
-				.status(StatusCode::BAD_REQUEST)
-				.body(Body::from(e.to_string()))
-				.unwrap(),
+			Err(e) => {
+				eprintln!("Response Error: {e}");
+				Response::builder()
+					.status(StatusCode::BAD_REQUEST)
+					.body(Body::from(e.to_string()))
+					.unwrap()
+			}
 		}
 	}
 }
@@ -81,7 +84,20 @@ impl Proxy {
 			&& self.last_uri.scheme() == uri.scheme()
 	}
 
-	pub async fn handle(&mut self, req: Request<Body>) -> Response<Body> {
+	pub fn handle_set(&mut self, req: Request<Body>) -> Response<Body> {
+		(|| -> Result<Response<Body>> {
+			let uri = req.uri();
+			let uri = uri.remove_leading_slash()?;
+			self.apply_next_origin(&uri)?;
+			Ok(Response::builder()
+				.status(StatusCode::OK)
+				.body(Body::from("OK"))
+				.unwrap())
+		})()
+		.to_response()
+	}
+
+	pub async fn handle(&self, req: Request<Body>) -> Response<Body> {
 		(async || -> Result<Response<Body>> {
 			let uri = req.uri();
 			let uri = uri.remove_leading_slash()?;
@@ -92,7 +108,7 @@ impl Proxy {
 				handle_proxy_request_from_url(req, &uri_next).await
 			} else {
 				println!("Proxy - absolute:\n{uri}\n");
-				self.apply_next_origin(&uri)?;
+				// self.apply_next_origin(&uri)?;
 				handle_proxy_request_from_url(req, &uri).await
 			}
 		})()
@@ -119,7 +135,9 @@ impl Proxy {
 					.unwrap_or(self.last_uri.authority().ok()?)
 					.clone(),
 			)
-			.scheme(uri.scheme().unwrap_or(self.last_uri.scheme().ok()?).clone())
+			.scheme(
+				uri.scheme().unwrap_or(self.last_uri.scheme().ok()?).clone(),
+			)
 			.path_and_query(self.last_uri.path_and_query().ok()?.clone())
 			.build()?;
 		println!("URI SET: {uri}");

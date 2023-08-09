@@ -15,6 +15,8 @@ forky_core = { workspace = true }
 anyhow = { workspace = true }
 extend = { workspace = true }
 
+serde = { workspace = true }
+serde_json = { workspace = true }
 # rand = { workspace = true }
 # getrandom = { workspace = true }
 # num-traits = { workspace = true }

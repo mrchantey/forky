@@ -97,12 +97,12 @@ impl Server {
 		if self.proxy{
 			let proxy = Arc::new(futures::lock::Mutex::new(Proxy::default()));
 			let proxy2 = proxy.clone();
-			router = router.nest_service("/_proxy_/", get(|req:Request<Body>| async move {
-				let mut proxy = proxy2.lock().await;
-				proxy.handle(req).await
-			}));
 			router = router.nest_service("/_proxy_set_/", get(|req:Request<Body>| async move {
 				let mut proxy = proxy.lock().await;
+				proxy.handle_set(req)
+			}));
+			router = router.nest_service("/_proxy_/", get(|req:Request<Body>| async move {
+				let proxy = proxy2.lock().await;
 				proxy.handle(req).await
 			}));
 		}
