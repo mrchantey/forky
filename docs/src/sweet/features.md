@@ -25,20 +25,6 @@ Received: foobar
 */
 ```
 
-## Async Matchers
-Lots of web stuff happens at weird times, so we've got helpers like `poll_ok`, which will wait for 4 seconds before failing.
-
-```rs
-let _handle = set_timeout(|| {
-		mount(|cx| view!{cx,
-			<div>"sweet as!"</div>
-		});
-	}, Duration::from_millis(100));
-
-poll_ok(|| expect_el("div")).await?
-	.to_contain_text("sweet as!")?;
-```
-
 ## Informative outputs
 - Long running tests show which suite is hanging
 	- ![progress](images/progress.png)

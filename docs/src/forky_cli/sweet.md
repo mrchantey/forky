@@ -1,6 +1,11 @@
 # sweet
 
-usage: `forky sweet`
+Currently the `sweet` CLI has one function which is to run the interactive web runner.
+
+usage:
+```sh
+forky sweet
+```
 
 ```
 Arguments:

@@ -30,23 +30,4 @@
 
 Here's an example output of a runner with a few tests:
 
-![native-runner](images/success.png)
-
-## Passing arguments
-
-The binary is isself a mini cli with options, to see them all try:
-
-`cargo run --example sweet --help`
-
-```
-Native runner for your tests.
-
-Usage: sweet_sweet.exe [OPTIONS] [filter]...
-
-Arguments:
-  [filter]...  filter by directory or path name, ie. `/test1.rs /e2e/`
-
-Options:
-  -w, --watch     clears screen and does not return error
-  -p, --parallel  run tests in parallel
-```
+![native-runner](../images/success.png)

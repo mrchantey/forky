@@ -8,12 +8,16 @@
 	- [mod](./forky_cli/mod.md)
 ---
 - [Sweet](./sweet/index.md)
-	- [Quickstart - Native](./sweet/quickstart-native.md)
-	- [Quickstart - Web](./sweet/quickstart-web.md)
+	- [Quickstart - Native](./sweet/native/index.md)
+		- [Passing Arguments](./sweet/native/arguments.md)
+	- [Quickstart - Web](./sweet/web/index.md)
+		- [Matchers](./sweet/web/matchers.md)
+		- [End-To-End](./sweet/web/end-to-end.md)
 	- [Features](./sweet/features.md)
 	- [Workspaces](./sweet/workspaces.md)
 	- [FAQ](./sweet/faq.md)
 	- [Misc](./sweet/misc.md)
+	- [Changelog](./sweet/changelog.md)
 # Demos
 
 - [Bevy WebXR](./demos/bevy-webxr.md)

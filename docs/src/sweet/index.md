@@ -1,12 +1,13 @@
 # Sweet
 
-Sweet is an authoring-first testing framework for rust. With an ergonomic native runner and an interactive web runner, you're gonna have a sweet dev experience.
+Sweet is an **DevEx-First** test framework for rust. Whether you're running native, component or e2e tests, you're gonna have a sweet dev experience.
 
 ## Features
 
 - 🔥 Parallel
 - 🕙 Async
-- 🌍 WASM UI tests
+- 🕸️ WASM UI tests
+- 🌍 E2E Tests
 - ☮️ Intuitive matchers
 - 🌈 Pretty output
 
@@ -15,7 +16,13 @@ Sweet is an authoring-first testing framework for rust. With an ergonomic native
 ```rs
 sweet! {
   it "works" {
-		expect("some string").not().to_start_with("foo")?;
+		expect("bar").not().to_contain("foo")?;
   }
 }
 ```
+
+Sweet only exposes three functions:
+
+- `sweet!` macro
+- `expect()`
+- `visit()` for e2e tests

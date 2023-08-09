@@ -1,6 +1,11 @@
 # watch
 
-usage: `forky watch`
+Analagous to `cargo watch` but allows for watch globs.
+
+usage: 
+```sh
+forky watch
+```
 
 ```
 Usage: forky.exe watch [OPTIONS] <cmd>...

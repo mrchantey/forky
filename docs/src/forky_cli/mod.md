@@ -1,6 +1,9 @@
 # Mod
 
-usage: `forky mod`
+usage:
+```sh
+forky mod
+```
 
 I like to organize projects by *many* small files and including them becomes a headache so I use a cli to auto-generate mod files that include all files in a directory.
 
