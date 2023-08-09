@@ -34,6 +34,6 @@ expect(page).poll(|p|
 
 We can also retrieve child elements via polling
 ```rs
-expect(page).poll(|p| p.get("p")).await?
+expect(page).poll(|p| p.get("div")).await?
 	.to_contain_text("sweet as!")?;
 ```
