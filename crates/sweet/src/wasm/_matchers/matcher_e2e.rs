@@ -16,8 +16,7 @@ pub async fn visit(url: &str) -> Result<HtmlIFrameElement> {
 	match Document::x_query_selector::<HtmlIFrameElement>("iframe") {
 		None => Err(anyhow::anyhow!(NO_IFRAME)),
 		Some(iframe) => {
-			iframe.set_src(url);
-			iframe.x_wait_for_load().await;
+			iframe.x_set_source_async(url).await;
 			Ok(iframe)
 		}
 	}

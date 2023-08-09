@@ -66,10 +66,12 @@ async fn run_case_unit(
 	params.set("testid", &case.id.to_string());
 	let mut url = params.to_string().as_string().unwrap();
 	url.insert_str(0, "?");
-	iframe.set_src(&url);
+	iframe.x_set_source_async(&url).await;
+	
 	let ev = HtmlEventListener::wait("message").await;
 	let ev: MessageEvent = ev.into();
 	let data = ev.data();
+	// forky_core::log!("data: {:?}",data);
 	if data.is_string() {
 		Err(anyhow::anyhow!(data.as_string().unwrap()))
 	} else {

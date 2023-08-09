@@ -2,10 +2,10 @@ use forky_web::*;
 use leptos::*;
 use std::time::Duration;
 use sweet::*;
+use web_sys::window;
 
-
-fn create_view() -> Mount {
-	mount_with_unmount(|cx| {
+fn create_view() {
+	mount(|cx| {
 		view! {cx,
 			<div>
 			<h1>"This is a heading"</h1>
@@ -17,17 +17,16 @@ fn create_view() -> Mount {
 }
 
 sweet! {
-	test "expect_body" {
-
-		let _m = create_view();
-		expect_body().to_contain_text("This is a headingThis is a paragraph")?;
-		expect_body().not().to_contain_text("foobar")?;
-		expect_body().to_contain_text("This is hidden")?;
-		expect_body().not().to_contain_visible_text("This is hidden")?;
-		expect_body().to_contain_html("<div><h1>This is a heading</h1>")?;
+	test "expect window" {
+		create_view();
+		expect(window).to_contain_text("This is a headingThis is a paragraph")?;
+		expect(window).not().to_contain_text("foobar")?;
+		expect(window).to_contain_text("This is hidden")?;
+		expect(window).not().to_contain_visible_text("This is hidden")?;
+		expect(window).to_contain_html("<div><h1>This is a heading</h1>")?;
 	}
 	test "expect_get" {
-		let _m = create_view();
+		create_view();
 		expect_el("h1")?.to_contain_text("This is a heading")?;
 	}
 

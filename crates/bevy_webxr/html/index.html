@@ -40,8 +40,6 @@
 	import init from './wasm/bindgen.js'
 	//if http assume test
 	const isTest = navigator.userAgent.indexOf("OculusBrowser") === -1
-	// const isTest = location.protocol === 'http:'
-
 	if (isTest) {
 		init()
 	} else {

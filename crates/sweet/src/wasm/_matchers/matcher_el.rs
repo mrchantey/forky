@@ -3,17 +3,73 @@ use anyhow::Result;
 use web_sys::HtmlElement;
 
 
-impl Matcher<HtmlElement> {
-	pub fn to_contain_text(&self, other: &str) -> Result<()> {
-		let receive = self.value.text_content().unwrap_or_default();
+pub trait IntoHtmlElement {
+	fn into_html_element(&self) -> HtmlElement;
+}
+// impl<T> IntoHtmlElement for &T
+// where
+// 	T: IntoHtmlElement + Clone,
+// {
+// 	fn into_html_element(&self) -> HtmlElement {
+// 		self.clone().into_html_element()
+// 	}
+// }
+
+impl<T> IntoHtmlElement for Option<T>
+where
+	T: IntoHtmlElement,
+{
+	fn into_html_element(&self) -> HtmlElement {
+		self.as_ref().unwrap().into_html_element()
+	}
+}
+impl<F, T> IntoHtmlElement for F
+where
+	F: Fn() -> Option<T>,
+	T: IntoHtmlElement,
+{
+	fn into_html_element(&self) -> HtmlElement {
+		self().unwrap().into_html_element()
+	}
+}
+
+/// this is a noop
+impl IntoHtmlElement for web_sys::HtmlElement {
+	fn into_html_element(&self) -> HtmlElement { self.clone() }
+}
+impl IntoHtmlElement for web_sys::Document {
+	fn into_html_element(&self) -> HtmlElement { self.body().unwrap() }
+}
+
+impl IntoHtmlElement for web_sys::Window {
+	fn into_html_element(&self) -> HtmlElement {
+		self.document().unwrap().into_html_element()
+	}
+}
+impl IntoHtmlElement for web_sys::HtmlIFrameElement {
+	fn into_html_element(&self) -> HtmlElement {
+		self.content_document().unwrap().into_html_element()
+	}
+}
+
+pub trait MatcherHtml<T>: MatcherTrait<T>
+where
+	T: IntoHtmlElement,
+{
+	fn to_contain_text(&self, other: &str) -> Result<()> {
+		let receive = self
+			.get_value()
+			.into_html_element()
+			.text_content()
+			.unwrap_or_default();
 		self.contains(other, &receive, "text")
 	}
-	pub fn to_contain_visible_text(&self, other: &str) -> Result<()> {
-		let receive = self.value.inner_text();
+	fn to_contain_visible_text(&self, other: &str) -> Result<()> {
+		let receive = self.get_value().into_html_element().inner_text();
 		self.contains(other, &receive, "visible text")
 	}
-	pub fn to_contain_html(&self, other: &str) -> Result<()> {
-		let receive = self.value.inner_html();
+	fn to_contain_html(&self, other: &str) -> Result<()> {
+		let receive = self.get_value().into_html_element().inner_html();
 		self.contains(other, &receive, "html")
 	}
 	fn contains(
@@ -23,8 +79,16 @@ impl Matcher<HtmlElement> {
 		expect_suffix: &str,
 	) -> Result<()> {
 		let result = receive.contains(other);
-		let received = receive.chars().take(100).collect::<String>();
+		// forky_core::log!("result: {result}");
+		let mut received = receive.chars().take(100).collect::<String>();
+		if received.len() == 100 {
+			received.push_str("...truncated...");
+		}
 		let expected = format!("to contain {} '{}'", expect_suffix, other);
-		self.assert_correct_with_received(result, &expected, &received)
+
+		self.get_matcher()
+			.assert_correct_with_received(result, &expected, &received)
 	}
 }
+
+impl<T> MatcherHtml<T> for Matcher<T> where T: IntoHtmlElement {}
