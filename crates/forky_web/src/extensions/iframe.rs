@@ -10,10 +10,10 @@ pub impl HtmlIFrameElement {
 	}
 
 	async fn x_set_source_async(&self, url: &str) {
-		self.set_src(url);
+		self.set_src(&url);
 		self.x_wait_for_load().await;
 		if self.content_document().is_none() {
-			panic!("iframe content document is null, this is likely a cors issue");
+			panic!("tried to load url: {url}\niframe content document is null, if you can see the page this is likely a cors issue");
 		}
 	}
 

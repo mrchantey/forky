@@ -1,5 +1,7 @@
+use anyhow::Result;
 use colorize::AnsiColor;
 use forky_core::OptionTExt;
+use hyper::Uri;
 use std::fmt::Display;
 
 #[derive(Debug, Clone, Copy)]
@@ -11,6 +13,11 @@ pub struct Address {
 }
 
 impl Address {
+	pub fn to_uri(&self) -> Result<Uri> {
+		let uri = self.to_string().parse()?;
+		Ok(uri)
+	}
+
 	pub fn host_from_str(host: &str) -> anyhow::Result<[u8; 4]> {
 		let mut parts = host.split('.');
 		let v1 = parts.next().ok()?.parse::<u8>()?;
@@ -42,6 +49,9 @@ impl Address {
 			port,
 		)
 	}
+	pub fn to_string_pretty(&self) -> String {
+		self.to_string().b_cyan().underlined().bold()
+	}
 }
 
 impl Default for Address {
@@ -70,10 +80,7 @@ impl Display for Address {
 		let str = format!(
 			"{}{}.{}.{}.{}:{}",
 			prefix, host[0], host[1], host[2], host[3], port
-		)
-		.b_cyan()
-		.underlined()
-		.bold();
+		);
 		write!(f, "{str}")
 	}
 }

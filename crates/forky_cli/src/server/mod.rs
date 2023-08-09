@@ -6,3 +6,5 @@ mod server;
 pub use self::server::*;
 mod tls;
 pub use self::tls::*;
+mod proxy;
+pub use self::proxy::*;

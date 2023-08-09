@@ -16,7 +16,10 @@ pub async fn visit(url: &str) -> Result<HtmlIFrameElement> {
 	match Document::x_query_selector::<HtmlIFrameElement>("iframe") {
 		None => Err(anyhow::anyhow!(NO_IFRAME)),
 		Some(iframe) => {
-			iframe.x_set_source_async(url).await;
+			// let url = format!("/_proxy?url={url}");
+			let url = format!("/_proxy_/{url}");
+			// let url = format!("/_proxy_/{url}?sweet_visit=1");
+			iframe.x_set_source_async(&url).await;
 			Ok(iframe)
 		}
 	}

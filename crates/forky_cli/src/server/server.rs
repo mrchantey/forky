@@ -1,11 +1,16 @@
 use super::*;
 use anyhow::Result;
 use axum::http::Method;
+use axum::response::Response;
+use axum::routing::get;
 use axum::Router;
 use forky_fs::terminal;
 use forky_fs::FsWatcher;
 use futures::Future;
+use hyper::Body;
+use hyper::Request;
 use std::pin::Pin;
+use std::sync::Arc;
 use std::thread::JoinHandle;
 use tower_http::cors::CorsLayer;
 use tower_http::services::ServeDir;
@@ -18,6 +23,8 @@ pub struct Server {
 	pub clear: bool,
 	pub quiet: bool,
 	pub any_origin: bool,
+	pub proxy: bool,
+	// pub proxies: Vec<String>,
 }
 
 impl Default for Server {
@@ -28,6 +35,8 @@ impl Default for Server {
 			clear: true,
 			quiet: false,
 			any_origin: false,
+			proxy:false,
+			// proxies:Vec::new(),
 		}
 	}
 }
@@ -72,6 +81,7 @@ impl Server {
 		self.print_start();
 
 		let mut router = Router::new()
+   	  .route_service("/__ping__", get(ping))
 			.nest_service("/", ServeDir::new(self.dir.as_str()));
 
 		if let Some(livereload) = livereload {
@@ -82,6 +92,19 @@ impl Server {
 			.allow_methods([Method::GET, Method::POST])
 			.allow_origin(tower_http::cors::Any);
 			router = router.layer(cors);
+		}
+		
+		if self.proxy{
+			let proxy = Arc::new(futures::lock::Mutex::new(Proxy::default()));
+			let proxy2 = proxy.clone();
+			router = router.nest_service("/_proxy_/", get(|req:Request<Body>| async move {
+				let mut proxy = proxy2.lock().await;
+				proxy.handle(req).await
+			}));
+			router = router.nest_service("/_proxy_set_/", get(|req:Request<Body>| async move {
+				let mut proxy = proxy.lock().await;
+				proxy.handle(req).await
+			}));
 		}
 
 		if self.address.secure{
@@ -138,6 +161,16 @@ impl Server {
 		} else {
 			""
 		};
-		println!("serving '{}' at {}{any_origin}", self.dir, self.address);
+		let proxy = if self.proxy {
+			"\nproxy: true"
+		} else {
+			""
+		};
+		println!("serving '{}' at {}{any_origin}{proxy}", self.dir, self.address);
 	}
+}
+
+async fn ping(req:Request<Body>)->Response<String>{
+	let body = format!("request was {:?}",req);
+	Response::new(body)
 }

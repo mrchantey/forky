@@ -26,7 +26,7 @@ impl SweetCli {
 
 		let server2 = self.server.clone();
 		let _server_handle = std::thread::spawn(move || -> Result<()> {
-			println!("Starting server at {}\n", server2.address);
+			println!("Starting server at {}\n", server2.address.to_string_pretty());
 			server2.serve_with_reload(livereload)
 		});
 
@@ -76,7 +76,7 @@ impl SweetCli {
 
 	fn print_success(&self) {
 		let success = "Build succeeded".b_green().bold();
-		println!("\n{success}\nServer running at {}\n", self.server.address);
+		println!("\n{success}\nServer running at {}\n", self.server.address.to_string_pretty());
 	}
 
 	#[rustfmt::skip]

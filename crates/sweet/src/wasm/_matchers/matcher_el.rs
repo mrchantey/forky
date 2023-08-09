@@ -102,7 +102,7 @@ where
 		// forky_core::log!("result: {result}");
 		let mut received = receive.chars().take(100).collect::<String>();
 		if received.len() == 100 {
-			received.push_str("...truncated...");
+			received.push_str("...TRUNCATED...");
 		}
 		let expected = format!("to contain {} '{}'", expect_suffix, other);
 

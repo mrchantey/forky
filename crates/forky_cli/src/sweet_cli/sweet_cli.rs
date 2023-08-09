@@ -6,7 +6,7 @@ pub struct SweetCli {
 	pub package: Option<String>,
 	pub server: Server,
 	pub release: bool,
-	pub static_dir:Option<String>
+	pub static_dir: Option<String>,
 }
 
 
@@ -24,6 +24,7 @@ impl Default for SweetCli {
 			static_dir: None,
 			server: Server {
 				quiet: true,
+				proxy: true,
 				dir: "target/sweet".to_string(),
 				..Server::default()
 			},

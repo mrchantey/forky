@@ -49,6 +49,20 @@ impl Subcommand for ServerCommand {
 					.long("any-origin")
 					.action(ArgAction::SetTrue),
 			)
+			// .arg(
+			// 	Arg::new("proxies")
+			// 		.required(false)
+			// 		.help("add a proxy to serve from")
+			// 		.long("proxy")
+			// 		.action(ArgAction::Append),
+			// )
+			.arg(
+				Arg::new("proxy")
+					.required(false)
+					.help("adds a proxy served from /_proxy/*")
+					.long("proxy")
+					.action(ArgAction::SetTrue),
+			)
 	}
 
 	fn run(&self, args: &clap::ArgMatches) -> Result<()> {
@@ -57,10 +71,17 @@ impl Subcommand for ServerCommand {
 		let host = args.get_one::<String>("host").ok()?;
 		let secure = args.get_flag("secure");
 		let any_origin = args.get_flag("any-origin");
+		let proxy = args.get_flag("proxy");
+		// let proxies = args
+		// 	.get_many::<String>("proxies")
+		// 	.unwrap()
+		// 	.map(|s| s.clone())
+		// 	.collect::<Vec<_>>();
 
 		let server = Server {
 			dir: dir.to_string(),
 			any_origin,
+			proxy,
 			address: Address {
 				host: Address::host_from_str(&host)?,
 				port: port.parse::<u16>()?,
