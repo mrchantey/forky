@@ -1,28 +1,43 @@
+use crate::*;
 use anyhow::Result;
 use forky_web::*;
 use std::time::Duration;
 
-pub trait IntoAsyncMatcher<T>
-where
-	Self: Sized,
-{
-	async fn poll(&self) -> Result<T>;
+
+impl<T> Matcher<T> {
+	pub async fn poll<T2>(
+		&self,
+		func: impl Fn(&Self) -> Result<T2> + 'static,
+	) -> Result<T2> {
+		poll_ok(|| func(self)).await
+		// match self {
+		// 	Matcher::AsyncMatcher(m) => m.poll().await,
+		// 	Matcher::SyncMatcher(m) => Ok(m.clone()),
+		// }
+	}
 }
 
+// pub trait IntoAsyncMatcher<T>
+// where
+// 	Self: MatcherTrait<T>,
+// {
+// 	async fn poll(&self, func: ) -> Result<T>;
+// }
 
-impl<T, F> IntoAsyncMatcher<T> for F
-where
-	F: Fn() -> Result<T> + 'static,
-{
-	async fn poll(&self) -> Result<T> { poll_ok(self).await }
-}
+
+// impl<T, F> IntoAsyncMatcher<T> for F
+// where
+// 	F: Fn() -> Result<T> + 'static,
+// {
+// 	async fn poll(&self) -> Result<T> { poll_ok(self).await }
+// }
 
 
-pub async fn poll_ok<T>(f: impl Fn() -> Result<T>) -> Result<T> {
+async fn poll_ok<T>(f: impl Fn() -> Result<T>) -> Result<T> {
 	poll_ok_with_timeout(f, Duration::from_secs(2)).await
 }
 
-pub async fn poll_ok_with_timeout<T>(
+async fn poll_ok_with_timeout<T>(
 	f: impl Fn() -> Result<T>,
 	timeout: Duration,
 ) -> Result<T> {

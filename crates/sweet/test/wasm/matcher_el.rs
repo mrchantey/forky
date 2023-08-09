@@ -41,8 +41,8 @@ sweet! {
 
 		expect(window).not().get("div")?;
 
-		poll_ok(||expect(window).get("div")).await?
+		expect(window).poll(|w|w.get("div")).await?
+			// .not().to_contain_text("hello world!")?;
 			.to_contain_text("hello world!")?;
-
 	}
 }

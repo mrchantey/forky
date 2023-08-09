@@ -73,12 +73,10 @@ impl HtmlEventListener<JsValue> {
 		let listener2 = listener.clone();
 		let promise = Promise::new(&mut move |resolve, _reject| {
 			let target = target.clone();
-			// let listener3 = listener2.clone();
 			*listener2.borrow_mut() =
 				Some(HtmlEventListener::<JsValue>::new_with_target(
 					name,
 					move |value| {
-						// *listener3.borrow_mut() = None;
 						resolve.call1(&JsValue::NULL, &value).unwrap();
 					},
 					target,
