@@ -1,10 +1,12 @@
 # End-To-End
 
-By default web tests run *inside* the iframe. This is great for testing components, but when we want to test a page provided by the server we need a different approach.
+By default web tests run inside the iframe. This is great for testing components, but when we want to test a page provided by the server we need a different approach.
 
-Test cases marked as `e2e` will run in the parent process instead of inside the iframe. The child `iframe` can be retrieved via `visit()`, at which point you can interact with the underlying document just like with unit tests.
+Test cases marked as `e2e` will run in the parent process instead. The child `iframe` can be retrieved via `visit()`, at which point you can interact with the underlying document just like with unit tests.
 
-Testing iframes from different origins, ie another port on localhost, is [hard](https://docs.cypress.io/guides/guides/web-security#:~:text=To%20get%20around%20these%20restrictions,rules%20of%20same%2Dorigin%20policy.). To make this easier, sweet provides a reverse proxy that will serve your iframe content from the same origin. Its been tested on simple sites like these docs, but if you encounter any problems please create an issue.
+Testing iframes from different origins can be [tricky](https://docs.cypress.io/guides/guides/web-security), by default a web browser will say "hey, this isnt your site, i won't let you see whats inside `iframe.contentDocument` etc". 
+
+To make this easier, sweet provides a reverse proxy that will serve your url same origin. Its been tested on simple sites like these docs, but if you encounter any problems please create an issue.
 
 ### `visit()`
 
@@ -30,4 +32,3 @@ sweet!{
 And the output looks like this:
 
 ![end-to-end](../images/end-to-end.png)
-
