@@ -2,7 +2,6 @@ use anyhow::Result;
 use forky_web::*;
 use web_sys::Document;
 use web_sys::HtmlIFrameElement;
-use web_sys::Window;
 
 const NO_IFRAME: &str = r#"
 iframe only available in e2e tests:
@@ -18,7 +17,7 @@ pub async fn visit(url: &str) -> Result<HtmlIFrameElement> {
 		None => Err(anyhow::anyhow!(NO_IFRAME)),
 		Some(iframe) => {
 			iframe.set_src(url);
-			//TODO await
+			iframe.x_wait_for_load().await;
 			Ok(iframe)
 		}
 	}

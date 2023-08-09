@@ -40,9 +40,9 @@ impl TestSuiteTrait<TestCaseWasm> for TestSuiteWasm {
 				|| case.config.context == TestRunEnvironment::EndToEnd;
 
 				let result = if is_e2e {
-					iframe.x_reload();
+					// iframe.x_reload();
 					//TODO await reload
-					// iframe.x_reload_async().await;
+					iframe.x_reload_async().await;
 					case.run().await
 				} else {
 					run_case_unit(&iframe, case).await

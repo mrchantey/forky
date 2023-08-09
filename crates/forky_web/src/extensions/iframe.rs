@@ -1,5 +1,6 @@
 use crate::HtmlEventListener;
 use extend::ext;
+use wasm_bindgen::JsCast;
 use web_sys::HtmlIFrameElement;
 
 #[ext]
@@ -7,24 +8,24 @@ pub impl HtmlIFrameElement {
 	fn x_reload(&self) {
 		self.content_window().unwrap().location().reload().unwrap();
 	}
-	// async fn x_reload_async(&self) {
-	// 	let window = self.content_window().unwrap();
-	// 	let location = window.location();
-	// 	location.reload().unwrap();
-	// 	HtmlEventListener::wait_with_window("load", window).await;
-	// 	// HtmlEventListener::wait_with_window("click", window).await;
-	// }
 	async fn x_reload_async(&self) {
-		let window = self.content_window().unwrap();
-		HtmlEventListener::wait_with_window_and_while_listening(
-			"load",
-			window.clone(),
-			move || {
-				let location = window.location();
-				location.reload().unwrap();
-			},
-		)
-		.await;
-		// HtmlEventListener::wait_with_window("click", window).await;
+		self.x_reload();
+		let this = self.clone().unchecked_into();
+		HtmlEventListener::wait_with_target("load", this).await;
+	}
+	// let window = self.content_window().unwrap();
+	// HtmlEventListener::wait_with_target_and_while_listening(
+	// 	"load",
+	// 	this,
+	// 	move || {
+	// 		let location = window.location();
+	// 		location.reload().unwrap();
+	// 	},
+	// )
+	// .await;
+
+	async fn x_wait_for_load(&self) {
+		let this = self.clone().unchecked_into();
+		HtmlEventListener::wait_with_target("load", this).await;
 	}
 }
