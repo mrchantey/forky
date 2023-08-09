@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="forky_cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="forky_cli/sweet.html"><strong aria-hidden="true">1.1.</strong> sweet</a></li><li class="chapter-item expanded "><a href="forky_cli/watch.html"><strong aria-hidden="true">1.2.</strong> watch</a></li><li class="chapter-item expanded "><a href="forky_cli/mod.html"><strong aria-hidden="true">1.3.</strong> mod</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/quickstart-native.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li class="chapter-item expanded "><a href="sweet/quickstart-web.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li class="chapter-item expanded "><a href="sweet/features.html"><strong aria-hidden="true">2.3.</strong> Features</a></li><li class="chapter-item expanded "><a href="sweet/workspaces.html"><strong aria-hidden="true">2.4.</strong> Workspaces</a></li><li class="chapter-item expanded "><a href="sweet/faq.html"><strong aria-hidden="true">2.5.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="sweet/misc.html"><strong aria-hidden="true">2.6.</strong> Misc</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="demos/bevy-webxr.html"><strong aria-hidden="true">3.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="other/contributing.html"><strong aria-hidden="true">4.</strong> Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="forky_cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="forky_cli/sweet.html"><strong aria-hidden="true">1.1.</strong> sweet</a></li><li class="chapter-item expanded "><a href="forky_cli/watch.html"><strong aria-hidden="true">1.2.</strong> watch</a></li><li class="chapter-item expanded "><a href="forky_cli/mod.html"><strong aria-hidden="true">1.3.</strong> mod</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/native/index.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/native/arguments.html"><strong aria-hidden="true">2.1.1.</strong> Passing Arguments</a></li></ol></li><li class="chapter-item expanded "><a href="sweet/web/index.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/web/matchers.html"><strong aria-hidden="true">2.2.1.</strong> Matchers</a></li><li class="chapter-item expanded "><a href="sweet/web/end-to-end.html"><strong aria-hidden="true">2.2.2.</strong> End-To-End</a></li></ol></li><li class="chapter-item expanded "><a href="sweet/features.html"><strong aria-hidden="true">2.3.</strong> Features</a></li><li class="chapter-item expanded "><a href="sweet/workspaces.html"><strong aria-hidden="true">2.4.</strong> Workspaces</a></li><li class="chapter-item expanded "><a href="sweet/faq.html"><strong aria-hidden="true">2.5.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="sweet/misc.html"><strong aria-hidden="true">2.6.</strong> Misc</a></li><li class="chapter-item expanded "><a href="sweet/changelog.html"><strong aria-hidden="true">2.7.</strong> Changelog</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="demos/bevy-webxr.html"><strong aria-hidden="true">3.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="other/contributing.html"><strong aria-hidden="true">4.</strong> Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -199,7 +199,10 @@ forky --help
 	  sweet    build the wasm sweet runner and start a dev server
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sweet"><a class="header" href="#sweet">sweet</a></h1>
-<p>usage: <code>forky sweet</code></p>
+<p>Currently the <code>sweet</code> CLI has one function which is to run the interactive web runner.</p>
+<p>usage:</p>
+<pre><code class="language-sh">forky sweet
+</code></pre>
 <pre><code>Arguments:
   [specify-suite]...
 
@@ -210,7 +213,10 @@ Options:
       --static &lt;static&gt;    directory for static files (ie .css) that should be served  
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="watch"><a class="header" href="#watch">watch</a></h1>
-<p>usage: <code>forky watch</code></p>
+<p>Analagous to <code>cargo watch</code> but allows for watch globs.</p>
+<p>usage: </p>
+<pre><code class="language-sh">forky watch
+</code></pre>
 <pre><code>Usage: forky.exe watch [OPTIONS] &lt;cmd&gt;...
 
 Arguments:
@@ -222,26 +228,35 @@ Options:
       --once             only run once instead of watching indefinitely
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mod"><a class="header" href="#mod">Mod</a></h1>
-<p>usage: <code>forky mod</code></p>
+<p>usage:</p>
+<pre><code class="language-sh">forky mod
+</code></pre>
 <p>I like to organize projects by <em>many</em> small files and including them becomes a headache so I use a cli to auto-generate mod files that include all files in a directory.</p>
 <p>Its current incarnation is zero config and opinionated so you may want to play around with it on an empty project before integrating with existing codebases.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sweet-1"><a class="header" href="#sweet-1">Sweet</a></h1>
-<p>Sweet is an authoring-first testing framework for rust. With an ergonomic native runner and an interactive web runner, you're gonna have a sweet dev experience.</p>
+<p>Sweet is an <strong>DevEx-First</strong> test framework for rust. Whether you're running native, component or e2e tests, you're gonna have a sweet dev experience.</p>
 <h2 id="features"><a class="header" href="#features">Features</a></h2>
 <ul>
 <li>🔥 Parallel</li>
 <li>🕙 Async</li>
-<li>🌍 WASM UI tests</li>
+<li>🕸️ WASM UI tests</li>
+<li>🌍 E2E Tests</li>
 <li>☮️ Intuitive matchers</li>
 <li>🌈 Pretty output</li>
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <pre><code class="language-rs">sweet! {
   it &quot;works&quot; {
-		expect(&quot;some string&quot;).not().to_start_with(&quot;foo&quot;)?;
+		expect(&quot;bar&quot;).not().to_contain(&quot;foo&quot;)?;
   }
 }
 </code></pre>
+<p>Sweet only exposes three functions:</p>
+<ul>
+<li><code>sweet!</code> macro</li>
+<li><code>expect()</code></li>
+<li><code>visit()</code> for e2e tests</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart---native"><a class="header" href="#quickstart---native">Quickstart - Native</a></h1>
 <ol>
 <li>edit <code>cargo.toml</code>
@@ -271,16 +286,17 @@ sweet! {
 <li>run <code>cargo run --example sweet</code></li>
 </ol>
 <p>Here's an example output of a runner with a few tests:</p>
-<p><img src="sweet/images/success.png" alt="native-runner" /></p>
-<h2 id="passing-arguments"><a class="header" href="#passing-arguments">Passing arguments</a></h2>
-<p>The binary is isself a mini cli with options, to see them all try:</p>
-<p><code>cargo run --example sweet --help</code></p>
+<p><img src="sweet/native/../images/success.png" alt="native-runner" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="passing-arguments"><a class="header" href="#passing-arguments">Passing Arguments</a></h1>
+<p>The native binary has a few cli options, to see them all run:</p>
+<pre><code class="language-sh">cargo run --example sweet --help
+</code></pre>
 <pre><code>Native runner for your tests.
 
-Usage: sweet_sweet.exe [OPTIONS] [filter]...
+Usage: sweet_sweet.exe [OPTIONS] [match]...
 
 Arguments:
-  [filter]...  filter by directory or path name, ie. `/test1.rs /e2e/`
+  [match]...  filter suites by path glob, ie. `*/test1.rs */e2e/*`
 
 Options:
   -w, --watch     clears screen and does not return error
@@ -288,18 +304,19 @@ Options:
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart---web"><a class="header" href="#quickstart---web">Quickstart - Web</a></h1>
 <ol>
-<li>Follow native quickstart</li>
+<li>Follow <a href="sweet/web/../native/index.html">native quickstart</a></li>
 <li>install the helper cli: <code>cargo install forky_cli</code>
 <ul>
-<li>More details on the <a href="sweet/../forky_cli/sweet.html">cli page</a></li>
+<li>More details on the <a href="sweet/web/../../forky_cli/sweet.html">cli page</a></li>
 </ul>
 </li>
-<li>mount some html and add some wasm matchers to your test
+<li>Update your test to do some web stuff:
 <pre><code class="language-rs">web_sys::window().unwrap()
 		.document().unwrap()
 		.body().unwrap()
 		.set_inner_html(&quot;&lt;h1&gt;This is a heading&lt;/h1&gt;&quot;);
-expect_el(&quot;h1&quot;)?.to_contain_text(&quot;This is a heading&quot;)?;
+expect(window).get(&quot;h1&quot;)?
+	.to_contain_text(&quot;This is a heading&quot;)?;
 </code></pre>
 </li>
 <li>run <code>forky sweet</code>
@@ -309,10 +326,48 @@ expect_el(&quot;h1&quot;)?.to_contain_text(&quot;This is a heading&quot;)?;
 </li>
 </ol>
 <p>Here's an example of a runner with a few tests:</p>
-<p><img src="sweet/images/wasm-runner.png" alt="wasm-runner" /></p>
+<p><img src="sweet/web/../images/wasm-runner.png" alt="wasm-runner" /></p>
 <blockquote>
-<p>Note: to disable a few messy warnings its helpful to enable <a href="chrome://flags/#privacy-sandbox-ads-apis">this chrome feature</a></p>
+<p>Note: to disable the below warning its helpful to enable <a href="chrome://flags/#privacy-sandbox-ads-apis">this chrome feature</a></p>
+<p><code>Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'browsing-topics'.</code></p>
 </blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="matchers"><a class="header" href="#matchers">Matchers</a></h1>
+<h2 id="expectelement"><a class="header" href="#expectelement"><code>expect(element)</code></a></h2>
+<p>Querying a html element is so common Sweet has matchers for some common checks:</p>
+<ul>
+<li><code>to_contain_html</code></li>
+<li><code>to_contain_text</code></li>
+<li><code>to_contain_visible_test</code></li>
+</ul>
+<h2 id="intohtmlelement"><a class="header" href="#intohtmlelement"><code>IntoHtmlElement</code></a></h2>
+<p><code>window().unwrap().document().unwrap().body().unwrap()</code> is a bit of a mouthful 🥴</p>
+<p>Sweet provides some wrappers around common types, ie <code>web_sys::window</code>:</p>
+<pre><code class="language-rs">//window implements IntoHtmlElement
+expect(web_sys::window).to_contain_text(&quot;sweet as!&quot;)?;
+
+//so does iframe
+let page = visit(&quot;localhost:7777&quot;).await; 
+expect(page).to_contain_text(&quot;sweet as!&quot;)?;
+</code></pre>
+<h2 id="async-matchers"><a class="header" href="#async-matchers">Async Matchers</a></h2>
+<p>Lots of web stuff happens at weird times, so we've got helpers like <code>poll()</code>, which will wait for 2 seconds before failing.</p>
+<pre><code class="language-rs">expect(page).poll(|p|
+	p.to_contain_text(&quot;sweet as!&quot;)).await?;
+</code></pre>
+<p>We can also retrieve child elements via polling</p>
+<pre><code class="language-rs">expect(page).poll(|p| p.get(&quot;p&quot;)).await?
+	.to_contain_text(&quot;sweet as!&quot;)?;
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="end-to-end"><a class="header" href="#end-to-end">End-To-End</a></h1>
+<p>By default web tests run <em>inside</em> the iframe. This is great for testing components, but when we want to test a page provided by the server we need an end-to-end approach.</p>
+<p>Test cases marked as <code>e2e</code> will run in the parent process instead of inside the iframe. The child <code>iframe</code> can be retrieved via <code>visit()</code>, at which point you can interact with the underlying document just like with unit tests.</p>
+<pre><code class="language-rs">sweet!{
+	it e2e &quot;works&quot;{
+		let page = visit(&quot;localhost:7777&quot;).await; 
+		expect(page).to_contain_text(&quot;sweet as!&quot;)?;
+	}
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="features-1"><a class="header" href="#features-1">Features</a></h1>
 <h2 id="macros"><a class="header" href="#macros">Macros</a></h2>
 <pre><code class="language-rs">sweet!{
@@ -327,24 +382,13 @@ expect_el(&quot;h1&quot;)?.to_contain_text(&quot;This is a heading&quot;)?;
 <li>Single Binary - The default rust intergration test runner creates a seperate binary for each test, which ramps up compile times, see <a href="https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html">this blog</a> for more info.</li>
 <li>Very Hot Reload - The wasm cli tool features a lightweight dev server that uses <code>tower-livereload</code> instead of shutting down and restarting.</li>
 </ul>
-<h2 id="matchers"><a class="header" href="#matchers">Matchers</a></h2>
+<h2 id="matchers-1"><a class="header" href="#matchers-1">Matchers</a></h2>
 <p>Instead of an opaque <code>panic!</code>, matchers provide the runner with enough info to produce a highly descriptive failure:</p>
 <pre><code class="language-rs">expect(&quot;foobar&quot;).not().to_start_with(&quot;foo&quot;)?;
 /*
 Expected: NOT to start with 'foo'
 Received: foobar
 */
-</code></pre>
-<h2 id="async-matchers"><a class="header" href="#async-matchers">Async Matchers</a></h2>
-<p>Lots of web stuff happens at weird times, so we've got helpers like <code>poll_ok</code>, which will wait for 4 seconds before failing.</p>
-<pre><code class="language-rs">let _handle = set_timeout(|| {
-		mount(|cx| view!{cx,
-			&lt;div&gt;&quot;sweet as!&quot;&lt;/div&gt;
-		});
-	}, Duration::from_millis(100));
-
-poll_ok(|| expect_el(&quot;div&quot;)).await?
-	.to_contain_text(&quot;sweet as!&quot;)?;
 </code></pre>
 <h2 id="informative-outputs"><a class="header" href="#informative-outputs">Informative outputs</a></h2>
 <ul>
@@ -406,6 +450,22 @@ test crate *args:
 <li>Matchers inspired by <a href="https://jestjs.io/">jest</a></li>
 <li>WASM runner inspired by <a href="https://www.cypress.io/">cypress</a></li>
 <li><a href="https://playwright.dev/">Playwright</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="changelog"><a class="header" href="#changelog">Changelog</a></h1>
+<h2 id="0119---10082023"><a class="header" href="#0119---10082023"><code>0.1.19</code> - 10/08/2023</a></h2>
+<ul>
+<li>End-to-end testing</li>
+<li>Nicer async ergonomics: <code>matcher.poll().await?</code></li>
+</ul>
+<h2 id="0118---03082023"><a class="header" href="#0118---03082023"><code>0.1.18</code> - 03/08/2023</a></h2>
+<p>Initial Announcement</p>
+<h3 id="features-2"><a class="header" href="#features-2">Features</a></h3>
+<ul>
+<li>Component Testing</li>
+<li>Native Testing</li>
+<li>Parallel</li>
+<li>Async</li>
+<li>Wasm Runner</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-webxr"><a class="header" href="#bevy-webxr">Bevy WebXR</a></h1>
 <p>A proof-of-concept for WebXR in Bevy <code>0.11.0</code>. Visit this page in your Oculus Quest to see it in action!</p>
