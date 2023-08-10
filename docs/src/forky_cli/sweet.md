@@ -2,7 +2,7 @@
 
 Currently the `sweet` CLI has one function which is to run the interactive web runner.
 
-usage:
+## Usage:
 ```sh
 forky sweet
 ```
@@ -17,3 +17,6 @@ Options:
       --secure             run the dev server with https
       --static <static>    directory for static files (ie .css) that should be served  
 ```
+
+## Features
+- Very Hot Reload - The runner features a lightweight dev server that uses `tower-livereload` instead of shutting down and restarting.

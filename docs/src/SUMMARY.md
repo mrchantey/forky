@@ -13,7 +13,8 @@
 	- [Quickstart - Web](./sweet/web/index.md)
 		- [Matchers](./sweet/web/matchers.md)
 		- [End-To-End](./sweet/web/end-to-end.md)
-	- [Features](./sweet/features.md)
+	- [Matchers](./sweet/matchers.md)
+	- [Macros](./sweet/macros.md)
 	- [Workspaces](./sweet/workspaces.md)
 	- [FAQ](./sweet/faq.md)
 	- [Misc](./sweet/misc.md)
@@ -24,3 +25,4 @@
 
 # Other
 - [Contributing](./other/contributing.md)
+- [Roadmap](./other/roadmap.md)

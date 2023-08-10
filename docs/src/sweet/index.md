@@ -6,7 +6,7 @@ Sweet is an **DevEx-First** test framework for rust. Whether you're running nati
 
 - 🔥 Parallel
 - 🕙 Async
-- 🕸️ WASM UI tests
+- 🕸️ Native & Browser
 - 🌍 E2E Tests
 - ☮️ Intuitive matchers
 - 🌈 Pretty output
@@ -16,13 +16,13 @@ Sweet is an **DevEx-First** test framework for rust. Whether you're running nati
 ```rs
 sweet! {
   it "works" {
-		expect("bar").not().to_contain("foo")?;
+		expect("foo").not().to_contain("bar")?;
   }
 }
 ```
 
 Sweet only exposes three functions:
 
-- `sweet!` macro
-- `expect()`
-- `visit()` for e2e tests
+- [`sweet!` defines a test suite](./macros.md)
+- [`expect()` returns a matcher](./matchers.md)
+- [`visit()` returns an iframe (e2e)](./web/end-to-end.md)

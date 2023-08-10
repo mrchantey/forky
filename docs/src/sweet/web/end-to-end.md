@@ -6,7 +6,7 @@ Test cases marked as `e2e` will run in the parent process instead. The child `if
 
 Testing iframes from different origins can be [tricky](https://docs.cypress.io/guides/guides/web-security), by default a web browser will say "hey, this isnt your site, i won't let you see whats inside `iframe.contentDocument` etc". 
 
-To make this easier, sweet provides a reverse proxy that will serve your url same origin. Its been tested on simple sites like these docs, but if you encounter any problems please create an issue.
+To make this easier, sweet provides a reverse proxy that will serve your url from the same origin. Its been tested on simple sites like these docs, but if you encounter any problems please create an issue.
 
 ### `visit()`
 
