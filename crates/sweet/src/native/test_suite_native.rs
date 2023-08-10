@@ -26,6 +26,25 @@ impl TestSuiteTrait<TestCaseNative> for TestSuiteNative {
 		to_run: Vec<&TestCaseNative>,
 		config: &TestRunnerConfig,
 	) -> Vec<anyhow::Error> {
+		
+		//TODO run manually and format results etc here
+		
+		// let to_run = to_run.iter().map(|case|case.func);
+		// let (syncs, series, parallels) = Self::split_cases(to_run);
+		// 	pub async fn run_funcs(funcs:impl IntoIterator<Item=&Self>) -> Result<()> {
+		// 		let (syncs, series, parallels) = Self::split_funcs(funcs);
+		// 		for f in syncs {
+		// 			f()?;
+		// 		}
+		// 		for f in series {
+		// 			f().await?;
+		// 		}
+		// 		for f in parallels {
+		// 			f().await?;
+		// 		}
+		// 		Ok(())
+		// 	}
+
 		if config.parallel {
 			run_cases_parallel(to_run, config).await
 		} else {

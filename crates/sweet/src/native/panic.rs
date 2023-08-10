@@ -1,17 +1,10 @@
+use crate::BoxedFutureUnwindSafe;
 use anyhow::Result;
-use futures::Future;
 use futures::FutureExt;
 use std::any::Any;
-use std::panic::UnwindSafe;
-use std::pin::Pin;
 
-
-pub async fn unwrap_panic_async(
-	pinned_future: Pin<
-		Box<dyn Send + Sync + UnwindSafe + Future<Output = Result<()>>>,
-	>,
-) -> Result<()> {
-	match pinned_future.catch_unwind().await {
+pub async fn unwrap_panic_async(fut: BoxedFutureUnwindSafe) -> Result<()> {
+	match fut.catch_unwind().await {
 		Ok(matcher_res) => match matcher_res {
 			Ok(()) => Ok(()),
 			Err(err) => Err(anyhow::anyhow!(err.to_string())),

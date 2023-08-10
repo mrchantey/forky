@@ -10,6 +10,8 @@ mod suite_logger_native_parallel;
 pub use self::suite_logger_native_parallel::*;
 mod test_case_native;
 pub use self::test_case_native::*;
+mod test_case_native_func;
+pub use self::test_case_native_func::*;
 mod test_collector_native;
 pub use self::test_collector_native::*;
 mod test_runner_config_native;

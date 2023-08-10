@@ -39,6 +39,10 @@ impl SuiteLogger for SuiteLoggerNative {
 		let mut stdout = stdout();
 		stdout.execute(crossterm::cursor::MoveUp(1)).unwrap();
 		stdout.execute(crossterm::cursor::MoveToColumn(0)).unwrap();
-		println!("{end_str}{log}");
+		if log.is_empty() {
+			println!("{end_str}");
+		} else {
+			println!("{end_str}\n{log}");
+		}
 	}
 }

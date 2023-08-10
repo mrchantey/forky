@@ -37,8 +37,6 @@ pub mod exports {
 	pub use inventory;
 	pub use serde_json;
 	#[cfg(not(target_arch = "wasm32"))]
-	pub use async_std::task::block_on;
-	#[cfg(not(target_arch = "wasm32"))]
 	pub use futures::future::CatchUnwind;
 	#[cfg(not(target_arch = "wasm32"))]
 	pub use futures::FutureExt;

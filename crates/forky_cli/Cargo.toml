@@ -21,7 +21,6 @@ extend = { workspace = true }
 futures = { workspace = true }
 rayon = { workspace = true }
 tokio = { workspace = true }
-async-std = { workspace = true }
 
 ## forky
 forky_core = { workspace = true }
