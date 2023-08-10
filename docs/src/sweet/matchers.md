@@ -6,9 +6,6 @@ Matchers are an ergonomic way to make assertions. Providing intellisense and typ
 The `expect(val)` function returns a `Matcher<T>` where `T` is the type of the value passed in. What assertions are available for that matcher depend on the 
 
 ```rs
-```
-
-```rs
 expect(true).to_be_false()?;
 ```
 <img src="images/failure.png" width=50%>
