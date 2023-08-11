@@ -41,10 +41,6 @@ glob = { workspace = true }
 rayon = { workspace = true }
 futures = { workspace = true }
 
-[dev-dependencies]
-### browser ###
-fantoccini = { workspace = true }
-
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 forky_web = { workspace = true }
@@ -61,6 +57,10 @@ clap = { workspace = true }
 forky_fs = { workspace = true }
 crossterm = { workspace = true }
 gag = { workspace = true }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+### browser ###
+fantoccini = { workspace = true }
 
 
 [[example]]

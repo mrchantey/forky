@@ -1,12 +1,16 @@
 mod build_output;
 pub use self::build_output::*;
+mod build_output_native;
+pub use self::build_output_native::*;
+mod build_output_wasm;
+pub use self::build_output_wasm::*;
 mod parse_utils;
 pub use self::parse_utils::*;
 mod suite_func;
 pub use self::suite_func::*;
 mod test_case_attr;
 pub use self::test_case_attr::*;
-mod test_case_config;
-pub use self::test_case_config::*;
+mod test_case_flags;
+pub use self::test_case_flags::*;
 mod test_case_func;
 pub use self::test_case_func::*;

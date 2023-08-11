@@ -1,5 +1,5 @@
 use super::*;
-use proc_macro2::Span;
+// use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use proc_macro2::TokenTree;
 use quote::TokenStreamExt;
@@ -36,22 +36,20 @@ fn parse_next(
 			let i_str = ident.to_string();
 			match i_str.as_str() {
 				"test" | "it" => {
-					let config = parse_case_config(iter)?;
-					let name = parse_name(iter);
-					/*
-					TODO assert that next token is a group
-					TokenTree::Group(_) => {
-						break;
+					let case_flags = parse_case_flags(iter)?;
+					if let Some(func) = iter.next() {
+						match func {
+							TokenTree::Group(func) => {
+								Ok(parse_test_case(&func, &case_flags))
+							}
+							other => Err(syn::Error::new(
+								ident.span(),
+								&format!("Expected block, found {:?}", other),
+							)),
+						}
+					} else {
+						Err(syn::Error::new(ident.span(), "Expected block"))
 					}
-					tree => {
-						return Err(syn::parse::Error::new(
-							tree.span(),
-							"Expected curly braces",
-						));
-					}
-							*/
-					let func = iter.next().unwrap();
-					Ok(to_inventory_wrap_func(name, func.into(), config))
 				}
 				"before" => {
 					todo!();
@@ -59,16 +57,15 @@ fn parse_next(
 				"after" => {
 					todo!();
 				}
-				_ => Err(to_error(ident.span(), ident.to_string().as_str())),
+				_ => Err(syn::Error::new(
+					ident.span(),
+					&format!("Expected \"test\" or \"it\", found ${:?}", ident),
+				)),
 			}
 		}
-		_ => Err(to_error(tree.span(), tree.to_string().as_str())),
+		_ => Err(syn::Error::new(
+			tree.span(),
+			&format!("Expected \"test\" or \"it\", found ${:?}", tree),
+		)),
 	}
-}
-
-fn to_error(span: Span, actual: &str) -> syn::Error {
-	syn::Error::new(
-		span,
-		format!("expected \"it\" or \"test\", found \"{actual}\""),
-	)
 }

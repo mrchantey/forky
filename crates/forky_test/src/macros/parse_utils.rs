@@ -1,4 +1,5 @@
-use proc_macro2::Literal;
+use proc_macro2::TokenStream;
+// use proc_macro2::Literal;
 use proc_macro2::TokenTree;
 use std::iter::Peekable;
 use syn::parse::Parse;
@@ -12,20 +13,31 @@ pub fn into_peekable(
 	Ok(stream.into_iter().peekable())
 }
 
-pub fn parse_name<I>(iter: &mut Peekable<I>) -> Literal
-where
-	I: Iterator<Item = TokenTree>,
-{
-	let mut name = Literal::string("undefined");
-	if let Some(t) = iter.peek() {
-		if let TokenTree::Literal(_lit) = t {
-			name = _lit.clone();
-			let _ = iter.next().unwrap();
-		}
-	};
-	name
+pub fn _contains_await(stream: TokenStream) -> bool {
+    for token in stream {
+        if let TokenTree::Ident(ident) = token {
+            if ident.to_string() == "await" {
+                return true;
+            }
+        }
+    }
+    false
 }
-pub fn try_remove_comma<I>(iter: &mut Peekable<I>) -> bool
+
+// pub fn parse_name<I>(iter: &mut Peekable<I>) -> Literal
+// where
+// 	I: Iterator<Item = TokenTree>,
+// {
+// 	let mut name = Literal::string("undefined");
+// 	if let Some(t) = iter.peek() {
+// 		if let TokenTree::Literal(_lit) = t {
+// 			name = _lit.clone();
+// 			let _ = iter.next().unwrap();
+// 		}
+// 	};
+// 	name
+// }
+pub fn _try_remove_comma<I>(iter: &mut Peekable<I>) -> bool
 where
 	I: Iterator<Item = TokenTree>,
 {
