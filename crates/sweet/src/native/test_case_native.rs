@@ -28,21 +28,26 @@ impl TestCase for TestCaseNative {
 impl TestCaseNative {
 	pub fn split_funcs<'a>(
 		funcs: impl IntoIterator<Item = &'a Self>,
-	) -> (
-		Vec<(&'a Self, &'a TestCaseNativeFuncSync)>,
-		Vec<(&'a Self, &'a TestCaseNativeFuncSeries)>,
-		Vec<(&'a Self, &'a TestCaseNativeFuncParallel)>,
-	) {
+	) -> TestCaseNativeSplit<'a> {
 		funcs.into_iter().fold(
-			(Vec::new(), Vec::new(), Vec::new()),
-			|(mut syncs, mut series, mut parallels), t| {
+			TestCaseNativeSplit::<'a>::default(),
+			|mut split, t| {
 				match &t.func {
-					TestCaseNativeFunc::Sync(f) => syncs.push((t, f)),
-					TestCaseNativeFunc::Series(f) => series.push((t, f)),
-					TestCaseNativeFunc::Parallel(f) => parallels.push((t, f)),
+					TestCaseNativeFunc::Sync(f) => split.syncs.push((t, f)),
+					TestCaseNativeFunc::Series(f) => split.series.push((t, f)),
+					TestCaseNativeFunc::Parallel(f) => {
+						split.parallels.push((t, f))
+					}
 				}
-				(syncs, series, parallels)
+				split
 			},
 		)
 	}
+}
+
+#[derive(Debug, Default)]
+pub struct TestCaseNativeSplit<'a> {
+	pub syncs: Vec<(&'a TestCaseNative, &'a TestCaseNativeFuncSync)>,
+	pub series: Vec<(&'a TestCaseNative, &'a TestCaseNativeFuncSeries)>,
+	pub parallels: Vec<(&'a TestCaseNative, &'a TestCaseNativeFuncParallel)>,
 }

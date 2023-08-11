@@ -10,7 +10,7 @@
 - [Sweet](./sweet/index.md)
 	- [Quickstart - Native](./sweet/native/index.md)
 		- [Native Runner](./sweet/native/runner.md)
-		- [Parallel & Async Tests](./sweet/native/parallel_async.md)
+		- [Async Tests](./sweet/native/async.md)
 	- [Quickstart - Web](./sweet/web/index.md)
 		- [Matchers](./sweet/web/matchers.md)
 		- [End-To-End](./sweet/web/end-to-end.md)

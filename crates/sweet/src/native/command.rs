@@ -43,7 +43,7 @@ impl Subcommand for RunTestsNativeCommand {
 	}
 
 	fn run(&self, args: &ArgMatches) -> Result<()> {
-		let config = TestRunnerConfig::from_arg_matchers(args)?;
-		TestRunnerNative::run(&config)
+		let mut config = TestRunnerConfig::from_arg_matchers(args)?;
+		TestRunnerNative::run(&mut config)
 	}
 }

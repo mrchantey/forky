@@ -10,7 +10,7 @@ pub struct TestRunnerNative;
 
 impl TestRunnerNative {
 	#[tokio::main]
-	pub async fn run(config: &TestRunnerConfig) -> Result<()> {
+	pub async fn run(config: &mut TestRunnerConfig) -> Result<()> {
 		// dont exit program on panic?
 		// let _ = std::panic::take_hook();
 		if config.watch {
@@ -25,6 +25,12 @@ impl TestRunnerNative {
 		let collector = TestCollectorNative::new();
 
 		let to_run = collector.suites_to_run(&config);
+		let contains_non_send = contains_non_send(&to_run);
+		if config.parallel && contains_non_send {
+			config.parallel = false;
+			println!("found non-send tests, ignoring parallel flag\n");
+		}
+
 		let results = if config.parallel {
 			run_group_parallel(to_run, &config).await
 		} else {
@@ -75,6 +81,16 @@ async fn run_group_parallel(
 		Ok(results) => results.into(),
 		Err(_) => panic!("Error in parallel test suite"),
 	}
+}
+
+fn contains_non_send(to_run: &Vec<&TestSuiteNative>) -> bool {
+	to_run.iter().any(|suite| suite_contains_non_send(&suite))
+}
+fn suite_contains_non_send(suite: &TestSuiteNative) -> bool {
+	false
+		== TestCaseNative::split_funcs(suite.tests.iter())
+			.series
+			.is_empty()
 }
 
 /*

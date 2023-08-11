@@ -5,8 +5,7 @@ use sweet::*;
 sweet! {
 	it nonSend "works" {
 		let c = ClientBuilder::native().connect("http://localhost:9515")
-		.await?;
-		// .expect("failed to connect to WebDriver");
+		.await.map_err(|e| anyhow::anyhow!("failed to connect, is chromedriver running?\n{:?}",e))?;
 
 		// first, go to the Wikipedia page for Foobar
 		c.goto("https://en.wikipedia.org/wiki/Foobar").await?;
