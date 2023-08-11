@@ -2,6 +2,7 @@ use super::*;
 use crate::*;
 use anyhow::Result;
 use forky_fs::*;
+use futures::future::join_all;
 use std::time::Instant;
 
 pub struct TestRunnerNative;
@@ -9,7 +10,7 @@ pub struct TestRunnerNative;
 
 impl TestRunnerNative {
 	#[tokio::main]
-	pub async fn run(config:&TestRunnerConfig) -> Result<()> {
+	pub async fn run(config: &TestRunnerConfig) -> Result<()> {
 		// dont exit program on panic?
 		// let _ = std::panic::take_hook();
 		if config.watch {
@@ -25,10 +26,7 @@ impl TestRunnerNative {
 
 		let to_run = collector.suites_to_run(&config);
 		let results = if config.parallel {
-			TestRunner::run_group_parallel::<SuiteLoggerNoop, TestCaseNative>(
-				to_run, &config,
-			)
-			.await
+			run_group_parallel(to_run, &config).await
 		} else {
 			TestRunner::run_group_series::<SuiteLoggerNative, TestCaseNative>(
 				to_run, &config,
@@ -59,7 +57,25 @@ impl TestRunnerNative {
 		}
 	}
 }
+async fn run_group_parallel(
+	to_run: Vec<&TestSuiteNative>,
+	config: &TestRunnerConfig,
+) -> ResultSummary {
+	let handles_parallel = to_run.into_iter().map(|suite| {
+		let suite = (*suite).clone();
+		let config = (*config).clone();
+		tokio::spawn(async move { suite.run::<SuiteLoggerNoop>(&config).await })
+	});
+	let results = join_all(handles_parallel)
+		.await
+		.into_iter()
+		.collect::<Result<Vec<_>, _>>();
 
+	match results {
+		Ok(results) => results.into(),
+		Err(_) => panic!("Error in parallel test suite"),
+	}
+}
 
 /*
 Test Suites: 3 skipped, 42 passed, 42 of 45 total

@@ -13,11 +13,11 @@ sweet! {
 	it "works" {
 
 		let _suite = suite(vec![
-			case(|| {
+			case(TestCaseNativeFunc::Parallel(|| {
 				Box::pin(async {
 					panic!("hello");
 				})
-			}),
+			})),
 
 		]);
 

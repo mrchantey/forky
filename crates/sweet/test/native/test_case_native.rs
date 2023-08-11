@@ -3,7 +3,7 @@
 use sweet::*;
 
 
-pub fn case(func: TestCaseNativeFuncParallel) -> TestCaseNative {
+pub fn case(func: TestCaseNativeFunc) -> TestCaseNative {
 	TestCaseNative {
 		file: "some/path.rs",
 		name: "works",

@@ -1,11 +1,11 @@
-// use fantoccini::ClientBuilder;
+use fantoccini::ClientBuilder;
 // use fantoccini::Locator;
 use sweet::*;
 
 sweet! {
 	it "works" {
-		// let c = ClientBuilder::native().connect("http://localhost:9515")
-		// .await?;
+		let c = ClientBuilder::native().connect("http://localhost:9515")
+		.await?;
 		// .expect("failed to connect to WebDriver");
 		//
 	// first, go to the Wikipedia page for Foobar

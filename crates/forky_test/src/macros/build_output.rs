@@ -51,7 +51,7 @@ pub fn to_inventory(
 		#[cfg(not(target_arch = "wasm32"))]
 		inventory::submit!(sweet::TestCaseNative {
 			name: #name,
-			func: #func,
+			func: TestCaseNativeFunc::Series(#func),
 			file: file!(),
 			config: #config
 		});
