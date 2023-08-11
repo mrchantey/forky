@@ -27,14 +27,14 @@ fn parse_func_native(func: &Group, flags: &TestCaseFlags) -> TokenStream {
 	let contains_await = _contains_await(func.stream());
 	if contains_await {
 		if flags.non_send {
-			quote!(TestCaseNativeFunc::Series(||{
+			quote!(sweet::TestCaseNativeFunc::Series(||{
 				Box::pin(async {
 					#func
 					Ok(())
 				})
 			}))
 		} else {
-			quote!(TestCaseNativeFunc::Parallel(||{
+			quote!(sweet::TestCaseNativeFunc::Parallel(||{
 				Box::pin(async {
 					#func
 					Ok(())
@@ -42,7 +42,7 @@ fn parse_func_native(func: &Group, flags: &TestCaseFlags) -> TokenStream {
 			}))
 		}
 	} else {
-		quote!(TestCaseNativeFunc::Sync(||{
+		quote!(sweet::TestCaseNativeFunc::Sync(||{
 			#func
 			Ok(())
 		}))

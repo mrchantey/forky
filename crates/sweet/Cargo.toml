@@ -2,14 +2,11 @@
 name = "sweet"
 description = "Declarative native & web ui test framework."
 categories = ["development-tools::testing"]
-keywords = [
+keywords = [ # 5 at most
+	"test",
 	"unit",
 	"e2e",
-	"test",
 	"web",
-	"wasm",
-	"interactive",
-	"jest",
 	"cypress",
 ]
 readme = "README.md"
