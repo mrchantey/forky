@@ -1,3 +1,8 @@
+# Fantoccini
+
+Sweet can be used with fantoccini or any other webdriver client. Note the `nonSend` flag, as fantoccini futures are not `Send`.
+
+```rs
 use fantoccini::ClientBuilder;
 use fantoccini::Locator;
 use sweet::*;
@@ -22,3 +27,4 @@ sweet! {
 		c.close().await?;
 	}
 }
+```

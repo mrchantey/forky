@@ -11,6 +11,7 @@
 	- [Quickstart - Native](./sweet/native/index.md)
 		- [Native Runner](./sweet/native/runner.md)
 		- [Async Tests](./sweet/native/async.md)
+		- [Fantoccini](./sweet/native/fantoccini.md)
 	- [Quickstart - Web](./sweet/web/index.md)
 		- [Matchers](./sweet/web/matchers.md)
 		- [End-To-End](./sweet/web/end-to-end.md)

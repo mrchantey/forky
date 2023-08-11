@@ -1,5 +1,7 @@
 # End-To-End
 
+> This section is for in-browser end-to-end tests. For native end-to-end tests see [fantoccini](../native/fantoccini.md).
+
 By default web tests run inside the iframe. This is great for testing components, but when we want to test a page provided by the server we need a different approach.
 
 Test cases marked as `e2e` will run in the parent process instead. The child `iframe` can be retrieved via `visit()`, at which point you can interact with the underlying document just like with unit tests.
