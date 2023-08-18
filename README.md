@@ -16,7 +16,7 @@
     <span> | </span>
     <a href="https://docs.rs/forky">API Docs</a>
     <span> | </span>
-    <a href="https://github.com/mrchantey/forky#contributing">Contributing</a>
+    <a href="https://mrchantey.github.io/forky/docs/other/contributing">Contributing</a>
   </h3>
 
 <img src="https://lumiere-a.akamaihd.net/v1/images/open-uri20150422-20810-1p4gxx9_6ea17642.jpeg?region=0,0,600,600" width="100" height="100">
