@@ -1,6 +1,20 @@
 # Fantoccini
 
-Sweet can be used with fantoccini or any other webdriver client. Note the `nonSend` flag, as fantoccini futures are not `Send`.
+Sweet can be used with fantoccini or any other webdriver client. 
+
+## Requirements
+
+Ensure that a webdriver client running, ie chromedriver.
+```sh
+# install - windows
+choco install chromedriver
+# run
+chromedriver
+```
+
+## Example
+
+Note the `nonSend` flag, as fantoccini futures are not `Send`.
 
 ```rs
 use fantoccini::ClientBuilder;

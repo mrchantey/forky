@@ -16,9 +16,7 @@ impl TestRunnerNative {
 		if config.watch {
 			terminal::clear()
 		}
-
-		let intro = TestRunner::pretty_print_intro(&config);
-		println!("{intro}");
+		RunnerLogger::log_intro(&config);
 
 		let start_time = Instant::now();
 
@@ -40,9 +38,7 @@ impl TestRunnerNative {
 			.await
 		};
 		let duration = start_time.elapsed();
-		let summary = TestRunner::pretty_print_summary(&results, duration);
-
-		println!("{summary}");
+		RunnerLogger::log_summary(&results, duration);
 
 		let no_tests = results.cases.tests == 0;
 		if config.watch || no_tests {

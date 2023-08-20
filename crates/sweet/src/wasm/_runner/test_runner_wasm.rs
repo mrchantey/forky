@@ -3,6 +3,7 @@ use crate::*;
 use anyhow::Result;
 use forky_core::*;
 use forky_web::*;
+use js_sys::Array;
 use std::time::Duration;
 use wasm_bindgen::JsValue;
 use web_sys::console;
@@ -57,9 +58,10 @@ impl TestRunnerWasm {
 
 			let collector = TestCollectorWasm::new();
 
-			let intro = TestRunner::pretty_print_intro(&config);
 			console::clear();
-			log!("{intro}");
+			RunnerLogger::log_intro(&config);
+
+			let sweet = Array::new();
 
 			let start_time = performance_now();
 			let to_run = collector
@@ -84,9 +86,7 @@ impl TestRunnerWasm {
 			.await;
 			let duration =
 				Duration::from_millis((performance_now() - start_time) as u64);
-			let summary = TestRunner::pretty_print_summary(&results, duration);
-
-			log!("{summary}");
+			RunnerLogger::log_summary(&results, duration);
 		});
 	}
 }

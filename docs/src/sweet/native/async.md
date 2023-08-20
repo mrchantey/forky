@@ -22,6 +22,6 @@ Internally each native test will be stored as one of three types:
 	}
 	```
 
-By default Sweet will expect any tests containing the `await` keyword to be `Send`, but it currently can't determine if the future is not `Send`. For this reason the `nonSend` flag must be specified if your test contains a non-send future.
+By default Sweet will detect the `await` keyword and mark that test as containing `Send` Futures. The `nonSend` flag must be specified if your test contains a non-send future.
 
 Note: currently if the runner finds any `nonSend` tests it will run all tests on the main thread, even if the parallel flag is supplied.
