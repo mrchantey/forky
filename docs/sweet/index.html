@@ -167,7 +167,28 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="sweet"><a class="header" href="#sweet">Sweet</a></h1>
-<p>Sweet is an <strong>DevEx-First</strong> test framework for rust. Whether you're running native, component or e2e tests, you're gonna have a sweet dev experience.</p>
+<p>Sweet is a full-stack test framework for rust. </p>
+<p>Currently supported test types:</p>
+<ul>
+<li>Native</li>
+<li>Native e2e
+<ul>
+<li>Use webdriver, fantoccini etc</li>
+</ul>
+</li>
+<li>In-browser component
+<ul>
+<li>Runs in isolated iframe</li>
+<li>Framework agnostic: Yew, Leptos etc</li>
+</ul>
+</li>
+<li>In-browser e2e
+<ul>
+<li>Visit page in isolated iframe</li>
+<li>Uses reverse proxy to interact with page</li>
+</ul>
+</li>
+</ul>
 <h2 id="features"><a class="header" href="#features">Features</a></h2>
 <ul>
 <li>🔥 Parallel</li>
@@ -180,7 +201,7 @@
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <pre><code class="language-rs">sweet! {
   it &quot;works&quot; {
-		expect(&quot;foo&quot;).not().to_contain(&quot;bar&quot;)?;
+		expect(true).to_be_true()?;
   }
 }
 </code></pre>
@@ -190,6 +211,8 @@
 <li><a href="./matchers.html"><code>expect()</code> returns a matcher</a></li>
 <li><a href="./web/end-to-end.html"><code>visit()</code> returns an iframe (e2e)</a></li>
 </ul>
+<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
+<p>Check out the <a href="./native/index.html">quickstart page</a> or have a browse of the <a href="https://github.com/mrchantey/forky/tree/main/crates/sweet/test">tests written for sweet</a></p>
 
                     </main>
 

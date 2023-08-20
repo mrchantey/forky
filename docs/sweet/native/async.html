@@ -189,7 +189,7 @@
 </code></pre>
 </li>
 </ul>
-<p>By default Sweet will expect any tests containing the <code>await</code> keyword to be <code>Send</code>, but it currently can't determine if the future is not <code>Send</code>. For this reason the <code>nonSend</code> flag must be specified if your test contains a non-send future.</p>
+<p>By default Sweet will detect the <code>await</code> keyword and mark that test as containing <code>Send</code> Futures. The <code>nonSend</code> flag must be specified if your test contains a non-send future.</p>
 <p>Note: currently if the runner finds any <code>nonSend</code> tests it will run all tests on the main thread, even if the parallel flag is supplied.</p>
 
                     </main>

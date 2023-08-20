@@ -167,7 +167,16 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="fantoccini"><a class="header" href="#fantoccini">Fantoccini</a></h1>
-<p>Sweet can be used with fantoccini or any other webdriver client. Note the <code>nonSend</code> flag, as fantoccini futures are not <code>Send</code>.</p>
+<p>Sweet can be used with fantoccini or any other webdriver client. </p>
+<h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
+<p>Ensure that a webdriver client running, ie chromedriver.</p>
+<pre><code class="language-sh"># install - windows
+choco install chromedriver
+# run
+chromedriver
+</code></pre>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p>Note the <code>nonSend</code> flag, as fantoccini futures are not <code>Send</code>.</p>
 <pre><code class="language-rs">use fantoccini::ClientBuilder;
 use fantoccini::Locator;
 use sweet::*;

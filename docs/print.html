@@ -238,7 +238,28 @@ Options:
 <p>I like to organize projects by <em>many</em> small files and including them becomes a headache so I use a cli to auto-generate mod files that include all files in a directory.</p>
 <p>Its current incarnation is zero config and opinionated so you may want to play around with it on an empty project before integrating with existing codebases.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sweet-1"><a class="header" href="#sweet-1">Sweet</a></h1>
-<p>Sweet is an <strong>DevEx-First</strong> test framework for rust. Whether you're running native, component or e2e tests, you're gonna have a sweet dev experience.</p>
+<p>Sweet is a full-stack test framework for rust. </p>
+<p>Currently supported test types:</p>
+<ul>
+<li>Native</li>
+<li>Native e2e
+<ul>
+<li>Use webdriver, fantoccini etc</li>
+</ul>
+</li>
+<li>In-browser component
+<ul>
+<li>Runs in isolated iframe</li>
+<li>Framework agnostic: Yew, Leptos etc</li>
+</ul>
+</li>
+<li>In-browser e2e
+<ul>
+<li>Visit page in isolated iframe</li>
+<li>Uses reverse proxy to interact with page</li>
+</ul>
+</li>
+</ul>
 <h2 id="features-1"><a class="header" href="#features-1">Features</a></h2>
 <ul>
 <li>🔥 Parallel</li>
@@ -251,7 +272,7 @@ Options:
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
 <pre><code class="language-rs">sweet! {
   it &quot;works&quot; {
-		expect(&quot;foo&quot;).not().to_contain(&quot;bar&quot;)?;
+		expect(true).to_be_true()?;
   }
 }
 </code></pre>
@@ -261,6 +282,8 @@ Options:
 <li><a href="sweet/./matchers.html"><code>expect()</code> returns a matcher</a></li>
 <li><a href="sweet/./web/end-to-end.html"><code>visit()</code> returns an iframe (e2e)</a></li>
 </ul>
+<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
+<p>Check out the <a href="sweet/./native/index.html">quickstart page</a> or have a browse of the <a href="https://github.com/mrchantey/forky/tree/main/crates/sweet/test">tests written for sweet</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart---native"><a class="header" href="#quickstart---native">Quickstart - Native</a></h1>
 <ol>
 <li>edit <code>cargo.toml</code>
@@ -339,10 +362,19 @@ Options:
 </code></pre>
 </li>
 </ul>
-<p>By default Sweet will expect any tests containing the <code>await</code> keyword to be <code>Send</code>, but it currently can't determine if the future is not <code>Send</code>. For this reason the <code>nonSend</code> flag must be specified if your test contains a non-send future.</p>
+<p>By default Sweet will detect the <code>await</code> keyword and mark that test as containing <code>Send</code> Futures. The <code>nonSend</code> flag must be specified if your test contains a non-send future.</p>
 <p>Note: currently if the runner finds any <code>nonSend</code> tests it will run all tests on the main thread, even if the parallel flag is supplied.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="fantoccini"><a class="header" href="#fantoccini">Fantoccini</a></h1>
-<p>Sweet can be used with fantoccini or any other webdriver client. Note the <code>nonSend</code> flag, as fantoccini futures are not <code>Send</code>.</p>
+<p>Sweet can be used with fantoccini or any other webdriver client. </p>
+<h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
+<p>Ensure that a webdriver client running, ie chromedriver.</p>
+<pre><code class="language-sh"># install - windows
+choco install chromedriver
+# run
+chromedriver
+</code></pre>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p>Note the <code>nonSend</code> flag, as fantoccini futures are not <code>Send</code>.</p>
 <pre><code class="language-rs">use fantoccini::ClientBuilder;
 use fantoccini::Locator;
 use sweet::*;
@@ -443,7 +475,7 @@ expect(page).to_contain_text(&quot;sweet as!&quot;)?;
 </li>
 <li>awaits the iframe <code>load</code> event</li>
 </ol>
-<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
 <p>Here's an example of an end-to-end test running on these docs:</p>
 <pre><code class="language-rs">sweet!{
 	test e2e &quot;docs origin&quot; {
@@ -711,7 +743,7 @@ fn main() {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
 <p>If this project is of interest to you feel free to have a dig around! </p>
 <p>Everything is very early days so there are no doubt lots of bugs and missing features. If you find something that could be improved please open an issue or PR.</p>
-<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
+<h2 id="getting-started-1"><a class="header" href="#getting-started-1">Getting Started</a></h2>
 <p>Most of this is for my own reference, but you may find it useful:</p>
 <ol>
 <li>Install Rust
