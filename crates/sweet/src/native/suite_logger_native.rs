@@ -1,14 +1,10 @@
 use crate::*;
 use crossterm::*;
 use std::io::stdout;
-// use std::io::Write;
-
-
-
 
 pub struct SuiteLoggerNative {
-	stdout: std::io::Result<gag::BufferRedirect>,
-	stderr: std::io::Result<gag::BufferRedirect>,
+	stdout: Option<gag::BufferRedirect>,
+	stderr: Option<gag::BufferRedirect>,
 }
 
 
@@ -17,8 +13,8 @@ impl SuiteLogger for SuiteLoggerNative {
 		// self.log(self.
 		println!("{start_str}");
 		let this = SuiteLoggerNative {
-			stdout: gag::BufferRedirect::stdout(),
-			stderr: gag::BufferRedirect::stderr(),
+			stdout: gag::BufferRedirect::stdout().ok(),
+			stderr: gag::BufferRedirect::stderr().ok(),
 		};
 		this
 	}
@@ -26,13 +22,11 @@ impl SuiteLogger for SuiteLoggerNative {
 	fn on_end(self, end_str: String) {
 		use std::io::Read;
 		let mut log = String::new();
-		if self.stdout.is_ok() {
-			let mut bb = self.stdout.unwrap();
+		if let Some(mut bb) = self.stdout {
 			bb.read_to_string(&mut log).unwrap();
 			drop(bb);
 		}
-		if self.stderr.is_ok() {
-			let mut bb = self.stderr.unwrap();
+		if let Some(mut bb) = self.stderr {
 			bb.read_to_string(&mut log).unwrap();
 			drop(bb);
 		}

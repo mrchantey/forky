@@ -75,7 +75,7 @@ async fn run_group_parallel(
 
 	match results {
 		Ok(results) => results.into(),
-		Err(_) => panic!("Error in parallel test suite"),
+		Err(e) => panic!("Error in parallel test suite\n{:?}", e),
 	}
 }
 

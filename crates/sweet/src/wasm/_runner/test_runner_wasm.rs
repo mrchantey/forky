@@ -61,23 +61,18 @@ impl TestRunnerWasm {
 			console::clear();
 			RunnerLogger::log_intro(&config);
 
-			let sweet = Array::new();
-
 			let start_time = performance_now();
 			let to_run = collector
-				.suites_to_run(&config)
-				.iter()
-				.map(|s| {
+			.suites_to_run(&config)
+			.iter()
+			.map(|s| {
+					//TODO avoid cloning here
 					let mut s = (*s).clone();
 					s.iframe = Some(iframe.clone());
 					s
 				})
 				.collect::<Vec<_>>();
 			let to_run = to_run.iter().map(|s| s).collect::<Vec<_>>();
-			// for suite in to_run.iter_mut() {
-			// 	suite.iframe = Some(iframe.clone());
-			// 	// log!("{suite.file}");
-			// }
 
 			let results = TestRunner::run_group_series::<
 				SuiteLoggerWasm,
