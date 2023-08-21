@@ -1,19 +1,30 @@
 use fantoccini::ClientBuilder;
 use serde_json::Value;
+use std::time::Duration;
+use std::time::Instant;
 use sweet::*;
 
 sweet! {
 	it nonSend "works" {
 		let c = ClientBuilder::native().connect("http://localhost:9515")
-		.await.map_err(|e| anyhow::anyhow!("failed to connect, is chromedriver running?\n{:?}",e))?;
+		.await?;
+	c.goto("http://localhost:7777").await?;
 
-		let result = c.execute("return ['foo','bar',3]", Vec::new()).await?;
-		let vec = value_to_vec_str(&result);
-
-		println!("result: {:?}", vec);
-
-		// c.goto("https://en.wikipedia.org/wiki/Foobar").await?;
-
+		// let result = c.execute("return ['foo','bar',3]", Vec::new()).await?;
+		let start_time = Instant::now();
+		loop{
+			let result = c.execute("return window._sweet_log", Vec::new()).await?;
+			let vec = value_to_vec_str(&result);
+			if vec.last() == Some(&"_sweet_end") {
+				break;
+			}
+			if start_time.elapsed() > Duration::from_secs(10) {
+				panic!("timeout");
+			}
+			let result = vec.join("\n");
+			println!("\nresult:\n{}", result);
+			std::thread::sleep(Duration::from_secs(1));
+		}
 		c.close().await?;
 	}
 }

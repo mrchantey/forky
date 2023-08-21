@@ -29,5 +29,6 @@ impl RunnerLogger for RunnerLoggerWasm {
 		let summary = Self::pretty_print_summary(&results, duration);
 		log!("{summary}");
 		self.logger_export.push(&summary);
+		self.logger_export.push("_sweet_end");
 	}
 }
