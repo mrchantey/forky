@@ -40,6 +40,13 @@ impl Subcommand for SweetCommand {
 					.action(ArgAction::SetTrue),
 			)
 			.arg(
+				Arg::new("nowatch")
+					.required(false)
+					.help("do not watch the directory for changes")
+					.long("nowatch")
+					.action(ArgAction::SetTrue),
+			)
+			.arg(
 				Arg::new("static")
 					.required(false)
 					.help("directory for static files (ie .css) that should be served")
@@ -53,6 +60,7 @@ impl Subcommand for SweetCommand {
 		cli.static_dir = args.get_one::<String>("static").cloned();
 		cli.server.address.secure = args.get_flag("secure");
 		cli.release = args.get_flag("release");
+		cli.watch = !args.get_flag("nowatch");
 		cli.run()
 	}
 }

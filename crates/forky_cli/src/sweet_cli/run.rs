@@ -37,7 +37,7 @@ impl SweetCli {
 		loop {
 			self.copy_static()?;
 			let kill2 = kill.clone();
-			let change_listener = std::thread::spawn(move || -> Result<()> {
+			let change_listener = if self.watch {std::thread::spawn(move || -> Result<()> {
 				let kill_lock = kill2.lock().unwrap();
 				FsWatcher::default()
 					.with_watch("**/*.rs")
@@ -45,7 +45,16 @@ impl SweetCli {
 					.block()?;
 				drop(kill_lock);
 				Ok(())
-			});
+			})}else{
+				std::thread::spawn(move ||-> Result<()>{
+					let _kill_lock = kill2.lock().unwrap();
+loop {
+		std::thread::sleep(Duration::from_secs(1))
+}
+// Ok(())
+				})				
+			};
+			// let change_listener = std::thread::spawn(change_listener);
 			// wait until fswatcher ready
 			while kill_unlocked() {
 				std::thread::sleep(Duration::from_millis(1))
