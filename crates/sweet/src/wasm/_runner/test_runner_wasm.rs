@@ -2,17 +2,11 @@ use super::*;
 use crate::*;
 use anyhow::Result;
 use forky_core::*;
-use forky_web::*;
-use js_sys::Array;
-use std::time::Duration;
 use wasm_bindgen::JsValue;
-use web_sys::console;
 use web_sys::window;
 use web_sys::HtmlIFrameElement;
 
 pub struct TestRunnerWasm;
-
-
 
 impl TestRunnerWasm {
 	pub fn run_case(id: usize) -> Result<()> {
@@ -57,15 +51,12 @@ impl TestRunnerWasm {
 			forky_web::set_panic_hook();
 
 			let collector = TestCollectorWasm::new();
+			let logger = RunnerLoggerWasm::start(&config);
 
-			console::clear();
-			RunnerLogger::log_intro(&config);
-
-			let start_time = performance_now();
 			let to_run = collector
-			.suites_to_run(&config)
-			.iter()
-			.map(|s| {
+				.suites_to_run(&config)
+				.iter()
+				.map(|s| {
 					//TODO avoid cloning here
 					let mut s = (*s).clone();
 					s.iframe = Some(iframe.clone());
@@ -79,9 +70,8 @@ impl TestRunnerWasm {
 				TestCaseWasm,
 			>(to_run, &config)
 			.await;
-			let duration =
-				Duration::from_millis((performance_now() - start_time) as u64);
-			RunnerLogger::log_summary(&results, duration);
+			
+			logger.end(&results);
 		});
 	}
 }

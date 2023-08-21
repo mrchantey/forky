@@ -1,27 +1,13 @@
+use crate::*;
 use colorize::*;
 use std::time::Duration;
-use forky_core::*;
-use crate::*;
 
-pub struct RunnerLogger;
-
-impl RunnerLogger {
-
-	pub fn log_intro(config: &TestRunnerConfig) {
-		let intro = Self::pretty_print_intro(&config);
-		log!("{intro}");
-	}
+pub trait RunnerLogger where Self:Sized {
+	fn start(config: &TestRunnerConfig)->Self;
+	fn end(self,results: &ResultSummary);
 
 	fn pretty_print_intro(config: &TestRunnerConfig) -> String {
 		format!("\n🤘 sweet as! 🤘\n\n{config}")
-	}
-
-	pub fn log_summary(
-		results: &ResultSummary,
-		duration: Duration,
-	) {
-		let summary = Self::pretty_print_summary(&results, duration);
-		log!("{summary}");
 	}
 
 	fn pretty_print_summary(

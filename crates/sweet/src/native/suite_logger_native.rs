@@ -10,7 +10,6 @@ pub struct SuiteLoggerNative {
 
 impl SuiteLogger for SuiteLoggerNative {
 	fn on_start(start_str: String) -> Self {
-		// self.log(self.
 		println!("{start_str}");
 		let this = SuiteLoggerNative {
 			stdout: gag::BufferRedirect::stdout().ok(),

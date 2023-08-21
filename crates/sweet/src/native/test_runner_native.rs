@@ -3,7 +3,6 @@ use crate::*;
 use anyhow::Result;
 use forky_fs::*;
 use futures::future::join_all;
-use std::time::Instant;
 
 pub struct TestRunnerNative;
 
@@ -16,9 +15,9 @@ impl TestRunnerNative {
 		if config.watch {
 			terminal::clear()
 		}
-		RunnerLogger::log_intro(&config);
+		let logger = RunnerLoggerNative::start(&config);
 
-		let start_time = Instant::now();
+
 
 		let collector = TestCollectorNative::new();
 
@@ -37,8 +36,8 @@ impl TestRunnerNative {
 			)
 			.await
 		};
-		let duration = start_time.elapsed();
-		RunnerLogger::log_summary(&results, duration);
+
+		logger.end(&results);
 
 		let no_tests = results.cases.tests == 0;
 		if config.watch || no_tests {

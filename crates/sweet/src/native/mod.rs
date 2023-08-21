@@ -18,3 +18,5 @@ mod test_runner_native;
 pub use self::test_runner_native::*;
 mod test_suite_native;
 pub use self::test_suite_native::*;
+mod runner_logger_native;
+pub use self::runner_logger_native::*;
