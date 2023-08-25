@@ -56,13 +56,12 @@ where
 		run_cases_series(to_run).await
 	}
 
-	async fn run<Logger>(&self, config: &TestRunnerConfig) -> TestSuiteResult
+	async fn run<Logger>(&self, config: &TestRunnerConfig) -> SuiteResult
 	where
 		Logger: SuiteLogger,
 	{
 		let tests = self.tests();
 		let file = self.file();
-		let logger = Logger::start(file);
 
 		let contains_only = tests.iter().any(|t| t.config().only);
 
@@ -70,18 +69,18 @@ where
 			.iter()
 			.partition(|t| !self.should_skip(t, contains_only));
 
-		let failed = self.run_cases(to_run, config).await;
+		let mut result =
+			SuiteResult::new(file.to_string(), tests.len(), skipped.len());
 
-		let msg = failed
+		let logger = Logger::on_start(result.in_progress_str());
+		result.failed = self
+			.run_cases(to_run, config)
+			.await
 			.iter()
-			.fold(String::new(), |val, err| val + err.to_string().as_str());
+			.map(|e| e.to_string())
+			.collect();
 
-		let result = TestSuiteResult {
-			tests: tests.len(),
-			failed: failed.len(),
-			skipped: skipped.len(),
-		};
-		logger.end(file, &result, msg);
+		logger.on_end(result.end_str());
 		result
 	}
 }

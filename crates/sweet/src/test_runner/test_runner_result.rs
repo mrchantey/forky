@@ -3,29 +3,29 @@ use crate::*;
 
 #[derive(Debug, Default)]
 pub struct TestRunnerResult {
-	// pub suites_arr: Vec<TestSuiteResult>,
-	pub suites: TestSuiteResult,
-	pub cases: TestSuiteResult,//TODO probably newtype this
+	pub suite_results: Vec<SuiteResult>,
+	pub suites: ResultCount,
+	pub cases: ResultCount, //TODO probably newtype this
 }
 
-impl Into<TestRunnerResult> for Vec<TestSuiteResult> {
+impl Into<TestRunnerResult> for Vec<SuiteResult> {
 	fn into(self) -> TestRunnerResult {
-		TestRunnerResult::from_suites_arr(self)
+		TestRunnerResult::from_suite_results(self)
 	}
 }
 
 impl TestRunnerResult {
-	fn from_suites_arr(suites_arr: Vec<TestSuiteResult>) -> Self {
-		let mut suites = TestSuiteResult::new();
-		let cases = suites_arr.iter().fold(
-			TestSuiteResult::default(),
+	fn from_suite_results(suite_results: Vec<SuiteResult>) -> Self {
+		let mut suites = ResultCount::new();
+		let cases = suite_results.iter().fold(
+			ResultCount::default(),
 			|mut acc, item| {
 				acc.tests += item.tests;
-				acc.failed += item.failed;
+				acc.failed += item.failed.len();
 				acc.skipped += item.skipped;
 
 				suites.tests += 1;
-				if item.failed > 0 {
+				if item.failed.len() > 0 {
 					suites.failed += 1;
 				}
 
@@ -33,7 +33,7 @@ impl TestRunnerResult {
 			},
 		);
 		TestRunnerResult {
-			// suites_arr,
+			suite_results,
 			suites,
 			cases,
 		}

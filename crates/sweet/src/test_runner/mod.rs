@@ -1,3 +1,5 @@
+mod result_count;
+pub use self::result_count::*;
 mod runner_logger;
 pub use self::runner_logger::*;
 mod test_collector;
