@@ -1,5 +1,3 @@
-mod end_to_end;
-pub use self::end_to_end::*;
 mod fantoccini;
 pub use self::fantoccini::*;
 mod test_case_native;
