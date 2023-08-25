@@ -13,7 +13,7 @@ impl RunnerLogger for RunnerLoggerNative {
 	}
 	fn end(self, results: &TestRunnerResult) {
 		let duration = self.start_time.elapsed();
-		let summary = Self::pretty_print_summary(&results, duration);
+		let summary = results.end_str(duration);
 		println!("{summary}");
 	}
 }

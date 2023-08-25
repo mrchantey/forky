@@ -1,6 +1,8 @@
 use crate::*;
+use colorize::*;
 use serde::Deserialize;
 use serde::Serialize;
+use std::time::Duration;
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct TestRunnerResult {
@@ -37,6 +39,36 @@ impl TestRunnerResult {
 			suite_results,
 			suites,
 			cases,
+		}
+	}
+
+
+	pub fn end_str(&self, duration: Duration) -> String {
+		let mut post_run = String::from("\n");
+
+		if self.cases.tests == 0 {
+			post_run += "No Tests Found\n".red().as_str();
+			return post_run;
+		} else if self.cases.failed == 0 {
+			post_run +=
+				"All tests passed\n".bold().cyan().underlined().as_str();
+		}
+
+		post_run += self.suites.pretty_print("Suites:\t\t").as_str();
+		post_run.push('\n');
+		post_run += self.cases.pretty_print("Tests:\t\t").as_str();
+		post_run.push('\n');
+		post_run += Self::print_time(duration).as_str();
+		post_run
+	}
+
+	fn print_time(duration: Duration) -> String {
+		let millis = duration.as_millis();
+		let prefix = "Time:\t\t".bold();
+		if millis < 100 {
+			format!("{}{} ms\n\n", prefix, millis)
+		} else {
+			format!("{}{:.2} s\n\n", prefix, millis as f32 * 0.001)
 		}
 	}
 }
