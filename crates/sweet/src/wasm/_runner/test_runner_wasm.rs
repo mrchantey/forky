@@ -65,11 +65,15 @@ impl TestRunnerWasm {
 				.collect::<Vec<_>>();
 			let to_run = to_run.iter().map(|s| s).collect::<Vec<_>>();
 
-			let results = TestRunner::run_group_series::<
-				SuiteLoggerDefault,
-				TestCaseWasm,
-			>(to_run, &config)
-			.await;
+
+			let mut results = Vec::with_capacity(to_run.len());
+			for suite in to_run {
+				let result = suite.run::<SuiteLoggerDefault>(&config).await;
+				results.push(result);
+				ResultExport::set_suites(&results);
+			}
+			let results: TestRunnerResult = results.into();
+			ResultExport::set_total(&results);
 			
 			logger.end(&results);
 		});

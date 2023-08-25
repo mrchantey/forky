@@ -1,7 +1,7 @@
 mod build_test;
 pub use self::build_test::*;
-mod logger_export;
-pub use self::logger_export::*;
+mod result_export;
+pub use self::result_export::*;
 mod runner_logger_wasm;
 pub use self::runner_logger_wasm::*;
 mod test_case_wasm;
