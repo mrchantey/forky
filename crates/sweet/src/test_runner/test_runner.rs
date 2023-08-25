@@ -6,7 +6,7 @@ impl TestRunner {
 	pub async fn run_group_series<Logger, Case>(
 		to_run: Vec<&impl TestSuiteTrait<Case>>,
 		config: &TestRunnerConfig,
-	) -> ResultSummary
+	) -> TestRunnerResult
 	where
 		Case: TestCase,
 		Logger: SuiteLogger,
@@ -18,5 +18,4 @@ impl TestRunner {
 		}
 		results.into()
 	}
-
 }

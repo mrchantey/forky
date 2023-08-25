@@ -23,7 +23,7 @@ impl RunnerLogger for RunnerLoggerWasm {
 			logger_export,
 		}
 	}
-	fn end(self, results: &ResultSummary) {
+	fn end(self, results: &TestRunnerResult) {
 		let duration =
 			Duration::from_millis((performance_now() - self.start_time) as u64);
 		let summary = Self::pretty_print_summary(&results, duration);

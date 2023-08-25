@@ -2,16 +2,19 @@ use crate::*;
 use colorize::*;
 use std::time::Duration;
 
-pub trait RunnerLogger where Self:Sized {
-	fn start(config: &TestRunnerConfig)->Self;
-	fn end(self,results: &ResultSummary);
+pub trait RunnerLogger
+where
+	Self: Sized,
+{
+	fn start(config: &TestRunnerConfig) -> Self;
+	fn end(self, results: &TestRunnerResult);
 
 	fn pretty_print_intro(config: &TestRunnerConfig) -> String {
 		format!("\n🤘 sweet as! 🤘\n\n{config}")
 	}
 
 	fn pretty_print_summary(
-		results: &ResultSummary,
+		results: &TestRunnerResult,
 		duration: Duration,
 	) -> String {
 		let mut post_run = String::from("\n");

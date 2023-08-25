@@ -36,8 +36,8 @@ where
 	}
 }
 
-fn pretty_path(val: &str) -> String {
-	let mut splt = val.split("\\").collect::<Vec<&str>>();
+fn pretty_path(file: &str) -> String {
+	let mut splt = file.split("\\").collect::<Vec<&str>>();
 	let _file = splt.pop();
 	let file = _file.unwrap_or_default().to_string().bold();
 	let path = splt.join("\\").faint();
