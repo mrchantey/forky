@@ -1,7 +1,7 @@
 #![feature(async_fn_in_trait, async_closure)]
-mod _matchers;
+mod matchers;
 mod test_case;
-pub use self::_matchers::*;
+pub use self::matchers::*;
 pub use forky_test::*;
 pub use test_case::*;
 mod test_suite;
