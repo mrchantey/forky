@@ -1,7 +1,8 @@
 use crate::*;
+use serde::Deserialize;
+use serde::Serialize;
 
-
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct TestRunnerResult {
 	pub suite_results: Vec<SuiteResult>,
 	pub suites: ResultCount,

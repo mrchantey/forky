@@ -66,7 +66,7 @@ impl TestRunnerWasm {
 			let to_run = to_run.iter().map(|s| s).collect::<Vec<_>>();
 
 			let results = TestRunner::run_group_series::<
-				SuiteLoggerWasm,
+				SuiteLoggerDefault,
 				TestCaseWasm,
 			>(to_run, &config)
 			.await;

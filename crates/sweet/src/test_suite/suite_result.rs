@@ -1,8 +1,9 @@
-// use crate::*;
 use colorize::*;
+use serde::Deserialize;
+use serde::Serialize;
 // use std::default;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct SuiteResult {
 	pub file: String,
 	pub tests: usize,

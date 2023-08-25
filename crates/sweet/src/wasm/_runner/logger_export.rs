@@ -30,7 +30,5 @@ impl LoggerExport {
 	}
 	pub fn get_or_init() -> Self { Self::get().unwrap_or_else(|| Self::init()) }
 
-	pub fn push(&self, value: &str) {
-		self.logs.push(&value.into());
-	}
+	pub fn push(&self, value: &str) { self.logs.push(&value.into()); }
 }

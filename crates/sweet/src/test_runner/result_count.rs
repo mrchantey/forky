@@ -1,6 +1,8 @@
 use colorize::*;
+use serde::Deserialize;
+use serde::Serialize;
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone,Serialize,Deserialize)]
 pub struct ResultCount {
 	pub tests: usize,
 	pub failed: usize,

@@ -4,8 +4,6 @@ mod logger_export;
 pub use self::logger_export::*;
 mod runner_logger_wasm;
 pub use self::runner_logger_wasm::*;
-mod suite_logger_wasm;
-pub use self::suite_logger_wasm::*;
 mod test_case_wasm;
 pub use self::test_case_wasm::*;
 mod test_collector_wasm;
