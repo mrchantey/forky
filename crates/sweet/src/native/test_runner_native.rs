@@ -15,9 +15,11 @@ impl TestRunnerNative {
 		if config.watch {
 			terminal::clear()
 		}
-		let logger = RunnerLoggerNative::start(&config);
-
-
+		let logger = if config.silent {
+			None
+		} else {
+			Some(RunnerLoggerNative::start(&config))
+		};
 
 		let collector = TestCollectorNative::new();
 
@@ -37,7 +39,9 @@ impl TestRunnerNative {
 			.await
 		};
 
-		logger.end(&results);
+		if let Some(logger) = logger {
+			logger.end(&results);
+		}
 
 		let no_tests = results.cases.tests == 0;
 		if config.watch || no_tests {

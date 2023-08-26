@@ -51,7 +51,11 @@ impl TestRunnerWasm {
 			forky_web::set_panic_hook();
 
 			let collector = TestCollectorWasm::new();
-			let logger = RunnerLoggerWasm::start(&config);
+			let logger = if config.silent {
+				None
+			} else {
+				Some(RunnerLoggerWasm::start(&config))
+			};
 
 			let to_run = collector
 				.suites_to_run(&config)
@@ -74,8 +78,10 @@ impl TestRunnerWasm {
 			}
 			let results: TestRunnerResult = results.into();
 			ResultExport::set_total(&results);
-			
-			logger.end(&results);
+
+			if let Some(logger) = logger {
+				logger.end(&results);
+			}
 		});
 	}
 }

@@ -72,7 +72,11 @@ where
 		let mut result =
 			SuiteResult::new(file.to_string(), tests.len(), skipped.len());
 
-		let logger = Logger::on_start(result.in_progress_str());
+		let logger = if config.silent {
+			None
+		} else {
+			Some(Logger::on_start(result.in_progress_str()))
+		};
 		result.failed = self
 			.run_cases(to_run, config)
 			.await
@@ -80,7 +84,9 @@ where
 			.map(|e| e.to_string())
 			.collect();
 
-		logger.on_end(result.end_str());
+		if let Some(logger) = logger {
+			logger.on_end(result.end_str());
+		}
 		result
 	}
 }

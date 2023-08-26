@@ -8,6 +8,7 @@ impl TestRunnerConfig {
 	pub fn from_arg_matchers(value: &ArgMatches) -> Result<Self> {
 		let watch = value.get_flag("watch");
 		let parallel = value.get_flag("parallel");
+		let silent = value.get_flag("silent");
 		let matches = value
 			.get_many::<String>("match")
 			.unwrap_or_default()
@@ -19,6 +20,7 @@ impl TestRunnerConfig {
 			watch,
 			parallel,
 			matches,
+			silent
 		})
 	}
 }

@@ -1,10 +1,22 @@
 use glob::Pattern;
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Clone)]
 pub struct TestRunnerConfig {
 	pub watch: bool,
 	pub parallel: bool,
+	pub silent: bool,
 	pub matches: Vec<Pattern>,
+}
+
+impl Default for TestRunnerConfig {
+	fn default() -> Self {
+		Self {
+			watch: false,
+			parallel: false,
+			silent: false,
+			matches: Vec::new(),
+		}
+	}
 }
 
 impl TestRunnerConfig {

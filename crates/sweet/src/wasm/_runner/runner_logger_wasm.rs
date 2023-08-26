@@ -15,9 +15,7 @@ impl RunnerLogger for RunnerLoggerWasm {
 		let intro = Self::pretty_print_intro(&config);
 		log!("{intro}");
 		let start_time = performance_now();
-		Self {
-			start_time,
-		}
+		Self { start_time }
 	}
 	fn end(self, results: &TestRunnerResult) {
 		let duration =

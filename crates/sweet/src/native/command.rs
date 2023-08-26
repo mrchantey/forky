@@ -40,6 +40,14 @@ impl Subcommand for RunTestsNativeCommand {
 					.long("parallel")
 					.action(ArgAction::SetTrue),
 			)
+			.arg(
+				Arg::new("silent")
+					.help("don't log results")
+					.required(false)
+					.short('s')
+					.long("silent")
+					.action(ArgAction::SetTrue),
+			)
 	}
 
 	fn run(&self, args: &ArgMatches) -> Result<()> {

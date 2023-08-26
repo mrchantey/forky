@@ -7,6 +7,8 @@ pub const MATCHES_KEY: &str = "m";
 
 impl TestRunnerConfig {
 	pub fn from_search_params() -> Self {
+		let silent = SearchParams::get_flag("silent");
+
 		let matches = SearchParams::get_all(MATCHES_KEY)
 			.iter()
 			.map(|s| Pattern::new(&s).unwrap())
@@ -18,6 +20,7 @@ impl TestRunnerConfig {
 		Self {
 			watch: false,
 			parallel: false,
+			silent,
 			matches,
 		}
 	}
