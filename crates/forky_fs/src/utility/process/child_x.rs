@@ -16,10 +16,10 @@ pub impl Child {
 	/// Returns either when child completes or kill returns true
 	fn wait_killable(
 		mut self,
-		kill: impl Fn() -> bool,
+		should_kill: impl Fn() -> bool,
 	) -> Result<ChildProcessStatus> {
 		loop {
-			if kill() {
+			if should_kill() {
 				self.kill()?;
 				return Ok(ChildProcessStatus::Killed);
 			}

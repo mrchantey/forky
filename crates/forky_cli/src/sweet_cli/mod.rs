@@ -1,6 +1,10 @@
+mod build_wasm;
+pub use self::build_wasm::*;
 mod command;
 pub use self::command::*;
 mod run;
 pub use self::run::*;
+mod run_mode;
+pub use self::run_mode::*;
 mod sweet_cli;
 pub use self::sweet_cli::*;

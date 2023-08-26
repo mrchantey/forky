@@ -1,12 +1,6 @@
+use super::*;
 use crate::server::*;
 use std::fmt::Display;
-
-#[derive(Debug, Clone)]
-pub enum RunMode{
-	Interactive,
-	Headless,
-	Headed
-}
 
 
 #[derive(Debug, Clone)]
@@ -16,7 +10,7 @@ pub struct SweetCli {
 	pub release: bool,
 	pub watch: bool,
 	pub static_dir: Option<String>,
-	pub run_mode:RunMode
+	pub run_mode: RunMode,
 }
 
 
@@ -32,7 +26,7 @@ impl Default for SweetCli {
 		Self {
 			package: None,
 			static_dir: None,
-			run_mode:RunMode::Interactive,
+			run_mode: RunMode::Interactive,
 			watch: true,
 			server: Server {
 				quiet: true,

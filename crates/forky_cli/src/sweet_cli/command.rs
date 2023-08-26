@@ -40,6 +40,13 @@ impl Subcommand for SweetCommand {
 					.action(ArgAction::SetTrue),
 			)
 			.arg(
+				Arg::new("static")
+				.required(false)
+				.help("directory for static files (ie .css) that should be served")
+				.long("static")
+				.action(ArgAction::Set),
+			)
+			.arg(
 				Arg::new("nowatch")
 					.required(false)
 					.help("do not watch the directory for changes")
@@ -47,25 +54,18 @@ impl Subcommand for SweetCommand {
 					.action(ArgAction::SetTrue),
 			)
 			.arg(
-				Arg::new("static")
-					.required(false)
-					.help("directory for static files (ie .css) that should be served")
-					.long("static")
-					.action(ArgAction::Set),
-			)
-			.arg(
 				Arg::new("run")
 					.required(false)
-					.help("run the tests using chromedriver")
+					.help("run the tests using chromedriver in headless mode")
 					.long("run")
 					.action(ArgAction::SetTrue),
 			)
 			.arg(
-				Arg::new("run-headless")
+				Arg::new("run-headed")
 					.required(false)
-					.help("run the tests using chromedriver in headless mode")
-					.long("run-headless")
-					.action(ArgAction::Set),
+					.help("run the tests using chromedriver in headed mode")
+					.long("run-headed")
+					.action(ArgAction::SetTrue),
 			)
 	}
 	fn run(&self, args: &clap::ArgMatches) -> anyhow::Result<()> {
@@ -76,8 +76,12 @@ impl Subcommand for SweetCommand {
 		cli.release = args.get_flag("release");
 		cli.watch = !args.get_flag("nowatch");
 
+		if args.get_flag("run") {
+			cli.run_mode = RunMode::Headless;
+		} else if args.get_flag("run-headed") {
+			cli.run_mode = RunMode::Headed;
+		}
 
-		
 		cli.run()
 	}
 }
