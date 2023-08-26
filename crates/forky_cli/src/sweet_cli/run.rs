@@ -20,7 +20,6 @@ impl SweetCli {
 		terminal::clear();
 		terminal::print_forky();
 
-
 		let livereload = LiveReloadLayer::new();
 		let reload = livereload.reloader();
 
@@ -48,9 +47,9 @@ impl SweetCli {
 			})}else{
 				std::thread::spawn(move ||-> Result<()>{
 					let _kill_lock = kill2.lock().unwrap();
-loop {
-		std::thread::sleep(Duration::from_secs(1))
-}
+					loop {
+							std::thread::sleep(Duration::from_secs(1))
+					}
 // Ok(())
 				})				
 			};

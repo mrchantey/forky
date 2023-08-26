@@ -53,6 +53,20 @@ impl Subcommand for SweetCommand {
 					.long("static")
 					.action(ArgAction::Set),
 			)
+			.arg(
+				Arg::new("run")
+					.required(false)
+					.help("run the tests using chromedriver")
+					.long("run")
+					.action(ArgAction::SetTrue),
+			)
+			.arg(
+				Arg::new("run-headless")
+					.required(false)
+					.help("run the tests using chromedriver in headless mode")
+					.long("run-headless")
+					.action(ArgAction::Set),
+			)
 	}
 	fn run(&self, args: &clap::ArgMatches) -> anyhow::Result<()> {
 		let mut cli = SweetCli::default();
@@ -61,6 +75,9 @@ impl Subcommand for SweetCommand {
 		cli.server.address.secure = args.get_flag("secure");
 		cli.release = args.get_flag("release");
 		cli.watch = !args.get_flag("nowatch");
+
+
+		
 		cli.run()
 	}
 }
