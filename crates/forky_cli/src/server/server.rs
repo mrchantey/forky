@@ -51,31 +51,19 @@ impl Server {
 		self
 	}
 
-	pub fn serve_with_shutdown(
-		&self,
-		shutdown: impl Future<Output = ()>,
-	) -> Result<()> {
-		self.serve_with_callbacks(Some(shutdown), None)
-	}
-
 	pub fn serve_with_default_reload(&self) -> Result<()> {
 		let (livereload, _handle) = self.default_reload();
 		self.serve_with_reload(livereload)
 	}
 
 	pub fn serve_with_reload(&self, livereload: LiveReloadLayer) -> Result<()> {
-		#[allow(unused_assignments)]
-		let mut shutdown = Some(self.default_shutdown());
-		shutdown = None;
-		self.serve_with_callbacks(shutdown, Some(livereload))
+		self.serve_with_options(Some(livereload))
 	}
 
 	#[tokio::main]
 	#[rustfmt::skip]
-	pub async fn serve_with_callbacks(
+	pub async fn serve_with_options(
 		&self,
-		// unused for now
-		_shutdown: Option<impl Future<Output = ()>>,
 		livereload: Option<LiveReloadLayer>,
 	) -> Result<()> {
 		self.print_start();
@@ -134,8 +122,8 @@ impl Server {
 		(livereload, reload_handle)
 	}
 
-
-	fn default_shutdown(&self) -> Pin<Box<dyn Future<Output = ()>>> {
+//not yet implemented
+	fn _default_shutdown(&self) -> Pin<Box<dyn Future<Output = ()>>> {
 		let dir = self.dir.clone();
 		let quiet = self.quiet;
 		Box::pin(async move {

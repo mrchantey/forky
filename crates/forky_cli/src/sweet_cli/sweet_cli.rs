@@ -10,11 +10,14 @@ pub struct SweetCli {
 	pub release: bool,
 	pub watch: bool,
 	pub static_dir: Option<String>,
-	pub run_mode: RunMode,
+	pub run_tests: Option<RunTestsMode>,
 }
 
 
 impl SweetCli {
+	pub fn should_run_once(&self) -> bool {
+		self.run_tests.is_some() && !self.watch
+	}
 	pub fn set_package(&mut self, package: String) -> &mut Self {
 		self.package = Some(package);
 		self
@@ -26,7 +29,7 @@ impl Default for SweetCli {
 		Self {
 			package: None,
 			static_dir: None,
-			run_mode: RunMode::Interactive,
+			run_tests: None,
 			watch: true,
 			server: Server {
 				quiet: true,

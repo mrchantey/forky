@@ -77,9 +77,9 @@ impl Subcommand for SweetCommand {
 		cli.watch = !args.get_flag("nowatch");
 
 		if args.get_flag("run") {
-			cli.run_mode = RunMode::Headless;
+			cli.run_tests = Some(RunTestsMode::Headless);
 		} else if args.get_flag("run-headed") {
-			cli.run_mode = RunMode::Headed;
+			cli.run_tests = Some(RunTestsMode::Headed);
 		}
 
 		cli.run()

@@ -10,28 +10,24 @@ use std::time::Instant;
 use sweet::*;
 
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum RunMode {
-	Interactive,
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RunTestsMode {
 	Headless,
 	Headed,
 }
 
 
 impl SweetCli {
-	pub async fn handle_run_mode(
+	pub async fn run_tests(
 		&self,
+		mode: RunTestsMode,
 		should_kill: impl Fn() -> bool,
-	) -> Result<()> {
-		if self.run_mode == RunMode::Interactive {
-			return Ok(());
-		}
-
+	) -> Result<Option<TestRunnerResult>> {
 		let mut chromedriver = Command::new("chromedriver")
-			.args(["--silent", "--port=9515"])
+			.args(["--silent", "--port=7780"])
 			.spawn()?;
 
-		let cap = if self.run_mode == RunMode::Headed {
+		let cap = if mode == RunTestsMode::Headed {
 			fantoccini::wd::Capabilities::default()
 		} else {
 			serde_json::from_str(
@@ -42,18 +38,20 @@ impl SweetCli {
 
 		let client = ClientBuilder::native()
 			.capabilities(cap)
-			.connect("http://localhost:9515")
+			.connect("http://localhost:7780")
 			.await
 			.expect("\nCould not connect to chromedriver, is it running?\n");
 
-		client.goto(&self.server.address.to_string()).await?;
+		let address = format!("{}?silent=true", self.server.address);
+
+		client.goto(&address).await?;
 
 		let start_time = Instant::now();
 		let mut printed_suites = 0;
 
-		loop {
+		let result = loop {
 			if should_kill() {
-				break;
+				break None;
 			}
 			if let Ok(results) = try_get_global::<Vec<SuiteResult>>(
 				&client,
@@ -73,13 +71,13 @@ impl SweetCli {
 			.await
 			{
 				println!("{}", result.end_str(start_time.elapsed()));
-				break;
+				break Some(result);
 			}
 			std::thread::sleep(Duration::from_millis(10));
-		}
+		};
 		client.close().await?;
 		chromedriver.kill()?;
-		Ok(())
+		Ok(result)
 	}
 }
 
