@@ -18,9 +18,7 @@ impl Subcommand for RunTestsNativeCommand {
 		command
 			.arg(
 				Arg::new("match")
-					.help(
-						"filter suites by path glob, ie. `/test1.rs /e2e/`",
-					)
+					.help("filter suites by path glob, ie `my_test` or `/e2e/`")
 					.required(false)
 					.action(ArgAction::Append),
 			)

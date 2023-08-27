@@ -1,5 +1,9 @@
 # Changelog
 
+## Main
+
+- Headless runner
+
 ## `0.1.19` - 10/08/2023
 
 - End-to-end testing
@@ -7,8 +11,6 @@
 
 ## `0.1.18` - 03/08/2023
 
-Initial Announcement
-### Features
 - Component Testing
 - Native Testing
 - Parallel

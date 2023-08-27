@@ -1,13 +1,13 @@
 [package]
 name = "sweet"
-description = "Declarative native & web ui test framework."
+description = "Declarative full-stack test framework"
 categories = ["development-tools::testing"]
 keywords = [ # 5 at most
 	"test",
 	"unit",
 	"e2e",
-	"web",
-	"cypress",
+	"browser",
+	"webdriver",
 ]
 readme = "README.md"
 version = { workspace = true }
@@ -63,8 +63,3 @@ fantoccini = { workspace = true }
 [[example]]
 name = "sweet_sweet"
 path = "test/sweet.rs"
-# harness = false
-
-# [[bin]]
-# name = "sweet_bin"
-# path = "test/sweet.rs"

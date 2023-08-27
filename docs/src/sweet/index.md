@@ -1,18 +1,17 @@
 # Sweet
 
-Sweet is a full-stack test framework for rust. 
+Sweet is a declarative full-stack test framework for Rust with many supported test types:
 
-Currently supported test types:
 
-- Native
-- Native e2e
-	- Use webdriver, fantoccini etc
-- In-browser component
-	- Runs in isolated iframe
-	- Framework agnostic: Yew, Leptos etc
-- In-browser e2e
-	- Visit page in isolated iframe
-	- Uses reverse proxy to interact with page
+| Type                   | Analagous To                          | Features                           |
+| ---------------------- | ------------------------------------- | ---------------------------------- |
+| Native - Vanilla       | [Jest](https://jestjs.io/)            | Declarative matchers               |
+| Native - E2E           | [Playwright](https://playwright.dev/) | Uses webdriver, fantoccini etc     |
+| In-browser - Component | [Cypress - Component][1]              | Web framework agnostic             |
+| In-browser - E2E       | [Cypress - E2E][2]                    | Uses reverse proxy for interaction |
+
+[1]: https://docs.cypress.io/guides/core-concepts/testing-types#What-is-Component-Testing
+[2]: https://docs.cypress.io/guides/core-concepts/testing-types#What-is-E2E-Testing
 
 ## Features
 
@@ -33,7 +32,7 @@ sweet! {
 }
 ```
 
-Sweet only exposes three functions:
+Sweet has three main functions:
 
 - [`sweet!` defines a test suite](./macros.md)
 - [`expect()` returns a matcher](./matchers.md)

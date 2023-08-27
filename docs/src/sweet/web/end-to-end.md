@@ -1,6 +1,6 @@
 # End-To-End
 
-> This section is for in-browser end-to-end tests. For native end-to-end tests see [fantoccini](../native/fantoccini.md).
+> This section is for in-browser end-to-end tests. For native end-to-end tests see [webdriver](../native/webdriver.md).
 
 By default web tests run inside the iframe. This is great for testing components, but when we want to test a page provided by the server we need a different approach.
 

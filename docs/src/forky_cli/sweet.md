@@ -1,22 +1,50 @@
 # sweet
 
-Currently the `sweet` CLI has one function which is to run the interactive web runner.
+The Sweet CLI is a tool for building, serving & running tests in-browser. It can:
+
+- Build the tests with `cargo build` & `wasm bindgen`
+- Serve the tests on a dev server with live reload
+- Run the tests using `chromedriver`
 
 ## Usage:
 ```sh
+# run - requires chromedriver
 forky sweet
+# interactive
+forky sweet --interactive
+# workspaces - expects an example called sweet_my_crate
+forky sweet -p my_crate
+# help
+forky sweet --help
 ```
 
+## Requirements
+
+- [wasm-bindgen-cli](https://rustwasm.github.io/wasm-bindgen/reference/cli.html)
+	- `cargo install -f wasm-bindgen-cli`
+- [chromedriver](https://chromedriver.chromium.org/)
+	- Not required for interactive mode
+	- ```sh
+		# windows
+		choco install chromedriver
+		# mac
+		brew install --cask chromedriver
+		```
+
+## Help
+
 ```
+forky sweet --help
+
 Arguments:
-  [specify-suite]...
+  [match]...  filter suites by path glob, ie `my_test` or `/e2e/`
 
 Options:
   -p, --package <package>  pass the --package flag to cargo run
       --release            pass the --release flag to cargo run
       --secure             run the dev server with https
-      --static <static>    directory for static files (ie .css) that should be served  
+      --static <static>    directory for static files (ie .css) that should be served
+  -w, --watch              live reload file changes
+      --headed             run the tests with a visible browser window        
+  -i, --interactive        just start the server for viewing in your browser 
 ```
-
-## Features
-- Very Hot Reload - The runner features a lightweight dev server that uses `tower-livereload` instead of shutting down and restarting.

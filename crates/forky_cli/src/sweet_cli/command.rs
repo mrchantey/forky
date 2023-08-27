@@ -6,7 +6,7 @@ use forky_fs::Subcommand;
 
 pub struct SweetCommand;
 
-const ABOUT: &str = "build the wasm sweet runner and start a dev server";
+const ABOUT: &str = "build, serve & run tests in-browser";
 
 impl Subcommand for SweetCommand {
 	fn name(&self) -> &'static str { "sweet" }
@@ -16,7 +16,7 @@ impl Subcommand for SweetCommand {
 			.arg(
 				Arg::new("match")
 					.help(
-						"filter suites by path glob, ie. `/test1.rs /e2e/`",
+						"filter suites by path glob, ie `my_test` or `/e2e/`",
 					)
 					.required(false)
 					.action(ArgAction::Append),
@@ -52,26 +52,26 @@ impl Subcommand for SweetCommand {
 			.arg(
 				Arg::new("watch")
 					.required(false)
-					.help("do not watch the directory for changes")
+					.help("live reload file changes")
 					.short('w')
 					.long("watch")
 					.action(ArgAction::SetTrue),
 				)
-			.arg(
-				Arg::new("interactive")
-				.required(false)
-				.help("don't run the tests, just start the server")
-				.short('i')
-				.long("interactive")
-				.action(ArgAction::SetTrue),
-			)
-			.arg(
-				Arg::new("headed")
+				.arg(
+					Arg::new("headed")
 					.required(false)
-					.help("run the tests using chromedriver in headed mode")
+					.help("run the tests with a visible browser window")
 					.long("headed")
 					.action(ArgAction::SetTrue),
-			)
+				)
+				.arg(
+					Arg::new("interactive")
+					.required(false)
+					.help("just start the server for viewing in your browser")
+					.short('i')
+					.long("interactive")
+					.action(ArgAction::SetTrue),
+				)
 	}
 	fn run(&self, args: &clap::ArgMatches) -> anyhow::Result<()> {
 		let mut cli = SweetCli::default();

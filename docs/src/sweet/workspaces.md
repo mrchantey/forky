@@ -22,7 +22,7 @@ Running `cargo run -p crate_a --example sweet_crate_a` is a bit of a mouthfull, 
 ```sh
 #justfile
 test crate *args:
-	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example sweet_{{crate}} -- {{args}}
+	cargo run -p {{crate}} --example sweet_{{crate}} -- {{args}}
 ```
 Now you can run:
 `just test crate_a`

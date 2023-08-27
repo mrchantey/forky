@@ -6,7 +6,9 @@
 cargo install forky_cli
 forky --help
 
-	Usage: forky.exe [COMMAND]
+	Welcome to the Forky CLI!
+	
+	Usage: Forky CLI [COMMAND]
 	
 	Commands:
 	  auto-fs  generate mod and css files
@@ -14,5 +16,6 @@ forky --help
 	  serve    serve static files
 	  style    Generate types for styles
 	  mod      generate mod files for your project
-	  sweet    build the wasm sweet runner and start a dev server
+	  sweet    build, serve & run tests in-browser
+	  help     Print this message or the help of the given subcommand(s)
 ```

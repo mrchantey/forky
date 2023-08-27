@@ -8,6 +8,6 @@ sweet!{
 	test "is an alias for it"{}
 	it skip "wont run"{}
 	it only "will exclude non-onlys in this suite"{}
-	it e2e only "will only run, and in an "{}
+	it e2e "(in-browser) runs in the parent process"{}
 }
 ```

@@ -11,7 +11,7 @@
 	- [Quickstart - Native](./sweet/native/index.md)
 		- [Native Runner](./sweet/native/runner.md)
 		- [Async Tests](./sweet/native/async.md)
-		- [Fantoccini](./sweet/native/fantoccini.md)
+		- [Web Driver](./sweet/native/webdriver.md)
 	- [Quickstart - Web](./sweet/web/index.md)
 		- [Matchers](./sweet/web/matchers.md)
 		- [End-To-End](./sweet/web/end-to-end.md)
@@ -19,7 +19,6 @@
 	- [Macros](./sweet/macros.md)
 	- [Workspaces](./sweet/workspaces.md)
 	- [FAQ](./sweet/faq.md)
-	- [Misc](./sweet/misc.md)
 	- [Changelog](./sweet/changelog.md)
 # Demos
 

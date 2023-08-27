@@ -1,5 +1,4 @@
 use fantoccini::ClientBuilder;
-use fantoccini::Locator;
 use sweet::*;
 use std::process::Command;
 
@@ -22,7 +21,7 @@ sweet! {
 
 		client.goto("https://en.wikipedia.org/wiki/Foobar").await?;
 		let url = client.current_url().await?;
-		expect(url.as_ref()).to_be("https://en.wikipedia.org/wiki/Foobar");
+		expect(url.as_ref()).to_be("https://en.wikipedia.org/wiki/Foobar")?;
 
 		client.close().await?;
 		chromedriver.kill()?;
