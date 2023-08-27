@@ -104,10 +104,10 @@ impl Proxy {
 			let proxied_referrer = referrer_is_proxied(&req);
 			if proxied_referrer {
 				let uri_next = self.apply_last_origin(&uri.to_string())?;
-				println!("PROXY - relative:\nfrom: {uri}\nto:   {uri_next}\n");
+				// println!("PROXY - relative:\nfrom: {uri}\nto:   {uri_next}\n");
 				handle_proxy_request_from_url(req, &uri_next).await
 			} else {
-				println!("Proxy - absolute:\n{uri}\n");
+				// println!("Proxy - absolute:\n{uri}\n");
 				// self.apply_next_origin(&uri)?;
 				handle_proxy_request_from_url(req, &uri).await
 			}
@@ -140,7 +140,7 @@ impl Proxy {
 			)
 			.path_and_query(self.last_uri.path_and_query().ok()?.clone())
 			.build()?;
-		println!("URI SET: {uri}");
+		// println!("URI SET: {uri}");
 		self.last_uri = uri;
 		Ok(())
 	}
