@@ -14,7 +14,10 @@ impl Subcommand for SweetCommand {
 	fn append_command(&self, command: Command) -> Command {
 		command
 			.arg(
-				Arg::new("specify-suite")
+				Arg::new("match")
+					.help(
+						"filter suites by path glob, ie. `/test1.rs /e2e/`",
+					)
 					.required(false)
 					.action(ArgAction::Append),
 			)
@@ -47,40 +50,52 @@ impl Subcommand for SweetCommand {
 				.action(ArgAction::Set),
 			)
 			.arg(
-				Arg::new("nowatch")
+				Arg::new("watch")
 					.required(false)
 					.help("do not watch the directory for changes")
-					.long("nowatch")
+					.short('w')
+					.long("watch")
 					.action(ArgAction::SetTrue),
+				)
+			.arg(
+				Arg::new("interactive")
+				.required(false)
+				.help("don't run the tests, just start the server")
+				.short('i')
+				.long("interactive")
+				.action(ArgAction::SetTrue),
 			)
 			.arg(
-				Arg::new("run")
-					.required(false)
-					.help("run the tests using chromedriver in headless mode")
-					.long("run")
-					.action(ArgAction::SetTrue),
-			)
-			.arg(
-				Arg::new("run-headed")
+				Arg::new("headed")
 					.required(false)
 					.help("run the tests using chromedriver in headed mode")
-					.long("run-headed")
+					.long("headed")
 					.action(ArgAction::SetTrue),
 			)
 	}
 	fn run(&self, args: &clap::ArgMatches) -> anyhow::Result<()> {
 		let mut cli = SweetCli::default();
+		cli.matches = args
+			.get_many::<String>("match")
+			.unwrap_or_default()
+			.map(|s| s.clone())
+			.collect::<Vec<_>>();
+
+
 		cli.package = args.get_one::<String>("package").cloned();
 		cli.static_dir = args.get_one::<String>("static").cloned();
 		cli.server.address.secure = args.get_flag("secure");
 		cli.release = args.get_flag("release");
-		cli.watch = !args.get_flag("nowatch");
+		cli.watch = args.get_flag("watch");
 
-		if args.get_flag("run") {
-			cli.run_tests = Some(RunTestsMode::Headless);
-		} else if args.get_flag("run-headed") {
-			cli.run_tests = Some(RunTestsMode::Headed);
-		}
+
+		cli.run_tests_mode = if args.get_flag("interactive") {
+			None
+		} else if args.get_flag("headed") {
+			Some(RunTestsMode::Headed)
+		} else {
+			Some(RunTestsMode::Headless)
+		};
 
 		cli.run()
 	}

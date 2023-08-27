@@ -20,9 +20,10 @@ pub enum RunTestsMode {
 impl SweetCli {
 	pub async fn run_tests(
 		&self,
-		mode: RunTestsMode,
 		should_kill: impl Fn() -> bool,
 	) -> Result<Option<TestRunnerResult>> {
+		let mode = self.run_tests_mode.unwrap_or(RunTestsMode::Headless);
+
 		let mut chromedriver = Command::new("chromedriver")
 			.args(["--silent", "--port=7780"])
 			.spawn()?;
@@ -42,7 +43,14 @@ impl SweetCli {
 			.await
 			.expect("\nCould not connect to chromedriver, is it running?\n");
 
-		let address = format!("{}?silent=true", self.server.address);
+		let matches = self
+			.matches
+			.iter()
+			.map(|m| format!("m={}", m))
+			.collect::<Vec<_>>()
+			.join("&");
+
+		let address = format!("{}?silent=true&{matches}", self.server.address);
 
 		client.goto(&address).await?;
 

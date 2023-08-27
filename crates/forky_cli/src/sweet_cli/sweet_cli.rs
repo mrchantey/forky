@@ -5,18 +5,19 @@ use std::fmt::Display;
 
 #[derive(Debug, Clone)]
 pub struct SweetCli {
+	pub matches: Vec<String>,
 	pub package: Option<String>,
-	pub server: Server,
 	pub release: bool,
-	pub watch: bool,
+	pub run_tests_mode: Option<RunTestsMode>,
+	pub server: Server,
 	pub static_dir: Option<String>,
-	pub run_tests: Option<RunTestsMode>,
+	pub watch: bool,
 }
 
 
 impl SweetCli {
 	pub fn should_run_once(&self) -> bool {
-		self.run_tests.is_some() && !self.watch
+		self.run_tests_mode.is_some() && !self.watch
 	}
 	pub fn set_package(&mut self, package: String) -> &mut Self {
 		self.package = Some(package);
@@ -27,17 +28,18 @@ impl SweetCli {
 impl Default for SweetCli {
 	fn default() -> Self {
 		Self {
+			matches: Vec::new(),
 			package: None,
-			static_dir: None,
-			run_tests: None,
-			watch: true,
+			release: false,
+			run_tests_mode: None,
 			server: Server {
 				quiet: true,
 				proxy: true,
 				dir: "target/sweet".to_string(),
 				..Server::default()
 			},
-			release: false,
+			static_dir: None,
+			watch: true,
 		}
 	}
 }

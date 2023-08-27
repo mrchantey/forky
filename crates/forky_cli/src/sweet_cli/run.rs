@@ -1,5 +1,5 @@
 use super::*;
-use anyhow::bail;
+use anyhow::anyhow;
 use anyhow::Error;
 use anyhow::Result;
 use forky_fs::terminal;
@@ -9,7 +9,6 @@ use std::sync::Mutex;
 use std::thread::JoinHandle;
 use std::time::Duration;
 use tower_livereload::LiveReloadLayer;
-use tower_livereload::Reloader;
 
 pub type AnyhowJoinHandle = JoinHandle<Result<(), Error>>;
 
@@ -19,61 +18,58 @@ impl SweetCli {
 		terminal::clear();
 		terminal::print_forky();
 
-		let (_server, reload) = self.get_server()?;
-
-		if let Some(mode) = self.run_tests && !self.watch {
-				let should_kill = || false;
-				self.build_wasm(should_kill)?;
-				let result = self.run_tests(mode, should_kill).await?.unwrap();
-				if result.cases.failed > 0 {
-					bail!("Tests failed");
-				}
-		}else{
-
-			let kill = Arc::new(Mutex::new(()));
-			let kill2 = kill.clone();
-			let should_kill = move || -> bool { kill2.try_lock().is_ok() };
-	
-			loop {
-				let change_listener = self.get_change_listener(kill.clone());
-	
-				if let Err(err) = self.build_wasm(should_kill.clone()) {
-					eprintln!("sweet cli - build failed: {:?}", err);
-				} else {
-					if let Some(reload) = reload.as_ref() {
-						reload.reload();
-					}
-					if let Some(mode) = self.run_tests {
-						let _ = self.run_tests(mode, should_kill.clone()).await?;
-					}
-				}
-				//only joins in watch mode, otherwise block forever
-				change_listener.join().unwrap()?;
-			}
+		if self.run_tests_mode.is_some() && !self.watch {
+			self.run_once().await
+		} else {
+			//run forever if watch mode OR don't run tests, ie interactive mode
+			self.run_forever().await
 		}
-
-
-		Ok(())
 	}
 
-	fn get_server(&self) -> Result<(AnyhowJoinHandle, Option<Reloader>)> {
+	async fn run_once(&self) -> Result<()> {
 		let server = self.server.clone();
-		if None == self.run_tests || !self.watch {
-			let server_handle = std::thread::spawn(move || -> Result<()> {
-				server.serve_with_options(None)
-			});
-			Ok((server_handle, None))
+		let _server = std::thread::spawn(move || -> Result<()> {
+			server.serve_with_options(None)
+		});
+		let should_kill = || false;
+		self.build_wasm(should_kill)?;
+		let result = self.run_tests(should_kill).await?.unwrap();
+		if result.did_fail() {
+			Err(anyhow!("Tests failed"))
 		} else {
-			let livereload = LiveReloadLayer::new();
-			let reload = livereload.reloader();
-			let server_handle = std::thread::spawn(move || -> Result<()> {
-				println!(
-					"Starting server at {}\n",
-					server.address.to_string_pretty()
-				);
-				server.serve_with_reload(livereload)
-			});
-			Ok((server_handle, Some(reload)))
+			Ok(())
+		}
+	}
+
+	async fn run_forever(&self) -> Result<()> {
+		let server = self.server.clone();
+		let livereload = LiveReloadLayer::new();
+		let reload = livereload.reloader();
+		let _server_handle = std::thread::spawn(move || -> Result<()> {
+			println!(
+				"Starting server at {}\n",
+				server.address.to_string_pretty()
+			);
+			server.serve_with_reload(livereload)
+		});
+
+		let kill = Arc::new(Mutex::new(()));
+		let kill2 = kill.clone();
+		let should_kill = move || -> bool { kill2.try_lock().is_ok() };
+
+		loop {
+			let change_listener = self.get_change_listener(kill.clone());
+
+			if let Err(err) = self.build_wasm(should_kill.clone()) {
+				eprintln!("sweet cli - build failed: {:?}", err);
+			} else {
+				reload.reload();
+				if self.run_tests_mode.is_some() {
+					let _ = self.run_tests(should_kill.clone()).await?;
+				}
+			}
+			//only joins in watch mode, otherwise block forever
+			change_listener.join().unwrap()?;
 		}
 	}
 
