@@ -4,6 +4,7 @@ use clap::ArgMatches;
 use glob::Pattern;
 
 impl TestRunnerConfig {
+
 	///Errors on malformed glob pattern.
 	pub fn from_arg_matchers(value: &ArgMatches) -> Result<Self> {
 		let watch = value.get_flag("watch");
@@ -12,7 +13,7 @@ impl TestRunnerConfig {
 		let matches = value
 			.get_many::<String>("match")
 			.unwrap_or_default()
-			.map(|s| Pattern::new(&s))
+			.map(|s| Pattern::new(&format!("*{s}*")))
 			.collect::<Vec<_>>()
 			.into_iter()
 			.collect::<Result<Vec<_>, _>>()?;
@@ -20,7 +21,7 @@ impl TestRunnerConfig {
 			watch,
 			parallel,
 			matches,
-			silent
+			silent,
 		})
 	}
 }

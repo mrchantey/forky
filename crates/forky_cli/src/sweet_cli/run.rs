@@ -47,6 +47,7 @@ impl SweetCli {
 						let _ = self.run_tests(mode, should_kill.clone()).await?;
 					}
 				}
+				//only joins in watch mode, otherwise block forever
 				change_listener.join().unwrap()?;
 			}
 		}
@@ -97,7 +98,7 @@ impl SweetCli {
 				}
 			})
 		};
-		//wait for fswatcher to spin up
+		//wait for lock
 		while kill.try_lock().is_ok() {
 			std::thread::sleep(Duration::from_millis(1))
 		}

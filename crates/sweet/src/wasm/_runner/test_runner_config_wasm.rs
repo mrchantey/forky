@@ -11,7 +11,7 @@ impl TestRunnerConfig {
 
 		let matches = SearchParams::get_all(MATCHES_KEY)
 			.iter()
-			.map(|s| Pattern::new(&s).unwrap())
+			.map(|s| Pattern::new(&format!("*{s}*").unwrap()))
 			.collect::<Vec<_>>();
 		// if let Some(file) =  {
 		// 	//todo error onn malformed pattern
