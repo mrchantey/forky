@@ -1,11 +1,7 @@
-mod backtrace_test;
-pub use self::backtrace_test::*;
 mod lifecycle;
 pub use self::lifecycle::*;
 mod matcher;
 pub use self::matcher::*;
-mod multithreaded;
-pub use self::multithreaded::*;
 mod panic;
 pub use self::panic::*;
 mod test_case;

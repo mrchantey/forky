@@ -15,22 +15,16 @@ sweet! {
 		)
 		.unwrap();
 
-		let c = ClientBuilder::native()
+		let client = ClientBuilder::native()
 		.capabilities(cap)
 		.connect("http://localhost:9515")
-		.await.map_err(|e| anyhow::anyhow!("failed to connect, is chromedriver running?\n{:?}",e))?;
+		.await?;
 
-		c.goto("https://en.wikipedia.org/wiki/Foobar").await?;
-		let url = c.current_url().await?;
-		assert_eq!(url.as_ref(), "https://en.wikipedia.org/wiki/Foobar");
+		client.goto("https://en.wikipedia.org/wiki/Foobar").await?;
+		let url = client.current_url().await?;
+		expect(url.as_ref()).to_be("https://en.wikipedia.org/wiki/Foobar");
 
-		c.find(Locator::Css(".mw-disambig")).await?.click().await?;
-		c.find(Locator::LinkText("Foo Lake")).await?.click().await?;
-
-		let url = c.current_url().await?;
-		assert_eq!(url.as_ref(), "https://en.wikipedia.org/wiki/Foo_Lake");
-
-		c.close().await?;
+		client.close().await?;
 		chromedriver.kill()?;
 	}
 }

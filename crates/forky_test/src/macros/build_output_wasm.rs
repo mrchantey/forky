@@ -38,8 +38,9 @@ pub fn parse_test_case_wasm(
 
 fn parse_func_wasm(func: &Group) -> TokenStream {
 	quote! {
-	#[cfg(target_arch = "wasm32")]
-	{|| -> Promise {
+		#[cfg(target_arch = "wasm32")]
+		{|| -> Promise {
+			use core::result::Result::{Ok,Err};
 			async fn func_async ()->Result<()>{
 				#func
 				Ok(())

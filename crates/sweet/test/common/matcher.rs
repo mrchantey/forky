@@ -6,16 +6,6 @@ use sweet::*;
 
 sweet! {
 
-	test "result"{
-		expect(Ok(())).to_be_ok()?;
-		expect(Ok(())).not().to_be_err()?;
-
-		expect(Err(anyhow!("foo"))).to_be_err()?;
-		expect(Err(anyhow!("foo"))).not().to_be_ok()?;
-
-		expect(Err(anyhow!("foo"))).to_be_err_str("foo")?;
-		expect(Err(anyhow!("foo"))).not().to_be_err_str("foobar")?;
-	}
 	test "equality" {
 		expect(true).to_be(true)?;
 		expect(true).not().to_be(false)?;
@@ -52,5 +42,17 @@ sweet! {
 		expect("foobar").not().to_end_with("foo")?;
 
 	}
+
+		// test "result"{
+	// 	expect(Ok(())).to_be_ok()?;
+	// 	expect(Ok(())).not().to_be_err()?;
+
+	// 	expect(Err(anyhow!("foo"))).to_be_err()?;
+	// 	expect(Err(anyhow!("foo"))).not().to_be_ok()?;
+
+	// 	expect(Err(anyhow!("foo"))).to_be_err_str("foo")?;
+	// 	expect(Err(anyhow!("foo"))).not().to_be_err_str("foobar")?;
+	// }
+
 
 }

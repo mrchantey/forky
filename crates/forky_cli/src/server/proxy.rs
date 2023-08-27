@@ -155,6 +155,10 @@ pub async fn handle_proxy_request_from_url(
 	*proxied_req.uri_mut() = uri.clone();
 	*proxied_req.method_mut() = req.method().clone();
 	*proxied_req.headers_mut() = req.headers().clone();
+	//currently using absolute URIs, so remove the host header
+	proxied_req.headers_mut().remove("host");
+	// println!("PROXY REQUEST: {:?}",proxied_req);
 	let proxied_res = client.request(proxied_req).await?;
+	// println!("PROXY RESPONSE: {:?}",proxied_res);
 	Ok(proxied_res)
 }

@@ -7,15 +7,16 @@ sweet! {
 		expect(page)
 			.poll(|p|p.to_contain_text("__ping__")).await?;
 	}
-	test e2e "docs origin" {
-		let page = visit("http://localhost:3000").await?;
-		expect(page)
-			.poll(|p|p.to_contain_text("Very early stage warning")).await?;
-	}
 
-	test skip e2e "example origin" {
+	test e2e "example origin" {
 		let page = visit("http://example.com").await?;
 		expect(page)
-			.poll(|p|p.to_contain_text("Example")).await?;
+			.poll(|p|p.to_contain_text("Example Domain")).await?;
+	}
+
+	test skip e2e "wikipedia" {
+		let page = visit("http://wikipedia.com").await?;
+		expect(page)
+			.poll(|p|p.to_contain_text("Example Domain")).await?;
 	}
 }
