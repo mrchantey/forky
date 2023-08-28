@@ -45,7 +45,7 @@ jobs:
     - name: 🔨 Install Wasm Target
       run: rustup target add wasm32-unknown-unknown
     - name: 🔨 Install Wasm Bindgen
-      uses: dtolnay/install@master
+      uses: baptiste0928/cargo-install@v2
       with:
         crate: wasm-bindgen-cli
     - name: 🔎 Test Native
