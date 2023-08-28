@@ -17,7 +17,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - uses: extractions/setup-just@v1
@@ -28,10 +27,14 @@ jobs:
         override: true
         default: true
         components: rustfmt, clippy
-        # target: wasm32-unknown-unknown
-    - name: Check
-      run: just --version
-    - name: Cargo
-      run: cargo --version
-    - name: Test
-      run: just test forky_core
+    - name: Test Native
+      run: just test-all
+    - name: Install Wasm Target
+      run: rustup target add wasm32-unknown-unknown
+    - name: Install Wasm Bindgen
+      run: cargo install -f wasm-bindgen-cli
+    - name: Install ChromeDriver
+      uses: nanasess/setup-chromedriver@v2
+
+    - name: Test Wasm
+      run: just test-all-wasm
