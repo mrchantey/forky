@@ -7,7 +7,8 @@ use std::process::Command;
 sweet! {
 	it nonSend "works" {
 		let mut chromedriver = Command::new("chromedriver")
-			.args(["--silent", "--port=9515"])
+			// .args(["--silent", "--port=9515"])
+			.args(["--port=9515"])
 			.spawn()?;
 		let cap = serde_json::from_str(
 			r#"{"browserName":"chrome","goog:chromeOptions":{"args":["--headless"]}}"#,
