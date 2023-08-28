@@ -97,7 +97,7 @@ start crate:
 
 test-all *args:
 	for file in {{testable}}; do \
-		just test $file {{args}}; \
+		just test $file {{args}} --parallel; \
 	done
 
 test crate *args:

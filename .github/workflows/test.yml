@@ -13,12 +13,11 @@ jobs:
     name: 🔨🔎 Build and Test
     strategy:
       matrix:
-        # os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-latest, ubuntu-latest, macos-latest]
         # os: [ubuntu-latest]
         # os: [windows-latest]
-        os: [macos-latest]
+        # os: [macos-latest]
     runs-on: ${{ matrix.os }}
-    # runs-on: ubuntu-latest
     steps:
     - name: 📂 Checkout
       uses: actions/checkout@v3
@@ -31,7 +30,7 @@ jobs:
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
           target/
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-v2
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-v3
     - name: 🔨 Install Cygwin
       uses: cygwin/cygwin-install-action@master
       if: runner.os == 'Windows'
@@ -56,10 +55,8 @@ jobs:
       uses: baptiste0928/cargo-install@v2
       with:
         crate: wasm-bindgen-cli
-    - name: 🔎 Test Chromedriver
-      run: just run sweet --example fantoccini
-    # - name: 🔨 Build Crates
-    #   run: just all build
+    - name: 🔨 Build Crates
+      run: just all build
     - name: 🔎 Test Native
       run: just test-all
     - name: 🔎 Test Wasm
