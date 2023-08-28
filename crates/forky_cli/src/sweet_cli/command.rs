@@ -45,7 +45,7 @@ impl Subcommand for SweetCommand {
 			.arg(
 				Arg::new("static")
 				.required(false)
-				.help("directory for static files (ie .css) that should be served")
+				.help("directory for static files (ie .css) used by component tests")
 				.long("static")
 				.action(ArgAction::Set),
 			)

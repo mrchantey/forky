@@ -43,7 +43,7 @@ Options:
   -p, --package <package>  pass the --package flag to cargo run
       --release            pass the --release flag to cargo run
       --secure             run the dev server with https
-      --static <static>    directory for static files (ie .css) that should be served
+      --static <static>    directory for static files (ie .css) used by component tests
   -w, --watch              live reload file changes
       --headed             run the tests with a visible browser window        
   -i, --interactive        just start the server for viewing in your browser 
