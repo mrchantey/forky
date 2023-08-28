@@ -19,20 +19,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: ⚡ Cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}    
+    - uses: actions/checkout@v3
     - uses: extractions/setup-just@v1
     - uses: nanasess/setup-chromedriver@v2
-    - name: Install Rust
+    - name: 🔨 Install Rust
       uses: actions-rs/toolchain@v1
       with:
         toolchain: nightly
         override: true
         default: true
         components: rustfmt, clippy
-    - name: Test Native
+    - name: 🔎 Test Native
       run: just test-all
-    - name: Install Wasm Target
+    - name: 🔨 Install Wasm Target
       run: rustup target add wasm32-unknown-unknown
-    - name: Install Wasm Bindgen
+    - name: 🔨 Install Wasm Bindgen
       run: cargo install -f wasm-bindgen-cli
-    - name: Test Wasm
+    - name: 🔎 Test Wasm
       run: just test-all-wasm
