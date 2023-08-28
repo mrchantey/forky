@@ -2,7 +2,8 @@ set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
 crates := 'forky forky_cli forky_core forky_play forky_test sweet'
-testable := 'forky_core forky_cli forky_fs forky_play sweet'
+# testable := 'forky_core forky_cli forky_fs forky_play sweet'
+testable := 'sweet forky_play forky_fs forky_cli forky_core'
 # features := '--features forky_play/shader_debug_internal'
 features := ''
 # forky_esp
