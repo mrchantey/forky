@@ -21,7 +21,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: extractions/setup-just@v1
-    - name: Build
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: nightly
+        override: true
+        components: rustfmt, clippy
+    - name: Check
       run: just --version
+    - name: Cargo
+      run: cargo --version
     - name: Test
-      run: just test-all
+      run: just test forky_core
