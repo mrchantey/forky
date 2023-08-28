@@ -6,6 +6,7 @@ use std::process::Command;
 async fn main() -> Result<()> {
 	let mut chromedriver =
 		Command::new("chromedriver").args(["--port=9515"]).spawn()?;
+	std::thread::sleep(std::time::Duration::from_secs(1));
 	let client = ClientBuilder::native()
 		.connect("http://localhost:9515")
 		.await?;
