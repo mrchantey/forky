@@ -6,15 +6,9 @@ html/assets*
 html/style.css
 
 # rust
-/target/
-Cargo.lock
+target/
+crates/*/target/
 **/*.rs.bk
 
 # esp idf
 .embuild
-/crates/*/target/
-
-
-**/secret.rs
-
-.env
