@@ -1,4 +1,4 @@
-name: 🔎 Test Repo
+name: 🔎 Test Crates
 on:
   push:
     branches: main
@@ -13,7 +13,10 @@ jobs:
     name: 🔨🔎 Build and Test
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        # os: [windows-latest, ubuntu-latest, macos-latest]
+        # os: [ubuntu-latest]
+        # os: [windows-latest]
+        os: [macos-latest]
     runs-on: ${{ matrix.os }}
     # runs-on: ubuntu-latest
     steps:
@@ -53,9 +56,9 @@ jobs:
       uses: baptiste0928/cargo-install@v2
       with:
         crate: wasm-bindgen-cli
-    - name: 🔨 Build Packages
+    - name: 🔨 Build Crates
       run: just all build
-    # - name: 🔎 Test Native
-    #   run: just test-all
-    # - name: 🔎 Test Wasm
-    #   run: just test-all-wasm
+    - name: 🔎 Test Native
+      run: just test-all
+    - name: 🔎 Test Wasm
+      run: just test-all-wasm

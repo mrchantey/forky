@@ -1,0 +1,38 @@
+[package]
+name = "forky_xr"
+version = { workspace = true }
+edition = { workspace = true }
+authors = { workspace = true }
+documentation = { workspace = true }
+license = { workspace = true }
+readme = { workspace = true }
+description = { workspace = true }
+repository = { workspace = true }
+
+[dependencies]
+anyhow = { workspace = true }
+extend = { workspace = true }
+futures = { workspace = true }
+notify = { workspace = true }
+crossbeam-channel = { workspace = true }
+
+# GAME
+bevy = {workspace = true}
+wgpu = {workspace = true}
+wgpu-types = {workspace = true}
+wgpu-hal = {workspace = true}
+glow = {workspace = true}
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+js-sys = { workspace = true }
+wasm-bindgen = { workspace = true }
+wasm-bindgen-futures = { workspace = true }
+web-sys = { workspace = true }
+console_error_panic_hook = { workspace = true }
+
+[dev-dependencies]
+sweet = { workspace = true }
+
+[[example]]
+name = "sweet_forky_xr"
+path = "test/sweet.rs"
