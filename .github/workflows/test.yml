@@ -10,7 +10,11 @@ env:
   CARGO_TERM_COLOR: always
 jobs:
   build_and_test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    # runs-on: ubuntu-latest
     steps:
     - name: 📂 Checkout
       uses: actions/checkout@v3
