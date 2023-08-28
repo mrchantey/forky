@@ -2,34 +2,31 @@ name: Test Repo
 
 on:
   push:
-    branches:
-      - main
-    # paths:
-    #   - '**/*.rs'
+    branches: [main]
+    paths: ['**/*.rs', '.github/workflows/**']
   pull_request:
-    branches:
-      - main
-    # paths:
-    #   - '**/*.rs'
+    branches: [main]
+    paths: ['**/*.rs', '.github/workflows/**']
 env:
   CARGO_TERM_COLOR: always
-
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: ⚡ Cache
+    - name: 📂 Checkout
+      uses: actions/checkout@v3
+    - name: 📂 Cache
       uses: actions/cache@v3
       with:
         path: |
           ~/.cargo/registry
           ~/.cargo/git
           target
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}    
-    - uses: actions/checkout@v3
-    - uses: extractions/setup-just@v1
-    - uses: nanasess/setup-chromedriver@v2
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+    - name: 🔨 Install Just
+      uses: extractions/setup-just@v1
+    - name: 🔨 Install Chromedriver
+      uses: nanasess/setup-chromedriver@v2
     - name: 🔨 Install Rust
       uses: actions-rs/toolchain@v1
       with:
@@ -37,11 +34,11 @@ jobs:
         override: true
         default: true
         components: rustfmt, clippy
-    - name: 🔎 Test Native
-      run: just test-all
     - name: 🔨 Install Wasm Target
       run: rustup target add wasm32-unknown-unknown
     - name: 🔨 Install Wasm Bindgen
       run: cargo install -f wasm-bindgen-cli
+    - name: 🔎 Test Native
+      run: just test-all
     - name: 🔎 Test Wasm
       run: just test-all-wasm
