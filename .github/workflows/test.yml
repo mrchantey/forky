@@ -31,6 +31,8 @@ jobs:
     - name: 🔨 Install Cygwin
       uses: cygwin/cygwin-install-action@master
       if: runner.os == 'Windows'
+      with:
+        install-dir: C:\tools\cygwin
     - name: 🔨 Install Just
       uses: extractions/setup-just@v1
     - name: 🔨 Install Chromedriver
