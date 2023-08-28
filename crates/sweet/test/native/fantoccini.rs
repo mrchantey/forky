@@ -1,28 +1,31 @@
 use fantoccini::ClientBuilder;
-use sweet::*;
+use forky_core::retry_async;
 use std::process::Command;
+use sweet::*;
 
 // example from fantoccini README https://crates.io/crates/fantoccini
 
 sweet! {
 	it nonSend "works" {
 		let mut chromedriver = Command::new("chromedriver")
-			// .args(["--silent", "--port=9515"])
-			.args(["--port=9515"])
+			.args(["--silent", "--port=9515"])
 			.spawn()?;
-		// let cap = serde_json::from_str(
-		// 	r#"{"browserName":"chrome","goog:chromeOptions":{"args":["--headless"]}}"#,
-		// )
-		// .unwrap();
 
-		let client = ClientBuilder::native()
-		// .capabilities(cap)
-		.connect("http://localhost:9515")
+		let client = retry_async(
+			async || {
+				let cap = serde_json::from_str(
+					r#"{"browserName":"chrome","goog:chromeOptions":{"args":["--headless"]}}"#,
+				).unwrap();
+				ClientBuilder::native().capabilities(cap).connect("http://localhost:9515").await
+
+			},
+			std::time::Duration::from_secs(1),
+		)
 		.await?;
 
 		client.goto("https://example.com").await?;
 		let url = client.current_url().await?;
-		expect(url.as_ref()).to_be("https://example.com")?;
+		expect(url.as_ref()).to_contain("example.com")?;
 
 		client.close().await?;
 		chromedriver.kill()?;

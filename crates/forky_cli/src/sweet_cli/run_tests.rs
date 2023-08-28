@@ -2,6 +2,7 @@ use super::*;
 use anyhow::Result;
 use fantoccini::Client;
 use fantoccini::ClientBuilder;
+use forky_core::retry_async;
 use forky_core::OptionTExt;
 use serde::de::DeserializeOwned;
 use std::process::Command;
@@ -16,6 +17,32 @@ pub enum RunTestsMode {
 	Headed,
 }
 
+const WEBDRIVER_PORT: u16 = 7780;
+const WEBDRIVER_CONNECT_TIMEOUT: Duration = Duration::from_secs(1);
+
+
+async fn get_client(mode: RunTestsMode) -> Result<Client> {
+	let client = retry_async(
+		async || {
+			let cap = if mode == RunTestsMode::Headed {
+				fantoccini::wd::Capabilities::default()
+			} else {
+				serde_json::from_str(
+					r#"{"browserName":"chrome","goog:chromeOptions":{"args":["--headless"]}}"#,
+				)
+				.unwrap()
+			};
+			ClientBuilder::native()
+				.capabilities(cap)
+				.connect(&format!("http://localhost:{WEBDRIVER_PORT}"))
+				.await
+		},
+		WEBDRIVER_CONNECT_TIMEOUT,
+	)
+	.await
+	.expect("\nCould not connect to chromedriver, is it installed and on path?\n");
+	Ok(client)
+}
 
 impl SweetCli {
 	pub async fn run_tests(
@@ -24,24 +51,10 @@ impl SweetCli {
 	) -> Result<Option<TestRunnerResult>> {
 		let mode = self.run_tests_mode.unwrap_or(RunTestsMode::Headless);
 
+		
 		let mut chromedriver = Command::new("chromedriver")
-			.args(["--silent", "--port=7780"])
+			.args(["--silent", &format!("--port={WEBDRIVER_PORT}")])
 			.spawn()?;
-
-		let cap = if mode == RunTestsMode::Headed {
-			fantoccini::wd::Capabilities::default()
-		} else {
-			serde_json::from_str(
-				r#"{"browserName":"chrome","goog:chromeOptions":{"args":["--headless"]}}"#,
-			)
-			.unwrap()
-		};
-
-		let client = ClientBuilder::native()
-			.capabilities(cap)
-			.connect("http://localhost:7780")
-			.await
-			.expect("\nCould not connect to chromedriver, is it running?\n");
 
 		let matches = self
 			.matches
@@ -51,6 +64,8 @@ impl SweetCli {
 			.join("&");
 
 		let address = format!("{}?silent=true&{matches}", self.server.address);
+
+		let client = get_client(mode).await?;
 
 		client.goto(&address).await?;
 
