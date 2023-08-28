@@ -1,10 +1,11 @@
-name: Deploy Book
+name: 🌍 Deploy Book
 on:
   push:
     branches: main
     paths: ['docs/**','.github/workflows/book.yml']
 jobs:
   deploy:
+    name: 🔨🌍 Build and Deploy
     runs-on: ubuntu-20.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}

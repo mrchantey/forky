@@ -1,4 +1,4 @@
-name: Test Repo
+name: 🔎 Test Repo
 on:
   push:
     branches: main
@@ -10,6 +10,7 @@ env:
   CARGO_TERM_COLOR: always
 jobs:
   build_and_test:
+    name: 🔨🔎 Build and Test
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
