@@ -36,14 +36,14 @@ install-cli *args:
 run-w *args:
 	just watch just run {{args}}
 
-build crate example:
-	RUST_BACKTRACE={{backtrace}} cargo build -p {{crate}} --example {{example}}
+build crate *args:
+	RUST_BACKTRACE={{backtrace}} cargo build -p {{crate}} {{args}}
 
-check crate:
-	cargo check -p {{crate}}
+check crate *args:
+	RUST_BACKTRACE={{backtrace}} cargo check -p {{crate}} {{args}}
 
-clean *args:
-	cargo clean -p {{args}}
+clean crate *args:
+	RUST_BACKTRACE={{backtrace}} cargo clean -p {{crate}} {{args}}
 
 clean-repo:
 	cargo clean
