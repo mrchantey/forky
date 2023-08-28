@@ -1,0 +1,27 @@
+name: Test Repo
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.rs'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**/*.rs'
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: extractions/setup-just@v1
+    - name: Build
+      run: just --version
+    - name: Test
+      run: just test-all
