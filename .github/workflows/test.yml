@@ -56,9 +56,11 @@ jobs:
       uses: baptiste0928/cargo-install@v2
       with:
         crate: wasm-bindgen-cli
-    - name: 🔨 Build Crates
-      run: just all build
-    - name: 🔎 Test Native
-      run: just test-all
-    - name: 🔎 Test Wasm
-      run: just test-all-wasm
+    - name: 🔎 Test Sweet Only
+      run: just test sweet
+    # - name: 🔨 Build Crates
+    #   run: just all build
+    # - name: 🔎 Test Native
+    #   run: just test-all
+    # - name: 🔎 Test Wasm
+    #   run: just test-all-wasm

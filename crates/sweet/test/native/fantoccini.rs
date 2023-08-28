@@ -10,13 +10,13 @@ sweet! {
 			// .args(["--silent", "--port=9515"])
 			.args(["--port=9515"])
 			.spawn()?;
-		let cap = serde_json::from_str(
-			r#"{"browserName":"chrome","goog:chromeOptions":{"args":["--headless"]}}"#,
-		)
-		.unwrap();
+		// let cap = serde_json::from_str(
+		// 	r#"{"browserName":"chrome","goog:chromeOptions":{"args":["--headless"]}}"#,
+		// )
+		// .unwrap();
 
 		let client = ClientBuilder::native()
-		.capabilities(cap)
+		// .capabilities(cap)
 		.connect("http://localhost:9515")
 		.await?;
 
