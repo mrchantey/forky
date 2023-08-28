@@ -1,26 +1,20 @@
 use fantoccini::ClientBuilder;
-use fantoccini::Locator;
+use anyhow::Result;
+use std::process::Command;
 
-// let's set up the sequence of steps we want the browser to take
 #[tokio::main]
-async fn main() -> Result<(), fantoccini::error::CmdError> {
-	let c = ClientBuilder::native().connect("http://localhost:9515")
-		.await
-		.expect("failed to connect to WebDriver");
+async fn main() -> Result<()> {
+	let mut chromedriver =
+		Command::new("chromedriver").args(["--port=9515"]).spawn()?;
+	let client = ClientBuilder::native()
+		.connect("http://localhost:9515")
+		.await?;
 
-	// first, go to the Wikipedia page for Foobar
-	c.goto("https://en.wikipedia.org/wiki/Foobar").await?;
-	let url = c.current_url().await?;
-	assert_eq!(url.as_ref(), "https://en.wikipedia.org/wiki/Foobar");
+	client.goto("http://example.com").await?;
+	let url = client.current_url().await?;
+	assert_eq!(url.as_ref(),"http://example.com/");
 
-	// click "Foo (disambiguation)"
-	c.find(Locator::Css(".mw-disambig")).await?.click().await?;
-
-	// click "Foo Lake"
-	c.find(Locator::LinkText("Foo Lake")).await?.click().await?;
-
-	let url = c.current_url().await?;
-	assert_eq!(url.as_ref(), "https://en.wikipedia.org/wiki/Foo_Lake");
-
-	c.close().await
+	client.close().await?;
+	chromedriver.kill()?;
+	Ok(())
 }

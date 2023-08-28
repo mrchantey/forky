@@ -20,9 +20,9 @@ sweet! {
 		.connect("http://localhost:9515")
 		.await?;
 
-		client.goto("https://en.wikipedia.org/wiki/Foobar").await?;
+		client.goto("https://example.com").await?;
 		let url = client.current_url().await?;
-		expect(url.as_ref()).to_be("https://en.wikipedia.org/wiki/Foobar")?;
+		expect(url.as_ref()).to_be("https://example.com")?;
 
 		client.close().await?;
 		chromedriver.kill()?;

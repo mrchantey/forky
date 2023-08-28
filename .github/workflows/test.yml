@@ -56,8 +56,8 @@ jobs:
       uses: baptiste0928/cargo-install@v2
       with:
         crate: wasm-bindgen-cli
-    - name: 🔎 Test Sweet Only
-      run: just test sweet
+    - name: 🔎 Test Chromedriver
+      run: just run sweet --example fantoccini
     # - name: 🔨 Build Crates
     #   run: just all build
     # - name: 🔎 Test Native
