@@ -2,24 +2,23 @@ name: Deploy Book
 on:
   push:
     branches: main
-    paths: 'docs/**'
+    paths: ['docs/**','.github/workflows/book.yml']
 jobs:
   deploy:
     runs-on: ubuntu-20.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup mdBook
+      - name: 📂 Checkout
+        uses: actions/checkout@v2
+      - name: 🔨 Install mdbook
         uses: peaceiris/actions-mdbook@v1
         with:
-          mdbook-version: '0.4.33'
-
-      - name: Build
+          mdbook-version: '0.4.34'
+      - name: 🔨 Build Book
         run: mdbook build
         working-directory: ./docs
-
-      - name: Deploy
+      - name: 🌍 Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:

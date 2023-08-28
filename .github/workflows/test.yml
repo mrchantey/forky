@@ -37,6 +37,8 @@ jobs:
       uses: extractions/setup-just@v1
     - name: 🔨 Install Chromedriver
       uses: nanasess/setup-chromedriver@v2
+    - name: 🔨 Check Chromedriver
+      run: chromedriver --version
     - name: 🔨 Install Rust
       uses: actions-rs/toolchain@v1
       with:
