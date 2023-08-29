@@ -6,7 +6,6 @@ const PREFIX_STACK_FRAMES: usize = 1;
 const PREFIX_STACK_FRAMES: usize = 2;
 #[cfg(target_os = "windows")]
 const PREFIX_STACK_FRAMES: usize = 6;
-// const RUST_INTERNAL_FILE: &str = "library\\core\\src\\ops\\function.rs";
 
 #[cfg(target_arch = "wasm32")]
 pub fn file_context_depth(_: usize) -> String {
