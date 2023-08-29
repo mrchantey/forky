@@ -1,6 +1,7 @@
 use crate::*;
 use anyhow::Error;
-use anyhow::Result;
+use rayon::prelude::*;
+use tokio::task::JoinError;
 
 #[derive(Default, Debug, Clone)]
 pub struct TestSuiteNative {
@@ -44,7 +45,6 @@ impl TestSuiteTrait<TestCaseNative> for TestSuiteNative {
 }
 
 async fn run_native_series(to_run: &TestCaseNativeSplit<'_>) -> Vec<Error> {
-	// let (syncs, series, parallels) = TestCaseNative::split_funcs(to_run);
 	let mut errors = Vec::new();
 	for (t, f) in to_run.syncs.iter() {
 		let result = unwrap_panic(f);
@@ -74,21 +74,20 @@ async fn run_native_series(to_run: &TestCaseNativeSplit<'_>) -> Vec<Error> {
 async fn run_native_parallel(
 	to_run: &TestCaseNativeSplit<'_>,
 ) -> anyhow::Result<Vec<Error>> {
-	// let (syncs, series, parallels) = TestCaseNative::split_funcs(to_run);
 	if to_run.series.len() > 0 {
 		panic!(
 			"\n\nattempted to run suites containing 'nonSend' in parallel\n\n"
 		)
 	}
 
-	let handles_sync = to_run.syncs.iter().map(|(t, f)| {
-		let t = (*t).clone();
-		let f = (*f).clone();
-		std::thread::spawn(move || {
+	let results_sync = to_run
+		.syncs
+		.par_iter()
+		.map(|(t, f)| {
 			let result = unwrap_panic(&f);
 			t.format_error(result)
-		})
-	});
+		});
+
 	let handles_parallel = to_run.parallels.iter().map(|(t, f)| {
 		let t = (*t).clone();
 		let f = (*f).clone();
@@ -98,17 +97,12 @@ async fn run_native_parallel(
 		})
 	});
 
-	let results_sync = handles_sync.map(|h| anyhow_panic(h.join()));
 	let results_parallel = futures::future::join_all(handles_parallel)
 		.await
 		.into_iter()
-		.map(|r| anyhow_tokio_join(r));
+		.collect::<std::result::Result<Vec<_>, JoinError>>()?; //spawn error
 	let errs = results_sync
-		.into_iter()
 		.chain(results_parallel)
-		.into_iter()
-		.collect::<Result<Vec<anyhow::Result<_>>>>()? //spawn error
-		.into_iter()
 		.filter_map(|r| r.err())
 		.collect();
 	Ok(errs)
