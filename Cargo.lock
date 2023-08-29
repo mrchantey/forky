@@ -2557,11 +2557,11 @@ checksum = "00b0228411908ca8685dba7fc2cdd70ec9990a6e753e89b6ac91a84c40fbaf4b"
 
 [[package]]
 name = "forky"
-version = "0.1.26"
+version = "0.1.27"
 
 [[package]]
 name = "forky_ai"
-version = "0.1.26"
+version = "0.1.27"
 dependencies = [
  "anyhow",
  "chatgpt_rs",
@@ -2575,7 +2575,7 @@ dependencies = [
 
 [[package]]
 name = "forky_cli"
-version = "0.1.26"
+version = "0.1.27"
 dependencies = [
  "anyhow",
  "axum",
@@ -2602,7 +2602,7 @@ dependencies = [
 
 [[package]]
 name = "forky_core"
-version = "0.1.26"
+version = "0.1.27"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
@@ -2620,7 +2620,7 @@ dependencies = [
 
 [[package]]
 name = "forky_esp"
-version = "0.1.26"
+version = "0.1.27"
 dependencies = [
  "esp-backtrace",
  "esp-hal-common",
@@ -2634,7 +2634,7 @@ dependencies = [
 
 [[package]]
 name = "forky_fs"
-version = "0.1.26"
+version = "0.1.27"
 dependencies = [
  "anyhow",
  "clap",
@@ -2653,7 +2653,7 @@ dependencies = [
 
 [[package]]
 name = "forky_play"
-version = "0.1.26"
+version = "0.1.27"
 dependencies = [
  "anyhow",
  "bevy",
@@ -2675,7 +2675,7 @@ dependencies = [
 
 [[package]]
 name = "forky_test"
-version = "0.1.26"
+version = "0.1.27"
 dependencies = [
  "anyhow",
  "proc-macro2",
@@ -2685,7 +2685,7 @@ dependencies = [
 
 [[package]]
 name = "forky_web"
-version = "0.1.26"
+version = "0.1.27"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
@@ -5680,7 +5680,7 @@ checksum = "8fb1df15f412ee2e9dfc1c504260fa695c1c3f10fe9f4a6ee2d2184d7d6450e2"
 
 [[package]]
 name = "sweet"
-version = "0.1.26"
+version = "0.1.27"
 dependencies = [
  "anyhow",
  "backtrace",

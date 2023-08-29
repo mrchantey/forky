@@ -26,18 +26,18 @@ fn error_level(err: Error) -> Result<()> {
 
 sweet! {
 
-	test skip "file context" {
+	test "file context" {
 		let ctx = file_context();
 		expect(ctx.as_str()).to_contain("let ctx = backtracer::file_context();")?;
 		// expect(false).to_be_true()?;
 	}
 
-	test skip "level 1: declarative"{
+	test "level 1: declarative"{
 		let result = expect(true).to_be(false);
 		declarative_level(result.unwrap_err())?;
 	}
 
-	test skip "level 2: assertion"{
+	test "level 2: assertion"{
 		let result = expect(true).assert_equal(false);
 		assertion_level(result.unwrap_err())?;
 		let result = expect(true).assert_correct(false,&false);
@@ -46,7 +46,7 @@ sweet! {
 		assertion_level(result.unwrap_err())?;
 	}
 
-	test skip "level 3: error"{
+	test "level 3: error"{
 		let err = expect(true).to_error(&false);
 		error_level(err)?;
 		let err = expect(true).to_error_with_received(&false,&true);
