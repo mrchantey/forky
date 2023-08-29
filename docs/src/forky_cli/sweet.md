@@ -22,13 +22,15 @@ forky sweet --help
 
 - [wasm-bindgen-cli](https://rustwasm.github.io/wasm-bindgen/reference/cli.html)
 	- `cargo install -f wasm-bindgen-cli`
-- [chromedriver](https://chromedriver.chromium.org/)
+- [chromedriver](https://chromedriver.chromium.org/downloads)
 	- Not required for interactive mode
-	- ```sh
+	- ```sh	
 		# windows
 		choco install chromedriver
 		# mac
 		brew install --cask chromedriver
+		# linux
+		sudo apt install chromium-chromedriver
 		```
 
 ## Help

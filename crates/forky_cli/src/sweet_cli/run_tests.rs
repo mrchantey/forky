@@ -40,7 +40,9 @@ async fn get_client(mode: RunTestsMode) -> Result<Client> {
 		WEBDRIVER_CONNECT_TIMEOUT,
 	)
 	.await
-	.expect("\nCould not connect to chromedriver, is it installed and on path?\n");
+	.expect(
+		"\nUnexpected Error - Could not connect to chromedriver, please open an issue\n",
+	);
 	Ok(client)
 }
 
@@ -51,10 +53,13 @@ impl SweetCli {
 	) -> Result<Option<TestRunnerResult>> {
 		let mode = self.run_tests_mode.unwrap_or(RunTestsMode::Headless);
 
-		
+
 		let mut chromedriver = Command::new("chromedriver")
 			.args(["--silent", &format!("--port={WEBDRIVER_PORT}")])
-			.spawn()?;
+			.spawn()
+			.expect(
+				"\nfailed to run chromedriver, is it installed and on path?\n",
+			);
 
 		let matches = self
 			.matches

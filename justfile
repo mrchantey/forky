@@ -69,12 +69,12 @@ example crate example *args:
 @log argument:
 	echo {{argument}}
 
-bump:
+patch:
 	cargo set-version --bump patch
 
 publish crate *args:
 	cargo publish -p {{crate}} --allow-dirty --no-verify {{args}}
-	sleep 5
+	sleep 2
 
 publish-all:
 	just publish forky || true

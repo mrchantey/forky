@@ -14,14 +14,18 @@ impl SweetCli{
 	pub fn build_wasm(&self,should_kill:impl Fn()->bool + Clone) -> Result<()> {
 		self.copy_static()?;
 
-		match self.cargo_run()?.wait_killable(should_kill.clone()) {
+		match self.cargo_run()
+		.expect("\nCargo run failed, probably due to the sweet example not being found\n")
+		.wait_killable(should_kill.clone()) {
 			Ok(ChildProcessStatus::ExitSuccess(_)) => {}
 			other => {
 				bail!("sweet cli: cargo run failed: {:?}", other);
 			}
 		}
 
-		match self.wasm_bingen()?.wait_killable(should_kill.clone()) {
+		match self.wasm_bingen()
+		.expect("\nWasm bindgen failed, try running `cargo install -f wasm-bindgen-cli`\n")
+		.wait_killable(should_kill.clone()) {
 			Ok(ChildProcessStatus::ExitSuccess(_)) => {}
 			other => {
 				bail!("sweet cli: wasm bindgen failed: {:?}", other);
