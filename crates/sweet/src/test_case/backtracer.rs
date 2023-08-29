@@ -1,10 +1,11 @@
 use backtrace::Backtrace;
 
+#[cfg(target_os = "linux")]
+const PREFIX_STACK_FRAMES: usize = 1;
+#[cfg(target_os = "macos")]
+const PREFIX_STACK_FRAMES: usize = 2;
 #[cfg(target_os = "windows")]
 const PREFIX_STACK_FRAMES: usize = 6;
-#[cfg(not(target_os = "windows"))]
-// #[cfg(any(target_os = "macos", target_os = "linux"))]
-const PREFIX_STACK_FRAMES: usize = 1;
 // const RUST_INTERNAL_FILE: &str = "library\\core\\src\\ops\\function.rs";
 
 #[cfg(target_arch = "wasm32")]
