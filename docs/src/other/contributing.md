@@ -18,7 +18,7 @@ Most of this is for my own reference, but you may find it useful:
 			# check
 			just all check
 			# tools
-			cargo install cargo-watch
+			cargo install cargo-watch cargo-edit
 			rustup toolchain install nightly
 			rustup component add rustfmt --toolchain nightly
 			cargo +nightly fmt

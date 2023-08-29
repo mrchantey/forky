@@ -1,6 +1,10 @@
 # Native Runner
 
+The native runner is an alternative to vanilla rust unit and integration tests. It creates a single binary for all of your tests which speeds up compile times, see [this blog](https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html) for more info.
+
 ## Usage
+
+The native runner has a few cli options, run with `--help` to see them all.
 
 ```sh
 cargo run --example sweet --help
@@ -15,10 +19,3 @@ Options:
   -p, --parallel  run tests in parallel
   -s, --silent    don't log results
 ```
-
-## Features
-
-- Single Binary - The default rust intergration test runner creates a seperate binary for each test, which ramps up compile times, see [this blog](https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html) for more info.
-- Informative Outputs
-	- Long running tests show which suite is hanging
-  	![progress](../images/progress.png)

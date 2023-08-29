@@ -18,6 +18,7 @@
 	- [Matchers](./sweet/matchers.md)
 	- [Macros](./sweet/macros.md)
 	- [Workspaces](./sweet/workspaces.md)
+	- [CI / CD](./sweet/cicd.md)
 	- [FAQ](./sweet/faq.md)
 	- [Changelog](./sweet/changelog.md)
 # Demos

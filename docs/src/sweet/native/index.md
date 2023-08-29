@@ -16,17 +16,15 @@
 	pub use sweet::*;
 
 	sweet! {
-	  it "works" {
-			// use assertions
+	  it "demonstrates sweet" {
 			assert!(true == false);
-			// or pretty matchers
 			expect(true).to_be_false()?;
-			expect("some string").not().to_start_with("foo")?;
+			expect("some string").not().to_start_with("some")?;
 	  }
 	}
 	```
 1. run `cargo run --example sweet`
-
+1. optional - try changing the above matchers so the test passes ⚡
 
 Here's an example output of a runner with a few tests:
 
