@@ -69,27 +69,22 @@ example crate example *args:
 @log argument:
 	echo {{argument}}
 
+bump:
+	cargo set-version --bump patch
+
 publish crate *args:
-	cargo publish -p {{crate}} --allow-dirty {{args}}
+	cargo publish -p {{crate}} --allow-dirty --no-verify {{args}}
+	sleep 5
 
 publish-all:
-	cargo set-version --bump patch
 	just publish forky || true
-	sleep 5
 	just publish forky_core || true
-	sleep 5
 	just publish forky_fs || true
-	sleep 5
 	just publish forky_web || true
-	sleep 5
 	just publish forky_test || true
-	sleep 5
 	just publish sweet || true
-	sleep 5
 	just publish forky_cli || true
-	sleep 5
 	just publish forky_ai || true
-	sleep 5
 	just publish forky_play || true
 
 start crate: 

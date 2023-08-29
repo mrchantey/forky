@@ -11,7 +11,6 @@ sweet! {
 		assert!(true ==false);
 	}
 	it skip "fails"{
-		// expect(true).to_be_false()?;
 		expect(true).to_be_false()?;
 	}
 }
