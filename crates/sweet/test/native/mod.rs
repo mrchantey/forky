@@ -4,6 +4,8 @@ mod fantoccini;
 pub use self::fantoccini::*;
 mod multithreaded;
 pub use self::multithreaded::*;
+mod multithreaded2;
+pub use self::multithreaded2::*;
 mod test_case_native;
 pub use self::test_case_native::*;
 mod test_suite_native;

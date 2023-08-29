@@ -80,28 +80,41 @@ async fn run_native_parallel(
 		)
 	}
 
+
+	let handles_parallel = to_run
+		.parallels
+		.iter()
+		.map(|(t, f)| {
+			let t = (*t).clone();
+			let f = (*f).clone();
+			tokio::spawn(async move {
+				let result = unwrap_panic_async(f()).await;
+				t.format_error(result)
+			})
+		})
+		.collect::<Vec<_>>();
+
+	let results_parallel = tokio::spawn(async move {
+		futures::future::join_all(handles_parallel).await
+	});// TODO seems like awkward way to force handles to run
+
 	let results_sync = to_run
 		.syncs
 		.par_iter()
 		.map(|(t, f)| {
 			let result = unwrap_panic(&f);
 			t.format_error(result)
-		});
-
-	let handles_parallel = to_run.parallels.iter().map(|(t, f)| {
-		let t = (*t).clone();
-		let f = (*f).clone();
-		tokio::spawn(async move {
-			let result = unwrap_panic_async(f()).await;
-			t.format_error(result)
 		})
-	});
+		.collect::<Vec<_>>(); //blocks until syncs complete
 
-	let results_parallel = futures::future::join_all(handles_parallel)
-		.await
+
+	// let results_parallel = futures::future::join_all(handles_parallel).await
+	let results_parallel = results_parallel
+		.await? //blocks until parallels complete
 		.into_iter()
-		.collect::<std::result::Result<Vec<_>, JoinError>>()?; //spawn error
+		.collect::<std::result::Result<Vec<_>, JoinError>>()?;
 	let errs = results_sync
+		.into_iter()
 		.chain(results_parallel)
 		.filter_map(|r| r.err())
 		.collect();

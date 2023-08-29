@@ -10,12 +10,8 @@ The native runner has a few cli options, run with `--help` to see them all.
 cargo run --example sweet --help
 ```
 
-```
-Arguments:
-  [match]...  filter suites by path glob, ie `my_test` or `/e2e/`   
-
-Options:
-  -w, --watch     clears screen and does not return error
-  -p, --parallel  run tests in parallel
-  -s, --silent    don't log results
-```
+### Options
+- `[match]` Space seperated path globs to run, ie `my_test` or `/e2e/`
+- `-w, --watch` Clears screen and does not return error, for use with `cargo watch` etc
+- `-p, --parallel` run tests in parallel
+- `-s, --silent` don't log results

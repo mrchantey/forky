@@ -88,10 +88,10 @@ fn contains_non_send(to_run: &Vec<&TestSuiteNative>) -> bool {
 	to_run.iter().any(|suite| suite_contains_non_send(&suite))
 }
 fn suite_contains_non_send(suite: &TestSuiteNative) -> bool {
-	false
-		== TestCaseNative::split_funcs(suite.tests.iter())
-			.series
-			.is_empty()
+	TestCaseNative::split_funcs(suite.tests.iter())
+		.series
+		.iter()
+		.any(|case| !case.0.config.skip)
 }
 
 /*
