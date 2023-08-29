@@ -224,7 +224,7 @@ forky sweet --help
 <li><code>cargo install -f wasm-bindgen-cli</code></li>
 </ul>
 </li>
-<li><a href="https://chromedriver.chromium.org/">chromedriver</a>
+<li><a href="https://chromedriver.chromium.org/downloads">chromedriver</a>
 <ul>
 <li>Not required for interactive mode</li>
 <li>
@@ -232,6 +232,8 @@ forky sweet --help
   choco install chromedriver
   # mac
   brew install --cask chromedriver
+  # linux
+  sudo apt install chromium-chromedriver
 </code></pre>
 </li>
 </ul>
@@ -344,14 +346,13 @@ sweet! {
 <p>The native runner has a few cli options, run with <code>--help</code> to see them all.</p>
 <pre><code class="language-sh">cargo run --example sweet --help
 </code></pre>
-<pre><code>Arguments:
-  [match]...  filter suites by path glob, ie `my_test` or `/e2e/`   
-
-Options:
-  -w, --watch     clears screen and does not return error
-  -p, --parallel  run tests in parallel
-  -s, --silent    don't log results
-</code></pre>
+<h3 id="options"><a class="header" href="#options">Options</a></h3>
+<ul>
+<li><code>[match]</code> Space seperated path globs to run, ie <code>my_test</code> or <code>/e2e/</code></li>
+<li><code>-w, --watch</code> Clears screen and does not return error, for use with <code>cargo watch</code> etc</li>
+<li><code>-p, --parallel</code> run tests in parallel</li>
+<li><code>-s, --silent</code> don't log results</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="async-tests"><a class="header" href="#async-tests">Async Tests</a></h1>
 <p>Internally each native test will be stored as one of three types:</p>
 <ul>
