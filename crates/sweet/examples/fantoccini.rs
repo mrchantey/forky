@@ -10,7 +10,17 @@ async fn main() -> Result<()> {
 	let mut chromedriver =
 		Command::new("chromedriver").args(["--port=9515"]).spawn()?;
 	let client = retry_async(
-		async || ClientBuilder::native().connect("http://localhost:9515").await,
+		async || {
+			let cap = serde_json::from_str(
+				r#"{"browserName":"chrome","goog:chromeOptions":{"args":["--headless"]}}"#,
+			)
+			.unwrap();
+
+			ClientBuilder::native()
+				.capabilities(cap)
+				.connect("http://localhost:9515")
+				.await
+		},
 		Duration::from_secs(1),
 	)
 	.await?;
