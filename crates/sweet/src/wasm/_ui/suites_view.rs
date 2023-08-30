@@ -29,7 +29,7 @@ pub fn SuitesView(
 	>"Suites"</h3>
 	<SuiteButton
 		name="all".to_string()
-		matcher="*".to_string()
+		matcher="".to_string()
 		set_matches
 	/>
 	{suites.iter()

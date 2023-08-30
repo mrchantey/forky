@@ -55,6 +55,8 @@ jobs:
         crate: wasm-bindgen-cli
     - name: 🔨 Build Crates
       run: just all build
+    - name: 🔎 Test Fantoccini
+      run: just run sweet fantoccini
     - name: 🔎 Test Native
       run: just test-all
     - name: 🔎 Test Wasm
