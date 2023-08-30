@@ -32,5 +32,5 @@ leptos = { workspace = true }
 sweet = { workspace = true }
 
 [[example]]
-name = "sweet_forky_web"
-path = "test/sweet.rs"
+name = "test_forky_web_wasm"
+path = "test/sweet_wasm.rs"

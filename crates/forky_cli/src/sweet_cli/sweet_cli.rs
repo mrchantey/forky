@@ -5,6 +5,7 @@ use std::fmt::Display;
 
 #[derive(Debug, Clone)]
 pub struct SweetCli {
+	pub example: String,
 	pub matches: Vec<String>,
 	pub package: Option<String>,
 	pub release: bool,
@@ -28,6 +29,7 @@ impl SweetCli {
 impl Default for SweetCli {
 	fn default() -> Self {
 		Self {
+			example: "sweet".to_string(),
 			matches: Vec::new(),
 			package: None,
 			release: false,
@@ -47,6 +49,7 @@ impl Default for SweetCli {
 impl Display for SweetCli {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		if let Some(package) = &self.package {
+			//TODO
 			write!(f, "package: {package}")?;
 		}
 		Ok(())

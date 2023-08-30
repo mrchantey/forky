@@ -1,9 +1,11 @@
+use std::path::Path;
 use super::*;
+use forky_core::PathExt;
 use sweet::*;
 
 pub fn suite(cases: Vec<TestCaseNative>) -> TestSuiteNative {
 	TestSuiteNative {
-		file: "some/path.rs".to_string(),
+		file: Path::new(file!()).to_forward_slash(),
 		tests: cases,
 		config: Default::default(),
 	}

@@ -1,6 +1,7 @@
 use crate::*;
 use anyhow::Error;
 use futures::Future;
+use std::path::PathBuf;
 
 
 pub async fn run_cases_series(to_run: Vec<&impl TestCase>) -> Vec<Error> {
@@ -35,8 +36,8 @@ pub trait TestSuiteTrait<Case>
 where
 	Case: TestCase,
 {
-	fn new(file: String) -> Self;
-	fn file(&self) -> &str;
+	fn new(file: PathBuf) -> Self;
+	fn file(&self) -> &PathBuf;
 	fn config(&self) -> &TestSuiteConfig;
 	fn tests(&self) -> &Vec<Case>;
 	fn tests_mut(&mut self) -> &mut Vec<Case>;
@@ -70,7 +71,7 @@ where
 			.partition(|t| !self.should_skip(t, contains_only));
 
 		let mut result =
-			SuiteResult::new(file.to_string(), tests.len(), skipped.len());
+			SuiteResult::new(file.clone(), tests.len(), skipped.len());
 
 		let logger = if config.silent {
 			None

@@ -45,23 +45,26 @@ pub fn SuiteView<'a>(
 	#[prop(into)] set_matches: WriteSignal<Vec<String>>,
 	suite: &'a TestSuiteWasm,
 ) -> impl IntoView {
-	let file = suite.file.clone();
-	let pretty = file
-		.split("\\")
+	let file_str = suite.file.to_string_lossy().to_string();
+
+	let pretty = suite
+		.file
+		.iter()
+		.map(|p| p.to_string_lossy())
 		.collect::<Vec<_>>()
 		.iter()
 		.rev()
 		.take(3)
 		.rev()
 		.fold(String::new(), |mut acc, val| {
-			acc.push_str(*val);
+			acc.push_str(val);
 			acc.push_str(" > ");
 			acc
 		})
 		.replace(".rs > ", "");
 	view! {cx,
 	<div class=spacecat!(forky_style::BUTTON_LIKE,sweet_style::SWEET_SUITE)
-		on:click=move|_|set_matches(vec![file.clone()])
+		on:click=move|_|set_matches(vec![file_str.clone()])
 	>
 		{pretty}
 	</div>

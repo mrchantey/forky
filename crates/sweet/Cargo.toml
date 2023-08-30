@@ -61,5 +61,9 @@ fantoccini = { workspace = true }
 
 
 [[example]]
-name = "sweet_sweet"
+name = "test_sweet"
 path = "test/sweet.rs"
+
+[[example]]
+name = "test_sweet_wasm"
+path = "test/sweet_wasm.rs"

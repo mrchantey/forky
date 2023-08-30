@@ -51,5 +51,5 @@ sweet = { workspace = true }
 # sweet = { workspace = true }
 
 [[example]]
-name = "sweet_forky_cli"
+name = "test_forky_cli"
 path = "test/sweet.rs"

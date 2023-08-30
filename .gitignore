@@ -2,6 +2,9 @@
 target/
 crates/*/target/
 **/*.rs.bk
+html/*
+!html/index.html
+!html/https.config.js
 
 # esp idf
 .embuild

@@ -1,5 +1,6 @@
 use crate::*;
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 
 pub trait TestCollector<Case, Suite>
@@ -18,16 +19,14 @@ where
 	fn collect_cases() -> Vec<Case>;
 
 	fn collect_cases_to_suites() -> Vec<Suite> {
-		let mut suites: HashMap<String, Suite> = HashMap::new();
+		let mut suites: HashMap<PathBuf, Suite> = HashMap::new();
 		let cases = Self::collect_cases();
 		for case in cases.iter() {
 			let path = case.path();
-			let path = path.to_str().unwrap();
-			if !suites.contains_key(path) {
-				let file = String::from(path);
-				suites.insert(file.clone(), Suite::new(file));
+			if !suites.contains_key(&path) {
+				suites.insert(path.clone(), Suite::new(path.clone()));
 			}
-			suites.get_mut(path).unwrap().push_test(case.clone());
+			suites.get_mut(&path).unwrap().push_test(case.clone());
 		}
 		let mut suites2 = Vec::with_capacity(suites.len());
 		for (_, suite) in suites {
@@ -37,5 +36,4 @@ where
 		suites2.sort_by(|a, b| a.file().cmp(&b.file()));
 		suites2
 	}
-
 }

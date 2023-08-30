@@ -22,13 +22,16 @@ default:
 run crate example *args:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} {{features}} {{args}}
 
+build-why crate example *args:
+	RUST_LOG=cargo::ops::cargo_rustc::fingerprint=info cargo build -p {{crate}} --example {{example}} {{args}}
+
 fix crate *args:
 	cargo fix --allow-dirty --lib -p {{crate}} {{args}}
 fix-all *args:
 	cargo fix --allow-dirty --workspace {{args}}
 
 cli *args:
-	cargo run -p forky_cli {{args}}
+	cargo run -p forky_cli -- {{args}}
 
 install-cli *args:
 	cargo install --path ./crates/forky_cli {{args}}
@@ -96,7 +99,7 @@ test-all *args:
 	done
 
 test crate *args:
-	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example sweet_{{crate}} -- {{args}}
+	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example test_{{crate}} -- {{args}}
 
 test-w crate *args:
 	just watch just test {{crate}} -w {{args}}
@@ -135,12 +138,12 @@ run-wasm crate example:
 build-wasm crate example *args:
 	echo building
 	just copy-wasm-assets
-	cargo build -p {{crate}} --example {{example}} --release --target wasm32-unknown-unknown {{args}}
+	cargo build -p {{crate}} --example {{example}} --target wasm32-unknown-unknown {{args}}
 	RUST_BACKTRACE={{backtrace}} wasm-bindgen \
 	--out-dir ./html/wasm \
 	--out-name bindgen \
 	--target web \
-	./target/wasm32-unknown-unknown/release/examples/{{example}}.wasm
+	./target/wasm32-unknown-unknown/debug/examples/{{example}}.wasm
 # --no-typescript \
 
 watch-wasm *args:
@@ -178,8 +181,8 @@ lightning in out *args:
 	lightningcss {{in}} --bundle -m -o {{out}} {{args}}
 
 test-all-wasm:
-	just cli sweet -p sweet
-	just cli sweet -p forky_web
+	just cli sweet -p sweet --example test_sweet_wasm
+	just cli sweet -p forky_web --example test_forky_web_wasm
 
 ### ESP ###
 

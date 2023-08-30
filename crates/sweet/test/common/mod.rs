@@ -8,3 +8,5 @@ mod test_case;
 pub use self::test_case::*;
 mod test_suite;
 pub use self::test_suite::*;
+mod suite_result;
+pub use self::suite_result::*;

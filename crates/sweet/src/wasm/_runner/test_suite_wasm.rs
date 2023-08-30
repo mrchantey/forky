@@ -1,20 +1,21 @@
 use crate::*;
 use anyhow::Ok;
 use forky_web::*;
+use std::path::PathBuf;
 use web_sys::HtmlIFrameElement;
 use web_sys::MessageEvent;
 use web_sys::UrlSearchParams;
 
 #[derive(Default, Debug, Clone)]
 pub struct TestSuiteWasm {
-	pub file: String,
+	pub file: PathBuf,
 	pub tests: Vec<TestCaseWasm>,
 	pub config: TestSuiteConfig,
 	pub iframe: Option<HtmlIFrameElement>,
 }
 
 impl TestSuiteTrait<TestCaseWasm> for TestSuiteWasm {
-	fn new(file: String) -> Self {
+	fn new(file: PathBuf) -> Self {
 		Self {
 			file,
 			tests: Vec::new(),
@@ -22,7 +23,7 @@ impl TestSuiteTrait<TestCaseWasm> for TestSuiteWasm {
 			iframe: None,
 		}
 	}
-	fn file(&self) -> &str { self.file.as_str() }
+	fn file(&self) -> &PathBuf { &self.file }
 	fn config(&self) -> &TestSuiteConfig { &self.config }
 	fn tests(&self) -> &Vec<TestCaseWasm> { &self.tests }
 	fn tests_mut(&mut self) -> &mut Vec<TestCaseWasm> { &mut self.tests }
@@ -67,7 +68,7 @@ async fn run_case_unit(
 	let mut url = params.to_string().as_string().unwrap();
 	url.insert_str(0, "?");
 	iframe.x_set_source_async(&url).await;
-	
+
 	let ev = HtmlEventListener::wait("message").await;
 	let ev: MessageEvent = ev.into();
 	let data = ev.data();

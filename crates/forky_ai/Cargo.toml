@@ -22,5 +22,5 @@ tokio = { workspace = true }
 sweet = { workspace = true }
 
 [[example]]
-name = "sweet_forky_ai"
+name = "test_forky_ai"
 path = "test/sweet.rs"

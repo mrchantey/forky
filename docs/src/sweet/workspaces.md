@@ -10,7 +10,7 @@ As per [this PR](https://github.com/rust-lang/cargo/pull/6308) crates that conta
 ```diff
 [[example]]
 - name = "sweet"
-+ name = "sweet_crate_a"
++ name = "test_crate_a"
 path = "test/sweet.rs"
 ```
 

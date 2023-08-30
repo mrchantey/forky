@@ -22,6 +22,14 @@ impl Subcommand for SweetCommand {
 					.action(ArgAction::Append),
 			)
 			.arg(
+				Arg::new("example")
+					.help("pass the --example flag to cargo run")
+					.required(false)
+					.short('e')
+    			.default_value("test")
+					.long("example"),
+			)
+			.arg(
 				Arg::new("package")
 					.help("pass the --package flag to cargo run")
 					.required(false)
@@ -67,7 +75,7 @@ impl Subcommand for SweetCommand {
 				.arg(
 					Arg::new("interactive")
 					.required(false)
-					.help("just start the server for viewing in your browser")
+					.help("run the server continuously for viewing in your browser")
 					.short('i')
 					.long("interactive")
 					.action(ArgAction::SetTrue),
@@ -81,13 +89,12 @@ impl Subcommand for SweetCommand {
 			.map(|s| s.clone())
 			.collect::<Vec<_>>();
 
-
+		cli.example = args.get_one::<String>("example").cloned().unwrap();
 		cli.package = args.get_one::<String>("package").cloned();
 		cli.static_dir = args.get_one::<String>("static").cloned();
 		cli.server.address.secure = args.get_flag("secure");
 		cli.release = args.get_flag("release");
 		cli.watch = args.get_flag("watch");
-
 
 		cli.run_tests_mode = if args.get_flag("interactive") {
 			None

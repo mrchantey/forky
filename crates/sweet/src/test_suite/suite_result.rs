@@ -1,11 +1,13 @@
 use colorize::*;
 use serde::Deserialize;
 use serde::Serialize;
+use std::path::Path;
+use std::path::PathBuf;
 // use std::default;
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct SuiteResult {
-	pub file: String,
+	pub file: PathBuf,
 	pub tests: usize,
 	pub skipped: usize,
 	pub failed: Vec<String>,
@@ -13,7 +15,7 @@ pub struct SuiteResult {
 
 
 impl SuiteResult {
-	pub fn new(file: String, tests: usize, skipped: usize) -> Self {
+	pub fn new(file: PathBuf, tests: usize, skipped: usize) -> Self {
 		SuiteResult {
 			file,
 			tests,
@@ -25,7 +27,7 @@ impl SuiteResult {
 	pub fn in_progress_str(&self) -> String {
 		let mut value = " RUNS ".black().bold().yellowb();
 		value += " ";
-		value += pretty_path(&self.file).as_str();
+		value += Self::pretty_path(&self.file).as_str();
 		value
 	}
 
@@ -37,7 +39,7 @@ impl SuiteResult {
 			" FAIL ".black().bold().redb()
 		};
 		val += " ";
-		val += pretty_path(&self.file).as_str();
+		val += Self::pretty_path(&self.file).as_str();
 
 		val += &self
 			.failed
@@ -46,15 +48,21 @@ impl SuiteResult {
 
 		val
 	}
-}
 
-
-
-fn pretty_path(file: &str) -> String {
-	let mut splt = file.split("\\").collect::<Vec<&str>>();
-	let _file = splt.pop();
-	let file = _file.unwrap_or_default().to_string().bold();
-	let path = splt.join("\\").faint();
-	let middle = "\\".to_string().faint();
-	format!("{path}{middle}{file}")
+	pub fn pretty_path(file: &PathBuf) -> String {
+		let name = file
+			.file_name()
+			.unwrap_or_default()
+			.to_string_lossy()
+			.to_string()
+			.bold();
+		let dir = file
+			.parent()
+			.unwrap_or_else(|| Path::new(""))
+			.to_string_lossy()
+			.to_string()
+			.faint();
+		let slash = "/".faint();
+		format!("{dir}{slash}{name}")
+	}
 }

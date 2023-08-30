@@ -17,11 +17,11 @@ notify = { workspace = true }
 crossbeam-channel = { workspace = true }
 
 # GAME
-bevy = {workspace = true}
-wgpu = {workspace = true}
-wgpu-types = {workspace = true}
-wgpu-hal = {workspace = true}
-glow = {workspace = true}
+bevy = { workspace = true }
+wgpu = { workspace = true }
+wgpu-types = { workspace = true }
+wgpu-hal = { workspace = true }
+glow = { workspace = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 js-sys = { workspace = true }
@@ -34,5 +34,5 @@ console_error_panic_hook = { workspace = true }
 sweet = { workspace = true }
 
 [[example]]
-name = "sweet_forky_xr"
+name = "test_forky_xr"
 path = "test/sweet.rs"

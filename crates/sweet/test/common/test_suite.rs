@@ -1,7 +1,10 @@
 // use sweet::*;
 
 
-// const DESC: TestSuiteDesc = TestSuiteDesc {
+// conz
+
+
+// const DESC: TestSuiteNative = TestSuiteNative {
 // 	name: "my test",
 // 	func: |_| Ok(()),
 // 	file: file!(),

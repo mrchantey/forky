@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use glob::Pattern;
 
 #[derive(Debug, Clone)]
@@ -20,10 +22,10 @@ impl Default for TestRunnerConfig {
 }
 
 impl TestRunnerConfig {
-	pub fn suite_passes_filter(&self, path: &str) -> bool {
-		let matchable_path = path;
+	pub fn suite_passes_filter(&self, path: &PathBuf) -> bool {
+		let matchable_path = path.to_string_lossy();
 		self.matches.len() == 0
-			|| self.matches.iter().any(|a| a.matches(matchable_path))
+			|| self.matches.iter().any(|a| a.matches(&matchable_path))
 	}
 }
 
@@ -44,6 +46,9 @@ impl std::fmt::Display for TestRunnerConfig {
 		}
 		if self.matches.len() > 0 {
 			out += format!("matching: {matches}\n").as_str();
+		}
+		if self.silent {
+			out += format!("silent: true\n").as_str();
 		}
 		write!(f, "{}", out)
 	}

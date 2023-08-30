@@ -1,3 +1,4 @@
+use std::path::PathBuf;
 use crate::*;
 use anyhow::Error;
 use rayon::prelude::*;
@@ -5,21 +6,21 @@ use tokio::task::JoinError;
 
 #[derive(Default, Debug, Clone)]
 pub struct TestSuiteNative {
-	pub file: String,
+	pub file: PathBuf,
 	pub tests: Vec<TestCaseNative>,
 	pub config: TestSuiteConfig,
 }
 
 
 impl TestSuiteTrait<TestCaseNative> for TestSuiteNative {
-	fn new(file: String) -> Self {
+	fn new(file: PathBuf) -> Self {
 		Self {
 			file,
 			tests: Vec::new(),
 			config: TestSuiteConfig::default(),
 		}
 	}
-	fn file(&self) -> &str { self.file.as_str() }
+	fn file(&self) -> &PathBuf { &self.file }
 	fn config(&self) -> &TestSuiteConfig { &self.config }
 	fn tests(&self) -> &Vec<TestCaseNative> { &self.tests }
 	fn tests_mut(&mut self) -> &mut Vec<TestCaseNative> { &mut self.tests }

@@ -15,7 +15,7 @@ impl SweetCli{
 		self.copy_static()?;
 
 		match self.cargo_run()
-		.expect("\nCargo run failed, probably due to the sweet example not being found\n")
+		.expect("\nCargo run failed\n")
 		.wait_killable(should_kill.clone()) {
 			Ok(ChildProcessStatus::ExitSuccess(_)) => {}
 			other => {
@@ -53,8 +53,7 @@ impl SweetCli{
 			cmd.extend(vec!["-p", package]);
 		};
 		
-		let example = self.example_name();
-		cmd.extend(vec!["--example", &example]);
+		cmd.extend(vec!["--example", &self.example]);
 		if self.release {
 				cmd.push("--release");
 		}
@@ -62,18 +61,10 @@ impl SweetCli{
 		spawn_command(&cmd)
 	}
 
-	fn example_name(&self)->String{
-		if let Some(package) = &self.package {
-			format!("sweet_{}", package)
-		}else{
-			"sweet".to_string()
-		}
-	}
-
 	#[rustfmt::skip]
 	fn wasm_bingen(&self) -> Result<Child> {
 		let mode = if self.release { "release" } else { "debug" };
-		let example = self.example_name();
+		let example = &self.example;
 		let file = format!("target/wasm32-unknown-unknown/{mode}/examples/{example}.wasm");
 		let hash = hash_file_to_string(&file)?;
 		let out_file = format!("sweet-{hash}");
