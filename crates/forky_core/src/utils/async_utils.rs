@@ -29,6 +29,7 @@ where
 				}
 			}
 		}
+		std::thread::sleep(Duration::from_millis(10));
 	}
 }
 
