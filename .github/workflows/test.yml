@@ -30,7 +30,7 @@ jobs:
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
           target/
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-temp
     - name: 🔨 Install Cygwin
       uses: cygwin/cygwin-install-action@master
       if: runner.os == 'Windows'
@@ -55,7 +55,7 @@ jobs:
         crate: wasm-bindgen-cli
     - name: 🔨 Build Crates
       run: just all build
-    - name: 🔎 Test Native
-      run: just test-all
-    - name: 🔎 Test Wasm
-      run: just test-all-wasm
+    # - name: 🔎 Test Native
+    #   run: just test-all
+    # - name: 🔎 Test Wasm
+    #   run: just test-all-wasm

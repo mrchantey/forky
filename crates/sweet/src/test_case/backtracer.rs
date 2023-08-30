@@ -3,7 +3,7 @@ use backtrace::Backtrace;
 #[cfg(target_os = "linux")]
 const PREFIX_STACK_FRAMES: usize = 1;
 #[cfg(target_os = "macos")]
-const PREFIX_STACK_FRAMES: usize = 2;
+const PREFIX_STACK_FRAMES: usize = 3;
 #[cfg(target_os = "windows")]
 const PREFIX_STACK_FRAMES: usize = 6;
 #[cfg(not(any(target_os = "linux",target_os = "macos",target_os = "windows")))]
