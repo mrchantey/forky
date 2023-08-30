@@ -55,7 +55,7 @@ jobs:
         crate: wasm-bindgen-cli
     - name: 🔨 Build Crates
       run: just all build
-    # - name: 🔎 Test Native
-    #   run: just test-all
-    # - name: 🔎 Test Wasm
-    #   run: just test-all-wasm
+    - name: 🔎 Test Native
+      run: just test-all
+    - name: 🔎 Test Wasm
+      run: just test-all-wasm

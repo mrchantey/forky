@@ -180,9 +180,12 @@ watch-css crate *args:
 lightning in out *args:
 	lightningcss {{in}} --bundle -m -o {{out}} {{args}}
 
-test-all-wasm:
-	just cli sweet -p sweet --example test_sweet_wasm
-	just cli sweet -p forky_web --example test_forky_web_wasm
+test-all-wasm *args:
+	just test-wasm sweet {{args}}
+	just test-wasm forky_web {{args}}
+
+test-wasm crate *args:
+	just cli sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
 
 ### ESP ###
 
