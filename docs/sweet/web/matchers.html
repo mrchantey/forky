@@ -174,10 +174,10 @@
 <li><code>to_contain_text</code></li>
 <li><code>to_contain_visible_test</code></li>
 </ul>
-<h2 id="intohtmlelement"><a class="header" href="#intohtmlelement"><code>IntoHtmlElement</code></a></h2>
+<h2 id="intohtmlelement"><a class="header" href="#intohtmlelement"><code>Into&lt;HtmlElement&gt;</code></a></h2>
 <p><code>window().unwrap().document().unwrap().body().unwrap()</code> is a bit of a mouthful 🥴</p>
 <p>Sweet provides some wrappers around common types, ie <code>web_sys::window</code>:</p>
-<pre><code class="language-rs">//window implements IntoHtmlElement
+<pre><code class="language-rs">//window implements Into&lt;HtmlElement&gt; by getting its document body
 expect(web_sys::window).to_contain_text(&quot;sweet as!&quot;)?;
 
 //so does iframe
