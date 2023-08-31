@@ -3,93 +3,87 @@ use anyhow::Result;
 use forky_web::*;
 use web_sys::HtmlElement;
 
-
-pub trait IntoHtmlElement {
-	fn into_html_element(&self) -> HtmlElement;
-}
-
-impl<T> IntoHtmlElement for Option<T>
-where
-	T: IntoHtmlElement,
-{
-	fn into_html_element(&self) -> HtmlElement {
-		self.as_ref().unwrap().into_html_element()
-	}
-}
-impl<F, T> IntoHtmlElement for F
-where
-	F: Fn() -> Option<T>,
-	T: IntoHtmlElement,
-{
-	fn into_html_element(&self) -> HtmlElement {
-		self().unwrap().into_html_element()
-	}
-}
-// impl<T> IntoHtmlElement for fn() -> Option<T>
+// impl<T> SweetInto<HtmlElement> for Option<T>
 // where
-// 	T: IntoHtmlElement,
+// 	T: SweetInto<HtmlElement>,
 // {
-// 	fn into_html_element(&self) -> HtmlElement {
-// 		self().unwrap().into_html_element()
+// 	fn sweet_into(&self) -> HtmlElement {
+// 		self.as_ref().unwrap().sweet_into()
 // 	}
 // }
-// impl<T> IntoHtmlElement for T
+
+//ie for window()
+impl<F, T> SweetInto<HtmlElement> for F
+where
+	F: Fn() -> Option<T>,
+	T: SweetInto<HtmlElement>,
+{
+	fn sweet_into(&self) -> HtmlElement { self().unwrap().sweet_into() }
+}
+// impl<T> SweetInto<HtmlElement> for fn() -> Option<T>
 // where
-// 	T: IntoHtmlElement,
+// 	T: SweetInto<HtmlElement>,
 // {
-// 	fn into_html_element(&self) -> HtmlElement { (*self).into_html_element() }
+// 	fn sweet_into(&self) -> HtmlElement {
+// 		self().unwrap().sweet_into()
+// 	}
+// }
+// impl<T> SweetInto<HtmlElement> for T
+// where
+// 	T: SweetInto<HtmlElement>,
+// {
+// 	fn sweet_into(&self) -> HtmlElement { (*self).sweet_into() }
 // }
 
-impl IntoHtmlElement for web_sys::HtmlElement {
-	fn into_html_element(&self) -> HtmlElement { self.clone() }
+impl SweetInto<HtmlElement> for web_sys::HtmlElement {
+	fn sweet_into(&self) -> HtmlElement { self.clone() }
 }
-impl IntoHtmlElement for web_sys::Document {
-	fn into_html_element(&self) -> HtmlElement { self.body().unwrap() }
+impl SweetInto<HtmlElement> for web_sys::Document {
+	fn sweet_into(&self) -> HtmlElement { self.body().unwrap() }
 }
 
-impl IntoHtmlElement for web_sys::Window {
-	fn into_html_element(&self) -> HtmlElement {
-		self.document().unwrap().into_html_element()
+impl SweetInto<HtmlElement> for web_sys::Window {
+	fn sweet_into(&self) -> HtmlElement {
+		self.document().unwrap().sweet_into()
 	}
 }
-impl IntoHtmlElement for web_sys::HtmlIFrameElement {
-	fn into_html_element(&self) -> HtmlElement {
-		self.content_document().unwrap().into_html_element()
+impl SweetInto<HtmlElement> for web_sys::HtmlIFrameElement {
+	fn sweet_into(&self) -> HtmlElement {
+		self.content_document().unwrap().sweet_into()
 	}
 }
 
 pub trait MatcherHtml<T>: MatcherTrait<T>
 where
-	T: IntoHtmlElement,
+	T: SweetInto<HtmlElement>,
 {
-	fn get(&self, selector: &str) -> Result<Matcher<Option<HtmlElement>>> {
+	fn get(&self, selector: &str) -> Result<Matcher<HtmlElement>> {
 		let matcher = self.get_matcher();
-		let parent = matcher.value.into_html_element();
-		let expected = format!(
-			"element {} to contain selector '{selector}'",
-			parent.tag_name()
-		);
+		let parent = matcher.value.sweet_into();
+		// let expected = format!(
+		// 	"element {} to contain selector '{selector}'",
+		// 	parent.tag_name()
+		// );
 		let received = parent.x_query_selector::<HtmlElement>(selector);
-		match matcher.assert_option_with_received(&expected, received) {
-			Ok(value) => Ok(Matcher::new(value)),
-			Err(e) => Err(e),
-		}
+		matcher
+			.assert_option_with_received(received)
+			.map(|c| Matcher::new(c))
 	}
 
 	fn to_contain_text(&self, other: &str) -> Result<()> {
 		let receive = self
 			.get_value()
-			.into_html_element()
+			.sweet_into()
 			.text_content()
 			.unwrap_or_default();
 		self.contains(other, &receive, "text")
 	}
 	fn to_contain_visible_text(&self, other: &str) -> Result<()> {
-		let receive = self.get_value().into_html_element().inner_text();
+		let receive = self.get_value().sweet_into().inner_text();
 		self.contains(other, &receive, "visible text")
 	}
 	fn to_contain_html(&self, other: &str) -> Result<()> {
-		let receive = self.get_value().into_html_element().inner_html();
+		let receive = self.get_value().sweet_into().inner_html();
 		self.contains(other, &receive, "html")
 	}
 	fn contains(
@@ -111,4 +105,4 @@ where
 	}
 }
 
-impl<T> MatcherHtml<T> for Matcher<T> where T: IntoHtmlElement {}
+impl<T> MatcherHtml<T> for Matcher<T> where T: SweetInto<HtmlElement> {}

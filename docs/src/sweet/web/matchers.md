@@ -8,14 +8,14 @@ Querying a html element is so common Sweet has matchers for some common checks:
 - `to_contain_text`
 - `to_contain_visible_test`
 
-## `IntoHtmlElement`
+## `Into<HtmlElement>`
 
 `window().unwrap().document().unwrap().body().unwrap()` is a bit of a mouthful 🥴
 
 Sweet provides some wrappers around common types, ie `web_sys::window`:
 
 ```rs
-//window implements IntoHtmlElement
+//window implements Into<HtmlElement> by getting its document body
 expect(web_sys::window).to_contain_text("sweet as!")?;
 
 //so does iframe

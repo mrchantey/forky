@@ -1,3 +1,5 @@
+mod extend_utils;
+pub use self::extend_utils::*;
 mod float_utils;
 pub use self::float_utils::*;
 mod matcher;

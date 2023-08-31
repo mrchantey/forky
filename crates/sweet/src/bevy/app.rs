@@ -4,39 +4,35 @@ use ::bevy::prelude::*;
 use anyhow::Result;
 use extend::ext;
 
-pub trait IntoEntity {
-	fn into_entity(self) -> Entity;
+impl SweetInto<Entity> for Entity {
+	fn sweet_into(&self) -> Entity { (*self).clone() }
 }
-
-impl IntoEntity for Entity {
-	fn into_entity(self) -> Entity { self }
+impl SweetInto<Entity> for &Entity {
+	fn sweet_into(&self) -> Entity { (**self).clone() }
 }
-impl IntoEntity for &Entity {
-	fn into_entity(self) -> Entity { self.clone() }
+impl SweetInto<Entity> for &EntityMut<'_> {
+	fn sweet_into(&self) -> Entity { self.id() }
 }
-impl IntoEntity for &EntityMut<'_> {
-	fn into_entity(self) -> Entity { self.id() }
-}
-impl IntoEntity for EntityMut<'_> {
-	fn into_entity(self) -> Entity { self.id() }
+impl SweetInto<Entity> for EntityMut<'_> {
+	fn sweet_into(&self) -> Entity { self.id() }
 }
 
 #[ext]
 pub impl Matcher<&App> {
 	fn to_have_component<T: Component>(
 		&self,
-		entity: impl IntoEntity,
+		entity: impl SweetInto<Entity>,
 	) -> Result<()> {
-		let entity = entity.into_entity();
+		let entity = entity.sweet_into();
 		let received = self.value.world.get::<T>(entity);
 		self.assert_option_with_received_negatable(received)
 	}
 
 	fn component<T: Component>(
 		&self,
-		entity: impl IntoEntity,
+		entity: impl SweetInto<Entity>,
 	) -> Result<Matcher<&T>> {
-		let received = self.value.world.get::<T>(entity.into_entity());
+		let received = self.value.world.get::<T>(entity.sweet_into());
 		self.assert_option_with_received(received)
 			.map(|c| Matcher::new(c))
 	}
@@ -66,7 +62,7 @@ pub impl Matcher<&App> {
 	//breaks backtracing
 	// fn component_to_be<T>(
 	// 	&self,
-	// 	entity: impl IntoEntity,
+	// 	entity: impl SweetInto<Entity>,
 	// 	other: &T,
 	// ) -> Result<()>
 	// where
