@@ -37,11 +37,16 @@ impl Subcommand for SweetCommand {
 					.long("package"),
 			)
 			.arg(
-				Arg::new("release")
+				Arg::new("cargo")
+					.help("any additional args for cargo run")
 					.required(false)
-					.help("pass the --release flag to cargo run")
-					.long("release")
-					.action(ArgAction::SetTrue),
+					.long("cargo"),
+			)
+			.arg(
+				Arg::new("bindgen")
+					.help("any additional args for wasm-bindgen")
+					.required(false)
+					.long("bindgen"),
 			)
 			.arg(
 				Arg::new("secure")
@@ -90,10 +95,11 @@ impl Subcommand for SweetCommand {
 			.collect::<Vec<_>>();
 
 		cli.example = args.get_one::<String>("example").cloned().unwrap();
+		cli.bindgen_args = args.get_one::<String>("bindgen").cloned();
+		cli.cargo_args = args.get_one::<String>("cargo").cloned();
 		cli.package = args.get_one::<String>("package").cloned();
 		cli.static_dir = args.get_one::<String>("static").cloned();
 		cli.server.address.secure = args.get_flag("secure");
-		cli.release = args.get_flag("release");
 		cli.watch = args.get_flag("watch");
 
 		cli.run_tests_mode = if args.get_flag("interactive") {

@@ -5,10 +5,11 @@ use std::fmt::Display;
 
 #[derive(Debug, Clone)]
 pub struct SweetCli {
+	pub bindgen_args: Option<String>,
+	pub cargo_args: Option<String>,
 	pub example: String,
 	pub matches: Vec<String>,
 	pub package: Option<String>,
-	pub release: bool,
 	pub run_tests_mode: Option<RunTestsMode>,
 	pub server: Server,
 	pub static_dir: Option<String>,
@@ -29,10 +30,11 @@ impl SweetCli {
 impl Default for SweetCli {
 	fn default() -> Self {
 		Self {
+			bindgen_args: None,
+			cargo_args: None,
 			example: "sweet".to_string(),
 			matches: Vec::new(),
 			package: None,
-			release: false,
 			run_tests_mode: None,
 			server: Server {
 				quiet: true,

@@ -2,3 +2,5 @@
 pub use sweet::*;
 mod common;
 mod wasm;
+#[cfg(feature = "bevy")]
+mod bevy;

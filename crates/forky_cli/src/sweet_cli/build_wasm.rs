@@ -52,18 +52,23 @@ impl SweetCli{
 		if let Some(package) = &self.package {
 			cmd.extend(vec!["-p", package]);
 		};
+		if let Some(args) = &self.cargo_args {
+			cmd.push(args);
+		};
 		
 		cmd.extend(vec!["--example", &self.example]);
-		if self.release {
-				cmd.push("--release");
-		}
 		
 		spawn_command(&cmd)
 	}
 
 	#[rustfmt::skip]
 	fn wasm_bingen(&self) -> Result<Child> {
-		let mode = if self.release { "release" } else { "debug" };
+		let is_release = if let Some(args) = &self.cargo_args {
+			args.contains("--release")
+		} else {
+			false
+		};
+		let mode = if is_release { "release" } else { "debug" };
 		let example = &self.example;
 		let file = format!("target/wasm32-unknown-unknown/{mode}/examples/{example}.wasm");
 		let hash = hash_file_to_string(&file)?;

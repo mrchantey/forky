@@ -21,6 +21,7 @@
 		"**/build.rs": true,
 		"html/assets/**": true
 	},
+	"rust-analyzer.cargo.features": "all",
 	// "rust-analyzer.cargo.features": [
 	// 	"web_sys_unstable_apis"
 	// ],

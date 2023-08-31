@@ -1,3 +1,5 @@
+use anyhow::Result;
+
 pub fn expect<T>(value: T) -> Matcher<T> { Matcher::new(value) }
 
 pub struct Matcher<T> {
@@ -10,6 +12,13 @@ impl<T> Matcher<T> {
 		Matcher {
 			value,
 			negated: false,
+		}
+	}
+	pub fn disallow_negated(&self) -> Result<()> {
+		if self.negated {
+			Err(Self::to_custom_error("Unsupported: Negation not supported for this matcher, please remove `.not()`"))
+		} else {
+			Ok(())
 		}
 	}
 

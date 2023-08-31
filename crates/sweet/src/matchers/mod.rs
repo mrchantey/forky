@@ -1,3 +1,5 @@
+mod float_utils;
+pub use self::float_utils::*;
 mod matcher;
 pub use self::matcher::*;
 mod matcher_bool;
@@ -8,6 +10,8 @@ mod matcher_eq;
 pub use self::matcher_eq::*;
 mod matcher_error;
 pub use self::matcher_error::*;
+mod matcher_option;
+pub use self::matcher_option::*;
 mod matcher_ord;
 pub use self::matcher_ord::*;
 mod matcher_result;

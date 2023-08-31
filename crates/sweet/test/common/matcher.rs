@@ -43,16 +43,24 @@ sweet! {
 
 	}
 
-		// test "result"{
-	// 	expect(Ok(())).to_be_ok()?;
-	// 	expect(Ok(())).not().to_be_err()?;
+	test "option"{
+		expect(Some(true)).to_be_some()?;
+		expect(Some(true)).not().to_be_none()?;
 
-	// 	expect(Err(anyhow!("foo"))).to_be_err()?;
-	// 	expect(Err(anyhow!("foo"))).not().to_be_ok()?;
+		expect(None::<bool>).to_be_none()?;
+		expect(None::<bool>).not().to_be_some()?;
+	}
 
-	// 	expect(Err(anyhow!("foo"))).to_be_err_str("foo")?;
-	// 	expect(Err(anyhow!("foo"))).not().to_be_err_str("foobar")?;
-	// }
+	test "result"{
+		expect(Ok(())).to_be_ok()?;
+		expect(Ok(())).not().to_be_err()?;
+
+		expect(Err(anyhow!("foo"))).to_be_err()?;
+		expect(Err(anyhow!("foo"))).not().to_be_ok()?;
+
+		expect(Err(anyhow!("foo"))).to_be_err_str("foo")?;
+		expect(Err(anyhow!("foo"))).not().to_be_err_str("foobar")?;
+	}
 
 
 }

@@ -16,7 +16,31 @@ pub use native::*;
 mod wasm;
 #[cfg(target_arch = "wasm32")]
 pub use wasm::*;
+#[cfg(feature = "bevy")]
+mod bevy;
+#[cfg(feature = "bevy")]
+pub use bevy::*;
 
+pub mod exports {
+	pub use anyhow::Result;
+	#[cfg(not(target_arch = "wasm32"))]
+	pub use futures::future::CatchUnwind;
+	#[cfg(not(target_arch = "wasm32"))]
+	pub use futures::FutureExt;
+	pub use inventory;
+	// #[cfg(target_arch = "wasm32")]
+	// pub use js_sys;
+	//is full exports like this bad form?
+	#[cfg(target_arch = "wasm32")]
+	pub use js_sys::*;
+	pub use serde_json;
+	#[cfg(target_arch = "wasm32")]
+	pub use wasm_bindgen;
+	#[cfg(target_arch = "wasm32")]
+	pub use wasm_bindgen::prelude::*;
+	#[cfg(target_arch = "wasm32")]
+	pub use wasm_bindgen_futures::future_to_promise;
+}
 
 #[cfg(target_arch = "wasm32")]
 // pub fn main() -> anyhow::Result<()> { wasm::sweet_wasm_entry() }
@@ -27,26 +51,4 @@ pub fn main() -> anyhow::Result<()> { wasm::sweet_wasm_entry() }
 pub fn main() -> anyhow::Result<()> {
 	use forky_fs::*;
 	RunTestsNativeCommand.run_with_cli_args()
-}
-
-
-pub mod exports {
-	pub use anyhow::Result;
-	#[cfg(not(target_arch = "wasm32"))]
-	pub use futures::future::CatchUnwind;
-	#[cfg(not(target_arch = "wasm32"))]
-	pub use futures::FutureExt;
-	pub use inventory;
-	//is full exports like this bad form?
-	// #[cfg(target_arch = "wasm32")]
-	// pub use js_sys;
-	#[cfg(target_arch = "wasm32")]
-	pub use js_sys::*;
-	pub use serde_json;
-	#[cfg(target_arch = "wasm32")]
-	pub use wasm_bindgen;
-	#[cfg(target_arch = "wasm32")]
-	pub use wasm_bindgen::prelude::*;
-	#[cfg(target_arch = "wasm32")]
-	pub use wasm_bindgen_futures::future_to_promise;
 }

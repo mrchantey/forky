@@ -5,3 +5,5 @@ mod common;
 mod native;
 // #[cfg(target_arch = "wasm32")]
 // mod wasm;
+#[cfg(feature = "bevy")]
+mod bevy;

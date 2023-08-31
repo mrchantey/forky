@@ -13,7 +13,7 @@ struct Pos {
 fn increment_score(mut score: ResMut<Score>) { score.0 += 1; }
 
 sweet! {
-	it "runs" {
+	test "resources" {
 		let mut app = App::new();
 		app.insert_resource(Score(0)).add_systems(Update,increment_score);
 
@@ -22,7 +22,7 @@ sweet! {
 	}
 
 
-	it "fooo" {
+	test "components" {
 		let mut app = App::new();
 		let id = app.world.spawn_empty().insert(Pos { x: 0., y: 1. }).id();
 		app.update();

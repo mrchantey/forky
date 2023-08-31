@@ -4,6 +4,11 @@ rustflags = "-A incomplete_features"
 ## Uncomment below to ignore the pesky warnings during development
 # rustflags = "-A dead_code -A unused_variables -A unused_imports -A unused_parens"
 
+# Bevy optimizations ##
+# will probably break cicd
+# [target.x86_64-pc-windows-msvc]
+# linker = "rust-lld.exe"
+# rustflags = ["-Zshare-generics=n"]
 
 ### WASM ###
 

@@ -2,10 +2,9 @@ set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
 crates := 'forky forky_cli forky_core forky_play forky_test sweet'
-# testable := 'forky_core forky_cli forky_fs forky_play sweet'
-testable := 'sweet forky_play forky_fs forky_cli forky_core'
 # features := '--features forky_play/shader_debug_internal'
-features := ''
+features := '--features sweet/bevy'
+# features := ''
 # forky_esp
 backtrace := '0'
 # backtrace := '1'
@@ -20,10 +19,7 @@ default:
 	done
 
 run crate example *args:
-	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} {{features}} {{args}}
-
-build-why crate example *args:
-	RUST_LOG=cargo::ops::cargo_rustc::fingerprint=info cargo build -p {{crate}} --example {{example}} {{args}}
+	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} {{args}}
 
 fix crate *args:
 	cargo fix --allow-dirty --lib -p {{crate}} {{args}}
@@ -66,9 +62,6 @@ expand crate example *args:
 expand-wasm crate example *args:
 	just expand {{crate}} {{example}} --target wasm32-unknown-unknown {{args}}
 
-example crate example *args:
-	just watch 'cargo run -p {{crate}} --example {{example}} {{args}}'
-
 @log argument:
 	echo {{argument}}
 
@@ -80,29 +73,42 @@ publish crate *args:
 	sleep 2
 
 publish-all:
-	just publish forky || true
-	just publish forky_core || true
-	just publish forky_fs || true
-	just publish forky_web || true
-	just publish forky_test || true
-	just publish sweet || true
-	just publish forky_cli || true
-	just publish forky_ai || true
-	just publish forky_play || true
+	just publish forky
+	just publish forky_core
+	just publish forky_fs
+	just publish forky_web
+	just publish forky_test
+	just publish sweet
+	just publish forky_cli
+	just publish forky_ai
+	just publish forky_play
 
 start crate: 
 	./target/debug/{{crate}}.exe
 
+ci:
+	just test-all
+	just test-all-wasm
+
 test-all *args:
-	for file in {{testable}}; do \
-		just test $file {{args}} --parallel; \
-	done
+	cargo run -p sweet			--example test_sweet 			--features sweet/bevy -- --parallel
+	cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
+	cargo run -p forky_cli	--example test_forky_cli	-- --parallel
+	cargo run -p forky_fs		--example test_forky_fs		-- --parallel
+	cargo run -p forky_core	--example test_forky_core	-- --parallel
 
 test crate *args:
-	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example test_{{crate}} -- {{args}}
+	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example test_{{crate}} {{features}} -- {{args}}
 
 test-w crate *args:
 	just watch just test {{crate}} -w {{args}}
+
+test-all-wasm *args:
+	just test-wasm sweet --cargo=--features=bevy {{args}}
+	just test-wasm forky_web {{args}}
+
+test-wasm crate *args:
+	just cli sweet -p {{crate}} --example test_{{crate}}_wasm --cargo=--features=bevy {{args}}
 
 docs:
 	cd docs && mdbook serve
@@ -138,7 +144,7 @@ run-wasm crate example:
 build-wasm crate example *args:
 	echo building
 	just copy-wasm-assets
-	cargo build -p {{crate}} --example {{example}} --target wasm32-unknown-unknown {{args}}
+	cargo build -p {{crate}} --example {{example}}--target wasm32-unknown-unknown {{args}}
 	RUST_BACKTRACE={{backtrace}} wasm-bindgen \
 	--out-dir ./html/wasm \
 	--out-name bindgen \
@@ -179,13 +185,6 @@ watch-css crate *args:
 
 lightning in out *args:
 	lightningcss {{in}} --bundle -m -o {{out}} {{args}}
-
-test-all-wasm *args:
-	just test-wasm sweet {{args}}
-	just test-wasm forky_web {{args}}
-
-test-wasm crate *args:
-	just cli sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
 
 ### ESP ###
 

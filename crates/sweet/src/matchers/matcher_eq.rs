@@ -23,5 +23,4 @@ where
 			self.value == *other
 		}
 	}
-
 }

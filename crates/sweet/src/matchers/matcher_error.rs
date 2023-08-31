@@ -5,31 +5,27 @@ use colorize::*;
 use std::fmt::Debug;
 
 impl<T> Matcher<T> {
-	// useful as seperate from to_be, preserves backtrace depth
-
-	pub fn assert_option_with_received<T2: Debug, T3: Debug>(
+	pub fn assert_option_with_received<T2>(
 		&self,
-		expected: &T2,
-		received: Option<T3>,
-	) -> Result<Option<T3>>
-	where
-		T3: Debug,
+		received: Option<T2>,
+	) -> Result<T2> {
+		self.disallow_negated()?;
+		received.ok_or_else(|| {
+			self.to_error_with_received_and_backtrace(&"Some", &"None", 1)
+		})
+	}
+
+	pub fn assert_option_with_received_negatable<T2>(
+		&self,
+		received: Option<T2>,
+	) -> Result<()>
 	{
-		match received {
-			Some(received) => {
-				if self.negated {
-					Err(self.to_error_with_received(expected, &received))
-				} else {
-					Ok(Some(received))
-				}
-			}
-			None => {
-				if self.negated {
-					Ok(None)
-				} else {
-					Err(self.to_error_with_received(expected, &received))
-				}
-			}
+		if self.negated && received.is_some() {
+			Err(self.to_error_with_received_and_backtrace(&"None", &"Some", 1))
+		} else if !self.negated && received.is_none() {
+			Err(self.to_error_with_received_and_backtrace(&"Some", &"None", 1))
+		} else {
+			Ok(())
 		}
 	}
 
@@ -46,6 +42,7 @@ impl<T> Matcher<T> {
 		}
 	}
 
+	/// Testing use only
 	pub fn to_error_with_received<T2: Debug, T3: Debug>(
 		&self,
 		expected: &T2,
@@ -74,9 +71,18 @@ impl<T> Matcher<T> {
 			.red();
 
 		let backtrace = file_context_depth(4 + backtrace_depth);
-		anyhow!(format!(
-			"Expected: {expected}\nReceived: {received}\n\n{backtrace}",
-		))
+		anyhow!("Expected: {expected}\nReceived: {received}\n\n{backtrace}",)
+	}
+	pub fn to_custom_error(err: &str) -> anyhow::Error {
+		Self::to_custom_error_with_backtrace(err, 1)
+	}
+
+	pub fn to_custom_error_with_backtrace(
+		err: &str,
+		backtrace_depth: usize,
+	) -> anyhow::Error {
+		let backtrace = file_context_depth(4 + backtrace_depth);
+		anyhow!("{err}\n\n{backtrace}")
 	}
 }
 
