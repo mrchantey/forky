@@ -9,6 +9,6 @@ sweet! {
 		div.set_inner_html("hello world");
 		Document::x_append_child(&div);
 
-		expect(window.into_html_element()).to_contain_text("hello world")?;
+		expect(window.sweet_into()).to_contain_text("hello world")?;
 	}
 }

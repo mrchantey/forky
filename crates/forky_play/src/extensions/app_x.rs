@@ -6,7 +6,7 @@ use extend::ext;
 use forky_core::RcCell;
 use std::time::Duration;
 
-#[ext(name = AppX)]
+#[ext]
 pub impl App {
 	fn __(&mut self) -> &mut Self { self }
 	fn forky_surrender_focus(&mut self) -> &mut Self {

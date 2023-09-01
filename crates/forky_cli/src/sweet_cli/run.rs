@@ -14,19 +14,17 @@ pub type AnyhowJoinHandle = JoinHandle<Result<(), Error>>;
 
 impl SweetCli {
 	#[tokio::main]
-	pub async fn run(&self) -> Result<()> {
-		terminal::clear();
-		terminal::print_forky();
-
+	pub async fn run(&self) -> Result<()> {		
 		if self.run_tests_mode.is_some() && !self.watch {
 			self.run_once().await
 		} else {
-			//run forever if watch mode OR don't run tests, ie interactive mode
+			// run in watch mode OR interactive
 			self.run_forever().await
 		}
 	}
-
+	
 	async fn run_once(&self) -> Result<()> {
+		terminal::print_forky();
 		let server = self.server.clone();
 		let _server = std::thread::spawn(move || -> Result<()> {
 			server.serve_with_options(None)
@@ -40,8 +38,10 @@ impl SweetCli {
 			Ok(())
 		}
 	}
-
+	
 	async fn run_forever(&self) -> Result<()> {
+		terminal::clear();
+		terminal::print_forky();
 		let server = self.server.clone();
 		let livereload = LiveReloadLayer::new();
 		let reload = livereload.reloader();

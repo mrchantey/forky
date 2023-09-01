@@ -3,10 +3,10 @@ use clap::Arg;
 use clap::ArgAction;
 use clap::Command;
 use colorize::*;
-use forky_core::StringX;
 use forky_fs::process::spawn_command_blocking;
 use forky_fs::FsWatcher;
 use forky_fs::Subcommand;
+
 
 pub struct WatchCommand;
 
@@ -56,17 +56,17 @@ impl Subcommand for WatchCommand {
 		let cmd = args
 			.get_many::<String>("cmd")
 			.unwrap()
-			.map(|s| s.to_str())
+			.map(|s| s.as_str())
 			.collect::<Vec<_>>();
 		let watches = args
 			.get_many::<String>("watch")
 			.unwrap_or_default()
-			.map(|s| s.to_str())
+			.map(|s| s.as_str())
 			.collect::<Vec<_>>();
 		let ignores = args
 			.get_many::<String>("ignore")
 			.unwrap_or_default()
-			.map(|s| s.to_str())
+			.map(|s| s.as_str())
 			.collect::<Vec<_>>();
 
 		let watcher = FsWatcher::default()

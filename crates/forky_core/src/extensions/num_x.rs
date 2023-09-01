@@ -1,7 +1,7 @@
 use extend::ext;
 use std::i32;
 
-#[ext(name = OptI32X)]
+#[ext]
 pub impl Option<&i32> {
 	fn or_default(&self) -> &i32 {
 		match &self {

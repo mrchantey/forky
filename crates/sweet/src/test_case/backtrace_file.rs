@@ -69,7 +69,7 @@ impl<'a> BacktraceFile<'a> {
 					&format!("{}|", " ".repeat(2 + LINE_BUFFER_LEN)).faint(),
 				);
 				output.push_str(&" ".repeat(col_no));
-				output.push_str_line(String::from("^").red().to_str());
+				output.push_str_line(String::from("^").red().as_str());
 			}
 		}
 		let prefix = String::from("at").faint();

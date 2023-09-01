@@ -3,7 +3,7 @@ use extend::ext;
 use std::fmt::Display;
 use std::slice::SliceIndex;
 
-#[ext(name = OrderableVecExt)]
+#[ext(name = VecXOrd)]
 pub impl<T: Ord> Vec<T> {
 	fn sorted(mut self) -> Self {
 		self.sort();
@@ -25,7 +25,7 @@ pub impl<T: Default + Clone> Vec<T> {
 }
 
 
-#[ext(name = GenericVecExt)]
+#[ext(name = VecX)]
 pub impl<T> Vec<T> {
 	fn _first(&self) -> &T { self.first().unwrap() }
 	fn _pop(&mut self) -> T { self.pop().unwrap() }

@@ -48,7 +48,7 @@ Matchers are easy to extend, particulary using the `extend` crate.
 # #[derive(Debug)]
 struct Awesomeness(u32);
 
-#[ext(name)]
+#[ext]
 pub impl Matcher<Awesomeness> {
 	fn to_be_more_awesome_than(&self, other:Awesomeness) -> Result<()> {
 		let outcome = self.0 > other.0;

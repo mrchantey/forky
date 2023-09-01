@@ -24,24 +24,24 @@ impl GetFramebuffer for XrWebGlLayer {
 // 	}
 // }
 
-#[ext(name = AppX)]
+#[ext]
 pub impl App {
 	/// Chaining helper, returns self
 	fn __(&mut self) -> &mut Self { self }
 	/// Custom runner that updates on the required XR requestAnimationFrame
 	fn run_webxr(self) { bevy_utils::run_bevy_webxr(self); }
 }
-#[ext(name = WorldX)]
+#[ext]
 pub impl World {
 	/// Chaining helper, returns self
 	fn __(&mut self) -> &mut Self { self }
 }
-#[ext(name = EntityCommandsX)]
+#[ext]
 pub impl<'w,'s,'a> EntityCommands<'w,'s,'a> {
 	/// Chaining helper, returns self
 	fn __(&mut self) -> &mut Self { self }
 }
-#[ext(name = Mat4X)]
+#[ext]
 pub impl Mat4 {
 	fn is_equal(&self, arr: &Vec<f32>, eps: f32) -> bool {
 		mat4_equal(self, arr, eps)
@@ -57,7 +57,7 @@ pub impl Mat4 {
 	}
 }
 
-#[ext(name = Vec4X)]
+#[ext]
 pub impl Vec4 {
 	fn is_equal(&self, arr: &Vec<f32>, eps: f32) -> bool {
 		vec4_equal(self, arr, eps)
@@ -65,7 +65,7 @@ pub impl Vec4 {
 }
 
 #[rustfmt::skip]
-#[ext(name = PerspectiveProjectionX)]
+#[ext]
 pub impl PerspectiveProjection {
 	fn is_equal(&self, other: &PerspectiveProjection) -> bool {
 		f32_equal(self.fov, other.fov, EPSILON_POJECTION)
@@ -74,7 +74,7 @@ pub impl PerspectiveProjection {
 			&& f32_equal(self.far, other.far, EPSILON_POJECTION)
 	}
 }
-#[ext(name = ViewportX)]
+#[ext]
 pub impl Viewport {
 	fn is_equal(&self, other: &Viewport) -> bool {
 		self.physical_position == other.physical_position
@@ -83,7 +83,7 @@ pub impl Viewport {
 			&& f32_equal(self.depth.end, other.depth.end, EPSILON_POJECTION)
 	}
 }
-#[ext(name = ArrayX)]
+#[ext]
 pub impl js_sys::Array {
 	fn to_vec_typed<T>(&self) -> Vec<T>
 	where
@@ -92,7 +92,7 @@ pub impl js_sys::Array {
 		self.iter().map(|x| x.into()).collect::<Vec<T>>()
 	}
 }
-#[ext(name = JsValueX)]
+#[ext]
 pub impl JsValue {
 	fn into_typed<T>(&self) -> T
 	where
