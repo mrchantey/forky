@@ -3,16 +3,6 @@ use anyhow::Result;
 use forky_web::*;
 use web_sys::HtmlElement;
 
-// impl<T> SweetInto<HtmlElement> for Option<T>
-// where
-// 	T: SweetInto<HtmlElement>,
-// {
-// 	fn sweet_into(&self) -> HtmlElement {
-// 		self.as_ref().unwrap().sweet_into()
-// 	}
-// }
-
-//ie for window()
 impl<F, T> SweetInto<HtmlElement> for F
 where
 	F: Fn() -> Option<T>,
@@ -20,20 +10,6 @@ where
 {
 	fn sweet_into(&self) -> HtmlElement { self().unwrap().sweet_into() }
 }
-// impl<T> SweetInto<HtmlElement> for fn() -> Option<T>
-// where
-// 	T: SweetInto<HtmlElement>,
-// {
-// 	fn sweet_into(&self) -> HtmlElement {
-// 		self().unwrap().sweet_into()
-// 	}
-// }
-// impl<T> SweetInto<HtmlElement> for T
-// where
-// 	T: SweetInto<HtmlElement>,
-// {
-// 	fn sweet_into(&self) -> HtmlElement { (*self).sweet_into() }
-// }
 
 impl SweetInto<HtmlElement> for web_sys::HtmlElement {
 	fn sweet_into(&self) -> HtmlElement { self.clone() }
@@ -106,3 +82,29 @@ where
 }
 
 impl<T> MatcherHtml<T> for Matcher<T> where T: SweetInto<HtmlElement> {}
+
+// impl<T> SweetInto<HtmlElement> for fn() -> Option<T>
+// where
+// 	T: SweetInto<HtmlElement>,
+// {
+// 	fn sweet_into(&self) -> HtmlElement {
+// 		self().unwrap().sweet_into()
+// 	}
+// }
+// impl<T> SweetInto<HtmlElement> for T
+// where
+// 	T: SweetInto<HtmlElement>,
+// {
+// 	fn sweet_into(&self) -> HtmlElement { (*self).sweet_into() }
+// }
+
+// impl<T> SweetInto<HtmlElement> for Option<T>
+// where
+// 	T: SweetInto<HtmlElement>,
+// {
+// 	fn sweet_into(&self) -> HtmlElement {
+// 		self.as_ref().unwrap().sweet_into()
+// 	}
+// }
+
+//ie for window()
