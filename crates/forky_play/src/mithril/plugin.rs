@@ -12,6 +12,7 @@ impl Plugin for MithrilPlugin {
 				debug_plugin: plugins::ForkyDebugPlugin {
 					debug_cameras: false,
 					debug_grid: false,
+					..default()
 				},
 				tool_plugin: tool::ToolPlugin {
 					settings: tool::InteractionSettings {

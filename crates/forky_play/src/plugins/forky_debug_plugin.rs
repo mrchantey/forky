@@ -1,3 +1,4 @@
+use super::CustomDefaultPlugin;
 use crate::*;
 use bevy::prelude::*;
 use bevy::winit::WinitSettings;
@@ -7,9 +8,14 @@ use bevy_inspector_egui::quick::WorldInspectorPlugin;
 pub struct ForkyDebugPlugin {
 	pub debug_cameras: bool,
 	pub debug_grid: bool,
+	pub custom_default: CustomDefaultPlugin,
 }
 
 impl ForkyDebugPlugin {
+	pub fn without_custom_canvas(mut self) -> Self {
+		self.custom_default.custom_canvas = false;
+		self
+	}
 	pub fn without_debug_cameras(mut self) -> Self {
 		self.debug_cameras = false;
 		self
@@ -25,6 +31,7 @@ impl Default for ForkyDebugPlugin {
 		Self {
 			debug_grid: true,
 			debug_cameras: true,
+			custom_default: CustomDefaultPlugin::default(),
 		}
 	}
 }
@@ -34,7 +41,7 @@ impl Plugin for ForkyDebugPlugin {
 		app.__()
 			.insert_resource(Msaa::default())
 			// .insert_resource(ClearColor(Color::NAVY))
-			.add_plugins(plugins::CustomDefaultPlugin)
+			.add_plugins(self.custom_default.clone())
 			.add_plugins(input::InputPlugin)
 			.add_plugins(camera::CameraPlugin)
 			.add_plugins(materials::ForkyMaterialPlugin)

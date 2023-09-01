@@ -2,6 +2,12 @@ use super::*;
 use crate::*;
 use bevy::{input::mouse::*, prelude::*};
 
+
+#[cfg(not(target_arch = "wasm32"))]
+pub const SCROLL_SPEED: f32 = 0.1;
+#[cfg(target_arch = "wasm32")]
+pub const SCROLL_SPEED: f32 = 0.00001;
+
 pub fn mouse_controller(
 	mut ev_motion: EventReader<MouseMotion>,
 	mut ev_scroll: EventReader<MouseWheel>,
@@ -23,7 +29,7 @@ pub fn mouse_controller(
 		}
 
 		for ev in ev_scroll.iter() {
-			let scalar = ev.y * controller.translate_speed * 0.1;
+			let scalar = ev.y * controller.translate_speed * SCROLL_SPEED;
 			if controller.local_axis {
 				let axis = tran.forward();
 				tran.translate_local(axis * scalar);

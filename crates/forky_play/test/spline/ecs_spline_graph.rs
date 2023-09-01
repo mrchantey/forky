@@ -8,7 +8,7 @@ sweet! {
 		let mut app = App::new();
 
 		app.__()
-			.add_plugins(plugins::CustomDefaultPlugin)
+			.add_plugins(plugins::CustomDefaultPlugin::default())
 			.add_plugins(materials::ForkyMaterialPlugin)
 			.add_plugins(ecs_graph::EcsSplineGraphPlugin)
 			.add_systems(Startup, setup)

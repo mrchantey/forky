@@ -6,7 +6,18 @@ use bevy::window::PresentMode;
 use bevy::window::WindowResolution;
 use std::time::Duration;
 
-pub struct CustomDefaultPlugin;
+#[derive(Debug, Clone)]
+pub struct CustomDefaultPlugin {
+	pub custom_canvas: bool,
+}
+
+impl Default for CustomDefaultPlugin {
+	fn default() -> Self {
+		Self {
+			custom_canvas: true,
+		}
+	}
+}
 
 impl Plugin for CustomDefaultPlugin {
 	fn build(&self, app: &mut App) {
@@ -33,10 +44,14 @@ impl Plugin for CustomDefaultPlugin {
 							// winit
 							present_mode: PresentMode::AutoVsync,
 							position: WindowPosition::At(IVec2::new(-1440, 0)),
-							canvas: Some(
-								"canvas[data-bevy=\"primary_window\"]"
-									.to_string(),
-							),
+							canvas: if self.custom_canvas {
+								Some(
+									"canvas[data-bevy=\"primary_window\"]"
+										.to_string(),
+								)
+							} else {
+								None
+							},
 							..Default::default()
 						}),
 						..Default::default()
