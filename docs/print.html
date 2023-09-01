@@ -520,7 +520,7 @@ expect(page).to_contain_text(&quot;sweet as!&quot;)?;
 </span><span class="boring">#[derive(Debug)]
 </span>struct Awesomeness(u32);
 
-#[ext(name)]
+#[ext]
 pub impl Matcher&lt;Awesomeness&gt; {
 	fn to_be_more_awesome_than(&amp;self, other:Awesomeness) -&gt; Result&lt;()&gt; {
 		let outcome = self.0 &gt; other.0;
