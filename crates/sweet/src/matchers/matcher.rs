@@ -14,6 +14,9 @@ impl<T> Matcher<T> {
 			negated: false,
 		}
 	}
+	pub fn map<T2>(&self, func: impl FnOnce(&T) -> T2) -> Matcher<T2> {
+		Matcher::new(func(&self.value))
+	}
 	pub fn disallow_negated(&self) -> Result<()> {
 		if self.negated {
 			Err(Self::to_custom_error("Unsupported: Negation not supported for this matcher, please remove `.not()`"))

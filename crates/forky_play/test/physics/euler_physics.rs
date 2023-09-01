@@ -25,7 +25,7 @@ sweet! {
 		expect(app.world.get::<Transform>(player_id).unwrap().translation.x)
 			.to_be(0.)?;
 
-		app.update_with_tick(1.);
+		app.update_with_secs(1);
 		expect(app.world.get::<Transform>(player_id).unwrap().translation.x)
 		.to_be(1.)?;
 	}
@@ -40,7 +40,7 @@ sweet! {
 		expect(app.world.get::<Transform>(player_id).unwrap().translation.x)
 			.to_be(0.)?;
 
-		app.update_with_tick(1.);
+		app.update_with_secs(1);
 		expect(app.world.get::<Transform>(player_id).unwrap().translation.x)
 			.to_be(0.5)?;
 	}
@@ -53,7 +53,7 @@ sweet! {
 			Velocity::default(),
 		)).id();
 
-		app.update_with_tick(2.);
+		app.update_with_secs(2);
 		expect(app.world.get::<Velocity>(player_id).unwrap().x)
 			.to_be(1.)?;
 		expect(app.world.get::<Transform>(player_id).unwrap().translation.x)
@@ -68,9 +68,9 @@ sweet! {
 		)).id();
 
 		// for i in 0..20{
-		// 	app.update_with_tick(0.1);
+		// 	app.update_with_secs(0.1);
 		// }
-		app.update_with_tick(2.);
+		app.update_with_secs(2);
 		expect(app.world.get::<Velocity>(player_id).unwrap().x)
 			.to_be(2.)?;
 		expect(app.world.get::<Transform>(player_id).unwrap().translation.x)

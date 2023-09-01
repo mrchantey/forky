@@ -35,7 +35,7 @@ sweet! {
 		// expect(app.world.get::<Transform>(player_id).unwrap().translation.y)
 		// .to_be(1.)?;
 
-		// app.update_with_tick(0.1);
+		// app.update_with_millis(100);
 		// expect(app.world.get::<Transform>(player_id).unwrap().translation.y)
 		// .to_be(0.9703)?;
 	}
