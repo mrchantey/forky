@@ -5,6 +5,12 @@ use bevy::utils::Instant;
 
 #[ext(name=AppExtSweet)]
 pub impl App {
+	fn run_once(&mut self)->&mut Self{
+		self.finish();
+		self.update();
+		self
+	}
+
 	fn insert_test_timer(&mut self) -> &mut Self {
 		let mut time = Time::default();
 		let start_instant = Instant::now();

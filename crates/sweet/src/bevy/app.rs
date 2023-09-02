@@ -19,6 +19,15 @@ impl SweetInto<Entity> for EntityMut<'_> {
 
 #[ext]
 pub impl Matcher<&App> {
+	fn to_have_entity(
+		&self,
+		entity: impl SweetInto<Entity>,
+	) -> Result<()> {
+		let entity = entity.sweet_into();
+		let received = self.value.world.get_entity(entity);
+		self.assert_option_with_received_negatable(received)
+	}
+	
 	fn to_have_component<T: Component>(
 		&self,
 		entity: impl SweetInto<Entity>,

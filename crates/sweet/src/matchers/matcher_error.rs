@@ -10,20 +10,20 @@ impl<T> Matcher<T> {
 		received: Option<T2>,
 	) -> Result<T2> {
 		self.disallow_negated()?;
-		received.ok_or_else(|| {
-			self.to_error_with_received_and_backtrace(&"Some", &"None", 1)
-		})
+		match received {
+			Some(r) => Ok(r),
+			None => Err(self.to_error_with_received(&"Some", &"None")),
+		}
 	}
 
 	pub fn assert_option_with_received_negatable<T2>(
 		&self,
 		received: Option<T2>,
-	) -> Result<()>
-	{
+	) -> Result<()> {
 		if self.negated && received.is_some() {
-			Err(self.to_error_with_received_and_backtrace(&"None", &"Some", 1))
+			Err(self.to_error_with_received(&"None", &"Some"))
 		} else if !self.negated && received.is_none() {
-			Err(self.to_error_with_received_and_backtrace(&"Some", &"None", 1))
+			Err(self.to_error_with_received(&"Some", &"None"))
 		} else {
 			Ok(())
 		}
