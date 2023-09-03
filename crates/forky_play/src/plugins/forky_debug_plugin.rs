@@ -12,8 +12,8 @@ pub struct ForkyDebugPlugin {
 }
 
 impl ForkyDebugPlugin {
-	pub fn without_custom_canvas(mut self) -> Self {
-		self.custom_default.custom_canvas = false;
+	pub fn with_custom_canvas(mut self) -> Self {
+		self.custom_default.custom_canvas = true;
 		self
 	}
 	pub fn without_debug_cameras(mut self) -> Self {

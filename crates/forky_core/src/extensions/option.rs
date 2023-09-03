@@ -12,3 +12,21 @@ pub fn option_to_result<T>(option: Option<T>) -> Result<T> {
 		None => Err(anyhow!("Expected Some")),
 	}
 }
+
+#[ext]
+pub impl Option<bool> {
+	fn is_true(&self) -> bool {
+		if let Some(value) = self {
+			*value
+		} else {
+			false
+		}
+	}
+	fn is_none_or_false(&self) -> bool {
+		if let Some(value) = self {
+			!value
+		} else {
+			true
+		}
+	}
+}

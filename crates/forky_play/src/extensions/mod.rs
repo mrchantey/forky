@@ -8,6 +8,8 @@ mod color;
 pub use self::color::*;
 mod entity_builder;
 pub use self::entity_builder::*;
+mod map;
+pub use self::map::*;
 mod material;
 pub use self::material::*;
 mod physics;

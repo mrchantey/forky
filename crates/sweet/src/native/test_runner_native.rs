@@ -33,6 +33,7 @@ impl TestRunnerNative {
 		let results = if config.parallel {
 			run_group_parallel(to_run, &config).await
 		} else {
+			// TestRunner::run_group_series::<SuiteLoggerDefault, TestCaseNative>(
 			TestRunner::run_group_series::<SuiteLoggerNative, TestCaseNative>(
 				to_run, &config,
 			)

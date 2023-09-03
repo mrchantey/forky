@@ -1,7 +1,5 @@
 use bevy::{app::AppExit, prelude::*};
 // use enigo::*;
-use std::{thread, time};
-
 
 pub fn spawn_camera_at_position(position: Vec3) -> impl FnMut(Commands) {
 	move |mut commands| {
@@ -60,8 +58,6 @@ pub fn create_exit_after_system(
 }
 
 pub fn exit_system(mut exit: EventWriter<AppExit>) {
-	thread::sleep(time::Duration::from_secs(3));
-
 	exit.send(AppExit);
 }
 

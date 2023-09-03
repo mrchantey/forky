@@ -14,7 +14,7 @@ pub struct CustomDefaultPlugin {
 impl Default for CustomDefaultPlugin {
 	fn default() -> Self {
 		Self {
-			custom_canvas: true,
+			custom_canvas: false,
 		}
 	}
 }

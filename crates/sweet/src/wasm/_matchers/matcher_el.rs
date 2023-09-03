@@ -3,39 +3,38 @@ use anyhow::Result;
 use forky_web::*;
 use web_sys::HtmlElement;
 
-impl<F, T> SweetInto<HtmlElement> for F
+impl<F, T> SweetBorrow<HtmlElement> for F
 where
 	F: Fn() -> Option<T>,
-	T: SweetInto<HtmlElement>,
+	T: SweetBorrow<HtmlElement>,
 {
-	fn sweet_into(&self) -> HtmlElement { self().unwrap().sweet_into() }
+	fn sweet_borrow(&self) -> HtmlElement { self().unwrap().sweet_borrow() }
 }
 
-impl SweetInto<HtmlElement> for web_sys::HtmlElement {
-	fn sweet_into(&self) -> HtmlElement { self.clone() }
+impl SweetBorrow<HtmlElement> for web_sys::HtmlElement {
+	fn sweet_borrow(&self) -> HtmlElement { self.clone() }
 }
-impl SweetInto<HtmlElement> for web_sys::Document {
-	fn sweet_into(&self) -> HtmlElement { self.body().unwrap() }
+impl SweetBorrow<HtmlElement> for web_sys::Document {
+	fn sweet_borrow(&self) -> HtmlElement { self.body().unwrap() }
 }
 
-impl SweetInto<HtmlElement> for web_sys::Window {
-	fn sweet_into(&self) -> HtmlElement {
-		self.document().unwrap().sweet_into()
+impl SweetBorrow<HtmlElement> for web_sys::Window {
+	fn sweet_borrow(&self) -> HtmlElement {
+		self.document().unwrap().sweet_borrow()
 	}
 }
-impl SweetInto<HtmlElement> for web_sys::HtmlIFrameElement {
-	fn sweet_into(&self) -> HtmlElement {
-		self.content_document().unwrap().sweet_into()
+impl SweetBorrow<HtmlElement> for web_sys::HtmlIFrameElement {
+	fn sweet_borrow(&self) -> HtmlElement {
+		self.content_document().unwrap().sweet_borrow()
 	}
 }
 
 pub trait MatcherHtml<T>: MatcherTrait<T>
-where
-	T: SweetInto<HtmlElement>,
+where	T: SweetBorrow<HtmlElement>,
 {
 	fn get(&self, selector: &str) -> Result<Matcher<HtmlElement>> {
 		let matcher = self.get_matcher();
-		let parent = matcher.value.sweet_into();
+		let parent = matcher.value.sweet_borrow();
 		// let expected = format!(
 		// 	"element {} to contain selector '{selector}'",
 		// 	parent.tag_name()
@@ -49,17 +48,17 @@ where
 	fn to_contain_text(&self, other: &str) -> Result<()> {
 		let receive = self
 			.get_value()
-			.sweet_into()
+			.sweet_borrow()
 			.text_content()
 			.unwrap_or_default();
 		self.contains(other, &receive, "text")
 	}
 	fn to_contain_visible_text(&self, other: &str) -> Result<()> {
-		let receive = self.get_value().sweet_into().inner_text();
+		let receive = self.get_value().sweet_borrow().inner_text();
 		self.contains(other, &receive, "visible text")
 	}
 	fn to_contain_html(&self, other: &str) -> Result<()> {
-		let receive = self.get_value().sweet_into().inner_html();
+		let receive = self.get_value().sweet_borrow().inner_html();
 		self.contains(other, &receive, "html")
 	}
 	fn contains(
@@ -81,29 +80,29 @@ where
 	}
 }
 
-impl<T> MatcherHtml<T> for Matcher<T> where T: SweetInto<HtmlElement> {}
+impl<T> MatcherHtml<T> for Matcher<T> where T: SweetBorrow<HtmlElement> {}
 
-// impl<T> SweetInto<HtmlElement> for fn() -> Option<T>
+// impl<T> SweetBorrow<HtmlElement> for fn() -> Option<T>
 // where
-// 	T: SweetInto<HtmlElement>,
+// 	T: SweetBorrow<HtmlElement>,
 // {
-// 	fn sweet_into(&self) -> HtmlElement {
-// 		self().unwrap().sweet_into()
+// 	fn sweet_borrow(&self) -> HtmlElement {
+// 		self().unwrap().sweet_borrow()
 // 	}
 // }
-// impl<T> SweetInto<HtmlElement> for T
+// impl<T> SweetBorrow<HtmlElement> for T
 // where
-// 	T: SweetInto<HtmlElement>,
+// 	T: SweetBorrow<HtmlElement>,
 // {
-// 	fn sweet_into(&self) -> HtmlElement { (*self).sweet_into() }
+// 	fn sweet_borrow(&self) -> HtmlElement { (*self).sweet_borrow() }
 // }
 
-// impl<T> SweetInto<HtmlElement> for Option<T>
+// impl<T> SweetBorrow<HtmlElement> for Option<T>
 // where
-// 	T: SweetInto<HtmlElement>,
+// 	T: SweetBorrow<HtmlElement>,
 // {
-// 	fn sweet_into(&self) -> HtmlElement {
-// 		self.as_ref().unwrap().sweet_into()
+// 	fn sweet_borrow(&self) -> HtmlElement {
+// 		self.as_ref().unwrap().sweet_borrow()
 // 	}
 // }
 

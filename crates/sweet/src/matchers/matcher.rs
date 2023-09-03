@@ -42,16 +42,20 @@ impl<T> Matcher<T> {
 pub trait MatcherTrait<T> {
 	fn get_matcher(&self) -> &Matcher<T>;
 	fn get_matcher_mut(&mut self) -> &mut Matcher<T>;
+	fn get_matcher_owned(self) -> Matcher<T>;
 	fn get_value(&self) -> &T;
 	fn get_value_mut(&mut self) -> &mut T;
+	fn get_value_owned(self) -> T;
 	fn get_negated(&self) -> bool;
 	fn set_negated(&mut self, value: bool);
 }
 impl<T> MatcherTrait<T> for Matcher<T> {
+	fn get_matcher_owned(self) -> Matcher<T> { self }
 	fn get_matcher(&self) -> &Matcher<T> { self }
 	fn get_matcher_mut(&mut self) -> &mut Matcher<T> { self }
 	fn get_value(&self) -> &T { &self.value }
 	fn get_value_mut(&mut self) -> &mut T { &mut self.value }
+	fn get_value_owned(self) -> T { self.value }
 	fn get_negated(&self) -> bool { self.negated }
 	fn set_negated(&mut self, value: bool) { self.negated = value; }
 }

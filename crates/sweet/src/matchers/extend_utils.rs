@@ -1,5 +1,8 @@
 pub trait SweetInto<T> {
-	fn sweet_into(&self) -> T;
+	fn sweet_into(self) -> T;
+}
+pub trait SweetBorrow<T> {
+	fn sweet_borrow(&self) -> T;
 }
 
 // impl<T,U> SweetInto<U> for T
