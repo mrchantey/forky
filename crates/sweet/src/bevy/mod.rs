@@ -4,6 +4,8 @@ mod app_x;
 pub use self::app_x::*;
 mod extend_utils;
 pub use self::extend_utils::*;
+mod quat;
+pub use self::quat::*;
 mod vec2;
 pub use self::vec2::*;
 mod vec3;
