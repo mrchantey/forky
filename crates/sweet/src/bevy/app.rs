@@ -4,12 +4,9 @@ use ::bevy::prelude::*;
 use anyhow::Result;
 use extend::ext;
 
-impl SweetInto<Entity> for Entity {
-	fn sweet_into(self) -> Entity { self }
-}
-impl SweetInto<Entity> for &Entity {
-	fn sweet_into(self) -> Entity { (*self).clone() }
-}
+// impl SweetInto<Entity> for &Entity {
+// 	fn sweet_into(self) -> Entity { (*self).clone() }
+// }
 impl SweetInto<Entity> for &EntityMut<'_> {
 	fn sweet_into(self) -> Entity { self.id() }
 }

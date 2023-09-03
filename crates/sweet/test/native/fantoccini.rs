@@ -6,7 +6,7 @@ use sweet::*;
 // example from fantoccini README https://crates.io/crates/fantoccini
 
 sweet! {
-	it nonSend "works" {
+	it skip nonSend "works" {
 		let mut chromedriver = Command::new("chromedriver")
 			.args(["--silent", "--port=9515"])
 			.spawn()?;

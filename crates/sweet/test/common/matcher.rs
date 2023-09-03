@@ -3,6 +3,13 @@ use sweet::*;
 
 
 // fn foo() {}
+#[derive(Clone)]
+struct NewType<T>(pub T);
+
+impl<T> std::ops::Deref for NewType<T> {
+	type Target = T;
+	fn deref(&self) -> &Self::Target { &self.0 }
+}
 
 sweet! {
 
@@ -24,6 +31,10 @@ sweet! {
 		expect(0.).to_be_close_to(0.)?;
 		expect(-0.999).to_be_close_to(-1.)?;
 		expect(0.9).not().to_be_close_to(1.01)?;
+		expect(&NewType(0.0_f64)).to_be_close_to(0.)?;
+
+		expect(0.0_f32).to_be_close_to(0.)?;
+		expect(&NewType(0.0_f32)).to_be_close_to(0.)?;
 	}
 	test "order"{
 		expect(0).to_be_greater_or_equal_to(0)?;

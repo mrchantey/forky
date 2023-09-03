@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use sweet::*;
 
 
-#[derive(Debug, Clone, Copy, PartialEq, Deref,Component)]
+#[derive(Debug, Clone, Copy, PartialEq, Deref, Component)]
 struct Foo(pub Vec3);
 
 sweet! {
@@ -19,6 +19,5 @@ sweet! {
 		let entity = app.world.spawn(Foo(Vec3::ZERO)).id();
 		expect(&app).component::<Foo>(entity)?
 			.to_be_close_to(Vec3::ZERO)?;
-
 	}
 }

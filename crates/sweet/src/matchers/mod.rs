@@ -1,7 +1,7 @@
+mod close_to;
+pub use self::close_to::*;
 mod extend_utils;
 pub use self::extend_utils::*;
-mod float_utils;
-pub use self::float_utils::*;
 mod matcher;
 pub use self::matcher::*;
 mod matcher_bool;
