@@ -1,33 +1,7 @@
 use crate::*;
 use anyhow::Result;
 use forky_web::*;
-use web_sys::HtmlElement;
-
-impl<F, T> SweetBorrow<HtmlElement> for F
-where
-	F: Fn() -> Option<T>,
-	T: SweetBorrow<HtmlElement>,
-{
-	fn sweet_borrow(&self) -> HtmlElement { self().unwrap().sweet_borrow() }
-}
-
-impl SweetBorrow<HtmlElement> for web_sys::HtmlElement {
-	fn sweet_borrow(&self) -> HtmlElement { self.clone() }
-}
-impl SweetBorrow<HtmlElement> for web_sys::Document {
-	fn sweet_borrow(&self) -> HtmlElement { self.body().unwrap() }
-}
-
-impl SweetBorrow<HtmlElement> for web_sys::Window {
-	fn sweet_borrow(&self) -> HtmlElement {
-		self.document().unwrap().sweet_borrow()
-	}
-}
-impl SweetBorrow<HtmlElement> for web_sys::HtmlIFrameElement {
-	fn sweet_borrow(&self) -> HtmlElement {
-		self.content_document().unwrap().sweet_borrow()
-	}
-}
+use web_sys::*;
 
 pub trait MatcherHtml<T>: MatcherTrait<T>
 where	T: SweetBorrow<HtmlElement>,
@@ -81,29 +55,3 @@ where	T: SweetBorrow<HtmlElement>,
 }
 
 impl<T> MatcherHtml<T> for Matcher<T> where T: SweetBorrow<HtmlElement> {}
-
-// impl<T> SweetBorrow<HtmlElement> for fn() -> Option<T>
-// where
-// 	T: SweetBorrow<HtmlElement>,
-// {
-// 	fn sweet_borrow(&self) -> HtmlElement {
-// 		self().unwrap().sweet_borrow()
-// 	}
-// }
-// impl<T> SweetBorrow<HtmlElement> for T
-// where
-// 	T: SweetBorrow<HtmlElement>,
-// {
-// 	fn sweet_borrow(&self) -> HtmlElement { (*self).sweet_borrow() }
-// }
-
-// impl<T> SweetBorrow<HtmlElement> for Option<T>
-// where
-// 	T: SweetBorrow<HtmlElement>,
-// {
-// 	fn sweet_borrow(&self) -> HtmlElement {
-// 		self.as_ref().unwrap().sweet_borrow()
-// 	}
-// }
-
-//ie for window()

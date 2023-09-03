@@ -4,3 +4,5 @@ mod matcher_el;
 pub use self::matcher_el::*;
 mod matcher_end_to_end;
 pub use self::matcher_end_to_end::*;
+mod sweet_into;
+pub use self::sweet_into::*;

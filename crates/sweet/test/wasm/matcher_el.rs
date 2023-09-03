@@ -19,18 +19,18 @@ fn create_view() {
 sweet! {
 	test "expect window" {
 		create_view();
-		expect(window).to_contain_text("This is a headingThis is a paragraph")?;
-		expect(window).not().to_contain_text("foobar")?;
-		expect(window).to_contain_text("This is hidden")?;
-		expect(window).not().to_contain_visible_text("This is hidden")?;
-		expect(window).to_contain_html("<div><h1>This is a heading</h1>")?;
+		expect(window()).to_contain_text("This is a headingThis is a paragraph")?;
+		expect(window()).not().to_contain_text("foobar")?;
+		expect(window()).to_contain_text("This is hidden")?;
+		expect(window()).not().to_contain_visible_text("This is hidden")?;
+		expect(window()).to_contain_html("<div><h1>This is a heading</h1>")?;
 	}
 	test "get" {
 		// expect(window).not().get("div")?;
 		// expect(window).get("div")?;
 		create_view();
-		expect(window).get("div")?;
-		expect(window).get("h1")?
+		expect(window()).get("div")?;
+		expect(window()).get("h1")?
 			.to_contain_text("This is a heading")?;
 	}
 
@@ -42,7 +42,7 @@ sweet! {
 
 		// expect(window).not().get("div")?;
 
-		expect(window).poll(|w|w.get("div")).await?
+		expect(window()).poll(|w|w.get("div")).await?
 			.to_contain_text("hello world!")?;
 		// .not().to_contain_text("hello world!")?;
 	}

@@ -1,7 +1,5 @@
 mod close_to;
 pub use self::close_to::*;
-mod extend_utils;
-pub use self::extend_utils::*;
 mod matcher;
 pub use self::matcher::*;
 mod matcher_bool;
@@ -20,3 +18,5 @@ mod matcher_result;
 pub use self::matcher_result::*;
 mod matcher_str;
 pub use self::matcher_str::*;
+mod sweet_into;
+pub use self::sweet_into::*;
