@@ -18,7 +18,7 @@ pub enum RunTestsMode {
 }
 
 const WEBDRIVER_PORT: u16 = 7780;
-const WEBDRIVER_CONNECT_TIMEOUT: Duration = Duration::from_secs(1);
+const WEBDRIVER_CONNECT_TIMEOUT: Duration = Duration::from_secs(5);
 
 
 async fn get_client(mode: RunTestsMode) -> Result<Client> {
@@ -40,7 +40,7 @@ async fn get_client(mode: RunTestsMode) -> Result<Client> {
 		WEBDRIVER_CONNECT_TIMEOUT,
 	)
 	.await
-	.expect("Error - Could not connect to chromedriver\n");
+	.expect("Error - could not connect to chromedriver\n");
 	Ok(client)
 }
 
@@ -56,7 +56,7 @@ impl SweetCli {
 			.args(["--silent", &format!("--port={WEBDRIVER_PORT}")])
 			.spawn()
 			.expect(
-				"\nfailed to run chromedriver, is it installed and on path?\n",
+				"\nError - failed to run chromedriver, is it installed and on path?\n",
 			);
 
 		let matches = self
