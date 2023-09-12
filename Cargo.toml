@@ -10,9 +10,9 @@ members = [
 	"crates/forky_core",
 	"crates/forky_esp",
 	"crates/forky_play",
-	"crates/forky_test",
 	"crates/forky_web",
 	"crates/sweet",
+	"crates/sweet/macros",
 ]
 exclude = ["crates/bevy_webxr"]
 
@@ -35,9 +35,9 @@ forky_core = { path = "./crates/forky_core", version = "0.*" }
 forky_fs = { path = "./crates/forky_fs", version = "0.*" }
 forky_esp = { path = "./crates/forky_esp", version = "0.*" }
 forky_play = { path = "./crates/forky_play", version = "0.*" }
-forky_test = { path = "./crates/forky_test", version = "0.*" }
 forky_web = { path = "./crates/forky_web", version = "0.*" }
 sweet = { path = "./crates/sweet", version = "0.*" }
+sweet_macros = { path = "./crates/sweet/macros", version = "0.*" }
 
 ### game ###
 bevy = { version = "0.11.0" }

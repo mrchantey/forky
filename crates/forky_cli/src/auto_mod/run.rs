@@ -6,7 +6,8 @@ use std::env;
 use std::fs;
 use std::path::PathBuf;
 
-const CRATE_FOLDERS: &'static [&str] = &["src", "examples", "tests", "test"];
+const CRATE_FOLDERS: &'static [&str] =
+	&["src", "examples", "tests", "test", "macros/src"];
 const IGNORE_FOLDERS: &'static [&str] = &["src", "examples"];
 const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib", "sweet"];
 

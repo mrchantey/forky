@@ -2,7 +2,7 @@
 mod matchers;
 mod test_case;
 pub use self::matchers::*;
-pub use forky_test::*;
+pub use sweet_macros::*;
 pub use test_case::*;
 mod test_suite;
 pub use test_suite::*;

@@ -1,7 +1,7 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_cli forky_core forky_play forky_test sweet'
+crates := 'forky forky_cli forky_core forky_play sweet'
 # features := '--features forky_play/shader_debug_internal'
 features := '--features sweet/bevy'
 # features := ''
@@ -77,7 +77,7 @@ publish-all:
 	just publish forky_core
 	just publish forky_fs
 	just publish forky_web
-	just publish forky_test
+	just publish sweet_macros
 	just publish sweet
 	just publish forky_cli
 	just publish forky_ai

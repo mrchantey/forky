@@ -21,19 +21,21 @@ repository = { workspace = true }
 bevy = ["dep:bevy"]
 
 [dependencies]
+### internal ###
 forky_core = { workspace = true }
-forky_test = { workspace = true }
+sweet_macros = { workspace = true }
 
+### misc ###
 anyhow = { workspace = true }
 getrandom = { workspace = true }
 inventory = { workspace = true }
 extend = { workspace = true }
 
-## console ###
+### console ###
 colorize = { workspace = true }
 backtrace = { workspace = true }
 
-## parse ###
+### parse ###
 serde = { workspace = true }
 serde_json = { workspace = true }
 glob = { workspace = true }

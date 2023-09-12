@@ -2671,16 +2671,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "forky_test"
-version = "0.1.30"
-dependencies = [
- "anyhow",
- "proc-macro2",
- "quote",
- "syn 1.0.109",
-]
-
-[[package]]
 name = "forky_web"
 version = "0.1.30"
 dependencies = [
@@ -5679,7 +5669,6 @@ dependencies = [
  "fantoccini",
  "forky_core",
  "forky_fs",
- "forky_test",
  "forky_web",
  "futures",
  "gag",
@@ -5692,10 +5681,21 @@ dependencies = [
  "rayon",
  "serde",
  "serde_json",
+ "sweet_macros",
  "tokio",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
+]
+
+[[package]]
+name = "sweet_macros"
+version = "0.1.30"
+dependencies = [
+ "anyhow",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
 ]
 
 [[package]]
