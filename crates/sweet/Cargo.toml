@@ -64,7 +64,7 @@ crossterm = { workspace = true }
 gag = { workspace = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
-### browser ###
+forky_fs = { workspace = true }
 fantoccini = { workspace = true }
 
 

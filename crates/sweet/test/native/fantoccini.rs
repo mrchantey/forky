@@ -1,5 +1,5 @@
 use fantoccini::ClientBuilder;
-use forky_core::retry_async;
+use forky_fs::retry_async;
 use std::process::Command;
 use sweet::*;
 

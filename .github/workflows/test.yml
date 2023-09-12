@@ -13,9 +13,9 @@ jobs:
     name: Build and Test
     strategy:
       matrix:
-        # os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-latest, ubuntu-latest, macos-latest]
         # os: [ubuntu-latest]   # 1x  gh minutes
-        os: [windows-latest] # 2x  gh minutes
+        # os: [windows-latest] # 2x  gh minutes
         # os: [macos-latest]   # 10x gh minutes
     runs-on: ${{ matrix.os }}
     steps:
@@ -30,7 +30,7 @@ jobs:
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
           target/
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-v0
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
     - name: 🔨 Install Cygwin
       uses: cygwin/cygwin-install-action@master
       if: runner.os == 'Windows'

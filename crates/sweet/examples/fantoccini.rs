@@ -1,7 +1,7 @@
 #![feature(async_closure)]
 use anyhow::Result;
 use fantoccini::ClientBuilder;
-use forky_core::retry_async;
+use forky_fs::retry_async;
 use std::process::Command;
 use std::time::Duration;
 

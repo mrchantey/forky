@@ -30,6 +30,7 @@ clap = { workspace = true }
 notify = { workspace = true }
 notify-debouncer-full = { workspace = true }
 ## async
+tokio = { workspace = true }
 futures = { workspace = true }
 
 [dev-dependencies]

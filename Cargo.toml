@@ -88,7 +88,12 @@ plotters-canvas = "0.3.0"
 ### Async ###
 futures = "0.3.28"
 futures-util = "0.3.28"
-tokio = { version = "1.27.0", features = ["macros", "rt", "rt-multi-thread"] }
+tokio = { version = "1.27.0", features = [
+	"macros",
+	"rt",
+	"rt-multi-thread",
+	"time",
+] }
 tokio-stream = "0.1.14"
 rayon = "1.7.0"
 

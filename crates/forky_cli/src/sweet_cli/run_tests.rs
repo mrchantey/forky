@@ -2,7 +2,7 @@ use super::*;
 use anyhow::Result;
 use fantoccini::Client;
 use fantoccini::ClientBuilder;
-use forky_core::retry_async;
+use forky_fs::retry_async;
 use forky_core::OptionTExt;
 use serde::de::DeserializeOwned;
 use std::process::Command;
