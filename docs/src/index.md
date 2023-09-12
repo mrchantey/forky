@@ -1,6 +1,6 @@
 # Forky
 
-Forky is a monorepo containing several rust projects. If any of them gets substantial usage it may be spun out into a seperate repo.
+Forky is a monorepo for web & game rust crates.
 
 > *Very early stage warning:*
 > - breaking changes on patch versions

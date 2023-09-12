@@ -77,6 +77,7 @@ publish-all:
 	just publish forky_core
 	just publish forky_fs
 	just publish forky_web
+	just publish forky_test ## TODO only run once to clear sweet macros
 	just publish sweet_macros
 	just publish sweet
 	just publish forky_cli
@@ -108,7 +109,7 @@ test-all-wasm *args:
 	just test-wasm forky_web {{args}}
 
 test-wasm crate *args:
-	forky sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
+	just cli sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
 
 docs:
 	cd docs && mdbook serve

@@ -2,7 +2,7 @@
 <div align="center">
 
   <p>
-    <strong>Monorepo for several rust crates.</strong>
+    <strong>Monorepo for web & game rust crates</strong>
   </p>
 
   <p>
