@@ -12,14 +12,14 @@ Querying a html element is so common Sweet has matchers for some common checks:
 
 `window().unwrap().document().unwrap().body().unwrap()` is a bit of a mouthful 🥴
 
-Sweet provides some wrappers around common types, ie `web_sys::window`:
+Sweet provides some wrappers around common types, ie `Option<Window>`:
 
 ```rs
 //window implements Into<HtmlElement> by getting its document body
-expect(web_sys::window).to_contain_text("sweet as!")?;
+expect(web_sys::window()).to_contain_text("sweet as!")?;
 
 //so does iframe
-let page = visit("localhost:7777").await; 
+let page = visit("localhost:7777").await;
 expect(page).to_contain_text("sweet as!")?;
 ```
 

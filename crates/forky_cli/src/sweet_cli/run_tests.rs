@@ -40,9 +40,7 @@ async fn get_client(mode: RunTestsMode) -> Result<Client> {
 		WEBDRIVER_CONNECT_TIMEOUT,
 	)
 	.await
-	.expect(
-		"\nUnexpected Error - Could not connect to chromedriver, please open an issue\n",
-	);
+	.expect("\Error - Could not connect to chromedriver\n");
 	Ok(client)
 }
 

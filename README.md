@@ -2,7 +2,7 @@
 <div align="center">
 
   <p>
-    <strong>Rust utilities to do some of the heavy lifting for your project.</strong>
+    <strong>Monorepo for several rust crates.</strong>
   </p>
 
   <p>
@@ -28,3 +28,6 @@
 - [Forky CLI](./crates/forky_cli/README.md)
 - [Sweet](./crates/sweet/README.md)
 - [Bevy WebXR Demo](./crates/bevy_webxr/README.md)
+
+
+::rock

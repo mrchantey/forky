@@ -24,7 +24,7 @@ sweet! {
 			<TestSlider/>
 		</>
 		});
-		expect(web_sys::window).to_contain_text("value: 50")?;
+		expect(web_sys::window()).to_contain_text("value: 50")?;
 
 	}
 

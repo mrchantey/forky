@@ -108,7 +108,7 @@ test-all-wasm *args:
 	just test-wasm forky_web {{args}}
 
 test-wasm crate *args:
-	forky sweet -p {{crate}} --example test_{{crate}}_wasm --cargo=--features=bevy {{args}}
+	forky sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
 
 docs:
 	cd docs && mdbook serve

@@ -26,8 +26,8 @@ sweet! {
 		expect(window()).to_contain_html("<div><h1>This is a heading</h1>")?;
 	}
 	test "get" {
-		// expect(window).not().get("div")?;
-		// expect(window).get("div")?;
+		// expect(window()).not().get("div")?;
+		// expect(window()).get("div")?;
 		create_view();
 		expect(window()).get("div")?;
 		expect(window()).get("h1")?
@@ -40,7 +40,7 @@ sweet! {
 			mount(|cx|view!{cx,<div>"hello world!"</div>});
 		},Duration::from_millis(10));
 
-		// expect(window).not().get("div")?;
+		// expect(window()).not().get("div")?;
 
 		expect(window()).poll(|w|w.get("div")).await?
 			.to_contain_text("hello world!")?;
