@@ -62,5 +62,5 @@ jobs:
     #   run: just run sweet fantoccini
     - name: 🔎 Test Native
       run: just test-all
-    # - name: 🔎 Test Wasm
-    #   run: just test-all-wasm
+    - name: 🔎 Test Wasm
+      run: just test-all-wasm
