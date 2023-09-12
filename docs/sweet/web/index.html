@@ -180,7 +180,7 @@
 		.document().unwrap()
 		.body().unwrap()
 		.set_inner_html(&quot;&lt;h1&gt;This is a heading&lt;/h1&gt;&quot;);
-expect(window).get(&quot;h1&quot;)?
+expect(window()).get(&quot;h1&quot;)?
 	.to_contain_text(&quot;This is a heading&quot;)?;
 </code></pre>
 </li>
