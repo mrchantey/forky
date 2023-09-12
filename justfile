@@ -108,6 +108,10 @@ test-all-wasm *args:
 	just test-wasm sweet --cargo=--features=bevy {{args}}
 	just test-wasm forky_web {{args}}
 
+test-all-wasm-no-bevy *args:
+	just test-wasm sweet {{args}}
+	just test-wasm forky_web {{args}}
+
 test-wasm crate *args:
 	just cli sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
 

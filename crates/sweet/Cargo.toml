@@ -76,4 +76,5 @@ required-features = ["bevy"]
 [[example]]
 name = "test_sweet_wasm"
 path = "test/sweet_wasm.rs"
-required-features = ["bevy"]
+# cant currently cicd windows wasm bevy
+# required-features = ["bevy"]
