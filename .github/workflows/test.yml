@@ -36,9 +36,9 @@ jobs:
       if: runner.os == 'Windows'
       with:
         install-dir: C:\tools\cygwin
-    - name: 🔨 Install ALSA (bevy audio)
+    - name: 🔨 Install Bevy Dependencies
       if: runner.os == 'Linux'
-      run: sudo apt install librust-alsa-sys-dev
+      run: sudo apt-get install g++ pkg-config libx11-dev libasound2-dev libudev-dev
     - name: 🔨 Install Just
       uses: extractions/setup-just@v1
     - name: 🔨 Install Chromedriver
