@@ -26,7 +26,7 @@ impl<T> Matcher<T> {
 	}
 
 	pub fn not(&mut self) -> &mut Self {
-		self.negated = !self.negated;
+		self.negated = true;
 		self
 	}
 

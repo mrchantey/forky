@@ -2,12 +2,12 @@ use crate::*;
 use anyhow::Result;
 use std::time::Duration;
 
-pub async fn poll_ok<T>(f: impl Fn() -> Result<T>) -> Result<T> {
+pub async fn poll_ok<T>(f: impl FnMut() -> Result<T>) -> Result<T> {
 	poll_ok_with_timeout(f, Duration::from_secs(2)).await
 }
 
 pub async fn poll_ok_with_timeout<T>(
-	f: impl Fn() -> Result<T>,
+	mut f: impl FnMut() -> Result<T>,
 	timeout: Duration,
 ) -> Result<T> {
 	let start = performance_now();
