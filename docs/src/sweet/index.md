@@ -35,6 +35,14 @@ sweet! {
 }
 ```
 
+## Very Quick Start
+
+```
+git clone https://github.com/mrchantey/sweet-demo.git
+cd sweet-demo
+cargo run --example sweet
+```
+
 Sweet has three main functions:
 
 - [`sweet!` defines a test suite](./macros.md)

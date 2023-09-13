@@ -1,8 +1,9 @@
 # Changelog
 
-## Main
+## `0.1.31` - 13/09/2023
 
-- Headless runner
+- Headless in-browser tests
+- ci/cd workflows
 
 ## `0.1.19` - 10/08/2023
 

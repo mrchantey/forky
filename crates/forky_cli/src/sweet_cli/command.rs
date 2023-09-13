@@ -24,9 +24,9 @@ impl Subcommand for SweetCommand {
 			.arg(
 				Arg::new("example")
 					.help("pass the --example flag to cargo run")
-					.required(false)
+					.required(true)
 					.short('e')
-    			.default_value("test")
+    			// .default_value("test")
 					.long("example"),
 			)
 			.arg(

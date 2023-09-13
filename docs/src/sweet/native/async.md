@@ -11,14 +11,14 @@ Internally each native test will be stored as one of three types:
 - `fn() -> BoxedFutureSend`
 	```rs
 	it "has send futures"{
-		visit("http://example.com").await?;
+		tokio::time::sleep(Duration::from_millis(100)).await?;
 	}
 	```
 - `fn() -> BoxedFuture`
 	```rs
 	it nonSend "has non-send futures"{
 		//example of a common non-send async function
-		fantoccini::ClientBuilder::native().connect("http://example.com").await
+		fantoccini::ClientBuilder::native().connect("http://example.com").await;
 	}
 	```
 
