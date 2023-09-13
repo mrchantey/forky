@@ -21,7 +21,7 @@
 
 <img src="https://lumiere-a.akamaihd.net/v1/images/open-uri20150422-20810-1p4gxx9_6ea17642.jpeg?region=0,0,600,600" width="100" height="100">
 
-  <sub>Built with ❤️ by mrchantey</a></sub>
+  <sub>made with ❤️‍🔥 by mrchantey</sub>
 </div>
 
 ## Contents

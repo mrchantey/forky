@@ -20,5 +20,5 @@
     <a href="https://mrchantey.github.io/forky/docs/other/contributing.html">Contributing</a>
   </h3>
 
-  <sub>Built with ❤️ by mrchantey</a></sub>
+  <sub>made with ❤️‍🔥 by mrchantey</a></sub>
 </div>

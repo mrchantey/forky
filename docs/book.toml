@@ -4,3 +4,10 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Forky"
+
+[build]
+create-missing = false
+# extra-watch-dirs = ["./custom"]
+[output.html]
+additional-js = ["src/custom/index.js"]
+additional-css = ["src/custom/index.css"]
