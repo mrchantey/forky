@@ -4,7 +4,7 @@ Sweet has full CI/CD support for all test types. In fact, the [tests for this re
 
 [1]:https://github.com/mrchantey/forky/blob/main/.github/workflows/test.yml
 
-An example workflow may look something like this:
+An example workflow may look something like [this](https://github.com/mrchantey/sweet-demo/blob/main/.github/workflows/test.yml):
 
 ```yaml
 name: 🔎 Test Crates
@@ -51,9 +51,9 @@ jobs:
       with:
         crate: forky_cli
     - name: 🔨 Build
-      run: cargo run build
+      run: cargo build
     - name: 🔎 Test Native
       run: cargo run --example sweet
     - name: 🔎 Test Wasm
-      run: forky sweet
+      run: forky sweet --example sweet
 ```

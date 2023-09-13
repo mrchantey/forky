@@ -43,13 +43,15 @@ cd sweet-demo
 cargo run --example sweet
 ```
 
+## Getting Started
+
+Check out the [quickstart page](./native/index.md) or have a browse of the [tests written for sweet](https://github.com/mrchantey/forky/tree/main/crates/sweet/test)
+
+## Overview
+
 Sweet has three main functions:
 
 - [`sweet!` defines a test suite](./macros.md)
 - [`expect()` returns a matcher](./matchers.md)
 - [`visit()` returns an iframe (e2e)](./web/end-to-end.md)
 
-
-## Getting Started
-
-Check out the [quickstart page](./native/index.md) or have a browse of the [tests written for sweet](https://github.com/mrchantey/forky/tree/main/crates/sweet/test)

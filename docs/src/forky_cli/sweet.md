@@ -9,13 +9,13 @@ The Sweet CLI is a tool for building, serving & running tests in-browser. It can
 ## Usage:
 ```sh
 # run - requires chromedriver
-forky sweet
+forky sweet --example my_test
 # interactive
-forky sweet --interactive
+forky sweet --example my_test --interactive
 # workspaces - expects an example called sweet_my_crate
-forky sweet -p my_crate
+forky sweet --example my_test -p my_crate
 # help
-forky sweet --help
+forky sweet --example my_test --help
 ```
 
 ## Requirements
