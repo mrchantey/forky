@@ -28,7 +28,7 @@
 ```rs
 sweet! {
   it "works" {
-		expect("some string").not().to_start_with("foo")?;
+		expect("foo").not().to_start_with("bar")?;
   }
 }
 ```

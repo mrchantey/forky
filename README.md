@@ -28,6 +28,3 @@
 - [Forky CLI](./crates/forky_cli/README.md)
 - [Sweet](./crates/sweet/README.md)
 - [Bevy WebXR Demo](./crates/bevy_webxr/README.md)
-
-
-::rock

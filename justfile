@@ -73,16 +73,16 @@ publish crate *args:
 	sleep 2
 
 publish-all:
-	just publish forky
-	just publish forky_core
-	just publish forky_fs
-	just publish forky_web
-	just publish forky_test ## TODO only run once to clear sweet macros
-	just publish sweet_macros
-	just publish sweet
-	just publish forky_cli
-	just publish forky_ai
-	just publish forky_play
+	just publish forky 				| true
+	just publish forky_core 	| true
+	just publish forky_fs 		| true
+	just publish forky_web 		| true
+	just publish forky_test 	| true
+	just publish sweet_macros	| true
+	just publish sweet 				| true
+	just publish forky_cli 		| true
+	just publish forky_ai 		| true
+	just publish forky_play 	| true
 
 start crate: 
 	./target/debug/{{crate}}.exe

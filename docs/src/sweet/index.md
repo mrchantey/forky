@@ -9,7 +9,7 @@ Sweet is a declarative full-stack test framework for Rust. Use a single framewor
 | In-browser - Component | Test indivudual web components, framework agnostic |
 | In-browser - E2E       | Run e2e tests on actual elements via iframes       |
 
-The in-browser tests are architechually similar to Cypress [Component][1] and [e2e][2] tests. The native tests may be be compared to the likes of [Jest][3] or [Playwright][4].
+The in-browser tests are architecturally similar to Cypress [Component][1] and [e2e][2] tests. The native tests may be be compared to the likes of [Jest][3] or [Playwright][4].
 
 [1]: https://docs.cypress.io/guides/core-concepts/testing-types#What-is-Component-Testing
 [2]: https://docs.cypress.io/guides/core-concepts/testing-types#What-is-E2E-Testing
@@ -20,7 +20,7 @@ The in-browser tests are architechually similar to Cypress [Component][1] and [e
 
 - 🔥 Parallel
 - 🕙 Async
-- 🕸️ Native & Browser
+- 🕸️ Native & In-Browser
 - 🌍 E2E Tests
 - ☮️ Intuitive matchers
 - 🌈 Pretty output

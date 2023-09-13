@@ -8,6 +8,7 @@ members = [
 	"crates/forky_ai",
 	"crates/forky_cli",
 	"crates/forky_core",
+	"crates/forky_test",
 	"crates/forky_esp",
 	"crates/forky_play",
 	"crates/forky_web",
@@ -17,7 +18,7 @@ members = [
 exclude = ["crates/bevy_webxr"]
 
 [workspace.package]
-version = "0.1.30"
+version = "0.1.31"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
