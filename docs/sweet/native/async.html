@@ -178,14 +178,14 @@
 </li>
 <li><code>fn() -&gt; BoxedFutureSend</code>
 <pre><code class="language-rs">it &quot;has send futures&quot;{
-	visit(&quot;http://example.com&quot;).await?;
+	tokio::time::sleep(Duration::from_millis(100)).await?;
 }
 </code></pre>
 </li>
 <li><code>fn() -&gt; BoxedFuture</code>
 <pre><code class="language-rs">it nonSend &quot;has non-send futures&quot;{
 	//example of a common non-send async function
-	fantoccini::ClientBuilder::native().connect(&quot;http://example.com&quot;).await
+	fantoccini::ClientBuilder::native().connect(&quot;http://example.com&quot;).await;
 }
 </code></pre>
 </li>

@@ -174,6 +174,7 @@
 <p><em>Very early stage warning:</em></p>
 <ul>
 <li>breaking changes on patch versions</li>
+<li>outdated docs</li>
 <li>continued development not guaranteed</li>
 <li>bugs ahoy</li>
 </ul>
@@ -302,6 +303,11 @@ Options:
   }
 }
 </code></pre>
+<h2 id="very-quick-start"><a class="header" href="#very-quick-start">Very Quick Start</a></h2>
+<pre><code>git clone https://github.com/mrchantey/sweet-demo.git
+cd sweet-demo
+cargo run --example sweet
+</code></pre>
 <p>Sweet has three main functions:</p>
 <ul>
 <li><a href="sweet/./macros.html"><code>sweet!</code> defines a test suite</a></li>
@@ -363,14 +369,14 @@ sweet! {
 </li>
 <li><code>fn() -&gt; BoxedFutureSend</code>
 <pre><code class="language-rs">it &quot;has send futures&quot;{
-	visit(&quot;http://example.com&quot;).await?;
+	tokio::time::sleep(Duration::from_millis(100)).await?;
 }
 </code></pre>
 </li>
 <li><code>fn() -&gt; BoxedFuture</code>
 <pre><code class="language-rs">it nonSend &quot;has non-send futures&quot;{
 	//example of a common non-send async function
-	fantoccini::ClientBuilder::native().connect(&quot;http://example.com&quot;).await
+	fantoccini::ClientBuilder::native().connect(&quot;http://example.com&quot;).await;
 }
 </code></pre>
 </li>
@@ -629,9 +635,10 @@ jobs:
 <h3 id="what-about-wasm-bindgen-test"><a class="header" href="#what-about-wasm-bindgen-test">What about wasm-bindgen-test?</a></h3>
 <p>Sweet has different priorities from <a href="https://rustwasm.github.io/wasm-bindgen/wasm-bindgen-test/index.html">wasm-bindgen-test</a> in its current state, namely a focus on UI &amp; interactivity.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="changelog"><a class="header" href="#changelog">Changelog</a></h1>
-<h2 id="main"><a class="header" href="#main">Main</a></h2>
+<h2 id="0131---13092023"><a class="header" href="#0131---13092023"><code>0.1.31</code> - 13/09/2023</a></h2>
 <ul>
-<li>Headless runner</li>
+<li>Headless in-browser tests</li>
+<li>ci/cd workflows</li>
 </ul>
 <h2 id="0119---10082023"><a class="header" href="#0119---10082023"><code>0.1.19</code> - 10/08/2023</a></h2>
 <ul>
