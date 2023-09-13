@@ -211,13 +211,13 @@ forky --help
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage:</a></h2>
 <pre><code class="language-sh"># run - requires chromedriver
-forky sweet
+forky sweet --example my_test
 # interactive
-forky sweet --interactive
+forky sweet --example my_test --interactive
 # workspaces - expects an example called sweet_my_crate
-forky sweet -p my_crate
+forky sweet --example my_test -p my_crate
 # help
-forky sweet --help
+forky sweet --example my_test --help
 </code></pre>
 <h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
 <ul>
@@ -308,14 +308,15 @@ Options:
 cd sweet-demo
 cargo run --example sweet
 </code></pre>
+<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
+<p>Check out the <a href="sweet/./native/index.html">quickstart page</a> or have a browse of the <a href="https://github.com/mrchantey/forky/tree/main/crates/sweet/test">tests written for sweet</a></p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p>Sweet has three main functions:</p>
 <ul>
 <li><a href="sweet/./macros.html"><code>sweet!</code> defines a test suite</a></li>
 <li><a href="sweet/./matchers.html"><code>expect()</code> returns a matcher</a></li>
 <li><a href="sweet/./web/end-to-end.html"><code>visit()</code> returns an iframe (e2e)</a></li>
 </ul>
-<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
-<p>Check out the <a href="sweet/./native/index.html">quickstart page</a> or have a browse of the <a href="https://github.com/mrchantey/forky/tree/main/crates/sweet/test">tests written for sweet</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart---native"><a class="header" href="#quickstart---native">Quickstart - Native</a></h1>
 <ol>
 <li>edit <code>cargo.toml</code>
@@ -578,7 +579,7 @@ test crate *args:
 <code>just test crate_a</code></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ci--cd"><a class="header" href="#ci--cd">CI / CD</a></h1>
 <p>Sweet has full CI/CD support for all test types. In fact, the <a href="https://github.com/mrchantey/forky/blob/main/.github/workflows/test.yml">tests for this repo</a> are all run using Github Actions.</p>
-<p>An example workflow may look something like this:</p>
+<p>An example workflow may look something like <a href="https://github.com/mrchantey/sweet-demo/blob/main/.github/workflows/test.yml">this</a>:</p>
 <pre><code class="language-yaml">name: 🔎 Test Crates
 on:
   push:
@@ -623,11 +624,11 @@ jobs:
       with:
         crate: forky_cli
     - name: 🔨 Build
-      run: cargo run build
+      run: cargo build
     - name: 🔎 Test Native
       run: cargo run --example sweet
     - name: 🔎 Test Wasm
-      run: forky sweet
+      run: forky sweet --example sweet
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
 <h3 id="why-use-example-instead-of-test"><a class="header" href="#why-use-example-instead-of-test">Why use <code>[[example]]</code> instead of <code>[[test]]</code></a></h3>
