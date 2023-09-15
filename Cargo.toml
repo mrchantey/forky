@@ -98,7 +98,7 @@ tokio = { version = "1.27.0", features = [
 tokio-stream = "0.1.14"
 rayon = "1.7.0"
 
-### compile ###
+### macros ###
 inventory = "0.3.2"
 backtrace = "0.3.66"
 proc-macro2 = "1.0.47"
