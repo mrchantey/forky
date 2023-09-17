@@ -14,6 +14,8 @@ members = [
 	"crates/forky_web",
 	"crates/sweet",
 	"crates/sweet/macros",
+	"crates/gamai",
+	"crates/gamai/macros",
 ]
 exclude = ["crates/bevy_webxr"]
 
@@ -24,7 +26,7 @@ license = "MIT OR Apache-2.0"
 readme = "README.md"
 authors = ["Peter Hayman <peteyhayman@gmail.com>"]
 description = "Rust Utilities"
-documentation = "https://github.com/mrchantey/forky"
+documentation = "https://mrchantey.github.io/forky/docs"
 repository = "https://github.com/mrchantey/forky"
 
 [workspace.dependencies]
@@ -39,6 +41,8 @@ forky_play = { path = "./crates/forky_play", version = "0.*" }
 forky_web = { path = "./crates/forky_web", version = "0.*" }
 sweet = { path = "./crates/sweet", version = "0.*" }
 sweet_macros = { path = "./crates/sweet/macros", version = "0.*" }
+gamai = { path = "./crates/gamai", version = "0.*" }
+gamai_macros = { path = "./crates/gamai/macros", version = "0.*" }
 
 ### game ###
 bevy = { version = "0.11.0" }

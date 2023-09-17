@@ -9,11 +9,11 @@ keywords = [ # 5 at most
 	"browser",
 	"webdriver",
 ]
+documentation = "https://mrchantey.github.io/forky/docs/sweet"
 readme = "README.md"
 version = { workspace = true }
 edition = { workspace = true }
 authors = { workspace = true }
-documentation = { workspace = true }
 license = { workspace = true }
 repository = { workspace = true }
 

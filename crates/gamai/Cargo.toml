@@ -1,0 +1,22 @@
+[package]
+name = "gamai"
+version = { workspace = true }
+edition = { workspace = true }
+authors = { workspace = true }
+documentation = "https://mrchantey.github.io/forky/docs/gamai"
+license = { workspace = true }
+readme = "README.md"
+description = "A flexible & extendable game AI library."
+repository = { workspace = true }
+
+[dependencies]
+gamai_macros = { workspace = true }
+bevy = { workspace = true }
+
+[dev-dependencies]
+anyhow = { workspace = true }
+sweet = { workspace = true }
+
+[[example]]
+name = "test_gamai"
+path = "test/sweet.rs"

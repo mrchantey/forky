@@ -1,19 +1,20 @@
 [package]
-name = "sweet_macros"
+name = "gamai_macros"
 version = { workspace = true }
 edition = { workspace = true }
 authors = { workspace = true }
 documentation = { workspace = true }
 license = { workspace = true }
 readme = "README.md"
-description = "macro crate for sweet"
+description = "macro crate for gamai"
 repository = { workspace = true }
+
 
 [lib]
 proc-macro = true
 
 [dependencies]
-syn = { workspace = true }
-quote = { workspace = true }
-proc-macro2 = { workspace = true }
 anyhow = { workspace = true }
+syn = { workspace = true }
+proc-macro2 = { workspace = true }
+quote = { workspace = true }

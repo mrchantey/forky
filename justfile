@@ -73,16 +73,18 @@ publish crate *args:
 	sleep 2
 
 publish-all:
-	just publish forky 				| true
-	just publish forky_core 	| true
-	just publish forky_fs 		| true
-	just publish forky_web 		| true
-	just publish forky_test 	| true
-	just publish sweet_macros	| true
-	just publish sweet 				| true
-	just publish forky_cli 		| true
-	just publish forky_ai 		| true
-	just publish forky_play 	| true
+	just publish forky 					| true
+	just publish forky_core 		| true
+	just publish forky_fs 			| true
+	just publish forky_web 			| true
+	just publish forky_test 		| true
+	just publish sweet_macros		| true
+	just publish sweet 					| true
+	just publish forky_cli 			| true
+	just publish forky_ai 			| true
+	just publish forky_play 		| true
+	just publish gamai_macros	| true
+	just publish gamai 				| true
 
 start crate: 
 	./target/debug/{{crate}}.exe

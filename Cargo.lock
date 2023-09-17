@@ -2835,6 +2835,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "gamai"
+version = "0.1.31"
+dependencies = [
+ "anyhow",
+ "bevy",
+ "gamai_macros",
+ "sweet",
+]
+
+[[package]]
+name = "gamai_macros"
+version = "0.1.31"
+dependencies = [
+ "anyhow",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "gcd"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
