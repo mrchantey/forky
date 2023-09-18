@@ -41,9 +41,8 @@ pub fn parse_node_system(
 		// #[allow(non_camel_case_types)]
 		// pub struct #struct_ident;
 
-		impl AddAiNodeSystem for #struct_ident {
+		impl IntoNodeSystem for #struct_ident {
 			fn add_node_system<A: AiNode>(
-				&self,
 				schedule: &mut Schedule,
 				set: impl SystemSet,
 			) {
@@ -51,7 +50,7 @@ pub fn parse_node_system(
 			}
 		}
 
-		// #vis fn #ident() -> impl AddAiNodeSystem { #struct_ident }
+		// #vis fn #ident() -> impl IntoNodeSystem { #struct_ident }
 		#generic_err
 	}
 	.into()

@@ -32,7 +32,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 					_ => panic!("{}",Self::SET_CHILD_ERROR),
 				};
 			}
-			fn add_node_system<A: AiNode>(&self, _schedule: &mut Schedule, _set: impl SystemSet) {
+			fn add_node_system<A: AiNode>(_schedule: &mut Schedule, _set: impl SystemSet) {
 				todo!()
 			}
 			

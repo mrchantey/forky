@@ -1,6 +1,7 @@
 use crate::*;
 use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;
+use std::marker::PhantomData;
 
 // debug for edges to also be debug
 
@@ -16,33 +17,35 @@ pub trait AiNode: std::fmt::Debug + Default + 'static + Send + Sync {
 		entity: Entity,
 		index: usize,
 	);
-	fn add_node_system<A: AiNode>(&self, schedule: &mut Schedule,  set: impl SystemSet);
+	fn add_node_system<A: AiNode>(schedule: &mut Schedule, set: impl SystemSet);
 }
 
 #[derive(Debug, Default, Copy, Clone)]
-pub struct LeafNode<const ID: usize>;
+pub struct LeafNode<System: IntoNodeSystem, const ID: usize>(
+	PhantomData<System>,
+);
 
-impl<const ID: usize> AiNode for LeafNode<ID> {
+impl<System: IntoNodeSystem, const ID: usize> AiNode for LeafNode<System, ID> {
 	type ChildrenQuery = ();
-	fn edges(
-		_: &Query<Self::ChildrenQuery>,
-	) -> Vec<(Entity, Vec<EdgeState>)> {
+	fn edges(_: &Query<Self::ChildrenQuery>) -> Vec<(Entity, Vec<EdgeState>)> {
 		Vec::new()
 	}
 
-	fn set_child_node_state(
-		_: &mut Commands,
-		_: Entity,
-		_: usize,
-	) {
-		panic!("{}",Self::SET_CHILD_ERROR)
+	fn set_child_node_state(_: &mut Commands, _: Entity, _: usize) {
+		panic!("{}", Self::SET_CHILD_ERROR)
 	}
 
-	fn add_node_system<A: AiNode>(&self, _schedule: &mut Schedule, _set: impl SystemSet) {
-		todo!()
+	fn add_node_system<A: AiNode>(
+		schedule: &mut Schedule,
+		set: impl SystemSet,
+	) {
+		// todo!()
+		System::add_node_system::<A>(schedule, set)
 	}
 }
 
-pub trait AddAiNodeSystem: 'static + Clone + Send + Sync {
-	fn add_node_system<A: AiNode>(&self, schedule: &mut Schedule, set: impl SystemSet);
+pub trait IntoNodeSystem:
+	'static + std::fmt::Debug + Default + Clone + Send + Sync
+{
+	fn add_node_system<A: AiNode>(schedule: &mut Schedule, set: impl SystemSet);
 }

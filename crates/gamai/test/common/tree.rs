@@ -27,8 +27,6 @@ sweet! {
 		let mut schedule = Schedule::default();
 		my_node_plugin::new(first_valid_edge, (edge0, edge1)).build(&mut schedule);
 		schedule.run(&mut world);
-		// app.finish();
-		// app.update();
 		expect(&world)
 			.component::<F<0>>(entity)?
 			.map(|a| a.state)

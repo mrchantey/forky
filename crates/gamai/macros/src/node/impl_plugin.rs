@@ -20,7 +20,8 @@ pub fn impl_plugin(node: &NodeParser) -> TokenStream {
 		where #builder_bounds {
 			fn build(&self, schedule: &mut Schedule) {
 				#configure_sets
-				self.node.add_node_system::<#ident>(schedule, #ident.node_set());
+				NodeSystem::add_node_system::<#ident>(schedule, #ident.node_set());
+				// self.node.add_node_system::<#ident>(schedule, #ident.node_set());
 				#child_node_systems
 			}
 		}

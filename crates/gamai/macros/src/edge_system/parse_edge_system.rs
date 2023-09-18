@@ -28,7 +28,7 @@ pub fn parse_edge_system(
 
 	let struct_ident = item.sig.ident;
 	// let ident = item.sig.ident;
-	let vis = item.vis;
+	// let vis = item.vis;
 
 	quote! {
 		#item_inner
@@ -49,9 +49,9 @@ pub fn parse_edge_system(
 				schedule.add_systems(#func_ident::<E>.in_set(set));
 			}
 		}
+		#generic_err
 
 		// #vis fn #ident() -> impl EdgeSystemBuilder { #struct_ident }
-		// #generic_err
 	}
 	.into()
 }
