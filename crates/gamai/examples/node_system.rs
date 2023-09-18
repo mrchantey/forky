@@ -5,7 +5,7 @@ use gamai::*;
 //this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
 
-#[node_system]
+#[node]
 fn first_valid_edge<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<N::ChildrenQuery>,

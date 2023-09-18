@@ -3,7 +3,7 @@ use crate::*;
 use bevy_ecs::prelude::*;
 use std::marker::PhantomData;
 
-#[node_system]
+#[node]
 pub fn first_valid_edge<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<N::ChildrenQuery>,
@@ -19,23 +19,23 @@ pub fn first_valid_edge<N: AiNode>(
 	}
 }
 
-#[edge_system]
+#[edge]
 pub fn edge_always_pass<C: AiEdge>(mut query: Query<&mut ChildEdgeState<C>>) {
 	for mut edge in query.iter_mut() {
 		**edge = EdgeState::Pass;
 	}
 }
-#[edge_system]
+#[edge]
 pub fn edge_always_fail<C: AiEdge>(mut query: Query<&mut ChildEdgeState<C>>) {
 	for mut edge in query.iter_mut() {
 		**edge = EdgeState::Fail;
 	}
 }
-#[edge_system]
+#[edge]
 pub fn print_on_run<C: AiEdge>(mut query: Query<&mut ChildNodeState<C>>) {
 	for node in query.iter_mut() {
 		println!("NodeSystem: Running {:?}", node);
 	}
 }
-#[edge_system]
+#[edge]
 pub fn noop_node<C: AiEdge>(_phantom: PhantomData<C>) {}

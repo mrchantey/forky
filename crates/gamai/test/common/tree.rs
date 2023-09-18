@@ -8,10 +8,11 @@ type A<const I: usize> = ChildNodeState<EdgePhantom<my_node, I>>;
 
 // #[node(32)]
 #[node]
-fn my_node(){
-	// my_nodePlugin::new(node, edges)
-	first_valid_edge
-}
+fn my_node<N: AiNode>() {}
+// fn my_node(){
+// 	// my_nodePlugin::new(node, edges)
+// 	first_valid_edge
+// }
 
 sweet! {
 	it "works" {

@@ -37,9 +37,9 @@ pub fn parse_node_system(
 		use bevy_ecs::prelude::*;
 		use gamai::*;
 
-		#[derive(Clone)]
-		#[allow(non_camel_case_types)]
-		pub struct #struct_ident;
+		// #[derive(Clone)]
+		// #[allow(non_camel_case_types)]
+		// pub struct #struct_ident;
 
 		impl AddAiNodeSystem for #struct_ident {
 			fn add_node_system<A: AiNode>(

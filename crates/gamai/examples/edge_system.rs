@@ -5,5 +5,5 @@ use gamai::*;
 //this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
 
-#[edge_system]
+#[edge]
 pub fn noop_node<C: AiEdge>(mut _query: Query<&mut ChildNodeState<C>>) {}

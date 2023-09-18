@@ -1,5 +1,5 @@
 use super::*;
-// use crate::node_system::parse_node_system;
+use crate::node_system::parse_node_system;
 use proc_macro2::Ident;
 use proc_macro2::TokenStream;
 use quote::quote;
@@ -25,8 +25,8 @@ impl NodeParser {
 		attr: proc_macro::TokenStream,
 		item: proc_macro::TokenStream,
 	) -> proc_macro::TokenStream {
-		// let node_system: proc_macro2::TokenStream =
-		// 	parse_node_system(attr.clone(), item.clone()).into();
+		let node_system: proc_macro2::TokenStream =
+			parse_node_system(attr.clone(), item.clone()).into();
 
 		let attr = parse_macro_input!(attr as AttributeArgs);
 		let item = parse_macro_input!(item as ItemFn);
@@ -47,7 +47,7 @@ impl NodeParser {
 			#builder_impl
 			#node_impl
 			#bundle_impl
-			// #node_system
+			#node_system
 		}
 		.into()
 	}
