@@ -12,15 +12,15 @@ pub struct NodePluginParser {
 
 impl NodePluginParser {
 	pub fn new(item: &ItemFn, num_edges: usize) -> Self {
-		let ident =
+		let builder_ident =
 			Ident::new(&format!("{}Plugin", item.sig.ident), item.sig.ident.span());
 
-		let (builder_params, generic_bounds) = builder_params(num_edges);
+		let (builder_params, builder_bounds) = builder_params(num_edges);
 
 		Self {
-			builder_ident: ident,
+			builder_ident,
 			builder_params,
-			builder_bounds: generic_bounds,
+			builder_bounds,
 		}
 	}
 }

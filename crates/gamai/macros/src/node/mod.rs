@@ -1,7 +1,7 @@
 mod choice;
 pub use self::choice::*;
-mod impl_agent;
-pub use self::impl_agent::*;
+mod impl_node;
+pub use self::impl_node::*;
 mod impl_bundle;
 pub use self::impl_bundle::*;
 mod impl_plugin;
