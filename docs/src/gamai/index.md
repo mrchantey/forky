@@ -1,6 +1,6 @@
 # Gamai
 
-`gamai` is a flexible game AI library based on ECS and weighted graph theory.
+`gamai` is a flexible & extendable game AI library. It is based on ECS and weighted graph theory.
 
 ## Features
 
