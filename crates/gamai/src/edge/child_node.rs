@@ -7,7 +7,7 @@ pub trait ChildNodeSystems: 'static + Send + Sync + Clone {
 	fn edge_system(&self) -> Self::EdgeSystem;
 	fn node_system(&self) -> Self::NodeSystem;
 
-	fn add_edge_systems<C: Edge>(&self, app: &mut App, sets: &impl NodeSets) {
+	fn add_edge_systems<C: AiEdge>(&self, app: &mut App, sets: &impl NodeSets) {
 		self.edge_system()
 			.add_edge_system::<C>(app, sets.child_edge_set());
 		self.node_system()

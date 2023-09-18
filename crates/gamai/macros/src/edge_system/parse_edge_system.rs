@@ -4,7 +4,7 @@ use quote::quote;
 use syn::parse_macro_input;
 use syn::ItemFn;
 
-const GENERIC_ERROR:&str = "an `edge_system` must have a single type parameter bound by `gamai::Edge` ie: \npub fn my_func<E: Edge>()`";
+const GENERIC_ERROR:&str = "an `edge_system` must have a single type parameter bound by `gamai::AiEdge` ie: \npub fn my_func<E: AiEdge>()`";
 
 pub fn parse_edge_system(
 	_attr: proc_macro::TokenStream,
@@ -14,7 +14,7 @@ pub fn parse_edge_system(
 
 	let generic_err = assert_single_generic_bound(
 		item.sig.generics.clone(),
-		"Edge",
+		"AiEdge",
 		GENERIC_ERROR,
 	)
 	.unwrap_or_else(syn::Error::into_compile_error);
@@ -44,7 +44,7 @@ pub fn parse_edge_system(
 		pub struct #struct_ident;
 
 		impl EdgeSystemBuilder for #struct_ident {
-			fn add_edge_system<E: Edge>(
+			fn add_edge_system<E: AiEdge>(
 				&self,
 				app: &mut App,
 				set: impl SystemSet,

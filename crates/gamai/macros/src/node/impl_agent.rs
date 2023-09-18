@@ -29,7 +29,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			fn set_child_node_state(commands: &mut Commands, entity: Entity, index: usize) {
 				match index {
 					#set_child_node
-					_ => panic!("index out of range"),
+					_ => panic!("{}",Self::SET_CHILD_ERROR),
 				};
 			}
 		}

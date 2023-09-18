@@ -6,4 +6,4 @@ use gamai::*;
 fn main() {}
 
 #[edge_system]
-pub fn noop_node<C: Edge>(mut _query: Query<&mut ChildNodeState<C>>) {}
+pub fn noop_node<C: AiEdge>(mut _query: Query<&mut ChildNodeState<C>>) {}
