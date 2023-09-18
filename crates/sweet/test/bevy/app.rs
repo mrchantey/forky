@@ -5,7 +5,15 @@ use sweet::*;
 pub struct Health(pub u32);
 
 sweet! {
-	it "works" {
+
+	test "world"{
+		let mut world = World::new();
+		expect(&world).not().to_contain_resource::<Health>()?;
+		world.insert_resource(Health(5));
+		expect(&world).to_contain_resource::<Health>()?;
+	}
+
+	test "app" {
 		let mut app = App::new();
 		let entity = app.world.spawn_empty().id();
 
@@ -23,6 +31,5 @@ sweet! {
 		app.world.insert_non_send_resource(Health(5));
 		expect(&app).to_contain_non_send_resource::<Health>()?;
 		expect(&app).non_send_resource()?.to_be(&Health(5))?;
-
 	}
 }

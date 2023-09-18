@@ -33,5 +33,5 @@ leptos = { workspace = true }
 sweet = { workspace = true }
 
 [[example]]
-name = "test_forky_web_test_wasm"
+name = "test_forky_web_test_wasm" # lol cos assumptions
 path = "sweet_wasm.rs"

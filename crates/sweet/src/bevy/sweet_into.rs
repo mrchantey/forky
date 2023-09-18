@@ -2,6 +2,9 @@
 use crate::*;
 use ::bevy::prelude::*;
 
+
+impl<'a> SweetInto<&'a World> for &'a App
+{ fn sweet_into(self) -> &'a World { &self.world } }
 impl<T> SweetInto<Vec2> for &T where T: std::ops::Deref<Target = Vec2>,
 { fn sweet_into(self) -> Vec2 { **self } }
 impl<T> SweetInto<Vec3> for &T where T: std::ops::Deref<Target = Vec3>,

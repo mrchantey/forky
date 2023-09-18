@@ -15,52 +15,53 @@ impl SweetInto<Entity> for EntityMut<'_> {
 }
 
 #[ext]
-pub impl Matcher<&App> {
-	fn to_have_entity(
-		&self,
-		entity: impl SweetInto<Entity>,
-	) -> Result<()> {
+pub impl<'a, W> Matcher<W>
+where
+	W: 'a + SweetBorrow<&'a World>,
+{
+	fn to_have_entity(&self, entity: impl SweetInto<Entity>) -> Result<()> {
 		let entity = entity.sweet_into();
-		let received = self.value.world.get_entity(entity);
+		let value = self.value.sweet_borrow();
+		let received = value.get_entity(entity);
 		self.assert_option_with_received_negatable(received)
 	}
-	
+
 	fn to_have_component<T: Component>(
 		&self,
 		entity: impl SweetInto<Entity>,
 	) -> Result<()> {
 		let entity = entity.sweet_into();
-		let received = self.value.world.get::<T>(entity);
+		let received = self.value.sweet_borrow().get::<T>(entity);
 		self.assert_option_with_received_negatable(received)
 	}
 
 	fn component<T: Component>(
 		&self,
 		entity: impl SweetInto<Entity>,
-	) -> Result<Matcher<&T>> {
-		let received = self.value.world.get::<T>(entity.sweet_into());
+	) -> Result<Matcher<&'a T>> {
+		let received = self.value.sweet_borrow().get::<T>(entity.sweet_into());
 		self.assert_option_with_received(received)
 			.map(|c| Matcher::new(c))
 	}
 
 	fn to_contain_resource<T: Resource>(&self) -> Result<()> {
-		let received = self.value.world.get_resource::<T>();
+		let received = self.value.sweet_borrow().get_resource::<T>();
 		self.assert_option_with_received_negatable(received)
 	}
 
-	fn resource<T: Resource>(&self) -> Result<Matcher<&T>> {
-		let received = self.value.world.get_resource::<T>();
+	fn resource<T: Resource>(&self) -> Result<Matcher<&'a T>> {
+		let received = self.value.sweet_borrow().get_resource::<T>();
 		self.assert_option_with_received(received)
 			.map(|c| Matcher::new(c))
 	}
 
 	fn to_contain_non_send_resource<T: 'static>(&self) -> Result<()> {
-		let received = self.value.world.get_non_send_resource::<T>();
+		let received = self.value.sweet_borrow().get_non_send_resource::<T>();
 		self.assert_option_with_received_negatable(received)
 	}
 
-	fn non_send_resource<T: 'static>(&self) -> Result<Matcher<&T>> {
-		let received = self.value.world.get_non_send_resource::<T>();
+	fn non_send_resource<T: 'static>(&self) -> Result<Matcher<&'a T>> {
+		let received = self.value.sweet_borrow().get_non_send_resource::<T>();
 		self.assert_option_with_received(received)
 			.map(|c| Matcher::new(c))
 	}
