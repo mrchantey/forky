@@ -2,6 +2,7 @@
 use bevy::prelude::*;
 use gamai::*;
 
+//this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
 
 #[agent_system]
@@ -17,6 +18,5 @@ fn first_valid_solver<A: Agent>(
 				return;
 			}
 		}
-		// println!("{:?}: {:?}", entity, factors);
 	}
 }

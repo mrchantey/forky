@@ -14,7 +14,7 @@
 		"**/.embuild/": true,
 		// "**/.cargo/": true,
 		"**/Cargo.lock": true,
-		// "**/mod.rs": true,
+		"**/mod.rs": true,
 		// "out/": true,
 		// "**/target/": true,
 		"**/sdkconfig.defaults": true,

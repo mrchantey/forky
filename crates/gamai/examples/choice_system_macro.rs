@@ -2,17 +2,9 @@
 use bevy::prelude::*;
 use gamai::*;
 
+//this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
-// #[choice_system]
-// fn my_system<T: DerefFactorState>(query: Query<&T>) {
-// 	for state in query.iter() {
-// 		println!("state: {:?}", state);
-// 	}
-// }
 
 #[choice_system]
-pub fn action_print<C: Choice>(mut query: Query<&mut ChoiceActionState<C>>) {
-	for action in query.iter_mut() {
-		println!("Action: Running {:?}", action);
-	}
+pub fn action_noop<C: Choice>(mut _query: Query<&mut ChoiceActionState<C>>) {
 }
