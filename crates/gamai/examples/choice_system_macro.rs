@@ -6,5 +6,4 @@ use gamai::*;
 fn main() {}
 
 #[choice_system]
-pub fn action_noop<C: Choice>(mut _query: Query<&mut ChoiceActionState<C>>) {
-}
+pub fn noop_node<C: Choice>(mut _query: Query<&mut ChildNodeState<C>>) {}

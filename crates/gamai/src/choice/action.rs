@@ -6,13 +6,13 @@ use std::fmt::Debug;
 // use std::ops::DerefMut;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
-pub enum ActionState {
+pub enum NodeState {
 	#[default]
 	Once,
 	Repeating,
 	//yield? as in happy to continue but check choices again
 }
 
-impl ActionState {
-	pub fn finish(&mut self) { *self = ActionState::Once; }
+impl NodeState {
+	pub fn finish(&mut self) { *self = NodeState::Once; }
 }

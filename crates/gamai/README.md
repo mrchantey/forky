@@ -32,8 +32,8 @@
 struct MyAiNode;
 
 fn main() {
-	let will_skip = ChoiceBuilder::new(edge_always_fail, action_print);
-	let will_run = ChoiceBuilder::new(edge_always_pass, action_print);
+	let will_skip = ChoiceBuilder::new(edge_always_fail, print_on_run);
+	let will_run = ChoiceBuilder::new(edge_always_pass, print_on_run);
 
   let mut app = App::new()
   app.add_plugins(MyAiNodePlugin::new(default_system, (will_skip, will_run)));
@@ -41,5 +41,5 @@ fn main() {
   app.run();
 }
 
-// outputs: "ran action for MyAiNode at index 1"
+// outputs: "ran child_node for MyAiNode at index 1"
 ```

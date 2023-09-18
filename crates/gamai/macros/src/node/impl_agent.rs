@@ -14,7 +14,7 @@ pub fn impl_node(node: &AiNode) -> TokenStream {
 	let world_query = all_edges_nested(node);
 	let params = node_params_nested(node);
 	let params_deref = node_params_deref(node);
-	let set_action = node_set_action(node);
+	let set_child_node = set_child_node_state(node);
 
 	quote!(
 		impl AiNode for #ident
@@ -26,9 +26,9 @@ pub fn impl_node(node: &AiNode) -> TokenStream {
 					.map(|(entity, #params)| (entity, vec![#params_deref]))
 					.collect()
 			}
-			fn set_action(commands: &mut Commands, entity: Entity, index: usize) {
+			fn set_child_node_state(commands: &mut Commands, entity: Entity, index: usize) {
 				match index {
-					#set_action
+					#set_child_node
 					_ => panic!("index out of range"),
 				};
 			}
@@ -64,11 +64,11 @@ fn node_params_deref(node: &AiNode) -> TokenStream {
 		.collect()
 }
 
-fn node_set_action(node: &AiNode) -> TokenStream {
+fn set_child_node_state(node: &AiNode) -> TokenStream {
 	// let AiNode { ident, .. } = node;
 	(0..node.num_choices)
 		.map(|index| {
-			let val = action_default(node, index);
+			let val = default_child_node_state(node, index);
 			quote!(#index => commands.entity(entity).insert(#val),)
 		})
 		.collect()

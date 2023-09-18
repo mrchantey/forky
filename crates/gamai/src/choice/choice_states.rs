@@ -4,28 +4,28 @@ use std::marker::PhantomData;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-// derive debug for `ChoiceActionState` etc
+// derive debug for `ChildNodeState` etc
 pub trait Choice: std::fmt::Debug + 'static + Send + Sync {
 	const INDEX: usize;
 	type AiNode: AiNode;
 }
 
 #[derive(Debug, Default, Clone, Component, PartialEq)]
-pub struct ChoiceActionState<C: Choice> {
-	pub state: ActionState,
+pub struct ChildNodeState<C: Choice> {
+	pub state: NodeState,
 	marker: PhantomData<C>,
 }
 
-impl<C: Choice> Deref for ChoiceActionState<C> {
-	type Target = ActionState;
+impl<C: Choice> Deref for ChildNodeState<C> {
+	type Target = NodeState;
 	fn deref(&self) -> &Self::Target { &self.state }
 }
-impl<C: Choice> DerefMut for ChoiceActionState<C> {
+impl<C: Choice> DerefMut for ChildNodeState<C> {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.state }
 }
 
-impl<C: Choice> ChoiceActionState<C> {
-	pub fn new(state: ActionState) -> Self {
+impl<C: Choice> ChildNodeState<C> {
+	pub fn new(state: NodeState) -> Self {
 		Self {
 			state,
 			marker: PhantomData,

@@ -14,7 +14,7 @@ fn first_valid_solver<A: AiNode>(
 	for (entity, edges) in choices.iter() {
 		for (index, edge) in edges.iter().enumerate() {
 			if *edge != EdgeState::Fail {
-				A::set_action(&mut commands, *entity, index);
+				A::set_child_node_state(&mut commands, *entity, index);
 				return;
 			}
 		}

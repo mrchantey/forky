@@ -6,13 +6,13 @@ pub fn edge_type(node: &AiNode, index: usize) -> TokenStream {
 	let phantom = choice_phantom(node, index);
 	quote!(ChoiceEdgeState<#phantom>)
 }
-// pub fn action_type(node: &AiNode, index: usize) -> TokenStream {
+// pub fn child_node_type(node: &AiNode, index: usize) -> TokenStream {
 // 	let phantom = choice_phantom(node, index);
-// 	quote!(ChoiceActionState<#phantom>)
+// 	quote!(ChildNodeState<#phantom>)
 // }
-pub fn action_default(node: &AiNode, index: usize) -> TokenStream {
+pub fn default_child_node_state(node: &AiNode, index: usize) -> TokenStream {
 	let phantom = choice_phantom(node, index);
-	quote!(ChoiceActionState::<#phantom>::default())
+	quote!(ChildNodeState::<#phantom>::default())
 }
 
 pub fn choice_phantom(node: &AiNode, index: usize) -> TokenStream {

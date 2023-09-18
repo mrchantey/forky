@@ -19,11 +19,11 @@ fn choice_states(node: &AiNode) -> TokenStream {
 		.map(|index| {
 			let edge_field = field_ident("edge", index);
 			let edge_type = edge_type(node, index);
-			// let action_field = field_ident("action", index);
-			// let action_type = action_type(node, index);
+			// let node_field = field_ident("node", index);
+			// let node_type = node_type(node, index);
 			quote!(
 				#edge_field: #edge_type,
-				// #action_field: #action_type,
+				// #node_field: #node_type,
 			)
 		})
 		.collect()

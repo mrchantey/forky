@@ -3,7 +3,7 @@ use gamai::*;
 use sweet::*;
 
 type F<const I: usize> = ChoiceEdgeState<ChoicePhantom<MyAiNode, I>>;
-type A<const I: usize> = ChoiceActionState<ChoicePhantom<MyAiNode, I>>;
+type A<const I: usize> = ChildNodeState<ChoicePhantom<MyAiNode, I>>;
 
 
 // #[node(32)]
@@ -12,10 +12,10 @@ struct MyAiNode;
 
 sweet! {
 	it "works" {
-		let choice0 = ChoiceBuilder::new(edge_always_fail, action_noop);
-		let choice1 = ChoiceBuilder::new(edge_always_pass, action_noop);
-		// let choice0 = (edge_always_fail, action_print);
-		// let choice1 = (edge_always_pass, action_print);
+		let choice0 = ChoiceBuilder::new(edge_always_fail, noop_node);
+		let choice1 = ChoiceBuilder::new(edge_always_pass, noop_node);
+		// let choice0 = (edge_always_fail, print_on_run);
+		// let choice1 = (edge_always_pass, print_on_run);
 		let mut app = App::new();
 		let entity = app.world.spawn(MyAiNodeBundle::default()).id();
 		expect(&app).not().to_have_component::<A<0>>(entity)?;

@@ -12,7 +12,7 @@ pub fn first_valid_edge<N: AiNode>(
 	for (entity, edges) in entities.iter() {
 		for (index, edge) in edges.iter().enumerate() {
 			if *edge != EdgeState::Fail {
-				N::set_action(&mut commands, *entity, index);
+				N::set_child_node_state(&mut commands, *entity, index);
 				continue; //skip other edges, go to next entity
 			}
 		}
@@ -32,10 +32,10 @@ pub fn edge_always_fail<C: Choice>(mut query: Query<&mut ChoiceEdgeState<C>>) {
 	}
 }
 #[choice_system]
-pub fn action_print<C: Choice>(mut query: Query<&mut ChoiceActionState<C>>) {
-	for action in query.iter_mut() {
-		println!("Action: Running {:?}", action);
+pub fn print_on_run<C: Choice>(mut query: Query<&mut ChildNodeState<C>>) {
+	for node in query.iter_mut() {
+		println!("NodeSystem: Running {:?}", node);
 	}
 }
 #[choice_system]
-pub fn action_noop<C: Choice>(_phantom: PhantomData<C>) {}
+pub fn noop_node<C: Choice>(_phantom: PhantomData<C>) {}

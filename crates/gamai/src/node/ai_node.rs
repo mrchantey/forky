@@ -9,7 +9,11 @@ pub trait AiNode: std::fmt::Debug + Default + 'static + Send + Sync {
 	fn edges(
 		query: &Query<Self::ChildrenQuery>,
 	) -> Vec<(Entity, Vec<EdgeState>)>;
-	fn set_action(commands: &mut Commands, entity: Entity, index: usize);
+	fn set_child_node_state(
+		commands: &mut Commands,
+		entity: Entity,
+		index: usize,
+	);
 }
 
 pub trait AddAiNodeSystem: 'static + Clone + Send + Sync {
