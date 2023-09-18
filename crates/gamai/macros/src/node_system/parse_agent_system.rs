@@ -3,9 +3,9 @@ use quote::quote;
 use syn::parse_macro_input;
 use syn::ItemFn;
 
-const GENERIC_ERROR:&str = "an `agent_system` must have a single type parameter bound by `gamai::Agent` ie: \npub fn my_func<A: Agent>()`";
+const GENERIC_ERROR:&str = "an `node_system` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<A: AiNode>()`";
 
-pub fn parse_agent_system(
+pub fn parse_node_system(
 	_attr: proc_macro::TokenStream,
 	item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
@@ -13,7 +13,7 @@ pub fn parse_agent_system(
 
 	let generic_err = assert_single_generic_bound(
 		item.sig.generics.clone(),
-		"Agent",
+		"AiNode",
 		GENERIC_ERROR,
 	)
 	.unwrap_or_else(syn::Error::into_compile_error);
@@ -43,8 +43,8 @@ pub fn parse_agent_system(
 		#[allow(non_camel_case_types)]
 		pub struct #struct_ident;
 
-		impl AddAgentSystem for #struct_ident {
-			fn add_agent_system<A: Agent>(
+		impl AddAiNodeSystem for #struct_ident {
+			fn add_node_system<A: AiNode>(
 				&self,
 				app: &mut App,
 				set: impl SystemSet,
@@ -53,7 +53,7 @@ pub fn parse_agent_system(
 			}
 		}
 
-		#vis fn #ident() -> impl AddAgentSystem { #struct_ident }
+		#vis fn #ident() -> impl AddAiNodeSystem { #struct_ident }
 		#generic_err
 	}
 	.into()

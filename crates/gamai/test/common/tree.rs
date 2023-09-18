@@ -2,13 +2,13 @@ use bevy::prelude::*;
 use gamai::*;
 use sweet::*;
 
-type F<const I: usize> = ChoiceEdgeState<ChoicePhantom<MyAgent, I>>;
-type A<const I: usize> = ChoiceActionState<ChoicePhantom<MyAgent, I>>;
+type F<const I: usize> = ChoiceEdgeState<ChoicePhantom<MyAiNode, I>>;
+type A<const I: usize> = ChoiceActionState<ChoicePhantom<MyAiNode, I>>;
 
 
-// #[agent(32)]
-#[agent]
-struct MyAgent;
+// #[node(32)]
+#[node]
+struct MyAiNode;
 
 sweet! {
 	it "works" {
@@ -17,10 +17,10 @@ sweet! {
 		// let choice0 = (edge_always_fail, action_print);
 		// let choice1 = (edge_always_pass, action_print);
 		let mut app = App::new();
-		let entity = app.world.spawn(MyAgentBundle::default()).id();
+		let entity = app.world.spawn(MyAiNodeBundle::default()).id();
 		expect(&app).not().to_have_component::<A<0>>(entity)?;
 		expect(&app).to_have_component::<F<0>>(entity)?;
-		app.add_plugins(MyAgentPlugin::new(solver_first_valid, (choice0, choice1)));
+		app.add_plugins(MyAiNodePlugin::new(solver_first_valid, (choice0, choice1)));
 		app.finish();
 		app.update();
 		expect(&app)

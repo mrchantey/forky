@@ -3,24 +3,24 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
 
-pub fn impl_agent(agent: &Agent) -> TokenStream {
-	let Agent { ident, .. } = agent;
-	// let AgentBuilder {
+pub fn impl_node(node: &AiNode) -> TokenStream {
+	let AiNode { ident, .. } = node;
+	// let AiNodeBuilder {
 	// 	builder_ident: ident,
 	// 	builder_bounds,
 	// 	builder_params,
 	// 	..
 	// } = builder;
-	let world_query = all_edges_nested(agent);
-	let params = agent_params_nested(agent);
-	let params_deref = agent_params_deref(agent);
-	let set_action = agent_set_action(agent);
+	let world_query = all_edges_nested(node);
+	let params = node_params_nested(node);
+	let params_deref = node_params_deref(node);
+	let set_action = node_set_action(node);
 
 	quote!(
-		impl Agent for #ident
+		impl AiNode for #ident
 		{
-			type Items = (Entity, #world_query);
-			fn edges(query: &Query<Self::Items>) -> Vec<(Entity, Vec<EdgeState>)> {
+			type ChildrenQuery = (Entity, #world_query);
+			fn edges(query: &Query<Self::ChildrenQuery>) -> Vec<(Entity, Vec<EdgeState>)> {
 				query
 					.iter()
 					.map(|(entity, #params)| (entity, vec![#params_deref]))
@@ -36,17 +36,17 @@ pub fn impl_agent(agent: &Agent) -> TokenStream {
 	)
 }
 
-fn all_edges_nested(agent: &Agent) -> TokenStream {
-	(0..agent.num_choices)
+fn all_edges_nested(node: &AiNode) -> TokenStream {
+	(0..node.num_choices)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
-			let ident = edge_type(agent, index);
+			let ident = edge_type(node, index);
 			quote!((&'static #ident, #prev))
 		})
 		.into_token_stream()
 }
-fn agent_params_nested(agent: &Agent) -> TokenStream {
-	(0..agent.num_choices)
+fn node_params_nested(node: &AiNode) -> TokenStream {
+	(0..node.num_choices)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
 			let ident = field_ident("edge", index);
@@ -55,8 +55,8 @@ fn agent_params_nested(agent: &Agent) -> TokenStream {
 		.into_token_stream()
 }
 
-fn agent_params_deref(agent: &Agent) -> TokenStream {
-	(0..agent.num_choices)
+fn node_params_deref(node: &AiNode) -> TokenStream {
+	(0..node.num_choices)
 		.map(|index| {
 			let ident = field_ident("edge", index);
 			quote!(**#ident,)
@@ -64,11 +64,11 @@ fn agent_params_deref(agent: &Agent) -> TokenStream {
 		.collect()
 }
 
-fn agent_set_action(agent: &Agent) -> TokenStream {
-	// let Agent { ident, .. } = agent;
-	(0..agent.num_choices)
+fn node_set_action(node: &AiNode) -> TokenStream {
+	// let AiNode { ident, .. } = node;
+	(0..node.num_choices)
 		.map(|index| {
-			let val = action_default(agent, index);
+			let val = action_default(node, index);
 			quote!(#index => commands.entity(entity).insert(#val),)
 		})
 		.collect()

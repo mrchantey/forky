@@ -6,5 +6,5 @@ use sweet::*;
 //this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
 
-#[agent]
-struct MyAgent;
+#[node]
+struct MyAiNode;

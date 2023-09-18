@@ -11,5 +11,5 @@ extern crate self as gamai;
 pub use gamai_macros::*;
 mod choice;
 pub use self::choice::*;
-mod agent;
-pub use self::agent::*;
+mod node;
+pub use self::node::*;

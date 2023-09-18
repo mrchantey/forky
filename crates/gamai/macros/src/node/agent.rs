@@ -6,7 +6,7 @@ use syn::AttributeArgs;
 use syn::ItemStruct;
 use syn::Visibility;
 
-pub struct Agent {
+pub struct AiNode {
 	pub num_choices: usize,
 	pub ident: Ident,
 	pub vis: Visibility,
@@ -14,16 +14,16 @@ pub struct Agent {
 	pub choice_bounds: TokenStream,
 	// pub fields: TokenStream,
 	// pub fields_typed: TokenStream,
-	pub builder: AgentBuilder,
+	pub builder: AiNodeBuilder,
 }
 
-impl Agent {
+impl AiNode {
 	pub fn new(item: ItemStruct, attr: AttributeArgs) -> Self {
 		let num_choices = parse_attributes(attr).unwrap_or(2);
 		let (choice_generic_params, choice_generic_bounds) =
 			choice_generics(num_choices);
 		// let (fields, fields_typed) = fields(num_choices);
-		let builder = AgentBuilder::new(&item, num_choices);
+		let builder = AiNodeBuilder::new(&item, num_choices);
 		Self {
 			builder,
 			num_choices,
@@ -41,13 +41,13 @@ impl Agent {
 	) -> proc_macro::TokenStream {
 		let attr = syn::parse_macro_input!(attr as syn::AttributeArgs);
 		let item = syn::parse_macro_input!(item as syn::ItemStruct);
-		let agent = Agent::new(item, attr);
+		let node = AiNode::new(item, attr);
 
-		let builder_impl = impl_builder(&agent);
-		let self_impl = impl_self(&agent);
-		let agent_impl = impl_agent(&agent);
-		let sets_impl = impl_sets(&agent);
-		let bundle_impl = impl_bundle(&agent);
+		let builder_impl = impl_builder(&node);
+		let self_impl = impl_self(&node);
+		let node_impl = impl_node(&node);
+		let sets_impl = impl_sets(&node);
+		let bundle_impl = impl_bundle(&node);
 
 		quote! {
 			use bevy::prelude::*;
@@ -55,7 +55,7 @@ impl Agent {
 			#self_impl
 			#sets_impl
 			#builder_impl
-			#agent_impl
+			#node_impl
 			#bundle_impl
 		}
 		.into()

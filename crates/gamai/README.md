@@ -28,18 +28,18 @@
 ```rs
 
 
-#[agent] //creates MyAgentPlugin & MyAgentBundle
-struct MyAgent;
+#[node] //creates MyAiNodePlugin & MyAiNodeBundle
+struct MyAiNode;
 
 fn main() {
 	let will_skip = ChoiceBuilder::new(edge_always_fail, action_print);
 	let will_run = ChoiceBuilder::new(edge_always_pass, action_print);
 
   let mut app = App::new()
-  app.add_plugins(MyAgentPlugin::new(default_solver, (will_skip, will_run)));
-  app.world.spawn(MyAgentBundle::default());
+  app.add_plugins(MyAiNodePlugin::new(default_solver, (will_skip, will_run)));
+  app.world.spawn(MyAiNodeBundle::default());
   app.run();
 }
 
-// outputs: "ran action for MyAgent at index 1"
+// outputs: "ran action for MyAiNode at index 1"
 ```

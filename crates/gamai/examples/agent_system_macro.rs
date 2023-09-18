@@ -5,10 +5,10 @@ use gamai::*;
 //this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
 
-#[agent_system]
-fn first_valid_solver<A: Agent>(
+#[node_system]
+fn first_valid_solver<A: AiNode>(
 	mut commands: Commands,
-	mut query: Query<A::Items>,
+	mut query: Query<A::ChildrenQuery>,
 ) {
 	let choices = A::edges(&mut query);
 	for (entity, edges) in choices.iter() {

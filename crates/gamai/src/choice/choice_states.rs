@@ -7,7 +7,7 @@ use std::ops::DerefMut;
 // derive debug for `ChoiceActionState` etc
 pub trait Choice: std::fmt::Debug + 'static + Send + Sync {
 	const INDEX: usize;
-	type Agent: Agent;
+	type AiNode: AiNode;
 }
 
 #[derive(Debug, Default, Clone, Component, PartialEq)]
@@ -57,9 +57,9 @@ impl<C: Choice> DerefMut for ChoiceEdgeState<C> {
 }
 
 #[derive(Debug, Default, PartialEq, Clone, Copy)]
-pub struct ChoicePhantom<A: Agent, const INDEX: usize>(PhantomData<A>);
+pub struct ChoicePhantom<A: AiNode, const INDEX: usize>(PhantomData<A>);
 
-impl<A: Agent, const INDEX: usize> Choice for ChoicePhantom<A, INDEX> {
-	type Agent = A;
+impl<A: AiNode, const INDEX: usize> Choice for ChoicePhantom<A, INDEX> {
+	type AiNode = A;
 	const INDEX: usize = INDEX;
 }

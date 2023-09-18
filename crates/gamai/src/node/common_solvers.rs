@@ -2,10 +2,10 @@
 use crate::*;
 use bevy::prelude::*;
 use std::marker::PhantomData;
-#[agent_system]
-pub fn solver_first_valid<A: Agent>(
+#[node_system]
+pub fn solver_first_valid<A: AiNode>(
 	mut commands: Commands,
-	mut query: Query<A::Items>,
+	mut query: Query<A::ChildrenQuery>,
 ) {
 	let choices = A::edges(&mut query);
 	for (entity, edges) in choices.iter() {

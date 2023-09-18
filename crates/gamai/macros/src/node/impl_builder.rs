@@ -4,13 +4,13 @@ use quote::quote;
 use syn::Ident;
 use syn::ItemStruct;
 
-pub struct AgentBuilder {
+pub struct AiNodeBuilder {
 	pub builder_ident: Ident,
 	pub builder_params: TokenStream,
 	pub builder_bounds: TokenStream,
 }
 
-impl AgentBuilder {
+impl AiNodeBuilder {
 	pub fn new(item: &ItemStruct, num_choices: usize) -> Self {
 		let ident =
 			Ident::new(&format!("{}Plugin", item.ident), item.ident.span());
@@ -19,7 +19,7 @@ impl AgentBuilder {
 
 		Self {
 			builder_ident: ident,
-			builder_params: builder_params,
+			builder_params,
 			builder_bounds: generic_bounds,
 		}
 	}
@@ -28,21 +28,21 @@ impl AgentBuilder {
 fn builder_params(num_params: usize) -> (TokenStream, TokenStream) {
 	let (choice_params, choice_bounds) = choice_generics(num_params);
 	let params = quote!(Solver, #choice_params);
-	let bounds = quote!(Solver: AddAgentSystem, #choice_bounds);
+	let bounds = quote!(Solver: AddAiNodeSystem, #choice_bounds);
 	(params, bounds)
 }
 
 
-pub fn impl_builder(agent: &Agent) -> TokenStream {
-	let plugin_impl = impl_plugin(agent);
+pub fn impl_builder(node: &AiNode) -> TokenStream {
+	let plugin_impl = impl_plugin(node);
 
-	let Agent {
+	let AiNode {
 		choice_params,
 		// vis,
 		builder,
 		..
-	} = agent;
-	let AgentBuilder {
+	} = node;
+	let AiNodeBuilder {
 		builder_ident,
 		builder_params,
 		builder_bounds,
