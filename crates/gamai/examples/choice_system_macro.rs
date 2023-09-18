@@ -5,5 +5,5 @@ use gamai::*;
 //this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
 
-#[choice_system]
+#[edge_system]
 pub fn noop_node<C: Choice>(mut _query: Query<&mut ChildNodeState<C>>) {}

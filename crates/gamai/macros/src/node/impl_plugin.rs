@@ -3,16 +3,16 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::Index;
 
-pub fn impl_plugin(node: &AiNode) -> TokenStream {
-	let AiNode { ident, builder, .. } = node;
-	let AiNodeBuilder {
+pub fn impl_plugin(node: &NodeParser) -> TokenStream {
+	let NodeParser { ident, builder, .. } = node;
+	let NodePluginParser {
 		builder_ident,
 		builder_params,
 		builder_bounds,
 		..
 	} = builder;
 
-	let choice_systems = choice_systems(node);
+	let child_node_systems = child_node_systems(node);
 	let configure_sets = configure_sets(node);
 
 	quote!(
@@ -22,14 +22,14 @@ pub fn impl_plugin(node: &AiNode) -> TokenStream {
 				#configure_sets
 				self.solver
 					.add_node_system::<#ident>(app, #ident.node_set());
-				#choice_systems
+				#child_node_systems
 			}
 		}
 	)
 }
 
-fn configure_sets(node: &AiNode) -> TokenStream {
-	let AiNode { ident, .. } = node;
+fn configure_sets(node: &NodeParser) -> TokenStream {
+	let NodeParser { ident, .. } = node;
 	quote! {
 		app.configure_set(Update,#ident.child_edge_set().before(#ident.node_set()));
 		app.configure_set(Update,#ident.node_set().before(#ident.child_node_set()));
@@ -37,13 +37,13 @@ fn configure_sets(node: &AiNode) -> TokenStream {
 }
 
 
-fn choice_systems(node: &AiNode) -> TokenStream {
+fn child_node_systems(node: &NodeParser) -> TokenStream {
 	(0..node.num_choices)
 		.map(|index| {
-			let AiNode { ident, .. } = node;
+			let NodeParser { ident, .. } = node;
 			let phantom = choice_phantom(node, index);
 			let index = Index::from(index);
-			quote!(self.choices.#index.add_choice_systems::<#phantom>(app, &#ident);)
+			quote!(self.choices.#index.add_edge_systems::<#phantom>(app, &#ident);)
 		})
 		.collect()
 }

@@ -4,9 +4,9 @@ use quote::quote;
 use syn::parse_macro_input;
 use syn::ItemFn;
 
-const GENERIC_ERROR:&str = "a `choice_system` must have a single type parameter bound by `gamai::Choice` ie: \npub fn my_func<C: Choice>()`";
+const GENERIC_ERROR:&str = "an `edge_system` must have a single type parameter bound by `gamai::Choice` ie: \npub fn my_func<C: Choice>()`";
 
-pub fn parse_choice_system(
+pub fn parse_edge_system(
 	_attr: proc_macro::TokenStream,
 	item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
@@ -43,8 +43,8 @@ pub fn parse_choice_system(
 		#[allow(non_camel_case_types)]
 		pub struct #struct_ident;
 
-		impl AddChoiceSystem for #struct_ident {
-			fn add_choice_system<C: Choice>(
+		impl EdgeSystemBuilder for #struct_ident {
+			fn add_edge_system<C: Choice>(
 				&self,
 				app: &mut App,
 				set: impl SystemSet,
@@ -53,7 +53,7 @@ pub fn parse_choice_system(
 			}
 		}
 
-		#vis fn #ident() -> impl AddChoiceSystem { #struct_ident }
+		#vis fn #ident() -> impl EdgeSystemBuilder { #struct_ident }
 		#generic_err
 	}
 	.into()

@@ -34,12 +34,12 @@ impl<C: Choice> ChildNodeState<C> {
 }
 
 #[derive(Debug, Default, Clone, Component, PartialEq)]
-pub struct ChoiceEdgeState<C: Choice> {
+pub struct ChildEdgeState<C: Choice> {
 	pub state: EdgeState,
 	marker: PhantomData<C>,
 }
 
-impl<C: Choice> ChoiceEdgeState<C> {
+impl<C: Choice> ChildEdgeState<C> {
 	pub fn new(state: EdgeState) -> Self {
 		Self {
 			state,
@@ -48,11 +48,11 @@ impl<C: Choice> ChoiceEdgeState<C> {
 	}
 }
 
-impl<C: Choice> Deref for ChoiceEdgeState<C> {
+impl<C: Choice> Deref for ChildEdgeState<C> {
 	type Target = EdgeState;
 	fn deref(&self) -> &Self::Target { &self.state }
 }
-impl<C: Choice> DerefMut for ChoiceEdgeState<C> {
+impl<C: Choice> DerefMut for ChildEdgeState<C> {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.state }
 }
 

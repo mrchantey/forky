@@ -4,13 +4,13 @@ use quote::quote;
 use syn::Ident;
 use syn::ItemStruct;
 
-pub struct AiNodeBuilder {
+pub struct NodePluginParser {
 	pub builder_ident: Ident,
 	pub builder_params: TokenStream,
 	pub builder_bounds: TokenStream,
 }
 
-impl AiNodeBuilder {
+impl NodePluginParser {
 	pub fn new(item: &ItemStruct, num_choices: usize) -> Self {
 		let ident =
 			Ident::new(&format!("{}Plugin", item.ident), item.ident.span());
@@ -33,16 +33,16 @@ fn builder_params(num_params: usize) -> (TokenStream, TokenStream) {
 }
 
 
-pub fn impl_builder(node: &AiNode) -> TokenStream {
+pub fn impl_builder(node: &NodeParser) -> TokenStream {
 	let plugin_impl = impl_plugin(node);
 
-	let AiNode {
+	let NodeParser {
 		choice_params,
 		// vis,
 		builder,
 		..
 	} = node;
-	let AiNodeBuilder {
+	let NodePluginParser {
 		builder_ident,
 		builder_params,
 		builder_bounds,

@@ -3,8 +3,8 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
 
-pub fn impl_node(node: &AiNode) -> TokenStream {
-	let AiNode { ident, .. } = node;
+pub fn impl_node(node: &NodeParser) -> TokenStream {
+	let NodeParser { ident, .. } = node;
 	// let AiNodeBuilder {
 	// 	builder_ident: ident,
 	// 	builder_bounds,
@@ -36,7 +36,7 @@ pub fn impl_node(node: &AiNode) -> TokenStream {
 	)
 }
 
-fn all_edges_nested(node: &AiNode) -> TokenStream {
+fn all_edges_nested(node: &NodeParser) -> TokenStream {
 	(0..node.num_choices)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
@@ -45,7 +45,7 @@ fn all_edges_nested(node: &AiNode) -> TokenStream {
 		})
 		.into_token_stream()
 }
-fn node_params_nested(node: &AiNode) -> TokenStream {
+fn node_params_nested(node: &NodeParser) -> TokenStream {
 	(0..node.num_choices)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
@@ -55,7 +55,7 @@ fn node_params_nested(node: &AiNode) -> TokenStream {
 		.into_token_stream()
 }
 
-fn node_params_deref(node: &AiNode) -> TokenStream {
+fn node_params_deref(node: &NodeParser) -> TokenStream {
 	(0..node.num_choices)
 		.map(|index| {
 			let ident = field_ident("edge", index);
@@ -64,7 +64,7 @@ fn node_params_deref(node: &AiNode) -> TokenStream {
 		.collect()
 }
 
-fn set_child_node_state(node: &AiNode) -> TokenStream {
+fn set_child_node_state(node: &NodeParser) -> TokenStream {
 	// let AiNode { ident, .. } = node;
 	(0..node.num_choices)
 		.map(|index| {

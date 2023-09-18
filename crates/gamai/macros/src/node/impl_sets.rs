@@ -5,8 +5,8 @@ use proc_macro2::TokenStream;
 use quote::quote;
 
 
-pub fn impl_sets(node: &AiNode) -> TokenStream {
-	let AiNode { ident, .. } = node;
+pub fn impl_sets(node: &NodeParser) -> TokenStream {
+	let NodeParser { ident, .. } = node;
 
 	let child_edge_ident =
 		Ident::new(&format!("{ident}ChildEdgeSet"), Span::call_site());

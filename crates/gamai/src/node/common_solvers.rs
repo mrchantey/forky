@@ -19,23 +19,23 @@ pub fn first_valid_edge<N: AiNode>(
 	}
 }
 
-#[choice_system]
-pub fn edge_always_pass<C: Choice>(mut query: Query<&mut ChoiceEdgeState<C>>) {
+#[edge_system]
+pub fn edge_always_pass<C: Choice>(mut query: Query<&mut ChildEdgeState<C>>) {
 	for mut edge in query.iter_mut() {
 		**edge = EdgeState::Pass;
 	}
 }
-#[choice_system]
-pub fn edge_always_fail<C: Choice>(mut query: Query<&mut ChoiceEdgeState<C>>) {
+#[edge_system]
+pub fn edge_always_fail<C: Choice>(mut query: Query<&mut ChildEdgeState<C>>) {
 	for mut edge in query.iter_mut() {
 		**edge = EdgeState::Fail;
 	}
 }
-#[choice_system]
+#[edge_system]
 pub fn print_on_run<C: Choice>(mut query: Query<&mut ChildNodeState<C>>) {
 	for node in query.iter_mut() {
 		println!("NodeSystem: Running {:?}", node);
 	}
 }
-#[choice_system]
+#[edge_system]
 pub fn noop_node<C: Choice>(_phantom: PhantomData<C>) {}
