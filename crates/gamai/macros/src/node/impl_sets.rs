@@ -23,9 +23,9 @@ pub fn impl_sets(node: &AiNode) -> TokenStream {
 		pub struct #action_ident;
 
 		impl NodeSets for #ident {
-			fn edge_set(&self) -> impl SystemSet { #edge_ident }
+			fn child_edge_set(&self) -> impl SystemSet { #edge_ident }
 			fn node_set(&self) -> impl SystemSet { #node_ident }
-			fn action_set(&self) -> impl SystemSet { #action_ident }
+			fn child_node_set(&self) -> impl SystemSet { #action_ident }
 		}
 	}
 }

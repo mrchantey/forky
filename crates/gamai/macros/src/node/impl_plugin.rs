@@ -31,8 +31,8 @@ pub fn impl_plugin(node: &AiNode) -> TokenStream {
 fn configure_sets(node: &AiNode) -> TokenStream {
 	let AiNode { ident, .. } = node;
 	quote! {
-		app.configure_set(Update,#ident.edge_set().before(#ident.node_set()));
-		app.configure_set(Update,#ident.node_set().before(#ident.action_set()));
+		app.configure_set(Update,#ident.child_edge_set().before(#ident.node_set()));
+		app.configure_set(Update,#ident.node_set().before(#ident.child_node_set()));
 	}
 }
 

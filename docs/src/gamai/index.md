@@ -14,6 +14,24 @@
 
 The structure of `gamai` is a directed tree graph, and uses graph theory terminology. It is paradigm agnostic, ie one node may have a utility filter, whereas another may use a binary filter.
 
+A graph structure like this:
+```mermaid
+
+graph TB;
+	A-->B;
+	A-->C;
+
+```
+Will turn into four systems, where the states are checked before `node A` is run, so it can determine which child node to activate.
+```mermaid
+graph LR;
+	State_B --> A;
+	State_C --> A;
+	A --> Node_B;
+	A --> Node_C;
+
+```
+
 
 ### Best With Bevy
 
