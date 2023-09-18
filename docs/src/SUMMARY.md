@@ -21,6 +21,8 @@
 	- [CI / CD](./sweet/cicd.md)
 	- [FAQ](./sweet/faq.md)
 	- [Changelog](./sweet/changelog.md)
+---
+- [Gamai](./gamai/index.md)
 # Demos
 
 - [Bevy WebXR](./demos/bevy-webxr.md)

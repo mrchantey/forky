@@ -21,7 +21,7 @@ pub fn impl_plugin(node: &AiNode) -> TokenStream {
 			fn build(&self, app: &mut App) {
 				#configure_sets
 				self.solver
-					.add_node_system::<#ident>(app, #ident.solver_set());
+					.add_node_system::<#ident>(app, #ident.node_set());
 				#choice_systems
 			}
 		}
@@ -31,8 +31,8 @@ pub fn impl_plugin(node: &AiNode) -> TokenStream {
 fn configure_sets(node: &AiNode) -> TokenStream {
 	let AiNode { ident, .. } = node;
 	quote! {
-		app.configure_set(Update,#ident.edge_set().before(#ident.solver_set()));
-		app.configure_set(Update,#ident.solver_set().before(#ident.action_set()));
+		app.configure_set(Update,#ident.edge_set().before(#ident.node_set()));
+		app.configure_set(Update,#ident.node_set().before(#ident.action_set()));
 	}
 }
 

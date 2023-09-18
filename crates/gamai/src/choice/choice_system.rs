@@ -14,7 +14,7 @@ pub trait ChoiceSystems: 'static + Send + Sync + Clone {
 	fn add_choice_systems<C: Choice>(
 		&self,
 		app: &mut App,
-		sets: &impl SolverSets,
+		sets: &impl NodeSets,
 	) {
 		self.get_edge().add_choice_system::<C>(app, sets.edge_set());
 		self.get_action()

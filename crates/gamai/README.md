@@ -36,7 +36,7 @@ fn main() {
 	let will_run = ChoiceBuilder::new(edge_always_pass, action_print);
 
   let mut app = App::new()
-  app.add_plugins(MyAiNodePlugin::new(default_solver, (will_skip, will_run)));
+  app.add_plugins(MyAiNodePlugin::new(default_system, (will_skip, will_run)));
   app.world.spawn(MyAiNodeBundle::default());
   app.run();
 }

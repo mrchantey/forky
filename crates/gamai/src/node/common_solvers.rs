@@ -2,16 +2,17 @@
 use crate::*;
 use bevy::prelude::*;
 use std::marker::PhantomData;
+
 #[node_system]
-pub fn solver_first_valid<A: AiNode>(
+pub fn first_valid_edge<N: AiNode>(
 	mut commands: Commands,
-	mut query: Query<A::ChildrenQuery>,
+	mut query: Query<N::ChildrenQuery>,
 ) {
-	let choices = A::edges(&mut query);
-	for (entity, edges) in choices.iter() {
+	let entities = N::edges(&mut query);
+	for (entity, edges) in entities.iter() {
 		for (index, edge) in edges.iter().enumerate() {
 			if *edge != EdgeState::Fail {
-				A::set_action(&mut commands, *entity, index);
+				N::set_action(&mut commands, *entity, index);
 				continue; //skip other edges, go to next entity
 			}
 		}

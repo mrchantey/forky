@@ -20,7 +20,7 @@ sweet! {
 		let entity = app.world.spawn(MyAiNodeBundle::default()).id();
 		expect(&app).not().to_have_component::<A<0>>(entity)?;
 		expect(&app).to_have_component::<F<0>>(entity)?;
-		app.add_plugins(MyAiNodePlugin::new(solver_first_valid, (choice0, choice1)));
+		app.add_plugins(MyAiNodePlugin::new(first_valid_edge, (choice0, choice1)));
 		app.finish();
 		app.update();
 		expect(&app)

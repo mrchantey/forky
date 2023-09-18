@@ -27,8 +27,8 @@ impl AiNodeBuilder {
 
 fn builder_params(num_params: usize) -> (TokenStream, TokenStream) {
 	let (choice_params, choice_bounds) = choice_generics(num_params);
-	let params = quote!(Solver, #choice_params);
-	let bounds = quote!(Solver: AddAiNodeSystem, #choice_bounds);
+	let params = quote!(NodeSystem, #choice_params);
+	let bounds = quote!(NodeSystem: AddAiNodeSystem, #choice_bounds);
 	(params, bounds)
 }
 
@@ -52,11 +52,11 @@ pub fn impl_builder(node: &AiNode) -> TokenStream {
 	quote! {
 		// #[derive(Debug)]
 		pub struct #builder_ident<#builder_params> where #builder_bounds{
-			solver: Solver,
+			solver: NodeSystem,
 			choices: (#choice_params),
 		}
 		impl<#builder_params> #builder_ident<#builder_params> where #builder_bounds{
-			pub fn new(solver: fn()->Solver, choices: (#choice_params))->Self
+			pub fn new(solver: fn()->NodeSystem, choices: (#choice_params))->Self
 				where #builder_bounds {
 				#builder_ident{ solver:solver(), choices }
 			}
