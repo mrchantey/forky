@@ -9,14 +9,16 @@ type A<const I: usize> = ChildNodeState<EdgePhantom<my_node, I>>;
 // #[node(32)]
 #[node]
 fn my_node(){
+	// my_nodePlugin::new(node, edges)
+	first_valid_edge
 }
 
 sweet! {
 	it "works" {
 		let edge0 = EdgeBuilder::new(edge_always_fail, noop_node);
 		let edge1 = EdgeBuilder::new(edge_always_pass, noop_node);
-		// let edge0 = (edge_always_fail, print_on_run);
-		// let edge1 = (edge_always_pass, print_on_run);
+		// // let edge0 = (edge_always_fail, print_on_run);
+		// // let edge1 = (edge_always_pass, print_on_run);
 		let mut app = App::new();
 		let entity = app.world.spawn(my_nodeBundle::default()).id();
 		expect(&app).not().to_have_component::<A<0>>(entity)?;

@@ -57,9 +57,9 @@ pub fn impl_builder(node: &NodeParser) -> TokenStream {
 			edges: (#edge_params),
 		}
 		impl<#builder_params> #builder_ident<#builder_params> where #builder_bounds{
-			pub fn new(node: fn()->NodeSystem, edges: (#edge_params))->Self
+			pub fn new(node: NodeSystem, edges: (#edge_params))->Self
 				where #builder_bounds {
-				#builder_ident{ node:node(), edges }
+				#builder_ident{ node, edges }
 			}
 	}
 		#plugin_impl

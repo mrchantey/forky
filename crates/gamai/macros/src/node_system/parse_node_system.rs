@@ -26,12 +26,10 @@ pub fn parse_node_system(
 	let mut item_inner = item.clone();
 	item_inner.sig.ident = func_ident.clone();
 
-	let struct_ident = syn::Ident::new(
-		&format!("{}_struct", item.sig.ident),
-		item.sig.ident.span(),
-	);
-	let ident = item.sig.ident;
-	let vis = item.vis;
+	let struct_ident = item.sig.ident;
+
+	// let ident = item.sig.ident;
+	// let vis = item.vis;
 
 	quote! {
 		#item_inner
@@ -53,7 +51,7 @@ pub fn parse_node_system(
 			}
 		}
 
-		#vis fn #ident() -> impl AddAiNodeSystem { #struct_ident }
+		// #vis fn #ident() -> impl AddAiNodeSystem { #struct_ident }
 		#generic_err
 	}
 	.into()

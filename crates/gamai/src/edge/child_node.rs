@@ -39,8 +39,8 @@ where
 	EdgeSystem: EdgeSystemBuilder,
 	NodeSystem: EdgeSystemBuilder,
 {
-	pub edge: fn() -> EdgeSystem,
-	pub node: fn() -> NodeSystem,
+	pub edge: EdgeSystem,
+	pub node: NodeSystem,
 }
 
 impl<EdgeSystem, NodeSystem> EdgeBuilder<EdgeSystem, NodeSystem>
@@ -48,7 +48,7 @@ where
 	EdgeSystem: EdgeSystemBuilder,
 	NodeSystem: EdgeSystemBuilder,
 {
-	pub fn new(edge: fn() -> EdgeSystem, node: fn() -> NodeSystem) -> Self {
+	pub fn new(edge: EdgeSystem, node: NodeSystem) -> Self {
 		Self { edge, node }
 	}
 }
@@ -61,6 +61,6 @@ where
 {
 	type EdgeSystem = EdgeSystem;
 	type NodeSystem = NodeSystem;
-	fn edge_system(&self) -> Self::EdgeSystem { (self.edge)() }
-	fn node_system(&self) -> Self::NodeSystem { (self.node)() }
+	fn edge_system(&self) -> Self::EdgeSystem { self.edge.clone() }
+	fn node_system(&self) -> Self::NodeSystem { self.node.clone() }
 }
