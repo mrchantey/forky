@@ -9,6 +9,7 @@ pub fn impl_bundle(node: &NodeParser) -> TokenStream {
 	let edge_states = edge_states(node);
 	quote! {
 		#[derive(Bundle, Default)]
+		#[allow(non_camel_case_types)]
 		#vis struct #ident{
 			#edge_states
 		}

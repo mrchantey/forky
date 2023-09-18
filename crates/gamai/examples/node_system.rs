@@ -1,12 +1,12 @@
 #![feature(associated_type_bounds, return_position_impl_trait_in_trait)]
-use bevy::prelude::*;
+use bevy_ecs::prelude::*;
 use gamai::*;
 
 //this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
 
 #[node_system]
-fn first_valid_solver<N: AiNode>(
+fn first_valid_edge<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<N::ChildrenQuery>,
 ) {

@@ -36,7 +36,7 @@ pub fn parse_node_system(
 	quote! {
 		#item_inner
 
-		use bevy::prelude::*;
+		use bevy_ecs::prelude::*;
 		use gamai::*;
 
 		#[derive(Clone)]
@@ -46,10 +46,10 @@ pub fn parse_node_system(
 		impl AddAiNodeSystem for #struct_ident {
 			fn add_node_system<A: AiNode>(
 				&self,
-				app: &mut App,
+				schedule: &mut Schedule,
 				set: impl SystemSet,
 			) {
-				app.add_systems(Update, #func_ident::<A>.in_set(set));
+				schedule.add_systems(#func_ident::<A>.in_set(set));
 			}
 		}
 

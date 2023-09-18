@@ -1,6 +1,6 @@
 # Forky
 
-Forky is a monorepo for web & game rust crates.
+Forky is a monorepo for kickass rust crates.
 
 > *Very early stage warning:*
 > - breaking changes on patch versions
@@ -11,4 +11,5 @@ Forky is a monorepo for web & game rust crates.
 ## Crates
 
 - [CLI](./forky_cli)
+- [Gamai](./gamai)
 - [Sweet](./sweet)

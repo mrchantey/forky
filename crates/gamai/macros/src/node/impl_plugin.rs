@@ -16,12 +16,14 @@ pub fn impl_plugin(node: &NodeParser) -> TokenStream {
 	let configure_sets = configure_sets(node);
 
 	quote!(
-		impl<#builder_params> Plugin for #builder_ident<#builder_params>
+		impl<#builder_params> bevy::prelude::Plugin for #builder_ident<#builder_params>
 		where #builder_bounds {
-			fn build(&self, app: &mut App) {
+			fn build(&self, app: &mut bevy::prelude::App) {
+				app.init_schedule(bevy::prelude::Update);
+				let mut schedule = app.get_schedule_mut(bevy::prelude::Update).unwrap();
 				#configure_sets
-				self.solver
-					.add_node_system::<#ident>(app, #ident.node_set());
+				self.node
+					.add_node_system::<#ident>(schedule, #ident.node_set());
 				#child_node_systems
 			}
 		}
@@ -31,8 +33,8 @@ pub fn impl_plugin(node: &NodeParser) -> TokenStream {
 fn configure_sets(node: &NodeParser) -> TokenStream {
 	let NodeParser { ident, .. } = node;
 	quote! {
-		app.configure_set(Update,#ident.child_edge_set().before(#ident.node_set()));
-		app.configure_set(Update,#ident.node_set().before(#ident.child_node_set()));
+		schedule.configure_set(#ident.child_edge_set().before(#ident.node_set()));
+		schedule.configure_set(#ident.node_set().before(#ident.child_node_set()));
 	}
 }
 
@@ -43,7 +45,7 @@ fn child_node_systems(node: &NodeParser) -> TokenStream {
 			let NodeParser { ident, .. } = node;
 			let phantom = edge_phantom(node, index);
 			let index = Index::from(index);
-			quote!(self.edges.#index.add_edge_systems::<#phantom>(app, &#ident);)
+			quote!(self.edges.#index.add_edge_systems::<#phantom>(schedule, &#ident);)
 		})
 		.collect()
 }

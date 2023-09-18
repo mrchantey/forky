@@ -2,8 +2,9 @@ use super::*;
 use proc_macro2::Ident;
 use proc_macro2::TokenStream;
 use quote::quote;
+use syn::parse_macro_input;
 use syn::AttributeArgs;
-use syn::ItemStruct;
+use syn::ItemFn;
 use syn::Visibility;
 
 pub struct NodeParser {
@@ -18,7 +19,32 @@ pub struct NodeParser {
 }
 
 impl NodeParser {
-	pub fn new(item: ItemStruct, attr: AttributeArgs) -> Self {
+	pub fn parse(
+		attr: proc_macro::TokenStream,
+		item: proc_macro::TokenStream,
+	) -> proc_macro::TokenStream {
+		let attr = parse_macro_input!(attr as AttributeArgs);
+		let item = parse_macro_input!(item as ItemFn);
+		let node = NodeParser::new(item, attr);
+
+		let builder_impl = impl_builder(&node);
+		let self_impl = impl_self(&node);
+		let node_impl = impl_node(&node);
+		let sets_impl = impl_sets(&node);
+		let bundle_impl = impl_bundle(&node);
+
+		quote! {
+			use bevy_ecs::prelude::*;
+			use gamai::*;
+			#self_impl
+			#sets_impl
+			#builder_impl
+			#node_impl
+			#bundle_impl
+		}
+		.into()
+	}
+	pub fn new(item: ItemFn, attr: AttributeArgs) -> Self {
 		let num_edges = parse_attributes(attr).unwrap_or(2);
 		let (edge_generic_params, edge_generic_bounds) =
 			edge_generics(num_edges);
@@ -31,34 +57,9 @@ impl NodeParser {
 			edge_bounds: edge_generic_bounds,
 			// fields,
 			// fields_typed,
-			ident: item.ident,
+			ident: item.sig.ident,
 			vis: item.vis,
 		}
-	}
-	pub fn parse(
-		attr: proc_macro::TokenStream,
-		item: proc_macro::TokenStream,
-	) -> proc_macro::TokenStream {
-		let attr = syn::parse_macro_input!(attr as syn::AttributeArgs);
-		let item = syn::parse_macro_input!(item as syn::ItemStruct);
-		let node = NodeParser::new(item, attr);
-
-		let builder_impl = impl_builder(&node);
-		let self_impl = impl_self(&node);
-		let node_impl = impl_node(&node);
-		let sets_impl = impl_sets(&node);
-		let bundle_impl = impl_bundle(&node);
-
-		quote! {
-			use bevy::prelude::*;
-			use gamai::*;
-			#self_impl
-			#sets_impl
-			#builder_impl
-			#node_impl
-			#bundle_impl
-		}
-		.into()
 	}
 }
 

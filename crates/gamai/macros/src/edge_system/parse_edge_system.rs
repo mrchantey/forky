@@ -36,7 +36,7 @@ pub fn parse_edge_system(
 	quote! {
 		#item_inner
 
-		use bevy::prelude::*;
+		use bevy_ecs::prelude::*;
 		use gamai::*;
 
 		#[derive(Clone)]
@@ -46,10 +46,10 @@ pub fn parse_edge_system(
 		impl EdgeSystemBuilder for #struct_ident {
 			fn add_edge_system<E: AiEdge>(
 				&self,
-				app: &mut App,
+				schedule: &mut Schedule,
 				set: impl SystemSet,
 			) {
-				app.add_systems(Update, #func_ident::<E>.in_set(set));
+				schedule.add_systems(#func_ident::<E>.in_set(set));
 			}
 		}
 

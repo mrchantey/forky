@@ -1,6 +1,6 @@
 // pub mod common_solvers {
 use crate::*;
-use bevy::prelude::*;
+use bevy_ecs::prelude::*;
 use std::marker::PhantomData;
 
 #[node_system]

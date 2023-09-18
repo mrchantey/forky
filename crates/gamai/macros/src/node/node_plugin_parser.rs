@@ -2,7 +2,7 @@ use super::*;
 use proc_macro2::TokenStream;
 use quote::quote;
 use syn::Ident;
-use syn::ItemStruct;
+use syn::ItemFn;
 
 pub struct NodePluginParser {
 	pub builder_ident: Ident,
@@ -11,9 +11,9 @@ pub struct NodePluginParser {
 }
 
 impl NodePluginParser {
-	pub fn new(item: &ItemStruct, num_edges: usize) -> Self {
+	pub fn new(item: &ItemFn, num_edges: usize) -> Self {
 		let ident =
-			Ident::new(&format!("{}Plugin", item.ident), item.ident.span());
+			Ident::new(&format!("{}Plugin", item.sig.ident), item.sig.ident.span());
 
 		let (builder_params, generic_bounds) = builder_params(num_edges);
 
@@ -51,14 +51,15 @@ pub fn impl_builder(node: &NodeParser) -> TokenStream {
 
 	quote! {
 		// #[derive(Debug)]
+		#[allow(non_camel_case_types)]
 		pub struct #builder_ident<#builder_params> where #builder_bounds{
-			solver: NodeSystem,
+			node: NodeSystem,
 			edges: (#edge_params),
 		}
 		impl<#builder_params> #builder_ident<#builder_params> where #builder_bounds{
-			pub fn new(solver: fn()->NodeSystem, edges: (#edge_params))->Self
+			pub fn new(node: fn()->NodeSystem, edges: (#edge_params))->Self
 				where #builder_bounds {
-				#builder_ident{ solver:solver(), edges }
+				#builder_ident{ node:node(), edges }
 			}
 	}
 		#plugin_impl

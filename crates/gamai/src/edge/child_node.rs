@@ -1,5 +1,5 @@
 use crate::*;
-use bevy::prelude::*;
+use bevy_ecs::prelude::*;
 
 pub trait ChildNodeSystems: 'static + Send + Sync + Clone {
 	type EdgeSystem: EdgeSystemBuilder;
@@ -7,11 +7,15 @@ pub trait ChildNodeSystems: 'static + Send + Sync + Clone {
 	fn edge_system(&self) -> Self::EdgeSystem;
 	fn node_system(&self) -> Self::NodeSystem;
 
-	fn add_edge_systems<C: AiEdge>(&self, app: &mut App, sets: &impl NodeSets) {
+	fn add_edge_systems<C: AiEdge>(
+		&self,
+		schedule: &mut Schedule,
+		sets: &impl NodeSets,
+	) {
 		self.edge_system()
-			.add_edge_system::<C>(app, sets.child_edge_set());
+			.add_edge_system::<C>(schedule, sets.child_edge_set());
 		self.node_system()
-			.add_edge_system::<C>(app, sets.child_node_set());
+			.add_edge_system::<C>(schedule, sets.child_node_set());
 	}
 }
 

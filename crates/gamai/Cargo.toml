@@ -11,6 +11,8 @@ repository = { workspace = true }
 
 [dependencies]
 gamai_macros = { workspace = true }
+bevy_ecs = { workspace = true }
+# TODO switch to bevy_ecs with bevy feature flag
 bevy = { workspace = true }
 
 [dev-dependencies]

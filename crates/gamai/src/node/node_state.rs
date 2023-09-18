@@ -1,9 +1,4 @@
-// use bevy::prelude::*;
-// use bevy::prelude::Component;
 use std::fmt::Debug;
-// use std::marker::PhantomData;
-// use std::ops::Deref;
-// use std::ops::DerefMut;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub enum NodeState {

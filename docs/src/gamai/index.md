@@ -6,9 +6,10 @@
 
 - 🔥 Parallel
 - ✍️ No Blackboard
-- 🌴 Tree graph architecture
-- 🌈 Paradigm Agnostic
+- 🌴 Digraph architecture
+- 🌈 Paradigm agnostic
 - 🌍 With or without Bevy
+- 🐢 Systems all the way down
 
 ## Architecture
 

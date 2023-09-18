@@ -7,6 +7,7 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 	let NodeParser { ident, vis, .. } = node;
 	quote! {
 		#[derive(Debug,Default)]
+		#[allow(non_camel_case_types)]
 		#vis struct #ident;
 	}
 }

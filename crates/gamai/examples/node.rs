@@ -4,4 +4,5 @@
 fn main() {}
 
 #[gamai::node]
-struct MyAiNode;
+fn my_node() {}
+// struct MyAiNode;

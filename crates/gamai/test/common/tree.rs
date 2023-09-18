@@ -2,13 +2,14 @@ use bevy::prelude::*;
 use gamai::*;
 use sweet::*;
 
-type F<const I: usize> = ChildEdgeState<EdgePhantom<MyNode, I>>;
-type A<const I: usize> = ChildNodeState<EdgePhantom<MyNode, I>>;
+type F<const I: usize> = ChildEdgeState<EdgePhantom<my_node, I>>;
+type A<const I: usize> = ChildNodeState<EdgePhantom<my_node, I>>;
 
 
 // #[node(32)]
 #[node]
-struct MyNode;
+fn my_node(){
+}
 
 sweet! {
 	it "works" {
@@ -17,10 +18,10 @@ sweet! {
 		// let edge0 = (edge_always_fail, print_on_run);
 		// let edge1 = (edge_always_pass, print_on_run);
 		let mut app = App::new();
-		let entity = app.world.spawn(MyNodeBundle::default()).id();
+		let entity = app.world.spawn(my_nodeBundle::default()).id();
 		expect(&app).not().to_have_component::<A<0>>(entity)?;
 		expect(&app).to_have_component::<F<0>>(entity)?;
-		app.add_plugins(MyNodePlugin::new(first_valid_edge, (edge0, edge1)));
+		app.add_plugins(my_nodePlugin::new(first_valid_edge, (edge0, edge1)));
 		app.finish();
 		app.update();
 		expect(&app)

@@ -2,7 +2,7 @@
 <div align="center">
 
   <p>
-    <strong>Monorepo for web & game rust crates</strong>
+    <strong>Monorepo for kickass rust crates</strong>
   </p>
 
   <p>
@@ -26,5 +26,6 @@
 
 ## Contents
 - [Forky CLI](./crates/forky_cli/README.md)
+- [Gamai](./crates/gamai/README.md)
 - [Sweet](./crates/sweet/README.md)
 - [Bevy WebXR Demo](./crates/bevy_webxr/README.md)

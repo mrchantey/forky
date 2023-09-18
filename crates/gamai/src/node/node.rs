@@ -1,9 +1,8 @@
 use crate::*;
-use bevy::ecs::query::WorldQuery;
-use bevy::prelude::*;
+use bevy_ecs::prelude::*;
+use bevy_ecs::query::WorldQuery;
 
 // debug for edges to also be debug
-
 
 pub trait AiNode: std::fmt::Debug + Default + 'static + Send + Sync {
 	const SET_CHILD_ERROR: &'static str = "gamai: child index out of range";
@@ -45,5 +44,5 @@ impl<const ID: usize> AiNode for LeafNode<ID> {
 }
 
 pub trait AddAiNodeSystem: 'static + Clone + Send + Sync {
-	fn add_node_system<A: AiNode>(&self, app: &mut App, set: impl SystemSet);
+	fn add_node_system<A: AiNode>(&self, schedule: &mut Schedule, set: impl SystemSet);
 }

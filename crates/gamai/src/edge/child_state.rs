@@ -1,5 +1,5 @@
 use crate::*;
-use bevy::prelude::*;
+use bevy_ecs::prelude::*;
 use std::marker::PhantomData;
 use std::ops::Deref;
 use std::ops::DerefMut;
