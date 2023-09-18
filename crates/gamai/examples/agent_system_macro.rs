@@ -10,8 +10,8 @@ fn first_valid_solver<A: AiNode>(
 	mut commands: Commands,
 	mut query: Query<A::ChildrenQuery>,
 ) {
-	let choices = A::edges(&mut query);
-	for (entity, edges) in choices.iter() {
+	let entities = A::edges(&mut query);
+	for (entity, edges) in entities.iter() {
 		for (index, edge) in edges.iter().enumerate() {
 			if *edge != EdgeState::Fail {
 				A::set_child_node_state(&mut commands, *entity, index);

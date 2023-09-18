@@ -1,17 +1,13 @@
 use crate::*;
 use bevy::prelude::*;
 
-pub trait EdgeSystemBuilder: 'static + Clone + Send + Sync {
-	fn add_edge_system<C: Choice>(&self, app: &mut App, set: impl SystemSet);
-}
-
-pub trait ChoiceSystems: 'static + Send + Sync + Clone {
+pub trait ChildNodeSystems: 'static + Send + Sync + Clone {
 	type EdgeSystem: EdgeSystemBuilder;
 	type NodeSystem: EdgeSystemBuilder;
 	fn edge_system(&self) -> Self::EdgeSystem;
 	fn node_system(&self) -> Self::NodeSystem;
 
-	fn add_edge_systems<C: Choice>(&self, app: &mut App, sets: &impl NodeSets) {
+	fn add_edge_systems<C: Edge>(&self, app: &mut App, sets: &impl NodeSets) {
 		self.edge_system()
 			.add_edge_system::<C>(app, sets.child_edge_set());
 		self.node_system()
@@ -20,7 +16,7 @@ pub trait ChoiceSystems: 'static + Send + Sync + Clone {
 }
 
 //doesnt work?
-impl<BF, BA, EdgeSystem, NodeSystem> ChoiceSystems for (BF, BA)
+impl<BF, BA, EdgeSystem, NodeSystem> ChildNodeSystems for (BF, BA)
 where
 	BF: 'static + Clone + Send + Sync + Fn() -> EdgeSystem,
 	BA: 'static + Clone + Send + Sync + Fn() -> NodeSystem,
@@ -53,7 +49,7 @@ where
 	}
 }
 
-impl<EdgeSystem, NodeSystem> ChoiceSystems
+impl<EdgeSystem, NodeSystem> ChildNodeSystems
 	for ChildNodeBuilder<EdgeSystem, NodeSystem>
 where
 	EdgeSystem: EdgeSystemBuilder,

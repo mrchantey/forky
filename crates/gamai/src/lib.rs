@@ -9,7 +9,7 @@
 //allow proc macros to work internally
 extern crate self as gamai;
 pub use gamai_macros::*;
-mod choice;
-pub use self::choice::*;
+mod edge;
+pub use self::edge::*;
 mod node;
 pub use self::node::*;

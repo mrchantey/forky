@@ -4,27 +4,21 @@ use std::marker::PhantomData;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-// derive debug for `ChildNodeState` etc
-pub trait Choice: std::fmt::Debug + 'static + Send + Sync {
-	const INDEX: usize;
-	type AiNode: AiNode;
-}
-
 #[derive(Debug, Default, Clone, Component, PartialEq)]
-pub struct ChildNodeState<C: Choice> {
+pub struct ChildNodeState<C: Edge> {
 	pub state: NodeState,
 	marker: PhantomData<C>,
 }
 
-impl<C: Choice> Deref for ChildNodeState<C> {
+impl<C: Edge> Deref for ChildNodeState<C> {
 	type Target = NodeState;
 	fn deref(&self) -> &Self::Target { &self.state }
 }
-impl<C: Choice> DerefMut for ChildNodeState<C> {
+impl<C: Edge> DerefMut for ChildNodeState<C> {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.state }
 }
 
-impl<C: Choice> ChildNodeState<C> {
+impl<C: Edge> ChildNodeState<C> {
 	pub fn new(state: NodeState) -> Self {
 		Self {
 			state,
@@ -34,12 +28,12 @@ impl<C: Choice> ChildNodeState<C> {
 }
 
 #[derive(Debug, Default, Clone, Component, PartialEq)]
-pub struct ChildEdgeState<C: Choice> {
+pub struct ChildEdgeState<C: Edge> {
 	pub state: EdgeState,
 	marker: PhantomData<C>,
 }
 
-impl<C: Choice> ChildEdgeState<C> {
+impl<C: Edge> ChildEdgeState<C> {
 	pub fn new(state: EdgeState) -> Self {
 		Self {
 			state,
@@ -48,18 +42,18 @@ impl<C: Choice> ChildEdgeState<C> {
 	}
 }
 
-impl<C: Choice> Deref for ChildEdgeState<C> {
+impl<C: Edge> Deref for ChildEdgeState<C> {
 	type Target = EdgeState;
 	fn deref(&self) -> &Self::Target { &self.state }
 }
-impl<C: Choice> DerefMut for ChildEdgeState<C> {
+impl<C: Edge> DerefMut for ChildEdgeState<C> {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.state }
 }
 
 #[derive(Debug, Default, PartialEq, Clone, Copy)]
-pub struct ChoicePhantom<A: AiNode, const INDEX: usize>(PhantomData<A>);
+pub struct EdgePhantom<A: AiNode, const INDEX: usize>(PhantomData<A>);
 
-impl<A: AiNode, const INDEX: usize> Choice for ChoicePhantom<A, INDEX> {
-	type AiNode = A;
+impl<N: AiNode, const INDEX: usize> Edge for EdgePhantom<N, INDEX> {
+	type NextNode = N;
 	const INDEX: usize = INDEX;
 }

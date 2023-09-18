@@ -20,5 +20,5 @@ pub fn default_child_node_state(
 
 pub fn choice_phantom(node: &NodeParser, index: usize) -> TokenStream {
 	let ident = &node.ident;
-	quote!(ChoicePhantom<#ident,#index>)
+	quote!(EdgePhantom<#ident,#index>)
 }

@@ -8,7 +8,7 @@ use quote::ToTokens;
 // 	field_ident("choice", index).to_token_stream()
 // }
 pub fn choice_type(index: usize) -> TokenStream {
-	field_ident("Choice", index).to_token_stream()
+	field_ident("Edge", index).to_token_stream()
 }
 
 pub fn choice_generics(num_params: usize) -> (TokenStream, TokenStream) {
@@ -23,7 +23,7 @@ pub fn choice_generics(num_params: usize) -> (TokenStream, TokenStream) {
 		.map(|index| {
 			let choice = choice_type(index);
 			quote!(
-				#choice:ChoiceSystems,
+				#choice:ChildNodeSystems,
 			)
 		})
 		.collect();
