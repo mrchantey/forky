@@ -1,5 +1,5 @@
 [package]
-name = "forky_web"
+name = "forky_web_test"
 version = { workspace = true }
 edition = { workspace = true }
 authors = { workspace = true }
@@ -12,6 +12,7 @@ repository = { workspace = true }
 
 [dependencies]
 forky_core = { workspace = true }
+forky_web = { workspace = true }
 anyhow = { workspace = true }
 extend = { workspace = true }
 
@@ -27,3 +28,10 @@ wasm-bindgen-futures = { workspace = true }
 web-sys = { workspace = true }
 console_error_panic_hook = { workspace = true }
 leptos = { workspace = true }
+
+[dev-dependencies]
+sweet = { workspace = true }
+
+[[example]]
+name = "test_forky_web_test_wasm"
+path = "sweet_wasm.rs"

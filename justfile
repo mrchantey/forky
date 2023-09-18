@@ -99,7 +99,7 @@ test-all *args:
 	cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
 	cargo run -p forky_cli	--example test_forky_cli	-- --parallel
 	cargo run -p forky_fs		--example test_forky_fs		-- --parallel
-	cargo run -p forky_core	--example test_forky_core	-- --parallel
+	cargo run -p forky_core_test	--example test_forky_core_test	-- --parallel
 
 test crate *args:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example test_{{crate}} {{features}} -- {{args}}

@@ -2609,6 +2609,24 @@ dependencies = [
  "leptos",
  "num-traits",
  "rand",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
+name = "forky_core_test"
+version = "0.1.31"
+dependencies = [
+ "anyhow",
+ "console_error_panic_hook",
+ "extend",
+ "forky_core",
+ "getrandom",
+ "js-sys",
+ "leptos",
+ "num-traits",
+ "rand",
  "sweet",
  "wasm-bindgen",
  "wasm-bindgen-futures",
@@ -2683,6 +2701,24 @@ dependencies = [
  "console_error_panic_hook",
  "extend",
  "forky_core",
+ "js-sys",
+ "leptos",
+ "serde",
+ "serde_json",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
+name = "forky_web_test"
+version = "0.1.31"
+dependencies = [
+ "anyhow",
+ "console_error_panic_hook",
+ "extend",
+ "forky_core",
+ "forky_web",
  "js-sys",
  "leptos",
  "serde",
