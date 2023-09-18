@@ -22,8 +22,7 @@ pub fn impl_plugin(node: &NodeParser) -> TokenStream {
 				app.init_schedule(bevy::prelude::Update);
 				let mut schedule = app.get_schedule_mut(bevy::prelude::Update).unwrap();
 				#configure_sets
-				self.node
-					.add_node_system::<#ident>(schedule, #ident.node_set());
+				self.node.add_node_system::<#ident>(schedule, #ident.node_set());
 				#child_node_systems
 			}
 		}

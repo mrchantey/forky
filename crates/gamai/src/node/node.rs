@@ -16,7 +16,7 @@ pub trait AiNode: std::fmt::Debug + Default + 'static + Send + Sync {
 		entity: Entity,
 		index: usize,
 	);
-	// fn add_node_system<A: AiNode>(&self, app: &mut App, set: impl SystemSet);
+	fn add_node_system<A: AiNode>(&self, schedule: &mut Schedule,  set: impl SystemSet);
 }
 
 #[derive(Debug, Default, Copy, Clone)]
@@ -38,9 +38,9 @@ impl<const ID: usize> AiNode for LeafNode<ID> {
 		panic!("{}",Self::SET_CHILD_ERROR)
 	}
 
-	// fn add_node_system<A: AiNode>(&self, app: &mut App, set: impl SystemSet) {
-	// 	todo!()
-	// }
+	fn add_node_system<A: AiNode>(&self, _schedule: &mut Schedule, _set: impl SystemSet) {
+		todo!()
+	}
 }
 
 pub trait AddAiNodeSystem: 'static + Clone + Send + Sync {
