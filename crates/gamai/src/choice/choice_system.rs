@@ -6,9 +6,9 @@ pub trait AddChoiceSystem: 'static + Clone + Send + Sync {
 }
 
 pub trait ChoiceSystems: 'static + Send + Sync + Clone {
-	type Factor: AddChoiceSystem;
+	type EdgeSystem: AddChoiceSystem;
 	type Action: AddChoiceSystem;
-	fn get_factor(&self) -> Self::Factor;
+	fn get_edge(&self) -> Self::EdgeSystem;
 	fn get_action(&self) -> Self::Action;
 
 	fn add_choice_systems<C: Choice>(
@@ -16,54 +16,53 @@ pub trait ChoiceSystems: 'static + Send + Sync + Clone {
 		app: &mut App,
 		sets: &impl SolverSets,
 	) {
-		self.get_factor()
-			.add_choice_system::<C>(app, sets.factor_set());
+		self.get_edge().add_choice_system::<C>(app, sets.edge_set());
 		self.get_action()
 			.add_choice_system::<C>(app, sets.action_set());
 	}
 }
 
 //doesnt work?
-impl<BF, BA, Factor, Action> ChoiceSystems for (BF, BA)
+impl<BF, BA, EdgeSystem, Action> ChoiceSystems for (BF, BA)
 where
-	BF: 'static + Clone + Send + Sync + Fn() -> Factor,
+	BF: 'static + Clone + Send + Sync + Fn() -> EdgeSystem,
 	BA: 'static + Clone + Send + Sync + Fn() -> Action,
-	Factor: AddChoiceSystem,
+	EdgeSystem: AddChoiceSystem,
 	Action: AddChoiceSystem,
 {
-	type Factor = Factor;
+	type EdgeSystem = EdgeSystem;
 	type Action = Action;
-	fn get_factor(&self) -> Self::Factor { (self.0)() }
+	fn get_edge(&self) -> Self::EdgeSystem { (self.0)() }
 	fn get_action(&self) -> Self::Action { (self.1)() }
 }
 
 #[derive(Clone)]
-pub struct ChoiceBuilder<Factor, Action>
+pub struct ChoiceBuilder<EdgeSystem, Action>
 where
-	Factor: AddChoiceSystem,
+	EdgeSystem: AddChoiceSystem,
 	Action: AddChoiceSystem,
 {
-	pub factor: fn() -> Factor,
+	pub edge: fn() -> EdgeSystem,
 	pub action: fn() -> Action,
 }
 
-impl<Factor, Action> ChoiceBuilder<Factor, Action>
+impl<EdgeSystem, Action> ChoiceBuilder<EdgeSystem, Action>
 where
-	Factor: AddChoiceSystem,
+	EdgeSystem: AddChoiceSystem,
 	Action: AddChoiceSystem,
 {
-	pub fn new(factor: fn() -> Factor, action: fn() -> Action) -> Self {
-		Self { factor, action }
+	pub fn new(edge: fn() -> EdgeSystem, action: fn() -> Action) -> Self {
+		Self { edge, action }
 	}
 }
 
-impl<Factor, Action> ChoiceSystems for ChoiceBuilder<Factor, Action>
+impl<EdgeSystem, Action> ChoiceSystems for ChoiceBuilder<EdgeSystem, Action>
 where
-	Factor: AddChoiceSystem,
+	EdgeSystem: AddChoiceSystem,
 	Action: AddChoiceSystem,
 {
-	type Factor = Factor;
+	type EdgeSystem = EdgeSystem;
 	type Action = Action;
-	fn get_factor(&self) -> Self::Factor { (self.factor)() }
+	fn get_edge(&self) -> Self::EdgeSystem { (self.edge)() }
 	fn get_action(&self) -> Self::Action { (self.action)() }
 }

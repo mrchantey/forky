@@ -2,9 +2,9 @@ use super::*;
 use proc_macro2::TokenStream;
 use quote::quote;
 
-pub fn factor_type(agent: &Agent, index: usize) -> TokenStream {
+pub fn edge_type(agent: &Agent, index: usize) -> TokenStream {
 	let phantom = choice_phantom(agent, index);
-	quote!(ChoiceFactorState<#phantom>)
+	quote!(ChoiceEdgeState<#phantom>)
 }
 // pub fn action_type(agent: &Agent, index: usize) -> TokenStream {
 // 	let phantom = choice_phantom(agent, index);

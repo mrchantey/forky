@@ -32,8 +32,8 @@
 struct MyAgent;
 
 fn main() {
-	let will_skip = ChoiceBuilder::new(factor_always_fail, action_print);
-	let will_run = ChoiceBuilder::new(factor_always_pass, action_print);
+	let will_skip = ChoiceBuilder::new(edge_always_fail, action_print);
+	let will_run = ChoiceBuilder::new(edge_always_pass, action_print);
 
   let mut app = App::new()
   app.add_plugins(MyAgentPlugin::new(default_solver, (will_skip, will_run)));

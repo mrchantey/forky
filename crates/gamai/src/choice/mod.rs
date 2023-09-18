@@ -4,5 +4,5 @@ mod choice_states;
 pub use self::choice_states::*;
 mod choice_system;
 pub use self::choice_system::*;
-mod factor;
-pub use self::factor::*;
+mod edge_state;
+pub use self::edge_state::*;

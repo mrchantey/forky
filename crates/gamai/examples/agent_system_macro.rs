@@ -10,10 +10,10 @@ fn first_valid_solver<A: Agent>(
 	mut commands: Commands,
 	mut query: Query<A::Items>,
 ) {
-	let choices = A::factors(&mut query);
-	for (entity, factors) in choices.iter() {
-		for (index, factor) in factors.iter().enumerate() {
-			if *factor != FactorState::Fail {
+	let choices = A::edges(&mut query);
+	for (entity, edges) in choices.iter() {
+		for (index, edge) in edges.iter().enumerate() {
+			if *edge != EdgeState::Fail {
 				A::set_action(&mut commands, *entity, index);
 				return;
 			}

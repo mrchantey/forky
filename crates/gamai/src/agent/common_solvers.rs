@@ -7,31 +7,27 @@ pub fn solver_first_valid<A: Agent>(
 	mut commands: Commands,
 	mut query: Query<A::Items>,
 ) {
-	let choices = A::factors(&mut query);
-	for (entity, factors) in choices.iter() {
-		for (index, factor) in factors.iter().enumerate() {
-			if *factor != FactorState::Fail {
+	let choices = A::edges(&mut query);
+	for (entity, edges) in choices.iter() {
+		for (index, edge) in edges.iter().enumerate() {
+			if *edge != EdgeState::Fail {
 				A::set_action(&mut commands, *entity, index);
-				continue; //skip other factors, go to next entity
+				continue; //skip other edges, go to next entity
 			}
 		}
 	}
 }
 
 #[choice_system]
-pub fn factor_always_pass<C: Choice>(
-	mut query: Query<&mut ChoiceFactorState<C>>,
-) {
-	for mut factor in query.iter_mut() {
-		**factor = FactorState::Pass;
+pub fn edge_always_pass<C: Choice>(mut query: Query<&mut ChoiceEdgeState<C>>) {
+	for mut edge in query.iter_mut() {
+		**edge = EdgeState::Pass;
 	}
 }
 #[choice_system]
-pub fn factor_always_fail<C: Choice>(
-	mut query: Query<&mut ChoiceFactorState<C>>,
-) {
-	for mut factor in query.iter_mut() {
-		**factor = FactorState::Fail;
+pub fn edge_always_fail<C: Choice>(mut query: Query<&mut ChoiceEdgeState<C>>) {
+	for mut edge in query.iter_mut() {
+		**edge = EdgeState::Fail;
 	}
 }
 #[choice_system]

@@ -17,12 +17,12 @@ pub fn impl_bundle(agent: &Agent) -> TokenStream {
 fn choice_states(agent: &Agent) -> TokenStream {
 	(0..agent.num_choices)
 		.map(|index| {
-			let factor_field = field_ident("factor", index);
-			let factor_type = factor_type(agent, index);
+			let edge_field = field_ident("edge", index);
+			let edge_type = edge_type(agent, index);
 			// let action_field = field_ident("action", index);
 			// let action_type = action_type(agent, index);
 			quote!(
-				#factor_field: #factor_type,
+				#edge_field: #edge_type,
 				// #action_field: #action_type,
 			)
 		})

@@ -8,8 +8,8 @@ use quote::quote;
 pub fn impl_sets(agent: &Agent) -> TokenStream {
 	let Agent { ident, .. } = agent;
 
-	let factor_ident =
-		Ident::new(&format!("{ident}FactorSet"), Span::call_site());
+	let edge_ident =
+		Ident::new(&format!("{ident}EdgeSystemSet"), Span::call_site());
 	let solver_ident =
 		Ident::new(&format!("{ident}SolverSet"), Span::call_site());
 	let action_ident =
@@ -17,17 +17,16 @@ pub fn impl_sets(agent: &Agent) -> TokenStream {
 
 	quote! {
 		#[derive(SystemSet, Debug, Clone, Eq, PartialEq, Hash)]
-		pub struct #factor_ident;
+		pub struct #edge_ident;
 		#[derive(SystemSet, Debug, Clone, Eq, PartialEq, Hash)]
 		pub struct #solver_ident;
 		#[derive(SystemSet, Debug, Clone, Eq, PartialEq, Hash)]
 		pub struct #action_ident;
 
 		impl SolverSets for #ident {
-			fn factor_set(&self) -> impl SystemSet { #factor_ident }
+			fn edge_set(&self) -> impl SystemSet { #edge_ident }
 			fn solver_set(&self) -> impl SystemSet { #solver_ident }
 			fn action_set(&self) -> impl SystemSet { #action_ident }
 		}
 	}
 }
-

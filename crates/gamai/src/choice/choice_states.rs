@@ -34,13 +34,13 @@ impl<C: Choice> ChoiceActionState<C> {
 }
 
 #[derive(Debug, Default, Clone, Component, PartialEq)]
-pub struct ChoiceFactorState<C: Choice> {
-	pub state: FactorState,
+pub struct ChoiceEdgeState<C: Choice> {
+	pub state: EdgeState,
 	marker: PhantomData<C>,
 }
 
-impl<C: Choice> ChoiceFactorState<C> {
-	pub fn new(state: FactorState) -> Self {
+impl<C: Choice> ChoiceEdgeState<C> {
+	pub fn new(state: EdgeState) -> Self {
 		Self {
 			state,
 			marker: PhantomData,
@@ -48,11 +48,11 @@ impl<C: Choice> ChoiceFactorState<C> {
 	}
 }
 
-impl<C: Choice> Deref for ChoiceFactorState<C> {
-	type Target = FactorState;
+impl<C: Choice> Deref for ChoiceEdgeState<C> {
+	type Target = EdgeState;
 	fn deref(&self) -> &Self::Target { &self.state }
 }
-impl<C: Choice> DerefMut for ChoiceFactorState<C> {
+impl<C: Choice> DerefMut for ChoiceEdgeState<C> {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.state }
 }
 

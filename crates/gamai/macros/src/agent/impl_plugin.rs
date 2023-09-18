@@ -31,7 +31,7 @@ pub fn impl_plugin(agent: &Agent) -> TokenStream {
 fn configure_sets(agent: &Agent) -> TokenStream {
 	let Agent { ident, .. } = agent;
 	quote! {
-		app.configure_set(Update,#ident.factor_set().before(#ident.solver_set()));
+		app.configure_set(Update,#ident.edge_set().before(#ident.solver_set()));
 		app.configure_set(Update,#ident.solver_set().before(#ident.action_set()));
 	}
 }
@@ -48,11 +48,11 @@ fn choice_systems(agent: &Agent) -> TokenStream {
 		.collect()
 }
 
-// fn all_factors_nested_defaults(agent: &Agent) -> TokenStream {
+// fn all_edges_nested_defaults(agent: &Agent) -> TokenStream {
 // 	(0..agent.num_choices)
 // 		// .rev()
 // 		.fold(TokenStream::new(), |prev, index| {
-// 			let ident = factor_type(agent, index);
+// 			let ident = edge_type(agent, index);
 // 			quote!((#ident::default(), #prev))
 // 		})
 // 		.into_token_stream()

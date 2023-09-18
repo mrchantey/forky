@@ -11,7 +11,7 @@ pub fn impl_agent(agent: &Agent) -> TokenStream {
 	// 	builder_params,
 	// 	..
 	// } = builder;
-	let world_query = all_factors_nested(agent);
+	let world_query = all_edges_nested(agent);
 	let params = agent_params_nested(agent);
 	let params_deref = agent_params_deref(agent);
 	let set_action = agent_set_action(agent);
@@ -20,7 +20,7 @@ pub fn impl_agent(agent: &Agent) -> TokenStream {
 		impl Agent for #ident
 		{
 			type Items = (Entity, #world_query);
-			fn factors(query: &Query<Self::Items>) -> Vec<(Entity, Vec<FactorState>)> {
+			fn edges(query: &Query<Self::Items>) -> Vec<(Entity, Vec<EdgeState>)> {
 				query
 					.iter()
 					.map(|(entity, #params)| (entity, vec![#params_deref]))
@@ -36,11 +36,11 @@ pub fn impl_agent(agent: &Agent) -> TokenStream {
 	)
 }
 
-fn all_factors_nested(agent: &Agent) -> TokenStream {
+fn all_edges_nested(agent: &Agent) -> TokenStream {
 	(0..agent.num_choices)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
-			let ident = factor_type(agent, index);
+			let ident = edge_type(agent, index);
 			quote!((&'static #ident, #prev))
 		})
 		.into_token_stream()
@@ -49,7 +49,7 @@ fn agent_params_nested(agent: &Agent) -> TokenStream {
 	(0..agent.num_choices)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
-			let ident = field_ident("factor", index);
+			let ident = field_ident("edge", index);
 			quote!((#ident, #prev))
 		})
 		.into_token_stream()
@@ -58,7 +58,7 @@ fn agent_params_nested(agent: &Agent) -> TokenStream {
 fn agent_params_deref(agent: &Agent) -> TokenStream {
 	(0..agent.num_choices)
 		.map(|index| {
-			let ident = field_ident("factor", index);
+			let ident = field_ident("edge", index);
 			quote!(**#ident,)
 		})
 		.collect()
