@@ -29,7 +29,6 @@ graph LR;
 	State_C --> A;
 	A --> Node_B;
 	A --> Node_C;
-
 ```
 
 
@@ -44,14 +43,14 @@ It is *possible* to jump to other nodes, like in a Finite State Machine, but I p
 
 # Nodes
 
-Nodes are a single system, they can be thought of as Actions or Behaviours. Leaf nodes simply run behaviour, whereas branching nodes may additionally select the next edge to activate.
+An `AiNode` is a single system, they can be thought of as Actions or Behaviours. Leaf nodes simply run behaviour, whereas branching nodes may additionally **select** a child node to activate.
 
 ## Edges
 
-Edges are systems used to dermine the validity of their associated node which is done via setting the `EdgeState`. Common examples of this are:
-- `Binary` (behaviour tree)
-- `Weight` (utility)
-- `RankedWeight` (dual utility)
+An `AiEdge` is a system used to dermine the validity of its associated node by setting the corresponding `EdgeState`, an enum of either:
+- `Pass,Fail` (behaviour tree)
+- `Weight(f32)` (utility)
+- `RankedWeight(u32,f32)` (dual utility)
 
 ## Usage
 

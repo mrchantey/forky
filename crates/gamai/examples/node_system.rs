@@ -6,15 +6,15 @@ use gamai::*;
 fn main() {}
 
 #[node_system]
-fn first_valid_solver<A: AiNode>(
+fn first_valid_solver<N: AiNode>(
 	mut commands: Commands,
-	mut query: Query<A::ChildrenQuery>,
+	mut query: Query<N::ChildrenQuery>,
 ) {
-	let entities = A::edges(&mut query);
+	let entities = N::edges(&mut query);
 	for (entity, edges) in entities.iter() {
 		for (index, edge) in edges.iter().enumerate() {
 			if *edge != EdgeState::Fail {
-				A::set_child_node_state(&mut commands, *entity, index);
+				N::set_child_node_state(&mut commands, *entity, index);
 				return;
 			}
 		}
