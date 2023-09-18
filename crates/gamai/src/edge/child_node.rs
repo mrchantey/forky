@@ -30,7 +30,7 @@ where
 }
 
 #[derive(Clone)]
-pub struct ChildNodeBuilder<EdgeSystem, NodeSystem>
+pub struct EdgeBuilder<EdgeSystem, NodeSystem>
 where
 	EdgeSystem: EdgeSystemBuilder,
 	NodeSystem: EdgeSystemBuilder,
@@ -39,7 +39,7 @@ where
 	pub node: fn() -> NodeSystem,
 }
 
-impl<EdgeSystem, NodeSystem> ChildNodeBuilder<EdgeSystem, NodeSystem>
+impl<EdgeSystem, NodeSystem> EdgeBuilder<EdgeSystem, NodeSystem>
 where
 	EdgeSystem: EdgeSystemBuilder,
 	NodeSystem: EdgeSystemBuilder,
@@ -50,7 +50,7 @@ where
 }
 
 impl<EdgeSystem, NodeSystem> ChildNodeSystems
-	for ChildNodeBuilder<EdgeSystem, NodeSystem>
+	for EdgeBuilder<EdgeSystem, NodeSystem>
 where
 	EdgeSystem: EdgeSystemBuilder,
 	NodeSystem: EdgeSystemBuilder,

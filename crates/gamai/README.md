@@ -32,8 +32,8 @@
 struct MyNode;
 
 fn main() {
-	let will_skip = ChildNodeBuilder::new(edge_always_fail, print_on_run);
-	let will_run = ChildNodeBuilder::new(edge_always_pass, print_on_run);
+	let will_skip = EdgeBuilder::new(edge_always_fail, print_on_run);
+	let will_run = EdgeBuilder::new(edge_always_pass, print_on_run);
 
   let mut app = App::new()
   app.add_plugins(MyNodePlugin::new(default_system, (will_skip, will_run)));

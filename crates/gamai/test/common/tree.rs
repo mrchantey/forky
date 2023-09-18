@@ -2,25 +2,25 @@ use bevy::prelude::*;
 use gamai::*;
 use sweet::*;
 
-type F<const I: usize> = ChildEdgeState<EdgePhantom<MyAiNode, I>>;
-type A<const I: usize> = ChildNodeState<EdgePhantom<MyAiNode, I>>;
+type F<const I: usize> = ChildEdgeState<EdgePhantom<MyNode, I>>;
+type A<const I: usize> = ChildNodeState<EdgePhantom<MyNode, I>>;
 
 
 // #[node(32)]
 #[node]
-struct MyAiNode;
+struct MyNode;
 
 sweet! {
 	it "works" {
-		let edge0 = ChildNodeBuilder::new(edge_always_fail, noop_node);
-		let edge1 = ChildNodeBuilder::new(edge_always_pass, noop_node);
+		let edge0 = EdgeBuilder::new(edge_always_fail, noop_node);
+		let edge1 = EdgeBuilder::new(edge_always_pass, noop_node);
 		// let edge0 = (edge_always_fail, print_on_run);
 		// let edge1 = (edge_always_pass, print_on_run);
 		let mut app = App::new();
-		let entity = app.world.spawn(MyAiNodeBundle::default()).id();
+		let entity = app.world.spawn(MyNodeBundle::default()).id();
 		expect(&app).not().to_have_component::<A<0>>(entity)?;
 		expect(&app).to_have_component::<F<0>>(entity)?;
-		app.add_plugins(MyAiNodePlugin::new(first_valid_edge, (edge0, edge1)));
+		app.add_plugins(MyNodePlugin::new(first_valid_edge, (edge0, edge1)));
 		app.finish();
 		app.update();
 		expect(&app)
