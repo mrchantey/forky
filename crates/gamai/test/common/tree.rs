@@ -12,15 +12,15 @@ struct MyAiNode;
 
 sweet! {
 	it "works" {
-		let choice0 = ChildNodeBuilder::new(edge_always_fail, noop_node);
-		let choice1 = ChildNodeBuilder::new(edge_always_pass, noop_node);
-		// let choice0 = (edge_always_fail, print_on_run);
-		// let choice1 = (edge_always_pass, print_on_run);
+		let edge0 = ChildNodeBuilder::new(edge_always_fail, noop_node);
+		let edge1 = ChildNodeBuilder::new(edge_always_pass, noop_node);
+		// let edge0 = (edge_always_fail, print_on_run);
+		// let edge1 = (edge_always_pass, print_on_run);
 		let mut app = App::new();
 		let entity = app.world.spawn(MyAiNodeBundle::default()).id();
 		expect(&app).not().to_have_component::<A<0>>(entity)?;
 		expect(&app).to_have_component::<F<0>>(entity)?;
-		app.add_plugins(MyAiNodePlugin::new(first_valid_edge, (choice0, choice1)));
+		app.add_plugins(MyAiNodePlugin::new(first_valid_edge, (edge0, edge1)));
 		app.finish();
 		app.update();
 		expect(&app)

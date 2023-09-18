@@ -4,26 +4,26 @@ use quote::quote;
 use quote::ToTokens;
 
 
-// pub fn choice_field(index: usize) -> TokenStream {
-// 	field_ident("choice", index).to_token_stream()
+// pub fn edge_field(index: usize) -> TokenStream {
+// 	field_ident("edge", index).to_token_stream()
 // }
-pub fn choice_type(index: usize) -> TokenStream {
+fn edge_type_param_name(index: usize) -> TokenStream {
 	field_ident("Edge", index).to_token_stream()
 }
 
-pub fn choice_generics(num_params: usize) -> (TokenStream, TokenStream) {
+pub fn edge_generics(num_params: usize) -> (TokenStream, TokenStream) {
 	let params = (0..num_params)
 		.map(|index| {
-			let choice = choice_type(index);
-			quote!(#choice,)
+			let edge = edge_type_param_name(index);
+			quote!(#edge,)
 		})
 		.collect();
 
 	let bounds = (0..num_params)
 		.map(|index| {
-			let choice = choice_type(index);
+			let edge = edge_type_param_name(index);
 			quote!(
-				#choice:ChildNodeSystems,
+				#edge:ChildNodeSystems,
 			)
 		})
 		.collect();

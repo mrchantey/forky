@@ -2,7 +2,7 @@ use crate::*;
 use bevy::ecs::query::WorldQuery;
 use bevy::prelude::*;
 
-// debug for choices to also be debug
+// debug for edges to also be debug
 pub trait AiNode: std::fmt::Debug + Default + 'static + Send + Sync {
 	type ChildrenQuery: WorldQuery;
 	type Query<'w, 's> = Query<'w, 's, Self::ChildrenQuery>;

@@ -38,18 +38,18 @@ fn configure_sets(node: &NodeParser) -> TokenStream {
 
 
 fn child_node_systems(node: &NodeParser) -> TokenStream {
-	(0..node.num_choices)
+	(0..node.num_edges)
 		.map(|index| {
 			let NodeParser { ident, .. } = node;
-			let phantom = choice_phantom(node, index);
+			let phantom = edge_phantom(node, index);
 			let index = Index::from(index);
-			quote!(self.choices.#index.add_edge_systems::<#phantom>(app, &#ident);)
+			quote!(self.edges.#index.add_edge_systems::<#phantom>(app, &#ident);)
 		})
 		.collect()
 }
 
 // fn all_edges_nested_defaults(node: &AiNode) -> TokenStream {
-// 	(0..node.num_choices)
+// 	(0..node.num_edges)
 // 		// .rev()
 // 		.fold(TokenStream::new(), |prev, index| {
 // 			let ident = edge_type(node, index);

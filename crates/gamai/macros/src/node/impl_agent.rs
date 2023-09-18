@@ -37,7 +37,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 }
 
 fn all_edges_nested(node: &NodeParser) -> TokenStream {
-	(0..node.num_choices)
+	(0..node.num_edges)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
 			let ident = edge_type(node, index);
@@ -46,7 +46,7 @@ fn all_edges_nested(node: &NodeParser) -> TokenStream {
 		.into_token_stream()
 }
 fn node_params_nested(node: &NodeParser) -> TokenStream {
-	(0..node.num_choices)
+	(0..node.num_edges)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
 			let ident = field_ident("edge", index);
@@ -56,7 +56,7 @@ fn node_params_nested(node: &NodeParser) -> TokenStream {
 }
 
 fn node_params_deref(node: &NodeParser) -> TokenStream {
-	(0..node.num_choices)
+	(0..node.num_edges)
 		.map(|index| {
 			let ident = field_ident("edge", index);
 			quote!(**#ident,)
@@ -66,7 +66,7 @@ fn node_params_deref(node: &NodeParser) -> TokenStream {
 
 fn set_child_node_state(node: &NodeParser) -> TokenStream {
 	// let AiNode { ident, .. } = node;
-	(0..node.num_choices)
+	(0..node.num_edges)
 		.map(|index| {
 			let val = default_child_node_state(node, index);
 			quote!(#index => commands.entity(entity).insert(#val),)

@@ -10,7 +10,7 @@ pub enum NodeState {
 	#[default]
 	Once,
 	Repeating,
-	//yield? as in happy to continue but check choices again
+	//yield? as in happy to continue but check edges again
 }
 
 impl NodeState {

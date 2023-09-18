@@ -7,11 +7,11 @@ use syn::ItemStruct;
 use syn::Visibility;
 
 pub struct NodeParser {
-	pub num_choices: usize,
+	pub num_edges: usize,
 	pub ident: Ident,
 	pub vis: Visibility,
-	pub choice_params: TokenStream,
-	pub choice_bounds: TokenStream,
+	pub edge_params: TokenStream,
+	pub edge_bounds: TokenStream,
 	// pub fields: TokenStream,
 	// pub fields_typed: TokenStream,
 	pub builder: NodePluginParser,
@@ -19,16 +19,16 @@ pub struct NodeParser {
 
 impl NodeParser {
 	pub fn new(item: ItemStruct, attr: AttributeArgs) -> Self {
-		let num_choices = parse_attributes(attr).unwrap_or(2);
-		let (choice_generic_params, choice_generic_bounds) =
-			choice_generics(num_choices);
-		// let (fields, fields_typed) = fields(num_choices);
-		let builder = NodePluginParser::new(&item, num_choices);
+		let num_edges = parse_attributes(attr).unwrap_or(2);
+		let (edge_generic_params, edge_generic_bounds) =
+			edge_generics(num_edges);
+		// let (fields, fields_typed) = fields(num_edges);
+		let builder = NodePluginParser::new(&item, num_edges);
 		Self {
 			builder,
-			num_choices,
-			choice_params: choice_generic_params,
-			choice_bounds: choice_generic_bounds,
+			num_edges,
+			edge_params: edge_generic_params,
+			edge_bounds: edge_generic_bounds,
 			// fields,
 			// fields_typed,
 			ident: item.ident,
