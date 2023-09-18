@@ -3,7 +3,7 @@ use quote::quote;
 use syn::parse_macro_input;
 use syn::ItemFn;
 
-const GENERIC_ERROR:&str = "an `node_system` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<A: AiNode>()`";
+const GENERIC_ERROR:&str = "a `node_system` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<A: AiNode>()`";
 
 pub fn parse_node_system(
 	_attr: proc_macro::TokenStream,
