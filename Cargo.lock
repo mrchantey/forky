@@ -2839,7 +2839,6 @@ name = "gamai"
 version = "0.1.31"
 dependencies = [
  "anyhow",
- "bevy",
  "bevy_ecs",
  "gamai_macros",
  "sweet",

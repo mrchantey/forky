@@ -94,6 +94,7 @@ ci:
 	just test-all-wasm
 
 test-all *args:
+	cargo run -p gamai			--example test_sweet 			-- --parallel
 	cargo run -p sweet			--example test_sweet 			--features sweet/bevy -- --parallel
 	cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
 	cargo run -p forky_cli	--example test_forky_cli	-- --parallel
