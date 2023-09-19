@@ -22,6 +22,24 @@ pub trait AiNode: std::fmt::Debug + Default + 'static + Send + Sync {
 	// fn add_node_system<A: AiNode>(schedule: &mut Schedule, set: impl SystemSet);
 }
 
+crate::node!(0);
+crate::node!(1);
+crate::node!(2);
+crate::node!(3);
+crate::node!(4);
+crate::node!(5);
+crate::node!(6);
+crate::node!(7);
+crate::node!(8);
+crate::node!(9);
+crate::node!(10);
+crate::node!(11);
+crate::node!(12);
+crate::node!(13);
+crate::node!(14);
+crate::node!(15);
+crate::node!(16);
+
 // #[derive(Debug, Default, Copy, Clone)]
 // pub struct AnonNode<Node: IntoNodeSystem, const ID: usize>(PhantomData<Node>);
 

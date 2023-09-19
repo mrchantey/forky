@@ -3,9 +3,8 @@
 
 fn main() {}
 
-
-gamai::node!(0);
 gamai::node!(1);
+// gamai::node!(1);
 // #[gamai::node(num_edges = 0)]
 // #[gamai::node(num_choices = 20)]
 // #[gamai::node(num_edges(20))]

@@ -25,17 +25,6 @@ pub fn impl_plugin(node: &NodeParser) -> TokenStream {
 				#child_node_systems
 			}
 		}
-		// deprecated use of bevy::Plugin
-		// impl<#builder_params> bevy::prelude::Plugin for #builder_ident<#builder_params>
-		// where #builder_bounds {
-		// 	fn build(&self, app: &mut bevy::prelude::App) {
-		// 		app.init_schedule(bevy::prelude::Update);
-		// 		let mut schedule = app.get_schedule_mut(bevy::prelude::Update).unwrap();
-		// 		#configure_sets
-		// 		self.node.add_node_system::<#ident>(schedule, #ident.node_set());
-		// 		#child_node_systems
-		// 	}
-		// }
 	)
 }
 

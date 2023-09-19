@@ -23,10 +23,11 @@
 	- [Changelog](./sweet/changelog.md)
 ---
 - [Gamai](./gamai/index.md)
+	- [Resources](./gamai/resources.md)
+
 # Demos
 
 - [Bevy WebXR](./demos/bevy-webxr.md)
 
 # Other
 - [Contributing](./other/contributing.md)
-- [Roadmap](./other/roadmap.md)

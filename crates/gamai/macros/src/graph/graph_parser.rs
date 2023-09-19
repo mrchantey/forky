@@ -36,17 +36,21 @@ impl GraphParser {
 			.number_of_top_level_nodes(1);
 
 		let parser = Parser::new(config);
-		let (nodes, errors) = parser.parse_recoverable(tokens).split_vec();
+		let (nodes_rsx, errors) = parser.parse_recoverable(tokens).split_vec();
 
-		if let Some(node) = nodes.first() {
-			let graph = Self::new(node)?;
-			let n = graph.node;
+		if let Some(node_rsx) = nodes_rsx.first() {
+			let graph = Self::new(node_rsx)?;
+			let system_ident = graph.node;
 
 			let errors = errors.into_iter().map(|e| e.emit_as_expr_tokens());
 			let id = CNT.fetch_add(1, Ordering::SeqCst);
+
+			let num_children = graph.children.len();
+			let ident = syn::Ident::new(&format!("Node{}", num_children), node_rsx.span());
+
 			Ok(quote! {
 				#(#errors;)*
-				gamai::AnonNode::<#n, #id>::default()
+				gamai::#ident::<#system_ident, #id>::default()
 				// impl AnonNode<#n, #id>
 				// #n
 			})

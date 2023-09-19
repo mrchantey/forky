@@ -13,6 +13,14 @@
 
 ## Architecture
 
+### The Graph
+
+A concept discussed in Chris Hecker's [Structure Vs Style](https://youtu.be/4eQp8SdzOa0) and elaborated upon by [Kevin Dill](https://www.youtube.com/watch?v=IvK0ZlNoxjw&t=1082s) is that of a distintion betwee structure and style.
+
+`gamai` is inspired by Dill's xml format for declaring ai behavior, the use of `rsx` gives us several advantages over runtime definitions:
+- Oppourtunistic Parallelism - uses bevy's famous resolver
+- Serialization - uses standard xml syntax
+
 One of the coolest parts of bevy is its systems with expressive querying. `gamai` is built entirely around that, each node is a system.
 The structure of `gamai` is a directed tree graph, and uses graph theory terminology. It is paradigm agnostic, ie one node may have a utility filter, whereas another may use a binary filter.
 
