@@ -1,5 +1,6 @@
 use super::*;
 use proc_macro2::Ident;
+use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use quote::quote;
 use syn::parse_macro_input;
@@ -26,32 +27,56 @@ pub struct NodeParser {
 
 
 impl NodeParser {
-	pub fn parse(
+	pub fn parse_node_system(
+		_attr: proc_macro::TokenStream,
+		item: proc_macro::TokenStream,
+	) -> proc_macro::TokenStream {
+		let item = parse_macro_input!(item as ItemFn);
+		let node = NodeParser::new(item, 0);
+
+		let self_impl = impl_self(&node);
+		let original_func = parse_original_function(&node.func);
+		let into_node_system_impl = impl_into_node_system(&node);
+
+		quote! {
+			#original_func
+			use bevy_ecs::prelude::*;
+			use gamai::*;
+			#self_impl
+			#into_node_system_impl
+		}
+		.into()
+	}
+
+
+	pub fn parse_node_full(
 		attr: proc_macro::TokenStream,
 		item: proc_macro::TokenStream,
 	) -> proc_macro::TokenStream {
-		let node_system: proc_macro2::TokenStream =
-			parse_node_system(item.clone()).into();
-		let num_edges = get_num_edges(attr);
+		let num_edges = get_num_edges(attr).unwrap();
 		let item = parse_macro_input!(item as ItemFn);
 		let node = NodeParser::new(item, num_edges);
 
-		let builder_impl = impl_builder(&node);
 		let self_impl = impl_self(&node);
+		let original_func = parse_original_function(&node.func);
+		let into_node_system_impl = impl_into_node_system(&node);
+
+		let builder_impl = impl_builder(&node);
 		let node_impl = impl_node(&node);
 		let sets_impl = impl_sets(&node);
 		let bundle_impl = impl_bundle(&node);
-
 
 		quote! {
 			use bevy_ecs::prelude::*;
 			use gamai::*;
 			#self_impl
+			#original_func
+			#into_node_system_impl
+
 			#sets_impl
 			#builder_impl
 			#node_impl
 			#bundle_impl
-			#node_system
 		}
 		.into()
 	}
@@ -70,26 +95,36 @@ impl NodeParser {
 	}
 }
 
-pub fn get_num_edges(attr: proc_macro::TokenStream) -> usize {
+pub fn get_num_edges(attr: proc_macro::TokenStream) -> syn::Result<usize> {
 	let attr: TokenStream = attr.into();
-	let default_val = 2;
 	if attr.is_empty() {
-		return default_val;
+		return Err(syn::Error::new(
+			Span::call_site(),
+			"please specify number of edges",
+		));
 	}
 	let attr: syn::Attribute = syn::parse_quote! {#[#attr]};
-	let val = match attr.meta {
+	match attr.meta {
 		Meta::NameValue(kvp) => {
 			if let Expr::Lit(val) = kvp.value {
 				if let Lit::Int(val) = val.lit {
-					val.base10_parse::<usize>().ok()
+					val.base10_parse::<usize>()
 				} else {
-					None
+					Err(syn::Error::new(
+						val.lit.span(),
+						"please specify number of edges",
+					))
 				}
 			} else {
-				None
+				Err(syn::Error::new(
+					Span::call_site(),
+					"please specify number of edges",
+				))
 			}
 		}
-		_ => None,
-	};
-	val.unwrap_or(default_val)
+		_ => Err(syn::Error::new(
+			Span::call_site(),
+			"please specify number of edges",
+		)),
+	}
 }

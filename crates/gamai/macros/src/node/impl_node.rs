@@ -14,7 +14,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let world_query = all_edges_nested(node);
 	let params = node_params_nested(node);
 	let params_deref = node_params_deref(node);
-	let set_child_node = set_child_node_state(node);
+	let set_child_node = impl_set_child_node(node);
 
 	quote!(
 		impl AiNode for #ident
@@ -26,16 +26,13 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 					.map(|(entity, #params)| (entity, vec![#params_deref]))
 					.collect()
 			}
-			fn set_child_node_state(commands: &mut Commands, entity: Entity, index: usize) {
+			fn set_child_node_state(commands: &mut Commands, entity: Entity, index: usize)-> gamai::Result<()> {
 				match index {
 					#set_child_node
-					_ => panic!("{}",Self::SET_CHILD_ERROR),
+					_ => gamai::bail!(Self::SET_CHILD_ERROR),
 				};
+				Ok(())
 			}
-			fn add_node_system<A: AiNode>(_schedule: &mut Schedule, _set: impl SystemSet) {
-				todo!()
-			}
-			
 		}
 	)
 }
@@ -68,7 +65,7 @@ fn node_params_deref(node: &NodeParser) -> TokenStream {
 		.collect()
 }
 
-fn set_child_node_state(node: &NodeParser) -> TokenStream {
+fn impl_set_child_node(node: &NodeParser) -> TokenStream {
 	// let AiNode { ident, .. } = node;
 	(0..node.num_edges)
 		.map(|index| {

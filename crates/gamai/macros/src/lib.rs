@@ -17,7 +17,11 @@ pub fn graph(item: TokenStream) -> TokenStream {
 }
 #[proc_macro_attribute]
 pub fn node(attr: TokenStream, item: TokenStream) -> TokenStream {
-	NodeParser::parse(attr, item)
+	NodeParser::parse_node_full(attr, item)
+}
+#[proc_macro_attribute]
+pub fn node_system(attr: TokenStream, item: TokenStream) -> TokenStream {
+	NodeParser::parse_node_system(attr, item)
 }
 
 #[proc_macro_attribute]
@@ -26,6 +30,4 @@ pub fn edge(attr: TokenStream, item: TokenStream) -> TokenStream {
 }
 
 #[proc_macro]
-pub fn html(tokens: TokenStream) -> TokenStream {
-    html_inner(tokens, false)
-}
+pub fn html(tokens: TokenStream) -> TokenStream { html_inner(tokens, false) }

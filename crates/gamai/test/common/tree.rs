@@ -7,7 +7,7 @@ type A<const I: usize> = ChildNodeState<EdgePhantom<my_node, I>>;
 
 
 // #[node(32)]
-#[node]
+#[node(2)]
 fn my_node<N: AiNode>() {}
 // fn my_node(){
 // 	// my_nodePlugin::new(node, edges)

@@ -3,7 +3,7 @@ use crate::*;
 use bevy_ecs::prelude::*;
 use std::marker::PhantomData;
 
-#[node]
+#[node_system]
 pub fn first_valid_edge<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<N::ChildrenQuery>,

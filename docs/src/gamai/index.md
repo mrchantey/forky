@@ -13,6 +13,7 @@
 
 ## Architecture
 
+One of the coolest parts of bevy is its systems with expressive querying. `gamai` is built entirely around that, each node is a system.
 The structure of `gamai` is a directed tree graph, and uses graph theory terminology. It is paradigm agnostic, ie one node may have a utility filter, whereas another may use a binary filter.
 
 A graph structure like this:

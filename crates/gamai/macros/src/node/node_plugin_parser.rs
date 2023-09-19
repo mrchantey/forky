@@ -30,7 +30,7 @@ impl NodePluginParser {
 fn builder_params(num_params: usize) -> (TokenStream, TokenStream) {
 	let (edge_params, edge_bounds) = edge_generics(num_params);
 	let params = quote!(NodeSystem, #edge_params);
-	let bounds = quote!(NodeSystem: IntoNodeSystem, #edge_bounds);
+	let bounds = quote!(NodeSystem: AiNode, #edge_bounds);
 	(params, bounds)
 }
 

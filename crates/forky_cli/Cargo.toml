@@ -13,7 +13,8 @@ repository = { workspace = true }
 name = "forky"
 path = "src/main.rs"
 
-[dependencies]
+# [dependencies]
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies] # specify os for rust analyzer
 anyhow = { workspace = true }
 extend = { workspace = true }
 
