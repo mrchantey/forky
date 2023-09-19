@@ -16,6 +16,10 @@ pub use native::*;
 mod wasm;
 #[cfg(target_arch = "wasm32")]
 pub use wasm::*;
+#[cfg(feature = "bevy_ecs")]
+mod bevy_ecs;
+#[cfg(feature = "bevy_ecs")]
+pub use bevy_ecs::*;
 #[cfg(feature = "bevy")]
 mod bevy;
 #[cfg(feature = "bevy")]

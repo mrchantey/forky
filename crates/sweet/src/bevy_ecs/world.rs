@@ -1,6 +1,7 @@
 use crate::*;
-use ::bevy::ecs::world::EntityMut;
-use ::bevy::prelude::*;
+use ::bevy_ecs::world::EntityMut;
+use ::bevy_ecs::prelude::*;
+// use ::bevy_ecs::resource::*;
 use anyhow::Result;
 use extend::ext;
 

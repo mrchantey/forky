@@ -18,7 +18,8 @@ license = { workspace = true }
 repository = { workspace = true }
 
 [features]
-bevy = ["dep:bevy"]
+bevy_ecs = ["dep:bevy_ecs"]
+bevy = ["bevy_ecs", "dep:bevy"]
 
 [dependencies]
 ### internal ###
@@ -46,6 +47,7 @@ futures = { workspace = true }
 
 ### bevy ###
 bevy = { workspace = true, optional = true }
+bevy_ecs = { workspace = true, optional = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 forky_web = { workspace = true }
