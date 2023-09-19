@@ -10,14 +10,12 @@ use syn::LitInt;
 pub struct NodeParser {
 	pub num_edges: usize,
 	pub ident: Ident,
+	pub self_params: TokenStream,
+	pub self_decl: TokenStream,
 	pub edge_params: TokenStream,
 	pub edge_bounds: TokenStream,
 	pub builder: NodePluginParser,
 }
-
-
-
-
 
 impl NodeParser {
 	pub fn parse_node_system(
@@ -47,19 +45,19 @@ impl NodeParser {
 
 
 	pub fn parse_node(
-		attr: proc_macro::TokenStream,
+		tokens: proc_macro::TokenStream,
 	) -> proc_macro::TokenStream {
-		let num_edges = get_num_edges(attr).unwrap();
+		let num_edges = get_num_edges(tokens).unwrap();
 		let node = NodeParser::new(num_edges);
 
 		let self_impl = impl_self(&node);
 		// let original_func = parse_original_function(&node.func);
 		// let into_node_system_impl = impl_into_node_system(&node);
 
-		let builder_impl = impl_builder(&node);
 		let node_impl = impl_node(&node);
 		let sets_impl = impl_sets(&node);
-		let bundle_impl = impl_bundle(&node);
+		let _plugin_impl = impl_plugin_impl(&node);
+		let _bundle_impl = impl_bundle(&node);
 
 		quote! {
 			use bevy_ecs::prelude::*;
@@ -67,21 +65,25 @@ impl NodeParser {
 			#self_impl
 
 			#sets_impl
-			#builder_impl
 			#node_impl
-			#bundle_impl
+			// #plugin_impl
+			// #bundle_impl
 		}
 		.into()
 	}
 	pub fn new(num_edges: usize) -> Self {
 		let ident = Ident::new(&format!("Node{num_edges}"), Span::call_site());
 		let (edge_params, edge_bounds) = edge_generics(num_edges);
-
+		let self_params = quote!(NodeSystem, ID);
+		let self_decl =
+			quote!(NodeSystem: gamai::IntoNodeSystem, const ID: usize);
 
 		let builder = NodePluginParser::new(&ident, num_edges);
 		Self {
 			builder,
 			num_edges,
+			self_params,
+			self_decl,
 			edge_params,
 			edge_bounds,
 			ident,

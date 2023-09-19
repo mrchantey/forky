@@ -6,7 +6,12 @@ use quote::quote;
 
 
 pub fn impl_sets(node: &NodeParser) -> TokenStream {
-	let NodeParser { ident, .. } = node;
+	let NodeParser {
+		ident,
+		self_params,
+		self_decl,
+		..
+	} = node;
 
 	let child_edge_ident =
 		Ident::new(&format!("{ident}ChildEdgeSet"), Span::call_site());
@@ -22,7 +27,7 @@ pub fn impl_sets(node: &NodeParser) -> TokenStream {
 		#[derive(SystemSet, Debug, Clone, Eq, PartialEq, Hash)]
 		pub struct #child_node_ident;
 
-		impl NodeSets for #ident {
+		impl<#self_decl> NodeSets for #ident<#self_params> {
 			fn child_edge_set(&self) -> impl SystemSet { #child_edge_ident }
 			fn node_set(&self) -> impl SystemSet { #node_ident }
 			fn child_node_set(&self) -> impl SystemSet { #child_node_ident }

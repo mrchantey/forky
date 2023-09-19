@@ -32,7 +32,7 @@ fn builder_params(num_params: usize) -> (TokenStream, TokenStream) {
 }
 
 
-pub fn impl_builder(node: &NodeParser) -> TokenStream {
+pub fn impl_plugin_impl(node: &NodeParser) -> TokenStream {
 	let plugin_impl = impl_plugin(node);
 
 	let NodeParser {

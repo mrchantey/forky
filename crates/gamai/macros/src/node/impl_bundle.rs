@@ -5,12 +5,12 @@ use quote::quote;
 
 pub fn impl_bundle(node: &NodeParser) -> TokenStream {
 	let NodeParser { ident, .. } = node;
-	let ident = Ident::new(&format!("{ident}Bundle"), ident.span());
+	let bundle_ident = Ident::new(&format!("{ident}Bundle"), ident.span());
 	let edge_states = edge_states(node);
 	quote! {
 		#[derive(Bundle, Default)]
 		#[allow(non_camel_case_types)]
-		pub struct #ident{
+		pub struct #bundle_ident{
 			#edge_states
 		}
 	}

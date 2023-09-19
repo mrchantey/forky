@@ -19,6 +19,8 @@ pub fn default_child_node_state(
 }
 
 pub fn edge_phantom(node: &NodeParser, index: usize) -> TokenStream {
-	let ident = &node.ident;
-	quote!(EdgePhantom<#ident,#index>)
+	let NodeParser {
+		ident, self_params, ..
+	} = node;
+	quote!(EdgePhantom<#ident<#self_params>,#index>)
 }

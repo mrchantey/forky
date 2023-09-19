@@ -9,15 +9,8 @@ const GENERIC_ERROR:&str = "a `node_system` must have a single type parameter bo
 
 pub fn impl_into_node_system(func: &ItemFn) -> TokenStream {
 	let ident = &func.sig.ident;
-	let add_node_system = parse_node_system(&func);
-	quote! {
-		impl IntoNodeSystem for #ident{
-			#add_node_system
-		}
-	}
-}
-
-fn parse_node_system(func: &ItemFn) -> TokenStream {
+	let func_ident = func_ident(&func.sig.ident);
+	
 	let generic_err = assert_single_generic_bound(
 		func.sig.generics.clone(),
 		"AiNode",
@@ -25,16 +18,15 @@ fn parse_node_system(func: &ItemFn) -> TokenStream {
 	)
 	.unwrap_or_else(syn::Error::into_compile_error);
 
-
-	let func_ident = func_ident(&func.sig.ident);
 	quote! {
+		impl IntoNodeSystem for #ident{
 			fn add_node_system<A: AiNode>(
 				schedule: &mut Schedule,
 				set: impl SystemSet,
 			) {
 				schedule.add_systems(#func_ident::<A>.in_set(set));
 			}
-		// }
+		}
 		#generic_err
 	}
 }

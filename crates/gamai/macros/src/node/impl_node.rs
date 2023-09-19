@@ -4,7 +4,12 @@ use quote::quote;
 use quote::ToTokens;
 
 pub fn impl_node(node: &NodeParser) -> TokenStream {
-	let NodeParser { ident, .. } = node;
+	let NodeParser {
+		ident,
+		self_params,
+		self_decl,
+		..
+	} = node;
 	// let AiNodeBuilder {
 	// 	builder_ident: ident,
 	// 	builder_bounds,
@@ -17,9 +22,11 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let set_child_node = impl_set_child_node(node);
 
 	quote!(
-		impl AiNode for #ident
+		impl<#self_decl> AiNode for #ident<#self_params>
 		{
+			const ID: usize = ID;
 			type ChildrenQuery = (Entity, #world_query);
+			type System = NodeSystem;
 			fn edges(query: &Query<Self::ChildrenQuery>) -> Vec<(Entity, Vec<EdgeState>)> {
 				query
 					.iter()
@@ -29,7 +36,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			fn set_child_node_state(commands: &mut Commands, entity: Entity, index: usize)-> gamai::Result<()> {
 				match index {
 					#set_child_node
-					_ => gamai::bail!(Self::SET_CHILD_ERROR),
+					_ => gamai::bail!(format!("{}: child index {index} out of range", Self::ID)),
 				}
 			}
 		}
