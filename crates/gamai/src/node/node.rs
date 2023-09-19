@@ -7,7 +7,7 @@ use std::marker::PhantomData;
 // debug for edges to also be debug
 /// An AiNode is a combination of a system and a set of child nodes, each with an edge.
 pub trait AiNode:
-	std::fmt::Debug + Default + 'static + Send + Sync + IntoNodeSystem
+	std::fmt::Debug + Default + 'static + Send + Sync
 {
 	const SET_CHILD_ERROR: &'static str = "gamai: child index out of range";
 	type ChildrenQuery: WorldQuery;

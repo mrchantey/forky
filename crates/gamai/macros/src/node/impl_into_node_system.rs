@@ -7,8 +7,8 @@ use syn::ItemFn;
 const GENERIC_ERROR:&str = "a `node_system` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<A: AiNode>()`";
 
 
-pub fn impl_into_node_system(node: &NodeParser) -> TokenStream {
-	let NodeParser{ ident,func, .. } = node;
+pub fn impl_into_node_system(func: &ItemFn) -> TokenStream {
+	let ident = &func.sig.ident;
 	let add_node_system = parse_node_system(&func);
 	quote! {
 		impl IntoNodeSystem for #ident{

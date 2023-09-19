@@ -3,11 +3,14 @@
 
 fn main() {}
 
-#[gamai::node]
+
+gamai::node!(0);
+gamai::node!(1);
+// #[gamai::node(num_edges = 0)]
 // #[gamai::node(num_choices = 20)]
 // #[gamai::node(num_edges(20))]
 // fn my_node() {}
-fn my_node<A: gamai::AiNode>() {}
+// fn my_node<A: gamai::AiNode>() {}
 
 // #[node]
 // fn first_valid_edge<N: AiNode>(

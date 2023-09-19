@@ -12,7 +12,7 @@ pub fn first_valid_edge<N: AiNode>(
 	for (entity, edges) in entities.iter() {
 		for (index, edge) in edges.iter().enumerate() {
 			if *edge != EdgeState::Fail {
-				N::set_child_node_state(&mut commands, *entity, index);
+				N::set_child_node_state(&mut commands, *entity, index).unwrap();
 				continue; //skip other edges, go to next entity
 			}
 		}

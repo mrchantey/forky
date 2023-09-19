@@ -15,9 +15,9 @@ pub fn graph(item: TokenStream) -> TokenStream {
 		.unwrap_or_else(syn::Error::into_compile_error)
 		.into()
 }
-#[proc_macro_attribute]
-pub fn node(attr: TokenStream, item: TokenStream) -> TokenStream {
-	NodeParser::parse_node_full(attr, item)
+#[proc_macro]
+pub fn node(attr: TokenStream) -> TokenStream {
+	NodeParser::parse_node(attr)
 }
 #[proc_macro_attribute]
 pub fn node_system(attr: TokenStream, item: TokenStream) -> TokenStream {

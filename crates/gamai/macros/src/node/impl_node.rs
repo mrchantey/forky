@@ -30,8 +30,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				match index {
 					#set_child_node
 					_ => gamai::bail!(Self::SET_CHILD_ERROR),
-				};
-				Ok(())
+				}
 			}
 		}
 	)
@@ -70,7 +69,10 @@ fn impl_set_child_node(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		.map(|index| {
 			let val = default_child_node_state(node, index);
-			quote!(#index => commands.entity(entity).insert(#val),)
+			quote!(#index => {
+				commands.entity(entity).insert(#val);
+				Ok(())
+			},)
 		})
 		.collect()
 }

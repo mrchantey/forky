@@ -4,13 +4,13 @@ use proc_macro2::TokenStream;
 use quote::quote;
 
 pub fn impl_bundle(node: &NodeParser) -> TokenStream {
-	let NodeParser { ident, vis, .. } = node;
-	let ident = Ident::new(&format!("{ident}_bundle"), ident.span());
+	let NodeParser { ident, .. } = node;
+	let ident = Ident::new(&format!("{ident}Bundle"), ident.span());
 	let edge_states = edge_states(node);
 	quote! {
 		#[derive(Bundle, Default)]
 		#[allow(non_camel_case_types)]
-		#vis struct #ident{
+		pub struct #ident{
 			#edge_states
 		}
 	}
