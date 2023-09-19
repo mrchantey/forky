@@ -667,7 +667,8 @@ jobs:
 <li>🐢 Systems all the way down</li>
 </ul>
 <h2 id="architecture"><a class="header" href="#architecture">Architecture</a></h2>
-<p>The structure of <code>gamai</code> is a directed tree graph, and uses graph theory terminology. It is paradigm agnostic, ie one node may have a utility filter, whereas another may use a binary filter.</p>
+<p>One of the coolest parts of bevy is its systems with expressive querying. <code>gamai</code> is built entirely around that, each node is a system.
+The structure of <code>gamai</code> is a directed tree graph, and uses graph theory terminology. It is paradigm agnostic, ie one node may have a utility filter, whereas another may use a binary filter.</p>
 <p>A graph structure like this:</p>
 <pre><code class="language-mermaid">
 graph TB;
