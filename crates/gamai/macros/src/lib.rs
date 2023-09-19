@@ -9,9 +9,9 @@ use edge::*;
 mod utility;
 use utility::*;
 
-#[proc_macro_attribute]
-pub fn graph(attr: TokenStream, item: TokenStream) -> TokenStream {
-	GraphParser::parse(attr, item)
+#[proc_macro]
+pub fn graph(item: TokenStream) -> TokenStream {
+	GraphParser::parse(item)
 		.unwrap_or_else(syn::Error::into_compile_error)
 		.into()
 }
@@ -23,4 +23,9 @@ pub fn node(attr: TokenStream, item: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn edge(attr: TokenStream, item: TokenStream) -> TokenStream {
 	parse_edge_system(attr, item)
+}
+
+#[proc_macro]
+pub fn html(tokens: TokenStream) -> TokenStream {
+    html_inner(tokens, false)
 }

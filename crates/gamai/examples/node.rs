@@ -6,3 +6,19 @@ fn main() {}
 #[gamai::node(num_choices=20)]
 // #[gamai::node(num_edges(20))]
 fn my_node() {}
+
+// #[node]
+// fn first_valid_edge<N: AiNode>(
+// 	mut commands: Commands,
+// 	mut query: Query<N::ChildrenQuery>,
+// ) {
+// 	let entities = N::edges(&mut query);
+// 	for (entity, edges) in entities.iter() {
+// 		for (index, edge) in edges.iter().enumerate() {
+// 			if *edge != EdgeState::Fail {
+// 				N::set_child_node_state(&mut commands, *entity, index);
+// 				return;
+// 			}
+// 		}
+// 	}
+// }
