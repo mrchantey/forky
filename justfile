@@ -98,7 +98,7 @@ test-all *args:
 	cargo run -p sweet			--example test_sweet 			--features sweet/bevy -- --parallel
 	cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
 	cargo run -p forky_cli	--example test_forky_cli	-- --parallel
-	cargo run -p forky_fs		--example test_forky_fs		-- --parallel
+	cargo run -p forky_fs_test		--example test_forky_fs_test		-- --parallel
 	cargo run -p forky_core_test	--example test_forky_core_test	-- --parallel
 
 test crate *args:

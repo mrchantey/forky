@@ -2,8 +2,8 @@ use bevy_ecs::prelude::*;
 use gamai::*;
 use sweet::*;
 
-type F<const I: usize> = ChildEdgeState<EdgePhantom<my_node, I>>;
-type A<const I: usize> = ChildNodeState<EdgePhantom<my_node, I>>;
+// type F<const I: usize> = ChildEdgeState<EdgePhantom<my_node, I>>;
+// type A<const I: usize> = ChildNodeState<EdgePhantom<my_node, I>>;
 
 
 // #[node(32)]

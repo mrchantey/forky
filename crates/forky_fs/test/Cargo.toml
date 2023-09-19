@@ -1,0 +1,21 @@
+[package]
+name = "forky_fs_test"
+version = { workspace = true }
+edition = { workspace = true }
+authors = { workspace = true }
+documentation = { workspace = true }
+license = { workspace = true }
+readme = { workspace = true }
+description = { workspace = true }
+repository = { workspace = true }
+
+
+[dependencies]
+forky_fs = { workspace = true }
+
+[dev-dependencies]
+sweet = { workspace = true }
+
+[[example]]
+name = "test_forky_fs_test"
+path = "sweet.rs"
