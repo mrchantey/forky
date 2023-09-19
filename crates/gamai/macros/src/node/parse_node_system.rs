@@ -6,7 +6,6 @@ use syn::ItemFn;
 const GENERIC_ERROR:&str = "a `node_system` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<A: AiNode>()`";
 
 pub fn parse_node_system(
-	_attr: proc_macro::TokenStream,
 	item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
 	let item = parse_macro_input!(item as ItemFn);

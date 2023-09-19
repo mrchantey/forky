@@ -2918,7 +2918,11 @@ dependencies = [
  "anyhow",
  "bevy_ecs",
  "gamai_macros",
+ "proc-macro2",
+ "quote",
+ "rstml",
  "sweet",
+ "syn 2.0.37",
 ]
 
 [[package]]
@@ -2928,7 +2932,8 @@ dependencies = [
  "anyhow",
  "proc-macro2",
  "quote",
- "syn 1.0.109",
+ "rstml",
+ "syn 2.0.37",
 ]
 
 [[package]]
@@ -5919,7 +5924,7 @@ dependencies = [
  "anyhow",
  "proc-macro2",
  "quote",
- "syn 1.0.109",
+ "syn 2.0.37",
 ]
 
 [[package]]

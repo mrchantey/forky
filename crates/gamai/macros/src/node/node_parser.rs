@@ -1,11 +1,12 @@
 use super::*;
-use crate::node_system::parse_node_system;
 use proc_macro2::Ident;
 use proc_macro2::TokenStream;
 use quote::quote;
 use syn::parse_macro_input;
-use syn::AttributeArgs;
+use syn::Expr;
 use syn::ItemFn;
+use syn::Lit;
+use syn::Meta;
 use syn::Visibility;
 
 pub struct NodeParser {
@@ -20,17 +21,20 @@ pub struct NodeParser {
 	pub builder: NodePluginParser,
 }
 
+
+
+
+
 impl NodeParser {
 	pub fn parse(
 		attr: proc_macro::TokenStream,
 		item: proc_macro::TokenStream,
 	) -> proc_macro::TokenStream {
 		let node_system: proc_macro2::TokenStream =
-			parse_node_system(attr.clone(), item.clone()).into();
-
-		let attr = parse_macro_input!(attr as AttributeArgs);
+			parse_node_system(item.clone()).into();
+		let num_edges = get_num_edges(attr);
 		let item = parse_macro_input!(item as ItemFn);
-		let node = NodeParser::new(item, attr);
+		let node = NodeParser::new(item, num_edges);
 
 		let builder_impl = impl_builder(&node);
 		let self_impl = impl_self(&node);
@@ -51,8 +55,7 @@ impl NodeParser {
 		}
 		.into()
 	}
-	pub fn new(func: ItemFn, attr: AttributeArgs) -> Self {
-		let num_edges = parse_attributes(attr).unwrap_or(2);
+	pub fn new(func: ItemFn, num_edges: usize) -> Self {
 		let (edge_params, edge_bounds) = edge_generics(num_edges);
 		let builder = NodePluginParser::new(&func, num_edges);
 		Self {
@@ -67,11 +70,26 @@ impl NodeParser {
 	}
 }
 
-fn parse_attributes(attr: syn::AttributeArgs) -> Option<usize> {
-	if let Some(first) = attr.first() {
-		if let syn::NestedMeta::Lit(syn::Lit::Int(val)) = first {
-			return val.base10_parse::<usize>().ok();
-		}
+pub fn get_num_edges(attr: proc_macro::TokenStream) -> usize {
+	let attr: TokenStream = attr.into();
+	let default_val = 2;
+	if attr.is_empty() {
+		return default_val;
 	}
-	return None;
+	let attr: syn::Attribute = syn::parse_quote! {#[#attr]};
+	let val = match attr.meta {
+		Meta::NameValue(kvp) => {
+			if let Expr::Lit(val) = kvp.value {
+				if let Lit::Int(val) = val.lit {
+					val.base10_parse::<usize>().ok()
+				} else {
+					None
+				}
+			} else {
+				None
+			}
+		}
+		_ => None,
+	};
+	val.unwrap_or(default_val)
 }

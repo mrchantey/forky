@@ -3,5 +3,6 @@
 
 fn main() {}
 
-#[gamai::node]
+#[gamai::node(num_choices=20)]
+// #[gamai::node(num_edges(20))]
 fn my_node() {}

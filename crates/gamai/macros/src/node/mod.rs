@@ -16,5 +16,7 @@ mod node_parser;
 pub use self::node_parser::*;
 mod node_plugin_parser;
 pub use self::node_plugin_parser::*;
+mod parse_node_system;
+pub use self::parse_node_system::*;
 mod utils;
 pub use self::utils::*;
