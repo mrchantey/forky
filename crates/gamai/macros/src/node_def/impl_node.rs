@@ -8,6 +8,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 		ident,
 		self_params,
 		self_bounds,
+		num_edges,
 		..
 	} = node;
 	// let AiNodeBuilder {
@@ -22,6 +23,12 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let set_child_node = impl_set_child_node(node);
 	let build_children = build_children(node);
 	let configure_sets = configure_sets(node);
+
+	let node_system_config = if *num_edges == 0 {
+		quote! {NodeSystemConfig::default()}
+	} else {
+		quote! {NodeSystemConfig{apply_deferred: true,}}
+	};
 
 	quote!(
 		impl<#self_bounds> AiNode for #ident<#self_params>
@@ -51,8 +58,9 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				}
 			}
 			fn build(schedule: &mut Schedule){
-				NodeSystem::add_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
-				EdgeSystem::add_node_system::<Self>(schedule, BeforeNodeSet::<GRAPH_ID, PARENT_DEPTH>);
+				NodeSystem::add_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>,&#node_system_config);
+				//my edge should run before my parents node set
+				EdgeSystem::add_node_system::<Self>(schedule, BeforeNodeSet::<GRAPH_ID, PARENT_DEPTH>, &NodeSystemConfig::default());
 
 				#configure_sets
 				#build_children
@@ -62,26 +70,16 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	)
 }
 
-fn configure_sets(node: &NodeParser) -> TokenStream {
+fn configure_sets(_node: &NodeParser) -> TokenStream {
 	// repeats set configuration for each siblings, thats ok
-
-	let common = quote!(
-		let is_root = GRAPH_DEPTH == 0 && PARENT_DEPTH == 0;
-		if !is_root{
+	quote!(
+		if GRAPH_DEPTH != 0{
 			schedule.configure_set(BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>
 				.after(NodeSet::<GRAPH_ID, PARENT_DEPTH>));
 		}
 		schedule.configure_set(NodeSet::<GRAPH_ID, GRAPH_DEPTH>
 			.after(BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>));
-	);
-	if node.num_edges == 0 {
-		common
-	} else {
-		// let child_ident = child_type_param_name(0);
-		quote! {
-			#common
-		}
-	}
+	)
 }
 
 fn all_edges_nested(node: &NodeParser) -> TokenStream {
