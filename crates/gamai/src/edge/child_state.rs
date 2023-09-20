@@ -5,20 +5,20 @@ use std::ops::Deref;
 use std::ops::DerefMut;
 
 #[derive(Debug, Default, Clone, Component, PartialEq)]
-pub struct ChildNodeState<C: AiEdge> {
+pub struct ChildNodeState<N: AiNode> {
 	pub state: NodeState,
-	marker: PhantomData<C>,
+	marker: PhantomData<N>,
 }
 
-impl<C: AiEdge> Deref for ChildNodeState<C> {
+impl<N: AiNode> Deref for ChildNodeState<N> {
 	type Target = NodeState;
 	fn deref(&self) -> &Self::Target { &self.state }
 }
-impl<C: AiEdge> DerefMut for ChildNodeState<C> {
+impl<N: AiNode> DerefMut for ChildNodeState<N> {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.state }
 }
 
-impl<C: AiEdge> ChildNodeState<C> {
+impl<N: AiNode> ChildNodeState<N> {
 	pub fn new(state: NodeState) -> Self {
 		Self {
 			state,
@@ -28,12 +28,12 @@ impl<C: AiEdge> ChildNodeState<C> {
 }
 
 #[derive(Debug, Default, Clone, Component, PartialEq)]
-pub struct ChildEdgeState<C: AiEdge> {
+pub struct ChildEdgeState<N: AiNode> {
 	pub state: EdgeState,
-	marker: PhantomData<C>,
+	marker: PhantomData<N>,
 }
 
-impl<C: AiEdge> ChildEdgeState<C> {
+impl<N: AiNode> ChildEdgeState<N> {
 	pub fn new(state: EdgeState) -> Self {
 		Self {
 			state,
@@ -42,18 +42,10 @@ impl<C: AiEdge> ChildEdgeState<C> {
 	}
 }
 
-impl<C: AiEdge> Deref for ChildEdgeState<C> {
+impl<N: AiNode> Deref for ChildEdgeState<N> {
 	type Target = EdgeState;
 	fn deref(&self) -> &Self::Target { &self.state }
 }
-impl<C: AiEdge> DerefMut for ChildEdgeState<C> {
+impl<N: AiNode> DerefMut for ChildEdgeState<N> {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.state }
-}
-
-#[derive(Debug, Default, PartialEq, Clone, Copy)]
-pub struct EdgePhantom<A: AiNode, const INDEX: usize>(PhantomData<A>);
-
-impl<N: AiNode, const INDEX: usize> AiEdge for EdgePhantom<N, INDEX> {
-	type NextNode = N;
-	const INDEX: usize = INDEX;
 }

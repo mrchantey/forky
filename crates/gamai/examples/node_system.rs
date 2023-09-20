@@ -5,5 +5,5 @@ use gamai::*;
 //this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
 
-#[node_system]
+#[node]
 pub fn my_node<N: AiNode>() {}

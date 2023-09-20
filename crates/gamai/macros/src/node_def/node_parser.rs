@@ -3,8 +3,6 @@ use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::parse_macro_input;
-use syn::ItemFn;
 use syn::LitInt;
 
 pub struct NodeParser {
@@ -18,32 +16,6 @@ pub struct NodeParser {
 }
 
 impl NodeParser {
-	pub fn parse_node_system(
-		_attr: proc_macro::TokenStream,
-		item: proc_macro::TokenStream,
-	) -> proc_macro::TokenStream {
-		let func = parse_macro_input!(item as ItemFn);
-		// let node = NodeParser::new(item, 0);
-		let ItemFn { vis, sig, .. } = func.clone();
-		let ident = &sig.ident;
-
-		let original_func = parse_original_function(&func);
-		let into_node_system_impl = impl_into_node_system(&func);
-		quote! {
-			use bevy_ecs::prelude::*;
-			use gamai::*;
-
-			#[derive(Debug,Default,Clone)]
-			#[allow(non_camel_case_types)]
-			#vis struct #ident;
-
-			#original_func
-			#into_node_system_impl
-		}
-		.into()
-	}
-
-
 	pub fn parse_node(
 		tokens: proc_macro::TokenStream,
 	) -> proc_macro::TokenStream {
@@ -51,12 +23,7 @@ impl NodeParser {
 		let node = NodeParser::new(num_edges);
 
 		let self_impl = impl_self(&node);
-		// let original_func = parse_original_function(&node.func);
-		// let into_node_system_impl = impl_into_node_system(&node);
-
 		let node_impl = impl_node(&node);
-		// let sets_impl = impl_sets(&node);
-		let _bundle_impl = impl_bundle(&node);
 
 		quote! {
 			use bevy_ecs::prelude::*;

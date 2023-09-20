@@ -2,16 +2,16 @@
 //this example is used for macro expansion, for usage see the `tests` directory
 
 
-#[gamai::node_system]
+#[gamai::node]
 fn my_node<F: gamai::AiNode>() {}
 
 fn main() {
-	// let out = gamai::graph!(
-	// 	<my_node edge=bar>
-	// 	<edgesss/>
-	// 	<edge/>
-	// 	</my_node>
-	// );
+	let out = gamai::graph!(
+		<my_node edge=bar>
+		<edgesss/>
+		<edge/>
+		</my_node>
+	);
 
 	// println!("{:?}", out);
 }

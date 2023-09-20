@@ -89,8 +89,8 @@ fn all_edges_nested(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
-			let ident = edge_type(node, index);
-			quote!((&'static #ident, #prev))
+			let child = child_type_param_name(index);
+			quote!((&'static ChildEdgeState<#child>, #prev))
 		})
 		.into_token_stream()
 }
@@ -98,7 +98,7 @@ fn node_params_nested(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
-			let ident = field_ident("edge", index);
+			let ident = field_ident("child", index);
 			quote!((#ident, #prev))
 		})
 		.into_token_stream()
@@ -107,7 +107,7 @@ fn node_params_nested(node: &NodeParser) -> TokenStream {
 fn node_params_deref(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		.map(|index| {
-			let ident = field_ident("edge", index);
+			let ident = field_ident("child", index);
 			quote!(**#ident,)
 		})
 		.collect()
@@ -117,9 +117,9 @@ fn impl_set_child_node(node: &NodeParser) -> TokenStream {
 	// let AiNode { ident, .. } = node;
 	(0..node.num_edges)
 		.map(|index| {
-			let val = default_child_node_state(node, index);
+			let child = child_type_param_name(index);
 			quote!(#index => {
-				commands.entity(entity).insert(#val);
+				commands.entity(entity).insert(ChildNodeState::<#child>::default());
 				Ok(())
 			},)
 		})

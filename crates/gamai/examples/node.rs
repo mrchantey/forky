@@ -15,7 +15,7 @@ fn main() {
 	let mut world = World::new();
 	world.spawn(Parent::default());
 }
-gamai::node!(0);
-gamai::node!(1);
-gamai::node!(2);
-gamai::node!(3);
+gamai::define_node!(0);
+gamai::define_node!(1);
+gamai::define_node!(2);
+gamai::define_node!(3);

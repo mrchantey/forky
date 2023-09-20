@@ -2,10 +2,10 @@
 use proc_macro::TokenStream;
 mod graph;
 use graph::*;
-mod node;
-use node::*;
-mod edge;
-use edge::*;
+mod node_def;
+use node_def::*;
+mod node_system;
+use node_system::*;
 mod utility;
 use utility::*;
 
@@ -16,17 +16,12 @@ pub fn graph(item: TokenStream) -> TokenStream {
 		.into()
 }
 #[proc_macro]
-pub fn node(attr: TokenStream) -> TokenStream {
+pub fn define_node(attr: TokenStream) -> TokenStream {
 	NodeParser::parse_node(attr)
 }
 #[proc_macro_attribute]
-pub fn node_system(attr: TokenStream, item: TokenStream) -> TokenStream {
-	NodeParser::parse_node_system(attr, item)
-}
-
-#[proc_macro_attribute]
-pub fn edge(attr: TokenStream, item: TokenStream) -> TokenStream {
-	parse_edge_system(attr, item)
+pub fn node(attr: TokenStream, item: TokenStream) -> TokenStream {
+	parse_node_system(attr, item)
 }
 
 #[proc_macro]
