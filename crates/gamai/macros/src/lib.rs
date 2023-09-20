@@ -10,7 +10,7 @@ mod utility;
 use utility::*;
 
 #[proc_macro]
-pub fn graph(item: TokenStream) -> TokenStream {
+pub fn tree(item: TokenStream) -> TokenStream {
 	GraphParser::parse(item)
 		.unwrap_or_else(syn::Error::into_compile_error)
 		.into()

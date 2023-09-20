@@ -1,70 +1,93 @@
 # Gamai
 
-`gamai` is a flexible & extendable game AI library. It is based on ECS and weighted graph theory.
+`gamai` is a flexible task switching library suitable for game AI, robotics etc.
 
 ## Features
 
 - 🔥 Parallel
 - ✍️ No Blackboard
 - 🌴 Digraph architecture
-- 🌈 Paradigm agnostic
+- 🌈 Unopinionated
 - 🌍 With or without Bevy
 - 🐢 Systems all the way down
 
-## Architecture
+## Overview
 
-### The Graph
-
-A concept discussed in Chris Hecker's [Structure Vs Style](https://youtu.be/4eQp8SdzOa0) and elaborated upon by [Kevin Dill](https://www.youtube.com/watch?v=IvK0ZlNoxjw&t=1082s) is that of a distintion betwee structure and style.
-
-`gamai` is inspired by Dill's xml format for declaring ai behavior, the use of `rsx` gives us several advantages over runtime definitions:
-- Oppourtunistic Parallelism - uses bevy's famous resolver
-- Serialization - uses standard xml syntax
-
-One of the coolest parts of bevy is its systems with expressive querying. `gamai` is built entirely around that, each node is a system.
-The structure of `gamai` is a directed tree graph, and uses graph theory terminology. It is paradigm agnostic, ie one node may have a utility filter, whereas another may use a binary filter.
-
-A graph structure like this:
-```mermaid
-
-graph TB;
-	A-->B;
-	A-->C;
-
-```
-Will turn into four systems, where the states are checked before `node A` is run, so it can determine which child node to activate.
-```mermaid
-graph LR;
-	State_B --> A;
-	State_C --> A;
-	A --> Node_B;
-	A --> Node_C;
-```
+`gamai` has two fundamental concepts:
+- [generic systems](#generic-systems)
+- [compile-time trees](#compile-time-trees)
 
 
-### Best With Bevy
+> Vocabulary from graph theory is used in `gamai`, here are some synonyms:
+> - Node: Action, Behaviour
+> - Edge: Consideration, Filter, Sensor, Scorer
 
-All nodes & edges are bevy systems. They run in parallel and can access anything a regular system can, which means no blackboard!
+### Generic Systems
 
-`gamai` can also be used with other engines, in which case the bevy world acts as the blackboard.
+If we want parallelism then every node and edge should only mutably access what it needs and not block its siblings. For code reuse we can use a generic system, this way our systems dont need to know which node they belong to.
 
-### Finite State Machines / GOTO
-
-If you're used to finite state machines you may be looking for a way to `goto` some arbitary node from another. While this is *possible* if you know the `NODE_ID` of the target, it is [considered an antipattern](https://youtu.be/gXrKGTPwfO8?list=PLFQdM4LOGDr_vYJuo8YTRcmv3FrwczdKg&t=230). Also the tradeoff of the parallel nature of `gamai` is that it will only act on the jump on the next frame.
-
-# Nodes
-
-An `AiNode` is a single system, they can be thought of as Actions or Behaviours. Leaf nodes simply run behaviour, whereas branching nodes may additionally **select** a child node to activate.
-
-## Edges
-
-An `AiEdge` is a system used to dermine the validity of its associated node by setting the corresponding `EdgeState`, an enum of either:
-- `Pass,Fail` (behaviour tree)
-- `Weight(f32)` (utility)
-- `RankedWeight(u32,f32)` (dual utility)
-
-## Usage
-
+Note the use of the `Node` parameter to specify the required state for all three systems:
 ```rs
-todo!()
+
+// edges give their parent an idea of whether their node should run
+#[node]
+fn child_edge<Node: AiNode>(query: Query<&mut EdgeState<Node>>){
+	for state in query.iter_mut(){
+			**state = EdgeState::Weight(0.7);
+	}
+}
+
+// nodes run if their parent lets them
+#[node]
+fn child_node<Node: AiNode>(query: Query<&NodeState<Node>>){
+	for state in query.iter(){
+		println!("this node is running, its state is {}", state);
+	}
+}
+```
+
+The parent node is a little more complex, it uses the generic parameter to retrieve all child states:
+```rs
+// parents decide which children get to run, based on their edge states
+#[node]
+fn parent<Node: AiNode>(mut commands: Commands, mut query: Query<Node::ChildrenQuery>) {
+	let entities = Node::edges(&mut query); // Vec(Entity,Vec<EdgeState>)
+	for (entity, edges) in entities.iter() {
+		for (index, edge) in edges.iter().enumerate() {
+			if *edge != EdgeState::Fail {
+				Node::set_child_node_state(&mut commands, *entity, index).unwrap();
+				continue;
+			}
+		}
+	}
+}
+
+```
+
+### Compile-time Trees
+
+The above example is nice and modular, but a little unweildy for use. There are three more things to be done:
+- Resolve generics for their tree
+- Specify system execution order
+	- child edges should run before parents, and child nodes after parents
+- Create component bundles for each tree
+
+The below example uses bevy but see [no_bevy](./no_bevy) for more examples.
+```rs
+type MyTree = gamai::tree!(
+	<parent>
+		<child_node edge=child_edge/>
+	</parent>
+)
+
+fn main(){
+	let mut app = App::new();
+	// like a plugin, but gamai only uses bevy_ecs
+	MyTree::build(app.world.schedule(Update).unwrap());
+	// its a bundle :)
+	app.world.spawn(MyTree::default());
+	app.update();
+}
+
+// "this node is running, its state is NodeState::Once"
 ```

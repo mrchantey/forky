@@ -10,46 +10,11 @@
 
 ## Examples
 
-```xml
-<character>
-	<factors>
-		<throttle delay=2/>
-	</factors>
-	<actions method="utility">
-		<idle>
-			<actions>
-				<whistle/>
-			</actions>
-		<melee_attack>
-			<factors>
-			</factors>
-			<actions method="sequence">
-			</actions>
-		</melee_attack>
-		<ranged_attack>
-			<factors>
-				<pick_enemy/>
-				<has_ammo/>
-			</factors>
-			<actions>
-				<shoot/>
-				<go_to_enemy/>
-			</actions>
-		</ranged_attack>
-	</actions>
-</character>
-
-
-```
-
-
-
-
 Sniper Planner
 - method: first valid option
 - options:
  - Take Shot
-	- sensors
+	- considerations
 		- Execution History - When the last shot was taken update this sensors 'next_shot' between 60 and 120. If elapsed time less than this, veto the actions.
 		- Pick Target - Check for a valid enemy to pick, if no valid enemy, veto the action, otherwise write target to blackboard.
 		- Pick Line of Retreat - Check area surrounding self, if no valid retreat, veto the action

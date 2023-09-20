@@ -6,7 +6,7 @@
 
 // sweet! {
 // 	test "graph" {
-// 		let out = gamai::graph!(
+// 		let out = gamai::tree!(
 // 			<my_node>
 // 			// <edgesss/>
 // 			// <edge/>
