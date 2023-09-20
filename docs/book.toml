@@ -10,4 +10,10 @@ create-missing = false
 # extra-watch-dirs = ["./custom"]
 [output.html]
 additional-js = ["src/custom/index.js"]
+# additional-js = ["src/custom/index.js", "mermaid.min.js", "mermaid-init.js"]
 additional-css = ["src/custom/index.css"]
+
+[preprocessor]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
