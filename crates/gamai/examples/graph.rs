@@ -6,12 +6,12 @@
 fn my_node<F: gamai::AiNode>() {}
 
 fn main() {
-	let out = gamai::graph!(
-		<my_node edge=bar>
-		<edgesss/>
-		<edge/>
-		</my_node>
-	);
+	// let out = gamai::graph!(
+	// 	<my_node edge=bar>
+	// 	<edgesss/>
+	// 	<edge/>
+	// 	</my_node>
+	// );
 
-	println!("{:?}", out);
+	// println!("{:?}", out);
 }

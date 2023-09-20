@@ -48,8 +48,9 @@ All nodes & edges are bevy systems. They run in parallel and can access anything
 
 `gamai` can also be used with other engines, in which case the bevy world acts as the blackboard.
 
-### Jumping
-It is *possible* to jump to other nodes, like in a Finite State Machine, but I personally consider it an antipattern that results in spaghettification. The tradeoff of the parallel nature of `gamai` is that it will only act on the jump on the next frame.
+### Finite State Machines / GOTO
+
+If you're used to finite state machines you may be looking for a way to `goto` some arbitary node from another. While this is *possible* if you know the `NODE_ID` of the target, it is [considered an antipattern](https://youtu.be/gXrKGTPwfO8?list=PLFQdM4LOGDr_vYJuo8YTRcmv3FrwczdKg&t=230). Also the tradeoff of the parallel nature of `gamai` is that it will only act on the jump on the next frame.
 
 # Nodes
 

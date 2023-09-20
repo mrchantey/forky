@@ -1,7 +1,8 @@
 use bevy_ecs::prelude::*;
 
-pub trait NodeSets {
-	fn child_edge_set(&self) -> impl SystemSet;
-	fn node_set(&self) -> impl SystemSet;
-	fn child_node_set(&self) -> impl SystemSet;
-}
+#[derive(SystemSet, Debug, Clone, Eq, PartialEq, Hash)]
+pub struct NodePreUpdate<const GRAPH_ID: usize, const DEPTH: usize>;
+#[derive(SystemSet, Debug, Clone, Eq, PartialEq, Hash)]
+pub struct NodeUpdate<const GRAPH_ID: usize, const DEPTH: usize>;
+#[derive(SystemSet, Debug, Clone, Eq, PartialEq, Hash)]
+pub struct NodePostUpdate<const GRAPH_ID: usize, const DEPTH: usize>;

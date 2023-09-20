@@ -11,10 +11,10 @@ pub struct NodeParser {
 	pub num_edges: usize,
 	pub ident: Ident,
 	pub self_params: TokenStream,
-	pub self_decl: TokenStream,
-	pub edge_params: TokenStream,
-	pub edge_bounds: TokenStream,
-	pub builder: NodePluginParser,
+	pub self_params_types_only: TokenStream,
+	pub self_bounds: TokenStream,
+	pub child_params: TokenStream,
+	pub child_bounds: TokenStream,
 }
 
 impl NodeParser {
@@ -55,8 +55,7 @@ impl NodeParser {
 		// let into_node_system_impl = impl_into_node_system(&node);
 
 		let node_impl = impl_node(&node);
-		let sets_impl = impl_sets(&node);
-		let _plugin_impl = impl_plugin_impl(&node);
+		// let sets_impl = impl_sets(&node);
 		let _bundle_impl = impl_bundle(&node);
 
 		quote! {
@@ -64,7 +63,7 @@ impl NodeParser {
 			use gamai::*;
 			#self_impl
 
-			#sets_impl
+			// #sets_impl
 			#node_impl
 			// #plugin_impl
 			// #bundle_impl
@@ -73,27 +72,52 @@ impl NodeParser {
 	}
 	pub fn new(num_edges: usize) -> Self {
 		let ident = Ident::new(&format!("Node{num_edges}"), Span::call_site());
-		let (edge_params, edge_bounds) = edge_generics(num_edges);
-		let self_params = quote!(NodeSystem, ID);
-		let self_decl =
-			quote!(NodeSystem: gamai::IntoNodeSystem, const ID: usize);
+		let (child_params, child_bounds) = child_generics(num_edges);
+		let self_params_types_only = quote!(NodeSystem, EdgeSystem,);
+		let self_params = quote!(
+			NodeSystem,
+			EdgeSystem,
+			NODE_ID,
+			GRAPH_ID,
+			GRAPH_DEPTH,
+			CHILD_INDEX,
+			PARENT_DEPTH,
+			#child_params
+		);
+		let self_bounds = quote!(
+			NodeSystem: IntoNodeSystem,
+			EdgeSystem: IntoNodeSystem,
+			const NODE_ID:usize,
+			const GRAPH_ID:usize,
+			const GRAPH_DEPTH:usize,
+			const CHILD_INDEX: usize,
+			const PARENT_DEPTH: usize,
+			#child_bounds
+		);
 
-		let builder = NodePluginParser::new(&ident, num_edges);
 		Self {
-			builder,
 			num_edges,
 			self_params,
-			self_decl,
-			edge_params,
-			edge_bounds,
+			self_params_types_only,
+			self_bounds,
+			child_params,
+			child_bounds,
 			ident,
 		}
 	}
 }
 
 pub fn get_num_edges(attr: proc_macro::TokenStream) -> syn::Result<usize> {
-	if let Ok(val) = syn::parse::<LitInt>(attr.into()) {
-		Ok(val.base10_parse::<usize>()?)
+	if let Ok(lit) = syn::parse::<LitInt>(attr.into()) {
+		let val = lit.base10_parse::<usize>()?;
+		if val <= 117 {
+			Ok(val)
+		} else {
+			Err(syn::Error::new(
+				lit.span(),
+				"maximum number of edges is 117",
+			))
+		}
 	} else {
 		Err(syn::Error::new(
 			Span::call_site(),

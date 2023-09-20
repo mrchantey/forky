@@ -1,28 +1,21 @@
-#![feature(associated_type_bounds, return_position_impl_trait_in_trait)]
+#![feature(
+	associated_type_bounds,
+	return_position_impl_trait_in_trait,
+	// generic_const_exprs
+)]
 //this example is used for macro expansion, for usage see the `tests` directory
+use bevy_ecs::schedule::Schedule;
+use gamai::*;
 
-fn main() {}
-
+type Parent = Node1<noop_node, noop_node, 0, 0, 0, 0, 0, Child>;
+type Child = Node0<noop_node, noop_node, 1, 0, 1, 0, 0>;
+fn main() {
+	let mut schedule = Schedule::new();
+	Parent::build(&mut schedule);
+	let mut world = World::new();
+	world.spawn(Parent::default());
+}
+gamai::node!(0);
 gamai::node!(1);
-// gamai::node!(1);
-// #[gamai::node(num_edges = 0)]
-// #[gamai::node(num_choices = 20)]
-// #[gamai::node(num_edges(20))]
-// fn my_node() {}
-// fn my_node<A: gamai::AiNode>() {}
-
-// #[node]
-// fn first_valid_edge<N: AiNode>(
-// 	mut commands: Commands,
-// 	mut query: Query<N::ChildrenQuery>,
-// ) {
-// 	let entities = N::edges(&mut query);
-// 	for (entity, edges) in entities.iter() {
-// 		for (index, edge) in edges.iter().enumerate() {
-// 			if *edge != EdgeState::Fail {
-// 				N::set_child_node_state(&mut commands, *entity, index);
-// 				return;
-// 			}
-// 		}
-// 	}
-// }
+gamai::node!(2);
+gamai::node!(3);

@@ -4,6 +4,9 @@ use bevy_ecs::prelude::*;
 use std::marker::PhantomData;
 
 #[node_system]
+pub fn noop_node<N: AiNode>() {}
+
+#[node_system]
 pub fn first_valid_edge<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<N::ChildrenQuery>,
@@ -38,4 +41,4 @@ pub fn print_on_run<C: AiEdge>(mut query: Query<&mut ChildNodeState<C>>) {
 	}
 }
 #[edge]
-pub fn noop_node<C: AiEdge>(_phantom: PhantomData<C>) {}
+pub fn noop_edge<C: AiEdge>(_phantom: PhantomData<C>) {}

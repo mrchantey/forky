@@ -1,22 +1,24 @@
 use crate::*;
-use bevy_ecs::prelude::*;
+// use bevy_ecs::prelude::*;
 
+
+//TODO get rid of this
 pub trait ChildNodeSystems: 'static + Send + Sync + Clone {
 	type EdgeSystem: EdgeSystemBuilder;
 	type NodeSystem: EdgeSystemBuilder;
 	fn edge_system(&self) -> Self::EdgeSystem;
 	fn node_system(&self) -> Self::NodeSystem;
 
-	fn add_edge_systems<C: AiEdge>(
-		&self,
-		schedule: &mut Schedule,
-		sets: &impl NodeSets,
-	) {
-		self.edge_system()
-			.add_edge_system::<C>(schedule, sets.child_edge_set());
-		self.node_system()
-			.add_edge_system::<C>(schedule, sets.child_node_set());
-	}
+	// fn add_edge_systems<C: AiEdge>(
+	// 	&self,
+	// 	schedule: &mut Schedule,
+	// 	sets: &impl NodeSets<0, 0>,
+	// ) {
+	// 	 self.edge_system()
+	// 	 	.add_edge_system::<C>(schedule, sets.node_pre_update());
+	// 	 self.node_system()
+	// 	 	.add_edge_system::<C>(schedule, sets.node_post_update());
+	// }
 }
 
 //doesnt work?
