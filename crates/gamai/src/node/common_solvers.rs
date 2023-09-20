@@ -14,7 +14,9 @@ pub fn first_valid_edge<N: AiNode>(
 	let entities = N::edges(&mut query);
 	for (entity, edges) in entities.iter() {
 		for (index, edge) in edges.iter().enumerate() {
+			println!("first_valid_edge, iterating..");
 			if *edge != EdgeState::Fail {
+				println!("first_valid_edge, setting node state..");
 				N::set_child_node_state(&mut commands, *entity, index).unwrap();
 				continue; //skip other edges, go to next entity
 			}
@@ -24,6 +26,7 @@ pub fn first_valid_edge<N: AiNode>(
 
 #[node]
 pub fn edge_always_pass<N: AiNode>(mut query: Query<&mut ChildEdgeState<N>>) {
+	println!("edge_always_pass: Running");
 	for mut edge in query.iter_mut() {
 		**edge = EdgeState::Pass;
 	}

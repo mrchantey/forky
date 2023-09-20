@@ -24,16 +24,14 @@ impl NodeParser {
 
 		let self_impl = impl_self(&node);
 		let node_impl = impl_node(&node);
+		let impl_named_children = impl_named_children(&node);
 
 		quote! {
 			use bevy_ecs::prelude::*;
 			use gamai::*;
 			#self_impl
-
-			// #sets_impl
 			#node_impl
-			// #plugin_impl
-			// #bundle_impl
+			#impl_named_children
 		}
 		.into()
 	}

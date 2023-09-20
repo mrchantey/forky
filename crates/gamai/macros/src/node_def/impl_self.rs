@@ -21,6 +21,7 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 			phantom: PhantomComponent<NODE_ID,(#self_params_types_only)>,
 			// phantom: std::marker::PhantomData<(#self_params_types_only)>,
 			children: (#params_nested),
+			edge_state: ChildEdgeState<Self>
 			// children: (#child_params),
 		}
 		// pub struct #ident<#self_bounds>(std::marker::PhantomData<(#self_params_types_only)>);

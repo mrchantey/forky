@@ -31,9 +31,6 @@ pub trait AiNode:
 	) -> Result<()>;
 
 	fn build(schedule: &mut Schedule);
-	fn set_pre_update() -> impl SystemSet;
-	fn set_update() -> impl SystemSet;
-	fn set_post_update() -> impl SystemSet;
 }
 
 /* GENERIC ORDER:
@@ -68,72 +65,3 @@ crate::define_node!(13);
 crate::define_node!(14);
 crate::define_node!(15);
 crate::define_node!(16);
-
-
-
-// #[derive(Debug, Default)]
-// pub struct RootParentNode<const GRAPH_ID: usize>;
-
-// impl<const GRAPH_ID: usize> AiNode for RootParentNode<GRAPH_ID> {
-// 	const NODE_ID: usize = 0;
-// 	const GRAPH_ID: usize = GRAPH_ID;
-// 	const GRAPH_DEPTH: usize = 0;
-// 	const CHILD_INDEX: usize = 0;
-// 	type ChildrenQuery = ();
-// 	type NodeSystem = noop_node;
-// 	type EdgeSystem = noop_node;
-// 	// type Parent = RootParentNode<0>;
-// 	type Query<'w, 's> = Query<'w, 's, Self::ChildrenQuery>;
-// 	fn edges(
-// 		query: &Query<Self::ChildrenQuery>,
-// 	) -> Vec<(Entity, Vec<EdgeState>)> {
-// 		panic!("not implemented for RootParentNode")
-// 	}
-// 	fn set_child_node_state(
-// 		commands: &mut Commands,
-// 		entity: Entity,
-// 		index: usize,
-// 	) -> Result<()> {
-// 		panic!("not implemented for RootParentNode")
-// 	}
-
-// 	fn build(schedule: &mut Schedule) {
-// 		panic!("not implemented for RootParentNode")
-// 	}
-// 	fn node_pre_update() -> impl SystemSet { NodePreUpdate::<GRAPH_ID, 0> }
-// 	fn node_update() -> impl SystemSet { NodeUpdate::<GRAPH_ID, 0> }
-// 	fn node_post_update() -> impl SystemSet { NodePostUpdate::<GRAPH_ID, 0> }
-// }
-
-
-// #[derive(Debug, Default, Copy, Clone)]
-// pub struct AnonNode<Node: IntoNodeSystem, const ID: usize>(PhantomData<Node>);
-
-// impl<Node: IntoNodeSystem, const ID: usize> AiNode for AnonNode<Node, ID> {
-// 	type ChildrenQuery = ();
-// 	const ID: usize = ID;
-// 	fn edges(
-// 		val: &Query<Self::ChildrenQuery>,
-// 	) -> Vec<(Entity, Vec<EdgeState>)> {
-// 		vec![]
-// 	}
-
-// 	fn set_child_node_state(
-// 		commands: &mut Commands,
-// 		entity: Entity,
-// 		index: usize,
-// 	) -> Result<()> {
-// 		anyhow::bail!(Self::SET_CHILD_ERROR)
-// 	}
-// }
-
-// impl<Node: IntoNodeSystem, const ID: usize> IntoNodeSystem
-// 	for AnonNode<Node, ID>
-// {
-// 	fn add_node_system<N: AiNode>(
-// 		schedule: &mut Schedule,
-// 		set: impl SystemSet,
-// 	) {
-// 		Node::add_node_system::<N>(schedule, set)
-// 	}
-// }

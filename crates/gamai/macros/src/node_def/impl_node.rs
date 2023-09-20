@@ -51,15 +51,13 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				}
 			}
 			fn build(schedule: &mut Schedule){
-				NodeSystem::add_node_system::<Self>(schedule, Self::set_update());
+				NodeSystem::add_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
+				EdgeSystem::add_node_system::<Self>(schedule, BeforeNodeSet::<GRAPH_ID, PARENT_DEPTH>);
 
 				#configure_sets
 				#build_children
 			}
 
-			fn set_pre_update() -> impl SystemSet { NodePreUpdate::<GRAPH_ID, GRAPH_DEPTH> }
-			fn set_update() -> impl SystemSet { NodeUpdate::<GRAPH_ID, GRAPH_DEPTH> }
-			fn set_post_update() -> impl SystemSet {NodePostUpdate::<GRAPH_ID, GRAPH_DEPTH>}
 		}
 	)
 }
@@ -70,10 +68,11 @@ fn configure_sets(node: &NodeParser) -> TokenStream {
 	let common = quote!(
 		let is_root = GRAPH_DEPTH == 0 && PARENT_DEPTH == 0;
 		if !is_root{
-			schedule.configure_set(Self::set_post_update().before(NodePostUpdate::<GRAPH_ID, PARENT_DEPTH>));
+			schedule.configure_set(BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>
+				.after(NodeSet::<GRAPH_ID, PARENT_DEPTH>));
 		}
-		schedule.configure_set(Self::set_update().before(Self::set_post_update()));
-		schedule.configure_set(Self::set_pre_update().before(Self::set_update()));
+		schedule.configure_set(NodeSet::<GRAPH_ID, GRAPH_DEPTH>
+			.after(BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>));
 	);
 	if node.num_edges == 0 {
 		common
