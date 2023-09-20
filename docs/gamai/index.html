@@ -7,7 +7,10 @@
 
 
         <!-- Custom HTML head -->
-        
+        <script type="module">
+        	import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        	mermaid.initialize({ startOnLoad: true });
+        </script>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -84,7 +87,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="../forky_cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../forky_cli/sweet.html"><strong aria-hidden="true">1.1.</strong> sweet</a></li><li class="chapter-item expanded "><a href="../forky_cli/watch.html"><strong aria-hidden="true">1.2.</strong> watch</a></li><li class="chapter-item expanded "><a href="../forky_cli/mod.html"><strong aria-hidden="true">1.3.</strong> mod</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sweet/native/index.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sweet/native/runner.html"><strong aria-hidden="true">2.1.1.</strong> Native Runner</a></li><li class="chapter-item expanded "><a href="../sweet/native/async.html"><strong aria-hidden="true">2.1.2.</strong> Async Tests</a></li><li class="chapter-item expanded "><a href="../sweet/native/webdriver.html"><strong aria-hidden="true">2.1.3.</strong> Web Driver</a></li></ol></li><li class="chapter-item expanded "><a href="../sweet/web/index.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sweet/web/matchers.html"><strong aria-hidden="true">2.2.1.</strong> Matchers</a></li><li class="chapter-item expanded "><a href="../sweet/web/end-to-end.html"><strong aria-hidden="true">2.2.2.</strong> End-To-End</a></li></ol></li><li class="chapter-item expanded "><a href="../sweet/matchers.html"><strong aria-hidden="true">2.3.</strong> Matchers</a></li><li class="chapter-item expanded "><a href="../sweet/macros.html"><strong aria-hidden="true">2.4.</strong> Macros</a></li><li class="chapter-item expanded "><a href="../sweet/workspaces.html"><strong aria-hidden="true">2.5.</strong> Workspaces</a></li><li class="chapter-item expanded "><a href="../sweet/cicd.html"><strong aria-hidden="true">2.6.</strong> CI / CD</a></li><li class="chapter-item expanded "><a href="../sweet/faq.html"><strong aria-hidden="true">2.7.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../sweet/changelog.html"><strong aria-hidden="true">2.8.</strong> Changelog</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../gamai/index.html" class="active"><strong aria-hidden="true">3.</strong> Gamai</a></li><li class="chapter-item expanded affix "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="../demos/bevy-webxr.html"><strong aria-hidden="true">4.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="../other/contributing.html"><strong aria-hidden="true">5.</strong> Contributing</a></li><li class="chapter-item expanded "><a href="../other/roadmap.html"><strong aria-hidden="true">6.</strong> Roadmap</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="../forky_cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../forky_cli/sweet.html"><strong aria-hidden="true">1.1.</strong> sweet</a></li><li class="chapter-item expanded "><a href="../forky_cli/watch.html"><strong aria-hidden="true">1.2.</strong> watch</a></li><li class="chapter-item expanded "><a href="../forky_cli/mod.html"><strong aria-hidden="true">1.3.</strong> mod</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sweet/native/index.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sweet/native/runner.html"><strong aria-hidden="true">2.1.1.</strong> Native Runner</a></li><li class="chapter-item expanded "><a href="../sweet/native/async.html"><strong aria-hidden="true">2.1.2.</strong> Async Tests</a></li><li class="chapter-item expanded "><a href="../sweet/native/webdriver.html"><strong aria-hidden="true">2.1.3.</strong> Web Driver</a></li></ol></li><li class="chapter-item expanded "><a href="../sweet/web/index.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sweet/web/matchers.html"><strong aria-hidden="true">2.2.1.</strong> Matchers</a></li><li class="chapter-item expanded "><a href="../sweet/web/end-to-end.html"><strong aria-hidden="true">2.2.2.</strong> End-To-End</a></li></ol></li><li class="chapter-item expanded "><a href="../sweet/matchers.html"><strong aria-hidden="true">2.3.</strong> Matchers</a></li><li class="chapter-item expanded "><a href="../sweet/macros.html"><strong aria-hidden="true">2.4.</strong> Macros</a></li><li class="chapter-item expanded "><a href="../sweet/workspaces.html"><strong aria-hidden="true">2.5.</strong> Workspaces</a></li><li class="chapter-item expanded "><a href="../sweet/cicd.html"><strong aria-hidden="true">2.6.</strong> CI / CD</a></li><li class="chapter-item expanded "><a href="../sweet/faq.html"><strong aria-hidden="true">2.7.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../sweet/changelog.html"><strong aria-hidden="true">2.8.</strong> Changelog</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../gamai/index.html" class="active"><strong aria-hidden="true">3.</strong> Gamai</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gamai/resources.html"><strong aria-hidden="true">3.1.</strong> Resources</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="../demos/bevy-webxr.html"><strong aria-hidden="true">4.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="../other/contributing.html"><strong aria-hidden="true">5.</strong> Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -179,6 +182,13 @@
 <li>🐢 Systems all the way down</li>
 </ul>
 <h2 id="architecture"><a class="header" href="#architecture">Architecture</a></h2>
+<h3 id="the-graph"><a class="header" href="#the-graph">The Graph</a></h3>
+<p>A concept discussed in Chris Hecker's <a href="https://youtu.be/4eQp8SdzOa0">Structure Vs Style</a> and elaborated upon by <a href="https://www.youtube.com/watch?v=IvK0ZlNoxjw&amp;t=1082s">Kevin Dill</a> is that of a distintion betwee structure and style.</p>
+<p><code>gamai</code> is inspired by Dill's xml format for declaring ai behavior, the use of <code>rsx</code> gives us several advantages over runtime definitions:</p>
+<ul>
+<li>Oppourtunistic Parallelism - uses bevy's famous resolver</li>
+<li>Serialization - uses standard xml syntax</li>
+</ul>
 <p>One of the coolest parts of bevy is its systems with expressive querying. <code>gamai</code> is built entirely around that, each node is a system.
 The structure of <code>gamai</code> is a directed tree graph, and uses graph theory terminology. It is paradigm agnostic, ie one node may have a utility filter, whereas another may use a binary filter.</p>
 <p>A graph structure like this:</p>
@@ -198,8 +208,8 @@ graph TB;
 <h3 id="best-with-bevy"><a class="header" href="#best-with-bevy">Best With Bevy</a></h3>
 <p>All nodes &amp; edges are bevy systems. They run in parallel and can access anything a regular system can, which means no blackboard!</p>
 <p><code>gamai</code> can also be used with other engines, in which case the bevy world acts as the blackboard.</p>
-<h3 id="jumping"><a class="header" href="#jumping">Jumping</a></h3>
-<p>It is <em>possible</em> to jump to other nodes, like in a Finite State Machine, but I personally consider it an antipattern that results in spaghettification. The tradeoff of the parallel nature of <code>gamai</code> is that it will only act on the jump on the next frame.</p>
+<h3 id="finite-state-machines--goto"><a class="header" href="#finite-state-machines--goto">Finite State Machines / GOTO</a></h3>
+<p>If you're used to finite state machines you may be looking for a way to <code>goto</code> some arbitary node from another. While this is <em>possible</em> if you know the <code>NODE_ID</code> of the target, it is <a href="https://youtu.be/gXrKGTPwfO8?list=PLFQdM4LOGDr_vYJuo8YTRcmv3FrwczdKg&amp;t=230">considered an antipattern</a>. Also the tradeoff of the parallel nature of <code>gamai</code> is that it will only act on the jump on the next frame.</p>
 <h1 id="nodes"><a class="header" href="#nodes">Nodes</a></h1>
 <p>An <code>AiNode</code> is a single system, they can be thought of as Actions or Behaviours. Leaf nodes simply run behaviour, whereas branching nodes may additionally <strong>select</strong> a child node to activate.</p>
 <h2 id="edges"><a class="header" href="#edges">Edges</a></h2>
@@ -221,7 +231,7 @@ graph TB;
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../demos/bevy-webxr.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../gamai/resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -235,7 +245,7 @@ graph TB;
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../demos/bevy-webxr.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../gamai/resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

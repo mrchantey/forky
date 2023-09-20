@@ -8,7 +8,10 @@
 
 
         <!-- Custom HTML head -->
-        
+        <script type="module">
+        	import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        	mermaid.initialize({ startOnLoad: true });
+        </script>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -85,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="forky_cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="forky_cli/sweet.html"><strong aria-hidden="true">1.1.</strong> sweet</a></li><li class="chapter-item expanded "><a href="forky_cli/watch.html"><strong aria-hidden="true">1.2.</strong> watch</a></li><li class="chapter-item expanded "><a href="forky_cli/mod.html"><strong aria-hidden="true">1.3.</strong> mod</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/native/index.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/native/runner.html"><strong aria-hidden="true">2.1.1.</strong> Native Runner</a></li><li class="chapter-item expanded "><a href="sweet/native/async.html"><strong aria-hidden="true">2.1.2.</strong> Async Tests</a></li><li class="chapter-item expanded "><a href="sweet/native/webdriver.html"><strong aria-hidden="true">2.1.3.</strong> Web Driver</a></li></ol></li><li class="chapter-item expanded "><a href="sweet/web/index.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/web/matchers.html"><strong aria-hidden="true">2.2.1.</strong> Matchers</a></li><li class="chapter-item expanded "><a href="sweet/web/end-to-end.html"><strong aria-hidden="true">2.2.2.</strong> End-To-End</a></li></ol></li><li class="chapter-item expanded "><a href="sweet/matchers.html"><strong aria-hidden="true">2.3.</strong> Matchers</a></li><li class="chapter-item expanded "><a href="sweet/macros.html"><strong aria-hidden="true">2.4.</strong> Macros</a></li><li class="chapter-item expanded "><a href="sweet/workspaces.html"><strong aria-hidden="true">2.5.</strong> Workspaces</a></li><li class="chapter-item expanded "><a href="sweet/cicd.html"><strong aria-hidden="true">2.6.</strong> CI / CD</a></li><li class="chapter-item expanded "><a href="sweet/faq.html"><strong aria-hidden="true">2.7.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="sweet/changelog.html"><strong aria-hidden="true">2.8.</strong> Changelog</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="gamai/index.html"><strong aria-hidden="true">3.</strong> Gamai</a></li><li class="chapter-item expanded affix "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="demos/bevy-webxr.html"><strong aria-hidden="true">4.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="other/contributing.html"><strong aria-hidden="true">5.</strong> Contributing</a></li><li class="chapter-item expanded "><a href="other/roadmap.html"><strong aria-hidden="true">6.</strong> Roadmap</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Forky</a></li><li class="chapter-item expanded affix "><li class="part-title">Crates</li><li class="chapter-item expanded "><a href="forky_cli/index.html"><strong aria-hidden="true">1.</strong> Command Line Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="forky_cli/sweet.html"><strong aria-hidden="true">1.1.</strong> sweet</a></li><li class="chapter-item expanded "><a href="forky_cli/watch.html"><strong aria-hidden="true">1.2.</strong> watch</a></li><li class="chapter-item expanded "><a href="forky_cli/mod.html"><strong aria-hidden="true">1.3.</strong> mod</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="sweet/index.html"><strong aria-hidden="true">2.</strong> Sweet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/native/index.html"><strong aria-hidden="true">2.1.</strong> Quickstart - Native</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/native/runner.html"><strong aria-hidden="true">2.1.1.</strong> Native Runner</a></li><li class="chapter-item expanded "><a href="sweet/native/async.html"><strong aria-hidden="true">2.1.2.</strong> Async Tests</a></li><li class="chapter-item expanded "><a href="sweet/native/webdriver.html"><strong aria-hidden="true">2.1.3.</strong> Web Driver</a></li></ol></li><li class="chapter-item expanded "><a href="sweet/web/index.html"><strong aria-hidden="true">2.2.</strong> Quickstart - Web</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sweet/web/matchers.html"><strong aria-hidden="true">2.2.1.</strong> Matchers</a></li><li class="chapter-item expanded "><a href="sweet/web/end-to-end.html"><strong aria-hidden="true">2.2.2.</strong> End-To-End</a></li></ol></li><li class="chapter-item expanded "><a href="sweet/matchers.html"><strong aria-hidden="true">2.3.</strong> Matchers</a></li><li class="chapter-item expanded "><a href="sweet/macros.html"><strong aria-hidden="true">2.4.</strong> Macros</a></li><li class="chapter-item expanded "><a href="sweet/workspaces.html"><strong aria-hidden="true">2.5.</strong> Workspaces</a></li><li class="chapter-item expanded "><a href="sweet/cicd.html"><strong aria-hidden="true">2.6.</strong> CI / CD</a></li><li class="chapter-item expanded "><a href="sweet/faq.html"><strong aria-hidden="true">2.7.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="sweet/changelog.html"><strong aria-hidden="true">2.8.</strong> Changelog</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="gamai/index.html"><strong aria-hidden="true">3.</strong> Gamai</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gamai/resources.html"><strong aria-hidden="true">3.1.</strong> Resources</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Demos</li><li class="chapter-item expanded "><a href="demos/bevy-webxr.html"><strong aria-hidden="true">4.</strong> Bevy WebXR</a></li><li class="chapter-item expanded affix "><li class="part-title">Other</li><li class="chapter-item expanded "><a href="other/contributing.html"><strong aria-hidden="true">5.</strong> Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -637,6 +640,11 @@ jobs:
 <h3 id="what-about-wasm-bindgen-test"><a class="header" href="#what-about-wasm-bindgen-test">What about wasm-bindgen-test?</a></h3>
 <p>Sweet has different priorities from <a href="https://rustwasm.github.io/wasm-bindgen/wasm-bindgen-test/index.html">wasm-bindgen-test</a> in its current state, namely a focus on UI &amp; interactivity.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="changelog"><a class="header" href="#changelog">Changelog</a></h1>
+<h2 id="todo"><a class="header" href="#todo">TODO</a></h2>
+<ul>
+<li>attribute macros</li>
+<li>Kill long-running tests</li>
+</ul>
 <h2 id="0131---13092023"><a class="header" href="#0131---13092023"><code>0.1.31</code> - 13/09/2023</a></h2>
 <ul>
 <li>Headless in-browser tests</li>
@@ -667,6 +675,13 @@ jobs:
 <li>🐢 Systems all the way down</li>
 </ul>
 <h2 id="architecture"><a class="header" href="#architecture">Architecture</a></h2>
+<h3 id="the-graph"><a class="header" href="#the-graph">The Graph</a></h3>
+<p>A concept discussed in Chris Hecker's <a href="https://youtu.be/4eQp8SdzOa0">Structure Vs Style</a> and elaborated upon by <a href="https://www.youtube.com/watch?v=IvK0ZlNoxjw&amp;t=1082s">Kevin Dill</a> is that of a distintion betwee structure and style.</p>
+<p><code>gamai</code> is inspired by Dill's xml format for declaring ai behavior, the use of <code>rsx</code> gives us several advantages over runtime definitions:</p>
+<ul>
+<li>Oppourtunistic Parallelism - uses bevy's famous resolver</li>
+<li>Serialization - uses standard xml syntax</li>
+</ul>
 <p>One of the coolest parts of bevy is its systems with expressive querying. <code>gamai</code> is built entirely around that, each node is a system.
 The structure of <code>gamai</code> is a directed tree graph, and uses graph theory terminology. It is paradigm agnostic, ie one node may have a utility filter, whereas another may use a binary filter.</p>
 <p>A graph structure like this:</p>
@@ -686,8 +701,8 @@ graph TB;
 <h3 id="best-with-bevy"><a class="header" href="#best-with-bevy">Best With Bevy</a></h3>
 <p>All nodes &amp; edges are bevy systems. They run in parallel and can access anything a regular system can, which means no blackboard!</p>
 <p><code>gamai</code> can also be used with other engines, in which case the bevy world acts as the blackboard.</p>
-<h3 id="jumping"><a class="header" href="#jumping">Jumping</a></h3>
-<p>It is <em>possible</em> to jump to other nodes, like in a Finite State Machine, but I personally consider it an antipattern that results in spaghettification. The tradeoff of the parallel nature of <code>gamai</code> is that it will only act on the jump on the next frame.</p>
+<h3 id="finite-state-machines--goto"><a class="header" href="#finite-state-machines--goto">Finite State Machines / GOTO</a></h3>
+<p>If you're used to finite state machines you may be looking for a way to <code>goto</code> some arbitary node from another. While this is <em>possible</em> if you know the <code>NODE_ID</code> of the target, it is <a href="https://youtu.be/gXrKGTPwfO8?list=PLFQdM4LOGDr_vYJuo8YTRcmv3FrwczdKg&amp;t=230">considered an antipattern</a>. Also the tradeoff of the parallel nature of <code>gamai</code> is that it will only act on the jump on the next frame.</p>
 <h1 id="nodes"><a class="header" href="#nodes">Nodes</a></h1>
 <p>An <code>AiNode</code> is a single system, they can be thought of as Actions or Behaviours. Leaf nodes simply run behaviour, whereas branching nodes may additionally <strong>select</strong> a child node to activate.</p>
 <h2 id="edges"><a class="header" href="#edges">Edges</a></h2>
@@ -699,6 +714,86 @@ graph TB;
 </ul>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
 <pre><code class="language-rs">todo!()
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
+<ul>
+<li><a href="https://youtu.be/IvK0ZlNoxjw">Modular AI</a></li>
+<li>Chris Hecker - <a href="https://youtu.be/4eQp8SdzOa0">Structure Vs Style</a></li>
+<li>Kevin Dill, Dave Mark - <a href="https://www.gdcvault.com/play/1012410/Improving-AI-Decision-Modeling-Through">Improving AI Decision Modeling Through Utility Theory</a></li>
+<li>Kevin Dill, Dave Mark - <a href="https://www.gdcvault.com/play/1015683/Embracing-the-Dark-Art-of">Embracing the Dark Art of Mathematical Modeling in Game AI</a></li>
+<li>Kevin Dill - <a href="https://www.sisostds.org/DesktopModules/Bring2mind/DMX/Download.aspx?Command=Core_Download&amp;EntryId=35466&amp;PortalId=0&amp;TabId=105">Introducing GAIA</a></li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<pre><code class="language-xml">&lt;character&gt;
+	&lt;factors&gt;
+		&lt;throttle delay=2/&gt;
+	&lt;/factors&gt;
+	&lt;actions method=&quot;utility&quot;&gt;
+		&lt;idle&gt;
+			&lt;actions&gt;
+				&lt;whistle/&gt;
+			&lt;/actions&gt;
+		&lt;melee_attack&gt;
+			&lt;factors&gt;
+			&lt;/factors&gt;
+			&lt;actions method=&quot;sequence&quot;&gt;
+			&lt;/actions&gt;
+		&lt;/melee_attack&gt;
+		&lt;ranged_attack&gt;
+			&lt;factors&gt;
+				&lt;pick_enemy/&gt;
+				&lt;has_ammo/&gt;
+			&lt;/factors&gt;
+			&lt;actions&gt;
+				&lt;shoot/&gt;
+				&lt;go_to_enemy/&gt;
+			&lt;/actions&gt;
+		&lt;/ranged_attack&gt;
+	&lt;/actions&gt;
+&lt;/character&gt;
+
+
+</code></pre>
+<p>Sniper Planner</p>
+<ul>
+<li>method: first valid option</li>
+<li>options:</li>
+<li>Take Shot
+<ul>
+<li>sensors
+<ul>
+<li>Execution History - When the last shot was taken update this sensors 'next_shot' between 60 and 120. If elapsed time less than this, veto the actions.</li>
+<li>Pick Target - Check for a valid enemy to pick, if no valid enemy, veto the action, otherwise write target to blackboard.</li>
+<li>Pick Line of Retreat - Check area surrounding self, if no valid retreat, veto the action</li>
+<li>Check shots fired - Basic curve, number of shots fired decreases likelyhood of next shot.</li>
+</ul>
+</li>
+<li>actions
+<ul>
+<li>Increment shots fired</li>
+<li>Fire at target</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<h2 id="retreat"><a class="header" href="#retreat">Retreat</a></h2>
+<ul>
+<li>Pick Line of Retreat - if no retreat, veto action</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-xml">&lt;take_shot&gt;
+	&lt;factors&gt;
+		&lt;range_throttle min=&quot;60&quot; max=&quot;120&quot;/&gt;
+		&lt;pick_target/&gt;
+		&lt;pick_line_of_retreat weight=&quot;100&quot;/&gt;
+	&lt;/factors&gt;
+	&lt;actions&gt;
+		&lt;increment_shots_fired/&gt;
+		&lt;fire_at_target/&gt;
+	&lt;/actions&gt;
+&lt;/take_shot&gt;
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-webxr"><a class="header" href="#bevy-webxr">Bevy WebXR</a></h1>
 <p>A proof-of-concept for WebXR in Bevy <code>0.11.0</code>. Visit this page in your Oculus Quest to see it in action!</p>
@@ -777,7 +872,7 @@ fn main() {
 <p>not required, but good idea to use the <a href="https://chrome.google.com/webstore/detail/webxr-api-emulator/mjddjgeghkdijejnciaefnkjmkafnnje?hl=en">WebXR API Emulator</a> for testing</p>
 </li>
 </ul>
-<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
+<h2 id="resources-1"><a class="header" href="#resources-1">Resources</a></h2>
 <ul>
 <li>JsValues
 <ul>
@@ -884,19 +979,6 @@ wasm-bindgen --out-dir ./html/maze --target web ./target/wasm32-unknown-unknown/
 cd html &amp;&amp; live-server
 </code></pre>
 </li>
-</ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h1>
-<p>Current Priroites:</p>
-<ul>
-<li>Automate in-browser tests</li>
-<li>Proxy component tests to point to a dev server
-<ul>
-<li>ie my static files are in <code>./static</code> served by <code>forky serve</code>, component tests should get <code>./style.css</code></li>
-</ul>
-</li>
-<li>Fantoccini examples</li>
-<li>Better macro spanning support</li>
-<li>Kill long-running tests</li>
 </ul>
 
                     </main>
