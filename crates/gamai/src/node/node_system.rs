@@ -11,7 +11,7 @@ pub struct NodeSystemConfig {
 pub trait IntoNodeSystem:
 	'static + std::fmt::Debug + Default + Clone + Send + Sync
 {
-	fn add_node_system<A: AiNode>(
+	fn add_node_system<Node: AiNode>(
 		schedule: &mut Schedule,
 		set: impl SystemSet,
 		config: &NodeSystemConfig,

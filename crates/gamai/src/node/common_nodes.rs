@@ -3,12 +3,25 @@ use crate::*;
 use bevy_ecs::prelude::*;
 use std::marker::PhantomData;
 
+
+#[node_system]
+pub fn fallback<N: AiNode>(mut query: Query<N::EdgesQuery>) {
+	let entities = N::edges(&mut query);
+	for (entity, edges) in entities.iter() {
+		for (index, edge) in edges.iter().enumerate() {}
+	}
+}
+
+#[node_system]
+pub fn sequence<N: AiNode>() {}
+
+
 #[derive(Debug, Default, Clone)]
 #[allow(non_camel_case_types)]
 pub struct empty_node;
 
 impl IntoNodeSystem for empty_node {
-	fn add_node_system<A: AiNode>(
+	fn add_node_system<N: AiNode>(
 		_schedule: &mut Schedule,
 		_set: impl SystemSet,
 		_config: &NodeSystemConfig,

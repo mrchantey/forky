@@ -27,6 +27,7 @@ impl NodeParser {
 		let impl_named_children = impl_named_children(&node);
 
 		quote! {
+			use bevy_app::prelude::*;
 			use bevy_ecs::prelude::*;
 			use gamai::*;
 			#self_impl

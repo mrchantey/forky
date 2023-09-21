@@ -1,5 +1,6 @@
 use crate::*;
 use anyhow::Result;
+use bevy_app::Plugin;
 use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;
 use std::marker::PhantomData;
@@ -29,7 +30,17 @@ pub trait AiNode:
 	) -> Result<()>;
 
 	fn build(schedule: &mut Schedule);
+	fn plugin() -> impl Plugin;
+	fn bundle() -> impl Bundle;
 }
+
+// struct Foo;
+// impl Plugin for Foo{
+// fn build(&self, app: &mut App) {
+// 	app.init_schedule(Update);
+// 	let schedule = app.get_schedule_mut(Update).unwrap();
+// }
+// }
 
 /* GENERIC ORDER:
 NodeSystem,

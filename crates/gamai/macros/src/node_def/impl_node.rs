@@ -65,7 +65,20 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				#configure_sets
 				#build_children
 			}
+			fn plugin() -> impl Plugin{
+				Self::default()
+			}
+			fn bundle() -> impl Bundle{
+				Self::default()
+			}
+		}
 
+		impl<#self_bounds> Plugin for #ident<#self_params> {
+			fn build(&self, app: &mut bevy_app::App) {
+				app.init_schedule(Update);
+				let schedule = app.get_schedule_mut(Update).unwrap();
+				<Self as AiNode>::build(schedule);
+			}
 		}
 	)
 }

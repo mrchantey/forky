@@ -51,6 +51,7 @@ gamai_macros = { path = "./crates/gamai/macros", version = "0.*" }
 ### game ###
 bevy = { version = "0.11.0" }
 bevy_ecs = { version = "0.11.*" }
+bevy_app = { version = "0.11.*" }
 bevy-inspector-egui = "0.19.0"
 bevy_mod_debugdump = "0.8.0"
 bevy_rapier3d = { version = "0.22.0", features = ["debug-render-3d"] }

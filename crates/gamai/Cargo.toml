@@ -3,15 +3,28 @@ name = "gamai"
 version = { workspace = true }
 edition = { workspace = true }
 authors = { workspace = true }
-documentation = "https://mrchantey.github.io/forky/docs/gamai"
 license = { workspace = true }
-readme = "README.md"
-description = "A flexible & extendable game AI library."
 repository = { workspace = true }
+readme = "README.md"
+description = "A flexible task switching library suitable for game AI & robotics"
+documentation = "https://mrchantey.github.io/forky/docs/gamai"
+categories = ["game-engines", "game-development", "data-structures"]
+keywords = [
+	"game-ai",
+	"robotics",
+	"behavior-tree",
+	"utility-ai",
+	"state-machine",
+]
+
+# [features]
+# bevy = ["dep:bevy_app"]
 
 [dependencies]
 gamai_macros = { workspace = true }
 bevy_ecs = { workspace = true }
+bevy_app = { workspace = true }
+# bevy_app = { workspace = true, optional = true }
 anyhow = { workspace = true }
 
 [dev-dependencies]

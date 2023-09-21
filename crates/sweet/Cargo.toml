@@ -1,6 +1,13 @@
 [package]
 name = "sweet"
+version = { workspace = true }
+edition = { workspace = true }
+authors = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+readme = "README.md"
 description = "Declarative full-stack test framework"
+documentation = "https://mrchantey.github.io/forky/docs/sweet"
 categories = ["development-tools::testing"]
 keywords = [ # 5 at most
 	"test",
@@ -9,13 +16,6 @@ keywords = [ # 5 at most
 	"browser",
 	"webdriver",
 ]
-documentation = "https://mrchantey.github.io/forky/docs/sweet"
-readme = "README.md"
-version = { workspace = true }
-edition = { workspace = true }
-authors = { workspace = true }
-license = { workspace = true }
-repository = { workspace = true }
 
 [features]
 bevy_ecs = ["dep:bevy_ecs"]
