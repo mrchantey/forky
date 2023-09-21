@@ -4,13 +4,13 @@ use bevy_ecs::prelude::*;
 use std::marker::PhantomData;
 
 
-#[node_system]
-pub fn fallback<N: AiNode>(mut query: Query<N::EdgesQuery>) {
-	let entities = N::edges(&mut query);
-	for (entity, edges) in entities.iter() {
-		for (index, edge) in edges.iter().enumerate() {}
-	}
-}
+// #[node_system]
+// pub fn fallback<N: AiNode>(mut query: Query<N::ChildQuery>) {
+// 	let entities = N::children(&mut query);
+// 	for (entity, edges) in entities.iter() {
+// 		for (index, edge) in edges.iter().enumerate() {}
+// 	}
+// }
 
 #[node_system]
 pub fn sequence<N: AiNode>() {}
@@ -32,15 +32,15 @@ impl IntoNodeSystem for empty_node {
 #[node_system]
 pub fn first_valid_edge<N: AiNode>(
 	mut commands: Commands,
-	mut query: Query<N::EdgesQuery>,
+	mut query: Query<N::ChildQuery>,
 ) {
-	let entities = N::edges(&mut query);
-	for (entity, edges) in entities.iter() {
-		for (index, edge) in edges.iter().enumerate() {
+	for node in query.iter_mut() {
+		for (index, edge) in N::children(&node).iter().enumerate() {
 			// println!("first_valid_edge: running..");
-			if *edge != EdgeState::Fail {
+			if ***edge != EdgeState::Fail {
 				// println!("first_valid_edge: setting node state..");
-				N::set_child_node_state(&mut commands, *entity, index).unwrap();
+				// N::set_child_node_state(&mut commands, state.entity, index)
+				// 	.unwrap();
 				continue; //skip other edges, go to next entity
 			}
 		}

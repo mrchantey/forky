@@ -4,6 +4,20 @@ use std::marker::PhantomData;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
+#[derive(Debug, Clone, PartialEq)]
+pub struct ChildStates {
+	pub entity: Entity,
+	// pub children: Vec<(EdgeState, Option<NodeState>)>,
+	pub children: Vec<EdgeState>,
+}
+// #[derive(Debug, Clone, PartialEq)]
+// pub struct ChildState {
+// 	index: usize,
+// 	edge: EdgeState,
+// 	node: Option<NodeState>,
+// }
+
+
 #[derive(Debug, Default, Clone, Component, PartialEq)]
 pub struct ChildNodeState<N: AiNode> {
 	pub state: NodeState,

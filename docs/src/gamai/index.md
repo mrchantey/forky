@@ -51,8 +51,8 @@ fn child<Node: AiNode>(mut query: Query<&mut NodeState<Node>>){
 The parent node is also concerned about the state of its children. In this example it will select the first child that has a passing edge state.
 ```rs
 #[node_system]
-fn parent<Node: AiNode>(mut commands: Commands, mut query: Query<Node::EdgesQuery>) {
-	for (entity, edges) in Node::edges(&mut query).iter() {
+fn parent<Node: AiNode>(mut commands: Commands, mut query: Query<Node::ChildQuery>) {
+	for (entity, edges) in Node::child_states(&mut query).iter() {
 		for (index, edge) in edges.iter().enumerate() {
 			if *edge == EdgeState::Pass {
 				Node::set_child_node_state(&mut commands, *entity, index).unwrap();
