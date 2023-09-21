@@ -1,5 +1,4 @@
 use crate::*;
-use anyhow::Result;
 use bevy_app::Plugin;
 use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;
@@ -27,14 +26,8 @@ pub trait AiNode:
 	type Query<'w, 's> = Query<'w, 's, Self::ChildQuery>;
 	fn entity<'a>(item: &<Self::ChildQuery as WorldQuery>::Item<'a>) -> Entity;
 	fn children<'a>(
-		item: &<Self::ChildQuery as WorldQuery>::Item<'a>,
-	) -> Vec<&'a dyn std::ops::Deref<Target = EdgeState>>;
-
-	fn set_child_node_state(
-		commands: &mut Commands,
-		entity: Entity,
-		index: usize,
-	) -> Result<()>;
+		item: <Self::ChildQuery as WorldQuery>::Item<'a>,
+	) -> (ChildState<'a>,Vec<ChildState<'a>>);
 
 	fn add_systems(schedule: &mut Schedule);
 	fn plugin() -> impl Plugin;
@@ -56,20 +49,13 @@ Child1..
 #[derive(Debug, Default, Clone, Component)]
 pub struct PhantomComponent<const NODE_ID: usize, T>(PhantomData<T>);
 
-// crate::define_node!(0);
-// crate::define_node!(1);
-// crate::define_node!(2);
-// crate::define_node!(3);
-// crate::define_node!(4);
-// crate::define_node!(5);
-// crate::define_node!(6);
-// crate::define_node!(7);
-// crate::define_node!(8);
-// crate::define_node!(9);
-// crate::define_node!(10);
-// crate::define_node!(11);
-// crate::define_node!(12);
-// crate::define_node!(13);
-// crate::define_node!(14);
-// crate::define_node!(15);
-// crate::define_node!(16);
+
+
+// #[derive(Component)]
+// struct Bar;
+
+// fn foobar(mut query: Query<&mut Bar>) {
+// 	for mut item in query.iter_mut() {
+// 		*item = Bar;
+// 	}
+// }

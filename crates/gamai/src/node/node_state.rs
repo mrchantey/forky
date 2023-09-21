@@ -7,3 +7,7 @@ pub enum NodeState {
 	Success,
 	Failure,
 }
+
+impl NodeState {
+	pub fn set(&mut self, other: Self) { *self = other; }
+}

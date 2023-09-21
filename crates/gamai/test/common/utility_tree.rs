@@ -17,7 +17,7 @@ sweet! {
 	test "utility tree" {
 		let mut world = World::new();
 		let mut schedule = Schedule::default();
-		MyTree::build(&mut schedule);
+		MyTree::add_systems(&mut schedule);
 		let entity = world.spawn(MyTree::default()).id();
 		expect(&world)
 			.to_have_component::<ChildEdgeState<Child0>>(entity)?;

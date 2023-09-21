@@ -2,6 +2,8 @@ mod ai_node;
 pub use self::ai_node::*;
 mod common_nodes;
 pub use self::common_nodes::*;
+mod define_node;
+pub use self::define_node::*;
 mod node_sets;
 pub use self::node_sets::*;
 mod node_state;

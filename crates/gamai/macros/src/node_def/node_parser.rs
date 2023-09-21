@@ -7,6 +7,7 @@ use syn::LitInt;
 
 pub struct NodeParser {
 	pub num_edges: usize,
+	/// The name of this node: `Node0`
 	pub ident: Ident,
 	/// all generic params for this type: `NodeSystem, EdgeSystem, NODE_ID, GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, Child1, Child2`
 	pub self_params: TokenStream,

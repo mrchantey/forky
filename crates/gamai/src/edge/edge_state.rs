@@ -10,6 +10,10 @@ pub enum EdgeState {
 	// RankedWeight(u32, f32), TODO
 }
 
+impl EdgeState {
+	pub fn set(&mut self, other: Self) { *self = other; }
+}
+
 impl PartialOrd for EdgeState {
 	fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
 		let val = match (self, other) {

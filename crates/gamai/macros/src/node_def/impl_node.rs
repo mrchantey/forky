@@ -11,10 +11,10 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 		num_edges,
 		..
 	} = node;
-	let world_query = all_edges_nested(node);
+	let world_query = world_query_nested(node);
 	let params = node_params_nested(node);
-	let params_deref = node_params_deref(node);
-	let set_child_node = impl_set_child_node(node);
+	let child_states = child_states(node);
+	let node_recast = node_recast(node);
 	let add_systems_children = add_systems_children(node);
 	let configure_sets = configure_sets(node);
 
@@ -37,14 +37,13 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			const CHILD_INDEX: usize = CHILD_INDEX;
 			const PARENT_DEPTH: usize = PARENT_DEPTH;
 
-			type ChildQuery = (Entity, #world_query);
+			type ChildQuery = (
+				Entity,
+				&'static mut ChildEdgeState<Self>,
+				Option<&'static mut ChildNodeState<Self>>,
+				#world_query
+			);
 
-			fn set_child_node_state(commands: &mut Commands, entity: Entity, index: usize)-> gamai::Result<()> {
-				match index {
-					#set_child_node
-					_ => gamai::bail!(format!("Node {}: child index {index} out of range", Self::NODE_ID)),
-				}
-			}
 			fn add_systems(schedule: &mut Schedule){
 				NodeSystem::add_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>,&#node_system_config);
 				//my edge should run before my parents node set
@@ -62,9 +61,27 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			fn entity<'a>(val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>) ->Entity{
 				val.0
 			}
-			fn children<'a>((entity,#params): &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
-				-> Vec<&'a dyn std::ops::Deref<Target = EdgeState>>{
-					vec![#params_deref]
+
+			fn children<'a>((entity,edge_state,node_state,#params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
+				-> (ChildState<'a>,Vec<ChildState<'a>>) {
+					let node_state = if let Some(val) = node_state{
+						Some(val.into_inner() as DerefNode<'_>)
+					}else{
+						None
+					};
+					let state = ChildState::<'a>{
+						entity: entity.clone(),
+						index: Self::CHILD_INDEX,
+						edge: edge_state.into_inner(),
+						node: node_state,
+						node_state_func: move |commands:&mut Commands,entity:Entity,state: NodeState|{
+							commands.entity(entity).insert(ChildNodeState::<Self>::new(state));
+						}
+					};
+
+					#node_recast
+					(state,vec![#child_states])
+					// vec![]
 			}
 
 		}
@@ -91,12 +108,12 @@ fn configure_sets(_node: &NodeParser) -> TokenStream {
 	)
 }
 
-fn all_edges_nested(node: &NodeParser) -> TokenStream {
+fn world_query_nested(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
 			let child = child_type_param_name(index);
-			quote!((&'static ChildEdgeState<#child>, #prev))
+			quote!((&'static mut ChildEdgeState<#child>,Option<&'static mut ChildNodeState<#child>>, #prev))
 		})
 		.into_token_stream()
 }
@@ -104,30 +121,46 @@ fn node_params_nested(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
-			let ident = field_ident("child", index);
-			quote!((#ident, #prev))
+			let edge = field_ident("edge", index);
+			let node = field_ident("node", index);
+			quote!((#edge, #node, #prev))
 		})
 		.into_token_stream()
 }
 
-fn node_params_deref(node: &NodeParser) -> TokenStream {
+fn child_states(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		.map(|index| {
-			let ident = field_ident("child", index);
-			quote!(*#ident,)
+			let child = child_type_param_name(index);
+			let edge = field_ident("edge", index);
+			let node = field_ident("node", index);
+			quote! {
+				ChildState::<'a>{
+					entity: entity.clone(),
+					index: #index,
+					edge: #edge.into_inner(),
+					node: #node,
+					node_state_func: move |commands:&mut Commands,entity:Entity,state: NodeState|{
+						commands.entity(entity).insert(ChildNodeState::<#child>::new(state));
+					}
+				},
+			}
 		})
 		.collect()
 }
 
-fn impl_set_child_node(node: &NodeParser) -> TokenStream {
-	// let AiNode { ident, .. } = node;
+// there is probably a better way to do this
+fn node_recast(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		.map(|index| {
-			let child = child_type_param_name(index);
-			quote!(#index => {
-				commands.entity(entity).insert(ChildNodeState::<#child>::default());
-				Ok(())
-			},)
+			let node = field_ident("node", index);
+			quote! {
+				let #node = if let Some(val) = #node{
+					Some(val.into_inner() as DerefNode<'_>)
+				}else{
+					None
+				};
+			}
 		})
 		.collect()
 }
