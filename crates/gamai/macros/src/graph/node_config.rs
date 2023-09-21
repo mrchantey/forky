@@ -45,7 +45,7 @@ impl<'a> NodeConfig<'a> {
 	) -> Result<Self> {
 		let node_id = NODE_ID.fetch_add(1, Ordering::SeqCst);
 		let parent_depth = graph_depth.checked_sub(1).unwrap_or(0);
-		let mut edge_system = quote!(gamai::noop_node);
+		let mut edge_system = quote!(gamai::empty_node);
 
 		let children = node
 			.children

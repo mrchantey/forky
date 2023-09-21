@@ -18,6 +18,8 @@
 - [compile-time trees](#compile-time-trees)
 
 
+The heart of `gamai` is the `node`.
+
 > Vocabulary from graph theory is used in `gamai`, here are some synonyms:
 > - Node: Action, Behaviour
 > - Edge: Consideration, Filter, Sensor, Scorer
@@ -30,7 +32,7 @@ Note the use of the `Node` parameter to specify the required state for all three
 ```rs
 
 // edges give their parent an idea of whether their node should run
-#[node]
+#[node_system]
 fn child_edge<Node: AiNode>(query: Query<&mut EdgeState<Node>>){
 	for state in query.iter_mut(){
 			**state = EdgeState::Weight(0.7);
@@ -38,7 +40,7 @@ fn child_edge<Node: AiNode>(query: Query<&mut EdgeState<Node>>){
 }
 
 // nodes run if their parent lets them
-#[node]
+#[node_system]
 fn child_node<Node: AiNode>(query: Query<&NodeState<Node>>){
 	for state in query.iter(){
 		println!("this node is running, its state is {}", state);
@@ -49,8 +51,8 @@ fn child_node<Node: AiNode>(query: Query<&NodeState<Node>>){
 The parent node is a little more complex, it uses the generic parameter to retrieve all child states:
 ```rs
 // parents decide which children get to run, based on their edge states
-#[node]
-fn parent<Node: AiNode>(mut commands: Commands, mut query: Query<Node::ChildrenQuery>) {
+#[node_system]
+fn parent<Node: AiNode>(mut commands: Commands, mut query: Query<Node::EdgesQuery>) {
 	let entities = Node::edges(&mut query); // Vec(Entity,Vec<EdgeState>)
 	for (entity, edges) in entities.iter() {
 		for (index, edge) in edges.iter().enumerate() {

@@ -15,15 +15,13 @@ pub trait AiNode:
 	const GRAPH_DEPTH: usize;
 	const CHILD_INDEX: usize;
 	const PARENT_DEPTH: usize; //required until complex expressions https://blog.rust-lang.org/2021/02/26/const-generics-mvp-beta.html#const-generics-with-complex-expressions
-	type ChildrenQuery: WorldQuery;
+	type EdgesQuery: WorldQuery;
 	type NodeSystem: IntoNodeSystem;
 	type EdgeSystem: IntoNodeSystem;
 	// type Parent: AiNode;
 
-	type Query<'w, 's> = Query<'w, 's, Self::ChildrenQuery>;
-	fn edges(
-		query: &Query<Self::ChildrenQuery>,
-	) -> Vec<(Entity, Vec<EdgeState>)>;
+	type Query<'w, 's> = Query<'w, 's, Self::EdgesQuery>;
+	fn edges(query: &Query<Self::EdgesQuery>) -> Vec<(Entity, Vec<EdgeState>)>;
 	fn set_child_node_state(
 		commands: &mut Commands,
 		entity: Entity,

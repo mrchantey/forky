@@ -28,7 +28,7 @@
 ```rs
 
 
-#[node] //creates MyAiNodePlugin & MyAiNodeBundle
+#[node_system] //creates MyAiNodePlugin & MyAiNodeBundle
 struct MyNode;
 
 fn main() {

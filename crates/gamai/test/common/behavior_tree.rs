@@ -3,17 +3,17 @@ use gamai::*;
 use sweet::*;
 
 type MyTree = gamai::tree!(
-	<first_valid_edge edge=edge_always_pass>
-		<noop_node edge=edge_always_fail/>
-		<noop_node edge=edge_always_pass/>
-		// <print_on_run edge=edge_always_pass/>
+	<first_valid_edge>
+		<print_on_run/>
+		<print_on_run/>
 	</first_valid_edge>
 );
 type Child0 = <MyTree as NamedChildren2>::Child0;
 type Child1 = <MyTree as NamedChildren2>::Child1;
 
 sweet! {
-	it "works" {
+
+	test "behavior tree" {
 		let mut world = World::new();
 		let mut schedule = Schedule::default();
 		MyTree::build(&mut schedule);

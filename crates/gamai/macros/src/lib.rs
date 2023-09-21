@@ -20,7 +20,7 @@ pub fn define_node(attr: TokenStream) -> TokenStream {
 	NodeParser::parse_node(attr)
 }
 #[proc_macro_attribute]
-pub fn node(attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn node_system(attr: TokenStream, item: TokenStream) -> TokenStream {
 	parse_node_system(attr, item)
 }
 

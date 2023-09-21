@@ -5,8 +5,8 @@ use gamai::*;
 
 type MyTree = gamai::tree!(
 	<first_valid_edge edge=edge_always_pass>
-		<noop_node edge=edge_always_fail/>
-		<noop_node edge=edge_always_pass/>
+		<empty_node edge=edge_always_fail/>
+		<empty_node edge=edge_always_pass/>
 	</first_valid_edge>
 );
 

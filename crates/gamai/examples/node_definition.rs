@@ -7,8 +7,8 @@
 use bevy_ecs::schedule::Schedule;
 use gamai::*;
 
-type Parent = Node1<noop_node, noop_node, 0, 0, 0, 0, 0, Child>;
-type Child = Node0<noop_node, noop_node, 1, 0, 1, 0, 0>;
+type Parent = Node1<empty_node, empty_node, 0, 0, 0, 0, 0, Child>;
+type Child = Node0<empty_node, empty_node, 1, 0, 1, 0, 0>;
 fn main() {
 	let mut schedule = Schedule::new();
 	Parent::build(&mut schedule);

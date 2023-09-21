@@ -43,9 +43,9 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			const CHILD_INDEX: usize = CHILD_INDEX;
 			const PARENT_DEPTH: usize = PARENT_DEPTH;
 
-			type ChildrenQuery = (Entity, #world_query);
+			type EdgesQuery = (Entity, #world_query);
 
-			fn edges(query: &Query<Self::ChildrenQuery>) -> Vec<(Entity, Vec<EdgeState>)> {
+			fn edges(query: &Query<Self::EdgesQuery>) -> Vec<(Entity, Vec<EdgeState>)> {
 				query
 					.iter()
 					.map(|(entity, #params)| (entity, vec![#params_deref]))
