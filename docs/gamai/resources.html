@@ -179,43 +179,13 @@
 <li>Kevin Dill - <a href="https://www.sisostds.org/DesktopModules/Bring2mind/DMX/Download.aspx?Command=Core_Download&amp;EntryId=35466&amp;PortalId=0&amp;TabId=105">Introducing GAIA</a></li>
 </ul>
 <h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
-<pre><code class="language-xml">&lt;character&gt;
-	&lt;factors&gt;
-		&lt;throttle delay=2/&gt;
-	&lt;/factors&gt;
-	&lt;actions method=&quot;utility&quot;&gt;
-		&lt;idle&gt;
-			&lt;actions&gt;
-				&lt;whistle/&gt;
-			&lt;/actions&gt;
-		&lt;melee_attack&gt;
-			&lt;factors&gt;
-			&lt;/factors&gt;
-			&lt;actions method=&quot;sequence&quot;&gt;
-			&lt;/actions&gt;
-		&lt;/melee_attack&gt;
-		&lt;ranged_attack&gt;
-			&lt;factors&gt;
-				&lt;pick_enemy/&gt;
-				&lt;has_ammo/&gt;
-			&lt;/factors&gt;
-			&lt;actions&gt;
-				&lt;shoot/&gt;
-				&lt;go_to_enemy/&gt;
-			&lt;/actions&gt;
-		&lt;/ranged_attack&gt;
-	&lt;/actions&gt;
-&lt;/character&gt;
-
-
-</code></pre>
 <p>Sniper Planner</p>
 <ul>
 <li>method: first valid option</li>
 <li>options:</li>
 <li>Take Shot
 <ul>
-<li>sensors
+<li>considerations
 <ul>
 <li>Execution History - When the last shot was taken update this sensors 'next_shot' between 60 and 120. If elapsed time less than this, veto the actions.</li>
 <li>Pick Target - Check for a valid enemy to pick, if no valid enemy, veto the action, otherwise write target to blackboard.</li>
