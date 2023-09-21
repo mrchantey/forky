@@ -9,7 +9,7 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 	let NodeParser {
 		ident,
 		self_bounds,
-		self_params_types_only,
+		self_params_systems_only,
 		..
 	} = node;
 
@@ -18,13 +18,13 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 		#[derive(Debug,Default,Clone,Bundle)]
 		// #[allow(non_camel_case_types)]
 		pub struct #ident<#self_bounds>{
-			phantom: PhantomComponent<NODE_ID,(#self_params_types_only)>,
-			// phantom: std::marker::PhantomData<(#self_params_types_only)>,
+			phantom: PhantomComponent<NODE_ID,(#self_params_systems_only)>,
+			// phantom: std::marker::PhantomData<(#self_params_systems_only)>,
 			children: (#params_nested),
 			edge_state: ChildEdgeState<Self>
 			// children: (#child_params),
 		}
-		// pub struct #ident<#self_bounds>(std::marker::PhantomData<(#self_params_types_only)>);
+		// pub struct #ident<#self_bounds>(std::marker::PhantomData<(#self_params_systems_only)>);
 	}
 }
 

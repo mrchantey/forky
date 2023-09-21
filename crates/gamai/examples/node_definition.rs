@@ -17,6 +17,6 @@ fn main() {
 	// world.spawn(Parent::default());
 }
 gamai::define_node!(0);
-gamai::define_node!(1);
+// gamai::define_node!(1);
 // gamai::define_node!(2);
 // gamai::define_node!(3);

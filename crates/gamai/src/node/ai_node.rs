@@ -17,14 +17,12 @@ pub trait AiNode:
 	const GRAPH_DEPTH: usize;
 	const CHILD_INDEX: usize;
 	const PARENT_DEPTH: usize; //required until complex expressions https://blog.rust-lang.org/2021/02/26/const-generics-mvp-beta.html#const-generics-with-complex-expressions
+	/// Tuple Query used to access child states: `(Entity,(Child1,(Child2)))`
 	type ChildQuery: WorldQuery;
+	/// System to run in this node's update set
 	type NodeSystem: IntoNodeSystem;
+	/// System to run in this node's preupdate set
 	type EdgeSystem: IntoNodeSystem;
-
-	// type ChildQueryInstance<'a> = &<Self::ChildQuery as WorldQuery>::Item<'a>;
-	// type ChildQueryInstance<'a> = <Self::ChildQuery as WorldQuery>::Item<'a>;
-	// type Parent: AiNode;
-	// type ChildrenIter<'a> = Vec<&'a dyn std::ops::Deref<Target = EdgeState>>;
 
 	type Query<'w, 's> = Query<'w, 's, Self::ChildQuery>;
 	fn entity<'a>(item: &<Self::ChildQuery as WorldQuery>::Item<'a>) -> Entity;

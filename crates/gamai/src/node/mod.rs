@@ -1,7 +1,5 @@
 mod ai_node;
 pub use self::ai_node::*;
-mod child_query;
-pub use self::child_query::*;
 mod common_nodes;
 pub use self::common_nodes::*;
 mod node_sets;

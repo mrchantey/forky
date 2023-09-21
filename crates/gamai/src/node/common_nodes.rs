@@ -31,11 +31,11 @@ impl IntoNodeSystem for empty_node {
 
 #[node_system]
 pub fn first_valid_edge<N: AiNode>(
-	mut commands: Commands,
+	mut _commands: Commands,
 	mut query: Query<N::ChildQuery>,
 ) {
 	for node in query.iter_mut() {
-		for (index, edge) in N::children(&node).iter().enumerate() {
+		for (_index, edge) in N::children(&node).iter().enumerate() {
 			// println!("first_valid_edge: running..");
 			if ***edge != EdgeState::Fail {
 				// println!("first_valid_edge: setting node state..");

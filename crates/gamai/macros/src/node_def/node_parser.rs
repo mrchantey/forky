@@ -8,10 +8,15 @@ use syn::LitInt;
 pub struct NodeParser {
 	pub num_edges: usize,
 	pub ident: Ident,
+	/// all generic params for this type: `NodeSystem, EdgeSystem, NODE_ID, GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, Child1, Child2`
 	pub self_params: TokenStream,
-	pub self_params_types_only: TokenStream,
+	/// systems-only generic params for this type: `NodeSystem, EdgeSystem`
+	pub self_params_systems_only: TokenStream,
+	/// all generic bounds for this type: `NodeSystem: IntoNodeSystem, ...`
 	pub self_bounds: TokenStream,
+	/// types of the children: `Child1,Child2`
 	pub child_params: TokenStream,
+	/// bound types of the children: `Child1: AiNode, Child2: AiNode`
 	pub child_bounds: TokenStream,
 }
 
@@ -39,7 +44,7 @@ impl NodeParser {
 	pub fn new(num_edges: usize) -> Self {
 		let ident = Ident::new(&format!("Node{num_edges}"), Span::call_site());
 		let (child_params, child_bounds) = child_generics(num_edges);
-		let self_params_types_only = quote!(NodeSystem, EdgeSystem,);
+		let self_params_systems_only = quote!(NodeSystem, EdgeSystem,);
 		let self_params = quote!(
 			NodeSystem,
 			EdgeSystem,
@@ -64,7 +69,7 @@ impl NodeParser {
 		Self {
 			num_edges,
 			self_params,
-			self_params_types_only,
+			self_params_systems_only,
 			self_bounds,
 			child_params,
 			child_bounds,
