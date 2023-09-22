@@ -12,7 +12,6 @@ use bevy_ecs::prelude::*;
 pub fn sequence<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<(Entity, &mut DerefNodeState<N>, ChildIter<N>)>,
-	foo: RemovedComponents<DerefNodeState<N>>,
 ) {
 	for (entity, mut state, children) in query.iter_mut() {
 		let mut children = N::children(children);

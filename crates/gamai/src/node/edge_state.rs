@@ -1,6 +1,6 @@
 use crate::*;
 use bevy_ecs::prelude::*;
-use bevy_ecs::query::WorldQuery;
+
 use std::cmp::Ordering;
 use std::fmt::Debug;
 use std::marker::PhantomData;

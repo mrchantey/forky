@@ -1,9 +1,9 @@
 use crate::*;
 use bevy_ecs::prelude::*;
-use bevy_ecs::query::WorldQuery;
-use std::marker::PhantomData;
-use std::ops::Deref;
-use std::ops::DerefMut;
+
+
+
+
 
 
 /// Tuple used in queries to access child states: `(Entity,(Child1,(Child2)))`
