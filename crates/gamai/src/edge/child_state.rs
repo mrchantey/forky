@@ -1,8 +1,28 @@
 use crate::*;
 use bevy_ecs::prelude::*;
+use bevy_ecs::query::WorldQuery;
 use std::marker::PhantomData;
 use std::ops::Deref;
 use std::ops::DerefMut;
+
+
+/// Tuple used in queries to access child states: `(Entity,(Child1,(Child2)))`
+pub type ChildIter<N> = <N as AiNode>::ChildQuery;
+
+
+// pub trait ChildIterTrait: AiNode {
+// 	fn children<'a>(
+// 		item: <Self::ChildQuery as WorldQuery>::Item<'a>,
+// 	) -> Vec<ChildState<'a>>;
+// }
+
+// impl<N> ChildIterTrait for ChildIter<N> {
+// 	fn children<'a>(
+// 		item: <Self::ChildQuery as WorldQuery>::Item<'a>,
+// 	) -> Vec<ChildState<'a>> {
+// 		<Self as AiNode>::children(item)
+// 	}
+// }
 
 // pub type DerefEdge<'a> = Mut<'_, gamai::ChildNodeState<Child0>>;
 // pub type DerefNode<'a> = Mut<'_, gamai::ChildNodeState<Child0>>;
