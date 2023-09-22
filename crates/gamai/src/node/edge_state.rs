@@ -1,5 +1,11 @@
+use crate::*;
+use bevy_ecs::prelude::*;
+use bevy_ecs::query::WorldQuery;
 use std::cmp::Ordering;
 use std::fmt::Debug;
+use std::marker::PhantomData;
+use std::ops::Deref;
+use std::ops::DerefMut;
 
 #[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub enum EdgeState {
@@ -27,4 +33,28 @@ impl PartialOrd for EdgeState {
 		};
 		Some(val)
 	}
+}
+
+pub type DerefEdge<'a> = &'a mut dyn std::ops::DerefMut<Target = EdgeState>;
+#[derive(Debug, Default, Clone, Component, PartialEq)]
+pub struct DerefEdgeState<N: AiNode> {
+	pub state: EdgeState,
+	pub marker: PhantomData<N>,
+}
+
+impl<N: AiNode> DerefEdgeState<N> {
+	pub fn new(state: EdgeState) -> Self {
+		Self {
+			state,
+			marker: PhantomData,
+		}
+	}
+}
+
+impl<N: AiNode> Deref for DerefEdgeState<N> {
+	type Target = EdgeState;
+	fn deref(&self) -> &Self::Target { &self.state }
+}
+impl<N: AiNode> DerefMut for DerefEdgeState<N> {
+	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.state }
 }

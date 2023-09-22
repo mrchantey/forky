@@ -19,7 +19,7 @@ impl IntoNodeSystem for empty_node {
 #[node_system]
 pub fn first_valid_edge<N: AiNode>(
 	mut commands: Commands,
-	mut query: Query<N::ChildQuery, With<ChildNodeState<N>>>,
+	mut query: Query<N::ChildQuery, With<DerefNodeState<N>>>,
 ) {
 	for node in query.iter_mut() {
 		let mut children = N::children(node);
@@ -33,32 +33,34 @@ pub fn first_valid_edge<N: AiNode>(
 }
 
 #[node_system]
-pub fn edge_always_pass<N: AiNode>(mut query: Query<&mut ChildEdgeState<N>>) {
+pub fn edge_always_pass<N: AiNode>(mut query: Query<&mut DerefEdgeState<N>>) {
 	// println!("edge_always_pass: Running");
 	for mut edge in query.iter_mut() {
 		**edge = EdgeState::Pass;
 	}
 }
 #[node_system]
-pub fn edge_always_fail<N: AiNode>(mut query: Query<&mut ChildEdgeState<N>>) {
+pub fn edge_always_fail<N: AiNode>(mut query: Query<&mut DerefEdgeState<N>>) {
 	for mut edge in query.iter_mut() {
 		**edge = EdgeState::Fail;
 	}
 }
 #[node_system]
-pub fn node_always_succeed<N: AiNode>(mut query: Query<&mut ChildNodeState<N>>) {
+pub fn node_always_succeed<N: AiNode>(
+	mut query: Query<&mut DerefNodeState<N>>,
+) {
 	for mut node in query.iter_mut() {
 		**node = NodeState::Success;
 	}
 }
 #[node_system]
-pub fn node_always_fail<N: AiNode>(mut query: Query<&mut ChildNodeState<N>>) {
+pub fn node_always_fail<N: AiNode>(mut query: Query<&mut DerefNodeState<N>>) {
 	for mut node in query.iter_mut() {
 		**node = NodeState::Failure;
 	}
 }
 #[node_system]
-pub fn print_on_run<N: AiNode>(mut query: Query<&mut ChildNodeState<N>>) {
+pub fn print_on_run<N: AiNode>(mut query: Query<&mut DerefNodeState<N>>) {
 	// println!("print_on_run: running..");
 	for node in query.iter_mut() {
 		println!("NodeSystem: Running {:?}", node);

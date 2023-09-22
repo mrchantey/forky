@@ -20,24 +20,24 @@ sweet! {
 		MyTree::add_systems(&mut schedule);
 		let entity = world.spawn(MyTree::bundle()).id();
 		expect(&world)
-			.to_have_component::<ChildEdgeState<MyTree>>(entity)?;
+			.to_have_component::<DerefEdgeState<MyTree>>(entity)?;
 		expect(&world)
-			.to_have_component::<ChildNodeState<MyTree>>(entity)?;
+			.to_have_component::<DerefNodeState<MyTree>>(entity)?;
 		expect(&world)
-			.to_have_component::<ChildEdgeState<Child0>>(entity)?;
+			.to_have_component::<DerefEdgeState<Child0>>(entity)?;
 		expect(&world).not()
-			.to_have_component::<ChildNodeState<Child0>>(entity)?;
+			.to_have_component::<DerefNodeState<Child0>>(entity)?;
 		schedule.run(&mut world);
 		// schedule.run(&mut world);
 		expect(&world)
-			.component::<ChildEdgeState<Child0>>(entity)?
+			.component::<DerefEdgeState<Child0>>(entity)?
 			.map(|a| a.state)
 			.to_be(EdgeState::Fail)?;
 		expect(&world)
-			.component::<ChildEdgeState<Child1>>(entity)?
+			.component::<DerefEdgeState<Child1>>(entity)?
 			.map(|a| a.state)
 			.to_be(EdgeState::Pass)?;
-		expect(&world).not().to_have_component::<ChildNodeState<Child0>>(entity)?;
-		expect(&world).to_have_component::<ChildNodeState<Child1>>(entity)?;
+		expect(&world).not().to_have_component::<DerefNodeState<Child0>>(entity)?;
+		expect(&world).to_have_component::<DerefNodeState<Child1>>(entity)?;
 	}
 }

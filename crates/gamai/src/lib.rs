@@ -9,8 +9,6 @@
 //allow proc macros to work internally
 extern crate self as gamai;
 pub use gamai_macros::*;
-mod edge;
-pub use self::edge::*;
 mod node;
 pub use self::node::*;
 mod builtin_nodes;

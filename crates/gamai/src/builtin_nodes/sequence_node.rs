@@ -11,8 +11,8 @@ use bevy_ecs::prelude::*;
 #[node_system]
 pub fn sequence<N: AiNode>(
 	mut commands: Commands,
-	mut query: Query<(Entity, &mut ChildNodeState<N>, ChildIter<N>)>,
-	foo: RemovedComponents<ChildNodeState<N>>,
+	mut query: Query<(Entity, &mut DerefNodeState<N>, ChildIter<N>)>,
+	foo: RemovedComponents<DerefNodeState<N>>,
 ) {
 	for (entity, mut state, children) in query.iter_mut() {
 		let mut children = N::children(children);
@@ -40,7 +40,7 @@ pub fn sequence<N: AiNode>(
 				**state = NodeState::Success;
 			}
 		} else {
-			commands.entity(entity).remove::<ChildNodeState<N>>();
+			commands.entity(entity).remove::<DerefNodeState<N>>();
 			for child in children.iter_mut() {
 				child.set_node_state(&mut commands, None);
 			}

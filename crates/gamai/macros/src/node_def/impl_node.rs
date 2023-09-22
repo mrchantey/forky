@@ -39,8 +39,8 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 
 			type ChildQuery = (
 				Entity,
-				// &'static mut ChildEdgeState<Self>,
-				// Option<&'static mut ChildNodeState<Self>>,
+				// &'static mut DerefEdgeState<Self>,
+				// Option<&'static mut DerefNodeState<Self>>,
 				#world_query
 			);
 
@@ -57,7 +57,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			}
 			fn bundle() -> impl Bundle{
 				//root node starts running
-				(ChildNodeState::<Self>::new(NodeState::Running),Self::default())
+				(DerefNodeState::<Self>::new(NodeState::Running),Self::default())
 			}
 			fn entity<'a>(val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>) ->Entity{
 				val.0
@@ -98,7 +98,7 @@ fn world_query_nested(node: &NodeParser) -> TokenStream {
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
 			let child = child_type_param_name(index);
-			quote!((&'static mut ChildEdgeState<#child>,Option<&'static mut ChildNodeState<#child>>, #prev))
+			quote!((&'static mut DerefEdgeState<#child>,Option<&'static mut DerefNodeState<#child>>, #prev))
 		})
 		.into_token_stream()
 }
@@ -126,10 +126,10 @@ fn child_states(node: &NodeParser) -> TokenStream {
 					edge: #edge.into_inner(),
 					node: #node,
 					set_node_state_func: move |commands:&mut Commands,entity:Entity,state: NodeState|{
-						commands.entity(entity).insert(ChildNodeState::<#child>::new(state));
+						commands.entity(entity).insert(DerefNodeState::<#child>::new(state));
 					},
 					remove_node_state_func: move |commands:&mut Commands,entity:Entity|{
-						commands.entity(entity).remove::<ChildNodeState::<#child>>();
+						commands.entity(entity).remove::<DerefNodeState::<#child>>();
 					},
 				},
 			}
