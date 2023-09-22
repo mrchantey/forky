@@ -39,8 +39,8 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 
 			type ChildQuery = (
 				Entity,
-				&'static mut ChildEdgeState<Self>,
-				Option<&'static mut ChildNodeState<Self>>,
+				// &'static mut ChildEdgeState<Self>,
+				// Option<&'static mut ChildNodeState<Self>>,
 				#world_query
 			);
 
@@ -56,32 +56,17 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				Self::default()
 			}
 			fn bundle() -> impl Bundle{
-				Self::default()
+				//root node starts running
+				(ChildNodeState::<Self>::new(NodeState::Running),Self::default())
 			}
 			fn entity<'a>(val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>) ->Entity{
 				val.0
 			}
 
-			fn children<'a>((entity,edge_state,node_state,#params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
-				-> (ChildState<'a>,Vec<ChildState<'a>>) {
-					let node_state = if let Some(val) = node_state{
-						Some(val.into_inner() as DerefNode<'_>)
-					}else{
-						None
-					};
-					let state = ChildState::<'a>{
-						entity: entity.clone(),
-						index: Self::CHILD_INDEX,
-						edge: edge_state.into_inner(),
-						node: node_state,
-						node_state_func: move |commands:&mut Commands,entity:Entity,state: NodeState|{
-							commands.entity(entity).insert(ChildNodeState::<Self>::new(state));
-						}
-					};
-
+			fn children<'a>((entity,#params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
+				-> Vec<ChildState<'a>> {
 					#node_recast
-					(state,vec![#child_states])
-					// vec![]
+					vec![#child_states]
 			}
 
 		}
@@ -140,9 +125,12 @@ fn child_states(node: &NodeParser) -> TokenStream {
 					index: #index,
 					edge: #edge.into_inner(),
 					node: #node,
-					node_state_func: move |commands:&mut Commands,entity:Entity,state: NodeState|{
+					set_node_state_func: move |commands:&mut Commands,entity:Entity,state: NodeState|{
 						commands.entity(entity).insert(ChildNodeState::<#child>::new(state));
-					}
+					},
+					remove_node_state_func: move |commands:&mut Commands,entity:Entity|{
+						commands.entity(entity).remove::<ChildNodeState::<#child>>();
+					},
 				},
 			}
 		})

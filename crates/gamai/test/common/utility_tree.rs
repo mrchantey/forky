@@ -18,7 +18,11 @@ sweet! {
 		let mut world = World::new();
 		let mut schedule = Schedule::default();
 		MyTree::add_systems(&mut schedule);
-		let entity = world.spawn(MyTree::default()).id();
+		let entity = world.spawn(MyTree::bundle()).id();
+		expect(&world)
+			.to_have_component::<ChildEdgeState<MyTree>>(entity)?;
+		expect(&world)
+			.to_have_component::<ChildNodeState<MyTree>>(entity)?;
 		expect(&world)
 			.to_have_component::<ChildEdgeState<Child0>>(entity)?;
 		expect(&world).not()

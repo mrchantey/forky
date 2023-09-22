@@ -13,5 +13,7 @@ mod edge;
 pub use self::edge::*;
 mod node;
 pub use self::node::*;
+mod builtin_nodes;
+pub use self::builtin_nodes::*;
 pub use anyhow::bail;
 pub use anyhow::Result;

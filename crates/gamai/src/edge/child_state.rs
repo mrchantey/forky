@@ -8,33 +8,50 @@ use std::ops::DerefMut;
 // pub type DerefNode<'a> = Mut<'_, gamai::ChildNodeState<Child0>>;
 pub type DerefEdge<'a> = &'a mut dyn std::ops::DerefMut<Target = EdgeState>;
 pub type DerefNode<'a> = &'a mut dyn std::ops::DerefMut<Target = NodeState>;
-// pub type OptDerefNode<'a> = Option<&'a dyn std::ops::Deref<Target = NodeState>>;
 
 // #[derive(Clone)]
 pub struct ChildState<'a> {
 	pub index: usize,
 	pub entity: Entity,
-	// pub edge: Mut<'a, gamai::ChildNodeState<Child0>>,
 	pub edge: DerefEdge<'a>,
 	pub node: Option<DerefNode<'a>>,
-	// pub node: Option<DerefNode<'a>>,
-	pub node_state_func: fn(&mut Commands, Entity, state: NodeState),
+
+	//this is horrid, we need to use generics and traits instead
+	pub set_node_state_func: fn(&mut Commands, Entity, state: NodeState),
+	pub remove_node_state_func: fn(&mut Commands, Entity),
 }
 
 
 impl<'a> ChildState<'a> {
-	/// helper function for adding a child node state from a parent where the concrete type is not known.
-	/// if the state already exists in the entity it will be updated, otherwise a command will be created.
+	/// helper function for setting node state from a context where the concrete type is not known.
+	/// if the current and new states are both `Some` state will be mutated instead of command created.
 	pub fn set_node_state(
 		&mut self,
 		commands: &mut Commands,
-		state: NodeState,
+		state: Option<NodeState>,
 	) {
-		if let Some(val) = &mut self.node {
-			***val = state;
-		} else {
-			(self.node_state_func)(commands, self.entity, state);
+		match (&mut self.node, state) {
+			(None, None) => {
+				//noop
+			}
+			(None, Some(next)) => {
+				(self.set_node_state_func)(commands, self.entity, next);
+			}
+			(Some(_), None) => {
+				(self.remove_node_state_func)(commands, self.entity);
+			}
+			(Some(current), Some(next)) => {
+				if ***current != next {
+					***current = next;
+				}
+			}
 		}
+
+		// if let Some(val) = &mut self.node {
+		// 	***val = state;
+		// } else {
+		// 	(self.set_node_state_func)(commands, self.entity, state);
+		// }
 	}
 }
 

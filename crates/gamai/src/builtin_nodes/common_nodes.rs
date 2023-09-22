@@ -3,34 +3,6 @@ use crate::*;
 use bevy_ecs::prelude::*;
 use std::marker::PhantomData;
 
-
-#[node_system]
-pub fn fallback<N: AiNode>(
-	mut commands: Commands,
-	mut query: Query<N::ChildQuery>,
-) {
-	for node in query.iter_mut() {
-		let (node, mut children) = N::children(node);
-		for child in children.iter_mut() {
-			// if **child.edge != EdgeState::Fail {
-			// 	println!("first_valid_edge: setting node state..");
-			// 	child.set_node_state(&mut commands, NodeState::Running);
-			// }
-		}
-		// let a = N::children(node.clone());
-		// for child in N::children(node).iter_mut() {
-		// if **child.edge != EdgeState::Fail {
-		// 	println!("first_valid_edge: setting node state..");
-		// 	child.set_node_state(&mut commands, NodeState::Running);
-		// }
-		// }
-	}
-}
-
-#[node_system]
-pub fn sequence<N: AiNode>() {}
-
-
 #[derive(Debug, Default, Clone)]
 #[allow(non_camel_case_types)]
 pub struct empty_node;
@@ -47,14 +19,14 @@ impl IntoNodeSystem for empty_node {
 #[node_system]
 pub fn first_valid_edge<N: AiNode>(
 	mut commands: Commands,
-	mut query: Query<N::ChildQuery>,
+	mut query: Query<N::ChildQuery, With<ChildNodeState<N>>>,
 ) {
 	for node in query.iter_mut() {
-		let (node, mut children) = N::children(node);
+		let mut children = N::children(node);
 		for child in children.iter_mut() {
 			if **child.edge != EdgeState::Fail {
 				// println!("first_valid_edge: setting node state..");
-				child.set_node_state(&mut commands, NodeState::Running);
+				child.set_node_state(&mut commands, Some(NodeState::Running));
 			}
 		}
 	}

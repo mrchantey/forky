@@ -27,7 +27,7 @@ pub trait AiNode:
 	fn entity<'a>(item: &<Self::ChildQuery as WorldQuery>::Item<'a>) -> Entity;
 	fn children<'a>(
 		item: <Self::ChildQuery as WorldQuery>::Item<'a>,
-	) -> (ChildState<'a>,Vec<ChildState<'a>>);
+	) -> Vec<ChildState<'a>>;
 
 	fn add_systems(schedule: &mut Schedule);
 	fn plugin() -> impl Plugin;
