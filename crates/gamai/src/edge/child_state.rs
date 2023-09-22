@@ -10,11 +10,43 @@ use std::ops::DerefMut;
 pub type ChildIter<N> = <N as AiNode>::ChildQuery;
 
 
-// pub trait ChildIterTrait: AiNode {
-// 	fn children<'a>(
-// 		item: <Self::ChildQuery as WorldQuery>::Item<'a>,
-// 	) -> Vec<ChildState<'a>>;
-// }
+pub trait ChildVecTrait<'a> {
+	fn first_with_node_state(
+		&mut self,
+	) -> Option<(&mut ChildState<'a>, NodeState)>;
+	fn try_set_node_state(
+		&mut self,
+		commands: &mut Commands,
+		index: Option<usize>,
+	) -> anyhow::Result<()>;
+}
+
+impl<'a> ChildVecTrait<'a> for Vec<ChildState<'a>> {
+	fn first_with_node_state(
+		&mut self,
+	) -> Option<(&mut ChildState<'a>, NodeState)> {
+		self.iter_mut().find_map(|child| {
+			if let Some(val) = child.node.as_ref().map(|val| ***val) {
+				Some((child, val))
+			} else {
+				None
+			}
+		})
+	}
+
+	fn try_set_node_state(
+		&mut self,
+		commands: &mut Commands,
+		index: Option<usize>,
+	) -> anyhow::Result<()> {
+		if let Some(index) = index && let Some(child) = self.get_mut(index) {
+			child.set_node_state(commands, Some(NodeState::Running));
+			Ok(())
+		} else {
+			anyhow::bail!("index out of bounds")
+		}
+	}
+}
 
 // impl<N> ChildIterTrait for ChildIter<N> {
 // 	fn children<'a>(
@@ -44,7 +76,10 @@ pub struct ChildState<'a> {
 
 impl<'a> ChildState<'a> {
 	/// helper function for setting node state from a context where the concrete type is not known.
-	/// if the current and new states are both `Some` state will be mutated instead of command created.
+	///
+	/// if current and next are `None` this is a noop
+	///
+	/// if current and next are `Some` state will be mutated instead of command created.
 	pub fn set_node_state(
 		&mut self,
 		commands: &mut Commands,

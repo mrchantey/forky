@@ -5,8 +5,8 @@ use sweet::*;
 
 type MyTree = gamai::tree!(
 	<sequence>
-		<empty_node/>
-		<empty_node/>
+		<node_always_succeed/>
+		<node_always_succeed/>
 		// <print_on_run edge=edge_always_pass/>
 	</sequence>
 );
@@ -26,15 +26,15 @@ sweet! {
 		app.update();
 
 		expect(&app)
-			.to_have_component::<ChildEdgeState<Child0>>(entity)?;
+			.to_have_component::<ChildNodeState<Child0>>(entity)?;
 		expect(&app).not()
-			.to_have_component::<ChildEdgeState<Child1>>(entity)?;
+			.to_have_component::<ChildNodeState<Child1>>(entity)?;
 		
 		app.update();
 		
 		expect(&app).not()
-			.to_have_component::<ChildEdgeState<Child0>>(entity)?;
+			.to_have_component::<ChildNodeState<Child0>>(entity)?;
 		expect(&app)
-			.to_have_component::<ChildEdgeState<Child1>>(entity)?;
+			.to_have_component::<ChildNodeState<Child1>>(entity)?;
 	}
 }

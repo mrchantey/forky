@@ -1,6 +1,14 @@
 use crate::*;
 use bevy_ecs::prelude::*;
 
+
+/// Logical OR. A node that runs its children in order until one succeeds.
+/// 
+/// If a child fails it will run the next child. 
+/// 
+/// If there are no more children it will fail.
+/// 
+/// If a child succeeds it will succeed.
 #[node_system]
 pub fn fallback<N: AiNode>(
 	mut commands: Commands,

@@ -46,6 +46,18 @@ pub fn edge_always_fail<N: AiNode>(mut query: Query<&mut ChildEdgeState<N>>) {
 	}
 }
 #[node_system]
+pub fn node_always_succeed<N: AiNode>(mut query: Query<&mut ChildNodeState<N>>) {
+	for mut node in query.iter_mut() {
+		**node = NodeState::Success;
+	}
+}
+#[node_system]
+pub fn node_always_fail<N: AiNode>(mut query: Query<&mut ChildNodeState<N>>) {
+	for mut node in query.iter_mut() {
+		**node = NodeState::Failure;
+	}
+}
+#[node_system]
 pub fn print_on_run<N: AiNode>(mut query: Query<&mut ChildNodeState<N>>) {
 	// println!("print_on_run: running..");
 	for node in query.iter_mut() {
