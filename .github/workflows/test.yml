@@ -65,6 +65,6 @@ jobs:
     - name: 🔎 Test Wasm - Windows
       if: runner.os == 'Windows'
       run: just test-all-wasm-no-bevy
-    - name: 🔎 Test Wasm - Unix
+    - name: 🔎 Test Wasm - Linux & MacOS
       if: runner.os != 'Windows'
       run: just test-all-wasm

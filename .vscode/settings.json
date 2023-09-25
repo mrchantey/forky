@@ -19,6 +19,7 @@
 		// "**/target/": true,
 		"**/sdkconfig.defaults": true,
 		"**/build.rs": true,
+		"docs/book/**": true,
 		"html/assets/**": true
 	},
 	"rust-analyzer.cargo.features": "all",

@@ -6,7 +6,9 @@ use bevy_ecs::prelude::*;
 
 
 
-/// Tuple used in queries to access child states: `(Entity,(Child1,(Child2)))`
+/// Tuple used in queries to access child states: 
+/// 
+/// `(&mut Entity,(&mut Child1,(&mut Child2)))`
 pub type ChildIter<N> = <N as AiNode>::ChildQuery;
 
 // #[derive(Clone)]
@@ -58,10 +60,11 @@ pub trait ChildVecTrait<'a> {
 	fn first_with_node_state(
 		&mut self,
 	) -> Option<(&mut ChildState<'a>, NodeState)>;
+	/// Sets the node state of the child at that index, 
 	fn try_set_node_state(
 		&mut self,
 		commands: &mut Commands,
-		index: Option<usize>,
+		index: Option<usize>,state:Option<NodeState>
 	) -> anyhow::Result<()>;
 }
 
@@ -81,10 +84,10 @@ impl<'a> ChildVecTrait<'a> for Vec<ChildState<'a>> {
 	fn try_set_node_state(
 		&mut self,
 		commands: &mut Commands,
-		index: Option<usize>,
+		index: Option<usize>,state:Option<NodeState>
 	) -> anyhow::Result<()> {
 		if let Some(index) = index && let Some(child) = self.get_mut(index) {
-			child.set_node_state(commands, Some(NodeState::Running));
+			child.set_node_state(commands, state);
 			Ok(())
 		} else {
 			anyhow::bail!("index out of bounds")

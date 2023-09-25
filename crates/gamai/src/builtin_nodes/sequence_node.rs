@@ -33,7 +33,11 @@ pub fn sequence<N: AiNode>(
 				None => Some(0),
 			};
 			if children
-				.try_set_node_state(&mut commands, next_index)
+				.try_set_node_state(
+					&mut commands,
+					next_index,
+					Some(NodeState::Running),
+				)
 				.is_err()
 			{
 				**state = NodeState::Success;

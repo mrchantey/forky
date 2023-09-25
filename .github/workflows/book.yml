@@ -5,7 +5,7 @@ on:
     paths: ['docs/**','.github/workflows/book.yml']
 jobs:
   deploy:
-    name: 🔨🌍 Build and Deploy
+    name: Build and Deploy
     runs-on: ubuntu-20.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}

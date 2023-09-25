@@ -2,6 +2,7 @@ use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
+use rstml::node::KeyedAttribute;
 use rstml::node::Node;
 use rstml::node::NodeAttribute;
 use rstml::node::NodeElement;
@@ -16,6 +17,8 @@ pub struct NodeConfig<'a> {
 	pub node: &'a NodeElement,
 	pub node_system: TokenStream,
 	pub edge_system: TokenStream,
+	pub before_system:TokenStream,
+	pub after_system:TokenStream,
 	pub node_id: usize,
 	pub graph_id: usize,
 	pub graph_depth: usize,
@@ -46,6 +49,8 @@ impl<'a> NodeConfig<'a> {
 		let node_id = NODE_ID.fetch_add(1, Ordering::SeqCst);
 		let parent_depth = graph_depth.checked_sub(1).unwrap_or(0);
 		let mut edge_system = quote!(gamai::empty_node);
+		let mut before_system = quote!(gamai::empty_node);
+		let mut after_system = quote!(gamai::empty_node);
 
 		let children = node
 			.children
@@ -61,10 +66,17 @@ impl<'a> NodeConfig<'a> {
 			// .to_owned()
 			.collect::<Result<Vec<_>>>()?;
 
+		let has_no_value = |attr: &KeyedAttribute| {
+			syn::Error::new(attr.key.span(), "this attribute must have a value")
+		};
+
 		for attribute in node.attributes() {
 			match attribute {
-				NodeAttribute::Block(_block) => {
-					todo!("whats a block attribute?")
+				NodeAttribute::Block(block) => {
+					return Err(syn::Error::new(
+						block.span(),
+						format!("block attributes not currently supported"),
+					));
 				}
 				NodeAttribute::Attribute(attr) => {
 					match attr.key.to_string().as_str() {
@@ -72,12 +84,19 @@ impl<'a> NodeConfig<'a> {
 							edge_system = attr
 								.value()
 								.map(|a| a.to_token_stream())
-								.ok_or_else(|| {
-									syn::Error::new(
-										attr.key.span(),
-										"edge attribute must have a value",
-									)
-								})?;
+								.ok_or_else(|| has_no_value(attr))?;
+						}
+						"before" => {
+							before_system = attr
+								.value()
+								.map(|a| a.to_token_stream())
+								.ok_or_else(|| has_no_value(attr))?;
+						}
+						"after" => {
+							after_system = attr
+								.value()
+								.map(|a| a.to_token_stream())
+								.ok_or_else(|| has_no_value(attr))?;
 						}
 						_ => {
 							return Err(syn::Error::new(
@@ -100,6 +119,8 @@ impl<'a> NodeConfig<'a> {
 			children,
 			node_system,
 			edge_system,
+			before_system,
+			after_system,
 			node_id,
 			graph_id,
 			graph_depth,
