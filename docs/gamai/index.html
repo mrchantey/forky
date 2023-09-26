@@ -171,97 +171,65 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="gamai"><a class="header" href="#gamai">Gamai</a></h1>
-<p><code>gamai</code> is a flexible task switching library suitable for game AI, robotics etc.</p>
-<pre><code class="language-rs">gamai::tree!{
-	&lt;select_first_valid_child&gt;
-		&lt;say_hello edge=if_framecount_is_two/&gt;
-	&lt;/select_first_valid_child&gt;
-}
-</code></pre>
+<p><code>gamai</code> is an ECS implementation of behaviour trees, suitable for game AI, robotics or other performance-critical environments. It is highly flexible and supports multiple selector paradigms like Utility AI or Goal Oriented Action Planning.</p>
+<p><strong>With Bevy</strong></p>
+<p>If used with Bevy there is no blackboard, as each node is a regular Bevy system with the same world access.</p>
+<p><strong>Without Bevy</strong></p>
+<p>The lightweight <a href="https://crates.io/crates/bevy_ecs"><code>bevy_ecs</code></a> crate that drives Gamai makes for an excellent blackboard, scheduling nodes to safely run in parallel and storing data efficiently for the CPU cache.</p>
 <h2 id="features"><a class="header" href="#features">Features</a></h2>
 <ul>
 <li>🔥 Parallel</li>
-<li>🐢 Systems all the way down</li>
-<li>🕒 Automatic Scheduling</li>
+<li>🌴 ECS Behaviour Tree</li>
+<li>🐢 Intuitive Definition &amp; Composition</li>
+<li>🕒 Automatic System Ordering</li>
 <li>✍️ No Blackboard</li>
 <li>🌈 Multi-paradigm</li>
 <li>🌍 With or without Bevy</li>
-<li>🌴 Digraph architecture</li>
 </ul>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p>The primitive of <code>gamai</code> is the <code>node</code>, which may execute some behaviour or decide which child should run. Nodes are composed together using two fundamental concepts:</p>
-<ul>
-<li><a href="#generic-systems">generic systems</a></li>
-<li><a href="#compile-time-trees">compile-time trees</a></li>
-</ul>
-<blockquote>
-<p>Vocabulary from <strong>graph theory</strong> is used to reflect the unopinionated nature of <code>gamai</code>, here are some synonyms:</p>
-<ul>
-<li>Node: <code>Action, Behaviour, Reasoner, Thinker</code></li>
-<li>Edge: <code>Consideration, Condition, Filter, Sensor, Scorer</code></li>
-</ul>
-</blockquote>
-<h3 id="generic-systems"><a class="header" href="#generic-systems">Generic Systems</a></h3>
-<p>a <code>node_system</code> is a bevy system with a single <code>AiNode</code> generic argument which allows us to reuse the system in any context. Note the use of the generic parameter in queries:</p>
-<h3 id="example-action"><a class="header" href="#example-action">Example Action</a></h3>
-<p>An action can use the <code>NodeState</code> component to check whether it should run, and inform its parent of the current state.</p>
-<pre><code class="language-rs">// nodes run if their parent lets them
-#[node_system]
-fn child&lt;Node: AiNode&gt;(mut query: Query&lt;&amp;mut NodeState&lt;Node&gt;&gt;){
+<h3 id="nodes"><a class="header" href="#nodes">Nodes</a></h3>
+<p>Nodes are systems that accept a single <code>AiNode</code> type argument, giving them access to the components that they need to communicate with parents and children. They are used 
+to either run some behaviour or decide which child should run.</p>
+<pre><code class="language-rs">fn say_hello&lt;Node: AiNode&gt;(mut query: Query&lt;&amp;mut NodeState&lt;Node&gt;&gt;){
+	
 	for mut state in query.iter_mut(){
-		println!(&quot;this node is running, its state is {}&quot;, state);
+		println!(&quot;hello world&quot;);
+
+		assert_eq!(**state, NodeState::Running);
+		//tell parent it can go to next node now
 		**state = NodeState::Success;
 	}
 }
 </code></pre>
-<h3 id="example-reasoner"><a class="header" href="#example-reasoner">Example Reasoner</a></h3>
-<p>The parent node is also concerned about the state of its children. In this example it will select the first child that has a passing edge state.</p>
-<pre><code class="language-rs">#[node_system]
-fn parent&lt;Node: AiNode&gt;(mut commands: Commands, mut query: Query&lt;Node::ChildQuery&gt;) {
-	for (entity, edges) in Node::child_states(&amp;mut query).iter() {
-		for (index, edge) in edges.iter().enumerate() {
-			if *edge == EdgeState::Pass {
-				Node::set_child_node_state(&amp;mut commands, *entity, index).unwrap();
-				continue;
-			}
-		}
-	}
-}
-</code></pre>
-<p>Note the <code>Node::edges</code> function that converts a tuple query of <code>(Edge1,Edge2,Edge3)</code> into a <code>Vec&lt;EdgeState&gt;</code>.</p>
-<h3 id="compile-time-trees"><a class="header" href="#compile-time-trees">Compile-time Trees</a></h3>
-<p>Once we have our <code>node_system</code> primitives we can define our tree using rsx syntax:</p>
+<h3 id="trees"><a class="header" href="#trees">Trees</a></h3>
+<p>Trees are composed in rsx parsed at <em>compile time</em> which gives us the nessesary type information for the opportunistic parallel scheduler in <code>bevy_ecs</code>.</p>
 <pre><code class="language-rs">type MyTree = gamai::tree!{
-	&lt;parent&gt;
-		&lt;child/&gt;
-	&lt;/parent&gt;
+	&lt;sequence&gt;
+		&lt;say_hello/&gt;
+		&lt;say_hello/&gt;
+	&lt;/sequence&gt;
 }
 </code></pre>
-<p>This does three things:</p>
-<ul>
-<li>Resolve generics in systems for their assigned node</li>
-<li>Specify system execution order</li>
-<li>Create component bundles for each tree</li>
-</ul>
 <h3 id="running"><a class="header" href="#running">Running</a></h3>
-<p><code>gamai::tree!</code> does two things to get us up and running:</p>
+<p>The type returned from <code>tree!</code> has two static methods: </p>
 <ul>
-<li>expose a <code>build</code> function that, like a bevy plugin, will schedule our systems</li>
-<li>implements <code>Bundle</code> for the tree, so it can be easily spawned</li>
+<li><code>MyTree::plugin()</code> provides the plugin that will add the systems to the world in the correct order.</li>
+<li><code>MyTree::bundle()</code> provides the components nessecary for the tree to run for a given entity.</li>
 </ul>
-<p>This uses bevy, see <a href="./no_bevy">no_bevy</a> for more examples.</p>
+<blockquote>
+<p>This example uses <code>bevy</code> , see <a href="./no_bevy">no_bevy</a> for more examples.</p>
+</blockquote>
 <pre><code class="language-rs">fn main(){
 	let mut app = App::new();
 	app.add_plugins(MyTree::plugin());
 	app.world.spawn(MyTree::bundle());
 	app.update();
 }
-
-// &quot;this node is running, its state is NodeState::Running&quot;
 </code></pre>
-<blockquote>
-<p>The reason we have a build function instead of a plugin is that <code>gamai</code> only depends on <code>bevy_ecs</code></p>
-</blockquote>
+<pre><code class="language-sh">&gt; cargo run
+hello world
+hello world
+</code></pre>
 
                     </main>
 
