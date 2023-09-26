@@ -5,15 +5,45 @@ use gamai::*;
 
 type MyTree = gamai::tree!(
 	<first_valid_edge edge=edge_always_pass>
-		<empty_node edge=edge_always_fail/>
-		<empty_node edge=edge_always_pass/>
+	<empty_node edge=edge_always_fail/>
+	<empty_node edge=edge_always_pass/>
 	</first_valid_edge>
 );
+type MyOtherTree = gamai::tree!(<empty_node edge=edge_always_fail/>);
 
 fn main() {
 	let mut world = World::new();
 	world.spawn(MyTree::default());
 	let mut schedule = Schedule::new();
-	MyTree::build(&mut schedule);
+	MyTree::add_systems(&mut schedule);
 	// println!("{:?}", out);
+
+	let a = foo(MyStruct(0));
+	let b = foo(MyOtherStruct(3));
+	// a.
+	// a.
+}
+
+
+fn foo<T: Tree>(a: T)-> impl AiNode {
+	a.build()
+	// T::build()
+	// let mut b = MyOtherStruct::build();
+	// b = a;
+}
+
+trait Tree {
+	fn build(&self) -> impl AiNode;
+}
+
+
+struct MyStruct(usize);
+
+impl Tree for MyStruct {
+	fn build(&self) -> impl AiNode { MyTree::default() }
+}
+
+struct MyOtherStruct(u32);
+impl Tree for MyOtherStruct {
+	fn build(&self) -> impl AiNode { MyOtherTree::default() }
 }

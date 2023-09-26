@@ -8,6 +8,7 @@ pub struct empty_node;
 
 impl IntoNodeSystem for empty_node {
 	fn add_node_system<N: AiNode>(
+		&self,
 		_schedule: &mut Schedule,
 		_set: impl SystemSet,
 		_config: &NodeSystemConfig,

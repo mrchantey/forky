@@ -21,6 +21,7 @@ pub fn impl_into_node_system(func: &ItemFn) -> TokenStream {
 	quote! {
 		impl IntoNodeSystem for #ident{
 			fn add_node_system<A: AiNode>(
+				&self,
 				schedule: &mut Schedule,
 				set: impl SystemSet,
 				config: &NodeSystemConfig,

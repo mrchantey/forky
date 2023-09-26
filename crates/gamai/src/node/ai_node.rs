@@ -33,6 +33,8 @@ pub trait AiNode:
 	fn add_systems(schedule: &mut Schedule);
 	fn plugin() -> impl Plugin;
 	fn bundle() -> impl Bundle;
+
+	fn add_systems_22(&self, schedule: &mut Schedule);
 }
 
 /* GENERIC ORDER:
