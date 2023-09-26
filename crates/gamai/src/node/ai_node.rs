@@ -10,7 +10,7 @@ use std::marker::PhantomData;
 // debug for edges to also be debug
 /// An AiNode is a node and edge system, and a set of child nodes.
 pub trait AiNode:
-	Bundle + std::fmt::Debug + Default + 'static + Send + Sync
+	Bundle + Default + 'static + Send + Sync
 {
 	const NODE_ID: usize;
 	const GRAPH_ID: usize;

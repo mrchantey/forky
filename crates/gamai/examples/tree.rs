@@ -11,7 +11,11 @@ type MyTree = gamai::tree!(
 );
 type MyOtherTree = gamai::tree!(<empty_node edge=edge_always_fail/>);
 
+fn bizz(){}
+
 fn main() {
+	let baz = bizz.clone();
+	// bizz.add_node_system::<MyTree>();
 	let mut world = World::new();
 	world.spawn(MyTree::default());
 	let mut schedule = Schedule::new();

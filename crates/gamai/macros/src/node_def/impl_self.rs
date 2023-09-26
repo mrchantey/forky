@@ -15,7 +15,7 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 
 	quote! {
 		// #[derive(Debug,Default,Clone)]
-		#[derive(Debug,Default,Clone,Bundle)]
+		#[derive(Default,Clone,Bundle)]
 		// #[allow(non_camel_case_types)]
 		pub struct #ident<#self_bounds>{
 			phantom: PhantomComponent<NODE_ID,(#self_params_systems_only)>,
