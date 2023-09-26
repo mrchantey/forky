@@ -3,7 +3,7 @@
 <div align="center">
 
   <p>
-    <strong>A flexible & extendable game AI library.</strong>
+    <strong>A flexible task switching library suitable for game AI & robotics</strong>
   </p>
 
   <p>
@@ -13,7 +13,7 @@
   </p>
 
   <h3>
-    <a href="https://mrchantey.github.io/forky/docs/gamai">Guide</a>
+    <a href="https://mrchantey.github.io/forky/docs/gamai">Book</a>
     <span> | </span>
     <a href="https://docs.rs/gamai">API Docs</a>
     <span> | </span>

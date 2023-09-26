@@ -12,7 +12,7 @@
   </p>
 
   <h3>
-    <a href="https://mrchantey.github.io/forky/docs">Guide</a>
+    <a href="https://mrchantey.github.io/forky/docs">Book</a>
     <span> | </span>
     <a href="https://docs.rs/forky">API Docs</a>
     <span> | </span>

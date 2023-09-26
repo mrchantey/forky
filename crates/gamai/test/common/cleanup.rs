@@ -4,13 +4,13 @@ use gamai::*;
 use sweet::*;
 
 
-fn foobar(){
+// fn foobar(){
 
-}
+// }
 
 type MyTree = gamai::tree!(
 	<sequence>
-		<print_on_run before=(gamai::cleanup_state,gamai::cleanup_state)/>
+		<print_on_run before=(gamai::print_on_run,gamai::print_on_run)/>
 		<print_on_run/>
 		// <foobar/>
 		// <node_always_succeed/>
@@ -23,11 +23,12 @@ type Child1 = <MyTree as NamedChildren2>::Child1;
 sweet! {
 
 	test "cleanup" {
+
 		let mut app = App::new();
 		app.add_plugins(MyTree::plugin());
 		let entity = app.world.spawn(MyTree::bundle()).id();
 
-		// app.update();
+		app.update();
 
 		// expect(&app)
 		// 	.to_have_component::<DerefNodeState<Child0>>(entity)?;

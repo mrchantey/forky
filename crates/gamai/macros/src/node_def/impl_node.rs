@@ -45,7 +45,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			);
 
 			fn add_systems(schedule: &mut Schedule){
-				NodeSystem::add_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>,&#node_system_config);
+				NodeSystem::add_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>, &#node_system_config);
 				//my edge should run before my parents node set
 				EdgeSystem::add_node_system::<Self>(schedule, BeforeNodeSet::<GRAPH_ID, PARENT_DEPTH>, &NodeSystemConfig::default());
 
