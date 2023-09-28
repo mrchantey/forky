@@ -24,7 +24,7 @@
 // 		println!("async 2");
 // 		sleep(Duration::from_secs(DELAY));
 // 	}
-// 	test skip nonSend "nonsend 1"{
+// 	test skip non_send "nonsend 1"{
 // 		async{}.await;
 // 		println!("nonsend 1");
 // 	}

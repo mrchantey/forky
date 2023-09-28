@@ -13,15 +13,15 @@ pub fn into_peekable(
 	Ok(stream.into_iter().peekable())
 }
 
-pub fn _contains_await(stream: TokenStream) -> bool {
-    for token in stream {
-        if let TokenTree::Ident(ident) = token {
-            if ident.to_string() == "await" {
-                return true;
-            }
-        }
-    }
-    false
+pub fn contains_await(stream: &TokenStream) -> bool {
+	for token in stream.clone().into_iter() {
+		if let TokenTree::Ident(ident) = token {
+			if ident.to_string() == "await" {
+				return true;
+			}
+		}
+	}
+	false
 }
 
 // pub fn parse_name<I>(iter: &mut Peekable<I>) -> Literal

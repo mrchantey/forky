@@ -1,38 +1,49 @@
 // use super::*;
-use proc_macro::TokenStream;
-// use proc_macro2::Literal;
-// use quote::quote;
-// use quote::ToTokens;
-use syn::parse::Parse;
-use syn::parse::ParseStream;
-use syn::parse::Result;
-use syn::parse_macro_input;
+use super::parse_test_case;
+use super::TestCaseFlags;
+use proc_macro2::Literal;
+use proc_macro2::TokenStream;
+use quote::quote;
+use syn::ItemFn;
+use syn::ReturnType;
 
 pub struct TestCaseAttr {
-	pub out: TokenStream,
+	// pub out: TokenStream,
 }
 
 impl TestCaseAttr {
-	pub fn parse(_attr: TokenStream, input: TokenStream) -> TokenStream {
-		let result = parse_macro_input!(input as TestCaseAttr).out;
-		result
-	}
-}
+	pub fn parse(
+		attr: proc_macro::TokenStream,
+		input: proc_macro::TokenStream,
+	) -> syn::Result<TokenStream> {
+		let func = syn::parse::<ItemFn>(input)?;
 
-impl Parse for TestCaseAttr {
-	fn parse(_stream: ParseStream) -> Result<Self> {
-		panic!("Not implemented, maybe never will");
-		// let func = syn::ItemFn::parse(stream)?;
-		// let func_out = func.clone();
-		// let name = func.sig.ident;
-		// let name_str = name.to_string();
-		// let func_ident = name.to_token_stream();
-		// let submit = to_inventory(
-		// 	Literal::string(&name_str.as_str()),
-		// 	func_ident,
-		// 	quote!(sweet::TestCaseConfig::default()),
-		// );
-		// let out = quote!(#func_out #submit).into();
-		// Ok(Self { out })
+		// panic!("Not implemented, maybe never will");
+		let func_out = func.clone();
+		let ident = func.sig.ident;
+		let attr: TokenStream = attr.into();
+		let mut attr = attr.into_iter().peekable();
+
+		let mut flags = TestCaseFlags::parse(&mut attr)?;
+		let name = ident.to_string().replace("_", " ");
+		flags.name = Literal::string(&name);
+
+		let is_async = func.sig.asyncness.is_some();
+		let is_result = func.sig.output != ReturnType::Default;
+
+		let wrapped = match (is_async, is_result) {
+			(true, true) => quote! {#ident().await?;},
+			(true, false) => quote! {#ident().await;},
+			(false, true) => quote! {#ident()?;},
+			(false, false) => quote! {#ident();},
+		};
+
+		let submit = parse_test_case(&wrapped, &flags);
+		let out = quote! {
+			#func_out
+			#submit
+		}
+		.into();
+		Ok(out)
 	}
 }

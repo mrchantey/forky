@@ -6,8 +6,8 @@ crates := 'forky forky_cli forky_core forky_play sweet'
 features := '--features sweet/bevy_ecs'
 # features := ''
 # forky_esp
-backtrace := '0'
-# backtrace := '1'
+# backtrace := '0'
+backtrace := '1'
 # backtrace := 'full'
 
 default:

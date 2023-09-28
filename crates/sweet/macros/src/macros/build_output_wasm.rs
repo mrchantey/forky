@@ -1,12 +1,11 @@
 use super::*;
-use proc_macro2::Group;
 use proc_macro2::Ident;
 // use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use quote::quote;
 
 pub fn parse_test_case_wasm(
-	func: &Group,
+	func: &TokenStream,
 	flags: &TestCaseFlags,
 ) -> TokenStream {
 	let config = flags.to_config();
@@ -36,7 +35,7 @@ pub fn parse_test_case_wasm(
 	)
 }
 
-fn parse_func_wasm(func: &Group) -> TokenStream {
+fn parse_func_wasm(func: &TokenStream) -> TokenStream {
 	quote! {
 		#[cfg(target_arch = "wasm32")]
 		{|| -> Promise {
