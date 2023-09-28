@@ -1,7 +1,7 @@
-use std::path::PathBuf;
 use crate::*;
 use anyhow::Error;
 use rayon::prelude::*;
+use std::path::PathBuf;
 use tokio::task::JoinError;
 
 #[derive(Default, Debug, Clone)]
@@ -77,7 +77,7 @@ async fn run_native_parallel(
 ) -> anyhow::Result<Vec<Error>> {
 	if to_run.series.len() > 0 {
 		panic!(
-			"\n\nattempted to run suites containing 'nonSend' in parallel\n\n"
+			"\n\nattempted to run suites containing 'non_send' in parallel\n\n"
 		)
 	}
 
@@ -97,7 +97,7 @@ async fn run_native_parallel(
 
 	let results_parallel = tokio::spawn(async move {
 		futures::future::join_all(handles_parallel).await
-	});// TODO seems like awkward way to force handles to run
+	}); // TODO seems like awkward way to force handles to run
 
 	let results_sync = to_run
 		.syncs

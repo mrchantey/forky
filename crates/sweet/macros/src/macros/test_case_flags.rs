@@ -49,51 +49,51 @@ impl TestCaseFlags {
 			}
 		}
 	}
-}
+	pub fn parse<I>(iter: &mut Peekable<I>) -> syn::parse::Result<TestCaseFlags>
+	where
+		I: Iterator<Item = TokenTree>,
+	{
+		let mut flags = TestCaseFlags::default();
 
-pub fn parse_case_flags<I>(
-	iter: &mut Peekable<I>,
-) -> syn::parse::Result<TestCaseFlags>
-where
-	I: Iterator<Item = TokenTree>,
-{
-	let mut flags = TestCaseFlags::default();
-
-	while let Some(t) = iter.peek() {
-		match t {
-			TokenTree::Literal(lit) => {
-				flags.name = lit.clone();
-				// let _ = iter.next().unwrap();
-			}
-			TokenTree::Ident(ident) => {
-				let i_str = ident.to_string();
-				match i_str.as_str() {
-					"skip" => {
-						flags.skip = true;
-						// let _ = iter.next().unwrap();
-					}
-					"only" => {
-						flags.only = true;
-						// let _ = iter.next().unwrap();
-					}
-					"e2e" => {
-						flags.e2e = true;
-						// let _ = iter.next().unwrap();
-					}
-					"nonSend" => {
-						flags.non_send = true;
-					}
-					_ => {
-						return Err(syn::parse::Error::new(
-							ident.span(),
-							"Config values: skip, only, e2e, nonSend",
-						));
+		while let Some(t) = iter.peek() {
+			match t {
+				TokenTree::Literal(lit) => {
+					flags.name = lit.clone();
+					// let _ = iter.next().unwrap();
+				}
+				TokenTree::Ident(ident) => {
+					let i_str = ident.to_string();
+					match i_str.as_str() {
+						"skip" => {
+							flags.skip = true;
+							// let _ = iter.next().unwrap();
+						}
+						"only" => {
+							flags.only = true;
+							// let _ = iter.next().unwrap();
+						}
+						"e2e" => {
+							flags.e2e = true;
+							// let _ = iter.next().unwrap();
+						}
+						"non_send" => {
+							flags.non_send = true;
+						}
+						other => {
+							return Err(syn::parse::Error::new(
+								ident.span(),
+								format!(
+								"Invalid test flag: {:?}\n Valid flags are: skip, only, e2e, non_send",
+													other),
+							));
+						}
 					}
 				}
+				TokenTree::Punct(_) => {}
+				_ => break,
 			}
-			_ => break,
+			let _ = iter.next().unwrap();
 		}
-		let _ = iter.next().unwrap();
+		Ok(flags)
 	}
-	Ok(flags)
 }

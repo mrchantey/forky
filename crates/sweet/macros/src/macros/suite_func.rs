@@ -36,11 +36,11 @@ fn parse_next(
 			let i_str = ident.to_string();
 			match i_str.as_str() {
 				"test" | "it" => {
-					let case_flags = parse_case_flags(iter)?;
+					let case_flags = TestCaseFlags::parse(iter)?;
 					if let Some(func) = iter.next() {
 						match func {
 							TokenTree::Group(func) => {
-								Ok(parse_test_case(&func, &case_flags))
+								Ok(parse_test_case(&func.stream(), &case_flags))
 							}
 							other => Err(syn::Error::new(
 								ident.span(),

@@ -16,12 +16,12 @@ Internally each native test will be stored as one of three types:
 	```
 - `fn() -> BoxedFuture`
 	```rs
-	it nonSend "has non-send futures"{
+	it non_send "has non-send futures"{
 		//example of a common non-send async function
 		fantoccini::ClientBuilder::native().connect("http://example.com").await;
 	}
 	```
 
-By default Sweet will detect the `await` keyword and mark that test as containing `Send` Futures. The `nonSend` flag must be specified if your test contains a non-send future.
+By default Sweet will detect the `await` keyword and mark that test as containing `Send` Futures. The `non_send` flag must be specified if your test contains a non-send future.
 
-Note: currently if the runner finds any `nonSend` tests it will run all tests on the main thread, even if the parallel flag is supplied.
+Note: currently if the runner finds any `non_send` tests it will run all tests on the main thread, even if the parallel flag is supplied.
