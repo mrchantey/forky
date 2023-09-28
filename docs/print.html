@@ -379,28 +379,28 @@ sweet! {
 </code></pre>
 </li>
 <li><code>fn() -&gt; BoxedFuture</code>
-<pre><code class="language-rs">it nonSend &quot;has non-send futures&quot;{
+<pre><code class="language-rs">it non_send &quot;has non-send futures&quot;{
 	//example of a common non-send async function
 	fantoccini::ClientBuilder::native().connect(&quot;http://example.com&quot;).await;
 }
 </code></pre>
 </li>
 </ul>
-<p>By default Sweet will detect the <code>await</code> keyword and mark that test as containing <code>Send</code> Futures. The <code>nonSend</code> flag must be specified if your test contains a non-send future.</p>
-<p>Note: currently if the runner finds any <code>nonSend</code> tests it will run all tests on the main thread, even if the parallel flag is supplied.</p>
+<p>By default Sweet will detect the <code>await</code> keyword and mark that test as containing <code>Send</code> Futures. The <code>non_send</code> flag must be specified if your test contains a non-send future.</p>
+<p>Note: currently if the runner finds any <code>non_send</code> tests it will run all tests on the main thread, even if the parallel flag is supplied.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="web-driver"><a class="header" href="#web-driver">Web Driver</a></h1>
 <blockquote>
 <p>This section is for native end-to-end tests. For in-browser end-to-end tests see <a href="sweet/native/../web/end-to-end.html">end-to-end</a>.</p>
 </blockquote>
 <p>Sweet can be used with fantoccini or any other webdriver client. </p>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
-<p>Note the <code>nonSend</code> flag, as fantoccini futures are not <code>Send</code>.</p>
+<p>Note the <code>non_send</code> flag, as fantoccini futures are not <code>Send</code>.</p>
 <pre><code class="language-rs">use fantoccini::ClientBuilder;
 use fantoccini::Locator;
 use sweet::*;
 
 sweet! {
-	it nonSend &quot;works&quot; {
+	it non_send &quot;works&quot; {
 		let client = ClientBuilder::native()
 			.connect(&quot;http://localhost:9515&quot;).await?;
 

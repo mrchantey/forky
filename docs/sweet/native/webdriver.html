@@ -176,13 +176,13 @@
 </blockquote>
 <p>Sweet can be used with fantoccini or any other webdriver client. </p>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
-<p>Note the <code>nonSend</code> flag, as fantoccini futures are not <code>Send</code>.</p>
+<p>Note the <code>non_send</code> flag, as fantoccini futures are not <code>Send</code>.</p>
 <pre><code class="language-rs">use fantoccini::ClientBuilder;
 use fantoccini::Locator;
 use sweet::*;
 
 sweet! {
-	it nonSend &quot;works&quot; {
+	it non_send &quot;works&quot; {
 		let client = ClientBuilder::native()
 			.connect(&quot;http://localhost:9515&quot;).await?;
 

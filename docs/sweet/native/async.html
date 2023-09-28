@@ -186,15 +186,15 @@
 </code></pre>
 </li>
 <li><code>fn() -&gt; BoxedFuture</code>
-<pre><code class="language-rs">it nonSend &quot;has non-send futures&quot;{
+<pre><code class="language-rs">it non_send &quot;has non-send futures&quot;{
 	//example of a common non-send async function
 	fantoccini::ClientBuilder::native().connect(&quot;http://example.com&quot;).await;
 }
 </code></pre>
 </li>
 </ul>
-<p>By default Sweet will detect the <code>await</code> keyword and mark that test as containing <code>Send</code> Futures. The <code>nonSend</code> flag must be specified if your test contains a non-send future.</p>
-<p>Note: currently if the runner finds any <code>nonSend</code> tests it will run all tests on the main thread, even if the parallel flag is supplied.</p>
+<p>By default Sweet will detect the <code>await</code> keyword and mark that test as containing <code>Send</code> Futures. The <code>non_send</code> flag must be specified if your test contains a non-send future.</p>
+<p>Note: currently if the runner finds any <code>non_send</code> tests it will run all tests on the main thread, even if the parallel flag is supplied.</p>
 
                     </main>
 
