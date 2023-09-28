@@ -16,14 +16,14 @@ impl Subcommand for ServerCommand {
 			.arg(
 				Arg::new("dir")
 					.required(false)
-					.default_value("html")
+					.default_value("./")
 					.action(ArgAction::Set),
 			)
 			.arg(
 				Arg::new("port")
 					.required(false)
 					.help("specify port")
-					.default_value("7779")
+					.default_value("3000")
 					.long("port")
 					.action(ArgAction::Set),
 			)
