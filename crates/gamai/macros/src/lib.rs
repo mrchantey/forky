@@ -17,7 +17,7 @@ pub fn tree(item: TokenStream) -> TokenStream {
 }
 #[proc_macro]
 pub fn define_node(attr: TokenStream) -> TokenStream {
-	NodeParser::parse_node(attr)
+	parse_node(attr)
 }
 #[proc_macro_attribute]
 pub fn node_system(attr: TokenStream, item: TokenStream) -> TokenStream {

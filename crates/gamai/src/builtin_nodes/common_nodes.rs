@@ -2,19 +2,20 @@
 use crate::*;
 use bevy_ecs::prelude::*;
 
-#[derive(Debug, Default, Clone)]
-#[allow(non_camel_case_types)]
-pub struct empty_node;
+// fn empty() {}
 
-impl IntoNodeSystem for empty_node {
-	fn add_node_system<N: AiNode>(
-		&self,
-		_schedule: &mut Schedule,
-		_set: impl SystemSet,
-		_config: &NodeSystemConfig,
-	) {
-	}
-}
+// #[derive(Debug, Default, Clone)]
+// #[allow(non_camel_case_types)]
+// pub struct empty_node;
+
+// impl IntoNodeSystemConfig for empty_node {
+// 	fn into_config(self) -> NodeSystemConfig {
+// 		NodeSystemConfig {
+// 			system: || empty,
+// 			skip: true,
+// 		}
+// 	}
+// }
 
 #[node_system]
 pub fn first_valid_edge<N: AiNode>(
@@ -63,7 +64,7 @@ pub fn node_always_fail<N: AiNode>(mut query: Query<&mut DerefNodeState<N>>) {
 pub fn print_on_run<N: AiNode>(mut query: Query<&mut DerefNodeState<N>>) {
 	// println!("print_on_run: running..");
 	for mut node in query.iter_mut() {
-		println!("NodeSystem: Running {:?}", node);
+		println!("NodeSystem: Running {:?}", **node);
 		**node = NodeState::Success;
 	}
 }

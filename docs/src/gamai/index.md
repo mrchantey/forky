@@ -1,6 +1,6 @@
 # Gamai
 
-`gamai` is an ECS implementation of behaviour trees, suitable for game AI, robotics or other performance-critical environments. It is highly flexible and supports multiple selector paradigms like Utility AI or Goal Oriented Action Planning.
+`gamai` is a flexible task switching library suitable for game AI, robotics & other performance-critical environments. It uses a modular behavior tree structure and supports multiple selector paradigms like Utility AI or Goal Oriented Action Planning (GOAP). The ECS implementation allows for opportunistic parallelism, ensuring trees are processed as quickly as possible.
 
 **With Bevy**
 
@@ -12,7 +12,7 @@ The lightweight [`bevy_ecs`][1] crate that drives Gamai makes for an excellent b
 
 ## Features
 
-- 🔥 Parallel
+- 🔥 Automatic Parallelism
 - 🌴 ECS Behaviour Tree
 - 🐢 Intuitive Definition & Composition
 - 🕒 Automatic System Ordering

@@ -3,18 +3,18 @@ use bevy_ecs::prelude::*;
 //this example is used for macro expansion, for usage see the `tests` directory
 use gamai::*;
 
-type MyTree = gamai::tree!(
+type MyTree = gamai::tree!{
 	<first_valid_edge edge=edge_always_pass>
 	<empty_node edge=edge_always_fail/>
 	<empty_node edge=edge_always_pass/>
 	</first_valid_edge>
-);
+};
 type MyOtherTree = gamai::tree!(<empty_node edge=edge_always_fail/>);
 
 fn bizz(){}
 
 fn main() {
-	let baz = bizz.clone();
+	let _baz = bizz.clone();
 	// bizz.add_node_system::<MyTree>();
 	let mut world = World::new();
 	world.spawn(MyTree::default());
@@ -51,3 +51,15 @@ struct MyOtherStruct(u32);
 impl Tree for MyOtherStruct {
 	fn build(&self) -> impl AiNode { MyOtherTree::default() }
 }
+
+
+/*
+
+
+fn my_node()->impl IntoNode{
+
+
+}
+
+
+*/

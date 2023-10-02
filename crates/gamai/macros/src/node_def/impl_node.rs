@@ -8,7 +8,6 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 		ident,
 		self_params,
 		self_bounds,
-		num_edges,
 		..
 	} = node;
 	let world_query = world_query_nested(node);
@@ -18,19 +17,9 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let add_systems_children = add_systems_children(node);
 	let configure_sets = configure_sets(node);
 
-	let node_system_config = if *num_edges == 0 {
-		quote! {NodeSystemConfig::default()}
-	} else {
-		quote! {NodeSystemConfig{apply_deferred: true,}}
-	};
-
 	quote!(
 		impl<#self_bounds> AiNode for #ident<#self_params>
 		{
-			type NodeSystem = NodeSystem;
-			type EdgeSystem = EdgeSystem;
-			// type Parent = Parent;
-
 			const NODE_ID: usize = NODE_ID;
 			const GRAPH_ID: usize = GRAPH_ID;
 			const GRAPH_DEPTH: usize = GRAPH_DEPTH;
@@ -44,29 +33,14 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				#world_query
 			);
 
-			fn add_systems(schedule: &mut Schedule){
-				NodeSystem::default().add_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>, &#node_system_config);
-				//my edge should run before my parents node set
-				EdgeSystem::default().add_node_system::<Self>(schedule, BeforeNodeSet::<GRAPH_ID, PARENT_DEPTH>, &NodeSystemConfig::default());
+			fn add_systems(self, schedule: &mut Schedule){	
+				self.node_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
+				self.edge_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
 
 				#configure_sets
 				#add_systems_children
 			}
-			fn add_systems_22(&self, schedule: &mut Schedule){
-				NodeSystem::default().add_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>, &#node_system_config);
-				//my edge should run before my parents node set
-				EdgeSystem::default().add_node_system::<Self>(schedule, BeforeNodeSet::<GRAPH_ID, PARENT_DEPTH>, &NodeSystemConfig::default());
 
-				#configure_sets
-				#add_systems_children
-			}
-			fn plugin() -> impl Plugin{
-				Self::default()
-			}
-			fn bundle() -> impl Bundle{
-				//root node starts running
-				(DerefNodeState::<Self>::new(NodeState::Running),Self::default())
-			}
 			fn entity<'a>(val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>) ->Entity{
 				val.0
 			}
@@ -79,13 +53,6 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 
 		}
 
-		impl<#self_bounds> Plugin for #ident<#self_params> {
-			fn build(&self, app: &mut bevy_app::App) {
-				app.init_schedule(Update);
-				let schedule = app.get_schedule_mut(Update).unwrap();
-				<Self as AiNode>::add_systems(schedule);
-			}
-		}
 	)
 }
 
@@ -164,8 +131,8 @@ fn node_recast(node: &NodeParser) -> TokenStream {
 fn add_systems_children(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		.map(|index| {
-			let child_ident = child_type_param_name(index);
-			quote!(#child_ident::add_systems(schedule);)
+			let child_ident = child_field_param_name(index);
+			quote!(self.#child_ident.add_systems(schedule);)
 		})
 		.collect()
 }

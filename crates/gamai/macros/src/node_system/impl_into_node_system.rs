@@ -19,18 +19,14 @@ pub fn impl_into_node_system(func: &ItemFn) -> TokenStream {
 	.unwrap_or_else(syn::Error::into_compile_error);
 
 	quote! {
-		impl IntoNodeSystem for #ident{
-			fn add_node_system<A: AiNode>(
-				&self,
+		impl IntoNodeSystem<Self> for #ident
+		{
+			fn into_node_system<Node: AiNode>(
+				self,
 				schedule: &mut Schedule,
 				set: impl SystemSet,
-				config: &NodeSystemConfig,
 			) {
-				if config.apply_deferred{
-					schedule.add_systems((#func_ident::<A>,apply_deferred).chain().in_set(set));
-				}else{
-					schedule.add_systems(#func_ident::<A>.in_set(set));
-				}
+				schedule.add_systems(#func_ident::<Node>.in_set(set));
 			}
 		}
 		#generic_err

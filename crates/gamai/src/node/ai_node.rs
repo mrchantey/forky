@@ -1,17 +1,10 @@
 use crate::*;
-use bevy_app::Plugin;
 use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;
 use std::marker::PhantomData;
-// use std::marker::PhantomData;
 
-
-
-// debug for edges to also be debug
 /// An AiNode is a node and edge system, and a set of child nodes.
-pub trait AiNode:
-	Bundle + Default + 'static + Send + Sync
-{
+pub trait AiNode: 'static + Send + Sync {
 	const NODE_ID: usize;
 	const GRAPH_ID: usize;
 	const GRAPH_DEPTH: usize;
@@ -19,10 +12,6 @@ pub trait AiNode:
 	const PARENT_DEPTH: usize; //required until complex expressions https://blog.rust-lang.org/2021/02/26/const-generics-mvp-beta.html#const-generics-with-complex-expressions
 	/// Tuple Query used to access child states: `(Entity,(Child1,(Child2)))`
 	type ChildQuery: WorldQuery;
-	/// System to run in this node's update set
-	type NodeSystem: IntoNodeSystem;
-	/// System to run in this node's preupdate set
-	type EdgeSystem: IntoNodeSystem;
 
 	type Query<'w, 's> = Query<'w, 's, Self::ChildQuery>;
 	fn entity<'a>(item: &<Self::ChildQuery as WorldQuery>::Item<'a>) -> Entity;
@@ -30,16 +19,10 @@ pub trait AiNode:
 		item: <Self::ChildQuery as WorldQuery>::Item<'a>,
 	) -> Vec<ChildState<'a>>;
 
-	fn add_systems(schedule: &mut Schedule);
-	fn plugin() -> impl Plugin;
-	fn bundle() -> impl Bundle;
-
-	fn add_systems_22(&self, schedule: &mut Schedule);
+	fn add_systems(self, schedule: &mut Schedule);
 }
 
 /* GENERIC ORDER:
-NodeSystem,
-EdgeSystem,
 NODE_ID,
 GRAPH_ID,
 GRAPH_DEPTH,

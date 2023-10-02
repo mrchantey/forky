@@ -8,5 +8,7 @@ mod impl_self;
 pub use self::impl_self::*;
 mod node_parser;
 pub use self::node_parser::*;
+mod parse_node;
+pub use self::parse_node::*;
 mod utils;
 pub use self::utils::*;
