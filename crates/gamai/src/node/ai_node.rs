@@ -19,7 +19,6 @@ pub trait AiNode: 'static + Send + Sync {
 	fn children<'a>(
 		item: <Self::ChildQuery as WorldQuery>::Item<'a>,
 	) -> Vec<ChildState<'a>>;
-
 	fn add_systems(self, schedule: &mut Schedule);
 }
 

@@ -23,20 +23,3 @@ where
 	F: 'static + Send + Sync + Fn() -> Node,
 {
 }
-
-// impl<T, Node> IntoNode<Node> for T
-// where
-// 	T: Fn() -> Node + 'static + Send + Sync,
-// 	Node: AiNode,
-// {
-// 	fn into_node(&self) -> Node { self() }
-// }
-
-// #[derive(Component)]
-// struct Bar;
-
-// fn foobar(mut query: Query<&mut Bar>) {
-// 	for mut item in query.iter_mut() {
-// 		*item = Bar;
-// 	}
-// }

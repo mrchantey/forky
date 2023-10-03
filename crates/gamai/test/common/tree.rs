@@ -1,6 +1,34 @@
+use bevy_app::prelude::*;
 // use bevy_ecs::prelude::*;
-// use gamai::*;
-// use sweet::*;
+use gamai::*;
+use sweet::*;
+
+fn my_node() -> impl AiNode {
+	tree! {
+		<sequence>
+		<node_always_succeed/>
+		</sequence>
+	}
+}
+#[sweet_test]
+pub fn it_works() -> Result<()> {
+	let mut app = App::new();
+	app.add_plugins(AiPlugin::new(my_node));
+	// let entity = app.world.spawn(AiBundle::running(my_node)).id();
+
+	// let child = my_node.child0();
+	// expect(my_node.node_state(&app.world, entity))
+	// 	.to_be(Some(NodeState::Running))?;
+
+	// app.update();
+
+	// expect(my_node.node_state(&app.world, entity))
+	// 	.to_be(Some(NodeState::Success))?;
+
+	//TODO how do we test this?
+	Ok(())
+}
+
 
 // type MyTree = gamai::tree!(
 // 	<first_valid_edge>

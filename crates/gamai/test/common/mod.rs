@@ -1,5 +1,3 @@
-mod behavior_tree;
-pub use self::behavior_tree::*;
 mod bundle;
 pub use self::bundle::*;
 mod cleanup;
@@ -10,5 +8,7 @@ mod plugin;
 pub use self::plugin::*;
 mod sequence;
 pub use self::sequence::*;
+mod tree;
+pub use self::tree::*;
 mod utility_tree;
 pub use self::utility_tree::*;

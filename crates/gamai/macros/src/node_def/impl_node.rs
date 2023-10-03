@@ -18,45 +18,43 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let add_systems_children = add_systems_children(node);
 	let configure_sets = configure_sets(node);
 
-	quote!(
-		impl<#self_bounds> AiNode for #ident<#self_params>
-		{
-			const NODE_ID: usize = NODE_ID;
-			const GRAPH_ID: usize = GRAPH_ID;
-			const GRAPH_DEPTH: usize = GRAPH_DEPTH;
-			const CHILD_INDEX: usize = CHILD_INDEX;
-			const PARENT_DEPTH: usize = PARENT_DEPTH;
+	quote! {
+			impl<#self_bounds> AiNode for #ident<#self_params>
+			{
+				const NODE_ID: usize = NODE_ID;
+				const GRAPH_ID: usize = GRAPH_ID;
+				const GRAPH_DEPTH: usize = GRAPH_DEPTH;
+				const CHILD_INDEX: usize = CHILD_INDEX;
+				const PARENT_DEPTH: usize = PARENT_DEPTH;
 
-			type ChildQuery = (
-				Entity,
-				// &'static mut DerefEdgeState<Self>,
-				// Option<&'static mut DerefNodeState<Self>>,
-				#world_query
-			);
+				type ChildQuery = (
+					Entity,
+					// &'static mut DerefEdgeState<Self>,
+					// Option<&'static mut DerefNodeState<Self>>,
+					#world_query
+				);
 
-			type ChildBundle = (#child_bundles);
+				type ChildBundle = (#child_bundles);
 
-			fn add_systems(self, schedule: &mut Schedule){
-				self.node_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
-				self.edge_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
+				fn add_systems(self, schedule: &mut Schedule){
+					self.node_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
+					self.edge_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
 
-				#configure_sets
-				#add_systems_children
+					#configure_sets
+					#add_systems_children
+				}
+
+				fn entity<'a>(val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>) ->Entity{
+					val.0
+				}
+
+				fn children<'a>((entity,#node_params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
+					-> Vec<ChildState<'a>> {
+						#node_recast
+						vec![#child_states]
+				}
 			}
-
-			fn entity<'a>(val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>) ->Entity{
-				val.0
-			}
-
-			fn children<'a>((entity,#node_params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
-				-> Vec<ChildState<'a>> {
-					#node_recast
-					vec![#child_states]
-			}
-
-		}
-
-	)
+	}
 }
 
 fn configure_sets(_node: &NodeParser) -> TokenStream {
@@ -75,7 +73,7 @@ fn world_query_nested(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
-			let child = child_type_param_name(index);
+			let child = child_type_name(index);
 			quote!((&'static mut DerefEdgeState<#child>,Option<&'static mut DerefNodeState<#child>>, #prev))
 		})
 		.into_token_stream()
@@ -94,7 +92,7 @@ fn node_params_nested(node: &NodeParser) -> TokenStream {
 fn child_states(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		.map(|index| {
-			let child = child_type_param_name(index);
+			let child = child_type_name(index);
 			let edge = field_ident("edge", index);
 			let node = field_ident("node", index);
 			quote! {
@@ -134,7 +132,7 @@ fn node_recast(node: &NodeParser) -> TokenStream {
 fn add_systems_children(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		.map(|index| {
-			let child_ident = child_field_param_name(index);
+			let child_ident = child_field_name(index);
 			quote!(self.#child_ident.add_systems(schedule);)
 		})
 		.collect()
