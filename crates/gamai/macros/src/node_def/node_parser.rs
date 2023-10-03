@@ -82,36 +82,4 @@ pub fn get_num_edges(attr: proc_macro::TokenStream) -> syn::Result<usize> {
 			"please specify number of edges",
 		))
 	}
-
-	// let attr: TokenStream = attr.into();
-	// if attr.is_empty() {
-	// 	return Err(syn::Error::new(
-	// 		Span::call_site(),
-	// 		"please specify number of edges",
-	// 	));
-	// }
-	// let attr: syn::Attribute = syn::parse_quote! {#[#attr]};
-	// match attr.meta {
-	// 	Meta::NameValue(kvp) => {
-	// 		if let Expr::Lit(val) = kvp.value {
-	// 			if let Lit::Int(val) = val.lit {
-	// 				val.base10_parse::<usize>()
-	// 			} else {
-	// 				Err(syn::Error::new(
-	// 					val.lit.span(),
-	// 					"please specify number of edges",
-	// 				))
-	// 			}
-	// 		} else {
-	// 			Err(syn::Error::new(
-	// 				Span::call_site(),
-	// 				"please specify number of edges",
-	// 			))
-	// 		}
-	// 	}
-	// 	_ => Err(syn::Error::new(
-	// 		Span::call_site(),
-	// 		"please specify number of edges",
-	// 	)),
-	// }
 }

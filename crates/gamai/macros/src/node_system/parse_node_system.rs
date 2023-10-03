@@ -20,7 +20,7 @@ pub fn parse_node_system(
 		use gamai::*;
 
 		#[allow(non_camel_case_types)]
-		#[derive(Clone)]
+		// #[derive(Clone)]
 		#vis struct #ident;
 		#original_func
 		#into_node_system_impl

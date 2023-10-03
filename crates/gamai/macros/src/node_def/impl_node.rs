@@ -36,7 +36,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 
 			type ChildBundle = (#child_bundles);
 
-			fn add_systems(self, schedule: &mut Schedule){	
+			fn add_systems(self, schedule: &mut Schedule){
 				self.node_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
 				self.edge_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
 

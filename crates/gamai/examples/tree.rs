@@ -3,11 +3,18 @@
 use gamai::*;
 
 fn main() {
-	let _ = AiPlugin::new(my_node);
-	let _ = AiBundle::new(my_node);
+	// let _ = AiPlugin::new(my_node);
+	// let _ = AiBundle::new(my_node);
 }
 
-fn my_system() {}
+fn my_bevy_system() {}
+#[node_system]
+fn my_node_system<N:AiNode>() {}
+
 fn my_node() -> impl AiNode {
-	gamai::tree! {<my_system/>}
+	gamai::tree! {
+		<my_bevy_system edge=my_bevy_system>
+			// <my_node_system/>
+		</my_bevy_system>
+	}
 }

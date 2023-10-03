@@ -6,20 +6,20 @@ use std::marker::PhantomData;
 pub struct AiPlugin<Node, Builder>
 where
 	Node: AiNode,
-	Builder: IntoNode<Node>,
+	Builder: 'static + Send + Sync + Fn() -> Node,
 {
-	node: Builder,
+	builder: Builder,
 	phantom: PhantomData<Node>,
 }
 
 impl<Node, Builder> AiPlugin<Node, Builder>
 where
 	Node: AiNode,
-	Builder: IntoNode<Node>,
+	Builder: 'static + Send + Sync + Fn() -> Node,
 {
-	pub fn new(node: Builder) -> Self {
+	pub fn new(builder: Builder) -> Self {
 		Self {
-			node,
+			builder,
 			phantom: PhantomData,
 		}
 	}
@@ -28,11 +28,11 @@ where
 impl<Node, Builder> Plugin for AiPlugin<Node, Builder>
 where
 	Node: AiNode,
-	Builder: IntoNode<Node>,
+	Builder: 'static + Send + Sync + Fn() -> Node,
 {
 	fn build(&self, app: &mut bevy_app::App) {
 		app.init_schedule(Update);
 		let schedule = app.get_schedule_mut(Update).unwrap();
-		self.node.into_node().add_systems(schedule);
+		(self.builder)().add_systems(schedule);
 	}
 }

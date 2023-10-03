@@ -22,7 +22,7 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 	// let to_child_type_params = quote! {CHILD_NODE_ID, CHILD_GRAPH_ID, CHILD_GRAPH_DEPTH, CHILD_CHILD_INDEX, CHILD_PARENT_DEPTH,_,_,_,_,};
 
 	quote! {
-		#[derive(Clone)]
+		// #[derive(Clone)]
 		pub struct #ident<#self_bounds>{
 			phantom: std::marker::PhantomData<(#self_params_systems_only)>,
 			node_system: NodeSystem,
