@@ -1,5 +1,3 @@
-use std::marker::PhantomData;
-
 crate::define_node!(0);
 crate::define_node!(1);
 crate::define_node!(2);

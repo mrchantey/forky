@@ -25,15 +25,18 @@ pub struct NodeConfig<'a> {
 	pub parent_depth: usize,
 	pub node_system: TokenStream,
 	pub edge_system: TokenStream,
-	pub before_system:TokenStream,
-	pub after_system:TokenStream,
+	pub before_system: TokenStream,
+	pub after_system: TokenStream,
 	pub children: Vec<NodeConfig<'a>>,
 }
 
 impl<'a> NodeConfig<'a> {
+	// pub fn num_children(&self) -> usize { self.children.len() }
+
 	pub fn root(node: &'a XmlNode, graph_id: usize) -> Result<Self> {
 		let node = match node {
-			XmlNode::Element(el) => match el.open_tag.name.to_string().as_str() {
+			XmlNode::Element(el) => match el.open_tag.name.to_string().as_str()
+			{
 				"edge" => {
 					todo!("handle edge parent, multiple edge children")
 				}
@@ -43,6 +46,7 @@ impl<'a> NodeConfig<'a> {
 		}?;
 		Ok(Self::new(node, graph_id, 0, 0)?)
 	}
+
 	fn new(
 		node: &'a XmlNodeElement,
 		graph_id: usize,
@@ -144,67 +148,47 @@ impl<'a> NodeConfig<'a> {
 		}
 	}
 
-	fn to_tokens_children(&self) -> TokenStream {
-		self.children
-			.iter()
-			.map(|c| {
-				let child = c.to_tokens_type();
-				quote!(#child,)
-			})
-			.collect()
-	}
 
-	//broken
-	pub fn to_tokens_type(&self) -> TokenStream {
+	pub fn to_instance_tokens(&self) -> TokenStream {
 		let ident = self.ident();
-		let children = self.to_tokens_children();
 		let NodeConfig {
-			node_system,
-			edge_system,
 			node_id,
 			graph_id,
 			graph_depth,
 			child_index,
 			parent_depth,
+			node_system,
+			edge_system,
 			..
 		} = self;
 
+		let child_types = self.child_types();
+		let child_instances = self.child_instances();
+
 		quote! {
-			#ident<
+			#ident::<
 			#node_id,
 			#graph_id,
 			#graph_depth,
 			#child_index,
 			#parent_depth,
-			#node_system,
-			#edge_system,
-			#children
-			>
+			_,_,_,_, //NodeSystem,NodeSystemMarker,EdgeSystem,EdgeSystemMarker
+			#child_types
+			>::new(|| #node_system,|| #edge_system,#child_instances)
 		}
 	}
-	// fn to_tokens_default(&self) -> TokenStream {
-	// 	let ident = self.ident();
-	// 	let NodeConfig {
-	// 		node_system,
-	// 		edge_system,
-	// 		node_id,
-	// 		graph_id,
-	// 		graph_depth,
-	// 		child_index,
-	// 		parent_depth,
-	// 		..
-	// 	} = self;
-
-	// 	quote! {
-	// 		#ident::<
-	// 		#node_system,
-	// 		#edge_system,
-	// 		#node_id,
-	// 		#graph_id,
-	// 		#graph_depth,
-	// 		#child_index,
-	// 		#parent_depth,
-	// 		>::default()
-	// 	}
-	// }
+	fn child_types(&self) -> TokenStream {
+		std::iter::repeat(quote! {_,})
+			.take(self.children.len())
+			.collect()
+	}
+	fn child_instances(&self) -> TokenStream {
+		self.children
+			.iter()
+			.map(|c| {
+				let child = c.to_instance_tokens();
+				quote!(#child,)
+			})
+			.collect()
+	}
 }
