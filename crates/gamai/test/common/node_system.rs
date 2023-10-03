@@ -12,8 +12,6 @@ fn works() -> Result<()> {
 	let _tree = tree! {
 		<foo>
 			<bar/>
-			// <foo/>
-			// <bar/>
 		</foo>
 	};
 

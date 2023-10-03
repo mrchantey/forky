@@ -1,6 +1,5 @@
 use crate::*;
 use bevy_ecs::prelude::*;
-
 use std::fmt::Debug;
 use std::marker::PhantomData;
 use std::ops::Deref;
@@ -28,6 +27,10 @@ pub struct DerefNodeState<N: AiNode> {
 	pub state: NodeState,
 	pub marker: PhantomData<N>,
 }
+
+// impl<N: AiNode> DerefNodeState<N> {
+
+// }
 
 pub type DerefNode<'a> = &'a mut dyn std::ops::DerefMut<Target = NodeState>;
 

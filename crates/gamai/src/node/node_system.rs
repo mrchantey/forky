@@ -1,11 +1,13 @@
 use crate::*;
 use bevy_ecs::prelude::*;
 
-#[doc(hidden)]
+/// not for external use
 pub struct IsBevySystem;
-#[doc(hidden)]
+/// used for manually declaring an `IntoNodeSystem`
 pub struct IsNodeSystem;
 
+
+/// Node systems are stored in Nodes as `||-> IntoNodeSystem` closures, which also implement `IntoNodeSystem`
 pub trait IntoNodeSystem<M>: 'static + Send + Sync {
 	fn into_node_system<Node: AiNode>(
 		self,
@@ -14,7 +16,7 @@ pub trait IntoNodeSystem<M>: 'static + Send + Sync {
 	);
 }
 
-// functions that return node systems
+// NodeSystem builders, functions that return node systems
 impl<F, T, M> IntoNodeSystem<(M, IsNodeSystem)> for F
 where
 	T: IntoNodeSystem<(M, IsNodeSystem)>,
@@ -28,7 +30,7 @@ where
 		self().into_node_system::<Node>(schedule, set);
 	}
 }
-// regular bevy systems that dont use the generic parameter
+// Bevy System Builders
 impl<F, T, M> IntoNodeSystem<(M, IsBevySystem)> for F
 where
 	T: IntoSystemConfigs<M>,

@@ -8,6 +8,8 @@ mod child_state;
 pub use self::child_state::*;
 mod edge_state;
 pub use self::edge_state::*;
+mod into_node;
+pub use self::into_node::*;
 mod node_definition;
 pub use self::node_definition::*;
 mod node_sets;

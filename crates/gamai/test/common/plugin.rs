@@ -1,13 +1,26 @@
-// use bevy_app::App;
-// use gamai::*;
-// use sweet::*;
-// type MyTree = gamai::tree!(<empty_node/>);
+use bevy_app::App;
+use gamai::*;
+use sweet::*;
 
-// sweet! {
-// 	it "works" {
-// 		let mut app = App::new();
-// 		app.add_plugins(MyTree::plugin());
-// 		app.world.spawn(MyTree::bundle());
-// 		app.update();
-// 	}
-// }
+fn my_node() -> impl AiNode {
+	tree! {<node_always_succeed/>}
+}
+
+
+#[sweet_test]
+pub fn it_works() -> Result<()> {
+	let mut app = App::new();
+	app.add_plugins(AiPlugin::new(my_node));
+	let entity = app.world.spawn(AiBundle::running(my_node)).id();
+
+	expect(my_node.node_state(&app.world, entity))
+		.to_be(Some(NodeState::Running))?;
+
+	app.update();
+
+	expect(my_node.node_state(&app.world, entity))
+		.to_be(Some(NodeState::Success))?;
+
+	//TODO how do we test this?
+	Ok(())
+}

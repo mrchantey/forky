@@ -39,27 +39,3 @@ pub struct PhantomComponent<T>(pub PhantomData<T>);
 impl<T> PhantomComponent<T> {
 	pub fn new() -> Self { Self(PhantomData) }
 }
-// pub trait IntoNode<Node: AiNode>: 'static + Send + Sync {
-// 	fn into_node(&self) -> Node;
-// }
-
-// impl<T: AiNode> IntoNode<T> for T {
-// 	fn into_node(self) -> T { self }
-// }
-
-// impl<T, Node> IntoNode<Node> for T
-// where
-// 	T: Fn() -> Node + 'static + Send + Sync,
-// 	Node: AiNode,
-// {
-// 	fn into_node(&self) -> Node { self() }
-// }
-
-// #[derive(Component)]
-// struct Bar;
-
-// fn foobar(mut query: Query<&mut Bar>) {
-// 	for mut item in query.iter_mut() {
-// 		*item = Bar;
-// 	}
-// }
