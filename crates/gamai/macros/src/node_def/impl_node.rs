@@ -11,7 +11,8 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 		..
 	} = node;
 	let world_query = world_query_nested(node);
-	let params = node_params_nested(node);
+	let node_params = node_params_nested(node);
+	let child_bundles = child_bundles_nested(node);
 	let child_states = child_states(node);
 	let node_recast = node_recast(node);
 	let add_systems_children = add_systems_children(node);
@@ -33,6 +34,8 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				#world_query
 			);
 
+			type ChildBundle = (#child_bundles);
+
 			fn add_systems(self, schedule: &mut Schedule){	
 				self.node_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
 				self.edge_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
@@ -45,7 +48,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				val.0
 			}
 
-			fn children<'a>((entity,#params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
+			fn children<'a>((entity,#node_params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
 				-> Vec<ChildState<'a>> {
 					#node_recast
 					vec![#child_states]

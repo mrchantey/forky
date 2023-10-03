@@ -11,16 +11,31 @@ pub trait IntoNodeSystem<M>: 'static + Send + Sync {
 
 
 // regular bevy systems dont use the generic parameter
-impl<T, M> IntoNodeSystem<M> for T
+// impl<T, M> IntoNodeSystem<M> for T
+// where
+// 	T: IntoSystemConfigs<M> + 'static + Send + Sync,
+// {
+// 	fn into_node_system<Node: AiNode>(
+// 		self,
+// 		schedule: &mut Schedule,
+// 		set: impl SystemSet,
+// 	) {
+// 		schedule.add_systems(self.in_set(set));
+// 	}
+// }
+impl<F, T, M> IntoNodeSystem<M> for F
 where
-	T: IntoSystemConfigs<M> + 'static + Send + Sync,
+	// T: IntoNodeSystem<M>,
+	T: IntoSystemConfigs<M>,
+	F: 'static + Send + Sync + Fn() -> T,
 {
 	fn into_node_system<Node: AiNode>(
 		self,
 		schedule: &mut Schedule,
 		set: impl SystemSet,
 	) {
-		schedule.add_systems(self.in_set(set));
+		let system = self();
+		schedule.add_systems(system.in_set(set));
 	}
 }
 

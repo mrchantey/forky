@@ -1,5 +1,7 @@
 mod behavior_tree;
 pub use self::behavior_tree::*;
+mod bundle;
+pub use self::bundle::*;
 mod cleanup;
 pub use self::cleanup::*;
 mod node_system;

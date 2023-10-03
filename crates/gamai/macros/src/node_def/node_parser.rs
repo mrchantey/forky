@@ -29,27 +29,27 @@ impl NodeParser {
 		let self_params_systems_only =
 			quote!(NodeSystem, NodeSystemMarker, EdgeSystem, EdgeSystemMarker);
 		let self_params = quote!(
-			NodeSystem,
-			NodeSystemMarker,
-			EdgeSystem,
-			EdgeSystemMarker,
 			NODE_ID,
 			GRAPH_ID,
 			GRAPH_DEPTH,
 			CHILD_INDEX,
 			PARENT_DEPTH,
+			NodeSystem,
+			NodeSystemMarker,
+			EdgeSystem,
+			EdgeSystemMarker,
 			#child_params
 		);
 		let self_bounds = quote!(
-			NodeSystem: IntoNodeSystem<NodeSystemMarker>,
-			NodeSystemMarker: 'static + Send + Sync,
-			EdgeSystem: IntoNodeSystem<EdgeSystemMarker>,
-			EdgeSystemMarker: 'static + Send + Sync,
 			const NODE_ID: usize,
 			const GRAPH_ID: usize,
 			const GRAPH_DEPTH: usize,
 			const CHILD_INDEX: usize,
 			const PARENT_DEPTH: usize,
+			NodeSystem: IntoNodeSystem<NodeSystemMarker>,
+			NodeSystemMarker: 'static + Send + Sync,
+			EdgeSystem: IntoNodeSystem<EdgeSystemMarker>,
+			EdgeSystemMarker: 'static + Send + Sync,
 			#child_bounds
 		);
 

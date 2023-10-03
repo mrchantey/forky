@@ -3,34 +3,37 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
 use rstml::node::KeyedAttribute;
-use rstml::node::Node;
-use rstml::node::NodeAttribute;
-use rstml::node::NodeElement;
 use std::sync::atomic::AtomicUsize;
 use std::sync::atomic::Ordering;
 use syn::spanned::Spanned;
 use syn::Result;
 
+
+type XmlNode = rstml::node::Node;
+type XmlNodeAttribute = rstml::node::NodeAttribute;
+type XmlNodeElement = rstml::node::NodeElement;
+
+
 static NODE_ID: AtomicUsize = AtomicUsize::new(0);
 
 pub struct NodeConfig<'a> {
-	pub node: &'a NodeElement,
-	pub node_system: TokenStream,
-	pub edge_system: TokenStream,
-	pub before_system:TokenStream,
-	pub after_system:TokenStream,
+	pub node: &'a XmlNodeElement,
 	pub node_id: usize,
 	pub graph_id: usize,
 	pub graph_depth: usize,
 	pub child_index: usize,
 	pub parent_depth: usize,
+	pub node_system: TokenStream,
+	pub edge_system: TokenStream,
+	pub before_system:TokenStream,
+	pub after_system:TokenStream,
 	pub children: Vec<NodeConfig<'a>>,
 }
 
 impl<'a> NodeConfig<'a> {
-	pub fn root(node: &'a Node, graph_id: usize) -> Result<Self> {
+	pub fn root(node: &'a XmlNode, graph_id: usize) -> Result<Self> {
 		let node = match node {
-			Node::Element(el) => match el.open_tag.name.to_string().as_str() {
+			XmlNode::Element(el) => match el.open_tag.name.to_string().as_str() {
 				"edge" => {
 					todo!("handle edge parent, multiple edge children")
 				}
@@ -41,7 +44,7 @@ impl<'a> NodeConfig<'a> {
 		Ok(Self::new(node, graph_id, 0, 0)?)
 	}
 	fn new(
-		node: &'a NodeElement,
+		node: &'a XmlNodeElement,
 		graph_id: usize,
 		graph_depth: usize,
 		child_index: usize,
@@ -56,7 +59,7 @@ impl<'a> NodeConfig<'a> {
 			.children
 			.iter()
 			.filter_map(|c| match c {
-				Node::Element(el) => Some(el),
+				XmlNode::Element(el) => Some(el),
 				_ => None,
 			})
 			.enumerate()
@@ -72,13 +75,13 @@ impl<'a> NodeConfig<'a> {
 
 		for attribute in node.attributes() {
 			match attribute {
-				NodeAttribute::Block(block) => {
+				XmlNodeAttribute::Block(block) => {
 					return Err(syn::Error::new(
 						block.span(),
 						format!("block attributes not currently supported"),
 					));
 				}
-				NodeAttribute::Attribute(attr) => {
+				XmlNodeAttribute::Attribute(attr) => {
 					match attr.key.to_string().as_str() {
 						"edge" => {
 							edge_system = attr
@@ -151,6 +154,7 @@ impl<'a> NodeConfig<'a> {
 			.collect()
 	}
 
+	//broken
 	pub fn to_tokens_type(&self) -> TokenStream {
 		let ident = self.ident();
 		let children = self.to_tokens_children();
@@ -167,13 +171,13 @@ impl<'a> NodeConfig<'a> {
 
 		quote! {
 			#ident<
-			#node_system,
-			#edge_system,
 			#node_id,
 			#graph_id,
 			#graph_depth,
 			#child_index,
 			#parent_depth,
+			#node_system,
+			#edge_system,
 			#children
 			>
 		}

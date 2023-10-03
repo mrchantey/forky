@@ -12,6 +12,7 @@ pub trait AiNode: 'static + Send + Sync {
 	const PARENT_DEPTH: usize; //required until complex expressions https://blog.rust-lang.org/2021/02/26/const-generics-mvp-beta.html#const-generics-with-complex-expressions
 	/// Tuple Query used to access child states: `(Entity,(Child1,(Child2)))`
 	type ChildQuery: WorldQuery;
+	type ChildBundle: 'static + Send + Sync + Default + Bundle;
 
 	type Query<'w, 's> = Query<'w, 's, Self::ChildQuery>;
 	fn entity<'a>(item: &<Self::ChildQuery as WorldQuery>::Item<'a>) -> Entity;
@@ -33,9 +34,26 @@ Child1..
 */
 
 #[derive(Debug, Default, Clone, Component)]
-pub struct PhantomComponent<const NODE_ID: usize, T>(PhantomData<T>);
+pub struct PhantomComponent<T>(pub PhantomData<T>);
 
+impl<T> PhantomComponent<T> {
+	pub fn new() -> Self { Self(PhantomData) }
+}
+pub trait IntoNode<Node: AiNode>: 'static + Send + Sync {
+	fn into_node(&self) -> Node;
+}
 
+// impl<T: AiNode> IntoNode<T> for T {
+// 	fn into_node(self) -> T { self }
+// }
+
+impl<T, Node> IntoNode<Node> for T
+where
+	T: Fn() -> Node + 'static + Send + Sync,
+	Node: AiNode,
+{
+	fn into_node(&self) -> Node { self() }
+}
 
 // #[derive(Component)]
 // struct Bar;

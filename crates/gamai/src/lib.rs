@@ -4,7 +4,7 @@
 	associated_type_defaults,
 	associated_type_bounds,
 	// inherent_associated_types,
-	// generic_const_exprs
+	// generic_const_exprs,
 )]
 //allow proc macros to work internally
 extern crate self as gamai;
