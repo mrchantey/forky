@@ -19,24 +19,25 @@ pub fn impl_into_node_system(func: &ItemFn) -> TokenStream {
 	.unwrap_or_else(syn::Error::into_compile_error);
 
 	quote! {
-		// impl<M> NodeSystemBuilder<M> for #ident
+		// impl NodeSystemBuilder<Self, IsNodeSystem> for #ident
 		// {
-		// 	fn get_system<Node: AiNode>(self) -> impl IntoSystemConfigs<M> { #func_ident::<Node> }
+		// 	fn marker() -> IsNodeSystem { IsNodeSystem }
+		// 	fn get_system<Node: AiNode>(self) -> impl IntoSystemConfigs<Self> { #func_ident::<Node> }
 		// }
 
-		// impl IntoNodeSystem<Self> for #ident 
-		// // impl IntoNodeSystem<Self> for fn() -> #ident 
-		// // impl<F> IntoNodeSystem<Self> for F 
-		// // where F: 'static + Send + Sync + Fn()-> #ident
-		// {
-		// 	fn into_node_system<Node: AiNode>(
-		// 		self,
-		// 		schedule: &mut Schedule,
-		// 		set: impl SystemSet,
-		// 	) {
-		// 		schedule.add_systems(#func_ident::<Node>.in_set(set));
-		// 	}
-		// }
+		// impl IntoNodeSystem<Self> for #ident
+		// impl IntoNodeSystem<(Self,IsNodeSystem)> for fn() -> #ident
+		impl IntoNodeSystem<(#ident,IsNodeSystem)> for #ident
+			// where F: 'static + Send + Sync + Fn()-> #ident
+		{
+			fn into_node_system<Node: AiNode>(
+				self,
+				schedule: &mut Schedule,
+				set: impl SystemSet,
+			) {
+				schedule.add_systems(#func_ident::<Node>.in_set(set));
+			}
+		}
 		#generic_err
 	}
 }

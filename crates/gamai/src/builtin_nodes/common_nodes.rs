@@ -4,20 +4,19 @@ use bevy_ecs::prelude::*;
 
 
 // should probably be a node not a node system
-pub fn empty_node() {}
+// pub fn empty_node() {}
 
-// #[derive(Debug, Default, Clone)]
-// #[allow(non_camel_case_types)]
-// pub struct empty_node;
+#[allow(non_camel_case_types)]
+pub struct empty_node;
 
-// impl IntoNodeSystem<Self> for empty_node {
-// 	fn into_node_system<Node: AiNode>(
-// 		self,
-// 		_schedule: &mut Schedule,
-// 		_set: impl SystemSet,
-// 	) {
-// 	}
-// }
+impl IntoNodeSystem<(Self, IsNodeSystem)> for empty_node {
+	fn into_node_system<Node: AiNode>(
+		self,
+		_schedule: &mut Schedule,
+		_set: impl SystemSet,
+	) {
+	}
+}
 
 #[node_system]
 pub fn first_valid_edge<N: AiNode>(

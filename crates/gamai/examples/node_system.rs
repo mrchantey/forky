@@ -1,5 +1,5 @@
 //this example is used for macro expansion, for usage see the `tests` directory
-
+#![feature(return_position_impl_trait_in_trait)]
 fn main() {}
 
 #[gamai::node_system]
