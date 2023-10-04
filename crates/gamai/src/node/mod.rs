@@ -12,6 +12,8 @@ mod into_node;
 pub use self::into_node::*;
 mod node_def;
 pub use self::node_def::*;
+mod node_id;
+pub use self::node_id::*;
 mod node_sets;
 pub use self::node_sets::*;
 mod node_state;

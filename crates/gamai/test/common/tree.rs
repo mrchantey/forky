@@ -25,7 +25,6 @@ pub fn it_works() -> Result<()> {
 	// expect(my_node.node_state(&app.world, entity))
 	// 	.to_be(Some(NodeState::Success))?;
 
-	//TODO how do we test this?
 	Ok(())
 }
 
