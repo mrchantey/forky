@@ -16,6 +16,15 @@ pub trait IntoNode<const CHILD_INDEX: usize, Parent: IntoNodeId>:
 	fn into_node(self) -> Self::Out;
 }
 
+// impl<const CHILD_INDEX: usize, Parent: IntoNodeId, F, T>
+// 	IntoNode<CHILD_INDEX, Parent> for F
+// where
+// 	T: IntoNode<CHILD_INDEX, Parent>,
+// 	F: 'static + Send + Sync + Fn() -> T,
+// {
+// 	type Out = T::Out;
+// 	fn into_node(self) -> Self::Out { self().into_node() }
+// }
 
 // fn node_state(self, world: &World, entity: Entity) -> Option<NodeState> {
 // 	world

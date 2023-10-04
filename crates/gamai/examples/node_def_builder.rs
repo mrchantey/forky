@@ -5,14 +5,14 @@ fn main() {}
 define_node!(0);
 define_node!(1);
 
-fn my_system() {}
+fn _my_system() {}
 
-fn foobar() {
+fn _foobar() {
 	let child =
-		Node0::<0, RootParent<0>, _, _, _, _>::new(|| my_system, || my_system);
-	let parent = Node1::<0, RootParent<0>, _, _, _, _, _>::new(
-		|| my_system,
-		|| my_system,
+		Node0::<0, RootParent<0>, _, _, _, _>::new(|| _my_system, || _my_system);
+	let _parent = Node1::<0, RootParent<0>, _, _, _, _, _>::new(
+		|| _my_system,
+		|| _my_system,
 		child,
 	);
 }

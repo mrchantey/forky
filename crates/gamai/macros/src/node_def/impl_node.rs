@@ -31,7 +31,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			}
 
 			impl<const NEW_CHILD_INDEX:usize, #self_bounds NewParent:IntoNodeId> IntoNode<NEW_CHILD_INDEX,NewParent> for #ident<#self_params>{
-				type Out = #ident<#self_params_new>;				
+				type Out = #ident<#self_params_new>;
 				fn into_node(self) -> Self::Out{
 					Self::Out{
             phantom: std::marker::PhantomData,

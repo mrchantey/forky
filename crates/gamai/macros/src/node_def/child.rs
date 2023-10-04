@@ -39,65 +39,13 @@ pub fn child_bundles_nested(node: &NodeParser) -> TokenStream {
 }
 
 
-pub fn child_generics(num_children: usize) -> (TokenStream, TokenStream) {
-	let params = (0..num_children)
-		.map(|index| {
-			let ty = child_type_name(index);
-			quote!(#ty,)
-		})
-		.collect();
 
-	let bounds = (0..num_children)
-		.map(|index| {
-			let ty = child_type_name(index);
-			// let into_ty = into_child_type_name(index);
-			quote!(
-				// #into_ty: IntoNode<#index,Self>,
-				// #ty:#into_ty::Out,
-				#ty:AiNode,
-			)
-		})
-		.collect();
-
-	(params, bounds)
-}
-
-/// returns `child0: Child0, child1: Child1, ..`
-pub fn child_fields_def(num_children: usize) -> TokenStream {
-	(0..num_children)
-		.map(|index| {
-			let field = child_field_name(index);
-			let ty = child_type_name(index);
-			quote!(#field: #ty,)
-		})
-		.collect()
-}
-pub fn child_fields_args(num_children: usize) -> TokenStream {
-	(0..num_children)
-		.map(|index| {
-			let field = child_field_name(index);
-			let ty = child_type_name(index);
-			// let ty = into_child_type_name(index);
-			quote!(#field: impl IntoNode<#index,Self,Out=#ty>,)
-			// quote!(#field: #ty,)
-		})
-		.collect()
-}
 // returns `child0, child1, ..`
 pub fn child_fields_self(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
 			let field = child_field_name(index);
 			quote!(#field: self.#field,)
-		})
-		.collect()
-}
-pub fn child_fields_into_node(num_children: usize) -> TokenStream {
-	(0..num_children)
-		.map(|index| {
-			let field = child_field_name(index);
-			quote!(#field: #field.into_node(),)
-			// quote!(#field: #field.into_node::<#index,Self>(),)
 		})
 		.collect()
 }

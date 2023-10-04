@@ -118,3 +118,27 @@ pub fn get_num_edges(attr: proc_macro::TokenStream) -> syn::Result<usize> {
 		))
 	}
 }
+
+
+fn child_generics(num_children: usize) -> (TokenStream, TokenStream) {
+	let params = (0..num_children)
+		.map(|index| {
+			let ty = child_type_name(index);
+			quote!(#ty,)
+		})
+		.collect();
+
+	let bounds = (0..num_children)
+		.map(|index| {
+			let ty = child_type_name(index);
+			// let into_ty = into_child_type_name(index);
+			quote!(
+				// #into_ty: IntoNode<#index,Self>,
+				// #ty:#into_ty::Out,
+				#ty:AiNode,
+			)
+		})
+		.collect();
+
+	(params, bounds)
+}

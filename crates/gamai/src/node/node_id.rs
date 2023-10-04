@@ -1,5 +1,5 @@
 // use super::*;
-use std::marker::PhantomData;
+// use std::marker::PhantomData;
 
 /// Trait used to distinguish node instances.
 /// The combination of `GRAPH_ID`, `CHILD_INDEX` & `GRAPH_DEPTH` is unique for each node instance.
@@ -15,43 +15,28 @@ pub trait IntoNodeId: 'static + Send + Sync {
 	fn parent_depth(&self) -> usize { Self::PARENT_DEPTH }
 }
 
-// TODO i think only useful for tests
-pub struct NodeId<const CHILD_INDEX: usize, Parent: IntoNodeId> {
-	phantom: PhantomData<Parent>,
-}
+/// used in child nodes for defining the parent to avoid cycles
+#[derive(Default)]
+pub struct PhantomNodeId<
+	const GRAPH_ID: usize,
+	const GRAPH_DEPTH: usize,
+	const CHILD_INDEX: usize,
+	const PARENT_DEPTH: usize,
+>;
 
-impl<const CHILD_INDEX: usize, Parent: IntoNodeId> NodeId<CHILD_INDEX, Parent> {
-	pub const CHILD_INDEX: usize = CHILD_INDEX;
-	pub const GRAPH_ID: usize = Parent::GRAPH_ID;
-	pub const GRAPH_DEPTH: usize = Parent::GRAPH_DEPTH + 1;
-	pub const PARENT_DEPTH: usize = Parent::GRAPH_DEPTH;
-	pub fn new(_parent: &Parent) -> Self {
-		Self {
-			phantom: PhantomData,
-		}
-	}
-}
-
-impl<const CHILD_INDEX: usize, Parent: IntoNodeId> IntoNodeId
-	for NodeId<CHILD_INDEX, Parent>
+impl<
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const PARENT_DEPTH: usize,
+	> IntoNodeId
+	for PhantomNodeId<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, PARENT_DEPTH>
 {
-	const GRAPH_ID: usize = Self::GRAPH_ID;
-	const CHILD_INDEX: usize = Self::CHILD_INDEX;
-	const GRAPH_DEPTH: usize = Self::GRAPH_DEPTH;
-	const PARENT_DEPTH: usize = Self::PARENT_DEPTH;
+	const GRAPH_ID: usize = GRAPH_ID;
+	const GRAPH_DEPTH: usize = GRAPH_DEPTH;
+	const CHILD_INDEX: usize = CHILD_INDEX;
+	const PARENT_DEPTH: usize = PARENT_DEPTH;
 }
-
-impl<const CHILD_INDEX: usize, Parent: IntoNodeId> Default
-	for NodeId<CHILD_INDEX, Parent>
-{
-	fn default() -> Self {
-		Self {
-			phantom: PhantomData,
-		}
-	}
-}
-
-
 /// The default parent for tree builders.
 #[derive(Default)]
 pub struct RootParent<const GRAPH_ID: usize>;
