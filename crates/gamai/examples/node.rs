@@ -1,4 +1,4 @@
-#![feature(return_position_impl_trait_in_trait)]
+#![feature(return_position_impl_trait_in_trait, associated_const_equality)]
 //this example is used for compilation checks, for usage see the `tests` directory
 use gamai::*;
 

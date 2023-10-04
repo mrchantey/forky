@@ -12,6 +12,10 @@ pub fn child_field_name(index: usize) -> TokenStream {
 pub fn child_type_name(index: usize) -> TokenStream {
 	field_ident("Child", index).to_token_stream()
 }
+/// Returns ChildN
+// pub fn into_child_type_name(index: usize) -> TokenStream {
+// 	field_ident("IntoChild", index).to_token_stream()
+// }
 
 /// returns (Child0,(Child1,..))
 pub fn _child_params_nested(node: &NodeParser) -> TokenStream {
@@ -46,7 +50,10 @@ pub fn child_generics(num_children: usize) -> (TokenStream, TokenStream) {
 	let bounds = (0..num_children)
 		.map(|index| {
 			let ty = child_type_name(index);
+			// let into_ty = into_child_type_name(index);
 			quote!(
+				// #into_ty: IntoNode<#index,Self>,
+				// #ty:#into_ty::Out,
 				#ty:AiNode,
 			)
 		})
@@ -65,12 +72,32 @@ pub fn child_fields_def(num_children: usize) -> TokenStream {
 		})
 		.collect()
 }
-// returns `child0, child1, ..`
-pub fn child_fields(num_children: usize) -> TokenStream {
+pub fn child_fields_args(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
 			let field = child_field_name(index);
-			quote!(#field,)
+			let ty = child_type_name(index);
+			// let ty = into_child_type_name(index);
+			quote!(#field: impl IntoNode<#index,Self,Out=#ty>,)
+			// quote!(#field: #ty,)
+		})
+		.collect()
+}
+// returns `child0, child1, ..`
+pub fn child_fields_self(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let field = child_field_name(index);
+			quote!(#field: self.#field,)
+		})
+		.collect()
+}
+pub fn child_fields_into_node(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let field = child_field_name(index);
+			quote!(#field: #field.into_node(),)
+			// quote!(#field: #field.into_node::<#index,Self>(),)
 		})
 		.collect()
 }

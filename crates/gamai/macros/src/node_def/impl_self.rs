@@ -10,28 +10,26 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 		ident,
 		self_bounds,
 		self_params,
-		self_params_systems_only,
+		phantom_types,
 		num_edges,
 		..
 	} = node;
 
 	let child_fields_def = child_fields_def(*num_edges);
-	let child_fields = child_fields(*num_edges);
-
-	// todo children
-	// let to_child_type_params = quote! {CHILD_NODE_ID, CHILD_GRAPH_ID, CHILD_GRAPH_DEPTH, CHILD_CHILD_INDEX, CHILD_PARENT_DEPTH,_,_,_,_,};
+	let child_fields_args = child_fields_args(*num_edges);
+	let child_fields = child_fields_into_node(*num_edges);
 
 	quote! {
 		// #[derive(Clone)]
 		pub struct #ident<#self_bounds>{
-			phantom: std::marker::PhantomData<(#self_params_systems_only)>,
+			phantom: std::marker::PhantomData<(#phantom_types)>,
 			node_system: NodeSystem,
 			edge_system: EdgeSystem,
 			#child_fields_def
 		}
 
 		impl<#self_bounds> #ident<#self_params> {
-			pub fn new(node_system: NodeSystem, edge_system: EdgeSystem, #child_fields_def) -> Self {
+			pub fn new(node_system: NodeSystem, edge_system: EdgeSystem, #child_fields_args) -> Self {
 				Self {
 					phantom: std::marker::PhantomData,
 					node_system,

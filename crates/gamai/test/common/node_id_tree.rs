@@ -34,7 +34,10 @@ impl<const CHILD_INDEX: usize, Parent: IntoNodeId> IntoNodeId
 
 impl<const CHILD_INDEX: usize, Parent: IntoNodeId> MyTree<CHILD_INDEX, Parent> {
 	fn from_parent(_parent: &Parent) -> Self { Self::default() }
-	fn build(&self) -> impl IntoNodeId { Self::default() }
+
+	// fn foobar() {
+	// 	let a = NodeSet::<{ <Self as IntoNodeId>::GRAPH_ID }, { <Self as IntoNodeId>::GRAPH_DEPTH }>;
+	// }
 }
 
 #[sweet_test]
@@ -44,13 +47,13 @@ pub fn works() -> Result<()> {
 	expect(root.child_index()).to_be(0)?;
 	expect(root.graph_depth()).to_be(1)?;
 	expect(root.parent_depth()).to_be(0)?;
-	
+
 	let child0 = <MyTree<0, _>>::from_parent(&root);
 	expect(child0.graph_id()).to_be(0)?;
 	expect(child0.child_index()).to_be(0)?;
 	expect(child0.graph_depth()).to_be(2)?;
 	expect(child0.parent_depth()).to_be(1)?;
-	
+
 	let child1 = <MyTree<1, _>>::from_parent(&root);
 	expect(child1.child_index()).to_be(1)?;
 

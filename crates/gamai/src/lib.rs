@@ -3,6 +3,7 @@
 	return_position_impl_trait_in_trait,//required for users, stablize pr open https://github.com/rust-lang/rust/pull/115822
 	associated_type_defaults,
 	associated_type_bounds,
+	associated_const_equality,
 	// inherent_associated_types,
 	// generic_const_exprs,
 )]

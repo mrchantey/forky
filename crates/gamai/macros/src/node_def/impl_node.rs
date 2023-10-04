@@ -6,8 +6,11 @@ use quote::ToTokens;
 pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let NodeParser {
 		ident,
+		num_edges,
 		self_params,
 		self_bounds,
+		self_bounds_full,
+		self_params_new,
 		..
 	} = node;
 	let world_query = world_query_nested(node);
@@ -17,15 +20,33 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let node_recast = node_recast(node);
 	let add_systems_children = add_systems_children(node);
 	let configure_sets = configure_sets(node);
+	let child_fields_self = child_fields_self(*num_edges);
 
 	quote! {
-			impl<#self_bounds> AiNode for #ident<#self_params>
-			{
-				const NODE_ID: usize = NODE_ID;
-				const GRAPH_ID: usize = GRAPH_ID;
-				const GRAPH_DEPTH: usize = GRAPH_DEPTH;
+			impl<#self_bounds> IntoNodeId for #ident<#self_params>{
+				const GRAPH_ID: usize = Parent::GRAPH_ID;
 				const CHILD_INDEX: usize = CHILD_INDEX;
-				const PARENT_DEPTH: usize = PARENT_DEPTH;
+				const GRAPH_DEPTH: usize = Parent::GRAPH_DEPTH + 1;
+				const PARENT_DEPTH: usize = Parent::GRAPH_DEPTH;
+			}
+
+			impl<const NEW_CHILD_INDEX:usize, #self_bounds NewParent:IntoNodeId> IntoNode<NEW_CHILD_INDEX,NewParent> for #ident<#self_params>{
+				type Out = #ident<#self_params_new>;				
+				fn into_node(self) -> Self::Out{
+					Self::Out{
+            phantom: std::marker::PhantomData,
+            node_system:self.node_system,
+            edge_system:self.edge_system,
+						#child_fields_self
+					}
+					// #ident::<#self_params_new>::new(self.node_system, self.edge_system, #child_fields_self)
+					// todo!()
+				}
+			}
+
+
+			impl<#self_bounds_full> AiNode for #ident<#self_params>
+			{
 
 				type ChildQuery = (
 					Entity,

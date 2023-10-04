@@ -1,5 +1,4 @@
 use gamai::*;
-use std::marker::PhantomData;
 use sweet::*;
 
 #[sweet_test]
@@ -21,15 +20,3 @@ pub fn works() -> Result<()> {
 
 	Ok(())
 }
-
-
-struct MyTree<Parent: IntoNodeId> {
-	phantom: PhantomData<Parent>,
-}
-impl<Parent: IntoNodeId> MyTree<Parent> {
-	fn build<const CHILD_INDEX: usize>() -> impl IntoNodeId {
-		NodeId::<CHILD_INDEX, Parent>::default()
-	}
-}
-
-// fn my_tree<Parent: IntoNodeId = RootParent<0>>() {}

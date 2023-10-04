@@ -3,7 +3,7 @@ use std::marker::PhantomData;
 
 /// Trait used to distinguish node instances.
 /// The combination of `GRAPH_ID`, `CHILD_INDEX` & `GRAPH_DEPTH` is unique for each node instance.
-pub trait IntoNodeId {
+pub trait IntoNodeId: 'static + Send + Sync {
 	const GRAPH_ID: usize;
 	const CHILD_INDEX: usize;
 	const GRAPH_DEPTH: usize;
@@ -15,6 +15,7 @@ pub trait IntoNodeId {
 	fn parent_depth(&self) -> usize { Self::PARENT_DEPTH }
 }
 
+// TODO i think only useful for tests
 pub struct NodeId<const CHILD_INDEX: usize, Parent: IntoNodeId> {
 	phantom: PhantomData<Parent>,
 }
