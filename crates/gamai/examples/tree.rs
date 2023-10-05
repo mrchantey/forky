@@ -6,9 +6,19 @@ fn my_system() {}
 fn main() {
 	let my_tree = tree! {
 		<my_system>
-			<my_system/>
+			// <MyTree/>
+			<my_system>
+				<my_system>
+					<my_system>
+						<my_system/>
+						<my_system/>
+						<MyTree/>
+					</my_system>
+				</my_system>
+			</my_system>
 		</my_system>
 	};
+	let _ = AiBundle::new(my_tree);
 	let _ = AiBundle::new(my_tree);
 	let _ = AiPlugin::new(my_tree);
 	let _ = AiPlugin::new(my_tree);
