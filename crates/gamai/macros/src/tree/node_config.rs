@@ -1,10 +1,9 @@
+use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
 use rstml::node::KeyedAttribute;
-use std::sync::atomic::AtomicUsize;
-use std::sync::atomic::Ordering;
 use syn::spanned::Spanned;
 use syn::Result;
 
@@ -13,16 +12,10 @@ type XmlNode = rstml::node::Node;
 type XmlNodeAttribute = rstml::node::NodeAttribute;
 type XmlNodeElement = rstml::node::NodeElement;
 
-
-static NODE_ID: AtomicUsize = AtomicUsize::new(0);
-
 pub struct NodeConfig<'a> {
 	pub node: &'a XmlNodeElement,
-	pub node_id: usize,
 	pub graph_id: usize,
-	pub graph_depth: usize,
 	pub child_index: usize,
-	pub parent_depth: usize,
 	pub node_system: TokenStream,
 	pub edge_system: TokenStream,
 	pub before_system: TokenStream,
@@ -53,8 +46,6 @@ impl<'a> NodeConfig<'a> {
 		graph_depth: usize,
 		child_index: usize,
 	) -> Result<Self> {
-		let node_id = NODE_ID.fetch_add(1, Ordering::SeqCst);
-		let parent_depth = graph_depth.checked_sub(1).unwrap_or(0);
 		let mut edge_system = quote!(gamai::empty_node);
 		let mut before_system = quote!(gamai::empty_node);
 		let mut after_system = quote!(gamai::empty_node);
@@ -128,11 +119,8 @@ impl<'a> NodeConfig<'a> {
 			edge_system,
 			before_system,
 			after_system,
-			node_id,
 			graph_id,
-			graph_depth,
 			child_index,
-			parent_depth,
 		})
 	}
 
@@ -148,15 +136,34 @@ impl<'a> NodeConfig<'a> {
 		}
 	}
 
+	pub fn to_struct(&self, ident: Ident) -> TokenStream {
+		let tokens = self.to_instance_tokens();
+		let as_root = Ident::new(&format!("{}_as_root", ident), ident.span());
+		let as_child = Ident::new(&format!("{}_as_child", ident), ident.span());
+		quote! {
+			// pub struct #ident;
+			#[allow(non_snake_case)]
+			fn #as_root()->impl IntoRootNode{
+				#tokens
+			}
+			#[allow(non_snake_case)]
+			fn #as_child<const CHILD_INDEX:usize, Parent: IntoNodeId>()->impl IntoChildNode<CHILD_INDEX,Parent>{
+				#tokens
+			}
+		}
+	}
+
+	pub fn to_instance(&self) -> TokenStream {
+		let tokens = self.to_instance_tokens();
+		quote! {
+			|| #tokens
+		}
+	}
 
 	pub fn to_instance_tokens(&self) -> TokenStream {
 		let ident = self.ident();
 		let NodeConfig {
-			node_id,
 			graph_id,
-			graph_depth,
-			child_index,
-			parent_depth,
 			node_system,
 			edge_system,
 			..
@@ -167,12 +174,8 @@ impl<'a> NodeConfig<'a> {
 
 		quote! {
 			#ident::<
-			#node_id,
-			#graph_id,
-			#graph_depth,
-			#child_index,
-			#parent_depth,
-			_,_,_,_, //NodeSystem,NodeSystemMarker,EdgeSystem,EdgeSystemMarker
+			0, RootParent<#graph_id>,
+			_,_,_,_, //NodeSystem, NodeSystemMarker, EdgeSystem, EdgeSystemMarker
 			#child_types
 			>::new(|| #node_system,|| #edge_system,#child_instances)
 		}
@@ -187,7 +190,7 @@ impl<'a> NodeConfig<'a> {
 			.iter()
 			.map(|c| {
 				let child = c.to_instance_tokens();
-				quote!(#child,)
+				quote!(move || #child,)
 			})
 			.collect()
 	}

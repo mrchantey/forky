@@ -13,9 +13,9 @@ pub struct AiBundle<Node: AiNode> {
 
 impl<Node: AiNode> AiBundle<Node> {
 	/// Initialize default, will not run until root node has NodeState::Running.
-	pub fn new(_node: impl Fn()->Node) -> Self { Self::default() }
+	pub fn new(_node: impl IntoRootNode<Out = Node>) -> Self { Self::default() }
 	/// Initialize default with NodeState::Running for the root node.
-	pub fn running(_node: impl Fn()-> Node) -> impl Bundle {
+	pub fn running(_node: impl IntoRootNode<Out = Node>) -> impl Bundle {
 		(
 			DerefNodeState::<Node>::new(NodeState::Running),
 			Self::default(),

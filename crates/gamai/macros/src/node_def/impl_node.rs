@@ -30,13 +30,19 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				const PARENT_DEPTH: usize = Parent::GRAPH_DEPTH;
 			}
 
-			impl<const NEW_CHILD_INDEX:usize, #self_bounds NewParent:IntoNodeId> IntoNode<NEW_CHILD_INDEX,NewParent> for #ident<#self_params>{
+			impl<#self_bounds> IntoRootNode for #ident<#self_params>{
+				type Out = #ident<#self_params>;
+				fn into_root_node(self) -> Self::Out{
+					self
+				}
+			}
+			impl<const NEW_CHILD_INDEX:usize, #self_bounds NewParent:IntoNodeId> IntoChildNode<NEW_CHILD_INDEX,NewParent> for #ident<#self_params>{
 				type Out = #ident<#self_params_new>;
-				fn into_node(self) -> Self::Out{
+				fn into_child_node(self) -> Self::Out{
 					Self::Out{
-            phantom: std::marker::PhantomData,
-            node_system:self.node_system,
-            edge_system:self.edge_system,
+						phantom: std::marker::PhantomData,
+						node_system:self.node_system,
+						edge_system:self.edge_system,
 						#child_fields_self
 					}
 					// #ident::<#self_params_new>::new(self.node_system, self.edge_system, #child_fields_self)

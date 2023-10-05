@@ -1,19 +1,19 @@
-#![feature(
-	return_position_impl_trait_in_trait,
-	associated_const_equality,
-	// generic_const_exprs
-)]
+#![feature(return_position_impl_trait_in_trait, associated_const_equality)]
 //this example is for macro expansion, for usage see the `tests` directory
 use gamai::*;
 fn my_system() {}
 
 fn main() {
-	//
-	// let _ = AiPlugin::new(my_tree);
-	let my_tree = tree! {<my_system/>};
+	let my_tree = tree! {
+		<my_system>
+			<my_system/>
+		</my_system>
+	};
+	let _ = AiBundle::new(my_tree);
+	let _ = AiPlugin::new(my_tree);
+	let _ = AiPlugin::new(my_tree);
 }
 
-
-
-// fn my_tree() -> impl IntoTree {
-// }
+tree! {MyTree,
+	<my_system/>
+}

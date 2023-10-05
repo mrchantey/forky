@@ -65,7 +65,7 @@ fn child_fields_into_node(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
 			let field = child_field_name(index);
-			quote!(#field: #field.into_node(),)
+			quote!(#field: #field.into_child_node(),)
 			// quote!(#field: #field.into_node::<#index,Self>(),)
 		})
 		.collect()
@@ -77,7 +77,7 @@ fn child_fields_args(num_children: usize) -> TokenStream {
 			let ty = child_type_name(index);
 			// let ty = into_child_type_name(index);
 			// quote!(#field: impl IntoNode<#index,Self,Out=#ty>,)
-			quote!{#field: impl IntoNode<#index,
+			quote!{#field: impl IntoChildNode<#index,
 				PhantomNodeId<
 					GRAPH_ID,
 					GRAPH_DEPTH,
