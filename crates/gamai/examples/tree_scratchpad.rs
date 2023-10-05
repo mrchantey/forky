@@ -20,14 +20,16 @@ fn foo(a: impl IntoTree) -> impl AiNode { a.into_root_node() }
 fn into_tree() -> impl IntoTree {
 	// pub struct FOO;
 	#[allow(non_camel_case_types)]
+	#[derive(Clone, Copy)]
 	struct my_node;
+	const GRAPH_ID: usize = 0;
 
-	impl IntoRootNode for my_node {
-		fn into_root_node(&self) -> impl AiNode {
-			const GRAPH_ID: usize = 0;
-			Self.into_child_node::<0, GRAPH_ID, 0, 0, RootParent<GRAPH_ID>>()
-		}
-	}
+	// impl IntoRootNode for my_node {
+	// 	type Out = Node0<0, RootParent<GRAPH_ID>, _, _, _, _>;
+	// 	fn into_root_node(&self) -> impl AiNode {
+	// 		Self.into_child_node::<0, GRAPH_ID, 0, 0, RootParent<GRAPH_ID>>()
+	// 	}
+	// }
 	impl IntoChildNode for my_node {
 		fn into_child_node<
 			const CHILD_INDEX: usize,

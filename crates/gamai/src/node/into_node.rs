@@ -17,7 +17,8 @@ pub trait IntoNode<const CHILD_INDEX: usize, Parent: IntoNodeId>:
 }
 
 pub trait IntoRootNode {
-	fn into_root_node(&self) -> impl AiNode;
+	type Out: AiNode;
+	fn into_root_node(&self) -> Self::Out;
 }
 pub trait IntoChildNode {
 	fn into_child_node<
@@ -45,7 +46,8 @@ where
 	T: IntoRootNode,
 	F: Fn() -> T + Copy,
 {
-	fn into_root_node(&self) -> impl AiNode { self().into_root_node() }
+	type Out = T::Out;
+	fn into_root_node(&self) -> Self::Out { self().into_root_node() }
 }
 impl<F, T> IntoChildNode for F
 where
