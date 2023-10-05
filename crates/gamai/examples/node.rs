@@ -8,10 +8,12 @@ fn my_bevy_system() {}
 fn my_node_system<N: AiNode>() {}
 
 fn my_node() -> impl AiNode {
-	let node0 =
-		Node0::<0, 0, 0, 0, 0, _, _, _, _>::new(my_node_system, my_node_system);
+	let node0 = Node0::<0, RootParent<0>, _, _, _, _>::new(
+		my_node_system,
+		my_node_system,
+	);
 	// node0
-	Node1::<0, 0, 0, 0, 0, _, _, _, _, _>::new(
+	Node1::<0, RootParent<0>, _, _, _, _, _>::new(
 		|| my_bevy_system,
 		|| my_bevy_system,
 		node0,
