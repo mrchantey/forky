@@ -2,8 +2,6 @@
 use proc_macro::TokenStream;
 mod tree;
 use tree::*;
-mod tree_builder;
-use tree_builder::*;
 mod node_def;
 use node_def::*;
 mod node_system;
@@ -25,11 +23,6 @@ pub fn tree(item: TokenStream) -> TokenStream {
 	parse_tree(item)
 		.unwrap_or_else(syn::Error::into_compile_error)
 		.into()
-}
-
-#[proc_macro_attribute]
-pub fn tree_builder(attr: TokenStream, item: TokenStream) -> TokenStream {
-	parse_tree_builder(attr, item)
 }
 
 #[proc_macro]

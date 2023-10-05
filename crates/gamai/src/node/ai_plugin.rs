@@ -3,36 +3,28 @@ use bevy_app::prelude::*;
 use std::marker::PhantomData;
 
 #[derive(Debug, Clone)]
-pub struct AiPlugin<Node, Builder>
+pub struct AiPlugin<Root>
 where
-	Node: AiNode,
-	Builder: 'static + Send + Sync + Fn() -> Node,
+	Root: 'static + Send + Sync + IntoRootNode,
 {
-	builder: Builder,
-	phantom: PhantomData<Node>,
+	root: Root,
 }
 
-impl<Node, Builder> AiPlugin<Node, Builder>
+impl<Root> AiPlugin<Root>
 where
-	Node: AiNode,
-	Builder: 'static + Send + Sync + Fn() -> Node,
+	Root: 'static + Send + Sync + IntoRootNode,
 {
-	pub fn new(builder: Builder) -> Self {
-		Self {
-			builder,
-			phantom: PhantomData,
-		}
-	}
+	pub fn new(root: Root) -> Self { Self { root } }
 }
 
-impl<Node, Builder> Plugin for AiPlugin<Node, Builder>
+impl<Builder> Plugin for AiPlugin<Builder>
 where
-	Node: AiNode,
-	Builder: 'static + Send + Sync + Fn() -> Node,
+	// Node: AiNode,
+	Builder: 'static + Send + Sync + IntoRootNode,
 {
 	fn build(&self, app: &mut bevy_app::App) {
 		app.init_schedule(Update);
 		let schedule = app.get_schedule_mut(Update).unwrap();
-		(self.builder)().add_systems(schedule);
+		self.root.into_root_node().add_systems(schedule);
 	}
 }
