@@ -34,6 +34,20 @@ pub fn first_valid_edge<N: AiNode>(
 	}
 }
 
+//TODO handle failure
+#[node_system]
+pub fn parallel<N: AiNode>(
+	mut commands: Commands,
+	mut query: Query<N::ChildQuery, With<DerefNodeState<N>>>,
+) {
+	for node in query.iter_mut() {
+		let mut children = N::children(node);
+		for child in children.iter_mut() {
+			child.set_node_state(&mut commands, Some(NodeState::Running));
+		}
+	}
+}
+
 #[node_system]
 pub fn edge_always_pass<N: AiNode>(mut query: Query<&mut DerefEdgeState<N>>) {
 	// println!("edge_always_pass: Running");

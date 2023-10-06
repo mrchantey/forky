@@ -21,6 +21,8 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let add_systems_children = add_systems_children(node);
 	let configure_sets = configure_sets(node);
 	let child_fields_self = child_fields_self(*num_edges);
+	let match_get_children = match_get_children(node);
+	let match_get_children_owned = match_get_children_owned(node);
 
 	quote! {
 			impl<#self_bounds> IntoNodeId for #ident<#self_params>{
@@ -80,23 +82,18 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 						vec![#child_states]
 				}
 
-				// fn child<Out>(
-				// 	self,
-				// 	index: usize,
-				// 	func: impl FnOnce(impl AiNode) -> Out,
-				// ) -> Out{
-				// 		panic!("invalid child index")
-				// }
-
-				// fn child(self, index: usize) -> Box<dyn AiNode>{
-				// 	// RootParent::<0>
-				// 	// match index{
-				// 	// 	0=>RootParent::<0>
-				// 	// 	// #(CHILD_INDEX => self.#child_fields_self.into_child_node(),)*
-				// 	// 	_ => panic!("invalid child index")
-				// 	// }
-				// 	panic!("invalid child index")
-				// }
+				fn get_child(&self,index:usize)->&dyn NodeInspector{
+					match index{
+						#match_get_children
+						_=> panic!("invalid child index")
+					}
+				}
+				fn get_child_owned(self,index:usize)->Box<dyn NodeInspector>{
+					match index{
+						#match_get_children_owned
+						_=> panic!("invalid child index")
+					}
+				}
 			}
 	}
 }
@@ -178,6 +175,22 @@ fn add_systems_children(node: &NodeParser) -> TokenStream {
 		.map(|index| {
 			let child_ident = child_field_name(index);
 			quote!(self.#child_ident.add_systems(schedule);)
+		})
+		.collect()
+}
+fn match_get_children(node: &NodeParser) -> TokenStream {
+	(0..node.num_edges)
+		.map(|index| {
+			let child_ident = child_field_name(index);
+			quote!(#index => &self.#child_ident,)
+		})
+		.collect()
+}
+fn match_get_children_owned(node: &NodeParser) -> TokenStream {
+	(0..node.num_edges)
+		.map(|index| {
+			let child_ident = child_field_name(index);
+			quote!(#index => Box::new(self.#child_ident),)
 		})
 		.collect()
 }

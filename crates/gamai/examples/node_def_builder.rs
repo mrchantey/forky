@@ -27,14 +27,3 @@ fn _foobar() {
 	let _ = AiPlugin::new(tree);
 	let _ = AiPlugin::new(tree);
 }
-
-// type Child;
-
-// trait IntoChild<Parent> {}
-
-// impl<const CHILD_INDEX: usize, Parent: IntoNodeId, T> IntoChild<Parent> for T where
-// 	T: IntoNode<CHILD_INDEX, Parent>
-// {
-// }
-
-// fn get_child()->impl

@@ -4,7 +4,7 @@ use gamai::*;
 fn my_system() {}
 
 fn main() {
-	let _tree0 = tree!{<MyTree/>};
+	let _tree0 = tree! {<MyTree/>};
 	let _tree1 = tree! {
 		<my_system>
 			<my_system>
@@ -19,15 +19,11 @@ fn main() {
 }
 
 
-#[derive(Clone, Copy)]
-struct MyTree;
-
-impl Tree for MyTree {
-	fn build(self) -> impl IntoNode {
-		tree! {
-			<my_system>
-				<MyTree/>
-			</my_system>
-		}
+#[tree_builder]
+pub fn MyTree() -> impl IntoTree {
+	tree! {
+		<my_system>
+			<MyTree/>
+		</my_system>
 	}
 }

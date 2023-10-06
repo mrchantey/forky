@@ -36,7 +36,7 @@ where
 }
 
 
-pub trait IntoNode: 'static + Send + Sync + Copy {
+pub trait IntoTree: 'static + Send + Sync + Copy {
 	fn bundle(self) -> impl Bundle {
 		AiBundle::new(move || self.get_into_root_node())
 	}
@@ -47,7 +47,17 @@ pub trait IntoNode: 'static + Send + Sync + Copy {
 		AiPlugin::new(move || self.get_into_root_node())
 	}
 	fn node(self) -> impl AiNode { self.get_into_root_node().into_root_node() }
+	fn node_state(self, world: &World, entity: Entity) -> Option<NodeState> {
+		self.node().node_state(world, entity)
+	}
 
+	fn edge_state(self, world: &World, entity: Entity) -> Option<EdgeState> {
+		self.node().edge_state(world, entity)
+	}
+
+	fn child(self, index: usize) -> Box<dyn NodeInspector> {
+		self.node().child_owned(index)
+	}
 
 	fn get_into_root_node(self) -> impl IntoRootNode;
 
@@ -56,41 +66,21 @@ pub trait IntoNode: 'static + Send + Sync + Copy {
 	) -> impl IntoChildNode<CHILD_INDEX, Parent>;
 }
 
-pub trait Tree: 'static + Send + Sync + Copy {
-	fn build(self) -> impl IntoNode;
-}
-
-
-impl<T> IntoNode for T
+impl<F, T> IntoTree for F
 where
-	T: Tree,
+	F: 'static + Send + Sync + Copy + FnOnce() -> T,
+	T: IntoTree,
 {
 	fn get_into_root_node(self) -> impl IntoRootNode {
-		self.build().get_into_root_node()
+		self().get_into_root_node()
 	}
 
 	fn get_into_child_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(
 		self,
 	) -> impl IntoChildNode<CHILD_INDEX, Parent> {
-		self.build().get_into_child_node()
+		self().get_into_child_node()
 	}
 }
-
-// impl<F, T> IntoNode for F
-// where
-// 	F: FnOnce() -> T,
-// 	T: IntoNode,
-// {
-// 	fn get_into_root_node(self) -> impl IntoRootNode {
-// 		self().get_into_root_node()
-// 	}
-
-// 	fn get_into_child_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(
-// 		self,
-// 	) -> impl IntoChildNode<CHILD_INDEX, Parent> {
-// 		self().get_into_child_node()
-// 	}
-// }
 
 
 // pub trait IntoNode<Node: AiNode>: 'static + Send + Sync + Sized {

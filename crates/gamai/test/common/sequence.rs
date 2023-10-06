@@ -1,40 +1,33 @@
-// // use bevy_ecs::prelude::*;
-// use bevy_app::prelude::*;
-// use gamai::*;
-// use sweet::*;
+use bevy_app::prelude::*;
+// use bevy_ecs::prelude::*;
+use gamai::*;
+use sweet::*;
 
-// type MyTree = gamai::tree!(
-// 	<sequence>
-// 		<node_always_succeed/>
-// 		<node_always_succeed/>
-// 		// <print_on_run edge=edge_always_pass/>
-// 	</sequence>
-// );
-// type Child0 = <MyTree as NamedChildren2>::Child0;
-// type Child1 = <MyTree as NamedChildren2>::Child1;
+#[sweet_test]
+pub fn works() -> Result<()> {
+	let my_tree = tree! {
+		<sequence>
+			<node_always_succeed/>
+			<node_always_succeed/>
+		</sequence>
+	};
 
-// sweet! {
+	let mut app = App::new();
 
-// 	test "sequence" {
-// 		let mut app = App::new();
-// 		app.add_plugins(MyTree::plugin());
-// 		// let mut world = World::new();
-// 		// let mut schedule = Schedule::default();
-// 		// MyTree::add_systems(&mut schedule);
-// 		let entity = app.world.spawn(MyTree::bundle()).id();
+	app.add_plugins(my_tree.plugin());
+	let entity = app.world.spawn(my_tree.bundle_running()).id();
 
-// 		app.update();
+	app.update();
 
-// 		expect(&app)
-// 			.to_have_component::<DerefNodeState<Child0>>(entity)?;
-// 		expect(&app).not()
-// 			.to_have_component::<DerefNodeState<Child1>>(entity)?;
+	expect(my_tree.child(0).node_state(&app.world, entity))
+		.to_be(Some(NodeState::Running))?;
+	expect(my_tree.child(1).node_state(&app.world, entity)).to_be_none()?;
 
-// 		app.update();
+	app.update();
 
-// 		expect(&app).not()
-// 			.to_have_component::<DerefNodeState<Child0>>(entity)?;
-// 		expect(&app)
-// 			.to_have_component::<DerefNodeState<Child1>>(entity)?;
-// 	}
-// }
+	expect(my_tree.child(0).node_state(&app.world, entity)).to_be_none()?;
+	expect(my_tree.child(1).node_state(&app.world, entity))
+		.to_be(Some(NodeState::Running))?;
+
+	Ok(())
+}

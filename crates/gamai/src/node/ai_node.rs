@@ -22,24 +22,8 @@ pub trait AiNode: 'static + Send + Sync + IntoNodeId {
 	) -> Vec<ChildState<'a>>;
 	fn add_systems(self, schedule: &mut Schedule);
 
-	fn node_state(&self, world: &World, entity: Entity) -> Option<NodeState>
-	where
-		Self: Sized,
-	{
-		world
-			.entity(entity)
-			.get::<DerefNodeState<Self>>()
-			.map(|state| **state)
-	}
-	fn edge_state(&self, world: &World, entity: Entity) -> Option<EdgeState>
-	where
-		Self: Sized,
-	{
-		world
-			.entity(entity)
-			.get::<DerefEdgeState<Self>>()
-			.map(|state| **state)
-	}
+	fn get_child(&self, index: usize) -> &dyn NodeInspector;
+	fn get_child_owned(self, index: usize) -> Box<dyn NodeInspector>;
 }
 
 
@@ -48,4 +32,35 @@ pub struct PhantomComponent<T>(pub PhantomData<T>);
 
 impl<T> PhantomComponent<T> {
 	pub fn new() -> Self { Self(PhantomData) }
+}
+
+
+pub trait NodeInspector {
+	fn node_state(&self, world: &World, entity: Entity) -> Option<NodeState>;
+	fn edge_state(&self, world: &World, entity: Entity) -> Option<EdgeState>;
+	fn child(&self, index: usize) -> &dyn NodeInspector;
+	fn child_owned(self, index: usize) -> Box<dyn NodeInspector>;
+}
+
+impl<T: AiNode + Sized> NodeInspector for T {
+	fn node_state(&self, world: &World, entity: Entity) -> Option<NodeState> {
+		world
+			.entity(entity)
+			.get::<DerefNodeState<Self>>()
+			.map(|state| **state)
+	}
+
+	fn edge_state(&self, world: &World, entity: Entity) -> Option<EdgeState> {
+		world
+			.entity(entity)
+			.get::<DerefEdgeState<Self>>()
+			.map(|state| **state)
+	}
+
+	fn child(&self, index: usize) -> &dyn NodeInspector {
+		self.get_child(index)
+	}
+	fn child_owned(self, index: usize) -> Box<dyn NodeInspector> {
+		self.get_child_owned(index)
+	}
 }

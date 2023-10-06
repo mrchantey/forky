@@ -7,9 +7,9 @@ use gamai::*;
 fn my_system() {}
 
 fn main() {
-	// let tree1 = tree! {<my_system/>};
-	// let _ = tree1.bundle();
-	// let _ = tree1.plugin();
+	let tree1 = tree! {<my_system/>};
+	let _ = tree1.bundle();
+	let _ = tree1.plugin();
 	let _tree2 = tree! {
 		<my_system>
 			<my_system/>

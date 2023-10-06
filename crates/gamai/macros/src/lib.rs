@@ -24,6 +24,10 @@ pub fn tree(item: TokenStream) -> TokenStream {
 		.unwrap_or_else(syn::Error::into_compile_error)
 		.into()
 }
+#[proc_macro_attribute]
+pub fn tree_builder(attr:TokenStream,item: TokenStream) -> TokenStream {
+	parse_tree_builder(attr,item)
+}
 
 #[proc_macro]
 pub fn html(tokens: TokenStream) -> TokenStream { html_inner(tokens, false) }
