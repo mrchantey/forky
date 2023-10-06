@@ -1,5 +1,21 @@
 use super::*;
-// use bevy_ecs::prelude::*;
+use bevy_app::prelude::*;
+use bevy_ecs::prelude::*;
+
+pub trait IntoRootNode {
+	type Out: AiNode;
+	fn into_root_node(self) -> Self::Out;
+}
+
+// implement for factories
+impl<F, T> IntoRootNode for F
+where
+	T: IntoRootNode,
+	F: FnOnce() -> T,
+{
+	type Out = T::Out;
+	fn into_root_node(self) -> Self::Out { self().into_root_node() }
+}
 
 pub trait IntoChildNode<const CHILD_INDEX: usize, Parent: IntoNodeId>:
 	'static + Send + Sync + Sized
@@ -19,20 +35,58 @@ where
 	fn into_child_node(self) -> Self::Out { self().into_child_node() }
 }
 
-pub trait IntoRootNode {
-	type Out: AiNode;
-	fn into_root_node(self) -> Self::Out;
+
+pub trait IntoNode: 'static + Send + Sync + Copy {
+	fn bundle(self) -> impl Bundle {
+		AiBundle::new(move || self.get_into_root_node())
+	}
+	fn plugin(self) -> impl Plugin {
+		AiPlugin::new(move || self.get_into_root_node())
+	}
+
+	fn get_into_root_node(self) -> impl IntoRootNode;
+
+	fn get_into_child_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(
+		self,
+	) -> impl IntoChildNode<CHILD_INDEX, Parent>;
 }
 
-// implement for factories
-impl<F, T> IntoRootNode for F
-where
-	T: IntoRootNode,
-	F: FnOnce() -> T + Copy,
-{
-	type Out = T::Out;
-	fn into_root_node(self) -> Self::Out { self().into_root_node() }
+pub trait Tree: 'static + Send + Sync + Copy {
+	fn build(self) -> impl IntoNode;
 }
+
+
+impl<T> IntoNode for T
+where
+	T: Tree,
+{
+	fn get_into_root_node(self) -> impl IntoRootNode {
+		self.build().get_into_root_node()
+	}
+
+	fn get_into_child_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(
+		self,
+	) -> impl IntoChildNode<CHILD_INDEX, Parent> {
+		self.build().get_into_child_node()
+	}
+}
+
+// impl<F, T> IntoNode for F
+// where
+// 	F: FnOnce() -> T,
+// 	T: IntoNode,
+// {
+// 	fn get_into_root_node(self) -> impl IntoRootNode {
+// 		self().get_into_root_node()
+// 	}
+
+// 	fn get_into_child_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(
+// 		self,
+// 	) -> impl IntoChildNode<CHILD_INDEX, Parent> {
+// 		self().get_into_child_node()
+// 	}
+// }
+
 
 // pub trait IntoNode<Node: AiNode>: 'static + Send + Sync + Sized {
 // 	fn into_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(&self) -> Node;

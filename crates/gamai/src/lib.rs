@@ -4,6 +4,8 @@
 	associated_type_defaults,
 	associated_type_bounds,
 	associated_const_equality,
+	impl_trait_in_fn_trait_return,
+	fn_traits,
 	// inherent_associated_types,
 	// generic_const_exprs,
 )]

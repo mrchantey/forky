@@ -12,7 +12,7 @@ type XmlNode = rstml::node::Node;
 type XmlNodeAttribute = rstml::node::NodeAttribute;
 type XmlNodeElement = rstml::node::NodeElement;
 
-pub struct NodeConfig<'a> {
+pub struct TreeParser<'a> {
 	pub node: &'a XmlNodeElement,
 	pub graph_id: usize,
 	pub child_index: usize,
@@ -22,12 +22,10 @@ pub struct NodeConfig<'a> {
 	pub edge_system: TokenStream,
 	pub before_system: TokenStream,
 	pub after_system: TokenStream,
-	pub children: Vec<NodeConfig<'a>>,
+	pub children: Vec<TreeParser<'a>>,
 }
 
-impl<'a> NodeConfig<'a> {
-	// pub fn num_children(&self) -> usize { self.children.len() }
-
+impl<'a> TreeParser<'a> {
 	pub fn root(node: &'a XmlNode, graph_id: usize) -> Result<Self> {
 		let node = match node {
 			XmlNode::Element(el) => match el.open_tag.name.to_string().as_str()
@@ -141,57 +139,43 @@ impl<'a> NodeConfig<'a> {
 		}
 	}
 
-	pub fn to_struct(&self, ident: Ident) -> TokenStream {
-		let tokens = self.to_instance_tokens();
-		let as_root = tree_as_root_ident(&ident);
-		let as_child = tree_as_child_ident(&ident);
-		quote! {
-			// pub struct #ident;
-			#[allow(non_snake_case)]
-			fn #as_root()->impl IntoRootNode{
-				#tokens
-			}
-			#[allow(non_snake_case)]
-			fn #as_child<const CHILD_INDEX:usize, Parent: IntoNodeId>()->impl IntoChildNode<CHILD_INDEX,Parent>{
-				#tokens
-			}
-		}
-	}
-
 	pub fn to_instance(&self) -> TokenStream {
-		let tokens = self.to_instance_tokens();
+		// let NodeConfig { graph_id, .. } = self;
+		let ident = self.tree_ident();
+		let tokens_root = self.to_instance_tokens(true);
+		let tokens_child = self.to_instance_tokens(false);
 		quote! {
-			|| #tokens
+			{
+				#[derive(Clone,Copy)]
+				struct #ident;
+				impl IntoNode for #ident{
+					fn get_into_root_node(self) -> impl IntoRootNode{
+						#tokens_root
+					}
+					fn get_into_child_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(self)
+						-> impl IntoChildNode<CHILD_INDEX, Parent>{
+						#tokens_child
+					}
+				}
+				#ident
+			}
 		}
 	}
 
-	pub fn to_instance_tokens(&self) -> TokenStream {
+	pub fn to_instance_tokens(&self, is_root: bool) -> TokenStream {
 		let ident = self.ident();
-		let NodeConfig {
+		let TreeParser {
 			node,
 			graph_id,
-			graph_depth,
 			child_index,
 			node_system,
 			edge_system,
-			child_index_of_parent,
 			..
 		} = self;
 
-		// let parent_depth:usize = 0;
-		// let grandparent_depth:usize = 0;
 		let child_types = self.child_types();
 		let child_instances = self.child_instances();
-		let name = node.name().to_string();
-		if is_uppercase(&name) {
-			let ident = tree_as_child_ident(&Ident::new(&name, node.span()));
-
-			let parent_id = parent_id(
-				*graph_id,
-				*child_index_of_parent,
-				graph_depth.checked_sub(1).unwrap_or(0),
-			); //not sure why we need to sub 1 here
-
+		if self.is_tree() {
 			if let Some(child) = self.children.first() {
 				return syn::Error::new(
 					child.node.span(),
@@ -200,17 +184,25 @@ impl<'a> NodeConfig<'a> {
 				.to_compile_error()
 				.into();
 			}
-			//TODO parent child index?
-			quote! {
-				#ident::<#child_index,#parent_id>()
+			let name = node.name();
+			if is_root {
+				quote! {
+					move || #name.get_into_root_node()
+				}
+			} else {
+				quote! {
+					#name.get_into_child_node()
+				}
 			}
 		} else {
-			let parent_id =
-				parent_id(*graph_id, *child_index_of_parent, *graph_depth);
-
+			let parent_id = if is_root {
+				quote! {RootParent<#graph_id>}
+			} else {
+				self.parent_id()
+			};
 			quote! {
 				#ident::<
-				0, #parent_id,
+				#child_index, #parent_id,
 				_,_,_,_, //these are for NodeSystem, NodeSystemMarker, EdgeSystem, EdgeSystemMarker
 				#child_types
 				>::new(|| #node_system,|| #edge_system,#child_instances)
@@ -226,43 +218,41 @@ impl<'a> NodeConfig<'a> {
 		self.children
 			.iter()
 			.map(|c| {
-				let child = c.to_instance_tokens();
+				let child = c.to_instance_tokens(false);
 				quote!(move || {#child},)
 			})
 			.collect()
 	}
-}
-
-fn is_uppercase(val: &str) -> bool {
-	if let Some(first_char) = val.chars().next() {
-		if first_char.is_uppercase() {
-			return true;
+	fn is_tree(&self) -> bool {
+		let name = self.node.name().to_string();
+		if let Some(first_char) = name.chars().next() {
+			if first_char.is_uppercase() {
+				return true;
+			}
 		}
+		false
 	}
-	false
-}
-
-
-fn tree_as_root_ident(ident: &Ident) -> Ident {
-	Ident::new(&format!("{}_as_root", ident), ident.span())
-}
-fn tree_as_child_ident(ident: &Ident) -> Ident {
-	Ident::new(&format!("{}_as_child", ident), ident.span())
-}
-
-
-fn parent_id(
-	graph_id: usize,
-	child_index_of_parent: usize,
-	depth: usize,
-) -> TokenStream {
-	let parent_depth = depth.checked_sub(1).unwrap_or(0);
-	let grandparent_depth = parent_depth.checked_sub(1).unwrap_or(0);
-	quote! {
-		PhantomNodeId<
-		#graph_id,
-		#parent_depth,
-		#child_index_of_parent,
-		#grandparent_depth>
+	fn tree_ident(&self) -> Ident {
+		Ident::new(
+			format!("AutoGenTree{}", self.graph_id).as_str(),
+			self.node.span(),
+		)
+	}
+	fn parent_id(&self) -> TokenStream {
+		let TreeParser {
+			graph_id,
+			graph_depth,
+			child_index_of_parent,
+			..
+		} = self;
+		let parent_depth = graph_depth.checked_sub(1).unwrap_or(0);
+		let grandparent_depth = parent_depth.checked_sub(1).unwrap_or(0);
+		quote! {
+			PhantomNodeId<
+			#graph_id,
+			#parent_depth,
+			#child_index_of_parent,
+			#grandparent_depth>
+		}
 	}
 }
