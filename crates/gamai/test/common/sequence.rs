@@ -15,7 +15,7 @@ pub fn works() -> Result<()> {
 	let mut app = App::new();
 
 	app.add_plugins(my_tree.plugin());
-	let entity = app.world.spawn(my_tree.bundle_running()).id();
+	let entity = app.world.spawn(my_tree.bundle()).id();
 
 	app.update();
 

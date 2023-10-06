@@ -23,11 +23,14 @@
 	- [Changelog](./sweet/changelog.md)
 ---
 - [Gamai](./gamai/index.md)
-	- [Resources](./gamai/resources.md)
+	- [Selectors](./gamai/selectors.md)
+	<!-- - [Resources](./gamai/resources.md) -->
+---
 
 # Demos
 
 - [Bevy WebXR](./demos/bevy-webxr.md)
+---
 
-# Other
+# Misc
 - [Contributing](./other/contributing.md)

@@ -8,13 +8,13 @@ pub fn root() -> Result<()> {
 
 	let mut app = App::new();
 
-	let entity = app.world.spawn(my_tree.bundle()).id();
+	let entity = app.world.spawn(my_tree.bundle_inactive()).id();
 
 	expect(my_tree.node_state(&app.world, entity)).to_be_none()?;
 	expect(my_tree.edge_state(&app.world, entity))
 		.to_be(Some(EdgeState::Fail))?;
 
-	let entity = app.world.spawn(my_tree.bundle_running()).id();
+	let entity = app.world.spawn(my_tree.bundle()).id();
 	expect(my_tree.node_state(&app.world, entity))
 		.to_be(Some(NodeState::Running))?;
 

@@ -1,16 +1,34 @@
-// use bevy_ecs::prelude::*;
-// use gamai::*;
-// use sweet::*;
+use bevy_app::App;
+use gamai::*;
+use sweet::*;
 
-// type MyTree = gamai::tree!(
-// 	<first_valid_edge edge=edge_always_pass>
-// 		<empty_node edge=edge_always_fail/>
-// 		<empty_node edge=edge_always_pass/>
-// 		// <print_on_run edge=edge_always_pass/>
-// 	</first_valid_edge>
-// );
-// type Child0 = <MyTree as NamedChildren2>::Child0;
-// type Child1 = <MyTree as NamedChildren2>::Child1;
+
+#[tree_builder]
+pub fn MyTree() -> impl AiTree {
+	tree! {
+		<first_valid_edge>
+			<empty_node edge=edge_always_fail/>
+			<empty_node edge=edge_always_pass/>
+		</first_valid_edge>
+	}
+}
+
+#[sweet_test]
+pub fn it_works() -> Result<()> {
+	let mut app = App::new();
+
+	app.add_plugins(MyTree.plugin());
+
+	let entity = app.world.spawn(MyTree.bundle()).id();
+	app.update();
+
+	expect(MyTree.child(0).node_state(&app.world, entity))
+		.to_be_none()?;
+	expect(MyTree.child(1).node_state(&app.world, entity))
+		.to_be(Some(NodeState::Running))?;
+
+	Ok(())
+}
 
 // sweet! {
 

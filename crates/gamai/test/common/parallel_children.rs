@@ -16,20 +16,19 @@ pub fn children() -> Result<()> {
 	let mut app = App::new();
 
 	app.add_plugins(my_tree.plugin());
-	let entity = app.world.spawn(my_tree.bundle_running()).id();
+	let entity = app.world.spawn(my_tree.bundle()).id();
 
-	expect(my_tree.child(0).node_state(&app.world, entity))
-		.to_be_none()?;
+	expect(my_tree.child(0).node_state(&app.world, entity)).to_be_none()?;
 	expect(my_tree.child(0).child(0).node_state(&app.world, entity))
 		.to_be_none()?;
 
 	app.update();
-	
+
 	expect(my_tree.child(0).node_state(&app.world, entity))
 		.to_be(Some(NodeState::Running))?;
 	expect(my_tree.child(0).child(0).node_state(&app.world, entity))
 		.to_be_none()?;
-	
+
 	app.update();
 	expect(my_tree.child(0).node_state(&app.world, entity))
 		.to_be(Some(NodeState::Running))?;
