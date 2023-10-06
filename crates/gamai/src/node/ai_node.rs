@@ -1,64 +1,66 @@
 use crate::*;
-use bevy_app::Plugin;
 use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;
 use std::marker::PhantomData;
-// use std::marker::PhantomData;
 
 
-
-// debug for edges to also be debug
 /// An AiNode is a node and edge system, and a set of child nodes.
-pub trait AiNode:
-	Bundle + std::fmt::Debug + Default + 'static + Send + Sync
-{
-	const NODE_ID: usize;
-	const GRAPH_ID: usize;
-	const GRAPH_DEPTH: usize;
-	const CHILD_INDEX: usize;
-	const PARENT_DEPTH: usize; //required until complex expressions https://blog.rust-lang.org/2021/02/26/const-generics-mvp-beta.html#const-generics-with-complex-expressions
+pub trait AiNode: 'static + Send + Sync + IntoNodeId {
+	// we need to repeat the consts for implementations as <Self::ID> is not allowed
+	// const GRAPH_ID: usize = <Self as IntoNodeId>::GRAPH_ID;
+	// const GRAPH_DEPTH: usize = <Self as IntoNodeId>::GRAPH_DEPTH;
+	// const CHILD_INDEX: usize = <Self as IntoNodeId>::CHILD_INDEX;
+	// const PARENT_DEPTH: usize = <Self as IntoNodeId>::PARENT_DEPTH;
 	/// Tuple Query used to access child states: `(Entity,(Child1,(Child2)))`
 	type ChildQuery: WorldQuery;
-	/// System to run in this node's update set
-	type NodeSystem: IntoNodeSystem;
-	/// System to run in this node's preupdate set
-	type EdgeSystem: IntoNodeSystem;
+	type ChildBundle: 'static + Send + Sync + Default + Bundle;
 
 	type Query<'w, 's> = Query<'w, 's, Self::ChildQuery>;
 	fn entity<'a>(item: &<Self::ChildQuery as WorldQuery>::Item<'a>) -> Entity;
 	fn children<'a>(
 		item: <Self::ChildQuery as WorldQuery>::Item<'a>,
 	) -> Vec<ChildState<'a>>;
+	fn add_systems(self, schedule: &mut Schedule);
 
-	fn add_systems(schedule: &mut Schedule);
-	fn plugin() -> impl Plugin;
-	fn bundle() -> impl Bundle;
-
-	fn add_systems_22(&self, schedule: &mut Schedule);
+	fn get_child(&self, index: usize) -> &dyn NodeInspector;
+	fn get_child_owned(self, index: usize) -> Box<dyn NodeInspector>;
 }
 
-/* GENERIC ORDER:
-NodeSystem,
-EdgeSystem,
-NODE_ID,
-GRAPH_ID,
-GRAPH_DEPTH,
-CHILD_INDEX,
-PARENT_DEPTH,
-Child0,
-Child1..
-*/
 
 #[derive(Debug, Default, Clone, Component)]
-pub struct PhantomComponent<const NODE_ID: usize, T>(PhantomData<T>);
+pub struct PhantomComponent<T>(pub PhantomData<T>);
+
+impl<T> PhantomComponent<T> {
+	pub fn new() -> Self { Self(PhantomData) }
+}
 
 
+pub trait NodeInspector {
+	fn node_state(&self, world: &World, entity: Entity) -> Option<NodeState>;
+	fn edge_state(&self, world: &World, entity: Entity) -> Option<EdgeState>;
+	fn child(&self, index: usize) -> &dyn NodeInspector;
+	fn child_owned(self, index: usize) -> Box<dyn NodeInspector>;
+}
 
-// #[derive(Component)]
-// struct Bar;
+impl<T: AiNode + Sized> NodeInspector for T {
+	fn node_state(&self, world: &World, entity: Entity) -> Option<NodeState> {
+		world
+			.entity(entity)
+			.get::<DerefNodeState<Self>>()
+			.map(|state| **state)
+	}
 
-// fn foobar(mut query: Query<&mut Bar>) {
-// 	for mut item in query.iter_mut() {
-// 		*item = Bar;
-// 	}
-// }
+	fn edge_state(&self, world: &World, entity: Entity) -> Option<EdgeState> {
+		world
+			.entity(entity)
+			.get::<DerefEdgeState<Self>>()
+			.map(|state| **state)
+	}
+
+	fn child(&self, index: usize) -> &dyn NodeInspector {
+		self.get_child(index)
+	}
+	fn child_owned(self, index: usize) -> Box<dyn NodeInspector> {
+		self.get_child_owned(index)
+	}
+}

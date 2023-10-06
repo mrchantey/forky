@@ -1,48 +1,37 @@
-use super::*;
-use proc_macro2::Ident;
-use proc_macro2::TokenStream;
-use quote::quote;
+// use super::*;
+// // use proc_macro2::Ident;
+// use proc_macro2::TokenStream;
+// use quote::quote;
 
-pub fn impl_named_children(node: &NodeParser) -> TokenStream {
-	let NodeParser {
-		ident,
-		self_params,
-		self_bounds,
-		num_edges,
-		..
-	} = node;
-	let trait_ident =
-		Ident::new(&format!("NamedChildren{num_edges}"), node.ident.span());
+// pub fn impl_named_children(_node: &NodeParser) -> TokenStream {
+// 	// let NodeParser {
+// 	// 	ident,
+// 	// 	self_params,
+// 	// 	self_bounds,
+// 	// 	num_edges,
+// 	// 	..
+// 	// } = node;
+// 	// let trait_ident =
+// 	// 	Ident::new(&format!("NamedChildren{num_edges}"), node.ident.span());
 
-	let child_types = child_types(*num_edges);
-	let child_impl = child_impl(*num_edges);
+// 	// let child_types = child_types(*num_edges);
+// 	// let child_impl = child_impl(*num_edges);
 
-	quote! {
-
-		pub trait #trait_ident{
-			#child_types
-		}
-
-		impl<#self_bounds> #trait_ident for #ident<#self_params>{
-			#child_impl
-		}
-	}
-}
+// 	// let child_funcs_def = child_funcs_def(*num_edges);
+// 	// let child_funcs_impl = child_funcs_impl(*num_edges);
 
 
-fn child_types(num_edges: usize) -> TokenStream {
-	(0..num_edges)
-		.map(|index| {
-			let child_ident = child_type_param_name(index);
-			quote!(type #child_ident: AiNode;)
-		})
-		.collect()
-}
-fn child_impl(num_edges: usize) -> TokenStream {
-	(0..num_edges)
-		.map(|index| {
-			let child_ident = child_type_param_name(index);
-			quote!(type #child_ident = #child_ident;)
-		})
-		.collect()
-}
+// 	quote! {
+
+// 		// pub trait #trait_ident<#self_bounds>{
+// 		// 	#child_funcs_def
+// 		// }
+
+// 		// // impl<F,#self_bounds> #trait_ident<#self_params> for F
+// 		// // 	where F:Fn()->#ident<#self_params>
+// 		// impl<#self_bounds> #trait_ident<#self_params> for fn()->#ident<#self_params>
+// 		// 	{
+// 		// 	#child_funcs_impl
+// 		// }
+// 	}
+// }

@@ -6,87 +6,96 @@ use quote::ToTokens;
 pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let NodeParser {
 		ident,
+		num_edges,
 		self_params,
 		self_bounds,
-		num_edges,
+		self_bounds_full,
+		self_params_new,
 		..
 	} = node;
 	let world_query = world_query_nested(node);
-	let params = node_params_nested(node);
+	let node_params = node_params_nested(node);
+	let child_bundles = child_bundles_nested(node);
 	let child_states = child_states(node);
 	let node_recast = node_recast(node);
 	let add_systems_children = add_systems_children(node);
 	let configure_sets = configure_sets(node);
+	let child_fields_self = child_fields_self(*num_edges);
+	let match_get_children = match_get_children(node);
+	let match_get_children_owned = match_get_children_owned(node);
 
-	let node_system_config = if *num_edges == 0 {
-		quote! {NodeSystemConfig::default()}
-	} else {
-		quote! {NodeSystemConfig{apply_deferred: true,}}
-	};
-
-	quote!(
-		impl<#self_bounds> AiNode for #ident<#self_params>
-		{
-			type NodeSystem = NodeSystem;
-			type EdgeSystem = EdgeSystem;
-			// type Parent = Parent;
-
-			const NODE_ID: usize = NODE_ID;
-			const GRAPH_ID: usize = GRAPH_ID;
-			const GRAPH_DEPTH: usize = GRAPH_DEPTH;
-			const CHILD_INDEX: usize = CHILD_INDEX;
-			const PARENT_DEPTH: usize = PARENT_DEPTH;
-
-			type ChildQuery = (
-				Entity,
-				// &'static mut DerefEdgeState<Self>,
-				// Option<&'static mut DerefNodeState<Self>>,
-				#world_query
-			);
-
-			fn add_systems(schedule: &mut Schedule){
-				NodeSystem::default().add_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>, &#node_system_config);
-				//my edge should run before my parents node set
-				EdgeSystem::default().add_node_system::<Self>(schedule, BeforeNodeSet::<GRAPH_ID, PARENT_DEPTH>, &NodeSystemConfig::default());
-
-				#configure_sets
-				#add_systems_children
-			}
-			fn add_systems_22(&self, schedule: &mut Schedule){
-				NodeSystem::default().add_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>, &#node_system_config);
-				//my edge should run before my parents node set
-				EdgeSystem::default().add_node_system::<Self>(schedule, BeforeNodeSet::<GRAPH_ID, PARENT_DEPTH>, &NodeSystemConfig::default());
-
-				#configure_sets
-				#add_systems_children
-			}
-			fn plugin() -> impl Plugin{
-				Self::default()
-			}
-			fn bundle() -> impl Bundle{
-				//root node starts running
-				(DerefNodeState::<Self>::new(NodeState::Running),Self::default())
-			}
-			fn entity<'a>(val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>) ->Entity{
-				val.0
+	quote! {
+			impl<#self_bounds> IntoNodeId for #ident<#self_params>{
+				const GRAPH_ID: usize = Parent::GRAPH_ID;
+				const CHILD_INDEX: usize = CHILD_INDEX;
+				const GRAPH_DEPTH: usize = Parent::GRAPH_DEPTH + 1;
+				const PARENT_DEPTH: usize = Parent::GRAPH_DEPTH;
 			}
 
-			fn children<'a>((entity,#params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
-				-> Vec<ChildState<'a>> {
-					#node_recast
-					vec![#child_states]
+			impl<#self_bounds> IntoRootNode for #ident<#self_params>{
+				type Out = #ident<#self_params>;
+				fn into_root_node(self) -> Self::Out{
+					self
+				}
+			}
+			impl<const NEW_CHILD_INDEX:usize, #self_bounds NewParent:IntoNodeId> IntoChildNode<NEW_CHILD_INDEX,NewParent> for #ident<#self_params>{
+				type Out = #ident<#self_params_new>;
+				fn into_child_node(self) -> Self::Out{
+					Self::Out{
+						phantom: std::marker::PhantomData,
+						node_system:self.node_system,
+						edge_system:self.edge_system,
+						#child_fields_self
+					}
+					// #ident::<#self_params_new>::new(self.node_system, self.edge_system, #child_fields_self)
+					// todo!()
+				}
 			}
 
-		}
+			impl<#self_bounds_full> AiNode for #ident<#self_params>
+			{
 
-		impl<#self_bounds> Plugin for #ident<#self_params> {
-			fn build(&self, app: &mut bevy_app::App) {
-				app.init_schedule(Update);
-				let schedule = app.get_schedule_mut(Update).unwrap();
-				<Self as AiNode>::add_systems(schedule);
+				type ChildQuery = (
+					Entity,
+					// &'static mut DerefEdgeState<Self>,
+					// Option<&'static mut DerefNodeState<Self>>,
+					#world_query
+				);
+
+				type ChildBundle = (#child_bundles);
+
+				fn add_systems(self, schedule: &mut Schedule){
+					self.node_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
+					self.edge_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
+
+					#configure_sets
+					#add_systems_children
+				}
+
+				fn entity<'a>(val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>) ->Entity{
+					val.0
+				}
+
+				fn children<'a>((entity,#node_params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
+					-> Vec<ChildState<'a>> {
+						#node_recast
+						vec![#child_states]
+				}
+
+				fn get_child(&self,index:usize)->&dyn NodeInspector{
+					match index{
+						#match_get_children
+						_=> panic!("invalid child index")
+					}
+				}
+				fn get_child_owned(self,index:usize)->Box<dyn NodeInspector>{
+					match index{
+						#match_get_children_owned
+						_=> panic!("invalid child index")
+					}
+				}
 			}
-		}
-	)
+	}
 }
 
 fn configure_sets(_node: &NodeParser) -> TokenStream {
@@ -105,7 +114,7 @@ fn world_query_nested(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
-			let child = child_type_param_name(index);
+			let child = child_type_name(index);
 			quote!((&'static mut DerefEdgeState<#child>,Option<&'static mut DerefNodeState<#child>>, #prev))
 		})
 		.into_token_stream()
@@ -124,7 +133,7 @@ fn node_params_nested(node: &NodeParser) -> TokenStream {
 fn child_states(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		.map(|index| {
-			let child = child_type_param_name(index);
+			let child = child_type_name(index);
 			let edge = field_ident("edge", index);
 			let node = field_ident("node", index);
 			quote! {
@@ -164,8 +173,24 @@ fn node_recast(node: &NodeParser) -> TokenStream {
 fn add_systems_children(node: &NodeParser) -> TokenStream {
 	(0..node.num_edges)
 		.map(|index| {
-			let child_ident = child_type_param_name(index);
-			quote!(#child_ident::add_systems(schedule);)
+			let child_ident = child_field_name(index);
+			quote!(self.#child_ident.add_systems(schedule);)
+		})
+		.collect()
+}
+fn match_get_children(node: &NodeParser) -> TokenStream {
+	(0..node.num_edges)
+		.map(|index| {
+			let child_ident = child_field_name(index);
+			quote!(#index => &self.#child_ident,)
+		})
+		.collect()
+}
+fn match_get_children_owned(node: &NodeParser) -> TokenStream {
+	(0..node.num_edges)
+		.map(|index| {
+			let child_ident = child_field_name(index);
+			quote!(#index => Box::new(self.#child_ident),)
 		})
 		.collect()
 }

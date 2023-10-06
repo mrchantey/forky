@@ -22,3 +22,27 @@
 
   <sub>made with ❤️‍🔥 by mrchantey</a></sub>
 </div>
+
+## Usage
+
+```rs
+#[tree_builder]
+pub fn MyTree() -> impl AiTree {
+	tree! {
+		<sequence>
+			<say_hello/>
+			<say_world/>
+		</sequence>
+	}
+}
+
+#[node_system]
+fn say_hello<Node: AiNode>(mut query: Query<&mut NodeState<Node>>){
+	
+	for mut state in query.iter_mut(){
+		println!("hello");
+		//tell parent it can go to the next node now
+		**state = NodeState::Success;
+	}
+}
+```

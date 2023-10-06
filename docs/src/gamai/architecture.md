@@ -17,11 +17,9 @@ The structure of `gamai` is a directed tree graph, and uses graph theory termino
 
 A graph structure like this:
 ```mermaid
-
 graph TB;
 	A-->B;
 	A-->C;
-
 ```
 Will turn into four systems, where the states are checked before `node A` is run, so it can determine which child node to activate.
 ```mermaid
@@ -31,14 +29,6 @@ graph LR;
 	A --> Node_B;
 	A --> Node_C;
 ```
-
-### Finite State Machines / GOTO
-
-If you're used to finite state machines you may be looking for a way to `goto` some arbitary node from another. While this is *possible* if you know the `NODE_ID` of the target, it is [considered an antipattern](https://youtu.be/gXrKGTPwfO8?list=PLFQdM4LOGDr_vYJuo8YTRcmv3FrwczdKg&t=230). 
-
-
-Also the tradeoff of the parallel nature of `gamai` is that it will only act on the jump on the next frame.
-
 
 ## Implementation
 

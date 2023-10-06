@@ -3,8 +3,11 @@
 	return_position_impl_trait_in_trait,//required for users, stablize pr open https://github.com/rust-lang/rust/pull/115822
 	associated_type_defaults,
 	associated_type_bounds,
+	associated_const_equality,
+	impl_trait_in_fn_trait_return,
+	fn_traits,
 	// inherent_associated_types,
-	// generic_const_exprs
+	// generic_const_exprs,
 )]
 //allow proc macros to work internally
 extern crate self as gamai;

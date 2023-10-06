@@ -2,16 +2,18 @@
 use crate::*;
 use bevy_ecs::prelude::*;
 
-#[derive(Debug, Default, Clone)]
+
+// should probably be a node not a node system
+// pub fn empty_node() {}
+
 #[allow(non_camel_case_types)]
 pub struct empty_node;
 
-impl IntoNodeSystem for empty_node {
-	fn add_node_system<N: AiNode>(
-		&self,
+impl IntoNodeSystem<(Self, IsNodeSystem)> for empty_node {
+	fn into_node_system<Node: AiNode>(
+		self,
 		_schedule: &mut Schedule,
 		_set: impl SystemSet,
-		_config: &NodeSystemConfig,
 	) {
 	}
 }
@@ -28,6 +30,20 @@ pub fn first_valid_edge<N: AiNode>(
 				// println!("first_valid_edge: setting node state..");
 				child.set_node_state(&mut commands, Some(NodeState::Running));
 			}
+		}
+	}
+}
+
+//TODO handle failure
+#[node_system]
+pub fn parallel<N: AiNode>(
+	mut commands: Commands,
+	mut query: Query<N::ChildQuery, With<DerefNodeState<N>>>,
+) {
+	for node in query.iter_mut() {
+		let mut children = N::children(node);
+		for child in children.iter_mut() {
+			child.set_node_state(&mut commands, Some(NodeState::Running));
 		}
 	}
 }
@@ -63,7 +79,7 @@ pub fn node_always_fail<N: AiNode>(mut query: Query<&mut DerefNodeState<N>>) {
 pub fn print_on_run<N: AiNode>(mut query: Query<&mut DerefNodeState<N>>) {
 	// println!("print_on_run: running..");
 	for mut node in query.iter_mut() {
-		println!("NodeSystem: Running {:?}", node);
+		println!("NodeSystem: Running {:?}", **node);
 		**node = NodeState::Success;
 	}
 }
