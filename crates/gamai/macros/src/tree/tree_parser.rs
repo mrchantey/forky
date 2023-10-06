@@ -127,7 +127,7 @@ impl<'a> TreeParser<'a> {
 		})
 	}
 
-	fn ident(&self) -> TokenStream {
+	fn from_node_system_ident(&self) -> TokenStream {
 		let ident = syn::Ident::new(
 			&format!("Node{}", self.children.len()),
 			Span::call_site(),
@@ -163,7 +163,6 @@ impl<'a> TreeParser<'a> {
 	}
 
 	pub fn to_instance_tokens(&self, is_root: bool) -> TokenStream {
-		let ident = self.ident();
 		let TreeParser {
 			node,
 			graph_id,
@@ -173,8 +172,6 @@ impl<'a> TreeParser<'a> {
 			..
 		} = self;
 
-		let child_types = self.child_types();
-		let child_instances = self.child_instances();
 		if self.is_tree() {
 			if let Some(child) = self.children.first() {
 				return syn::Error::new(
@@ -195,6 +192,9 @@ impl<'a> TreeParser<'a> {
 				}
 			}
 		} else {
+			let ident = self.from_node_system_ident();
+			let child_types = self.child_types();
+			let child_instances = self.child_instances();
 			let parent_id = if is_root {
 				quote! {RootParent<#graph_id>}
 			} else {

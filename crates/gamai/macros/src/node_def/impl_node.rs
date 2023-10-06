@@ -50,7 +50,6 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				}
 			}
 
-
 			impl<#self_bounds_full> AiNode for #ident<#self_params>
 			{
 
@@ -80,6 +79,24 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 						#node_recast
 						vec![#child_states]
 				}
+
+				// fn child<Out>(
+				// 	self,
+				// 	index: usize,
+				// 	func: impl FnOnce(impl AiNode) -> Out,
+				// ) -> Out{
+				// 		panic!("invalid child index")
+				// }
+
+				// fn child(self, index: usize) -> Box<dyn AiNode>{
+				// 	// RootParent::<0>
+				// 	// match index{
+				// 	// 	0=>RootParent::<0>
+				// 	// 	// #(CHILD_INDEX => self.#child_fields_self.into_child_node(),)*
+				// 	// 	_ => panic!("invalid child index")
+				// 	// }
+				// 	panic!("invalid child index")
+				// }
 			}
 	}
 }

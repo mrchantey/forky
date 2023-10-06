@@ -40,9 +40,14 @@ pub trait IntoNode: 'static + Send + Sync + Copy {
 	fn bundle(self) -> impl Bundle {
 		AiBundle::new(move || self.get_into_root_node())
 	}
+	fn bundle_running(self) -> impl Bundle {
+		AiBundle::running(move || self.get_into_root_node())
+	}
 	fn plugin(self) -> impl Plugin {
 		AiPlugin::new(move || self.get_into_root_node())
 	}
+	fn node(self) -> impl AiNode { self.get_into_root_node().into_root_node() }
+
 
 	fn get_into_root_node(self) -> impl IntoRootNode;
 

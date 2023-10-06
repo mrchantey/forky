@@ -8,8 +8,8 @@ fn bar<N: AiNode>() {}
 
 
 #[sweet_test]
-fn works() -> Result<()> {
-	let _tree = tree! {
+fn compiles() -> Result<()> {
+	let _ = tree! {
 		<foo>
 			<bar/>
 		</foo>

@@ -28,7 +28,6 @@ fn _foobar() {
 	let _ = AiPlugin::new(tree);
 }
 
-
 // type Child;
 
 // trait IntoChild<Parent> {}

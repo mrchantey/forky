@@ -3,6 +3,7 @@ use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;
 use std::marker::PhantomData;
 
+
 /// An AiNode is a node and edge system, and a set of child nodes.
 pub trait AiNode: 'static + Send + Sync + IntoNodeId {
 	// we need to repeat the consts for implementations as <Self::ID> is not allowed
@@ -20,7 +21,27 @@ pub trait AiNode: 'static + Send + Sync + IntoNodeId {
 		item: <Self::ChildQuery as WorldQuery>::Item<'a>,
 	) -> Vec<ChildState<'a>>;
 	fn add_systems(self, schedule: &mut Schedule);
+
+	fn node_state(&self, world: &World, entity: Entity) -> Option<NodeState>
+	where
+		Self: Sized,
+	{
+		world
+			.entity(entity)
+			.get::<DerefNodeState<Self>>()
+			.map(|state| **state)
+	}
+	fn edge_state(&self, world: &World, entity: Entity) -> Option<EdgeState>
+	where
+		Self: Sized,
+	{
+		world
+			.entity(entity)
+			.get::<DerefEdgeState<Self>>()
+			.map(|state| **state)
+	}
 }
+
 
 #[derive(Debug, Default, Clone, Component)]
 pub struct PhantomComponent<T>(pub PhantomData<T>);
