@@ -20,7 +20,7 @@ fn main() {
 
 
 #[tree_builder]
-pub fn MyTree() -> impl IntoTree {
+pub fn MyTree() -> impl AiTree {
 	tree! {
 		<my_system>
 			<MyTree/>

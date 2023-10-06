@@ -22,8 +22,8 @@ fn _foobar() {
 		);
 		parent
 	};
-	let _ = AiBundle::new(tree);
-	let _ = AiBundle::new(tree);
+	let _ = AiBundle::inactive(tree);
+	let _ = AiBundle::inactive(tree);
 	let _ = AiPlugin::new(tree);
 	let _ = AiPlugin::new(tree);
 }

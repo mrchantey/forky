@@ -4,6 +4,8 @@ mod ai_node;
 pub use self::ai_node::*;
 mod ai_plugin;
 pub use self::ai_plugin::*;
+mod ai_tree;
+pub use self::ai_tree::*;
 mod child_state;
 pub use self::child_state::*;
 mod edge_state;

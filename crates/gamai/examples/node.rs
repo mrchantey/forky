@@ -21,6 +21,6 @@ fn my_node() -> impl AiNode {
 }
 
 fn main() {
-	let _bundle = AiBundle::new(my_node);
+	let _bundle = AiBundle::inactive(my_node);
 	let _plugin = AiPlugin::new(my_node);
 }

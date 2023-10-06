@@ -148,7 +148,7 @@ impl<'a> TreeParser<'a> {
 			{
 				#[derive(Clone,Copy)]
 				struct #ident;
-				impl IntoTree for #ident{
+				impl AiTree for #ident{
 					fn get_into_root_node(self) -> impl IntoRootNode{
 						#tokens_root
 					}
