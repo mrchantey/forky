@@ -1,6 +1,6 @@
 # Gamai
 
-`gamai` is a flexible task switching library suitable for game AI, robotics & other performance-critical environments. It features a modular tree structure and supports multiple selector paradigms like Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation allows for opportunistic parallelism, ensuring trees are processed as quickly as possible.
+Gamai is a flexible task switching library suitable for game AI, robotics & other performance-critical environments. It features a modular tree structure and supports multiple selector paradigms like Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation allows for opportunistic parallelism, ensuring trees are processed as quickly as possible.
 
 **With Bevy**
 
@@ -34,7 +34,7 @@ pub fn MyTree() -> impl AiTree {
 }
 ```
 
-> `gamai` uses the same naming conventions as UI libraries like react or yew:
+> `gamai` uses a naming convention like web UI libraries:
 > - `node_systems` have snake_case 
 > - `tree_builders` have PascalCase
 
