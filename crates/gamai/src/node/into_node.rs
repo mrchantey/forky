@@ -5,8 +5,13 @@ pub trait IntoRootNode {
 	fn into_root_node(self) -> Self::Out;
 }
 
-pub trait IntoChildNode<const CHILD_INDEX: usize, Parent: IntoNodeId>:
-	'static + Send + Sync + Sized
+pub trait IntoChildNode<
+	const GRAPH_ID: usize,
+	const GRAPH_DEPTH: usize,
+	const CHILD_INDEX: usize,
+	const NODE_ID: usize,
+	const PARENT_DEPTH: usize,
+>: 'static + Send + Sync + Sized
 {
 	type Out: AiNode;
 	fn into_child_node(self) -> Self::Out;
@@ -23,10 +28,17 @@ where
 }
 
 // implement for builders
-impl<const CHILD_INDEX: usize, Parent: IntoNodeId, F, T>
-	IntoChildNode<CHILD_INDEX, Parent> for F
+impl<
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		const PARENT_DEPTH: usize,
+		F,
+		T,
+	> IntoChildNode<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH> for F
 where
-	T: IntoChildNode<CHILD_INDEX, Parent>,
+	T: IntoChildNode<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH>,
 	F: 'static + Send + Sync + FnOnce() -> T,
 {
 	type Out = T::Out;

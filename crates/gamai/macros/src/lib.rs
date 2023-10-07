@@ -25,9 +25,19 @@ pub fn tree(item: TokenStream) -> TokenStream {
 		.into()
 }
 #[proc_macro_attribute]
-pub fn tree_builder(attr:TokenStream,item: TokenStream) -> TokenStream {
-	parse_tree_builder(attr,item)
+pub fn tree_builder(attr: TokenStream, item: TokenStream) -> TokenStream {
+	parse_tree_builder(attr, item)
 }
 
 #[proc_macro]
 pub fn html(tokens: TokenStream) -> TokenStream { html_inner(tokens, false) }
+
+
+// #[proc_macro]
+// pub fn get_node_id_bounds(_: TokenStream) -> TokenStream {
+// 	node_id_bounds().into()
+// }
+// #[proc_macro]
+// pub fn get_node_id_params(_: TokenStream) -> TokenStream {
+// 	node_id_params().into()
+// }

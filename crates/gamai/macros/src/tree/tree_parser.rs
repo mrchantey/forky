@@ -1,3 +1,4 @@
+use crate::*;
 use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream;
@@ -7,7 +8,6 @@ use rstml::node::KeyedAttribute;
 use syn::spanned::Spanned;
 use syn::Result;
 
-
 type XmlNode = rstml::node::Node;
 type XmlNodeAttribute = rstml::node::NodeAttribute;
 type XmlNodeElement = rstml::node::NodeElement;
@@ -16,7 +16,6 @@ pub struct TreeParser<'a> {
 	pub node: &'a XmlNodeElement,
 	pub graph_id: usize,
 	pub child_index: usize,
-	pub child_index_of_parent: usize,
 	pub graph_depth: usize,
 	pub node_system: TokenStream,
 	pub edge_system: TokenStream,
@@ -37,7 +36,7 @@ impl<'a> TreeParser<'a> {
 			},
 			val => Err(syn::Error::new(val.span(), "Expected element node")),
 		}?;
-		Ok(Self::new(node, graph_id, 0, 0, 0)?)
+		Ok(Self::new(node, graph_id, 0, 0)?)
 	}
 
 	fn new(
@@ -45,7 +44,6 @@ impl<'a> TreeParser<'a> {
 		graph_id: usize,
 		graph_depth: usize,
 		child_index: usize,
-		child_index_of_parent: usize,
 	) -> Result<Self> {
 		let mut edge_system = quote!(gamai::empty_node);
 		let mut before_system = quote!(gamai::empty_node);
@@ -60,7 +58,7 @@ impl<'a> TreeParser<'a> {
 			})
 			.enumerate()
 			.map(|(index, child)| {
-				Self::new(child, graph_id, graph_depth + 1, index, child_index)
+				Self::new(child, graph_id, graph_depth + 1, index)
 			})
 			// .to_owned()
 			.collect::<Result<Vec<_>>>()?;
@@ -123,7 +121,6 @@ impl<'a> TreeParser<'a> {
 			graph_id,
 			graph_depth,
 			child_index,
-			child_index_of_parent,
 		})
 	}
 
@@ -144,6 +141,9 @@ impl<'a> TreeParser<'a> {
 		let ident = self.tree_ident();
 		let tokens_root = self.to_instance_tokens(true);
 		let tokens_child = self.to_instance_tokens(false);
+
+		let node_id_bounds = node_id_bounds();
+		let node_id_params = node_id_params();
 		quote! {
 			{
 				#[derive(Clone,Copy)]
@@ -152,8 +152,8 @@ impl<'a> TreeParser<'a> {
 					fn get_into_root_node(self) -> impl IntoRootNode{
 						#tokens_root
 					}
-					fn get_into_child_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(self)
-						-> impl IntoChildNode<CHILD_INDEX, Parent>{
+					fn get_into_child_node<#node_id_bounds>(self)
+						-> impl IntoChildNode<#node_id_params>{
 						#tokens_child
 					}
 				}
@@ -166,7 +166,7 @@ impl<'a> TreeParser<'a> {
 		let TreeParser {
 			node,
 			graph_id,
-			child_index,
+			// child_index,			// dont need to set child index because if child, intochildnode will set it
 			node_system,
 			edge_system,
 			..
@@ -183,8 +183,8 @@ impl<'a> TreeParser<'a> {
 			}
 			let name = node.name();
 			if is_root {
-				quote! {
-					move || #name.get_into_root_node()
+				quote! {// not setting graph id here? i guess the tree macro already set it
+					#name.get_into_root_node()
 				}
 			} else {
 				quote! {
@@ -195,14 +195,8 @@ impl<'a> TreeParser<'a> {
 			let ident = self.from_node_system_ident();
 			let child_types = self.child_types();
 			let child_instances = self.child_instances();
-			let parent_id = if is_root {
-				quote! {RootParent<#graph_id>}
-			} else {
-				self.parent_id()
-			};
 			quote! {
-				#ident::<
-				#child_index, #parent_id,
+				#ident::<#graph_id,0,0,0,0,
 				_,_,_,_, //these are for NodeSystem, NodeSystemMarker, EdgeSystem, EdgeSystemMarker
 				#child_types
 				>::new(|| #node_system,|| #edge_system,#child_instances)
@@ -238,21 +232,22 @@ impl<'a> TreeParser<'a> {
 			self.node.span(),
 		)
 	}
-	fn parent_id(&self) -> TokenStream {
-		let TreeParser {
-			graph_id,
-			graph_depth,
-			child_index_of_parent,
-			..
-		} = self;
-		let parent_depth = graph_depth.checked_sub(1).unwrap_or(0);
-		let grandparent_depth = parent_depth.checked_sub(1).unwrap_or(0);
-		quote! {
-			PhantomNodeId<
-			#graph_id,
-			#parent_depth,
-			#child_index_of_parent,
-			#grandparent_depth>
-		}
-	}
+	// not needed, handled by intochildnode
+	// fn parent_id(&self) -> TokenStream {
+	// 	let TreeParser {
+	// 		graph_id,
+	// 		graph_depth,
+	// 		child_index_of_parent,
+	// 		..
+	// 	} = self;
+	// 	let parent_depth = graph_depth.checked_sub(1).unwrap_or(0);
+	// 	let grandparent_depth = parent_depth.checked_sub(1).unwrap_or(0);
+	// 	quote! {
+	// 		PhantomNodeId<
+	// 		#graph_id,
+	// 		#parent_depth,
+	// 		#child_index_of_parent,
+	// 		#grandparent_depth>
+	// 	}
+	// }
 }

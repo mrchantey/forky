@@ -5,10 +5,16 @@ use bevy_ecs::prelude::*;
 pub trait AiTree: 'static + Send + Sync + Copy {
 	fn get_into_root_node(self) -> impl IntoRootNode;
 
-	fn get_into_child_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(
+	fn get_into_child_node<
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		const PARENT_DEPTH: usize,
+	>(
 		self,
-	) -> impl IntoChildNode<CHILD_INDEX, Parent>;
-	
+	) -> impl IntoChildNode<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH>;
+
 	fn plugin(self) -> impl Plugin {
 		AiPlugin::new(move || self.get_into_root_node())
 	}
@@ -30,6 +36,10 @@ pub trait AiTree: 'static + Send + Sync + Copy {
 	fn child(self, index: usize) -> Box<dyn NodeInspector> {
 		self.node().child_owned(index)
 	}
+	fn graph_id(self) -> usize { NodeInspector::graph_id(&self.node()) }
+	fn child_index(self) -> usize { NodeInspector::child_index(&self.node()) }
+	fn graph_depth(self) -> usize { NodeInspector::graph_depth(&self.node()) }
+	fn parent_depth(self) -> usize { NodeInspector::parent_depth(&self.node()) }
 }
 
 // implement for builders
@@ -42,9 +52,16 @@ where
 		self().get_into_root_node()
 	}
 
-	fn get_into_child_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(
+	fn get_into_child_node<
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		const PARENT_DEPTH: usize,
+	>(
 		self,
-	) -> impl IntoChildNode<CHILD_INDEX, Parent> {
+	) -> impl IntoChildNode<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH>
+	{
 		self().get_into_child_node()
 	}
 }

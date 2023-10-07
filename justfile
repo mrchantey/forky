@@ -130,9 +130,15 @@ watch *command:
 	-- {{command}}
 ### PLAY ###
 
-vis:
-	just run forky_play bevy_graph
-	just dot-to-svg target/render_graph.dot
+
+vis-w crate example:
+	just watch just vis {{crate}} {{example}}
+
+vis crate example:
+	just run {{crate}} {{example}}
+	just dot-to-svg target/graph/render_graph.dot
+
+# requires https://graphviz.org/download/
 dot-to-svg target:
 	dot -Tsvg -O {{target}}
 

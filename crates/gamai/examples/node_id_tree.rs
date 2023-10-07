@@ -1,4 +1,9 @@
-#![feature(associated_const_equality)]
+#![feature(
+	return_position_impl_trait_in_trait,
+	associated_const_equality,
+	generic_const_exprs
+)]
+#![allow(incomplete_features)]
 use gamai::*;
 use std::marker::PhantomData;
 
