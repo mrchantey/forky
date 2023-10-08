@@ -6,27 +6,15 @@
 )]
 #![allow(incomplete_features)]
 use gamai::*;
-fn main() {
-	// let a = Baz::<0>::next();
-	// assert_eq!(a.val(), 1);
-}
-// define_node!(0);
-// define_node!(1);
 
 fn _my_system() {}
 
-// struct Baz<const VAL: usize>;
-// impl<const VAL: usize> Baz<VAL> {
-// 	fn next() -> Baz<{ VAL + 1 }> { Baz }
-// 	fn val(self) -> usize { VAL }
-// }
-
-// fn _baz<const VAL:usize>() where VAL < 10 {}
-
-fn _foobar() {
+fn main() {
+	// let a = Baz::<0>::next();
+	// assert_eq!(a.val(), 1);
 	let tree = || {
 		let child = || {
-			Node0::<1, 1, 1, 1, 1, _, _, _, _>::new(
+			Node0::<0, 0, 0, 0, 0, _, _, _, _>::new(
 				|| _my_system,
 				|| gamai::empty_node,
 			)
@@ -43,3 +31,5 @@ fn _foobar() {
 	let _ = AiPlugin::new(tree);
 	let _ = AiPlugin::new(tree);
 }
+// define_node!(0);
+// define_node!(1);

@@ -1,5 +1,10 @@
 use super::*;
 
+
+// pub trait IntoChildNodeOpaque{
+// 	fn into_child_node_opaque()->impl AiNode;
+// }
+
 pub trait IntoRootNode {
 	type Out: AiNode;
 	fn into_root_node(self) -> Self::Out;
