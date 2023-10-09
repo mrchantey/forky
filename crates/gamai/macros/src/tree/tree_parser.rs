@@ -152,8 +152,8 @@ impl<'a> TreeParser<'a> {
 					fn get_into_root_node(self) -> impl IntoRootNode{
 						#tokens_root
 					}
-					fn get_into_child_node<#node_id_bounds>(self)
-						-> impl IntoChildNode<#node_id_params>{
+					fn get_into_child_node<#node_id_bounds,Out:AiNode>(self)
+						-> impl IntoChildNode<#node_id_params,Out>{
 						#tokens_child
 					}
 				}
@@ -189,6 +189,7 @@ impl<'a> TreeParser<'a> {
 			} else {
 				quote! {
 					#name.get_into_child_node()
+					// #name.get_into_root_node()
 				}
 			}
 		} else {

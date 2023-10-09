@@ -52,22 +52,22 @@ pub fn node_id_params_child(child_index: usize) -> TokenStream {
 pub fn node_id_bounds_new() -> TokenStream {
 	quote! {
 		const NEW_GRAPH_ID: usize,
-		// const NEW_GRAPH_DEPTH: usize,
+		const NEW_GRAPH_DEPTH: usize,
 		const NEW_CHILD_INDEX: usize,
-		const NEW_NODE_ID: usize
-		// const NEW_PARENT_DEPTH: usize
+		const NEW_NODE_ID: usize,
+		const NEW_PARENT_DEPTH: usize
 	}
 }
 
 pub fn node_id_params_new() -> TokenStream {
 	quote! {
 		NEW_GRAPH_ID,
-		// NEW_GRAPH_DEPTH,
-		{GRAPH_DEPTH+1},
+		NEW_GRAPH_DEPTH,
+		// {GRAPH_DEPTH+1},
 		NEW_CHILD_INDEX,
 		NEW_NODE_ID,
-		{PARENT_DEPTH+1}
-		// NEW_PARENT_DEPTH
+		// {PARENT_DEPTH+1}
+		NEW_PARENT_DEPTH
 	}
 }
 pub fn node_system_params() -> TokenStream {

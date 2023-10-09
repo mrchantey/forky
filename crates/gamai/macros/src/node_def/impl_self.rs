@@ -77,7 +77,7 @@ fn child_fields_args(num_children: usize) -> TokenStream {
 			let ty = child_type_name(index);
 			let node_id_params = node_id_params_child(index);
 			// quote! {#field: impl IntoChildNode<0,{GRAPH_DEPTH + 1},0,0,0,Out=#ty>,
-			quote! {#field: impl IntoChildNode<#node_id_params,Out=#ty>,}
+			quote! {#field: impl IntoChildNode<#node_id_params,#ty>,}
 		})
 		.collect()
 }

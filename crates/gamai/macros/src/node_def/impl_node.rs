@@ -6,10 +6,9 @@ use quote::ToTokens;
 pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let NodeParser {
 		ident,
-		num_children: num_edges,
+		num_children,
 		self_params,
 		self_bounds,
-		child_params,
 		..
 	} = node;
 	let world_query = world_query_nested(node);
@@ -17,27 +16,10 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let child_bundles = child_bundles_nested(node);
 	let child_states = child_states(node);
 	let node_recast = node_recast(node);
-	let add_systems_children = add_systems_children(node);
+	let add_systems_children = add_systems_children(*num_children);
 	let configure_sets = configure_sets(node);
-	let child_fields_self = child_fields_self(*num_edges);
-	let match_get_children = match_get_children(node);
-	let match_get_children_owned = match_get_children_owned(node);
-
-	let node_id_bounds_new = node_id_bounds_new();
-	let node_id_params_new = node_id_params_new();
-	// let child_bounds_new = child_bounds_new(*num_edges);
-	// let child_params_new = child_params_new(*num_edges);
-	let node_system_params = node_system_params();
-
-	let self_params_new = quote! {
-		#node_id_params_new,
-		#node_system_params,
-		#child_params
-	};
-	let bounds_old_and_new = quote! {
-		#node_id_bounds_new,
-		#self_bounds
-	};
+	let match_get_children = match_get_children(*num_children);
+	let match_get_children_owned = match_get_children_owned(*num_children);
 
 	quote! {
 			impl<#self_bounds> IntoNodeId for #ident<#self_params>{
@@ -52,18 +34,6 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				type Out = #ident<#self_params>;
 				fn into_root_node(self) -> Self::Out{
 					self
-				}
-			}
-			// TODO IntoChildNode for children as well
-			impl<#bounds_old_and_new> IntoChildNode<#node_id_params_new> for #ident<#self_params>{
-				type Out = #ident<#self_params_new>;
-				fn into_child_node(self) -> Self::Out{
-					Self::Out{
-						phantom: std::marker::PhantomData,
-						node_system:self.node_system,
-						edge_system:self.edge_system,
-						#child_fields_self
-					}
 				}
 			}
 
@@ -180,16 +150,6 @@ fn child_states(node: &NodeParser) -> TokenStream {
 		.collect()
 }
 
-// returns `child0, child1, ..`
-fn child_fields_self(num_children: usize) -> TokenStream {
-	(0..num_children)
-		.map(|index| {
-			let field = child_field_name(index);
-			quote!(#field: self.#field,)
-		})
-		.collect()
-}
-
 /// returns (AiBundle<Child0>,(AiBundle<Child1>,..))
 fn child_bundles_nested(node: &NodeParser) -> TokenStream {
 	(0..node.num_children)
@@ -217,45 +177,27 @@ fn node_recast(node: &NodeParser) -> TokenStream {
 		.collect()
 }
 
-fn add_systems_children(node: &NodeParser) -> TokenStream {
-	(0..node.num_children)
+fn add_systems_children(num_children: usize) -> TokenStream {
+	(0..num_children)
 		.map(|index| {
 			let child_ident = child_field_name(index);
 			quote!(self.#child_ident.add_systems(schedule);)
 		})
 		.collect()
 }
-fn match_get_children(node: &NodeParser) -> TokenStream {
-	(0..node.num_children)
+fn match_get_children(num_children: usize) -> TokenStream {
+	(0..num_children)
 		.map(|index| {
 			let child_ident = child_field_name(index);
 			quote!(#index => &self.#child_ident,)
 		})
 		.collect()
 }
-fn match_get_children_owned(node: &NodeParser) -> TokenStream {
-	(0..node.num_children)
+fn match_get_children_owned(num_children: usize) -> TokenStream {
+	(0..num_children)
 		.map(|index| {
 			let child_ident = child_field_name(index);
 			quote!(#index => Box::new(self.#child_ident),)
 		})
 		.collect()
 }
-
-// fn child_params_new(num_children: usize) -> TokenStream {
-// 	(0..num_children)
-// 		.map(|index| {
-// 			let ty = child_type_name_new(index);
-// 			quote!(#ty,)
-// 		})
-// 		.collect()
-// }
-
-// fn child_bounds_new(num_children: usize) -> TokenStream {
-// 	(0..num_children)
-// 		.map(|index| {
-// 			let ty = child_type_name_new(index);
-// 			quote!(#ty: AiNode,)
-// 		})
-// 		.collect()
-// }
