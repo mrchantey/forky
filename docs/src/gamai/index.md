@@ -38,11 +38,52 @@ pub fn MyTree() -> impl AiTree {
 > - `node_systems` have snake_case 
 > - `tree_builders` have PascalCase
 
-### Node Systems
+### Nodes
 
-Any Bevy system can be used as a node, but usually we want to know whether it is in a running state for a given entity. Node systems are bevy systems that also accept an `AiNode` type argument, giving them access to the components that they need to communicate with parents and children.
+Nodes are definitions of what systems should run for that node. The most common property is the `node_system` which is used 
 
-Node Systems can be used to either run some behaviour (actions) or decide which child should run (selectors).
+
+### Further ordering.
+
+Other positions in the tree are accessible via the 
+Examples are:
+- `node_system` Usually used to run an action or a selector
+- `before_parent_system` Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector
+- `before_node_system` - 
+- `after_node_system` Good for frame-perfect nodes, with `apply_deferred` in between each layer
+
+They are defined in `gamai` like so:
+```rs
+<sequence 
+	before=do_this 
+	before_parent=do_that
+	/>
+
+
+```
+
+
+For example, the below example tree
+
+
+```mermaid
+graph TB
+
+Node1 --- dot1
+Node1 --- Node2
+Node2 --- dot2
+Node2 --- Node3
+dot1[...]
+dot2[...]
+```
+Would produce a system ordering like this
+```mermaid
+graph LR;
+	node2.before_parent --- node1 --- node2.before --- node1.after --- node3.before_parent --- node2 
+	node2[node2 etc.]
+```
+
+`Nodes` are comprised of `node_systems` and `node_systems` are regular bevy systems with an added generic `AiNode` argument giving them access to the components that they need to communicate with parents and children. By design Nodes cannot communicate with grandparents/grandchildren. It seems like an antipattern by breaking the node-level modularity of the tree, but this can be looked into if there is a need.
 
 ```rs
 #[node_system]

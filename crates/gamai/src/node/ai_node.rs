@@ -5,7 +5,8 @@ use std::marker::PhantomData;
 
 
 /// An AiNode is a node and edge system, and a set of child nodes.
-pub trait AiNode: 'static + Send + Sync + Sized + IntoNodeId {
+pub trait AiNode: IntoNodeId {
+	// pub trait AiNode: 'static + Send + Sync + Sized + IntoNodeId {
 	// we need to repeat the consts for implementations as <Self::ID> is not allowed
 	// const GRAPH_ID: usize = <Self as IntoNodeId>::GRAPH_ID;
 	// const GRAPH_DEPTH: usize = <Self as IntoNodeId>::GRAPH_DEPTH;

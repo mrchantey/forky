@@ -17,8 +17,10 @@ pub fn parse_node_system(
 	let impl_into_node_system = impl_into_node_system(&func);
 	quote! {
 		use bevy_ecs::prelude::*;
+		// use bevy_ecs::schedule::SystemConfigs;
 		use gamai::*;
 
+		#[derive(Default)]
 		#[allow(non_camel_case_types)]
 		#vis struct #ident;
 		#func_as_inner
@@ -41,14 +43,10 @@ fn impl_into_node_system(func: &ItemFn) -> TokenStream {
 	.unwrap_or_else(syn::Error::into_compile_error);
 
 	quote! {
-		impl IntoNodeSystem<(#ident,IsNodeSystem)> for #ident
+		impl IntoNodeSystem for #ident
 		{
-			fn into_node_system<Node: AiNode>(
-				self,
-				schedule: &mut Schedule,
-				set: impl SystemSet,
-			) {
-				schedule.add_systems(#func_ident::<Node>.in_set(set));
+			fn into_node_system_configs<Node: AiNode>(self) -> bevy_ecs::schedule::SystemConfigs{
+				#func_ident::<Node>.into_configs()
 			}
 		}
 		#generic_err

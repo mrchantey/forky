@@ -5,6 +5,13 @@ use super::*;
 // 	fn into_child_node_opaque()->impl AiNode;
 // }
 
+pub trait IntoDepth<const NEW_DEPTH: usize, Out: Default> {
+	type NewDepth: Default = Out;
+	fn into_depth() -> Self::NewDepth { Self::NewDepth::default() }
+	// type IntoDepth<const NEW_DEPTH: usize>: NodeDepth<NEW_DEPTH, Marker>;
+	// fn into_depth<const NEW_DEPTH: usize>() -> impl NodeDepth<NEW_DEPTH>;
+}
+
 // pub trait IntoIntoChildNode<
 // 	const GRAPH_ID: usize,
 // 	const GRAPH_DEPTH: usize,
@@ -44,6 +51,10 @@ use super::*;
 // {
 // }
 
+pub trait DefaultNode<Out> {
+	fn into_default() -> Out;
+}
+
 pub trait IntoRootNode {
 	type Out: AiNode;
 	fn into_root_node(self) -> Self::Out;
@@ -55,15 +66,15 @@ pub trait IntoChildNode<
 	const CHILD_INDEX: usize,
 	const NODE_ID: usize,
 	const PARENT_DEPTH: usize,
-	Out: AiNode,
+	Out,
 >: 'static + Send + Sync + Sized
 {
-	type Out = Out;
+	// type Out: AiNode;
 	fn into_child_node(self) -> Out;
 	// fn into_child_node(self) -> Self::Out;
 }
 
-// implement for builders
+// implement for builders, essential because closures are required for passing instances
 impl<F, T> IntoRootNode for F
 where
 	T: IntoRootNode,
@@ -73,7 +84,7 @@ where
 	fn into_root_node(self) -> Self::Out { self().into_root_node() }
 }
 
-// implement for builders
+// implement for builders, essential because closures are required for passing instances
 // impl<
 // 		const GRAPH_ID: usize,
 // 		const GRAPH_DEPTH: usize,
@@ -82,8 +93,8 @@ where
 // 		const PARENT_DEPTH: usize,
 // 		F,
 // 		T,
-// 		Out: AiNode,
-// 	> IntoChildNode<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Out>
+// 		M,
+// 	> IntoChildNode<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, M>
 // 	for F
 // where
 // 	T: IntoChildNode<
@@ -92,10 +103,10 @@ where
 // 		CHILD_INDEX,
 // 		NODE_ID,
 // 		PARENT_DEPTH,
-// 		Out,
+// 		M,
 // 	>,
 // 	F: 'static + Send + Sync + FnOnce() -> T,
 // {
-// 	// type Out = T::Out;
-// 	fn into_child_node(self) -> Out { self().into_child_node() }
+// 	type Out = T::Out;
+// 	fn into_child_node(self) -> Self::Out { self().into_child_node() }
 // }

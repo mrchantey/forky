@@ -7,21 +7,17 @@
 #![allow(incomplete_features)]
 use gamai::*;
 
-fn _my_system() {}
+#[node_system]
+fn my_system<N: AiNode>() {}
+// fn _my_system() {}
 
 fn main() {
 	// let a = Baz::<0>::next();
 	// assert_eq!(a.val(), 1);
 	let tree = || {
-		let child = || {
-			Node0::<0, 0, 0, 0, 0, _, _, _, _>::new(
-				|| _my_system,
-				|| gamai::empty_node,
-			)
-		};
-		let parent = Node1::<0usize, 0, 0, 0, 0, _, _, _, _, _>::new(
-			move || _my_system,
-			move || _my_system,
+		let child = || Node0::<0, 0, 0, 0, 0, _>::new(Attributes::default());
+		let parent = Node1::<0usize, 0, 0, 0, 0, _, _>::new(
+			Attributes::default(),
 			move || child,
 		);
 		parent

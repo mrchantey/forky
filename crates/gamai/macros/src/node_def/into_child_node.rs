@@ -13,8 +13,6 @@ pub fn into_child_node(node: &NodeParser) -> TokenStream {
 
 	let child_fields_self = child_fields_self(*num_children);
 
-	let node_system_bounds = node_system_bounds();
-	let node_system_params = node_system_params();
 	// let node_id_params = node_id_params();
 	let node_id_bounds = node_id_bounds();
 	let node_id_bounds_new = node_id_bounds_new();
@@ -26,31 +24,27 @@ pub fn into_child_node(node: &NodeParser) -> TokenStream {
 	let bounds_old_and_new = quote! {
 		#node_id_bounds,
 		#node_id_bounds_new,
-		#node_system_bounds,
+		Attr: IntoAttributes,
 		#child_bounds_into_new
 		#child_bounds_new
 	};
 	let self_params_new = quote! {
 		#node_id_params_new,
-		#node_system_params,
+		Attr,
 		#child_params_new
 	};
 
 	quote! {
-				// impl<#bounds_old_and_new> IntoChildNode<#node_id_params_new,#ident<#self_params_new>> for #ident<#self_params> {
-				impl<#bounds_old_and_new> IntoChildNode<#node_id_params_new,#ident<#self_params_new>> for #ident<#self_params> {
-					// type Out = ;
-					fn into_child_node(self) -> #ident<#self_params_new>{
-						#ident::<#self_params_new>{
-							phantom: std::marker::PhantomData,
-							node_system:self.node_system,
-							edge_system:self.edge_system,
-							#child_fields_self
-						}
+			impl<#bounds_old_and_new> IntoChildNode<#node_id_params_new> for #ident<#self_params> {
+				type Out = #ident<#self_params_new>;
+				fn into_child_node(self) -> #ident<#self_params_new>{
+					#ident::<#self_params_new>{
+						attributes: self.attributes,
+						#child_fields_self
 					}
 				}
-
-		}
+			}
+	}
 }
 
 // returns `child0, child1, ..`

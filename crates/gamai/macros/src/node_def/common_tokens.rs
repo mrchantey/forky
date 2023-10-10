@@ -24,15 +24,6 @@ pub fn node_id_params() -> TokenStream {
 		PARENT_DEPTH
 	}
 }
-// pub fn node_id_params_deeper() -> TokenStream {
-// 	quote! {
-// 		GRAPH_ID,
-// 		{GRAPH_DEPTH+1},
-// 		CHILD_INDEX,
-// 		NODE_ID,
-// 		{PARENT_DEPTH+1}
-// 	}
-// }
 
 static NODE_ID: AtomicUsize = AtomicUsize::new(0);
 
@@ -68,21 +59,5 @@ pub fn node_id_params_new() -> TokenStream {
 		NEW_NODE_ID,
 		// {PARENT_DEPTH+1}
 		NEW_PARENT_DEPTH
-	}
-}
-pub fn node_system_params() -> TokenStream {
-	quote! {
-		NodeSystem,
-		NodeSystemMarker,
-		EdgeSystem,
-		EdgeSystemMarker
-	}
-}
-pub fn node_system_bounds() -> TokenStream {
-	quote! {
-			NodeSystem: IntoNodeSystem<NodeSystemMarker>,
-			NodeSystemMarker: 'static + Send + Sync,
-			EdgeSystem: IntoNodeSystem<EdgeSystemMarker>,
-			EdgeSystemMarker: 'static + Send + Sync
 	}
 }

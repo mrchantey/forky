@@ -150,11 +150,11 @@ impl<'a> TreeParser<'a> {
 				struct #ident;
 				impl AiTree for #ident{
 					fn get_into_root_node(self) -> impl IntoRootNode{
-						#tokens_root
+						|| #tokens_root
 					}
 					fn get_into_child_node<#node_id_bounds,Out:AiNode>(self)
 						-> impl IntoChildNode<#node_id_params,Out>{
-						#tokens_child
+						|| #tokens_child
 					}
 				}
 				#ident
@@ -197,10 +197,21 @@ impl<'a> TreeParser<'a> {
 			let child_types = self.child_types();
 			let child_instances = self.child_instances();
 			quote! {
-				#ident::<#graph_id,0,0,0,0,
-				_,_,_,_, //these are for NodeSystem, NodeSystemMarker, EdgeSystem, EdgeSystemMarker
+				#ident::<#graph_id,
+				// 0,0,0,0,
+				GRAPH_ID,
+				GRAPH_DEPTH,
+				0,
+				PARENT_DEPTH,				
+				_, //for IntoAttributes<T>
 				#child_types
-				>::new(|| #node_system,|| #edge_system,#child_instances)
+				>::new(
+					Attributes::new(
+						|| #edge_system,
+						|| gamai::empty_node,
+						|| #node_system,
+						|| gamai::empty_node),
+					#child_instances)
 			}
 		}
 	}

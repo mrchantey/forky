@@ -11,7 +11,7 @@ pub trait AiTree: 'static + Send + Sync + Copy {
 		const CHILD_INDEX: usize,
 		const NODE_ID: usize,
 		const PARENT_DEPTH: usize,
-		Out: AiNode,
+		Marker,
 	>(
 		self,
 	) -> impl IntoChildNode<
@@ -20,7 +20,7 @@ pub trait AiTree: 'static + Send + Sync + Copy {
 		CHILD_INDEX,
 		NODE_ID,
 		PARENT_DEPTH,
-		Out,
+		Marker,
 	>;
 
 	fn plugin(self) -> impl Plugin {
@@ -66,17 +66,11 @@ where
 		const CHILD_INDEX: usize,
 		const NODE_ID: usize,
 		const PARENT_DEPTH: usize,
-		Out: AiNode,
+		Marker,
 	>(
 		self,
-	) -> impl IntoChildNode<
-		GRAPH_ID,
-		GRAPH_DEPTH,
-		CHILD_INDEX,
-		NODE_ID,
-		PARENT_DEPTH,
-		Out,
-	> {
+	) -> impl IntoChildNode<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH,Marker>
+	{
 		self().get_into_child_node()
 	}
 }

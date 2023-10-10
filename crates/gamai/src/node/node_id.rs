@@ -2,11 +2,11 @@
 // use std::marker::PhantomData;
 
 /// Trait used to distinguish node instances.
-pub trait IntoNodeId: 'static + Send + Sync {
+pub trait IntoNodeId: 'static + Send + Sync + Default {
 	const GRAPH_ID: usize;
 	const GRAPH_DEPTH: usize;
 	const CHILD_INDEX: usize;
-	const NODE_ID:usize;
+	const NODE_ID: usize;
 	const PARENT_DEPTH: usize; //required until complex expressions https://blog.rust-lang.org/2021/02/26/const-generics-mvp-beta.html#const-generics-with-complex-expressions
 
 	fn graph_id(&self) -> usize { Self::GRAPH_ID }

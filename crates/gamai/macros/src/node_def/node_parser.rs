@@ -9,13 +9,11 @@ pub struct NodeParser {
 	pub num_children: usize,
 	/// The name of this node: `Node0`
 	pub ident: Ident,
-	/// all generic params for this type: `NodeSystem, EdgeSystem, NODE_ID, GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, Child1, Child2`
+	/// all generic params for this type: `NODE_ID, GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, Child1, Child2`
 	pub self_params: TokenStream,
-	/// systems-only generic params for this type: `NodeSystem, EdgeSystem`
-	pub phantom_types: TokenStream,
-	/// all generic bounds for this type: `NodeSystem: IntoNodeSystem, ...`
+	/// all generic bounds for this type: `const NODE_ID: usize, Child1: AiNode, ...`
 	pub self_bounds: TokenStream,
-	/// types of the children: `Child1,Child2`
+	/// types of the children: `Child1, Child2`
 	pub child_params: TokenStream,
 	/// bound types of the children: `Child1: AiNode, Child2: AiNode`
 	pub child_bounds: TokenStream,
@@ -29,21 +27,18 @@ impl NodeParser {
 
 		let child_params = child_params(num_children);
 		let child_bounds = child_bounds(num_children);
-		let phantom_types = quote!(NodeSystemMarker, EdgeSystemMarker);
 
 		let node_id_params = node_id_params();
 		let node_id_bounds = node_id_bounds();
-		let node_system_params = node_system_params();
-		let node_system_bounds = node_system_bounds();
 
 		let self_params = quote! {
 			#node_id_params,
-			#node_system_params,
+			Attr,
 			#child_params
 		};
 		let self_bounds = quote! {
 			#node_id_bounds,
-			#node_system_bounds,
+			Attr: IntoAttributes,
 			#child_bounds
 		};
 
@@ -52,7 +47,6 @@ impl NodeParser {
 			num_children,
 			self_params,
 			self_bounds,
-			phantom_types,
 			child_params,
 			child_bounds,
 		}

@@ -30,13 +30,6 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				const PARENT_DEPTH: usize = GRAPH_DEPTH;
 			}
 
-			impl<#self_bounds> IntoRootNode for #ident<#self_params>{
-				type Out = #ident<#self_params>;
-				fn into_root_node(self) -> Self::Out{
-					self
-				}
-			}
-
 			impl<#self_bounds> AiNode for #ident<#self_params>
 			{
 
@@ -47,12 +40,14 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 					#world_query
 				);
 
+				#[allow(unused_parens)]
 				type ChildBundle = (#child_bundles);
 
 				fn add_systems(self, schedule: &mut Schedule){
-					self.node_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
+					//TODO handle attributes
+					// self.node_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
 					//edges run before parent
-					self.edge_system.into_node_system::<Self>(schedule, BeforeNodeSet::<GRAPH_ID, PARENT_DEPTH>);
+					// self.edge_system.into_node_system::<Self>(schedule, BeforeNodeSet::<GRAPH_ID, PARENT_DEPTH>);
 
 					#configure_sets
 					#add_systems_children
@@ -79,6 +74,13 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 						#match_get_children_owned
 						_=> panic!("invalid child index")
 					}
+				}
+			}
+
+			impl<#self_bounds> IntoRootNode for #ident<#self_params>{
+				type Out = #ident<#self_params>;
+				fn into_root_node(self) -> Self::Out{
+					self
 				}
 			}
 	}

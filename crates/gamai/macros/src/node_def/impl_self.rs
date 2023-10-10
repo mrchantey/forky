@@ -10,7 +10,6 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 		ident,
 		self_bounds,
 		self_params,
-		phantom_types,
 		// child_params,
 		num_children: num_edges,
 		..
@@ -20,29 +19,17 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 	let child_fields_args = child_fields_args(*num_edges);
 	let child_fields_into_child = child_fields_into_child(*num_edges);
 
-	// let node_id_params_deeper = node_id_params_deeper();
-	// let node_system_params = node_system_params();
-	// let params_deeper = quote! {
-	// 	#node_id_params_deeper,
-	// 	#node_system_params,
-	// 	#child_params
-	// };
-
 	quote! {
 		// #[derive(Clone)]
 		pub struct #ident<#self_bounds>{
-			phantom: std::marker::PhantomData<(#phantom_types)>,
-			node_system: NodeSystem,
-			edge_system: EdgeSystem,
+			attributes: Attr,
 			#child_fields_def
 		}
 
 		impl<#self_bounds> #ident<#self_params> {
-			pub fn new(node_system: NodeSystem, edge_system: EdgeSystem, #child_fields_args) -> Self {
+			pub fn new(attributes: Attr, #child_fields_args) -> Self {
 				Self {
-					phantom: std::marker::PhantomData,
-					node_system,
-					edge_system,
+					attributes,
 					#child_fields_into_child
 				}
 			}
@@ -77,7 +64,7 @@ fn child_fields_args(num_children: usize) -> TokenStream {
 			let ty = child_type_name(index);
 			let node_id_params = node_id_params_child(index);
 			// quote! {#field: impl IntoChildNode<0,{GRAPH_DEPTH + 1},0,0,0,Out=#ty>,
-			quote! {#field: impl IntoChildNode<#node_id_params,#ty>,}
+			quote! {#field: impl IntoChildNode<#node_id_params,Out = #ty>,}
 		})
 		.collect()
 }
