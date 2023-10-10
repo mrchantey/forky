@@ -11,7 +11,7 @@ pub fn node_id_bounds() -> TokenStream {
 		const GRAPH_DEPTH: usize,
 		const CHILD_INDEX: usize,
 		const NODE_ID: usize,
-		const PARENT_DEPTH: usize
+		const : usize
 	}
 }
 

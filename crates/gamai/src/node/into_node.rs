@@ -5,9 +5,10 @@ use super::*;
 // 	fn into_child_node_opaque()->impl AiNode;
 // }
 
-pub trait IntoDepth<const NEW_DEPTH: usize, Out: Default> {
-	type NewDepth: Default = Out;
-	fn into_depth() -> Self::NewDepth { Self::NewDepth::default() }
+pub trait IntoDepth {
+	type Out<const NEW_DEPTH: usize>: IntoDepth;
+	fn into_depth<const NEW_DEPTH: usize>(self) -> Self::Out<NEW_DEPTH>;
+	// fn into_depth(self) -> Self::NewDepth { Self::NewDepth::default() }
 	// type IntoDepth<const NEW_DEPTH: usize>: NodeDepth<NEW_DEPTH, Marker>;
 	// fn into_depth<const NEW_DEPTH: usize>() -> impl NodeDepth<NEW_DEPTH>;
 }
@@ -65,7 +66,6 @@ pub trait IntoChildNode<
 	const GRAPH_DEPTH: usize,
 	const CHILD_INDEX: usize,
 	const NODE_ID: usize,
-	const PARENT_DEPTH: usize,
 	Out,
 >: 'static + Send + Sync + Sized
 {

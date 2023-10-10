@@ -3,6 +3,7 @@ use crate::*;
 use bevy_ecs::prelude::*;
 // use bevy_ecs::schedule::SystemConfigs;
 
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct Attributes<
 	PreParentUpdate: IntoNodeSystem,
 	PreUpdate: IntoNodeSystem,
@@ -37,82 +38,125 @@ impl<
 	}
 }
 
-pub type DefaultAttributes =
-	Attributes<empty_node, empty_node, empty_node, empty_node>;
+pub type DefaultAttributes = Attributes<
+	EmptyNodeSystem,
+	EmptyNodeSystem,
+	EmptyNodeSystem,
+	EmptyNodeSystem,
+>;
 
-impl<
-		PreParentUpdate: IntoNodeSystem,
-		PreUpdate: IntoNodeSystem,
-		Update: IntoNodeSystem,
-		PostUpdate: IntoNodeSystem,
-	> Default for Attributes<PreParentUpdate, PreUpdate, Update, PostUpdate>
-{
+impl Default for DefaultAttributes {
 	fn default() -> Self {
 		Self {
-			pre_parent_update: PreParentUpdate::default(),
-			pre_update: PreUpdate::default(),
-			update: Update::default(),
-			post_update: PostUpdate::default(),
+			pre_parent_update: EmptyNodeSystem::default(),
+			pre_update: EmptyNodeSystem::default(),
+			update: EmptyNodeSystem::default(),
+			post_update: EmptyNodeSystem::default(),
 		}
 	}
 }
-
-/// used by plugins to add systems to the schedule
-/// Examples are `node_system`, `before_parent_system`, `before_node_system`
-pub trait IntoAttributes: 'static + Send + Sync + Default {
-	fn add_systems<N: AiNode>(
-		self,
-		schedule: &mut Schedule,
-		set: impl SystemSet,
-	);
-}
-
 impl<
 		PreParentUpdate: IntoNodeSystem,
 		PreUpdate: IntoNodeSystem,
 		Update: IntoNodeSystem,
 		PostUpdate: IntoNodeSystem,
-	> IntoAttributes
+	> IntoNodeSystem
 	for Attributes<PreParentUpdate, PreUpdate, Update, PostUpdate>
 {
-	fn add_systems<N: AiNode>(
+	fn into_node_system_configs<Node: AiNode>(
 		self,
-		schedule: &mut Schedule,
-		set: impl SystemSet,
-	) {
-		schedule.add_systems(
-			self.update.into_node_system_configs::<N>().in_set(set),
-		);
-	}
-}
-
-/// Implementation accepting node systems in the order they are given.
-/// ie before_parent, before_node, node, after_node
-impl<
-		BeforeParent: IntoNodeSystem,
-		BeforeNode: IntoNodeSystem,
-		Node: IntoNodeSystem,
-		AfterNode: IntoNodeSystem,
-	> IntoAttributes for (BeforeParent, BeforeNode, Node, AfterNode)
-{
-	fn add_systems<N: AiNode>(
-		self,
-		schedule: &mut Schedule,
-		set: impl SystemSet,
-	) {
-		schedule
-			.add_systems(self.0.into_node_system_configs::<N>().in_set(set));
-		todo!("add_systems on lower level");
-		// schedule
-		// 	.add_systems(self.1.into_node_system_configs::<N>().in_set(set));
-		// schedule
-		// 	.add_systems(self.2.into_node_system_configs::<N>().in_set(set));
-		// schedule
-		// 	.add_systems(self.3.into_node_system_configs::<N>().in_set(set));
+	) -> bevy_ecs::schedule::SystemConfigs {
+		(
+			self.pre_parent_update
+				.into_node_system_configs::<Node>()
+				.in_set(Node::pre_parent_update_set()),
+			self.pre_update
+				.into_node_system_configs::<Node>()
+				.in_set(Node::pre_update_set()),
+			self.update
+				.into_node_system_configs::<Node>()
+				.in_set(Node::update_set()),
+			self.post_update
+				.into_node_system_configs::<Node>()
+				.in_set(Node::post_update_set()),
+		)
+			.into_configs()
 	}
 }
 
 
+// used by plugins to add systems to the schedule
+// Examples are `node_system`, `before_parent_system`, `before_node_system`
+// pub trait IntoAttributes {
+// 	fn add_systems<N: AiNode>(self, schedule: &mut Schedule);
+// }
+
+// impl<
+// 		PreParentUpdate: IntoNodeSystem,
+// 		PreUpdate: IntoNodeSystem,
+// 		Update: IntoNodeSystem,
+// 		PostUpdate: IntoNodeSystem,
+// 	> IntoAttributes
+// 	for Attributes<PreParentUpdate, PreUpdate, Update, PostUpdate>
+// {
+// 	fn add_systems<N: AiNode>(
+// 		self,
+// 		schedule: &mut Schedule,
+// 		// set: impl SystemSet,
+// 	) {
+
+// 		// if self
+// 		// schedule.add_systems(
+// 		// 	self.update.into_node_system_configs::<N>().in_set(set),
+// 		// );
+// 	}
+// }
+
+// Implementation accepting node systems in the order they are given.
+// ie before_parent, before_node, node, after_node
+// impl<
+// 		BeforeParent: IntoNodeSystem,
+// 		BeforeNode: IntoNodeSystem,
+// 		Node: IntoNodeSystem,
+// 		AfterNode: IntoNodeSystem,
+// 	> IntoAttributes for (BeforeParent, BeforeNode, Node, AfterNode)
+// {
+// 	fn add_systems<N: AiNode>(
+// 		self,
+// 		schedule: &mut Schedule,
+// 		set: impl SystemSet,
+// 	) {
+// 		schedule
+// 			.add_systems(self.0.into_node_system_configs::<N>().in_set(set));
+// 		todo!("add_systems on lower level");
+// 		// schedule
+// 		// 	.add_systems(self.1.into_node_system_configs::<N>().in_set(set));
+// 		// schedule
+// 		// 	.add_systems(self.2.into_node_system_configs::<N>().in_set(set));
+// 		// schedule
+// 		// 	.add_systems(self.3.into_node_system_configs::<N>().in_set(set));
+// 	}
+// }
+
+
+// pub trait NodeContext: IntoAttributes {
+// 	type Attr: IntoAttributes;
+// 	fn from_attr(attr: Self::Attr) -> Self;
+// 	fn get_attr(self) -> Self::Attr;
+// 	// fn into_cx<Cx: NodeContext>(self) -> Cx;
+// }
+
+
+
+// impl<T> NodeContext for T
+// where
+// 	T: 'static + IntoAttributes,
+// {
+// 	type Attr = T;
+// 	fn get_attr(self) -> Self::Attr { self }
+// 	fn from_attr(attr: Self::Attr) -> Self { attr }
+// 	// fn into_cx<Cx: NodeContext>(self) -> Cx { self }
+// }
 // pub enum Attribute {
 // 	NodeSystem(fn()->&dyn IntoNodeSystem),
 // 	BeforeParentSystem(Box<dyn IntoNodeSystem>),

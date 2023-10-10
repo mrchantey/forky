@@ -20,7 +20,7 @@ pub fn parse_node_system(
 		// use bevy_ecs::schedule::SystemConfigs;
 		use gamai::*;
 
-		#[derive(Default)]
+		#[derive(Default, Debug, Clone, Eq, PartialEq, std::hash::Hash)]
 		#[allow(non_camel_case_types)]
 		#vis struct #ident;
 		#func_as_inner

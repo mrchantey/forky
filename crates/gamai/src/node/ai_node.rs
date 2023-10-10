@@ -5,8 +5,8 @@ use std::marker::PhantomData;
 
 
 /// An AiNode is a node and edge system, and a set of child nodes.
-pub trait AiNode: IntoNodeId {
-	// pub trait AiNode: 'static + Send + Sync + Sized + IntoNodeId {
+// pub trait AiNode {
+pub trait AiNode: 'static + Send + Sync + IntoNodeSets {
 	// we need to repeat the consts for implementations as <Self::ID> is not allowed
 	// const GRAPH_ID: usize = <Self as IntoNodeId>::GRAPH_ID;
 	// const GRAPH_DEPTH: usize = <Self as IntoNodeId>::GRAPH_DEPTH;
@@ -25,6 +25,7 @@ pub trait AiNode: IntoNodeId {
 
 	fn get_child(&self, index: usize) -> &dyn NodeInspector;
 	fn get_child_owned(self, index: usize) -> Box<dyn NodeInspector>;
+	fn into_child<Path: TreePath>(self) -> impl AiNode;
 }
 
 
@@ -44,14 +45,12 @@ pub trait NodeInspector {
 	fn graph_id(&self) -> usize;
 	fn child_index(&self) -> usize;
 	fn graph_depth(&self) -> usize;
-	fn parent_depth(&self) -> usize;
 }
 
 impl<T: AiNode + Sized> NodeInspector for T {
 	fn graph_id(&self) -> usize { Self::GRAPH_ID }
 	fn child_index(&self) -> usize { Self::CHILD_INDEX }
-	fn graph_depth(&self) -> usize { Self::GRAPH_DEPTH }
-	fn parent_depth(&self) -> usize { Self::PARENT_DEPTH }
+	fn graph_depth(&self) -> usize { Self::DEPTH }
 	fn node_state(&self, world: &World, entity: Entity) -> Option<NodeState> {
 		world
 			.entity(entity)

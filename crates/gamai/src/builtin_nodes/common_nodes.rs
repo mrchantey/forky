@@ -7,7 +7,7 @@ use bevy_ecs::prelude::*;
 // pub fn empty_node() {}
 
 //TODO deprecate, dont need it, instead empty attribute
-#[derive(Default)]
+#[derive(Default, Debug, Clone, Eq, PartialEq, Hash)]
 #[allow(non_camel_case_types)]
 pub struct empty_node;
 

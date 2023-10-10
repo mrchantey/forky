@@ -1,15 +1,29 @@
 use crate::*;
 use bevy_ecs::prelude::*;
 use bevy_ecs::schedule::SystemConfigs;
+use std::fmt::Debug;
+use std::hash::Hash;
 
 /// not for external use
 pub struct IsBevySystem;
 /// used for manually declaring an `IntoNodeSystem`
 pub struct IsNodeSystem;
 
+/// Marker type that tells attributes to ignore that system
+#[derive(Default, Debug, Clone, Eq, PartialEq, Hash)]
+pub struct EmptyNodeSystem;
 
+impl IntoNodeSystem for EmptyNodeSystem {
+	const IS_EMPTY: bool = true;
+	fn into_node_system_configs<Node: AiNode>(self) -> SystemConfigs {
+		(|| {}).into_configs()
+	}
+}
 /// Node systems are stored in Nodes as `||-> IntoNodeSystem` closures, which also implement `IntoNodeSystem`
-pub trait IntoNodeSystem: 'static + Send + Sync + Sized + Default {
+pub trait IntoNodeSystem:
+	'static + Send + Sync + Sized + Eq + Hash + Clone + Debug
+{
+	const IS_EMPTY: bool = false;
 	fn into_node_system_configs<Node: AiNode>(self) -> SystemConfigs;
 }
 

@@ -13,9 +13,9 @@ use gamai::*;
 
 fn main() {
 	// let _tree = || {
-	// type Child = Node0<0, 0, 0, 0, 0, DefaultAttributes>;
+	// type Child = Node0<0, 0, 0, 0, DefaultAttributes>;
 	// let _a = Child::default();
-	// type Parent = Node1<0usize, 0, 0, 0, 0, DefaultAttributes, Child>;
+	// type Parent = Node1<0usize, 0, 0, 0, DefaultAttributes, Child>;
 	// let a = Parent::default();
 	// let b = Parent::into_depth();
 	// type A = Parent::NewDepth;
@@ -43,19 +43,9 @@ impl<
 		const GRAPH_DEPTH: usize,
 		const CHILD_INDEX: usize,
 		const NODE_ID: usize,
-		const PARENT_DEPTH: usize,
 		Attr: IntoAttributes,
 		Child0: AiNode,
-	> Default
-	for Node1<
-		GRAPH_ID,
-		GRAPH_DEPTH,
-		CHILD_INDEX,
-		NODE_ID,
-		PARENT_DEPTH,
-		Attr,
-		Child0,
-	>
+	> Default for Node1<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr, Child0>
 {
 	fn default() -> Self {
 		Self {
@@ -70,7 +60,6 @@ pub struct Node1<
 	const GRAPH_DEPTH: usize,
 	const CHILD_INDEX: usize,
 	const NODE_ID: usize,
-	const PARENT_DEPTH: usize,
 	Attr: IntoAttributes,
 	Child0: AiNode,
 > {
@@ -82,22 +71,13 @@ impl<
 		const GRAPH_DEPTH: usize,
 		const CHILD_INDEX: usize,
 		const NODE_ID: usize,
-		const PARENT_DEPTH: usize,
 		Attr: IntoAttributes,
 		Child0: AiNode,
-	>
-	Node1<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Attr, Child0>
+	> Node1<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr, Child0>
 {
 	pub fn new(
 		attributes: Attr,
-		child0: impl IntoChildNode<
-			GRAPH_ID,
-			{ GRAPH_DEPTH + 1 },
-			0usize,
-			0,
-			{ GRAPH_DEPTH + 1 },
-			Child0,
-		>,
+		child0: impl IntoChildNode<GRAPH_ID, { GRAPH_DEPTH + 1 }, 0usize, 0, Child0>,
 	) -> Self {
 		Self {
 			attributes,
@@ -110,44 +90,26 @@ impl<
 		const GRAPH_DEPTH: usize,
 		const CHILD_INDEX: usize,
 		const NODE_ID: usize,
-		const PARENT_DEPTH: usize,
 		Attr: IntoAttributes,
 		Child0: AiNode,
 	> IntoNodeId
-	for Node1<
-		GRAPH_ID,
-		GRAPH_DEPTH,
-		CHILD_INDEX,
-		NODE_ID,
-		PARENT_DEPTH,
-		Attr,
-		Child0,
-	>
+	for Node1<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr, Child0>
 {
 	const GRAPH_ID: usize = GRAPH_ID;
 	const GRAPH_DEPTH: usize = GRAPH_DEPTH;
 	const CHILD_INDEX: usize = CHILD_INDEX;
 	const NODE_ID: usize = NODE_ID;
-	const PARENT_DEPTH: usize = GRAPH_DEPTH;
 }
 impl<
 		const GRAPH_ID: usize,
 		const GRAPH_DEPTH: usize,
 		const CHILD_INDEX: usize,
 		const NODE_ID: usize,
-		const PARENT_DEPTH: usize,
 		Attr: IntoAttributes,
 		Child0: AiNode,
-	> AiNode
-	for Node1<
-		GRAPH_ID,
-		GRAPH_DEPTH,
-		CHILD_INDEX,
-		NODE_ID,
-		PARENT_DEPTH,
-		Attr,
-		Child0,
-	>
+	> AiNode for Node1<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr, Child0>
+where
+	[(); GRAPH_DEPTH - 1]:,
 {
 	type ChildQuery = (
 		Entity,
@@ -162,7 +124,7 @@ impl<
 		if GRAPH_DEPTH != 0 {
 			schedule.configure_set(
 				BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>
-					.after(NodeSet::<GRAPH_ID, PARENT_DEPTH>),
+					.after(NodeSet::<GRAPH_ID, { GRAPH_DEPTH - 1 }>),
 			);
 			schedule.configure_set(
 				NodeSet::<GRAPH_ID, GRAPH_DEPTH>
@@ -213,29 +175,14 @@ impl<
 		const GRAPH_DEPTH: usize,
 		const CHILD_INDEX: usize,
 		const NODE_ID: usize,
-		const PARENT_DEPTH: usize,
 		Attr: IntoAttributes,
 		Child0: AiNode,
 	> IntoRootNode
-	for Node1<
-		GRAPH_ID,
-		GRAPH_DEPTH,
-		CHILD_INDEX,
-		NODE_ID,
-		PARENT_DEPTH,
-		Attr,
-		Child0,
-	>
+	for Node1<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr, Child0>
+where
+	[(); GRAPH_DEPTH - 1]:,
 {
-	type Out = Node1<
-		GRAPH_ID,
-		GRAPH_DEPTH,
-		CHILD_INDEX,
-		NODE_ID,
-		PARENT_DEPTH,
-		Attr,
-		Child0,
-	>;
+	type Out = Node1<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr, Child0>;
 	fn into_root_node(self) -> Self::Out { self }
 }
 impl<
@@ -243,12 +190,10 @@ impl<
 		const GRAPH_DEPTH: usize,
 		const CHILD_INDEX: usize,
 		const NODE_ID: usize,
-		const PARENT_DEPTH: usize,
 		const NEW_GRAPH_ID: usize,
 		const NEW_GRAPH_DEPTH: usize,
 		const NEW_CHILD_INDEX: usize,
 		const NEW_NODE_ID: usize,
-		const NEW_PARENT_DEPTH: usize,
 		Attr: IntoAttributes,
 		Child0: AiNode
 			+ IntoChildNode<
@@ -256,7 +201,6 @@ impl<
 				{ NEW_GRAPH_DEPTH + 1 },
 				0usize,
 				0,
-				{ NEW_PARENT_DEPTH + 1 },
 				NewChild0,
 			>,
 		NewChild0: AiNode,
@@ -266,26 +210,15 @@ impl<
 		NEW_GRAPH_DEPTH,
 		NEW_CHILD_INDEX,
 		NEW_NODE_ID,
-		NEW_PARENT_DEPTH,
 		Node1<
 			NEW_GRAPH_ID,
 			NEW_GRAPH_DEPTH,
 			NEW_CHILD_INDEX,
 			NEW_NODE_ID,
-			NEW_PARENT_DEPTH,
 			Attr,
 			NewChild0,
 		>,
-	>
-	for Node1<
-		GRAPH_ID,
-		GRAPH_DEPTH,
-		CHILD_INDEX,
-		NODE_ID,
-		PARENT_DEPTH,
-		Attr,
-		Child0,
-	>
+	> for Node1<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr, Child0>
 {
 	fn into_child_node(
 		self,
@@ -294,255 +227,196 @@ impl<
 		NEW_GRAPH_DEPTH,
 		NEW_CHILD_INDEX,
 		NEW_NODE_ID,
-		NEW_PARENT_DEPTH,
 		Attr,
 		NewChild0,
 	> {
-		// Node1::new(self.attributes, || self.child0)
 		Node1 {
 			attributes: self.attributes,
 			child0: self.child0.into_child_node(),
 		}
-		// Node1::<
-		// 	NEW_GRAPH_ID,
-		// 	NEW_GRAPH_DEPTH,
-		// 	NEW_CHILD_INDEX,
-		// 	NEW_NODE_ID,
-		// 	NEW_PARENT_DEPTH,
-		// 	Attr,
-		// 	NewChild0,
-		// > {
-		// 	attributes: self.attributes,
-		// 	child0: self.child0.into_child_node(),
-		// }
 	}
 }
 
 
 
+impl<
+		const NEW_DEPTH: usize,
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		Attr: IntoAttributes,
+		Child0: AiNode + IntoDepth<{ NEW_DEPTH + 1 }, NewChild0>,
+		NewChild0: AiNode,
+	>
+	IntoDepth<
+		NEW_DEPTH,
+		Node1<GRAPH_ID, NEW_DEPTH, CHILD_INDEX, NODE_ID, Attr, NewChild0>,
+	> for Node1<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr, Child0>
+{
+}
+
+
+impl<
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		Attr: IntoAttributes,
+	> Default for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr>
+{
+	fn default() -> Self {
+		Self {
+			attributes: Default::default(),
+		}
+	}
+}
 
 
 
+pub struct Node0<
+	const GRAPH_ID: usize,
+	const GRAPH_DEPTH: usize,
+	const CHILD_INDEX: usize,
+	const NODE_ID: usize,
+	Attr: IntoAttributes,
+> {
+	attributes: Attr,
+}
+impl<
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		Attr: IntoAttributes,
+	> Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr>
+{
+	pub fn new(attributes: Attr) -> Self { Self { attributes } }
+}
+impl<
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		Attr: IntoAttributes,
+	> IntoNodeId for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr>
+{
+	const GRAPH_ID: usize = GRAPH_ID;
+	const GRAPH_DEPTH: usize = GRAPH_DEPTH;
+	const CHILD_INDEX: usize = CHILD_INDEX;
+	const NODE_ID: usize = NODE_ID;
+}
+impl<
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		Attr: IntoAttributes,
+	> AiNode for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr>
+where
+	[(); GRAPH_DEPTH - 1]:,
+{
+	type ChildQuery = (Entity,);
+	#[allow(unused_parens)]
+	type ChildBundle = ();
+	fn add_systems(self, schedule: &mut Schedule) {
+		if GRAPH_DEPTH != 0 {
+			schedule.configure_set(
+				BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>
+					.after(NodeSet::<GRAPH_ID, { GRAPH_DEPTH - 1 }>),
+			);
+			schedule.configure_set(
+				NodeSet::<GRAPH_ID, GRAPH_DEPTH>
+					.after(BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>),
+			);
+		} else {
+			schedule.configure_set(
+				BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>
+					.before(NodeSet::<GRAPH_ID, GRAPH_DEPTH>),
+			);
+		}
+	}
+	fn entity<'a>(
+		val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>,
+	) -> Entity {
+		val.0
+	}
+	fn children<'a>(
+		(_entity,): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>,
+	) -> Vec<ChildState<'a>> {
+		vec![]
+	}
+	fn get_child(&self, index: usize) -> &dyn NodeInspector {
+		match index {
+			_ => {
+				panic!()
+			}
+		}
+	}
+	fn get_child_owned(self, index: usize) -> Box<dyn NodeInspector> {
+		match index {
+			_ => {
+				panic!()
+			}
+		}
+	}
+}
+impl<
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		Attr: IntoAttributes,
+	> IntoRootNode for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr>
+where
+	[(); GRAPH_DEPTH - 1]:,
+{
+	type Out = Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr>;
+	fn into_root_node(self) -> Self::Out { self }
+}
+impl<
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		const NEW_GRAPH_ID: usize,
+		const NEW_GRAPH_DEPTH: usize,
+		const NEW_CHILD_INDEX: usize,
+		const NEW_NODE_ID: usize,
+		Attr: IntoAttributes,
+	>
+	IntoChildNode<
+		NEW_GRAPH_ID,
+		NEW_GRAPH_DEPTH,
+		NEW_CHILD_INDEX,
+		NEW_NODE_ID,
+		Node0<
+			NEW_GRAPH_ID,
+			NEW_GRAPH_DEPTH,
+			NEW_CHILD_INDEX,
+			NEW_NODE_ID,
+			Attr,
+		>,
+	> for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr>
+{
+	fn into_child_node(
+		self,
+	) -> Node0<NEW_GRAPH_ID, NEW_GRAPH_DEPTH, NEW_CHILD_INDEX, NEW_NODE_ID, Attr>
+	{
+		Node0 {
+			attributes: self.attributes,
+		}
+	}
+}
 
-
-
-
-// impl<
-// 		const GRAPH_ID: usize,
-// 		const GRAPH_DEPTH: usize,
-// 		const CHILD_INDEX: usize,
-// 		const NODE_ID: usize,
-// 		const PARENT_DEPTH: usize,
-// 		Attr: IntoAttributes,
-// 	> Default
-// 	for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Attr>
-// {
-// 	fn default() -> Self {
-// 		Self {
-// 			attributes: Default::default(),
-// 		}
-// 	}
-// }
-
-
-
-// pub struct Node0<
-// 	const GRAPH_ID: usize,
-// 	const GRAPH_DEPTH: usize,
-// 	const CHILD_INDEX: usize,
-// 	const NODE_ID: usize,
-// 	const PARENT_DEPTH: usize,
-// 	Attr: IntoAttributes,
-// > {
-// 	attributes: Attr,
-// }
-// impl<
-// 		const GRAPH_ID: usize,
-// 		const GRAPH_DEPTH: usize,
-// 		const CHILD_INDEX: usize,
-// 		const NODE_ID: usize,
-// 		const PARENT_DEPTH: usize,
-// 		Attr: IntoAttributes,
-// 	> Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Attr>
-// {
-// 	pub fn new(attributes: Attr) -> Self { Self { attributes } }
-// }
-// impl<
-// 		const GRAPH_ID: usize,
-// 		const GRAPH_DEPTH: usize,
-// 		const CHILD_INDEX: usize,
-// 		const NODE_ID: usize,
-// 		const PARENT_DEPTH: usize,
-// 		Attr: IntoAttributes,
-// 	> IntoNodeId
-// 	for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Attr>
-// {
-// 	const GRAPH_ID: usize = GRAPH_ID;
-// 	const GRAPH_DEPTH: usize = GRAPH_DEPTH;
-// 	const CHILD_INDEX: usize = CHILD_INDEX;
-// 	const NODE_ID: usize = NODE_ID;
-// 	const PARENT_DEPTH: usize = GRAPH_DEPTH;
-// }
-// impl<
-// 		const GRAPH_ID: usize,
-// 		const GRAPH_DEPTH: usize,
-// 		const CHILD_INDEX: usize,
-// 		const NODE_ID: usize,
-// 		const PARENT_DEPTH: usize,
-// 		Attr: IntoAttributes,
-// 	> AiNode
-// 	for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Attr>
-// {
-// 	type ChildQuery = (Entity,);
-// 	#[allow(unused_parens)]
-// 	type ChildBundle = ();
-// 	fn add_systems(self, schedule: &mut Schedule) {
-// 		if GRAPH_DEPTH != 0 {
-// 			schedule.configure_set(
-// 				BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>
-// 					.after(NodeSet::<GRAPH_ID, PARENT_DEPTH>),
-// 			);
-// 			schedule.configure_set(
-// 				NodeSet::<GRAPH_ID, GRAPH_DEPTH>
-// 					.after(BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>),
-// 			);
-// 		} else {
-// 			schedule.configure_set(
-// 				BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>
-// 					.before(NodeSet::<GRAPH_ID, GRAPH_DEPTH>),
-// 			);
-// 		}
-// 	}
-// 	fn entity<'a>(
-// 		val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>,
-// 	) -> Entity {
-// 		val.0
-// 	}
-// 	fn children<'a>(
-// 		(_entity,): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>,
-// 	) -> Vec<ChildState<'a>> {
-// 		vec![]
-// 	}
-// 	fn get_child(&self, index: usize) -> &dyn NodeInspector {
-// 		match index {
-// 			_ => {
-// 				panic!()
-// 			}
-// 		}
-// 	}
-// 	fn get_child_owned(self, index: usize) -> Box<dyn NodeInspector> {
-// 		match index {
-// 			_ => {
-// 				panic!()
-// 			}
-// 		}
-// 	}
-// }
-// impl<
-// 		const GRAPH_ID: usize,
-// 		const GRAPH_DEPTH: usize,
-// 		const CHILD_INDEX: usize,
-// 		const NODE_ID: usize,
-// 		const PARENT_DEPTH: usize,
-// 		Attr: IntoAttributes,
-// 	> IntoRootNode
-// 	for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Attr>
-// {
-// 	type Out =
-// 		Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Attr>;
-// 	fn into_root_node(self) -> Self::Out { self }
-// }
-// impl<
-// 		const GRAPH_ID: usize,
-// 		const GRAPH_DEPTH: usize,
-// 		const CHILD_INDEX: usize,
-// 		const NODE_ID: usize,
-// 		const PARENT_DEPTH: usize,
-// 		const NEW_GRAPH_ID: usize,
-// 		const NEW_GRAPH_DEPTH: usize,
-// 		const NEW_CHILD_INDEX: usize,
-// 		const NEW_NODE_ID: usize,
-// 		const NEW_PARENT_DEPTH: usize,
-// 		Attr: IntoAttributes,
-// 	>
-// 	IntoChildNode<
-// 		NEW_GRAPH_ID,
-// 		NEW_GRAPH_DEPTH,
-// 		NEW_CHILD_INDEX,
-// 		NEW_NODE_ID,
-// 		NEW_PARENT_DEPTH,
-// 		Node0<
-// 			NEW_GRAPH_ID,
-// 			NEW_GRAPH_DEPTH,
-// 			NEW_CHILD_INDEX,
-// 			NEW_NODE_ID,
-// 			NEW_PARENT_DEPTH,
-// 			Attr,
-// 		>,
-// 	> for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Attr>
-// {
-// 	fn into_child_node(
-// 		self,
-// 	) -> Node0<
-// 		NEW_GRAPH_ID,
-// 		NEW_GRAPH_DEPTH,
-// 		NEW_CHILD_INDEX,
-// 		NEW_NODE_ID,
-// 		NEW_PARENT_DEPTH,
-// 		Attr,
-// 	> {
-// 		Node0 {
-// 			attributes: self.attributes,
-// 		}
-// 	}
-// }
-
-// impl<
-// 		const NEW_DEPTH: usize,
-// 		const GRAPH_ID: usize,
-// 		const GRAPH_DEPTH: usize,
-// 		const CHILD_INDEX: usize,
-// 		const NODE_ID: usize,
-// 		const PARENT_DEPTH: usize,
-// 		Attr: IntoAttributes,
-// 	>
-// 	IntoDepth<
-// 		NEW_DEPTH,
-// 		Node0<GRAPH_ID, NEW_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Attr>,
-// 	> for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, PARENT_DEPTH, Attr>
-// {
-// }
-// impl<
-// 		const NEW_DEPTH: usize,
-// 		const GRAPH_ID: usize,
-// 		const GRAPH_DEPTH: usize,
-// 		const CHILD_INDEX: usize,
-// 		const NODE_ID: usize,
-// 		const PARENT_DEPTH: usize,
-// 		Attr: IntoAttributes,
-// 		Child0: AiNode + IntoDepth<{ NEW_DEPTH + 1 }, NewChild0>,
-// 		NewChild0: AiNode,
-// 	>
-// 	IntoDepth<
-// 		NEW_DEPTH,
-// 		Node1<
-// 			GRAPH_ID,
-// 			NEW_DEPTH,
-// 			CHILD_INDEX,
-// 			NODE_ID,
-// 			PARENT_DEPTH,
-// 			Attr,
-// 			NewChild0,
-// 		>,
-// 	>
-// 	for Node1<
-// 		GRAPH_ID,
-// 		GRAPH_DEPTH,
-// 		CHILD_INDEX,
-// 		NODE_ID,
-// 		PARENT_DEPTH,
-// 		Attr,
-// 		Child0,
-// 	>
-// {
-// }
+impl<
+		const NEW_DEPTH: usize,
+		const GRAPH_ID: usize,
+		const GRAPH_DEPTH: usize,
+		const CHILD_INDEX: usize,
+		const NODE_ID: usize,
+		Attr: IntoAttributes,
+	> IntoDepth<NEW_DEPTH, Node0<GRAPH_ID, NEW_DEPTH, CHILD_INDEX, NODE_ID, Attr>>
+	for Node0<GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, NODE_ID, Attr>
+{
+}
