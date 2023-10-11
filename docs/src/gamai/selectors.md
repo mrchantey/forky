@@ -9,7 +9,7 @@ Nodes with children are usually tasked witk deciding which child should run. The
 Perhaps the simples selector is the `sequence`. It runs each child in sequence.
 ```rs
 #[tree_builder]
-pub fn MyTree() -> impl AiTree {
+pub fn MyTree() -> impl AiNode {
 	tree! {
 		<sequence>
 			<say_hello/>
@@ -37,7 +37,7 @@ This tree will skip `child1` and run `child2`:
 
 ```rs
 #[tree_builder]
-pub fn MyTree() -> impl AiTree {
+pub fn MyTree() -> impl AiNode {
 	tree! {
 		<first_valid_edge>
 			<child1 edge=edge_always_fail/>

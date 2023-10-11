@@ -1,10 +1,7 @@
 # Changelog
 
 ## TODO
-- 
-- bevy plugins
-- generic edge state
-	- can be specified in node systems, ie where N::EdgeState: MyEdgeState
+- props
 
 ## `main`
 - node/edge architecture

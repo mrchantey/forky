@@ -24,7 +24,7 @@ Trees are defined using familiar RSX patterns like those found in web UI librari
 
 ```rs
 #[tree_builder]
-pub fn MyTree() -> impl AiTree {
+pub fn MyTree() -> impl AiNode {
 	tree! {
 		<sequence>
 			<say_hello/>

@@ -77,6 +77,9 @@ pub trait IntoNodeSets: TreePath + Clone + Debug {
 				.after(UpdateSet::<Self::Parent>::new()),
 		);
 		schedule.configure_set(
+			UpdateSet::<Self>::new().after(UpdateSet::<Self::Parent>::new()),
+		);
+		schedule.configure_set(
 			PostUpdateSet::<Self>::new().after(UpdateSet::<Self>::new()),
 		);
 	}
