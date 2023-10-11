@@ -11,9 +11,8 @@ pub fn parse_node(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
 	// let impl_named_children = impl_named_children(&node);
 
 	quote! {
-		use bevy_app::prelude::*;
-		use bevy_ecs::prelude::*;
 		use gamai::*;
+		use gamai::exports::*;
 		#impl_self
 		#impl_node
 		// #into_child_node

@@ -130,13 +130,15 @@ watch *command:
 	-- {{command}}
 ### PLAY ###
 
-
 vis-w crate example:
 	just watch just vis {{crate}} {{example}}
 
 vis crate example:
 	just run {{crate}} {{example}}
 	just dot-to-svg target/graph/render_graph.dot
+
+serve-vis:
+	cd ./target/graph && forky serve
 
 # requires https://graphviz.org/download/
 dot-to-svg target:

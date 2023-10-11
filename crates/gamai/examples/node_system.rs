@@ -8,4 +8,6 @@
 fn main() {}
 
 #[gamai::node_system]
-pub fn my_system<N: gamai::AiNode>() {}
+pub fn node_system<N: gamai::AiNode>() {}
+#[gamai::node_system]
+pub fn bevy_system() {}

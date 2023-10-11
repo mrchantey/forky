@@ -36,6 +36,11 @@ impl<T1: IntoNodeSystem, T2: IntoNodeSystem> IntoNodeSystem for (T1, T2) {
 			.into_configs()
 	}
 }
+// impl<T: IntoSystemConfigs<M>, M> IntoNodeSystem for T {
+// 	fn into_node_system_configs<Node: AiNode>(self) -> SystemConfigs {
+// 		self.into_configs()
+// 	}
+// }
 
 // // NodeSystem builders, functions that return node systems
 // impl<F, T> IntoNodeSystem for F

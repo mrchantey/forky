@@ -6,9 +6,6 @@ mod node_def;
 use node_def::*;
 mod node_system;
 use node_system::*;
-mod utility;
-use utility::*;
-
 
 #[proc_macro]
 pub fn define_node(attr: TokenStream) -> TokenStream { parse_node(attr) }
@@ -31,13 +28,3 @@ pub fn tree_builder(attr: TokenStream, item: TokenStream) -> TokenStream {
 
 #[proc_macro]
 pub fn html(tokens: TokenStream) -> TokenStream { html_inner(tokens, false) }
-
-
-// #[proc_macro]
-// pub fn get_node_id_bounds(_: TokenStream) -> TokenStream {
-// 	node_id_bounds().into()
-// }
-// #[proc_macro]
-// pub fn get_node_id_params(_: TokenStream) -> TokenStream {
-// 	node_id_params().into()
-// }

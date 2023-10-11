@@ -9,27 +9,33 @@ use std::fs::File;
 use std::io::Write;
 
 
+#[node_system]
 fn root() {}
+#[node_system]
 fn node1() {}
 // fn edge1() {}
+#[node_system]
 fn node2() {}
+#[node_system]
 fn edge2() {}
+#[node_system]
 fn node3() {}
+#[node_system]
 fn edge3() {}
 
 pub fn main() -> Result<()> {
 	let tree1 = tree! {
 		<root>
-				<node1>
-					<node2 edge=edge2>
-						<node3 edge=edge3/>
-					</node2>
+				// <node1>
+					// <node2 edge=edge2>
+						// <node3 edge=edge3/>
+					// </node2>
 					// <node_always_succeed>
 					// 	<node_always_succeed>
 					// 		<node_always_succeed/>
 					// 	</node_always_succeed>
 					// </node_always_succeed>
-				</node1>
+				// </node1>
 		</root>
 	};
 	// let tree2 = tree! {

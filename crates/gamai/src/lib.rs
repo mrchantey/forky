@@ -20,3 +20,9 @@ mod builtin_nodes;
 pub use self::builtin_nodes::*;
 pub use anyhow::bail;
 pub use anyhow::Result;
+pub mod exports {
+	pub use bevy_ecs::prelude::*;
+	pub use bevy_ecs::schedule::SystemConfigs;
+	// currently no macros depend on bevy_app
+	// pub use bevy_app::prelude::*;
+}
