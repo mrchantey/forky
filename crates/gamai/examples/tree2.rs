@@ -4,14 +4,14 @@
 	generic_const_exprs
 )]
 #![allow(incomplete_features)]
-//this example is for macro expansion, for usage see the `tests` directory
 use gamai::*;
+//this example is for macro expansion, for usage see the `tests` directory
 
 #[node_system]
 fn my_system<N: AiNode>() {}
 
 fn main() {
-	// let _tree0 = tree! {<MyTree/>};
+	let _tree0 = tree! {<MyTree/>};
 	// let _tree1 = tree! {
 	// 	<my_system>
 	// 		<my_system>

@@ -1,13 +1,9 @@
 //this example is used for macro expansion, for usage see the `tests` directory
-#![feature(
-	return_position_impl_trait_in_trait,
-	associated_const_equality,
-	generic_const_exprs
-)]
-#![allow(incomplete_features)]
 use gamai::*;
+use sweet::*;
 
-fn main() {
+#[sweet_test]
+pub fn works() -> Result<()> {
 	type Root = TreePathRoot<0>;
 	let tree = || {
 		let a = Node0::<Root, _>::new(DefaultAttributes::default());
@@ -18,4 +14,6 @@ fn main() {
 	let _ = AiBundle::new(tree);
 	let _ = AiPlugin::new(tree);
 	let _ = AiPlugin::new(tree);
+
+	Ok(())
 }

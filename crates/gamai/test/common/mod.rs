@@ -2,6 +2,8 @@ mod bundle;
 pub use self::bundle::*;
 mod depth;
 pub use self::depth::*;
+mod node_def_builder;
+pub use self::node_def_builder::*;
 mod node_id;
 pub use self::node_id::*;
 mod node_system;

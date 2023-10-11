@@ -8,11 +8,6 @@ use std::marker::PhantomData;
 /// An AiNode is a node and edge system, and a set of child nodes.
 // pub trait AiNode {
 pub trait AiNode: 'static + Send + Sync + TreePath {
-	// we need to repeat the consts for implementations as <Self::ID> is not allowed
-	// const GRAPH_ID: usize = <Self as IntoNodeId>::GRAPH_ID;
-	// const GRAPH_DEPTH: usize = <Self as IntoNodeId>::GRAPH_DEPTH;
-	// const CHILD_INDEX: usize = <Self as IntoNodeId>::CHILD_INDEX;
-	// const PARENT_DEPTH: usize = <Self as IntoNodeId>::PARENT_DEPTH;
 	/// Tuple Query used to access child states: `(Entity,(Child1,(Child2)))`
 	type ChildQuery: WorldQuery;
 	type ChildBundle: 'static + Send + Sync + Default + Bundle;

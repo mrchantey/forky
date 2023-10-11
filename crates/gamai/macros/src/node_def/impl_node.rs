@@ -189,7 +189,7 @@ fn children_into_child(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
 			let child_field = child_field_name(index);
-			quote!(self.#child_field.into_child::<TreePathSegment<#index, Self>>(),)
+			quote!(self.#child_field.into_child::<TreePathSegment<#index, NewPath>>(),)
 		})
 		.collect()
 }
