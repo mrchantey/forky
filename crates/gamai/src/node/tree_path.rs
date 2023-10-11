@@ -12,10 +12,6 @@ pub trait TreePath:
 
 	const GRAPH_ID: usize = Self::Parent::GRAPH_ID;
 	const DEPTH: usize = Self::Parent::DEPTH + 1;
-
-	fn graph_id(&self) -> usize { Self::GRAPH_ID }
-	fn depth(&self) -> usize { Self::DEPTH }
-	fn child_index(&self) -> usize { Self::CHILD_INDEX }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

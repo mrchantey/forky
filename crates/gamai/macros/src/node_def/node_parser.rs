@@ -28,17 +28,17 @@ impl NodeParser {
 		let child_params = child_params(num_children);
 		let child_bounds = child_bounds(num_children);
 
-		let node_id_params = node_id_params();
-		let node_id_bounds = node_id_bounds();
+		// let node_id_params = node_id_params();
+		// let node_id_bounds = node_id_bounds();
 
 		let self_params = quote! {
-			#node_id_params,
-			Attr,
+			Path,
+			System,
 			#child_params
 		};
 		let self_bounds = quote! {
-			#node_id_bounds,
-			Attr: IntoAttributes,
+			Path: TreePath,
+			System: IntoNodeSystem,
 			#child_bounds
 		};
 

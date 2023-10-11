@@ -20,10 +20,17 @@ use std::marker::PhantomData;
 fn main() {
 	type Root = TreePathRoot<0>;
 	let a = Node0::<Root, _>::new(DefaultAttributes::default());
-	let b = Node1::<Root, _, _>::new(DefaultAttributes::default(), a);
+	let b = Node1::<Root, _, _>::new(DefaultAttributes::default(), || a)
+		.into_root();
 
-	let b = b.into_child::<TreePathRoot<3>>();
+	let c = b.clone().into_child::<TreePathRoot<3>>();
+	assert_eq!(b.graph_id(), 0);
+	assert_eq!(c.graph_id(), 3);
 	assert_eq!(b.child(0).graph_depth(), 2);
+	// let bundle1 = b.clone().bundle();
+	// assert!(bundle1 != bundle2);
+
+	// let b = b.into_child::<TreePathRoot<3>>();
 }
 
 #[derive(Debug, Clone, Default, Hash, PartialEq, Eq)]
@@ -84,10 +91,13 @@ struct Node1<Path: TreePath, Node: IntoNodeSystem, Child0: AiNode> {
 	pub phantom: PhantomData<Path>,
 }
 impl<Path: TreePath, N: IntoNodeSystem, Child0: AiNode> Node1<Path, N, Child0> {
-	pub fn new(node: N, child0: Child0) -> Self {
+	pub fn new<IntoChild0Marker>(
+		node: N,
+		child0: impl IntoNode<IntoChild0Marker, Out = Child0>,
+	) -> Self {
 		Self {
 			node,
-			child0,
+			child0: child0.into_node(),
 			phantom: PhantomData,
 		}
 	}
@@ -129,10 +139,10 @@ impl<Path: TreePath, N: IntoNodeSystem, Child0: AiNode> AiNode
 	}
 
 	fn into_child<NewPath: TreePath>(self) -> impl AiNode {
-		Node1::<NewPath, N, _>::new(
+		Node1::<NewPath, _, _>::new(
 			self.node,
 			// self.child0
-			self.child0.into_child::<TreePathSegment<0, Self>>(),
+			|| self.child0.into_child::<TreePathSegment<0, Self>>(),
 		)
 	}
 

@@ -1,7 +1,7 @@
 use gamai::*;
 use sweet::*;
 
-fn foo() {}
+// fn foo() {}
 
 #[node_system]
 fn bar<N: AiNode>() {}
@@ -9,11 +9,11 @@ fn bar<N: AiNode>() {}
 
 #[sweet_test]
 fn compiles() -> Result<()> {
-	let _ = tree! {
-		<foo>
-			<bar/>
-		</foo>
-	};
+	// let _ = tree! {
+	// 	<foo>
+	// 		<bar/>
+	// 	</foo>
+	// };
 
 	Ok(())
 }

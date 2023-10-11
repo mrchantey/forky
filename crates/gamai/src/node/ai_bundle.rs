@@ -13,14 +13,14 @@ pub struct AiBundle<Node: AiNode> {
 
 impl<Node: AiNode> AiBundle<Node> {
 	/// Initialize default with `NodeState::Running` for the root node.
-	pub fn new(_node: impl IntoRootNode<Out = Node>) -> impl Bundle {
+	pub fn new<M>(_node: impl IntoNode<M, Out = Node>) -> impl Bundle {
 		(
 			DerefNodeState::<Node>::new(NodeState::Running),
 			Self::default(),
 		)
 	}
 	/// Initialize default, will not run until root node has `NodeState::Running`.
-	pub fn inactive(_node: impl IntoRootNode<Out = Node>) -> Self {
+	pub fn inactive<M>(_node: impl IntoNode<M, Out = Node>) -> Self {
 		Self::default()
 	}
 }

@@ -11,6 +11,3 @@ pub fn child_field_name(index: usize) -> TokenStream {
 pub fn child_type_name(index: usize) -> TokenStream {
 	field_ident("Child", index).to_token_stream()
 }
-pub fn child_type_name_new(index: usize) -> TokenStream {
-	field_ident("NewChild", index).to_token_stream()
-}

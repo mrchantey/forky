@@ -7,4 +7,4 @@
 #![allow(incomplete_features)]
 fn main() {}
 gamai::define_node!(0);
-// gamai::define_node!(1);
+gamai::define_node!(1);

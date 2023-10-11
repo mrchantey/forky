@@ -1,39 +1,38 @@
 use super::*;
 use proc_macro2::TokenStream;
 use quote::quote;
-// use quote::ToTokens;
+use quote::ToTokens;
 
 pub fn impl_self(node: &NodeParser) -> TokenStream {
-	// let states_typed = get_states_typed(node);
-	// let params_nested = child_params_nested(node);
 	let NodeParser {
 		ident,
 		self_bounds,
 		self_params,
-		// child_params,
-		num_children: num_edges,
+		num_children,
 		..
 	} = node;
 
-	let child_fields_def = child_fields_def(*num_edges);
-	let child_fields_args = child_fields_args(*num_edges);
-	let child_fields_into_child = child_fields_into_child(*num_edges);
+	let child_fields_def = child_fields_def(*num_children);
+	let child_fields_args = child_fields_args(*num_children);
+	let child_fields = child_fields(*num_children);
+	let child_fields_markers = child_fields_markers(*num_children);
 
 	quote! {
-		// #[derive(Clone)]
+		#[derive(Debug, Clone, Default, Hash, PartialEq, Eq)]
 		pub struct #ident<#self_bounds>{
-			attributes: Attr,
+			phantom: std::marker::PhantomData<Path>,
+			system: System,
 			#child_fields_def
 		}
 
 		impl<#self_bounds> #ident<#self_params> {
-			pub fn new(attributes: Attr, #child_fields_args) -> Self {
+			pub fn new<#child_fields_markers>(system: System, #child_fields_args) -> Self {
 				Self {
-					attributes,
-					#child_fields_into_child
+					system,
+					phantom: std::marker::PhantomData,
+					#child_fields
 				}
 			}
-
 		}
 	}
 }
@@ -47,24 +46,37 @@ fn child_fields_def(num_children: usize) -> TokenStream {
 		})
 		.collect()
 }
-
-fn child_fields_into_child(num_children: usize) -> TokenStream {
-	(0..num_children)
-		.map(|index| {
-			let field = child_field_name(index);
-			// let ty = child_type_name(index);
-			quote!(#field: #field.into_child_node(),)
-		})
-		.collect()
-}
 fn child_fields_args(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
 			let field = child_field_name(index);
 			let ty = child_type_name(index);
-			let node_id_params = node_id_params_child(index);
-			// quote! {#field: impl IntoChildNode<0,{GRAPH_DEPTH + 1},0,0,0,Out=#ty>,
-			quote! {#field: impl IntoChildNode<#node_id_params,Out = #ty>,}
+			let marker = child_marker_name(index);
+			quote!(#field: impl IntoNode<#marker, Out=#ty>,)
+		})
+		.collect()
+}
+
+fn child_fields(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let field = child_field_name(index);
+			quote!(#field:#field.into_node(),)
+		})
+		.collect()
+}
+
+
+pub fn child_marker_name(index: usize) -> TokenStream {
+	field_ident("IntoChildMarker", index).to_token_stream()
+}
+
+
+fn child_fields_markers(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let field = child_marker_name(index);
+			quote!(#field,)
 		})
 		.collect()
 }

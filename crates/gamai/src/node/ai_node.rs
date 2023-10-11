@@ -1,4 +1,5 @@
 use crate::*;
+use bevy_app::Plugin;
 use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;
 use std::marker::PhantomData;
@@ -6,7 +7,7 @@ use std::marker::PhantomData;
 
 /// An AiNode is a node and edge system, and a set of child nodes.
 // pub trait AiNode {
-pub trait AiNode: 'static + Send + Sync + IntoNodeSets {
+pub trait AiNode: 'static + Send + Sync + TreePath {
 	// we need to repeat the consts for implementations as <Self::ID> is not allowed
 	// const GRAPH_ID: usize = <Self as IntoNodeId>::GRAPH_ID;
 	// const GRAPH_DEPTH: usize = <Self as IntoNodeId>::GRAPH_DEPTH;
@@ -26,8 +27,12 @@ pub trait AiNode: 'static + Send + Sync + IntoNodeSets {
 	fn get_child(&self, index: usize) -> &dyn NodeInspector;
 	fn get_child_owned(self, index: usize) -> Box<dyn NodeInspector>;
 	fn into_child<Path: TreePath>(self) -> impl AiNode;
-}
+	fn into_root(self) -> impl AiNode { self.into_child::<Self>() }
 
+	fn bundle(self) -> impl Bundle { AiBundle::new(|| self) }
+	fn bundle_inactive(self) -> impl Bundle { AiBundle::inactive(|| self) }
+	fn plugin(self) -> impl Plugin { AiPlugin::new(||self) }
+}
 
 #[derive(Debug, Default, Clone, Component)]
 pub struct PhantomComponent<T>(pub PhantomData<T>);

@@ -1,5 +1,3 @@
-use crate::*;
-use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use quote::quote;
@@ -137,32 +135,13 @@ impl<'a> TreeParser<'a> {
 	}
 
 	pub fn to_instance(&self) -> TokenStream {
-		// let NodeConfig { graph_id, .. } = self;
-		let ident = self.tree_ident();
-		let tokens_root = self.to_instance_tokens(true);
-		let tokens_child = self.to_instance_tokens(false);
-
-		let node_id_bounds = node_id_bounds();
-		let node_id_params = node_id_params();
+		let tokens_root = self.to_instance_tokens();
 		quote! {
-			{
-				#[derive(Clone,Copy)]
-				struct #ident;
-				impl AiTree for #ident{
-					fn get_into_root_node(self) -> impl IntoRootNode{
-						|| #tokens_root
-					}
-					fn get_into_child_node<#node_id_bounds,Out:AiNode>(self)
-						-> impl IntoChildNode<#node_id_params,Out>{
-						|| #tokens_child
-					}
-				}
-				#ident
-			}
+			#tokens_root.into_root()
 		}
 	}
 
-	pub fn to_instance_tokens(&self, is_root: bool) -> TokenStream {
+	pub fn to_instance_tokens(&self) -> TokenStream {
 		let TreeParser {
 			node,
 			graph_id,
@@ -182,35 +161,22 @@ impl<'a> TreeParser<'a> {
 				.into();
 			}
 			let name = node.name();
-			if is_root {
-				quote! {// not setting graph id here? i guess the tree macro already set it
-					#name.get_into_root_node()
-				}
-			} else {
-				quote! {
-					#name.get_into_child_node()
-					// #name.get_into_root_node()
-				}
-			}
+			// if its a tree function, call it
+			quote!(#name())
 		} else {
 			let ident = self.from_node_system_ident();
 			let child_types = self.child_types();
 			let child_instances = self.child_instances();
 			quote! {
-				#ident::<#graph_id,
-				// 0,0,0,0,
-				GRAPH_ID,
-				GRAPH_DEPTH,
-				0,
-				PARENT_DEPTH,				
-				_, //for IntoAttributes<T>
+				#ident::<TreePathRoot<#graph_id>,
+				_, //for Nodesystem
 				#child_types
 				>::new(
 					Attributes::new(
-						|| #edge_system,
-						|| gamai::empty_node,
-						|| #node_system,
-						|| gamai::empty_node),
+						#edge_system,
+						gamai::empty_node,
+						#node_system,
+						gamai::empty_node),
 					#child_instances)
 			}
 		}
@@ -224,8 +190,8 @@ impl<'a> TreeParser<'a> {
 		self.children
 			.iter()
 			.map(|c| {
-				let child = c.to_instance_tokens(false);
-				quote!(move || {#child},)
+				let child = c.to_instance_tokens();
+				quote!(#child,)
 			})
 			.collect()
 	}
@@ -238,28 +204,4 @@ impl<'a> TreeParser<'a> {
 		}
 		false
 	}
-	fn tree_ident(&self) -> Ident {
-		Ident::new(
-			format!("AutoGenTree{}", self.graph_id).as_str(),
-			self.node.span(),
-		)
-	}
-	// not needed, handled by intochildnode
-	// fn parent_id(&self) -> TokenStream {
-	// 	let TreeParser {
-	// 		graph_id,
-	// 		graph_depth,
-	// 		child_index_of_parent,
-	// 		..
-	// 	} = self;
-	// 	let parent_depth = graph_depth.checked_sub(1).unwrap_or(0);
-	// 	let grandparent_depth = parent_depth.checked_sub(1).unwrap_or(0);
-	// 	quote! {
-	// 		PhantomNodeId<
-	// 		#graph_id,
-	// 		#parent_depth,
-	// 		#child_index_of_parent,
-	// 		#grandparent_depth>
-	// 	}
-	// }
 }

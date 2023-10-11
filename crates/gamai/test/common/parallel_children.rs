@@ -5,18 +5,20 @@ use sweet::*;
 
 #[sweet_test]
 pub fn children() -> Result<()> {
-	let my_tree = tree! {
-		<parallel>
+	let my_tree = || {
+		tree! {
 			<parallel>
-				<empty_node/>
+				<parallel>
+					<empty_node/>
+				</parallel>
 			</parallel>
-		</parallel>
+		}
 	};
 
 	let mut app = App::new();
 
-	app.add_plugins(my_tree.plugin());
-	let entity = app.world.spawn(my_tree.bundle()).id();
+	app.add_plugins(AiPlugin::new(my_tree));
+	let entity = app.world.spawn(AiBundle::new(my_tree)).id();
 
 	expect(my_tree.child(0).node_state(&app.world, entity)).to_be_none()?;
 	expect(my_tree.child(0).child(0).node_state(&app.world, entity))
