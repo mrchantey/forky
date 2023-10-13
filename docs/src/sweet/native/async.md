@@ -1,27 +1,20 @@
 # Async Tests
 
-Internally each native test will be stored as one of three types:
+Sweet allows async tests but cannot tell whether all awaited futures are `Send`. 
 
-- `fn() -> Result<()>`
-	```rs
-	it "has no 'async' keywords"{
-		expect(true).to_be_true()?;
-	}
-	```
-- `fn() -> BoxedFutureSend`
-	```rs
-	it "has send futures"{
-		tokio::time::sleep(Duration::from_millis(100)).await?;
-	}
-	```
-- `fn() -> BoxedFuture`
-	```rs
-	it non_send "has non-send futures"{
-		//example of a common non-send async function
-		fantoccini::ClientBuilder::native().connect("http://example.com").await;
-	}
-	```
+This is solved by adding the `non_send` attribute:
+```rs
 
-By default Sweet will detect the `await` keyword and mark that test as containing `Send` Futures. The `non_send` flag must be specified if your test contains a non-send future.
+// many async functions are parallelizable
+#[sweet_test]
+async fn example_parrallelizable_test(){
+	tokio::time::sleep(Duration::from_millis(100)).await.unwrap();
+}
 
-Note: currently if the runner finds any `non_send` tests it will run all tests on the main thread, even if the parallel flag is supplied.
+
+// some must be run on the main thread
+#[sweet_test(non_send)]
+async fn example_non_send_tests(){
+	fantoccini::ClientBuilder::native().connect("http://example.com").await;
+}
+```

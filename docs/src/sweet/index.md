@@ -1,10 +1,10 @@
 # Sweet
 
-Sweet is a declarative full-stack test framework for Rust. Use a single framework for some or all of the supported test types:
+Sweet is a full-stack test framework for Rust. Use a single framework for some or all of the supported test types:
 
 | Type                   | Description                                        |
 | ---------------------- | -------------------------------------------------- |
-| Native - Unit          | Write unit tests with intuitive matchers           |
+| Native - Unit          | Results-not-panic workflow                         |
 | Native - E2E           | Full support for webdriver, fantoccini etc         |
 | In-browser - Component | Test indivudual web components, framework agnostic |
 | In-browser - E2E       | Run e2e tests on actual elements via iframes       |
@@ -28,10 +28,9 @@ The in-browser tests are architecturally similar to Cypress [Component][1] and [
 ## Usage
 
 ```rs
-sweet! {
-  it "works" {
-		expect(true).to_be_true()?;
-  }
+#[sweet_test]
+fn true_is_true() -> Result<()> {
+  expect(true).to_be_true()
 }
 ```
 
@@ -49,9 +48,18 @@ Check out the [quickstart page](./native/index.md) or have a browse of the [test
 
 ## Overview
 
-Sweet has three main functions:
+Sweet has four main components:
 
 - [`sweet!` defines a test suite](./macros.md)
+- [`#[sweet_test]` defines a test](./native/index.md)
 - [`expect()` returns a matcher](./matchers.md)
 - [`visit()` returns an iframe (e2e)](./web/end-to-end.md)
 
+
+## Dont `panic!`, give me a `Result<()>`
+
+While sweet understands & supports panicking, it is not encouraged.
+
+Enjoy the included results-based test functions and matchers for pretty error logging. This is especially handy for **web** and **game** tests where we may want to poll an assertion until it passes. 
+
+It also allows for use of the `func()?;` syntax at the test function level, like in the [webdriver example](native/webdriver.md#example).

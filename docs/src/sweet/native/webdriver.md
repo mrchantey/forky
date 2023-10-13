@@ -14,16 +14,16 @@ use fantoccini::ClientBuilder;
 use fantoccini::Locator;
 use sweet::*;
 
-sweet! {
-	it non_send "works" {
-		let client = ClientBuilder::native()
-			.connect("http://localhost:9515").await?;
+#[sweet_test(non_send)]
+async fn connects_to_example()->Result<()>{
+	let client = ClientBuilder::native()
+		.connect("http://localhost:9515").await?;
 
-		client.goto("https://example.com").await?;
-		let url = client.current_url().await?;
-		expect(url.as_ref()).to_be("https://example.com")?;
+	client.goto("https://example.com").await?;
+	let url = client.current_url().await?;
+	expect(url.as_ref()).to_be("https://example.com")?;
 
-		client.close().await?;
-	}
+	client.close().await?;
+	Ok(())
 }
 ```
