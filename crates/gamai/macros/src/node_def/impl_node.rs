@@ -17,6 +17,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let child_states = child_states(node);
 	let node_recast = node_recast(node);
 	let add_systems_children = add_systems_children(*num_children);
+	let get_children = get_children(*num_children);
 	let match_get_children = match_get_children(*num_children);
 	let match_get_children_owned = match_get_children_owned(*num_children);
 
@@ -72,6 +73,9 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 					#match_get_children_owned
 					_=> panic!("invalid child index")
 				}
+			}
+			fn get_children(&self)->Vec<&dyn NodeInspector>{
+				vec![#get_children]
 			}
 			fn into_child<NewPath: TreePath>(self) -> impl AiNode {
 				#ident::<NewPath, _, #children_inferred_types>::new(
@@ -170,6 +174,15 @@ fn match_get_children(num_children: usize) -> TokenStream {
 		})
 		.collect()
 }
+fn get_children(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let child_ident = child_field_name(index);
+			quote!(&self.#child_ident,)
+		})
+		.collect()
+}
+
 fn match_get_children_owned(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {

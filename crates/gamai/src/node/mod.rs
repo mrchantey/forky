@@ -12,6 +12,8 @@ mod edge_state;
 pub use self::edge_state::*;
 mod into_node;
 pub use self::into_node::*;
+mod node_component;
+pub use self::node_component::*;
 mod node_def;
 pub use self::node_def::*;
 mod node_sets;

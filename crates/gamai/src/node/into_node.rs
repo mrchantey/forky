@@ -10,8 +10,6 @@ pub trait IntoNode<Marker>: Sized {
 	type Out: AiNode;
 	fn into_node(self) -> Self::Out;
 
-
-
 	/// wrapper for `NodeInspector::node_state`
 	fn node_state(self, world: &World, entity: Entity) -> Option<NodeState> {
 		NodeInspector::node_state(&self.into_node(), world, entity)
@@ -22,7 +20,7 @@ pub trait IntoNode<Marker>: Sized {
 		NodeInspector::edge_state(&self.into_node(), world, entity)
 	}
 
-	/// wrapper for `NodeInspector::child`
+	/// wrapper for `NodeInspector::child_owned`
 	fn child(self, index: usize) -> Box<dyn NodeInspector> {
 		NodeInspector::child_owned(self.into_node(), index)
 	}

@@ -19,14 +19,25 @@ pub trait AiNode: 'static + Send + Sync + TreePath {
 	) -> Vec<ChildState<'a>>;
 	fn add_systems(self, schedule: &mut Schedule);
 
+	fn get<'a, Component: NodeComponent>(
+		&'a self,
+		world: &'a World,
+		entity: Entity,
+	) -> Option<&'a Component::Value<Self>> {
+		Component::get(self, world, entity)
+	}
 	fn get_child(&self, index: usize) -> &dyn NodeInspector;
 	fn get_child_owned(self, index: usize) -> Box<dyn NodeInspector>;
+	fn get_children(&self) -> Vec<&dyn NodeInspector>;
+
+	/// Copies self, with a different path.
 	fn into_child<Path: TreePath>(self) -> impl AiNode;
+	/// Fixes paths of all children to be relative to self.
 	fn into_root(self) -> impl AiNode { self.into_child::<Self>() }
 
-	fn bundle(self) -> impl Bundle { AiBundle::new(|| self) }
-	fn bundle_inactive(self) -> impl Bundle { AiBundle::inactive(|| self) }
-	fn plugin(self) -> impl Plugin { AiPlugin::new(||self) }
+	fn bundle(self) -> impl Bundle { AiBundle::new(self) }
+	fn bundle_inactive(self) -> impl Bundle { AiBundle::inactive(self) }
+	fn plugin(self) -> impl Plugin { AiPlugin::new(self) }
 }
 
 #[derive(Debug, Default, Clone, Component)]
@@ -36,8 +47,8 @@ impl<T> PhantomComponent<T> {
 	pub fn new() -> Self { Self(PhantomData) }
 }
 
-
-pub trait NodeInspector {
+/// Base type for nodes, must be Send/Sync because used in components for distinguishing nodes
+pub trait NodeInspector: 'static + Send + Sync {
 	fn node_state(&self, world: &World, entity: Entity) -> Option<NodeState>;
 	fn edge_state(&self, world: &World, entity: Entity) -> Option<EdgeState>;
 	fn child(&self, index: usize) -> &dyn NodeInspector;

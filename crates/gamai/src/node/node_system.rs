@@ -5,9 +5,9 @@ use std::fmt::Debug;
 use std::hash::Hash;
 
 /// not for external use
-pub struct IsBevySystem;
-/// used for manually declaring an `IntoNodeSystem`
-pub struct IsNodeSystem;
+// pub struct IsBevySystem;
+// /// used for manually declaring an `IntoNodeSystem`
+// pub struct IsNodeSystem;
 
 /// Marker type that tells attributes to ignore that system
 #[derive(Default, Debug, Clone, Eq, PartialEq, Hash)]
