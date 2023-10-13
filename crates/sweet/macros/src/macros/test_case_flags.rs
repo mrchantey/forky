@@ -49,6 +49,8 @@ impl TestCaseFlags {
 			}
 		}
 	}
+
+	// TODO this should be handled by syn::Attribute parser
 	pub fn parse<I>(iter: &mut Peekable<I>) -> syn::parse::Result<TestCaseFlags>
 	where
 		I: Iterator<Item = TokenTree>,

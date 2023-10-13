@@ -15,17 +15,19 @@
 	#![feature(imported_main)]
 	pub use sweet::*;
 
-	sweet! {
-	  it "demonstrates sweet" {
-			assert!(true == false);
-			expect(true).to_be_false()?;
-			expect("some string").not().to_start_with("some")?;
-	  }
+	#[sweet_test]
+	fn it_works() -> Result<()>{
+		assert!(true == true);
+		expect(true).to_be_true()?;
+		expect("foobar")
+			.not()
+			.to_start_with("bazz")?;
+		Ok(())
 	}
 	```
 1. run `cargo run --example sweet`
-1. optional - try changing the above matchers so the test passes ⚡
+1. optional - try changing the above matchers so the test fails ⚡
 
-Here's an example output of a runner with a few tests:
+As an example here is the output of a runner with a few tests:
 
 ![native-runner](../images/success.png)
