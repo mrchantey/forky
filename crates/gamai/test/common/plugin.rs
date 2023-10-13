@@ -4,13 +4,13 @@ use sweet::*;
 
 #[sweet_test]
 pub fn it_works() -> Result<()> {
-	let my_tree = tree! {<node_always_succeed/>};
+	let my_tree = || tree! {<node_always_succeed/>};
 
 	let mut app = App::new();
 
-	app.add_plugins(my_tree.plugin());
+	app.add_plugins(AiPlugin::new(my_tree));
 
-	let entity = app.world.spawn(my_tree.bundle()).id();
+	let entity = app.world.spawn(AiBundle::new(my_tree)).id();
 
 	expect(my_tree.node_state(&app.world, entity))
 		.to_be(Some(NodeState::Running))?;

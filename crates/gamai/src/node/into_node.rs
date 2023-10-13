@@ -1,34 +1,57 @@
-use super::*;
+use crate::*;
+use bevy_ecs::entity::Entity;
+use bevy_ecs::world::World;
 
-pub trait IntoRootNode {
+
+pub struct IntoNodeMarkerNode;
+pub struct IntoNodeMarkerFunc;
+
+pub trait IntoNode<Marker>: Sized {
 	type Out: AiNode;
-	fn into_root_node(self) -> Self::Out;
+	fn into_node(self) -> Self::Out;
+
+
+
+	/// wrapper for `NodeInspector::node_state`
+	fn node_state(self, world: &World, entity: Entity) -> Option<NodeState> {
+		NodeInspector::node_state(&self.into_node(), world, entity)
+	}
+
+	/// wrapper for `NodeInspector::edge_state`
+	fn edge_state(self, world: &World, entity: Entity) -> Option<EdgeState> {
+		NodeInspector::edge_state(&self.into_node(), world, entity)
+	}
+
+	/// wrapper for `NodeInspector::child`
+	fn child(self, index: usize) -> Box<dyn NodeInspector> {
+		NodeInspector::child_owned(self.into_node(), index)
+	}
+
+	/// wrapper for `NodeInspector::graph_id`
+	fn graph_id(self) -> usize { NodeInspector::graph_id(&self.into_node()) }
+
+	/// wrapper for `NodeInspector::child_index`
+	fn child_index(self) -> usize {
+		NodeInspector::child_index(&self.into_node())
+	}
+
+	/// wrapper for `NodeInspector::graph_depth`
+	fn graph_depth(self) -> usize {
+		NodeInspector::graph_depth(&self.into_node())
+	}
 }
 
-pub trait IntoChildNode<const CHILD_INDEX: usize, Parent: IntoNodeId>:
-	'static + Send + Sync + Sized
-{
-	type Out: AiNode;
-	fn into_child_node(self) -> Self::Out;
+
+impl<T: AiNode> IntoNode<IntoNodeMarkerNode> for T {
+	type Out = T;
+	fn into_node(self) -> Self::Out { self }
 }
 
-// implement for builders
-impl<F, T> IntoRootNode for F
-where
-	T: IntoRootNode,
-	F: FnOnce() -> T,
-{
-	type Out = T::Out;
-	fn into_root_node(self) -> Self::Out { self().into_root_node() }
-}
 
-// implement for builders
-impl<const CHILD_INDEX: usize, Parent: IntoNodeId, F, T>
-	IntoChildNode<CHILD_INDEX, Parent> for F
-where
-	T: IntoChildNode<CHILD_INDEX, Parent>,
-	F: 'static + Send + Sync + FnOnce() -> T,
+
+impl<Node: AiNode, Func: FnOnce() -> Node> IntoNode<IntoNodeMarkerFunc>
+	for Func
 {
-	type Out = T::Out;
-	fn into_child_node(self) -> Self::Out { self().into_child_node() }
+	type Out = Node;
+	fn into_node(self) -> Self::Out { self() }
 }

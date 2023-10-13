@@ -7,8 +7,10 @@
 	impl_trait_in_fn_trait_return,
 	fn_traits,
 	// inherent_associated_types,
-	// generic_const_exprs,
+	generic_const_exprs,
 )]
+// suppress generic_const_exprs warning
+#![allow(incomplete_features)]
 //allow proc macros to work internally
 extern crate self as gamai;
 pub use gamai_macros::*;
@@ -18,3 +20,9 @@ mod builtin_nodes;
 pub use self::builtin_nodes::*;
 pub use anyhow::bail;
 pub use anyhow::Result;
+pub mod exports {
+	pub use bevy_ecs::prelude::*;
+	pub use bevy_ecs::schedule::SystemConfigs;
+	// currently no macros depend on bevy_app
+	// pub use bevy_app::prelude::*;
+}

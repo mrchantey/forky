@@ -1,8 +1,10 @@
-use crate::*;
+// use crate::*;
 use proc_macro2::TokenStream;
 use quote::quote;
 use syn::parse_macro_input;
+use syn::Ident;
 use syn::ItemFn;
+
 
 pub fn parse_node_system(
 	_attr: proc_macro::TokenStream,
@@ -16,41 +18,86 @@ pub fn parse_node_system(
 	let func_as_inner = func_as_inner(&func);
 	let impl_into_node_system = impl_into_node_system(&func);
 	quote! {
-		use bevy_ecs::prelude::*;
+		#func_as_inner
+		use gamai::exports::*;
 		use gamai::*;
 
+		#[derive(Default, Debug, Clone, Eq, PartialEq, std::hash::Hash)]
 		#[allow(non_camel_case_types)]
 		#vis struct #ident;
-		#func_as_inner
 		#impl_into_node_system
 	}
 	.into()
 }
 
-const GENERIC_ERROR:&str = "a `node_system` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<Node: AiNode>()`";
+// const GENERIC_ERROR:&str = "a `node_system` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<Node: AiNode>()`";
 
 fn impl_into_node_system(func: &ItemFn) -> TokenStream {
 	let ident = &func.sig.ident;
-	let func_ident = func_inner_ident(&func.sig.ident);
+	let func_inner = func_inner_ident(&func.sig.ident);
 
-	let generic_err = assert_single_generic_bound(
-		func.sig.generics.clone(),
-		"AiNode",
-		GENERIC_ERROR,
-	)
-	.unwrap_or_else(syn::Error::into_compile_error);
+	// let generic_err = assert_single_generic_bound(
+	// 	func.sig.generics.clone(),
+	// 	"AiNode",
+	// 	GENERIC_ERROR,
+	// )
+	// .unwrap_or_else(syn::Error::into_compile_error);
+
+	let func_generic = if func_is_generic(&func) {
+		quote!(::<Node>)
+	} else {
+		quote!()
+	};
 
 	quote! {
-		impl IntoNodeSystem<(#ident,IsNodeSystem)> for #ident
+		impl IntoNodeSystem for #ident
 		{
-			fn into_node_system<Node: AiNode>(
-				self,
-				schedule: &mut Schedule,
-				set: impl SystemSet,
-			) {
-				schedule.add_systems(#func_ident::<Node>.in_set(set));
+			fn into_node_system_configs<Node: AiNode>(self) -> SystemConfigs{
+				#func_inner #func_generic.into_configs()
 			}
 		}
-		#generic_err
+		// #generic_err
 	}
 }
+
+fn func_is_generic(func: &ItemFn) -> bool {
+	false == func.sig.generics.params.is_empty()
+}
+
+fn func_inner_ident(ident: &Ident) -> Ident {
+	Ident::new(&format!("{}_inner", ident), ident.span())
+}
+
+fn func_as_inner(func: &ItemFn) -> ItemFn {
+	let mut func_inner = func.clone();
+	func_inner.sig.ident = func_inner_ident(&func.sig.ident);
+	func_inner
+}
+// use proc_macro2::Span;
+// use proc_macro2::TokenStream;
+// use syn::Generics;
+
+// pub fn assert_single_generic_bound(
+// 	generics: Generics,
+// 	expected_bound:&str,
+// 	err:&str,
+// ) -> Result<TokenStream, syn::parse::Error> {
+// 	if generics.params.len() == 1 {
+// 		let param = generics.params.first().unwrap();
+// 		if let syn::GenericParam::Type(param) = param {
+// 			if param.bounds.len() == 1 {
+// 				if let syn::TypeParamBound::Trait(bound) =
+// 					param.bounds.first().unwrap()
+// 				{
+// 					if let Some(path) = bound.path.segments.last() {
+// 						if path.ident.to_string().as_str() == expected_bound {
+// 							return Ok(TokenStream::new());
+// 							// return Ok(param.ident.clone().into_token_stream());
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// 	return Err(syn::Error::new(Span::call_site(), err));
+// }

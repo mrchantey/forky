@@ -6,11 +6,9 @@ use quote::ToTokens;
 pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let NodeParser {
 		ident,
-		num_edges,
+		num_children,
 		self_params,
 		self_bounds,
-		self_bounds_full,
-		self_params_new,
 		..
 	} = node;
 	let world_query = world_query_nested(node);
@@ -18,100 +16,75 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let child_bundles = child_bundles_nested(node);
 	let child_states = child_states(node);
 	let node_recast = node_recast(node);
-	let add_systems_children = add_systems_children(node);
-	let configure_sets = configure_sets(node);
-	let child_fields_self = child_fields_self(*num_edges);
-	let match_get_children = match_get_children(node);
-	let match_get_children_owned = match_get_children_owned(node);
+	let add_systems_children = add_systems_children(*num_children);
+	let match_get_children = match_get_children(*num_children);
+	let match_get_children_owned = match_get_children_owned(*num_children);
+
+	let children_inferred_types = children_inferred_types(*num_children);
+	let children_into_child = children_into_child(*num_children);
 
 	quote! {
-			impl<#self_bounds> IntoNodeId for #ident<#self_params>{
-				const GRAPH_ID: usize = Parent::GRAPH_ID;
-				const CHILD_INDEX: usize = CHILD_INDEX;
-				const GRAPH_DEPTH: usize = Parent::GRAPH_DEPTH + 1;
-				const PARENT_DEPTH: usize = Parent::GRAPH_DEPTH;
+		impl<#self_bounds> TreePath for #ident<#self_params> {
+			type Parent = Path::Parent;
+			const CHILD_INDEX: usize = Path::CHILD_INDEX;
+		}
+
+		// impl<#self_bounds> IntoNode for #ident<#self_params> {
+		// 	type Out = Self;
+		// 	fn into_node(self) -> Self::Out { self }
+		// }
+
+		impl<#self_bounds> AiNode for #ident<#self_params> {
+
+			type ChildQuery = (
+				Entity,
+				#world_query
+			);
+
+			#[allow(unused_parens)]
+			type ChildBundle = (#child_bundles);
+
+			fn add_systems(self, schedule: &mut Schedule){
+				Self::configure_sets(schedule);
+				schedule.add_systems(self.system.into_node_system_configs::<Self>());
+
+				#add_systems_children
 			}
 
-			impl<#self_bounds> IntoRootNode for #ident<#self_params>{
-				type Out = #ident<#self_params>;
-				fn into_root_node(self) -> Self::Out{
-					self
-				}
-			}
-			impl<const NEW_CHILD_INDEX:usize, #self_bounds NewParent:IntoNodeId> IntoChildNode<NEW_CHILD_INDEX,NewParent> for #ident<#self_params>{
-				type Out = #ident<#self_params_new>;
-				fn into_child_node(self) -> Self::Out{
-					Self::Out{
-						phantom: std::marker::PhantomData,
-						node_system:self.node_system,
-						edge_system:self.edge_system,
-						#child_fields_self
-					}
-					// #ident::<#self_params_new>::new(self.node_system, self.edge_system, #child_fields_self)
-					// todo!()
-				}
+			fn entity<'a>(val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>) ->Entity{
+				val.0
 			}
 
-			impl<#self_bounds_full> AiNode for #ident<#self_params>
-			{
+			fn children<'a>((entity,#node_params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
+				-> Vec<ChildState<'a>> {
+				#node_recast
+				vec![#child_states]
+			}
 
-				type ChildQuery = (
-					Entity,
-					// &'static mut DerefEdgeState<Self>,
-					// Option<&'static mut DerefNodeState<Self>>,
-					#world_query
-				);
-
-				type ChildBundle = (#child_bundles);
-
-				fn add_systems(self, schedule: &mut Schedule){
-					self.node_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
-					self.edge_system.into_node_system::<Self>(schedule, NodeSet::<GRAPH_ID, GRAPH_DEPTH>);
-
-					#configure_sets
-					#add_systems_children
-				}
-
-				fn entity<'a>(val: &<Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>) ->Entity{
-					val.0
-				}
-
-				fn children<'a>((entity,#node_params): <Self::ChildQuery as bevy_ecs::query::WorldQuery>::Item<'a>)
-					-> Vec<ChildState<'a>> {
-						#node_recast
-						vec![#child_states]
-				}
-
-				fn get_child(&self,index:usize)->&dyn NodeInspector{
-					match index{
-						#match_get_children
-						_=> panic!("invalid child index")
-					}
-				}
-				fn get_child_owned(self,index:usize)->Box<dyn NodeInspector>{
-					match index{
-						#match_get_children_owned
-						_=> panic!("invalid child index")
-					}
+			fn get_child(&self,index:usize)->&dyn NodeInspector{
+				match index{
+					#match_get_children
+					_=> panic!("invalid child index")
 				}
 			}
+			fn get_child_owned(self,index:usize)->Box<dyn NodeInspector>{
+				match index{
+					#match_get_children_owned
+					_=> panic!("invalid child index")
+				}
+			}
+			fn into_child<NewPath: TreePath>(self) -> impl AiNode {
+				#ident::<NewPath, _, #children_inferred_types>::new(
+					self.system,
+					#children_into_child
+				)
+			}
+		}
 	}
 }
 
-fn configure_sets(_node: &NodeParser) -> TokenStream {
-	// repeats set configuration for each siblings, thats ok
-	quote!(
-		if GRAPH_DEPTH != 0{
-			schedule.configure_set(BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>
-				.after(NodeSet::<GRAPH_ID, PARENT_DEPTH>));
-		}
-		schedule.configure_set(NodeSet::<GRAPH_ID, GRAPH_DEPTH>
-			.after(BeforeNodeSet::<GRAPH_ID, GRAPH_DEPTH>));
-	)
-}
-
 fn world_query_nested(node: &NodeParser) -> TokenStream {
-	(0..node.num_edges)
+	(0..node.num_children)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
 			let child = child_type_name(index);
@@ -120,7 +93,7 @@ fn world_query_nested(node: &NodeParser) -> TokenStream {
 		.into_token_stream()
 }
 fn node_params_nested(node: &NodeParser) -> TokenStream {
-	(0..node.num_edges)
+	(0..node.num_children)
 		// .rev()
 		.fold(TokenStream::new(), |prev, index| {
 			let edge = field_ident("edge", index);
@@ -131,7 +104,7 @@ fn node_params_nested(node: &NodeParser) -> TokenStream {
 }
 
 fn child_states(node: &NodeParser) -> TokenStream {
-	(0..node.num_edges)
+	(0..node.num_children)
 		.map(|index| {
 			let child = child_type_name(index);
 			let edge = field_ident("edge", index);
@@ -154,9 +127,20 @@ fn child_states(node: &NodeParser) -> TokenStream {
 		.collect()
 }
 
+/// returns (AiBundle<Child0>,(AiBundle<Child1>,..))
+fn child_bundles_nested(node: &NodeParser) -> TokenStream {
+	(0..node.num_children)
+		// .rev()
+		.fold(TokenStream::new(), |prev, index| {
+			let ident = child_type_name(index);
+			quote!((AiBundle<#ident>, #prev))
+		})
+		.into_token_stream()
+}
+
 // there is probably a better way to do this
 fn node_recast(node: &NodeParser) -> TokenStream {
-	(0..node.num_edges)
+	(0..node.num_children)
 		.map(|index| {
 			let node = field_ident("node", index);
 			quote! {
@@ -170,27 +154,42 @@ fn node_recast(node: &NodeParser) -> TokenStream {
 		.collect()
 }
 
-fn add_systems_children(node: &NodeParser) -> TokenStream {
-	(0..node.num_edges)
+fn add_systems_children(num_children: usize) -> TokenStream {
+	(0..num_children)
 		.map(|index| {
 			let child_ident = child_field_name(index);
 			quote!(self.#child_ident.add_systems(schedule);)
 		})
 		.collect()
 }
-fn match_get_children(node: &NodeParser) -> TokenStream {
-	(0..node.num_edges)
+fn match_get_children(num_children: usize) -> TokenStream {
+	(0..num_children)
 		.map(|index| {
 			let child_ident = child_field_name(index);
 			quote!(#index => &self.#child_ident,)
 		})
 		.collect()
 }
-fn match_get_children_owned(node: &NodeParser) -> TokenStream {
-	(0..node.num_edges)
+fn match_get_children_owned(num_children: usize) -> TokenStream {
+	(0..num_children)
 		.map(|index| {
 			let child_ident = child_field_name(index);
 			quote!(#index => Box::new(self.#child_ident),)
+		})
+		.collect()
+}
+fn children_inferred_types(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|_index| {
+			quote!(_,)
+		})
+		.collect()
+}
+fn children_into_child(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let child_field = child_field_name(index);
+			quote!(self.#child_field.into_child::<TreePathSegment<#index, NewPath>>(),)
 		})
 		.collect()
 }

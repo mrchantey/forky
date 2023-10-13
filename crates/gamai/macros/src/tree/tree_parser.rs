@@ -1,4 +1,3 @@
-use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use quote::quote;
@@ -6,7 +5,6 @@ use quote::ToTokens;
 use rstml::node::KeyedAttribute;
 use syn::spanned::Spanned;
 use syn::Result;
-
 
 type XmlNode = rstml::node::Node;
 type XmlNodeAttribute = rstml::node::NodeAttribute;
@@ -16,7 +14,6 @@ pub struct TreeParser<'a> {
 	pub node: &'a XmlNodeElement,
 	pub graph_id: usize,
 	pub child_index: usize,
-	pub child_index_of_parent: usize,
 	pub graph_depth: usize,
 	pub node_system: TokenStream,
 	pub edge_system: TokenStream,
@@ -37,7 +34,7 @@ impl<'a> TreeParser<'a> {
 			},
 			val => Err(syn::Error::new(val.span(), "Expected element node")),
 		}?;
-		Ok(Self::new(node, graph_id, 0, 0, 0)?)
+		Ok(Self::new(node, graph_id, 0, 0)?)
 	}
 
 	fn new(
@@ -45,7 +42,6 @@ impl<'a> TreeParser<'a> {
 		graph_id: usize,
 		graph_depth: usize,
 		child_index: usize,
-		child_index_of_parent: usize,
 	) -> Result<Self> {
 		let mut edge_system = quote!(gamai::empty_node);
 		let mut before_system = quote!(gamai::empty_node);
@@ -60,7 +56,7 @@ impl<'a> TreeParser<'a> {
 			})
 			.enumerate()
 			.map(|(index, child)| {
-				Self::new(child, graph_id, graph_depth + 1, index, child_index)
+				Self::new(child, graph_id, graph_depth + 1, index)
 			})
 			// .to_owned()
 			.collect::<Result<Vec<_>>>()?;
@@ -123,7 +119,6 @@ impl<'a> TreeParser<'a> {
 			graph_id,
 			graph_depth,
 			child_index,
-			child_index_of_parent,
 		})
 	}
 
@@ -140,33 +135,17 @@ impl<'a> TreeParser<'a> {
 	}
 
 	pub fn to_instance(&self) -> TokenStream {
-		// let NodeConfig { graph_id, .. } = self;
-		let ident = self.tree_ident();
-		let tokens_root = self.to_instance_tokens(true);
-		let tokens_child = self.to_instance_tokens(false);
+		let tokens_root = self.to_instance_tokens();
 		quote! {
-			{
-				#[derive(Clone,Copy)]
-				struct #ident;
-				impl AiTree for #ident{
-					fn get_into_root_node(self) -> impl IntoRootNode{
-						#tokens_root
-					}
-					fn get_into_child_node<const CHILD_INDEX: usize, Parent: IntoNodeId>(self)
-						-> impl IntoChildNode<CHILD_INDEX, Parent>{
-						#tokens_child
-					}
-				}
-				#ident
-			}
+			#tokens_root.into_root()
 		}
 	}
 
-	pub fn to_instance_tokens(&self, is_root: bool) -> TokenStream {
+	pub fn to_instance_tokens(&self) -> TokenStream {
 		let TreeParser {
 			node,
 			graph_id,
-			child_index,
+			// child_index,			// dont need to set child index because if child, intochildnode will set it
 			node_system,
 			edge_system,
 			..
@@ -182,30 +161,23 @@ impl<'a> TreeParser<'a> {
 				.into();
 			}
 			let name = node.name();
-			if is_root {
-				quote! {
-					move || #name.get_into_root_node()
-				}
-			} else {
-				quote! {
-					#name.get_into_child_node()
-				}
-			}
+			// if its a tree function, call it
+			quote!(#name())
 		} else {
 			let ident = self.from_node_system_ident();
 			let child_types = self.child_types();
 			let child_instances = self.child_instances();
-			let parent_id = if is_root {
-				quote! {RootParent<#graph_id>}
-			} else {
-				self.parent_id()
-			};
 			quote! {
-				#ident::<
-				#child_index, #parent_id,
-				_,_,_,_, //these are for NodeSystem, NodeSystemMarker, EdgeSystem, EdgeSystemMarker
+				#ident::<TreePathRoot<#graph_id>,
+				_, //for Nodesystem
 				#child_types
-				>::new(|| #node_system,|| #edge_system,#child_instances)
+				>::new(
+					Attributes::new(
+						#edge_system,
+						gamai::empty_node,
+						#node_system,
+						gamai::empty_node),
+					#child_instances)
 			}
 		}
 	}
@@ -218,8 +190,8 @@ impl<'a> TreeParser<'a> {
 		self.children
 			.iter()
 			.map(|c| {
-				let child = c.to_instance_tokens(false);
-				quote!(move || {#child},)
+				let child = c.to_instance_tokens();
+				quote!(#child,)
 			})
 			.collect()
 	}
@@ -231,28 +203,5 @@ impl<'a> TreeParser<'a> {
 			}
 		}
 		false
-	}
-	fn tree_ident(&self) -> Ident {
-		Ident::new(
-			format!("AutoGenTree{}", self.graph_id).as_str(),
-			self.node.span(),
-		)
-	}
-	fn parent_id(&self) -> TokenStream {
-		let TreeParser {
-			graph_id,
-			graph_depth,
-			child_index_of_parent,
-			..
-		} = self;
-		let parent_depth = graph_depth.checked_sub(1).unwrap_or(0);
-		let grandparent_depth = parent_depth.checked_sub(1).unwrap_or(0);
-		quote! {
-			PhantomNodeId<
-			#graph_id,
-			#parent_depth,
-			#child_index_of_parent,
-			#grandparent_depth>
-		}
 	}
 }

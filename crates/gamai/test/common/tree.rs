@@ -4,7 +4,7 @@ use sweet::*;
 
 
 #[tree_builder]
-pub fn MyTree() -> impl AiTree {
+pub fn MyTree() -> impl AiNode {
 	tree! {
 		<sequence>
 			<node_always_succeed/>
@@ -17,9 +17,9 @@ pub fn MyTree() -> impl AiTree {
 pub fn it_works() -> Result<()> {
 	let mut app = App::new();
 
-	app.add_plugins(MyTree.plugin());
+	app.add_plugins(AiPlugin::new(MyTree));
 
-	let entity = app.world.spawn(MyTree.bundle()).id();
+	let entity = app.world.spawn(AiBundle::new(MyTree)).id();
 
 	expect(MyTree.node_state(&app.world, entity))
 		.to_be(Some(NodeState::Running))?;

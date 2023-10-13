@@ -6,9 +6,6 @@ mod node_def;
 use node_def::*;
 mod node_system;
 use node_system::*;
-mod utility;
-use utility::*;
-
 
 #[proc_macro]
 pub fn define_node(attr: TokenStream) -> TokenStream { parse_node(attr) }
@@ -25,8 +22,8 @@ pub fn tree(item: TokenStream) -> TokenStream {
 		.into()
 }
 #[proc_macro_attribute]
-pub fn tree_builder(attr:TokenStream,item: TokenStream) -> TokenStream {
-	parse_tree_builder(attr,item)
+pub fn tree_builder(attr: TokenStream, item: TokenStream) -> TokenStream {
+	parse_tree_builder(attr, item)
 }
 
 #[proc_macro]

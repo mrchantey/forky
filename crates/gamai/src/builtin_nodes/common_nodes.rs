@@ -6,15 +6,16 @@ use bevy_ecs::prelude::*;
 // should probably be a node not a node system
 // pub fn empty_node() {}
 
+//TODO deprecate, dont need it, instead empty attribute
+#[derive(Default, Debug, Clone, Eq, PartialEq, Hash)]
 #[allow(non_camel_case_types)]
 pub struct empty_node;
 
-impl IntoNodeSystem<(Self, IsNodeSystem)> for empty_node {
-	fn into_node_system<Node: AiNode>(
+impl IntoNodeSystem for empty_node {
+	fn into_node_system_configs<Node: AiNode>(
 		self,
-		_schedule: &mut Schedule,
-		_set: impl SystemSet,
-	) {
+	) -> bevy_ecs::schedule::SystemConfigs {
+		(|| {}).into_configs()
 	}
 }
 
