@@ -1,7 +1,6 @@
 use forky_core::PathExt;
 use std::path::Path;
 use std::path::PathBuf;
-use std::time::Duration;
 use sweet::*;
 
 
@@ -25,15 +24,17 @@ fn skips_only() -> Result<()> { expect(true).to_be_false() }
 #[sweet_test(e2e)]
 fn e2e() -> Result<()> { Ok(()) }
 
+#[cfg(not(target_arch = "wasm32"))]
 #[sweet_test(e2e, non_send)]
 async fn can_be_async() -> Result<()> {
-	tokio::time::sleep(Duration::from_millis(1)).await;
+	tokio::time::sleep(std::time::Duration::from_millis(1)).await;
 	Ok(())
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 #[sweet_test(non_send)]
 async fn can_be_async_non_send() -> Result<()> {
-	tokio::time::sleep(Duration::from_millis(1)).await;
+	tokio::time::sleep(std::time::Duration::from_millis(1)).await;
 	Ok(())
 }
 
