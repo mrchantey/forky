@@ -171,9 +171,23 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="macros"><a class="header" href="#macros">Macros</a></h1>
-<p>Currently there is only one macro for use: <code>sweet!()</code>. This will create a suite to be collected by the runner.</p>
+<h1 id="sweet_test"><a class="header" href="#sweet_test"><code>#[sweet_test]</code></a></h1>
+<p>Tests can be declared via an attribute.</p>
+<pre><code class="language-rs">#[sweet_test]
+fn foobar(){}
+
+//accepts several flags, async functions or an `anyhow::Result` return type
+#[sweet_test(skip,only,e2e,non_send)]
+async fn foobar()-&gt;Result&lt;()&gt;{
+	expect(true).to_be_true()
+}
+</code></pre>
+<h1 id="sweet"><a class="header" href="#sweet"><code>sweet!</code></a></h1>
+<p>A layout more familiar to front-end developers. Note that rust formatters may not indent etc. the contents of this macro correctly.</p>
 <pre><code class="language-rs">sweet!{
-	it &quot;works&quot;{}
+	it &quot;has less boilerplate&quot; {
+		expect(true).to_be_true()?;
+	}
 	test &quot;is an alias for it&quot;{}
 	it skip &quot;wont run&quot;{}
 	it only &quot;will exclude non-onlys in this suite&quot;{}

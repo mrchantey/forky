@@ -282,9 +282,9 @@ Options:
 <p>I like to organize projects by <em>many</em> small files and including them becomes a headache so I use a cli to auto-generate mod files that include all files in a directory.</p>
 <p>Its current incarnation is zero config and opinionated so you may want to play around with it on an empty project before integrating with existing codebases.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sweet-1"><a class="header" href="#sweet-1">Sweet</a></h1>
-<p>Sweet is a declarative full-stack test framework for Rust. Use a single framework for some or all of the supported test types:</p>
+<p>Sweet is a full-stack test framework for Rust. Use a single framework for some or all of the supported test types:</p>
 <div class="table-wrapper"><table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td>Native - Unit</td><td>Write unit tests with intuitive matchers</td></tr>
+<tr><td>Native - Unit</td><td>Results-not-panic workflow</td></tr>
 <tr><td>Native - E2E</td><td>Full support for webdriver, fantoccini etc</td></tr>
 <tr><td>In-browser - Component</td><td>Test indivudual web components, framework agnostic</td></tr>
 <tr><td>In-browser - E2E</td><td>Run e2e tests on actual elements via iframes</td></tr>
@@ -301,10 +301,9 @@ Options:
 <li>🌈 Pretty output</li>
 </ul>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
-<pre><code class="language-rs">sweet! {
-  it &quot;works&quot; {
-		expect(true).to_be_true()?;
-  }
+<pre><code class="language-rs">#[sweet_test]
+fn true_is_true() -&gt; Result&lt;()&gt; {
+  expect(true).to_be_true()
 }
 </code></pre>
 <h2 id="very-quick-start"><a class="header" href="#very-quick-start">Very Quick Start</a></h2>
@@ -315,12 +314,17 @@ cargo run --example sweet
 <h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
 <p>Check out the <a href="sweet/./native/index.html">quickstart page</a> or have a browse of the <a href="https://github.com/mrchantey/forky/tree/main/crates/sweet/test">tests written for sweet</a></p>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p>Sweet has three main functions:</p>
+<p>Sweet has four main components:</p>
 <ul>
 <li><a href="sweet/./macros.html"><code>sweet!</code> defines a test suite</a></li>
+<li><a href="sweet/./native/index.html"><code>#[sweet_test]</code> defines a test</a></li>
 <li><a href="sweet/./matchers.html"><code>expect()</code> returns a matcher</a></li>
 <li><a href="sweet/./web/end-to-end.html"><code>visit()</code> returns an iframe (e2e)</a></li>
 </ul>
+<h2 id="dont-panic-give-me-a-result"><a class="header" href="#dont-panic-give-me-a-result">Dont <code>panic!</code>, give me a <code>Result&lt;()&gt;</code></a></h2>
+<p>While sweet understands &amp; supports panicking, it is not encouraged.</p>
+<p>Enjoy the included results-based test functions and matchers for pretty error logging. This is especially handy for <strong>web</strong> and <strong>game</strong> tests where we may want to poll an assertion until it passes. </p>
+<p>It also allows for use of the <code>func()?;</code> syntax at the test function level, like in the <a href="sweet/native/webdriver.html#example">webdriver example</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart---native"><a class="header" href="#quickstart---native">Quickstart - Native</a></h1>
 <ol>
 <li>edit <code>cargo.toml</code>
@@ -336,19 +340,21 @@ path = &quot;test/sweet.rs&quot;
 <pre><code class="language-rs">#![feature(imported_main)]
 pub use sweet::*;
 
-sweet! {
-  it &quot;demonstrates sweet&quot; {
-		assert!(true == false);
-		expect(true).to_be_false()?;
-		expect(&quot;some string&quot;).not().to_start_with(&quot;some&quot;)?;
-  }
+#[sweet_test]
+fn it_works() -&gt; Result&lt;()&gt;{
+	assert!(true == true);
+	expect(true).to_be_true()?;
+	expect(&quot;foobar&quot;)
+		.not()
+		.to_start_with(&quot;bazz&quot;)?;
+	Ok(())
 }
 </code></pre>
 </li>
 <li>run <code>cargo run --example sweet</code></li>
-<li>optional - try changing the above matchers so the test passes ⚡</li>
+<li>optional - try changing the above matchers so the test fails ⚡</li>
 </ol>
-<p>Here's an example output of a runner with a few tests:</p>
+<p>As an example here is the output of a runner with a few tests:</p>
 <p><img src="sweet/native/../images/success.png" alt="native-runner" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="native-runner"><a class="header" href="#native-runner">Native Runner</a></h1>
 <p>The native runner is an alternative to vanilla rust unit and integration tests. It creates a single binary for all of your tests which speeds up compile times, see <a href="https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html">this blog</a> for more info.</p>
@@ -364,30 +370,22 @@ sweet! {
 <li><code>-s, --silent</code> don't log results</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="async-tests"><a class="header" href="#async-tests">Async Tests</a></h1>
-<p>Internally each native test will be stored as one of three types:</p>
-<ul>
-<li><code>fn() -&gt; Result&lt;()&gt;</code>
-<pre><code class="language-rs">it &quot;has no 'async' keywords&quot;{
-	expect(true).to_be_true()?;
+<p>Sweet allows async tests but cannot tell whether all awaited futures are <code>Send</code>. </p>
+<p>This is solved by adding the <code>non_send</code> attribute:</p>
+<pre><code class="language-rs">
+// many async functions are parallelizable
+#[sweet_test]
+async fn example_parrallelizable_test(){
+	tokio::time::sleep(Duration::from_millis(100)).await.unwrap();
 }
-</code></pre>
-</li>
-<li><code>fn() -&gt; BoxedFutureSend</code>
-<pre><code class="language-rs">it &quot;has send futures&quot;{
-	tokio::time::sleep(Duration::from_millis(100)).await?;
-}
-</code></pre>
-</li>
-<li><code>fn() -&gt; BoxedFuture</code>
-<pre><code class="language-rs">it non_send &quot;has non-send futures&quot;{
-	//example of a common non-send async function
+
+
+// some must be run on the main thread
+#[sweet_test(non_send)]
+async fn example_non_send_tests(){
 	fantoccini::ClientBuilder::native().connect(&quot;http://example.com&quot;).await;
 }
 </code></pre>
-</li>
-</ul>
-<p>By default Sweet will detect the <code>await</code> keyword and mark that test as containing <code>Send</code> Futures. The <code>non_send</code> flag must be specified if your test contains a non-send future.</p>
-<p>Note: currently if the runner finds any <code>non_send</code> tests it will run all tests on the main thread, even if the parallel flag is supplied.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="web-driver"><a class="header" href="#web-driver">Web Driver</a></h1>
 <blockquote>
 <p>This section is for native end-to-end tests. For in-browser end-to-end tests see <a href="sweet/native/../web/end-to-end.html">end-to-end</a>.</p>
@@ -399,17 +397,17 @@ sweet! {
 use fantoccini::Locator;
 use sweet::*;
 
-sweet! {
-	it non_send &quot;works&quot; {
-		let client = ClientBuilder::native()
-			.connect(&quot;http://localhost:9515&quot;).await?;
+#[sweet_test(non_send)]
+async fn connects_to_example()-&gt;Result&lt;()&gt;{
+	let client = ClientBuilder::native()
+		.connect(&quot;http://localhost:9515&quot;).await?;
 
-		client.goto(&quot;https://example.com&quot;).await?;
-		let url = client.current_url().await?;
-		expect(url.as_ref()).to_be(&quot;https://example.com&quot;)?;
+	client.goto(&quot;https://example.com&quot;).await?;
+	let url = client.current_url().await?;
+	expect(url.as_ref()).to_be(&quot;https://example.com&quot;)?;
 
-		client.close().await?;
-	}
+	client.close().await?;
+	Ok(())
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart---web"><a class="header" href="#quickstart---web">Quickstart - Web</a></h1>
@@ -551,9 +549,23 @@ pub impl Matcher&lt;Awesomeness&gt; {
 <li>Formats a pretty backtraced output error if needed.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="macros"><a class="header" href="#macros">Macros</a></h1>
-<p>Currently there is only one macro for use: <code>sweet!()</code>. This will create a suite to be collected by the runner.</p>
+<h1 id="sweet_test"><a class="header" href="#sweet_test"><code>#[sweet_test]</code></a></h1>
+<p>Tests can be declared via an attribute.</p>
+<pre><code class="language-rs">#[sweet_test]
+fn foobar(){}
+
+//accepts several flags, async functions or an `anyhow::Result` return type
+#[sweet_test(skip,only,e2e,non_send)]
+async fn foobar()-&gt;Result&lt;()&gt;{
+	expect(true).to_be_true()
+}
+</code></pre>
+<h1 id="sweet-2"><a class="header" href="#sweet-2"><code>sweet!</code></a></h1>
+<p>A layout more familiar to front-end developers. Note that rust formatters may not indent etc. the contents of this macro correctly.</p>
 <pre><code class="language-rs">sweet!{
-	it &quot;works&quot;{}
+	it &quot;has less boilerplate&quot; {
+		expect(true).to_be_true()?;
+	}
 	test &quot;is an alias for it&quot;{}
 	it skip &quot;wont run&quot;{}
 	it only &quot;will exclude non-onlys in this suite&quot;{}
@@ -667,7 +679,7 @@ jobs:
 <li>Wasm Runner</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gamai"><a class="header" href="#gamai">Gamai</a></h1>
-<p><code>gamai</code> is a flexible task switching library suitable for game AI, robotics &amp; other performance-critical environments. It features a modular tree structure and supports multiple selector paradigms like Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation allows for opportunistic parallelism, ensuring trees are processed as quickly as possible.</p>
+<p>Gamai is a flexible task switching library suitable for game AI, robotics &amp; other performance-critical environments. It features a modular tree structure and supports multiple selector paradigms like Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation allows for opportunistic parallelism, ensuring trees are processed as quickly as possible.</p>
 <p><strong>With Bevy</strong></p>
 <p>If used with Bevy there is no blackboard, as each node is a regular Bevy system with the same access to entities &amp; resources.</p>
 <p><strong>Without Bevy</strong></p>
@@ -683,7 +695,7 @@ jobs:
 <h2 id="trees"><a class="header" href="#trees">Trees</a></h2>
 <p>Trees are defined using familiar RSX patterns like those found in web UI libraries. A unique aspect of <code>gamai</code> is that trees are parsed at <em>compile time</em> which gives us the nessesary type information for the parallel scheduler in <code>bevy_ecs</code>.</p>
 <pre><code class="language-rs">#[tree_builder]
-pub fn MyTree() -&gt; impl AiTree {
+pub fn MyTree() -&gt; impl AiNode {
 	tree! {
 		&lt;sequence&gt;
 			&lt;say_hello/&gt;
@@ -693,15 +705,47 @@ pub fn MyTree() -&gt; impl AiTree {
 }
 </code></pre>
 <blockquote>
-<p><code>gamai</code> uses the same naming conventions as UI libraries like react or yew:</p>
+<p><code>gamai</code> uses a naming convention like web UI libraries:</p>
 <ul>
 <li><code>node_systems</code> have snake_case </li>
 <li><code>tree_builders</code> have PascalCase</li>
 </ul>
 </blockquote>
-<h3 id="node-systems"><a class="header" href="#node-systems">Node Systems</a></h3>
-<p>Any Bevy system can be used as a node, but usually we want to know whether it is in a running state for a given entity. Node systems are bevy systems that also accept an <code>AiNode</code> type argument, giving them access to the components that they need to communicate with parents and children.</p>
-<p>Node Systems can be used to either run some behaviour (actions) or decide which child should run (selectors).</p>
+<h3 id="nodes"><a class="header" href="#nodes">Nodes</a></h3>
+<p>Nodes are definitions of what systems should run for that node. The most common property is the <code>node_system</code> which is used </p>
+<h3 id="further-ordering"><a class="header" href="#further-ordering">Further ordering.</a></h3>
+<p>Other positions in the tree are accessible via the 
+Examples are:</p>
+<ul>
+<li><code>node_system</code> Usually used to run an action or a selector</li>
+<li><code>before_parent_system</code> Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector</li>
+<li><code>before_node_system</code> - </li>
+<li><code>after_node_system</code> Good for frame-perfect nodes, with <code>apply_deferred</code> in between each layer</li>
+</ul>
+<p>They are defined in <code>gamai</code> like so:</p>
+<pre><code class="language-rs">&lt;sequence 
+	before=do_this 
+	before_parent=do_that
+	/&gt;
+
+
+</code></pre>
+<p>For example, the below example tree</p>
+<pre><code class="language-mermaid">graph TB
+
+Node1 --- dot1
+Node1 --- Node2
+Node2 --- dot2
+Node2 --- Node3
+dot1[...]
+dot2[...]
+</code></pre>
+<p>Would produce a system ordering like this</p>
+<pre><code class="language-mermaid">graph LR;
+	node2.before_parent --- node1 --- node2.before --- node1.after --- node3.before_parent --- node2 
+	node2[node2 etc.]
+</code></pre>
+<p><code>Nodes</code> are comprised of <code>node_systems</code> and <code>node_systems</code> are regular bevy systems with an added generic <code>AiNode</code> argument giving them access to the components that they need to communicate with parents and children. By design Nodes cannot communicate with grandparents/grandchildren. It seems like an antipattern by breaking the node-level modularity of the tree, but this can be looked into if there is a need.</p>
 <pre><code class="language-rs">#[node_system]
 fn say_hello&lt;Node: AiNode&gt;(mut query: Query&lt;&amp;mut NodeState&lt;Node&gt;&gt;){
 	
@@ -738,7 +782,7 @@ world
 <h2 id="sequence"><a class="header" href="#sequence">Sequence</a></h2>
 <p>Perhaps the simples selector is the <code>sequence</code>. It runs each child in sequence.</p>
 <pre><code class="language-rs">#[tree_builder]
-pub fn MyTree() -&gt; impl AiTree {
+pub fn MyTree() -&gt; impl AiNode {
 	tree! {
 		&lt;sequence&gt;
 			&lt;say_hello/&gt;
@@ -758,7 +802,7 @@ fn edge_always_pass&lt;Node: AiNode&gt;(query: Query&lt;&amp;mut DerefEdgeState&
 </code></pre>
 <p>This tree will skip <code>child1</code> and run <code>child2</code>:</p>
 <pre><code class="language-rs">#[tree_builder]
-pub fn MyTree() -&gt; impl AiTree {
+pub fn MyTree() -&gt; impl AiNode {
 	tree! {
 		&lt;first_valid_edge&gt;
 			&lt;child1 edge=edge_always_fail/&gt;

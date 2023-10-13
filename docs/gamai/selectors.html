@@ -176,7 +176,7 @@
 <h2 id="sequence"><a class="header" href="#sequence">Sequence</a></h2>
 <p>Perhaps the simples selector is the <code>sequence</code>. It runs each child in sequence.</p>
 <pre><code class="language-rs">#[tree_builder]
-pub fn MyTree() -&gt; impl AiTree {
+pub fn MyTree() -&gt; impl AiNode {
 	tree! {
 		&lt;sequence&gt;
 			&lt;say_hello/&gt;
@@ -196,7 +196,7 @@ fn edge_always_pass&lt;Node: AiNode&gt;(query: Query&lt;&amp;mut DerefEdgeState&
 </code></pre>
 <p>This tree will skip <code>child1</code> and run <code>child2</code>:</p>
 <pre><code class="language-rs">#[tree_builder]
-pub fn MyTree() -&gt; impl AiTree {
+pub fn MyTree() -&gt; impl AiNode {
 	tree! {
 		&lt;first_valid_edge&gt;
 			&lt;child1 edge=edge_always_fail/&gt;

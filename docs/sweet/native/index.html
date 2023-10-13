@@ -185,19 +185,21 @@ path = &quot;test/sweet.rs&quot;
 <pre><code class="language-rs">#![feature(imported_main)]
 pub use sweet::*;
 
-sweet! {
-  it &quot;demonstrates sweet&quot; {
-		assert!(true == false);
-		expect(true).to_be_false()?;
-		expect(&quot;some string&quot;).not().to_start_with(&quot;some&quot;)?;
-  }
+#[sweet_test]
+fn it_works() -&gt; Result&lt;()&gt;{
+	assert!(true == true);
+	expect(true).to_be_true()?;
+	expect(&quot;foobar&quot;)
+		.not()
+		.to_start_with(&quot;bazz&quot;)?;
+	Ok(())
 }
 </code></pre>
 </li>
 <li>run <code>cargo run --example sweet</code></li>
-<li>optional - try changing the above matchers so the test passes ⚡</li>
+<li>optional - try changing the above matchers so the test fails ⚡</li>
 </ol>
-<p>Here's an example output of a runner with a few tests:</p>
+<p>As an example here is the output of a runner with a few tests:</p>
 <p><img src="../images/success.png" alt="native-runner" /></p>
 
                     </main>

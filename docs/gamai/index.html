@@ -171,7 +171,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="gamai"><a class="header" href="#gamai">Gamai</a></h1>
-<p><code>gamai</code> is a flexible task switching library suitable for game AI, robotics &amp; other performance-critical environments. It features a modular tree structure and supports multiple selector paradigms like Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation allows for opportunistic parallelism, ensuring trees are processed as quickly as possible.</p>
+<p>Gamai is a flexible task switching library suitable for game AI, robotics &amp; other performance-critical environments. It features a modular tree structure and supports multiple selector paradigms like Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation allows for opportunistic parallelism, ensuring trees are processed as quickly as possible.</p>
 <p><strong>With Bevy</strong></p>
 <p>If used with Bevy there is no blackboard, as each node is a regular Bevy system with the same access to entities &amp; resources.</p>
 <p><strong>Without Bevy</strong></p>
@@ -187,7 +187,7 @@
 <h2 id="trees"><a class="header" href="#trees">Trees</a></h2>
 <p>Trees are defined using familiar RSX patterns like those found in web UI libraries. A unique aspect of <code>gamai</code> is that trees are parsed at <em>compile time</em> which gives us the nessesary type information for the parallel scheduler in <code>bevy_ecs</code>.</p>
 <pre><code class="language-rs">#[tree_builder]
-pub fn MyTree() -&gt; impl AiTree {
+pub fn MyTree() -&gt; impl AiNode {
 	tree! {
 		&lt;sequence&gt;
 			&lt;say_hello/&gt;
@@ -197,15 +197,47 @@ pub fn MyTree() -&gt; impl AiTree {
 }
 </code></pre>
 <blockquote>
-<p><code>gamai</code> uses the same naming conventions as UI libraries like react or yew:</p>
+<p><code>gamai</code> uses a naming convention like web UI libraries:</p>
 <ul>
 <li><code>node_systems</code> have snake_case </li>
 <li><code>tree_builders</code> have PascalCase</li>
 </ul>
 </blockquote>
-<h3 id="node-systems"><a class="header" href="#node-systems">Node Systems</a></h3>
-<p>Any Bevy system can be used as a node, but usually we want to know whether it is in a running state for a given entity. Node systems are bevy systems that also accept an <code>AiNode</code> type argument, giving them access to the components that they need to communicate with parents and children.</p>
-<p>Node Systems can be used to either run some behaviour (actions) or decide which child should run (selectors).</p>
+<h3 id="nodes"><a class="header" href="#nodes">Nodes</a></h3>
+<p>Nodes are definitions of what systems should run for that node. The most common property is the <code>node_system</code> which is used </p>
+<h3 id="further-ordering"><a class="header" href="#further-ordering">Further ordering.</a></h3>
+<p>Other positions in the tree are accessible via the 
+Examples are:</p>
+<ul>
+<li><code>node_system</code> Usually used to run an action or a selector</li>
+<li><code>before_parent_system</code> Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector</li>
+<li><code>before_node_system</code> - </li>
+<li><code>after_node_system</code> Good for frame-perfect nodes, with <code>apply_deferred</code> in between each layer</li>
+</ul>
+<p>They are defined in <code>gamai</code> like so:</p>
+<pre><code class="language-rs">&lt;sequence 
+	before=do_this 
+	before_parent=do_that
+	/&gt;
+
+
+</code></pre>
+<p>For example, the below example tree</p>
+<pre><code class="language-mermaid">graph TB
+
+Node1 --- dot1
+Node1 --- Node2
+Node2 --- dot2
+Node2 --- Node3
+dot1[...]
+dot2[...]
+</code></pre>
+<p>Would produce a system ordering like this</p>
+<pre><code class="language-mermaid">graph LR;
+	node2.before_parent --- node1 --- node2.before --- node1.after --- node3.before_parent --- node2 
+	node2[node2 etc.]
+</code></pre>
+<p><code>Nodes</code> are comprised of <code>node_systems</code> and <code>node_systems</code> are regular bevy systems with an added generic <code>AiNode</code> argument giving them access to the components that they need to communicate with parents and children. By design Nodes cannot communicate with grandparents/grandchildren. It seems like an antipattern by breaking the node-level modularity of the tree, but this can be looked into if there is a need.</p>
 <pre><code class="language-rs">#[node_system]
 fn say_hello&lt;Node: AiNode&gt;(mut query: Query&lt;&amp;mut NodeState&lt;Node&gt;&gt;){
 	

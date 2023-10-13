@@ -181,17 +181,17 @@
 use fantoccini::Locator;
 use sweet::*;
 
-sweet! {
-	it non_send &quot;works&quot; {
-		let client = ClientBuilder::native()
-			.connect(&quot;http://localhost:9515&quot;).await?;
+#[sweet_test(non_send)]
+async fn connects_to_example()-&gt;Result&lt;()&gt;{
+	let client = ClientBuilder::native()
+		.connect(&quot;http://localhost:9515&quot;).await?;
 
-		client.goto(&quot;https://example.com&quot;).await?;
-		let url = client.current_url().await?;
-		expect(url.as_ref()).to_be(&quot;https://example.com&quot;)?;
+	client.goto(&quot;https://example.com&quot;).await?;
+	let url = client.current_url().await?;
+	expect(url.as_ref()).to_be(&quot;https://example.com&quot;)?;
 
-		client.close().await?;
-	}
+	client.close().await?;
+	Ok(())
 }
 </code></pre>
 
