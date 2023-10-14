@@ -22,6 +22,8 @@ impl NodeState {
 	pub fn set(&mut self, other: Self) { *self = other; }
 }
 
+pub type NodeStateProp<N> = NodeComponent<NodeState, N>;
+
 #[derive(Debug, Default, Clone, Component, PartialEq)]
 pub struct DerefNodeState<N: AiNode> {
 	pub state: NodeState,

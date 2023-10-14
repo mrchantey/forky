@@ -1,30 +1,37 @@
 use crate::*;
 use bevy_ecs::prelude::*;
+use std::ops::Deref;
 
-
-
-
-
-
-/// Tuple used in queries to access child states: 
-/// 
+/// Tuple used in queries to access child states:
+///
 /// `(&mut Entity,(&mut Child1,(&mut Child2)))`
-pub type ChildIter<N> = <N as AiNode>::ChildQuery;
+pub type ChildIter<T, N> = <N as AiNode>::ChildQuery<T>;
+pub type ChildIterOptional<T, N> = <N as AiNode>::ChildQueryOpt<T>;
 
 // #[derive(Clone)]
-pub struct ChildState<'a> {
+pub struct ChildState<'a, T: IntoNodeComponent> {
 	pub index: usize,
 	pub entity: Entity,
-	pub edge: DerefEdge<'a>,
-	pub node: Option<DerefNode<'a>>,
-
-	//this is horrid, we need to use generics and traits instead
-	pub set_node_state_func: fn(&mut Commands, Entity, state: NodeState),
-	pub remove_node_state_func: fn(&mut Commands, Entity),
+	pub value: &'a dyn Deref<Target = T>,
+}
+pub struct ChildStateOpt<'a, T: IntoNodeComponent> {
+	pub index: usize,
+	pub entity: Entity,
+	pub value: Option<&'a dyn Deref<Target = T>>,
+}
+pub struct ChildStateMut<'a, T: IntoNodeComponent> {
+	pub index: usize,
+	pub entity: Entity,
+	pub value: Mut<'a, T>,
+}
+pub struct ChildStateOptMut<'a, T: IntoNodeComponent> {
+	pub index: usize,
+	pub entity: Entity,
+	pub value: Option<Mut<'a, T>>,
 }
 
 
-impl<'a> ChildState<'a> {
+impl<'a, T: IntoNodeComponent> ChildState<'a, T> {
 	/// helper function for setting node state from a context where the concrete type is not known.
 	///
 	/// if current and next are `None` this is a noop
@@ -32,73 +39,54 @@ impl<'a> ChildState<'a> {
 	/// if current and next are `Some` state will be mutated instead of command created.
 	pub fn set_node_state(
 		&mut self,
-		commands: &mut Commands,
-		state: Option<NodeState>,
+		_commands: &mut Commands,
+		_state: Option<NodeState>,
 	) {
-		match (&mut self.node, state) {
-			(None, None) => {
-				//noop
-			}
-			(None, Some(next)) => {
-				(self.set_node_state_func)(commands, self.entity, next);
-			}
-			(Some(_), None) => {
-				(self.remove_node_state_func)(commands, self.entity);
-			}
-			(Some(current), Some(next)) => {
-				if ***current != next {
-					***current = next;
-				}
-			}
-		}
+		panic!("deleteme");
 	}
 }
 
-// pub type DerefEdge<'a> = Mut<'_, gamai::DerefNodeState<Child0>>;
-// pub type DerefNode<'a> = Mut<'_, gamai::DerefNodeState<Child0>>;
-pub trait ChildVecTrait<'a> {
-	fn first_with_node_state(
-		&mut self,
-	) -> Option<(&mut ChildState<'a>, NodeState)>;
-	/// Sets the node state of the child at that index, 
-	fn try_set_node_state(
-		&mut self,
-		commands: &mut Commands,
-		index: Option<usize>,state:Option<NodeState>
-	) -> anyhow::Result<()>;
+
+pub trait ChildQueryExt {
+	type Out;
+	fn to_props(self) -> Self::Out;
 }
 
-impl<'a> ChildVecTrait<'a> for Vec<ChildState<'a>> {
-	fn first_with_node_state(
-		&mut self,
-	) -> Option<(&mut ChildState<'a>, NodeState)> {
-		self.iter_mut().find_map(|child| {
-			if let Some(val) = child.node.as_ref().map(|val| ***val) {
-				Some((child, val))
-			} else {
-				None
-			}
-		})
-	}
-
-	fn try_set_node_state(
-		&mut self,
-		commands: &mut Commands,
-		index: Option<usize>,state:Option<NodeState>
-	) -> anyhow::Result<()> {
-		if let Some(index) = index && let Some(child) = self.get_mut(index) {
-			child.set_node_state(commands, state);
-			Ok(())
-		} else {
-			anyhow::bail!("index out of bounds")
-		}
-	}
+pub trait ChildVecTrait<'a, T: IntoNodeComponent> {
+	// fn first_with_state(&mut self) -> Option<&mut ChildState<'a, T>>;
+	// Sets the node state of the child at that index,
+	// fn try_set_state(
+	// 	&mut self,
+	// 	commands: &mut Commands,
+	// 	index: Option<usize>,
+	// 	state: Option<NodeState>,
+	// ) -> anyhow::Result<()>;
 }
 
-// impl<N> ChildIterTrait for ChildIter<N> {
-// 	fn children<'a>(
-// 		item: <Self::ChildQuery as WorldQuery>::Item<'a>,
-// 	) -> Vec<ChildState<'a>> {
-// 		<Self as AiNode>::children(item)
+// impl<'a> ChildVecTrait<'a> for Vec<ChildState<'a>> {
+// 	fn first_with_node_state(
+// 		&mut self,
+// 	) -> Option<(&mut ChildState<'a>, NodeState)> {
+// 		self.iter_mut().find_map(|child| {
+// 			if let Some(val) = child.node.as_ref().map(|val| ***val) {
+// 				Some((child, val))
+// 			} else {
+// 				None
+// 			}
+// 		})
+// 	}
+
+// 	fn try_set_node_state(
+// 		&mut self,
+// 		commands: &mut Commands,
+// 		index: Option<usize>,
+// 		state: Option<NodeState>,
+// 	) -> anyhow::Result<()> {
+// 		if let Some(index) = index && let Some(child) = self.get_mut(index) {
+// 			child.set_node_state(commands, state);
+// 			Ok(())
+// 		} else {
+// 			anyhow::bail!("index out of bounds")
+// 		}
 // 	}
 // }

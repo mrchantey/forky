@@ -1,5 +1,3 @@
-mod bundle;
-pub use self::bundle::*;
 mod depth;
 pub use self::depth::*;
 mod node_component;
@@ -14,6 +12,8 @@ mod parallel_children;
 pub use self::parallel_children::*;
 mod plugin;
 pub use self::plugin::*;
+mod prop_bundle;
+pub use self::prop_bundle::*;
 mod sequence;
 pub use self::sequence::*;
 mod system_sets;

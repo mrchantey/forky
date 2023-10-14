@@ -1,6 +1,5 @@
 use crate::*;
 use bevy_ecs::prelude::*;
-
 use std::cmp::Ordering;
 use std::fmt::Debug;
 use std::marker::PhantomData;
@@ -15,6 +14,9 @@ pub enum EdgeState {
 	Weight(f32),
 	// RankedWeight(u32, f32), TODO
 }
+
+pub type EdgeStateProp<N> = NodeComponent<EdgeState, N>;
+
 
 impl EdgeState {
 	pub fn set(&mut self, other: Self) { *self = other; }

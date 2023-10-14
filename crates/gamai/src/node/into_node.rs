@@ -2,22 +2,21 @@ use crate::*;
 use bevy_ecs::entity::Entity;
 use bevy_ecs::world::World;
 
-
+/// marker for any AiNode, ie `tree!{<empty_node/>}`
 pub struct IntoNodeMarkerNode;
+/// marker for any func that returns an AiNode, ie `|| tree!{<empty_node/>}`
 pub struct IntoNodeMarkerFunc;
 
 pub trait IntoNode<Marker>: Sized {
 	type Out: AiNode;
 	fn into_node(self) -> Self::Out;
 
-	/// wrapper for `NodeInspector::node_state`
-	fn node_state(self, world: &World, entity: Entity) -> Option<NodeState> {
-		NodeInspector::node_state(&self.into_node(), world, entity)
-	}
-
-	/// wrapper for `NodeInspector::edge_state`
-	fn edge_state(self, world: &World, entity: Entity) -> Option<EdgeState> {
-		NodeInspector::edge_state(&self.into_node(), world, entity)
+	fn get_recursive<T: IntoNodeComponent>(
+		self,
+		world: &World,
+		entity: Entity,
+	) -> NodeComponentRecursive<T> {
+		AiNode::get_recursive(self.into_node(), world, entity)
 	}
 
 	/// wrapper for `NodeInspector::child_owned`
@@ -44,8 +43,6 @@ impl<T: AiNode> IntoNode<IntoNodeMarkerNode> for T {
 	type Out = T;
 	fn into_node(self) -> Self::Out { self }
 }
-
-
 
 impl<Node: AiNode, Func: FnOnce() -> Node> IntoNode<IntoNodeMarkerFunc>
 	for Func
