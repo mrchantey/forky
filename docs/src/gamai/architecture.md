@@ -78,7 +78,7 @@ Note the `Node::edges` function that converts a tuple query of `(Edge1,Edge2,Edg
 
 ### Compile-time Trees
 
-Once we have our `node_system` primitives we can define our tree using rsx syntax:
+ A unique aspect of `gamai` is that trees are parsed at *compile time* which gives us the nessesary type information for the parallel scheduler in `bevy_ecs`.
 
 ```rs
 type MyTree = gamai::tree!{
