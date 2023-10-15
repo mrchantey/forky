@@ -384,6 +384,7 @@ async fn example_parrallelizable_test(){
 #[sweet_test(non_send)]
 async fn example_non_send_tests(){
 	fantoccini::ClientBuilder::native().connect(&quot;http://example.com&quot;).await;
+	bevy::app::new().add_plugins(DefaultPlugins).run();
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="web-driver"><a class="header" href="#web-driver">Web Driver</a></h1>
@@ -679,75 +680,25 @@ jobs:
 <li>Wasm Runner</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gamai"><a class="header" href="#gamai">Gamai</a></h1>
-<p>Gamai is a flexible task switching library suitable for game AI, robotics &amp; other performance-critical environments. It features a modular tree structure and supports multiple selector paradigms like Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation allows for opportunistic parallelism, ensuring trees are processed as quickly as possible.</p>
+<p>Gamai is a flexible task switching library suitable for game AI, robotics &amp; other performance-critical environments. The primitives it provies can be used for multiple decision-making paradigms like Behaviour Trees, Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation uses opportunistic parallelism, ensuring trees are processed as quickly as possible.</p>
 <p><strong>With Bevy</strong></p>
-<p>If used with Bevy there is no blackboard, as each node is a regular Bevy system with the same access to entities &amp; resources.</p>
+<p>If used with Bevy there is no blackboard, each node is a regular Bevy system with the same access to entities &amp; resources.</p>
 <p><strong>Without Bevy</strong></p>
-<p>The lightweight <a href="https://crates.io/crates/bevy_ecs"><code>bevy_ecs</code></a> crate that drives Gamai makes for an excellent blackboard, scheduling nodes to safely run in parallel and storing data efficiently for the CPU cache.</p>
+<p>The lightweight <a href="https://crates.io/crates/bevy_ecs"><code>bevy_ecs</code></a> crate that drives Gamai has a great storage pattern, scheduling systems to safely run in parallel and storing data efficiently for the CPU cache.</p>
 <h2 id="features-1"><a class="header" href="#features-1">Features</a></h2>
 <ul>
-<li>🌴 Declarative RSX Trees</li>
-<li>🔥 Automatic Parallelism &amp; System Ordering</li>
+<li>🌴 Declarative Tree Definition</li>
+<li>🔥 Compile-time Parallel Optimization</li>
 <li>✍️ No Blackboard</li>
 <li>🌈 Multi-paradigm</li>
 <li>🌍 With or without Bevy</li>
 </ul>
-<h2 id="trees"><a class="header" href="#trees">Trees</a></h2>
-<p>Trees are defined using familiar RSX patterns like those found in web UI libraries. A unique aspect of <code>gamai</code> is that trees are parsed at <em>compile time</em> which gives us the nessesary type information for the parallel scheduler in <code>bevy_ecs</code>.</p>
-<pre><code class="language-rs">#[tree_builder]
-pub fn MyTree() -&gt; impl AiNode {
-	tree! {
-		&lt;sequence&gt;
-			&lt;say_hello/&gt;
-			&lt;say_world/&gt;
-		&lt;/sequence&gt;
-	}
-}
-</code></pre>
-<blockquote>
-<p><code>gamai</code> uses a naming convention like web UI libraries:</p>
-<ul>
-<li><code>node_systems</code> have snake_case </li>
-<li><code>tree_builders</code> have PascalCase</li>
-</ul>
-</blockquote>
-<h3 id="nodes"><a class="header" href="#nodes">Nodes</a></h3>
-<p>Nodes are definitions of what systems should run for that node. The most common property is the <code>node_system</code> which is used </p>
-<h3 id="further-ordering"><a class="header" href="#further-ordering">Further ordering.</a></h3>
-<p>Other positions in the tree are accessible via the 
-Examples are:</p>
-<ul>
-<li><code>node_system</code> Usually used to run an action or a selector</li>
-<li><code>before_parent_system</code> Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector</li>
-<li><code>before_node_system</code> - </li>
-<li><code>after_node_system</code> Good for frame-perfect nodes, with <code>apply_deferred</code> in between each layer</li>
-</ul>
-<p>They are defined in <code>gamai</code> like so:</p>
-<pre><code class="language-rs">&lt;sequence 
-	before=do_this 
-	before_parent=do_that
-	/&gt;
-
-
-</code></pre>
-<p>For example, the below example tree</p>
-<pre><code class="language-mermaid">graph TB
-
-Node1 --- dot1
-Node1 --- Node2
-Node2 --- dot2
-Node2 --- Node3
-dot1[...]
-dot2[...]
-</code></pre>
-<p>Would produce a system ordering like this</p>
-<pre><code class="language-mermaid">graph LR;
-	node2.before_parent --- node1 --- node2.before --- node1.after --- node3.before_parent --- node2 
-	node2[node2 etc.]
-</code></pre>
-<p><code>Nodes</code> are comprised of <code>node_systems</code> and <code>node_systems</code> are regular bevy systems with an added generic <code>AiNode</code> argument giving them access to the components that they need to communicate with parents and children. By design Nodes cannot communicate with grandparents/grandchildren. It seems like an antipattern by breaking the node-level modularity of the tree, but this can be looked into if there is a need.</p>
+<h2 id="props"><a class="header" href="#props">Props</a></h2>
+<p>A <code>Prop</code> is a regular bevy Component with an added <code>AiNode</code> generic argument, meaning the same prop can be used to represent the state of individual nodes in the tree.</p>
+<h2 id="node-systems"><a class="header" href="#node-systems">Node Systems</a></h2>
+<p>A <code>node_system</code> is a bevy systems with an added generic <code>AiNode</code> argument:</p>
 <pre><code class="language-rs">#[node_system]
-fn say_hello&lt;Node: AiNode&gt;(mut query: Query&lt;&amp;mut NodeState&lt;Node&gt;&gt;){
+fn say_hello&lt;N: AiNode&gt;(mut query: Query&lt;&amp;mut Prop&lt;NodeState,N&gt;){
 	
 	for mut state in query.iter_mut(){
 		println!(&quot;hello&quot;);
@@ -757,16 +708,79 @@ fn say_hello&lt;Node: AiNode&gt;(mut query: Query&lt;&amp;mut NodeState&lt;Node&
 	}
 }
 </code></pre>
-<h3 id="running"><a class="header" href="#running">Running</a></h3>
-<p>An <code>AiNode</code> has two methods for running:</p>
+<h2 id="trees"><a class="header" href="#trees">Trees</a></h2>
+<p>Trees are defined using familiar RSX patterns like those found in web UI libraries. They contain either node systems or other trees.</p>
+<pre><code class="language-rs">#[tree_builder]
+pub fn MyTree() -&gt; impl AiNode {
+	tree! {
+		&lt;sequence&gt;
+			&lt;say_hello/&gt;
+			&lt;SayWorld/&gt; //a tree declared elsewhere
+		&lt;/sequence&gt;
+	}
+}
+</code></pre>
+<blockquote>
+<p><code>gamai</code> uses a naming convention like web UI libraries:</p>
 <ul>
-<li><code>MyTree.plugin()</code> provides the plugin that will add the systems to the world in the correct order.</li>
-<li><code>MyTree.bundle()</code> provides the components nessecary for the tree to run for a given entity.</li>
+<li><code>node_systems</code> have snake_case</li>
+<li><code>tree_builders</code> have PascalCase</li>
 </ul>
+</blockquote>
+<h3 id="further-ordering"><a class="header" href="#further-ordering">Further ordering.</a></h3>
+<p>So far each node will run consecutively, but for frame-perfect execution sometimes we need to run something before the parent.</p>
+<p>Other system orderings are accessible via attributes, examples are:</p>
+<ul>
+<li><code>before_parent</code> Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector</li>
+<li><code>before</code> - Tell children something before their <code>before_parent_system</code></li>
+<li><code>after</code> Good for frame-perfect nodes, with <code>apply_deferred</code> in between each layer</li>
+</ul>
+<p>They are defined in <code>gamai</code> like so:</p>
+<pre><code class="language-rs">tree!{
+	&lt;my_node
+		before_parent=set_score
+		before=set_child_scoring_parameter
+		after=cleanup
+	/&gt;
+}
+</code></pre>
+<p>For example, the following tree would produce this system ordering:</p>
+<pre><code class="language-mermaid">graph TB
+
+Node1 --- dot1
+Node1 --- Node2
+Node2 --- dot2
+Node2 --- Node3
+dot1[...]
+dot2[...]
+</code></pre>
+<pre><code class="language-mermaid">graph LR;
+	node2.before_parent --- node1 --- node2.before --- node1.after --- node3.before_parent --- node2 
+	node2[node2 etc.]
+</code></pre>
+<h3 id="running"><a class="header" href="#running">Running</a></h3>
+<p>Before we can run the above example we need two things:</p>
+<ul>
+<li>
+<p>An <code>AiPlugin</code> schedules all systems in the tree:</p>
+<pre><code class="language-rs">app.add_plugins(AiPlugin::new(MyTree));
+</code></pre>
+</li>
+<li>
+<p>A <code>PropBundle</code> will add given props to specified nodes in the tree.</p>
+<pre><code class="language-rs">// only set the root as running
+app.world.spawn(PropBundle::root(MyTree, NodeState::Running));
+// set all nodes in the tree to have a failing score
+app.world.spawn(PropBundle::recursive(MyTree, Score::Fail));
+</code></pre>
+</li>
+</ul>
+<p>Putting it all together we get something like this:</p>
 <pre><code class="language-rs">fn main(){
-	let mut app = App::new();
-	app.add_plugins(MyTree.plugin());
-	app.world.spawn(MyTree.bundle());
+	let mut app = App::new();	
+	app.add_plugins(AiPlugin::new(MyTree));
+	app.world.spawn(PropBundle::root(MyTree, NodeState::Running));
+
 	app.update(); // runs first child
 	app.update(); // runs second child
 }
@@ -777,10 +791,13 @@ world
 </code></pre>
 <!-- > This example uses `bevy`, see [no_bevy](./no_bevy) for more examples. -->
 <div style="break-before: page; page-break-before: always;"></div><h1 id="selectors"><a class="header" href="#selectors">Selectors</a></h1>
-<p>Nodes with children are usually tasked witk deciding which child should run. These have several names depending on the paradigm, here are a few synonyms:</p>
-<p><code>selector, planner, reasoner</code></p>
+<p>Selectors are Nodes with children, their job is to decide which child should run.</p>
+<p>Nodes with children are usually tasked witk deciding which child should run. Depending on the paradigm used these may have These have several names depending on the paradigm, here are a few synonyms:</p>
+<blockquote>
+<p>In some paradigms selectors are also known as <code>planners</code> or <code>reasoners</code></p>
+</blockquote>
 <h2 id="sequence"><a class="header" href="#sequence">Sequence</a></h2>
-<p>Perhaps the simples selector is the <code>sequence</code>. It runs each child in sequence.</p>
+<p>Perhaps the simples selector is the <code>sequence</code>. It runs each child in sequence until either completion or one fails.</p>
 <pre><code class="language-rs">#[tree_builder]
 pub fn MyTree() -&gt; impl AiNode {
 	tree! {
@@ -791,12 +808,12 @@ pub fn MyTree() -&gt; impl AiNode {
 	}
 }
 </code></pre>
-<h2 id="edge-selectors-considerations"><a class="header" href="#edge-selectors-considerations">Edge Selectors (Considerations)</a></h2>
-<p>Nodes can accept an <code>edge</code> attribute, which is a Node System that runs <em>before</em> the parent, providing information on how valid it would be for its associated node to run. Here's an example of an edge system that always sets its state enum to <code>Pass</code>. Other options are <code>Fail</code> and <code>Weight(u32)</code>.</p>
+<h2 id="utility-ai"><a class="header" href="#utility-ai">Utility AI</a></h2>
+<p>Nodes can accept a <code>before_parent</code> attribute, which is a Node System that runs <em>before</em> the parent. It can be used to provide a <code>Score</code> for each child. Here's an example of an edge system that always sets its score to <code>Pass</code>. Other options are <code>Fail</code> or <code>Weight(u32)</code></p>
 <pre><code class="language-rs">#[node_system]
-fn edge_always_pass&lt;Node: AiNode&gt;(query: Query&lt;&amp;mut DerefEdgeState&lt;Node&gt;&gt;){
+fn score_always_pass&lt;Node: AiNode&gt;(query: Query&lt;&amp;mut Prop&lt;Score, Node&gt;&gt;){
 	for state in query.iter_mut(){
-			**state = EdgeState::Pass;
+			**state = Score::Pass;
 	}
 }
 </code></pre>
@@ -805,8 +822,8 @@ fn edge_always_pass&lt;Node: AiNode&gt;(query: Query&lt;&amp;mut DerefEdgeState&
 pub fn MyTree() -&gt; impl AiNode {
 	tree! {
 		&lt;first_valid_edge&gt;
-			&lt;child1 edge=edge_always_fail/&gt;
-			&lt;child2 edge=edge_always_pass/&gt;
+			&lt;child1 before_parent=score_always_fail/&gt;
+			&lt;child2 before_parent=score_always_pass/&gt;
 		&lt;/first_valid_edge&gt;
 	}
 }
