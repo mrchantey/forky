@@ -39,15 +39,18 @@ impl IntoNodeSystem for empty_node {
 //TODO handle failure
 #[node_system]
 pub fn parallel<N: AiNode>(
-	mut commands: Commands,
-	mut query: Query<N::ChildQuery<EdgeStateProp<N>>, With<NodeStateProp<N>>>,
+	mut _commands: Commands,
+	mut _query: Query<
+		(N::ChildQueryMut<EdgeState>, N::ChildQueryOptMut<NodeState>),
+		With<NodeStateProp<N>>,
+	>,
 ) {
-	for node in query.iter_mut() {
-		let mut children = N::children(node);
-		for child in children.iter_mut() {
-			child.set_node_state(&mut commands, Some(NodeState::Running));
-		}
-	}
+	// for children in query.iter_mut() {
+	// 	let mut children = N::children_mut(children);
+	// 	for child in children.iter_mut() {
+	// 		child.set_node_state(&mut commands, Some(NodeState::Running));
+	// 	}
+	// }
 }
 
 #[node_system]

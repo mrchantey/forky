@@ -21,16 +21,24 @@ pub trait AiNode: 'static + Send + Sync + TreePath {
 	) -> Entity;
 	fn children<'a, T: IntoNodeComponent>(
 		item: <Self::ChildQuery<T> as WorldQuery>::Item<'a>,
-	) -> Vec<ChildState<'a, T>>;
+	) -> Vec<ChildState<'a, T, Self>>;
 	fn children_opt<'a, T: IntoNodeComponent>(
 		item: <Self::ChildQueryOpt<T> as WorldQuery>::Item<'a>,
-	) -> Vec<ChildStateOpt<'a, T>>;
+	) -> Vec<ChildStateOpt<'a, T, Self>>;
 	fn children_mut<'a, T: IntoNodeComponent>(
 		item: <Self::ChildQueryMut<T> as WorldQuery>::Item<'a>,
-	) -> Vec<ChildStateMut<'a, T>>;
+	) -> Vec<ChildStateMut<'a, T, Self>>;
 	fn children_opt_mut<'a, T: IntoNodeComponent>(
 		item: <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,
-	) -> Vec<ChildStateOptMut<'a, T>>;
+	) -> Vec<ChildStateOptMut<'a, T, Self>>;
+	fn children_opt_mut2<'a, T: IntoNodeComponent>(
+		item: <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,
+	) -> Vec<Box<dyn IntoChildState<'a, T> + 'a>>;
+	// fn parse_query<'a, T: IntoNodeComponent, Q: IntoChildQuery<Self, T>>(
+	// 	item: Q,
+	// ) -> Q::Out {
+	// 	item.out()
+	// }
 
 	fn add_systems(self, schedule: &mut Schedule);
 

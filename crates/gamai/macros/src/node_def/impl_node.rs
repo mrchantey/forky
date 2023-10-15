@@ -1,4 +1,5 @@
 use super::*;
+// use proc_macro2::Ident;
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
@@ -30,6 +31,8 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 
 	let child_states_opt_mut =
 		build_child_states(quote!(ChildStateOptMut), *num_children);
+	let child_states_opt_mut2 =
+		build_child_states2(quote!(ChildStateOptMut), *num_children);
 	let state_recast_opt_mut = state_recast_opt_mut(*num_children);
 
 
@@ -45,23 +48,13 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let children_into_child = children_into_child(*num_children);
 	let recursive_children = recursive_children(*num_children);
 
+	// let query_ext = Ident::new(&format!("QueryTrait{}", ident), ident.span());
+
 	quote! {
 		impl<#self_bounds> TreePath for #ident<#self_params> {
 			type Parent = Path::Parent;
 			const CHILD_INDEX: usize = Path::CHILD_INDEX;
 		}
-
-		// impl<#child_bounds> ChildQueryExt for (Entity,#child_query){
-		// 	type Out = usize;
-		// 	fn out(self)->Self::OUT{
-		// 		69
-		// 	}
-		// }
-
-		// impl<#self_bounds> IntoNode for #ident<#self_params> {
-		// 	type Out = Self;
-		// 	fn into_node(self) -> Self::Out { self }
-		// }
 
 		impl<#self_bounds> AiNode for #ident<#self_params> {
 
@@ -104,28 +97,34 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			}
 
 			fn children<'a,T:IntoNodeComponent>((entity,#node_params): <Self::ChildQuery<T> as WorldQuery>::Item<'a>)
-				-> Vec<ChildState<'a, T>> {
+				-> Vec<ChildState<'a, T, Self>> {
 					vec![#child_states]
 				}
 
 			fn children_opt<'a, T: IntoNodeComponent>((entity,#node_params): <Self::ChildQueryOpt<T> as WorldQuery>::Item<'a>,
-			) -> Vec<ChildStateOpt<'a,T>>{
+			) -> Vec<ChildStateOpt<'a,T, Self>>{
 				#state_recast_opt
 				vec![#child_states_opt]
 			}
 
 			fn children_mut<'a, T: IntoNodeComponent>((entity,#node_params_mut): <Self::ChildQueryMut<T> as WorldQuery>::Item<'a>,
-			) -> Vec<ChildStateMut<T>>{
+			) -> Vec<ChildStateMut<'a, T, Self>>{
 				#state_recast_mut
 				vec![#child_states_mut]
 			}
 
-			fn children_opt_mut<'a, T: IntoNodeComponent>((entity,#node_params): <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,
-		) -> Vec<ChildStateOptMut<'a, T>>{
+			fn children_opt_mut<'a, T: IntoNodeComponent>((entity,#node_params): <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,)
+				-> Vec<ChildStateOptMut<'a, T, Self>>{
 				#state_recast_opt_mut
 				vec![#child_states_opt_mut]
 			}
 
+			fn children_opt_mut2<'a, T: IntoNodeComponent>((entity,#node_params): <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,
+			) -> Vec<Box<dyn IntoChildState<'a, T> + 'a>>{
+				#state_recast_opt_mut
+				// vec![]
+				vec![#child_states_opt_mut2]
+			}
 
 			fn get_child(&self,index:usize)->&dyn NodeInspector{
 				match index{
@@ -223,11 +222,28 @@ fn build_child_states(ident: TokenStream, num_children: usize) -> TokenStream {
 		.map(|index| {
 			let value = field_ident("value", index);
 			quote! {
-				#ident::<T>{
+				#ident{
 					entity: entity.clone(),
 					index: #index,
 					value: #value,
+					marker: std::marker::PhantomData
 				},
+			}
+		})
+		.collect()
+}
+fn build_child_states2(ident: TokenStream, num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let child_ident = child_type_name(index);
+			let value = field_ident("value", index);
+			quote! {
+				Box::new(#ident{
+					entity: entity.clone(),
+					index: #index,
+					value: #value,
+					marker: std::marker::PhantomData::<#child_ident>
+				}),
 			}
 		})
 		.collect()
