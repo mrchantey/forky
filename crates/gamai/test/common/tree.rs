@@ -24,7 +24,7 @@
 // 		.spawn(NodeStateProp::from_node(MyTree, NodeState::Running))
 // 		.id();
 
-// 	expect(NodeComponent::<NodeState, _>::get(
+// 	expect(Prop::<NodeState, _>::get(
 // 		MyTree, &app.world, entity,
 // 	))
 // 	.to_be(Some(&NodeState::Running))?;
@@ -32,7 +32,7 @@
 // 	app.update();
 // 	app.update();
 
-// 	expect(NodeComponent::<NodeState, _>::get(
+// 	expect(Prop::<NodeState, _>::get(
 // 		MyTree, &app.world, entity,
 // 	))
 // 	.to_be(Some(&NodeState::Success))?;

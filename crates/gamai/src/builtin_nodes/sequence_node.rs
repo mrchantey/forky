@@ -18,7 +18,7 @@ pub fn sequence<N: AiNode>(
 	)>,
 ) {
 	for (entity, mut state, children) in query.iter_mut() {
-		let mut children = N::children_opt_mut2(children);
+		let mut children = N::children_opt_mut(children);
 		if **state == NodeState::Running {
 			let next_index =
 				children.iter_mut().find_map(|child| match child.get() {

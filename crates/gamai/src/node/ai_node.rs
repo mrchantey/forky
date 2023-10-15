@@ -9,32 +9,29 @@ use std::marker::PhantomData;
 // pub trait AiNode {
 pub trait AiNode: 'static + Send + Sync + TreePath {
 	/// Tuple Query used to access child states: `(Entity,(Child1,(Child2)))`
-	type ChildQuery<T: IntoNodeComponent>: WorldQuery;
-	type ChildQueryOpt<T: IntoNodeComponent>: WorldQuery;
-	type ChildQueryMut<T: IntoNodeComponent>: WorldQuery;
-	type ChildQueryOptMut<T: IntoNodeComponent>: WorldQuery;
+	type ChildQuery<T: IntoProp>: WorldQuery;
+	type ChildQueryOpt<T: IntoProp>: WorldQuery;
+	type ChildQueryMut<T: IntoProp>: WorldQuery;
+	type ChildQueryOptMut<T: IntoProp>: WorldQuery;
 
-	type TreeBundle<T: IntoNodeComponent>: Bundle;
+	type TreeBundle<T: IntoProp>: Bundle;
 	// type Query<'w, 's> = Query<'w, 's, Self::ChildQuery>;
-	fn entity<'a, T: IntoNodeComponent>(
+	fn entity<'a, T: IntoProp>(
 		item: &<Self::ChildQuery<T> as WorldQuery>::Item<'a>,
 	) -> Entity;
-	fn children<'a, T: IntoNodeComponent>(
+	fn children<'a, T: IntoProp>(
 		item: <Self::ChildQuery<T> as WorldQuery>::Item<'a>,
-	) -> Vec<ChildState<'a, T, Self>>;
-	fn children_opt<'a, T: IntoNodeComponent>(
+	) -> Vec<Box<dyn IntoChildProp<'a, T> + 'a>>;
+	fn children_opt<'a, T: IntoProp>(
 		item: <Self::ChildQueryOpt<T> as WorldQuery>::Item<'a>,
-	) -> Vec<ChildStateOpt<'a, T, Self>>;
-	fn children_mut<'a, T: IntoNodeComponent>(
+	) -> Vec<Box<dyn IntoChildPropOpt<'a, T> + 'a>>;
+	fn children_mut<'a, T: IntoProp>(
 		item: <Self::ChildQueryMut<T> as WorldQuery>::Item<'a>,
-	) -> Vec<ChildStateMut<'a, T, Self>>;
-	fn children_opt_mut<'a, T: IntoNodeComponent>(
+	) -> Vec<Box<dyn IntoChildPropMut<'a, T> + 'a>>;
+	fn children_opt_mut<'a, T: IntoProp>(
 		item: <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,
-	) -> Vec<ChildStateOptMut<'a, T, Self>>;
-	fn children_opt_mut2<'a, T: IntoNodeComponent>(
-		item: <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,
-	) -> Vec<Box<dyn IntoChildState<'a, T> + 'a>>;
-	// fn parse_query<'a, T: IntoNodeComponent, Q: IntoChildQuery<Self, T>>(
+	) -> Vec<Box<dyn IntoChildPropOptMut<'a, T> + 'a>>;
+	// fn parse_query<'a, T: IntoProp, Q: IntoChildQuery<Self, T>>(
 	// 	item: Q,
 	// ) -> Q::Out {
 	// 	item.out()
@@ -42,9 +39,7 @@ pub trait AiNode: 'static + Send + Sync + TreePath {
 
 	fn add_systems(self, schedule: &mut Schedule);
 
-	fn tree_bundle<T: IntoNodeComponent + Clone>(
-		value: T,
-	) -> Self::TreeBundle<T>;
+	fn tree_bundle<T: IntoProp + Clone>(value: T) -> Self::TreeBundle<T>;
 
 	fn get_child(&self, index: usize) -> &dyn NodeInspector;
 	fn get_child_owned(self, index: usize) -> Box<dyn NodeInspector>;
@@ -52,19 +47,19 @@ pub trait AiNode: 'static + Send + Sync + TreePath {
 	fn get_children_owned(self) -> Vec<Box<dyn NodeInspector>>;
 
 
-	fn get_recursive<T: IntoNodeComponent>(
+	fn get_recursive<T: IntoProp>(
 		self,
 		world: &World,
 		entity: Entity,
-	) -> NodeComponentRecursive<T> {
+	) -> PropTree<T> {
 		self.get_recursive_inner::<T>(world, entity, 0)
 	}
-	fn get_recursive_inner<T: IntoNodeComponent>(
+	fn get_recursive_inner<T: IntoProp>(
 		self,
 		world: &World,
 		entity: Entity,
 		depth: usize,
-	) -> NodeComponentRecursive<T>;
+	) -> PropTree<T>;
 
 	/// Copies self, with a different path.
 	fn into_child<Path: TreePath>(self) -> impl AiNode;

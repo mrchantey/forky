@@ -11,11 +11,11 @@ pub trait IntoNode<Marker>: Sized {
 	type Out: AiNode;
 	fn into_node(self) -> Self::Out;
 
-	fn get_recursive<T: IntoNodeComponent>(
+	fn get_recursive<T: IntoProp>(
 		self,
 		world: &World,
 		entity: Entity,
-	) -> NodeComponentRecursive<T> {
+	) -> PropTree<T> {
 		AiNode::get_recursive(self.into_node(), world, entity)
 	}
 

@@ -19,7 +19,7 @@ pub fn works() -> Result<()> {
 	app.add_plugins(AiPlugin::new(my_tree));
 	let entity = app
 		.world
-		.spawn(NodeComponent::from_node(my_tree, NodeState::Running))
+		.spawn(Prop::from_node(my_tree, NodeState::Running))
 		.id();
 
 	app.update();

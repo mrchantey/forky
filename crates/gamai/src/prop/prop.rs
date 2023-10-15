@@ -5,28 +5,27 @@ use std::ops::Deref;
 use std::ops::DerefMut;
 
 /// Marker for types that can be used as component fields.
-pub trait IntoNodeComponent: 'static + Send + Sync {}
-impl<T> IntoNodeComponent for T where T: 'static + Send + Sync {}
+pub trait IntoProp: 'static + Send + Sync {}
+impl<T> IntoProp for T where T: 'static + Send + Sync {}
 
 pub type DerefProp<T> = dyn Deref<Target = T>;
 
 
 #[derive(Debug, Clone, Component)]
-pub struct NodeComponent<T: IntoNodeComponent, Node: NodeInspector> {
+pub struct Prop<T: IntoProp, Node: NodeInspector> {
 	pub value: T,
 	pub marker: PhantomData<Node>,
 }
 
-
-impl<T: IntoNodeComponent, N: NodeInspector> Deref for NodeComponent<T, N> {
+impl<T: IntoProp, N: NodeInspector> Deref for Prop<T, N> {
 	type Target = T;
 	fn deref(&self) -> &Self::Target { &self.value }
 }
-impl<T: IntoNodeComponent, N: NodeInspector> DerefMut for NodeComponent<T, N> {
+impl<T: IntoProp, N: NodeInspector> DerefMut for Prop<T, N> {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.value }
 }
 
-impl<T: IntoNodeComponent, N: NodeInspector> NodeComponent<T, N> {
+impl<T: IntoProp, N: NodeInspector> Prop<T, N> {
 	pub fn new(value: T) -> Self {
 		Self {
 			value,
@@ -81,7 +80,7 @@ pub enum Lifecycle {
 	Success,
 	Failure,
 }
-impl<T: IntoNodeComponent, N: NodeInspector> NodeComponent<T, N>
+impl<T: IntoProp, N: NodeInspector> Prop<T, N>
 where
 	T: PartialEq,
 {
@@ -109,7 +108,7 @@ where
 		}
 	}
 }
-// impl<'a, T: IntoNodeComponent> NodeComponentRecursive<'a, T> {
+// impl<'a, T: IntoProp> PropTree<'a, T> {
 // 	pub fn new<N, M>(
 // 		n: impl IntoNode<M, Out = N>,
 // 		world: &'a World,

@@ -28,7 +28,7 @@ pub fn root() -> Result<()> {
 		.world
 		.spawn(PropBundle::root(tree, State::default()))
 		.id();
-	let out = NodeComponentRecursive::<State>::new(tree, &app.world, entity);
+	let out = PropTree::<State>::new(tree, &app.world, entity);
 	expect(out.value).to_be(Some(&State::default()))?;
 	expect(out.children[0].value).to_be_none()?;
 	Ok(())
@@ -40,7 +40,7 @@ pub fn recursive() -> Result<()> {
 		.world
 		.spawn(PropBundle::recursive(tree, State::Terrible))
 		.id();
-	let out = NodeComponentRecursive::<State>::new(tree, &app.world, entity);
+	let out = PropTree::<State>::new(tree, &app.world, entity);
 	expect(out.value).to_be(Some(&State::Terrible))?;
 	expect(out.children[0].value).to_be(Some(&State::Terrible))?;
 	Ok(())
@@ -52,7 +52,7 @@ pub fn flatten() -> Result<()> {
 		.world
 		.spawn(PropBundle::recursive(tree, State::Terrible))
 		.id();
-	let out = NodeComponentRecursive::<State>::new(tree, &app.world, entity);
+	let out = PropTree::<State>::new(tree, &app.world, entity);
 	expect(out.flatten()).to_be(vec![Some(&State::Terrible); 5])?;
 	Ok(())
 }

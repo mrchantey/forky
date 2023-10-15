@@ -20,28 +20,33 @@ impl IntoNodeSystem for empty_node {
 	}
 }
 
-// #[node_system]
-// pub fn first_valid_edge<N: AiNode>(
-// 	mut commands: Commands,
-// 	mut query: Query<N::ChildQuery<EdgeStateProp<N>>, With<NodeStateProp<N>>>,
-// ) {
-// 	for node in query.iter_mut() {
-// 		let mut children = N::children(node);
-// 		for child in children.iter_mut() {
-// 			if **child.edge != EdgeState::Fail {
-// 				// println!("first_valid_edge: setting node state..");
-// 				child.set_node_state(&mut commands, Some(NodeState::Running));
-// 			}
-// 		}
-// 	}
-// }
+#[node_system]
+pub fn first_passing_score<N: AiNode>(
+	mut commands: Commands,
+	mut query: Query<
+		(N::ChildQuery<Score>, N::ChildQueryOptMut<NodeState>),
+		With<NodeStateProp<N>>,
+	>,
+) {
+	for (scores, states) in query.iter_mut() {
+		let mut children = N::children(scores)
+			.into_iter()
+			.zip(N::children_opt_mut(states).into_iter())
+			.collect::<Vec<_>>();
+		for (score, state) in children.iter_mut() {
+			if **score.get() != Score::Fail {
+				state.set(&mut commands, Some(NodeState::Running));
+			}
+		}
+	}
+}
 
 //TODO handle failure
 #[node_system]
 pub fn parallel<N: AiNode>(
 	mut _commands: Commands,
 	mut _query: Query<
-		(N::ChildQueryMut<EdgeState>, N::ChildQueryOptMut<NodeState>),
+		(N::ChildQueryMut<Score>, N::ChildQueryOptMut<NodeState>),
 		With<NodeStateProp<N>>,
 	>,
 ) {
@@ -54,16 +59,16 @@ pub fn parallel<N: AiNode>(
 }
 
 #[node_system]
-pub fn edge_always_pass<N: AiNode>(mut query: Query<&mut DerefEdgeState<N>>) {
+pub fn edge_always_pass<N: AiNode>(mut query: Query<&mut ScoreProp<N>>) {
 	// println!("edge_always_pass: Running");
 	for mut edge in query.iter_mut() {
-		**edge = EdgeState::Pass;
+		**edge = Score::Pass;
 	}
 }
 #[node_system]
-pub fn edge_always_fail<N: AiNode>(mut query: Query<&mut DerefEdgeState<N>>) {
+pub fn edge_always_fail<N: AiNode>(mut query: Query<&mut ScoreProp<N>>) {
 	for mut edge in query.iter_mut() {
-		**edge = EdgeState::Fail;
+		**edge = Score::Fail;
 	}
 }
 #[node_system]

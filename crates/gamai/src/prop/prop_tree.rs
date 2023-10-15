@@ -5,18 +5,18 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 
 #[derive(Debug, Clone)]
-pub struct NodeComponentRecursive<'a, T: IntoNodeComponent> {
+pub struct PropTree<'a, T: IntoProp> {
 	pub depth: usize,
 	pub value: Option<&'a T>,
-	pub children: Vec<NodeComponentRecursive<'a, T>>,
+	pub children: Vec<PropTree<'a, T>>,
 }
 
-impl<'a, T: IntoNodeComponent> NodeComponentRecursive<'a, T> {
+impl<'a, T: IntoProp> PropTree<'a, T> {
 	pub fn new<M, N: AiNode>(
 		node: impl IntoNode<M, Out = N>,
 		world: &World,
 		entity: Entity,
-	) -> NodeComponentRecursive<T> {
+	) -> PropTree<T> {
 		node.into_node().get_recursive(world, entity)
 	}
 
@@ -32,9 +32,9 @@ impl<'a, T: IntoNodeComponent> NodeComponentRecursive<'a, T> {
 	}
 }
 
-impl<'a, T> Display for NodeComponentRecursive<'a, T>
+impl<'a, T> Display for PropTree<'a, T>
 where
-	T: IntoNodeComponent + Debug,
+	T: IntoProp + Debug,
 {
 	fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
 		let indent =

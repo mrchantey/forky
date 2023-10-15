@@ -16,6 +16,8 @@ extern crate self as gamai;
 pub use gamai_macros::*;
 mod node;
 pub use self::node::*;
+mod prop;
+pub use self::prop::*;
 mod builtin_nodes;
 pub use self::builtin_nodes::*;
 pub use anyhow::bail;

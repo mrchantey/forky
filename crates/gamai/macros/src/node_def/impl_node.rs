@@ -19,20 +19,18 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let child_query_opt_mut = child_query_opt_mut(*num_children);
 	let node_params = node_params(*num_children);
 	let node_params_mut = node_params_mut(*num_children);
-	let child_states = build_child_states(quote!(ChildState), *num_children);
+	let child_states = build_child_states(quote!(ChildProp), *num_children);
 
 	let child_states_opt =
-		build_child_states(quote!(ChildStateOpt), *num_children);
+		build_child_states(quote!(ChildPropOpt), *num_children);
 	let state_recast_opt = state_recast_opt(*num_children);
 
 	let child_states_mut =
-		build_child_states(quote!(ChildStateMut), *num_children);
+		build_child_states(quote!(ChildPropMut), *num_children);
 	let state_recast_mut = state_recast_mut(*num_children);
 
 	let child_states_opt_mut =
-		build_child_states(quote!(ChildStateOptMut), *num_children);
-	let child_states_opt_mut2 =
-		build_child_states2(quote!(ChildStateOptMut), *num_children);
+		build_child_states(quote!(ChildPropOptMut), *num_children);
 	let state_recast_opt_mut = state_recast_opt_mut(*num_children);
 
 
@@ -58,29 +56,29 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 
 		impl<#self_bounds> AiNode for #ident<#self_params> {
 
-			type ChildQuery<T:IntoNodeComponent> = (
+			type ChildQuery<T:IntoProp> = (
 				Entity,
 				#child_query
 			);
-			type ChildQueryOpt<T:IntoNodeComponent> = (
+			type ChildQueryOpt<T:IntoProp> = (
 				Entity,
 				#child_query_opt
 			);
-			type ChildQueryMut<T:IntoNodeComponent> = (
+			type ChildQueryMut<T:IntoProp> = (
 				Entity,
 				#child_query_mut
 			);
-			type ChildQueryOptMut<T:IntoNodeComponent> = (
+			type ChildQueryOptMut<T:IntoProp> = (
 				Entity,
 				#child_query_opt_mut
 			);
 
 			#[allow(unused_parens)]
-			type TreeBundle<T:IntoNodeComponent> = (NodeComponent<T,Self>,#child_tree_bundle_types);
+			type TreeBundle<T:IntoProp> = (Prop<T,Self>,#child_tree_bundle_types);
 
-			fn tree_bundle<T:IntoNodeComponent + Clone>(value: T) -> Self::TreeBundle<T>{
+			fn tree_bundle<T:IntoProp + Clone>(value: T) -> Self::TreeBundle<T>{
 				(
-					NodeComponent::new(value.clone()),
+					Prop::new(value.clone()),
 					#child_tree_bundle_values
 				)
 			}
@@ -92,38 +90,32 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				#add_systems_children
 			}
 
-			fn entity<'a,T:IntoNodeComponent>(val: &<Self::ChildQuery<T> as WorldQuery>::Item<'a>) ->Entity{
+			fn entity<'a,T:IntoProp>(val: &<Self::ChildQuery<T> as WorldQuery>::Item<'a>) ->Entity{
 				val.0
 			}
 
-			fn children<'a,T:IntoNodeComponent>((entity,#node_params): <Self::ChildQuery<T> as WorldQuery>::Item<'a>)
-				-> Vec<ChildState<'a, T, Self>> {
+			fn children<'a,T:IntoProp>((entity,#node_params): <Self::ChildQuery<T> as WorldQuery>::Item<'a>)
+				-> Vec<Box<dyn IntoChildProp<'a, T> + 'a>> {
 					vec![#child_states]
 				}
 
-			fn children_opt<'a, T: IntoNodeComponent>((entity,#node_params): <Self::ChildQueryOpt<T> as WorldQuery>::Item<'a>,
-			) -> Vec<ChildStateOpt<'a,T, Self>>{
+			fn children_opt<'a, T: IntoProp>((entity,#node_params): <Self::ChildQueryOpt<T> as WorldQuery>::Item<'a>,
+			) -> Vec<Box<dyn IntoChildPropOpt<'a, T> + 'a>>{
 				#state_recast_opt
 				vec![#child_states_opt]
 			}
 
-			fn children_mut<'a, T: IntoNodeComponent>((entity,#node_params_mut): <Self::ChildQueryMut<T> as WorldQuery>::Item<'a>,
-			) -> Vec<ChildStateMut<'a, T, Self>>{
+			fn children_mut<'a, T: IntoProp>((entity,#node_params_mut): <Self::ChildQueryMut<T> as WorldQuery>::Item<'a>,
+			) -> Vec<Box<dyn IntoChildPropMut<'a, T> + 'a>>{
 				#state_recast_mut
 				vec![#child_states_mut]
 			}
 
-			fn children_opt_mut<'a, T: IntoNodeComponent>((entity,#node_params): <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,)
-				-> Vec<ChildStateOptMut<'a, T, Self>>{
-				#state_recast_opt_mut
-				vec![#child_states_opt_mut]
-			}
-
-			fn children_opt_mut2<'a, T: IntoNodeComponent>((entity,#node_params): <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,
-			) -> Vec<Box<dyn IntoChildState<'a, T> + 'a>>{
+			fn children_opt_mut<'a, T: IntoProp>((entity,#node_params): <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,
+			) -> Vec<Box<dyn IntoChildPropOptMut<'a, T> + 'a>>{
 				#state_recast_opt_mut
 				// vec![]
-				vec![#child_states_opt_mut2]
+				vec![#child_states_opt_mut]
 			}
 
 			fn get_child(&self,index:usize)->&dyn NodeInspector{
@@ -145,15 +137,15 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				vec![#get_children_owned]
 			}
 
-			fn get_recursive_inner<T: IntoNodeComponent>(
+			fn get_recursive_inner<T: IntoProp>(
 				self,
 				world: &World,
 				entity: Entity,
 				depth:usize,
-			) -> NodeComponentRecursive<T>{
-				NodeComponentRecursive{
+			) -> PropTree<T>{
+				PropTree{
 					depth,
-					value:NodeComponent::<T,Self>::get_ref_from_node(world,entity).map(|v|&v.value),
+					value:Prop::<T,Self>::get_ref_from_node(world,entity).map(|v|&v.value),
 					children:vec![#recursive_children]
 				}
 			}
@@ -172,7 +164,7 @@ fn child_query(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.fold(TokenStream::new(), |prev, index| {
 			let child = child_type_name(index);
-			quote!((&'static NodeComponent<T,#child>, #prev))
+			quote!((&'static Prop<T,#child>, #prev))
 		})
 		.into_token_stream()
 }
@@ -180,7 +172,7 @@ fn child_query_opt(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.fold(TokenStream::new(), |prev, index| {
 			let child = child_type_name(index);
-			quote!((Option<&'static NodeComponent<T,#child>>, #prev))
+			quote!((Option<&'static Prop<T,#child>>, #prev))
 		})
 		.into_token_stream()
 }
@@ -188,7 +180,7 @@ fn child_query_mut(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.fold(TokenStream::new(), |prev, index| {
 			let child = child_type_name(index);
-			quote!((&'static mut NodeComponent<T,#child>, #prev))
+			quote!((&'static mut Prop<T,#child>, #prev))
 		})
 		.into_token_stream()
 }
@@ -196,7 +188,7 @@ fn child_query_opt_mut(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.fold(TokenStream::new(), |prev, index| {
 			let child = child_type_name(index);
-			quote!((Option<&'static mut NodeComponent<T,#child>>, #prev))
+			quote!((Option<&'static mut Prop<T,#child>>, #prev))
 		})
 		.into_token_stream()
 }
@@ -218,21 +210,6 @@ fn node_params_mut(num_children: usize) -> TokenStream {
 }
 
 fn build_child_states(ident: TokenStream, num_children: usize) -> TokenStream {
-	(0..num_children)
-		.map(|index| {
-			let value = field_ident("value", index);
-			quote! {
-				#ident{
-					entity: entity.clone(),
-					index: #index,
-					value: #value,
-					marker: std::marker::PhantomData
-				},
-			}
-		})
-		.collect()
-}
-fn build_child_states2(ident: TokenStream, num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
 			let child_ident = child_type_name(index);

@@ -25,10 +25,9 @@ pub fn works() -> Result<()> {
 	// 	.id();
 	let entity = app.world.spawn_empty().id();
 
-	expect(NodeComponent::<Lifecycle, _>::get(tree, &app.world, entity))
-		.to_be_none()?;
+	expect(Prop::<Lifecycle, _>::get(tree, &app.world, entity)).to_be_none()?;
 	app.update();
-	expect(NodeComponent::get(tree, &app.world, entity))
+	expect(Prop::get(tree, &app.world, entity))
 		.to_be(Some(&Lifecycle::Running))?;
 
 
@@ -47,11 +46,11 @@ const OUT: &str = r#"Running
 #[node_system]
 fn adds_my_thing<Node: AiNode>(
 	mut commands: Commands,
-	query: Query<Entity, Without<NodeComponent<Lifecycle, Node>>>,
+	query: Query<Entity, Without<Prop<Lifecycle, Node>>>,
 ) {
 	for entity in query.iter() {
 		commands
 			.entity(entity)
-			.insert(NodeComponent::<_, Node>::new(Lifecycle::default()));
+			.insert(Prop::<_, Node>::new(Lifecycle::default()));
 	}
 }
