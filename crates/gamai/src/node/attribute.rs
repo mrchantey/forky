@@ -13,6 +13,7 @@ pub struct Attributes<
 	pub pre_parent_update: PreParentUpdate,
 	pub pre_update: PreUpdate,
 	pub update: Update,
+	pub update_apply_deferred: bool,
 	pub post_update: PostUpdate,
 }
 
@@ -27,12 +28,14 @@ impl<
 		pre_parent_update: PreParentUpdate,
 		pre_update: PreUpdate,
 		update: Update,
+		update_apply_deferred: bool,
 		post_update: PostUpdate,
 	) -> Self {
 		Self {
 			pre_parent_update,
 			pre_update,
 			update,
+			update_apply_deferred,
 			post_update,
 		}
 	}
@@ -50,6 +53,7 @@ impl Default for DefaultAttributes {
 		Self {
 			pre_parent_update: EmptyNodeSystem::default(),
 			pre_update: EmptyNodeSystem::default(),
+			update_apply_deferred: false,
 			update: EmptyNodeSystem::default(),
 			post_update: EmptyNodeSystem::default(),
 		}
@@ -66,7 +70,7 @@ impl<
 	fn into_node_system_configs<Node: AiNode>(
 		self,
 	) -> bevy_ecs::schedule::SystemConfigs {
-		(
+		let mut systems = (
 			self.pre_parent_update
 				.into_node_system_configs::<Node>()
 				.in_set(Node::pre_parent_update_set()),
@@ -80,6 +84,18 @@ impl<
 				.into_node_system_configs::<Node>()
 				.in_set(Node::post_update_set()),
 		)
-			.into_configs()
+			.into_configs();
+
+		if self.update_apply_deferred {
+			systems = (
+				systems,
+				apply_deferred
+					.after(Node::update_set())
+					.before(Node::post_update_set()),
+			)
+				.into_configs();
+		}
+
+		systems
 	}
 }

@@ -31,7 +31,7 @@ pub fn works() -> Result<()> {
 
 	app.update();
 	//double update because no apply_deferred
-	app.update();
+	// app.update();
 
 	let out = my_tree.get_recursive::<NodeState>(&app.world, entity);
 	expect(out.value).to_be(Some(&NodeState::Running))?;

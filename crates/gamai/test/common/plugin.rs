@@ -1,27 +1,28 @@
-// use bevy_app::App;
-// use gamai::*;
-// use sweet::*;
+use bevy_app::App;
+use gamai::*;
+use sweet::*;
 
-// #[sweet_test]
-// pub fn it_works() -> Result<()> {
-// 	let my_tree = || tree! {<node_always_succeed/>};
+#[sweet_test]
+pub fn it_works() -> Result<()> {
+	let my_tree = || tree! {<node_always_succeed/>};
 
-// 	let mut app = App::new();
+	let mut app = App::new();
 
-// 	app.add_plugins(AiPlugin::new(my_tree));
+	app.add_plugins(AiPlugin::new(my_tree));
 
-// 	let entity = app
-// 		.world
-// 		.spawn(PropBundle::root(my_tree, NodeState::Running))
-// 		.id();
+	let entity = app
+		.world
+		.spawn(PropBundle::root(my_tree, NodeState::Running))
+		.id();
 
-// 	expect(my_tree.node_state(&app.world, entity))
-// 		.to_be(Some(NodeState::Running))?;
+	let out = PropTree::new(my_tree, &app.world, entity);
 
-// 	app.update();
+	expect(out.value).to_be(Some(&NodeState::Running))?;
 
-// 	expect(my_tree.node_state(&app.world, entity))
-// 		.to_be(Some(NodeState::Success))?;
+	app.update();
 
-// 	Ok(())
-// }
+	let out = PropTree::new(my_tree, &app.world, entity);
+	expect(out.value).to_be(Some(&NodeState::Success))?;
+
+	Ok(())
+}
