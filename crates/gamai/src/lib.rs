@@ -16,12 +16,15 @@ extern crate self as gamai;
 pub use gamai_macros::*;
 mod node;
 pub use self::node::*;
+mod prop;
+pub use self::prop::*;
 mod builtin_nodes;
 pub use self::builtin_nodes::*;
 pub use anyhow::bail;
 pub use anyhow::Result;
 pub mod exports {
 	pub use bevy_ecs::prelude::*;
+	pub use bevy_ecs::query::WorldQuery;
 	pub use bevy_ecs::schedule::SystemConfigs;
 	// currently no macros depend on bevy_app
 	// pub use bevy_app::prelude::*;

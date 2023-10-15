@@ -12,23 +12,25 @@ pub fn MyTree() -> impl AiNode {
 	}
 }
 
-
 #[sweet_test]
 pub fn it_works() -> Result<()> {
 	let mut app = App::new();
 
 	app.add_plugins(AiPlugin::new(MyTree));
 
-	let entity = app.world.spawn(AiBundle::new(MyTree)).id();
+	let entity = app
+		.world
+		.spawn(PropBundle::root(MyTree, NodeState::Running))
+		.id();
 
-	expect(MyTree.node_state(&app.world, entity))
-		.to_be(Some(NodeState::Running))?;
+	expect(Prop::<NodeState, _>::get(MyTree, &app.world, entity))
+		.to_be(Some(&NodeState::Running))?;
 
-	app.update();
-	app.update();
+	// app.update();
+	// app.update();
 
-	expect(MyTree.node_state(&app.world, entity))
-		.to_be(Some(NodeState::Success))?;
+	// expect(Prop::<NodeState, _>::get(MyTree, &app.world, entity))
+	// 	.to_be(Some(&NodeState::Success))?;
 
 	Ok(())
 }

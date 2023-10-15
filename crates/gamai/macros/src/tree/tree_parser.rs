@@ -3,6 +3,7 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
 use rstml::node::KeyedAttribute;
+use rstml::node::NodeElement;
 use syn::spanned::Spanned;
 use syn::Result;
 
@@ -15,56 +16,26 @@ pub struct TreeParser<'a> {
 	pub graph_id: usize,
 	pub child_index: usize,
 	pub graph_depth: usize,
-	pub node_system: TokenStream,
-	pub edge_system: TokenStream,
-	pub before_system: TokenStream,
-	pub after_system: TokenStream,
+	pub attribute: AttributeParser,
 	pub children: Vec<TreeParser<'a>>,
 }
 
-impl<'a> TreeParser<'a> {
-	pub fn root(node: &'a XmlNode, graph_id: usize) -> Result<Self> {
-		let node = match node {
-			XmlNode::Element(el) => match el.open_tag.name.to_string().as_str()
-			{
-				"edge" => {
-					todo!("handle edge parent, multiple edge children")
-				}
-				_ => Ok(el),
-			},
-			val => Err(syn::Error::new(val.span(), "Expected element node")),
-		}?;
-		Ok(Self::new(node, graph_id, 0, 0)?)
-	}
+pub struct AttributeParser {
+	pub pre_parent_update: TokenStream,
+	pub pre_update: TokenStream,
+	pub update_apply_deferred: bool,
+	pub update: TokenStream,
+	pub post_update: TokenStream,
+}
+impl AttributeParser {
+	pub fn from_attributes(node: &NodeElement) -> Result<Self> {
+		let mut attributes = Self::default();
+		attributes.update = node.name().to_token_stream();
 
-	fn new(
-		node: &'a XmlNodeElement,
-		graph_id: usize,
-		graph_depth: usize,
-		child_index: usize,
-	) -> Result<Self> {
-		let mut edge_system = quote!(gamai::empty_node);
-		let mut before_system = quote!(gamai::empty_node);
-		let mut after_system = quote!(gamai::empty_node);
-
-		let children = node
-			.children
-			.iter()
-			.filter_map(|c| match c {
-				XmlNode::Element(el) => Some(el),
-				_ => None,
-			})
-			.enumerate()
-			.map(|(index, child)| {
-				Self::new(child, graph_id, graph_depth + 1, index)
-			})
-			// .to_owned()
-			.collect::<Result<Vec<_>>>()?;
 
 		let has_no_value = |attr: &KeyedAttribute| {
 			syn::Error::new(attr.key.span(), "this attribute must have a value")
 		};
-
 		for attribute in node.attributes() {
 			match attribute {
 				XmlNodeAttribute::Block(block) => {
@@ -75,20 +46,23 @@ impl<'a> TreeParser<'a> {
 				}
 				XmlNodeAttribute::Attribute(attr) => {
 					match attr.key.to_string().as_str() {
-						"edge" => {
-							edge_system = attr
+						"apply_deferred" => {
+							attributes.update_apply_deferred = true
+						}
+						"before_parent" => {
+							attributes.pre_parent_update = attr
 								.value()
 								.map(|a| a.to_token_stream())
 								.ok_or_else(|| has_no_value(attr))?;
 						}
 						"before" => {
-							before_system = attr
+							attributes.pre_update = attr
 								.value()
 								.map(|a| a.to_token_stream())
 								.ok_or_else(|| has_no_value(attr))?;
 						}
 						"after" => {
-							after_system = attr
+							attributes.post_update = attr
 								.value()
 								.map(|a| a.to_token_stream())
 								.ok_or_else(|| has_no_value(attr))?;
@@ -107,15 +81,74 @@ impl<'a> TreeParser<'a> {
 			}
 		}
 
-		let node_system = node.name().to_token_stream();
+
+		Ok(attributes)
+	}
+	pub fn to_attributes_tokens(&self) -> TokenStream {
+		let Self {
+			update,
+			pre_update,
+			update_apply_deferred,
+			pre_parent_update,
+			post_update,
+		} = self;
+		quote! {
+		Attributes::new(
+			#pre_parent_update,
+			#pre_update,
+			#update,
+			#update_apply_deferred,
+			#post_update)
+		}
+	}
+}
+impl Default for AttributeParser {
+	fn default() -> Self {
+		Self {
+			pre_parent_update: quote!(gamai::empty_node),
+			pre_update: quote!(gamai::empty_node),
+			update_apply_deferred: false,
+			update: quote!(gamai::empty_node),
+			post_update: quote!(gamai::empty_node),
+		}
+	}
+}
+
+impl<'a> TreeParser<'a> {
+	pub fn root(node: &'a XmlNode, graph_id: usize) -> Result<Self> {
+		let node = match node {
+			XmlNode::Element(el) => Ok(el),
+			val => Err(syn::Error::new(val.span(), "Expected element node")),
+		}?;
+		Ok(Self::new(node, graph_id, 0, 0)?)
+	}
+
+	fn new(
+		node: &'a XmlNodeElement,
+		graph_id: usize,
+		graph_depth: usize,
+		child_index: usize,
+	) -> Result<Self> {
+		let attribute = AttributeParser::from_attributes(node)?;
+
+		let children = node
+			.children
+			.iter()
+			.filter_map(|c| match c {
+				XmlNode::Element(el) => Some(el),
+				_ => None,
+			})
+			.enumerate()
+			.map(|(index, child)| {
+				Self::new(child, graph_id, graph_depth + 1, index)
+			})
+			// .to_owned()
+			.collect::<Result<Vec<_>>>()?;
 
 		Ok(Self {
 			node,
 			children,
-			node_system,
-			edge_system,
-			before_system,
-			after_system,
+			attribute,
 			graph_id,
 			graph_depth,
 			child_index,
@@ -146,8 +179,7 @@ impl<'a> TreeParser<'a> {
 			node,
 			graph_id,
 			// child_index,			// dont need to set child index because if child, intochildnode will set it
-			node_system,
-			edge_system,
+			attribute,
 			..
 		} = self;
 
@@ -167,17 +199,12 @@ impl<'a> TreeParser<'a> {
 			let ident = self.from_node_system_ident();
 			let child_types = self.child_types();
 			let child_instances = self.child_instances();
+			let attribute = attribute.to_attributes_tokens();
 			quote! {
 				#ident::<TreePathRoot<#graph_id>,
 				_, //for Nodesystem
 				#child_types
-				>::new(
-					Attributes::new(
-						#edge_system,
-						gamai::empty_node,
-						#node_system,
-						gamai::empty_node),
-					#child_instances)
+				>::new(#attribute,#child_instances)
 			}
 		}
 	}

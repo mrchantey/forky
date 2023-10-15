@@ -16,5 +16,6 @@ async fn example_parrallelizable_test(){
 #[sweet_test(non_send)]
 async fn example_non_send_tests(){
 	fantoccini::ClientBuilder::native().connect("http://example.com").await;
+	bevy::app::new().add_plugins(DefaultPlugins).run();
 }
 ```

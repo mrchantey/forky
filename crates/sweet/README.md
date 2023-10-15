@@ -3,7 +3,7 @@
 <div align="center">
 
   <p>
-    <strong>Declarative native & web test framework delivering a sweet dev experience.</strong>
+    <strong>Declarative full-stack test framework.</strong>
   </p>
 
   <p>
@@ -26,9 +26,8 @@
 ## Usage
 
 ```rs
-sweet! {
-  it "works" {
-		expect("foo").not().to_start_with("bar")?;
-  }
+#[sweet_test]
+fn true_is_true() -> Result<()> {
+  expect(true).to_be_true()
 }
 ```

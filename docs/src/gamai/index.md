@@ -1,26 +1,46 @@
 # Gamai
 
-Gamai is a flexible task switching library suitable for game AI, robotics & other performance-critical environments. It features a modular tree structure and supports multiple selector paradigms like Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation allows for opportunistic parallelism, ensuring trees are processed as quickly as possible.
+Gamai is a flexible task switching library suitable for game AI, robotics & other performance-critical environments. The primitives it provies can be used for multiple decision-making paradigms like Behaviour Trees, Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation uses opportunistic parallelism, ensuring trees are processed as quickly as possible.
 
 **With Bevy**
 
-If used with Bevy there is no blackboard, as each node is a regular Bevy system with the same access to entities & resources.
+If used with Bevy there is no blackboard, each node is a regular Bevy system with the same access to entities & resources.
 
 **Without Bevy**
 
-The lightweight [`bevy_ecs`][1] crate that drives Gamai makes for an excellent blackboard, scheduling nodes to safely run in parallel and storing data efficiently for the CPU cache.
+The lightweight [`bevy_ecs`][1] crate that drives Gamai has a great storage pattern, scheduling systems to safely run in parallel and storing data efficiently for the CPU cache.
 
 ## Features
 
-- 🌴 Declarative RSX Trees
-- 🔥 Automatic Parallelism & System Ordering
+- 🌴 Declarative Tree Definition
+- 🔥 Compile-time Parallel Optimization
 - ✍️ No Blackboard
 - 🌈 Multi-paradigm
 - 🌍 With or without Bevy
 
+## Props
+
+A `Prop` is a regular bevy Component with an added `AiNode` generic argument, meaning the same prop can be used to represent the state of individual nodes in the tree.
+
+## Node Systems
+
+A `node_system` is a bevy systems with an added generic `AiNode` argument:
+```rs
+#[node_system]
+fn say_hello<N: AiNode>(mut query: Query<&mut Prop<NodeState,N>){
+	
+	for mut state in query.iter_mut(){
+		println!("hello");
+		assert_eq!(**state, NodeState::Running);
+		//tell parent it can go to the next node now
+		**state = NodeState::Success;
+	}
+}
+```
+
 ## Trees
 
-Trees are defined using familiar RSX patterns like those found in web UI libraries. A unique aspect of `gamai` is that trees are parsed at *compile time* which gives us the nessesary type information for the parallel scheduler in `bevy_ecs`.
+Trees are defined using familiar RSX patterns like those found in web UI libraries. They contain either node systems or other trees.
 
 ```rs
 #[tree_builder]
@@ -28,42 +48,38 @@ pub fn MyTree() -> impl AiNode {
 	tree! {
 		<sequence>
 			<say_hello/>
-			<say_world/>
+			<SayWorld/> //a tree declared elsewhere
 		</sequence>
 	}
 }
 ```
 
 > `gamai` uses a naming convention like web UI libraries:
-> - `node_systems` have snake_case 
+> - `node_systems` have snake_case
 > - `tree_builders` have PascalCase
-
-### Nodes
-
-Nodes are definitions of what systems should run for that node. The most common property is the `node_system` which is used 
-
 
 ### Further ordering.
 
-Other positions in the tree are accessible via the 
-Examples are:
-- `node_system` Usually used to run an action or a selector
-- `before_parent_system` Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector
-- `before_node_system` - 
-- `after_node_system` Good for frame-perfect nodes, with `apply_deferred` in between each layer
+So far each node will run consecutively, but for frame-perfect execution sometimes we need to run something before the parent.
+
+Other system orderings are accessible via attributes, examples are:
+- `before_parent` Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector
+- `before` - Tell children something before their `before_parent_system`
+- `after` Good for frame-perfect nodes, with `apply_deferred` in between each layer
 
 They are defined in `gamai` like so:
 ```rs
-<sequence 
-	before=do_this 
-	before_parent=do_that
+tree!{
+	<my_node
+		before_parent=set_score
+		before=set_child_scoring_parameter
+		after=cleanup
 	/>
-
-
+}
 ```
 
 
-For example, the below example tree
+For example, the following tree would produce this system ordering:
 
 
 ```mermaid
@@ -76,40 +92,37 @@ Node2 --- Node3
 dot1[...]
 dot2[...]
 ```
-Would produce a system ordering like this
 ```mermaid
 graph LR;
 	node2.before_parent --- node1 --- node2.before --- node1.after --- node3.before_parent --- node2 
 	node2[node2 etc.]
 ```
 
-`Nodes` are comprised of `node_systems` and `node_systems` are regular bevy systems with an added generic `AiNode` argument giving them access to the components that they need to communicate with parents and children. By design Nodes cannot communicate with grandparents/grandchildren. It seems like an antipattern by breaking the node-level modularity of the tree, but this can be looked into if there is a need.
-
-```rs
-#[node_system]
-fn say_hello<Node: AiNode>(mut query: Query<&mut NodeState<Node>>){
-	
-	for mut state in query.iter_mut(){
-		println!("hello");
-		assert_eq!(**state, NodeState::Running);
-		//tell parent it can go to the next node now
-		**state = NodeState::Success;
-	}
-}
-```
 
 ### Running
 
-An `AiNode` has two methods for running:
-- `MyTree.plugin()` provides the plugin that will add the systems to the world in the correct order.
-- `MyTree.bundle()` provides the components nessecary for the tree to run for a given entity.
+Before we can run the above example we need two things:
+- An `AiPlugin` schedules all systems in the tree:
+  
+	```rs 
+	app.add_plugins(AiPlugin::new(MyTree));
+	```
+- A `PropBundle` will add given props to specified nodes in the tree.
+	```rs
+	// only set the root as running
+	app.world.spawn(PropBundle::root(MyTree, NodeState::Running));
+	// set all nodes in the tree to have a failing score
+	app.world.spawn(PropBundle::recursive(MyTree, Score::Fail));
+	```
 
+Putting it all together we get something like this:
 
 ```rs
 fn main(){
-	let mut app = App::new();
-	app.add_plugins(MyTree.plugin());
-	app.world.spawn(MyTree.bundle());
+	let mut app = App::new();	
+	app.add_plugins(AiPlugin::new(MyTree));
+	app.world.spawn(PropBundle::root(MyTree, NodeState::Running));
+
 	app.update(); // runs first child
 	app.update(); // runs second child
 }

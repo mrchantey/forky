@@ -11,41 +11,41 @@ use bevy_ecs::prelude::*;
 #[node_system]
 pub fn sequence<N: AiNode>(
 	mut commands: Commands,
-	mut query: Query<(Entity, &mut DerefNodeState<N>, ChildIter<N>)>,
+	mut query: Query<(
+		Entity,
+		&mut Prop<NodeState, N>,
+		N::ChildQueryOptMut<NodeState>,
+	)>,
 ) {
 	for (entity, mut state, children) in query.iter_mut() {
-		let mut children = N::children(children);
-		// TODO we shouldnt be checking state, it should be one directional
+		let mut children = N::children_opt_mut(children);
 		if **state == NodeState::Running {
-			let next_index = match children.first_with_node_state() {
-				Some((child, child_state)) => match child_state {
-					NodeState::Running => None,
-					NodeState::Success => {
-						child.set_node_state(&mut commands, None);
-						Some(child.index + 1)
+			let next_index =
+				children.iter_mut().find_map(|child| match child.get() {
+					Some(NodeState::Running) => None,
+					Some(NodeState::Success) => {
+						child.set(&mut commands, None);
+						Some(child.index() + 1)
 					}
-					NodeState::Failure => {
-						child.set_node_state(&mut commands, None);
+					Some(NodeState::Failure) => {
+						child.set(&mut commands, None);
 						**state = NodeState::Failure;
 						None
 					}
-				},
-				None => Some(0),
-			};
-			if children
-				.try_set_node_state(
-					&mut commands,
-					next_index,
-					Some(NodeState::Running),
-				)
-				.is_err()
-			{
-				**state = NodeState::Success;
+					None => Some(0),
+				});
+			if let Some(next_index) = next_index {
+				if let Some(child) = children.get_mut(next_index) {
+					child.set(&mut commands, Some(NodeState::Running));
+				} else {
+					**state = NodeState::Success;
+				}
 			}
 		} else {
-			commands.entity(entity).remove::<DerefNodeState<N>>();
+			//TODO this should happen automatically
+			commands.entity(entity).remove::<Prop<NodeState, N>>();
 			for child in children.iter_mut() {
-				child.set_node_state(&mut commands, None);
+				child.set(&mut commands, None);
 			}
 		}
 	}

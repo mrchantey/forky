@@ -23,6 +23,7 @@ keywords = [
 [dependencies]
 gamai_macros = { workspace = true }
 bevy_ecs = { workspace = true }
+extend = { workspace = true }
 bevy_app = { workspace = true }
 # bevy_app = { workspace = true, optional = true }
 anyhow = { workspace = true }
