@@ -74,7 +74,7 @@ fantoccini = { workspace = true }
 [[example]]
 name = "test_sweet"
 path = "test/sweet.rs"
-required-features = ["bevy"]
+required-features = ["bevy_ecs"]
 
 [[example]]
 name = "test_sweet_wasm"

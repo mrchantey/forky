@@ -1,4 +1,6 @@
-#![feature(async_fn_in_trait, async_closure)]
+#![feature(async_closure)]
+#![allow(async_fn_in_trait)]
+
 mod matchers;
 mod test_case;
 pub use self::matchers::*;

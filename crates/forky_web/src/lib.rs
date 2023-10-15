@@ -1,4 +1,3 @@
-#![feature(async_fn_in_trait)]
 mod dom_utils;
 pub use self::dom_utils::*;
 mod logging;
