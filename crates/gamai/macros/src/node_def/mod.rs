@@ -1,7 +1,5 @@
 mod child;
 pub use self::child::*;
-mod impl_named_children;
-pub use self::impl_named_children::*;
 mod impl_node;
 pub use self::impl_node::*;
 mod impl_self;

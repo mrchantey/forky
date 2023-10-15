@@ -1,6 +1,7 @@
-use crate::*;
 use std::fmt::Debug;
 
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
+pub struct IsRunning;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub enum NodeState {
@@ -17,5 +18,3 @@ pub enum NodeState {
 impl NodeState {
 	pub fn set(&mut self, other: Self) { *self = other; }
 }
-
-pub type NodeStateProp<N> = Prop<NodeState, N>;

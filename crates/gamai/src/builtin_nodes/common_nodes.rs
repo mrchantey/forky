@@ -25,7 +25,7 @@ pub fn first_passing_score<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<
 		(N::ChildQuery<Score>, N::ChildQueryOptMut<NodeState>),
-		With<NodeStateProp<N>>,
+		With<Prop<NodeState, N>>,
 	>,
 ) {
 	for (scores, states) in query.iter_mut() {
@@ -47,7 +47,7 @@ pub fn parallel<N: AiNode>(
 	mut _commands: Commands,
 	mut _query: Query<
 		(N::ChildQueryMut<Score>, N::ChildQueryOptMut<NodeState>),
-		With<NodeStateProp<N>>,
+		With<Prop<NodeState, N>>,
 	>,
 ) {
 	// for children in query.iter_mut() {
@@ -59,32 +59,33 @@ pub fn parallel<N: AiNode>(
 }
 
 #[node_system]
-pub fn edge_always_pass<N: AiNode>(mut query: Query<&mut ScoreProp<N>>) {
-	// println!("edge_always_pass: Running");
-	for mut edge in query.iter_mut() {
-		**edge = Score::Pass;
+pub fn score_always_pass<N: AiNode>(mut query: Query<&mut ScoreProp<N>>) {
+	for mut score in query.iter_mut() {
+		**score = Score::Pass;
 	}
 }
 #[node_system]
-pub fn edge_always_fail<N: AiNode>(mut query: Query<&mut ScoreProp<N>>) {
-	for mut edge in query.iter_mut() {
-		**edge = Score::Fail;
+pub fn score_always_fail<N: AiNode>(mut query: Query<&mut ScoreProp<N>>) {
+	for mut score in query.iter_mut() {
+		**score = Score::Fail;
 	}
 }
 #[node_system]
-pub fn node_always_succeed<N: AiNode>(mut query: Query<&mut NodeStateProp<N>>) {
+pub fn node_always_succeed<N: AiNode>(
+	mut query: Query<&mut Prop<NodeState, N>>,
+) {
 	for mut node in query.iter_mut() {
 		**node = NodeState::Success;
 	}
 }
 #[node_system]
-pub fn node_always_fail<N: AiNode>(mut query: Query<&mut NodeStateProp<N>>) {
+pub fn node_always_fail<N: AiNode>(mut query: Query<&mut Prop<NodeState, N>>) {
 	for mut node in query.iter_mut() {
 		**node = NodeState::Failure;
 	}
 }
 #[node_system]
-pub fn print_on_run<N: AiNode>(mut query: Query<&mut NodeStateProp<N>>) {
+pub fn print_on_run<N: AiNode>(mut query: Query<&mut Prop<NodeState, N>>) {
 	// println!("print_on_run: running..");
 	for mut node in query.iter_mut() {
 		println!("NodeSystem: Running {:?}", **node);
@@ -94,11 +95,11 @@ pub fn print_on_run<N: AiNode>(mut query: Query<&mut NodeStateProp<N>>) {
 
 pub fn cleanup_state<N: AiNode>(
 	mut commands: Commands,
-	query: Query<(Entity, &NodeStateProp<N>), Changed<NodeStateProp<N>>>,
+	query: Query<(Entity, &Prop<NodeState, N>), Changed<Prop<NodeState, N>>>,
 ) {
 	for (entity, node) in query.iter() {
 		if **node != NodeState::Running {
-			commands.entity(entity).remove::<NodeStateProp<N>>();
+			commands.entity(entity).remove::<Prop<NodeState, N>>();
 		}
 	}
 }

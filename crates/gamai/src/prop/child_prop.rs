@@ -48,7 +48,6 @@ pub trait IntoChildProp<'a, T> {
 	fn index(&self) -> usize;
 	fn entity(&self) -> &Entity;
 	fn get(&self) -> &'a dyn Deref<Target = T>;
-	// fn set<Val>(&mut self, commands: &mut Commands, val:Val);
 }
 impl<'a, T: IntoProp, N: AiNode> IntoChildProp<'a, T> for ChildProp<'a, T, N> {
 	fn index(&self) -> usize { self.index }

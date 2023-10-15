@@ -13,7 +13,7 @@ pub fn sequence<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<(
 		Entity,
-		&mut NodeStateProp<N>,
+		&mut Prop<NodeState, N>,
 		N::ChildQueryOptMut<NodeState>,
 	)>,
 ) {
@@ -43,7 +43,7 @@ pub fn sequence<N: AiNode>(
 			}
 		} else {
 			//TODO this should happen automatically
-			commands.entity(entity).remove::<NodeStateProp<N>>();
+			commands.entity(entity).remove::<Prop<NodeState, N>>();
 			for child in children.iter_mut() {
 				child.set(&mut commands, None);
 			}

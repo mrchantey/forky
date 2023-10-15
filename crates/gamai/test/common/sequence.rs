@@ -29,15 +29,14 @@ pub fn works() -> Result<()> {
 	expect(out.value).to_be(Some(&NodeState::Running))?;
 	expect(out.children[0].value).to_be(Some(&NodeState::Running))?;
 
-	// expect(my_tree.child(0).node_state(&app.world, entity))
-	// 	.to_be(Some(NodeState::Running))?;
-	// expect(my_tree.child(1).node_state(&app.world, entity)).to_be_none()?;
-
+	app.update();
+	//double update because no apply_deferred
 	app.update();
 
-	// expect(my_tree.child(0).node_state(&app.world, entity)).to_be_none()?;
-	// expect(my_tree.child(1).node_state(&app.world, entity))
-	// 	.to_be(Some(NodeState::Running))?;
+	let out = my_tree.get_recursive::<NodeState>(&app.world, entity);
+	expect(out.value).to_be(Some(&NodeState::Running))?;
+	// expect(out.children[0].value).to_be_none()?;
+	// expect(out.children[1].value).to_be(Some(&NodeState::Running))?;
 
 	Ok(())
 }
