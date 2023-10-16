@@ -88,6 +88,9 @@ impl<
 			self.post_update
 				.into_action_configs::<Node>()
 				.in_set(Node::post_update_set()),
+			remove_running
+				.into_action_configs::<Node>()
+				.in_set(Node::post_update_set()),
 		)
 			.into_configs()
 	}

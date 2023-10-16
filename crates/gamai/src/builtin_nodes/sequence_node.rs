@@ -21,46 +21,41 @@ pub fn sequence<N: AiNode>(
 	>,
 ) {
 	for (entity, running, out) in query.iter_mut() {
-		// if **state == NodeState::Running
 		let mut children = std::iter::zip(
 			N::children_opt_mut(running).into_iter(),
 			N::children_opt_mut(out).into_iter(),
 		)
 		.collect::<Vec<_>>();
 
+		// a child is running
+		if children.iter().any(|(running, _)| running.get().is_some()) {
+			// println!("its still running!");
+			continue;
+		}
+
 		let next_index = children.iter_mut().find_map(|(running, out)| {
 			match (running.get(), out.get()) {
-				(_, Some(NodeState::Success)) => {// returned success
-					// running.set(&mut commands, None); //should be done in cleanup
-					Some(running.index() + 1)
-				}
-				(_, Some(NodeState::Failure)) => {// returned failure
-					// running.set(&mut commands, None); //should be done in cleanup
-					commands
-						.entity(entity)
-						.insert(Prop::<_, N>::new(NodeState::Failure));
-					None
-				}
-				(Some(_), _) => None,//still running
-				(None, None) => Some(0),//not running
+				(_, Some(NodeState::Success)) => Some(running.index() + 1),
+				(_, Some(NodeState::Failure)) => None,
+				_ => Some(0), //time for first child
 			}
 		});
+
+		println!("index: {:?}", next_index);
 		if let Some(next_index) = next_index {
 			if let Some((running, _)) = children.get_mut(next_index) {
-				// println!("setting child");
+				println!("running: {:?}", next_index);
 				running.set(&mut commands, Some(Running));
 			} else {
+				println!("success");
 				commands
-					.entity(entity)
+				.entity(entity)
 					.insert(Prop::<_, N>::new(NodeState::Success));
 			}
-		}
-		// } else {
-		// 	//TODO this should happen automatically
-		// 	commands.entity(entity).remove::<Prop<NodeState, N>>();
-		// 	for child in children.iter_mut() {
-		// 		child.set(&mut commands, None);
-		// 	}
-		// }
+		} else {
+			commands
+				.entity(entity)
+				.insert(Prop::<_, N>::new(NodeState::Failure));
+		};
 	}
 }

@@ -78,33 +78,36 @@ pub fn node_always_fail<N: AiNode>(
 }
 
 #[action]
-pub fn print_on_run<N: AiNode>(mut query: Query<&mut Prop<NodeState, N>>) {
-	// println!("print_on_run: running..");
-	for mut node in query.iter_mut() {
-		println!("Action: Running {:?}", **node);
-		**node = NodeState::Success;
+pub fn always_succeed_and_print<N: AiNode>(
+	mut commands: Commands,
+	mut query: Query<Entity, With<Prop<Running, N>>>,
+) {
+	for entity in query.iter_mut() {
+		println!("Node running: {}", N::DEPTH);
+		commands
+			.entity(entity)
+			.insert(Prop::<_, N>::new(NodeState::Success));
 	}
 }
 
-// pub fn cleanup_state<N: AiNode>(
-// 	mut commands: Commands,
-// 	query: Query<(Entity, &Prop<NodeState, N>), Changed<Prop<NodeState, N>>>,
-// ) {
-// 	for (entity, node) in query.iter() {
-// 		if **node != NodeState::Running {
-// 			commands.entity(entity).remove::<Prop<NodeState, N>>();
-// 		}
-// 	}
-// }
-// pub fn cleanup_child_state<N: AiNode>(
-// 	mut commands: Commands,
-// 	mut query: Query<ChildIter<NodeState, N>>,
-// ) {
-// 	for children in query.iter_mut() {
-// 		for mut child in N::children(children) {
-// 			if let Some(val) = &child.value && ***val != NodeState::Running {
-// 				child.set_node_state(&mut commands, None);
-// 			}
-// 		}
-// 	}
-// }
+
+#[action]
+pub fn remove_running<N: AiNode>(
+	mut commands: Commands,
+	added_result: Query<
+		Entity,
+		(With<Prop<NodeState, N>>, With<Prop<Running, N>>),
+	>,
+	mut removed_running: RemovedComponents<Prop<Running, N>>, 
+	//TODO added_interrupt, recursive cleanup
+) {
+	// First time around ensure this node doesnt run again
+	for entity in added_result.iter() {
+		commands.entity(entity).remove::<Prop<Running, N>>();
+	}
+	// Second time around ensure parent doesnt read state again
+	for entity in removed_running.iter() {
+		println!("removing");
+		commands.entity(entity).remove::<Prop<NodeState, N>>();
+	}
+}

@@ -3,8 +3,9 @@
 ## TODO
 - Kill long-running tests
 
-## `main`
+## `0.1.32` - 17/10/2023
 - attribute macros
+
 
 ## `0.1.31` - 13/09/2023
 
