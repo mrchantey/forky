@@ -1,12 +1,9 @@
-#![feature(
-	associated_const_equality,
-	generic_const_exprs
-)]
+#![feature(associated_const_equality, generic_const_exprs)]
 #![allow(incomplete_features)]
 //this example is for macro expansion, for usage see the `tests` directory
 use gamai::*;
 
-#[node_system]
+#[action]
 fn my_system<N: AiNode>() {}
 
 fn main() {

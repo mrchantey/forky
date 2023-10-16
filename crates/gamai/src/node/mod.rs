@@ -1,3 +1,5 @@
+mod action;
+pub use self::action::*;
 mod ai_component;
 pub use self::ai_component::*;
 mod ai_node;
@@ -12,7 +14,5 @@ mod node_def;
 pub use self::node_def::*;
 mod node_sets;
 pub use self::node_sets::*;
-mod node_system;
-pub use self::node_system::*;
 mod tree_path;
 pub use self::tree_path::*;

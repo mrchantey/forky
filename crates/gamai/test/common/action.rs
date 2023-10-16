@@ -3,7 +3,7 @@ use sweet::*;
 
 // fn foo() {}
 
-#[node_system]
+#[action]
 fn bar<N: AiNode>() {}
 
 

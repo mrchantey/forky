@@ -4,15 +4,15 @@ mod tree;
 use tree::*;
 mod node_def;
 use node_def::*;
-mod node_system;
-use node_system::*;
+mod action;
+use action::*;
 
 #[proc_macro]
 pub fn define_node(attr: TokenStream) -> TokenStream { parse_node(attr) }
 
 #[proc_macro_attribute]
-pub fn node_system(attr: TokenStream, item: TokenStream) -> TokenStream {
-	parse_node_system(attr, item)
+pub fn action(attr: TokenStream, item: TokenStream) -> TokenStream {
+	parse_action(attr, item)
 }
 
 #[proc_macro]

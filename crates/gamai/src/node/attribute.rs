@@ -5,10 +5,10 @@ use bevy_ecs::prelude::*;
 
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct Attributes<
-	PreParentUpdate: IntoNodeSystem,
-	PreUpdate: IntoNodeSystem,
-	Update: IntoNodeSystem,
-	PostUpdate: IntoNodeSystem,
+	PreParentUpdate: IntoAction,
+	PreUpdate: IntoAction,
+	Update: IntoAction,
+	PostUpdate: IntoAction,
 > {
 	pub pre_parent_update: PreParentUpdate,
 	pub pre_update: PreUpdate,
@@ -18,10 +18,10 @@ pub struct Attributes<
 }
 
 impl<
-		PreParentUpdate: IntoNodeSystem,
-		PreUpdate: IntoNodeSystem,
-		Update: IntoNodeSystem,
-		PostUpdate: IntoNodeSystem,
+		PreParentUpdate: IntoAction,
+		PreUpdate: IntoAction,
+		Update: IntoAction,
+		PostUpdate: IntoAction,
 	> Attributes<PreParentUpdate, PreUpdate, Update, PostUpdate>
 {
 	pub fn new(
@@ -41,47 +41,42 @@ impl<
 	}
 }
 
-pub type DefaultAttributes = Attributes<
-	EmptyNodeSystem,
-	EmptyNodeSystem,
-	EmptyNodeSystem,
-	EmptyNodeSystem,
->;
+pub type DefaultAttributes =
+	Attributes<EmptyAction, EmptyAction, EmptyAction, EmptyAction>;
 
 impl Default for DefaultAttributes {
 	fn default() -> Self {
 		Self {
-			pre_parent_update: EmptyNodeSystem::default(),
-			pre_update: EmptyNodeSystem::default(),
+			pre_parent_update: EmptyAction::default(),
+			pre_update: EmptyAction::default(),
 			update_apply_deferred: false,
-			update: EmptyNodeSystem::default(),
-			post_update: EmptyNodeSystem::default(),
+			update: EmptyAction::default(),
+			post_update: EmptyAction::default(),
 		}
 	}
 }
 impl<
-		PreParentUpdate: IntoNodeSystem,
-		PreUpdate: IntoNodeSystem,
-		Update: IntoNodeSystem,
-		PostUpdate: IntoNodeSystem,
-	> IntoNodeSystem
-	for Attributes<PreParentUpdate, PreUpdate, Update, PostUpdate>
+		PreParentUpdate: IntoAction,
+		PreUpdate: IntoAction,
+		Update: IntoAction,
+		PostUpdate: IntoAction,
+	> IntoAction for Attributes<PreParentUpdate, PreUpdate, Update, PostUpdate>
 {
-	fn into_node_system_configs<Node: AiNode>(
+	fn into_action_configs<Node: AiNode>(
 		self,
 	) -> bevy_ecs::schedule::SystemConfigs {
 		let mut systems = (
 			self.pre_parent_update
-				.into_node_system_configs::<Node>()
+				.into_action_configs::<Node>()
 				.in_set(Node::pre_parent_update_set()),
 			self.pre_update
-				.into_node_system_configs::<Node>()
+				.into_action_configs::<Node>()
 				.in_set(Node::pre_update_set()),
 			self.update
-				.into_node_system_configs::<Node>()
+				.into_action_configs::<Node>()
 				.in_set(Node::update_set()),
 			self.post_update
-				.into_node_system_configs::<Node>()
+				.into_action_configs::<Node>()
 				.in_set(Node::post_update_set()),
 		)
 			.into_configs();

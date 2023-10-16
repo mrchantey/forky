@@ -38,7 +38,7 @@ impl NodeParser {
 		};
 		let self_bounds = quote! {
 			Path: TreePath,
-			System: IntoNodeSystem,
+			System: IntoAction,
 			#child_bounds
 		};
 

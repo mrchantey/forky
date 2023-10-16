@@ -36,7 +36,7 @@ pub fn MyTree() -> impl AiNode {
 	}
 }
 
-#[node_system]
+#[action]
 fn say_hello<Node: AiNode>(mut query: Query<&mut NodeState<Node>>){
 	
 	for mut state in query.iter_mut(){

@@ -43,7 +43,7 @@ const OUT: &str = r#"Running
   Running
     None"#;
 
-#[node_system]
+#[action]
 fn adds_my_thing<Node: AiNode>(
 	mut commands: Commands,
 	query: Query<Entity, Without<Prop<Lifecycle, Node>>>,

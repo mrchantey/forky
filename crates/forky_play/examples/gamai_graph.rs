@@ -7,18 +7,18 @@ use std::fs::File;
 use std::io::Write;
 
 
-#[node_system]
+#[action]
 fn root() {}
-#[node_system]
+#[action]
 fn node1() {}
 // fn edge1() {}
-#[node_system]
+#[action]
 fn node2() {}
-#[node_system]
+#[action]
 fn edge2() {}
-#[node_system]
+#[action]
 fn node3() {}
-#[node_system]
+#[action]
 fn edge3() {}
 
 pub fn main() -> Result<()> {

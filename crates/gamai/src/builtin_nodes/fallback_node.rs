@@ -9,7 +9,7 @@
 // /// If there are no more children it will fail.
 // ///
 // /// If a child succeeds it will succeed.
-// #[node_system]
+// #[action]
 // pub fn fallback<N: AiNode>(
 // 	mut commands: Commands,
 // 	mut query: Query<N::ChildQuery>,

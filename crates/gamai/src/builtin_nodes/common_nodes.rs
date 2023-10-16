@@ -11,16 +11,16 @@ use bevy_ecs::prelude::*;
 #[allow(non_camel_case_types)]
 pub struct empty_node;
 
-impl IntoNodeSystem for empty_node {
+impl IntoAction for empty_node {
 	const IS_EMPTY: bool = true;
-	fn into_node_system_configs<Node: AiNode>(
+	fn into_action_configs<Node: AiNode>(
 		self,
 	) -> bevy_ecs::schedule::SystemConfigs {
 		(|| {}).into_configs()
 	}
 }
 
-#[node_system]
+#[action]
 pub fn first_passing_score<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<
@@ -42,7 +42,7 @@ pub fn first_passing_score<N: AiNode>(
 }
 
 //TODO handle failure
-#[node_system]
+#[action]
 pub fn parallel<N: AiNode>(
 	mut _commands: Commands,
 	mut _query: Query<
@@ -58,19 +58,19 @@ pub fn parallel<N: AiNode>(
 	// }
 }
 
-#[node_system]
+#[action]
 pub fn score_always_pass<N: AiNode>(mut query: Query<&mut ScoreProp<N>>) {
 	for mut score in query.iter_mut() {
 		**score = Score::Pass;
 	}
 }
-#[node_system]
+#[action]
 pub fn score_always_fail<N: AiNode>(mut query: Query<&mut ScoreProp<N>>) {
 	for mut score in query.iter_mut() {
 		**score = Score::Fail;
 	}
 }
-#[node_system]
+#[action]
 pub fn node_always_succeed<N: AiNode>(
 	mut query: Query<&mut Prop<NodeState, N>>,
 ) {
@@ -78,17 +78,17 @@ pub fn node_always_succeed<N: AiNode>(
 		**node = NodeState::Success;
 	}
 }
-#[node_system]
+#[action]
 pub fn node_always_fail<N: AiNode>(mut query: Query<&mut Prop<NodeState, N>>) {
 	for mut node in query.iter_mut() {
 		**node = NodeState::Failure;
 	}
 }
-#[node_system]
+#[action]
 pub fn print_on_run<N: AiNode>(mut query: Query<&mut Prop<NodeState, N>>) {
 	// println!("print_on_run: running..");
 	for mut node in query.iter_mut() {
-		println!("NodeSystem: Running {:?}", **node);
+		println!("Action: Running {:?}", **node);
 		**node = NodeState::Success;
 	}
 }

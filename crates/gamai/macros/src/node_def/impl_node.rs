@@ -85,7 +85,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 
 			fn add_systems(self, schedule: &mut Schedule){
 				Self::configure_sets(schedule);
-				schedule.add_systems(self.system.into_node_system_configs::<Self>());
+				schedule.add_systems(self.system.into_action_configs::<Self>());
 
 				#add_systems_children
 			}

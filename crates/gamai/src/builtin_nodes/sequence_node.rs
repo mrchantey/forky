@@ -8,7 +8,7 @@ use bevy_ecs::prelude::*;
 /// If there are no more children it will succeed.
 ///
 /// If a child fails it will fail.
-#[node_system]
+#[action]
 pub fn sequence<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<(

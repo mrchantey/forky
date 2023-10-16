@@ -6,7 +6,7 @@ use syn::Ident;
 use syn::ItemFn;
 
 
-pub fn parse_node_system(
+pub fn parse_action(
 	_attr: proc_macro::TokenStream,
 	item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
@@ -16,7 +16,7 @@ pub fn parse_node_system(
 	let ident = &sig.ident;
 
 	let func_as_inner = func_as_inner(&func);
-	let impl_into_node_system = impl_into_node_system(&func);
+	let impl_into_action = impl_into_action(&func);
 	quote! {
 		#func_as_inner
 		use gamai::exports::*;
@@ -25,14 +25,14 @@ pub fn parse_node_system(
 		#[derive(Default, Debug, Clone, Eq, PartialEq, std::hash::Hash)]
 		#[allow(non_camel_case_types)]
 		#vis struct #ident;
-		#impl_into_node_system
+		#impl_into_action
 	}
 	.into()
 }
 
-// const GENERIC_ERROR:&str = "a `node_system` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<Node: AiNode>()`";
+// const GENERIC_ERROR:&str = "a `action` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<Node: AiNode>()`";
 
-fn impl_into_node_system(func: &ItemFn) -> TokenStream {
+fn impl_into_action(func: &ItemFn) -> TokenStream {
 	let ident = &func.sig.ident;
 	let func_inner = func_inner_ident(&func.sig.ident);
 
@@ -50,9 +50,9 @@ fn impl_into_node_system(func: &ItemFn) -> TokenStream {
 	};
 
 	quote! {
-		impl IntoNodeSystem for #ident
+		impl IntoAction for #ident
 		{
-			fn into_node_system_configs<Node: AiNode>(self) -> SystemConfigs{
+			fn into_action_configs<Node: AiNode>(self) -> SystemConfigs{
 				#func_inner #func_generic.into_configs()
 			}
 		}

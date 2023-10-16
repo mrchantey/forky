@@ -155,7 +155,7 @@ impl<'a> TreeParser<'a> {
 		})
 	}
 
-	fn from_node_system_ident(&self) -> TokenStream {
+	fn from_action_ident(&self) -> TokenStream {
 		let ident = syn::Ident::new(
 			&format!("Node{}", self.children.len()),
 			Span::call_site(),
@@ -196,13 +196,13 @@ impl<'a> TreeParser<'a> {
 			// if its a tree function, call it
 			quote!(#name())
 		} else {
-			let ident = self.from_node_system_ident();
+			let ident = self.from_action_ident();
 			let child_types = self.child_types();
 			let child_instances = self.child_instances();
 			let attribute = attribute.to_attributes_tokens();
 			quote! {
 				#ident::<TreePathRoot<#graph_id>,
-				_, //for Nodesystem
+				_, //for action
 				#child_types
 				>::new(#attribute,#child_instances)
 			}

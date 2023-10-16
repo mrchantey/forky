@@ -4,10 +4,10 @@
 use gamai:: * ;
 use gamai::exports:: * ;
 #[derive(Debug,Clone,Default,Hash,PartialEq,Eq)]
-pub struct Node1<Path:TreePath,System:IntoNodeSystem,Child0:AiNode, >{
+pub struct Node1<Path:TreePath,System:IntoAction,Child0:AiNode, >{
   phantom:std::marker::PhantomData<Path> ,system:System,child0:Child0,
 }
-impl <Path:TreePath,System:IntoNodeSystem,Child0:AiNode, >Node1<Path,System,Child0, >{
+impl <Path:TreePath,System:IntoAction,Child0:AiNode, >Node1<Path,System,Child0, >{
   pub fn new<IntoChildMarker0, >(system:System,child0:impl IntoNode<IntoChildMarker0,Out = Child0> ,) -> Self {
     Self {
       system,phantom:std::marker::PhantomData,child0:child0.into_node(),
@@ -15,11 +15,11 @@ impl <Path:TreePath,System:IntoNodeSystem,Child0:AiNode, >Node1<Path,System,Chil
   }
 
   }
-impl <Path:TreePath,System:IntoNodeSystem,Child0:AiNode, >TreePath for Node1<Path,System,Child0, >{
+impl <Path:TreePath,System:IntoAction,Child0:AiNode, >TreePath for Node1<Path,System,Child0, >{
   type Parent = Path::Parent;
   const CHILD_INDEX:usize = Path::CHILD_INDEX;
 }
-impl <Path:TreePath,System:IntoNodeSystem,Child0:AiNode, >AiNode for Node1<Path,System,Child0, >{
+impl <Path:TreePath,System:IntoAction,Child0:AiNode, >AiNode for Node1<Path,System,Child0, >{
   type ChildQuery<T:IntoNodeComponent>  = (Entity,(&'static NodeComponent<T,Child0> ,));
   type ChildQueryOpt<T:IntoNodeComponent>  = (Entity,(Option< &'static NodeComponent<T,Child0>> ,));
   type ChildQueryMut<T:IntoNodeComponent>  = (Entity,(&'static mut NodeComponent<T,Child0> ,));
@@ -31,7 +31,7 @@ impl <Path:TreePath,System:IntoNodeSystem,Child0:AiNode, >AiNode for Node1<Path,
   }
   fn add_systems(self,schedule: &mut Schedule){
     Self::configure_sets(schedule);
-    schedule.add_systems(self.system.into_node_system_configs:: <Self>());
+    schedule.add_systems(self.system.into_action_configs:: <Self>());
     self.child0.add_systems(schedule);
   }
   fn entity<'a,T:IntoNodeComponent>(val: & <Self::ChildQuery<T>as bevy_ecs::query::WorldQuery> ::Item<'a>) -> Entity {
