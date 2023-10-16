@@ -26,16 +26,6 @@
 
 // 	app.update();
 
-// 	expect(my_tree.child(0).node_state(&app.world, entity))
-// 		.to_be(Some(NodeState::Running))?;
-// 	expect(my_tree.child(0).child(0).node_state(&app.world, entity))
-// 		.to_be_none()?;
-
-// 	app.update();
-// 	expect(my_tree.child(0).node_state(&app.world, entity))
-// 		.to_be(Some(NodeState::Running))?;
-// 	expect(my_tree.child(0).child(0).node_state(&app.world, entity))
-// 		.to_be(Some(NodeState::Running))?;
 
 // 	Ok(())
 // }

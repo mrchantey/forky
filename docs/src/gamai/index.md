@@ -18,29 +18,30 @@ The lightweight [`bevy_ecs`][1] crate that drives Gamai has a great storage patt
 - 🌈 Multi-paradigm
 - 🌍 With or without Bevy
 
+
+## Overview
+
+Gamai has three fundamental concepts: `Props`, `Actions` & `Trees`.
+
 ## Props
 
 A `Prop` is a regular bevy Component with an added `AiNode` generic argument, meaning the same prop can be used to represent the state of individual nodes in the tree.
 
-## Node Systems
+## Actions
 
-A `node_system` is a bevy systems with an added generic `AiNode` argument:
+An `action` is a bevy systems with an added generic `AiNode` argument which can be used to access props and children:
 ```rs
-#[node_system]
-fn say_hello<N: AiNode>(mut query: Query<&mut Prop<NodeState,N>){
-	
+#[action]
+fn say_hello<N: AiNode>(mut query: Query<Entity, With<Prop<Running,N>>){	
 	for mut state in query.iter_mut(){
 		println!("hello");
-		assert_eq!(**state, NodeState::Running);
-		//tell parent it can go to the next node now
-		**state = NodeState::Success;
 	}
 }
 ```
 
 ## Trees
 
-Trees are defined using familiar RSX patterns like those found in web UI libraries. They contain either node systems or other trees.
+Trees are defined using familiar RSX patterns like those found in web UI libraries. Each node can be either an action or a sub-tree.
 
 ```rs
 #[tree_builder]
@@ -55,12 +56,12 @@ pub fn MyTree() -> impl AiNode {
 ```
 
 > `gamai` uses a naming convention like web UI libraries:
-> - `node_systems` have snake_case
-> - `tree_builders` have PascalCase
+> - `actions` have snake_case
+> - `trees` have PascalCase
 
 ### Further ordering.
 
-So far each node will run consecutively, but for frame-perfect execution sometimes we need to run something before the parent.
+So far each action will run consecutively according to their depth, but for frame-perfect execution sometimes we need to run something before the parent.
 
 Other system orderings are accessible via attributes, examples are:
 - `before_parent` Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector
@@ -70,7 +71,7 @@ Other system orderings are accessible via attributes, examples are:
 They are defined in `gamai` like so:
 ```rs
 tree!{
-	<my_node
+	<my_action
 		before_parent=set_score
 		before=set_child_scoring_parameter
 		after=cleanup
@@ -78,9 +79,7 @@ tree!{
 }
 ```
 
-
 For example, the following tree would produce this system ordering:
-
 
 ```mermaid
 graph TB
@@ -110,7 +109,7 @@ Before we can run the above example we need two things:
 - A `PropBundle` will add given props to specified nodes in the tree.
 	```rs
 	// only set the root as running
-	app.world.spawn(PropBundle::root(MyTree, NodeState::Running));
+	app.world.spawn(PropBundle::root(MyTree, Running));
 	// set all nodes in the tree to have a failing score
 	app.world.spawn(PropBundle::recursive(MyTree, Score::Fail));
 	```
@@ -121,7 +120,7 @@ Putting it all together we get something like this:
 fn main(){
 	let mut app = App::new();	
 	app.add_plugins(AiPlugin::new(MyTree));
-	app.world.spawn(PropBundle::root(MyTree, NodeState::Running));
+	app.world.spawn(PropBundle::root(MyTree, Running));
 
 	app.update(); // runs first child
 	app.update(); // runs second child

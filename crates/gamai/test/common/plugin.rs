@@ -10,18 +10,15 @@ pub fn it_works() -> Result<()> {
 
 	app.add_plugins(AiPlugin::new(my_tree));
 
-	let entity = app
-		.world
-		.spawn(PropBundle::root(my_tree, NodeState::Running))
-		.id();
+	let entity = app.world.spawn(PropBundle::root(my_tree, Running)).id();
 
-	let out = PropTree::new(my_tree, &app.world, entity);
+	let out = PropTree::<Running>::new(my_tree, &app.world, entity);
 
-	expect(out.value).to_be(Some(&NodeState::Running))?;
+	expect(out.value).to_be_some()?;
 
 	app.update();
 
-	let out = PropTree::new(my_tree, &app.world, entity);
+	let out = PropTree::<NodeState>::new(my_tree, &app.world, entity);
 	expect(out.value).to_be(Some(&NodeState::Success))?;
 
 	Ok(())

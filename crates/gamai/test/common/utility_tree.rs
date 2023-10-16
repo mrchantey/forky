@@ -23,15 +23,15 @@ pub fn it_works() -> Result<()> {
 		.world
 		.spawn((
 			PropBundle::recursive(MyTree, Score::Fail),
-			PropBundle::root(MyTree, NodeState::Running),
+			PropBundle::root(MyTree, Running),
 		))
 		.id();
 	app.update();
 
-	let tree = PropTree::<NodeState>::new(MyTree, &app.world, entity);
+	let tree = PropTree::<Running>::new(MyTree, &app.world, entity);
 
 	expect(tree.children[0].value).to_be_none()?;
-	expect(tree.children[1].value).to_be(Some(&NodeState::Running))?;
+	expect(tree.children[1].value).to_be_some()?;
 
 	Ok(())
 }

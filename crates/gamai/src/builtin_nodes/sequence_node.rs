@@ -11,42 +11,56 @@ use bevy_ecs::prelude::*;
 #[action]
 pub fn sequence<N: AiNode>(
 	mut commands: Commands,
-	mut query: Query<(
-		Entity,
-		&mut Prop<NodeState, N>,
-		N::ChildQueryOptMut<NodeState>,
-	)>,
+	mut query: Query<
+		(
+			Entity,
+			N::ChildQueryOptMut<Running>,
+			N::ChildQueryOptMut<NodeState>,
+		),
+		With<Prop<Running, N>>,
+	>,
 ) {
-	for (entity, mut state, children) in query.iter_mut() {
-		let mut children = N::children_opt_mut(children);
-		if **state == NodeState::Running {
-			let next_index =
-				children.iter_mut().find_map(|child| match child.get() {
-					Some(NodeState::Running) => None,
-					Some(NodeState::Success) => {
-						child.set(&mut commands, None);
-						Some(child.index() + 1)
-					}
-					Some(NodeState::Failure) => {
-						child.set(&mut commands, None);
-						**state = NodeState::Failure;
-						None
-					}
-					None => Some(0),
-				});
-			if let Some(next_index) = next_index {
-				if let Some(child) = children.get_mut(next_index) {
-					child.set(&mut commands, Some(NodeState::Running));
-				} else {
-					**state = NodeState::Success;
+	for (entity, running, out) in query.iter_mut() {
+		// if **state == NodeState::Running
+		let mut children = std::iter::zip(
+			N::children_opt_mut(running).into_iter(),
+			N::children_opt_mut(out).into_iter(),
+		)
+		.collect::<Vec<_>>();
+
+		let next_index = children.iter_mut().find_map(|(running, out)| {
+			match (running.get(), out.get()) {
+				(_, Some(NodeState::Success)) => {
+					running.set(&mut commands, None); //should be done in cleanup
+					Some(running.index() + 1)
 				}
+				(_, Some(NodeState::Failure)) => {
+					running.set(&mut commands, None); //should be done in cleanup
+					commands
+						.entity(entity)
+						.insert(Prop::<_, N>::new(NodeState::Failure));
+					None
+				}
+				(Some(_), _) => None,
+				(_, None) => Some(0),
 			}
-		} else {
-			//TODO this should happen automatically
-			commands.entity(entity).remove::<Prop<NodeState, N>>();
-			for child in children.iter_mut() {
-				child.set(&mut commands, None);
+		});
+		if let Some(next_index) = next_index {
+			if let Some((running, _)) = children.get_mut(next_index) {
+				running.set(&mut commands, Some(Running));
+			} else {
+				commands
+					.entity(entity)
+					.insert(Prop::<_, N>::new(NodeState::Success));
+				// **state = NodeState::Success;
 			}
 		}
+		// } else {
+		// 	//TODO this should happen automatically
+		// 	commands.entity(entity).remove::<Prop<NodeState, N>>();
+		// 	for child in children.iter_mut() {
+		// 		child.set(&mut commands, None);
+		// 	}
+		// }
 	}
 }

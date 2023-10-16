@@ -24,38 +24,22 @@ impl IntoAction for empty_node {
 pub fn first_passing_score<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<
-		(N::ChildQuery<Score>, N::ChildQueryOptMut<NodeState>),
-		With<Prop<NodeState, N>>,
+		(N::ChildQuery<Score>, N::ChildQueryOptMut<Running>),
+		With<Prop<Running, N>>,
 	>,
 ) {
 	for (scores, states) in query.iter_mut() {
-		let mut children = N::children(scores)
-			.into_iter()
-			.zip(N::children_opt_mut(states).into_iter())
-			.collect::<Vec<_>>();
-		for (score, state) in children.iter_mut() {
+		for (score, mut state) in std::iter::zip(
+			N::children(scores).into_iter(),
+			N::children_opt_mut(states).into_iter(),
+		)
+		.collect::<Vec<_>>()
+		{
 			if **score.get() != Score::Fail {
-				state.set(&mut commands, Some(NodeState::Running));
+				state.set(&mut commands, Some(Running));
 			}
 		}
 	}
-}
-
-//TODO handle failure
-#[action]
-pub fn parallel<N: AiNode>(
-	mut _commands: Commands,
-	mut _query: Query<
-		(N::ChildQueryMut<Score>, N::ChildQueryOptMut<NodeState>),
-		With<Prop<NodeState, N>>,
-	>,
-) {
-	// for children in query.iter_mut() {
-	// 	let mut children = N::children_mut(children);
-	// 	for child in children.iter_mut() {
-	// 		child.set_node_state(&mut commands, Some(NodeState::Running));
-	// 	}
-	// }
 }
 
 #[action]
@@ -72,18 +56,27 @@ pub fn score_always_fail<N: AiNode>(mut query: Query<&mut ScoreProp<N>>) {
 }
 #[action]
 pub fn node_always_succeed<N: AiNode>(
-	mut query: Query<&mut Prop<NodeState, N>>,
+	mut commands: Commands,
+	mut query: Query<Entity, With<Prop<Running, N>>>,
 ) {
-	for mut node in query.iter_mut() {
-		**node = NodeState::Success;
+	for entity in query.iter_mut() {
+		commands
+			.entity(entity)
+			.insert(Prop::<_, N>::new(NodeState::Success));
 	}
 }
 #[action]
-pub fn node_always_fail<N: AiNode>(mut query: Query<&mut Prop<NodeState, N>>) {
-	for mut node in query.iter_mut() {
-		**node = NodeState::Failure;
+pub fn node_always_fail<N: AiNode>(
+	mut commands: Commands,
+	mut query: Query<Entity, With<Prop<Running, N>>>,
+) {
+	for entity in query.iter_mut() {
+		commands
+			.entity(entity)
+			.insert(Prop::<_, N>::new(NodeState::Failure));
 	}
 }
+
 #[action]
 pub fn print_on_run<N: AiNode>(mut query: Query<&mut Prop<NodeState, N>>) {
 	// println!("print_on_run: running..");
@@ -93,16 +86,16 @@ pub fn print_on_run<N: AiNode>(mut query: Query<&mut Prop<NodeState, N>>) {
 	}
 }
 
-pub fn cleanup_state<N: AiNode>(
-	mut commands: Commands,
-	query: Query<(Entity, &Prop<NodeState, N>), Changed<Prop<NodeState, N>>>,
-) {
-	for (entity, node) in query.iter() {
-		if **node != NodeState::Running {
-			commands.entity(entity).remove::<Prop<NodeState, N>>();
-		}
-	}
-}
+// pub fn cleanup_state<N: AiNode>(
+// 	mut commands: Commands,
+// 	query: Query<(Entity, &Prop<NodeState, N>), Changed<Prop<NodeState, N>>>,
+// ) {
+// 	for (entity, node) in query.iter() {
+// 		if **node != NodeState::Running {
+// 			commands.entity(entity).remove::<Prop<NodeState, N>>();
+// 		}
+// 	}
+// }
 // pub fn cleanup_child_state<N: AiNode>(
 // 	mut commands: Commands,
 // 	mut query: Query<ChildIter<NodeState, N>>,
