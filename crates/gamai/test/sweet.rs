@@ -1,3 +1,3 @@
-#![feature(imported_main, return_position_impl_trait_in_trait)]
+#![feature(imported_main)]
 pub use sweet::*;
 mod common;

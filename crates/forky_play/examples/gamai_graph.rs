@@ -1,5 +1,3 @@
-#![feature(return_position_impl_trait_in_trait)]
-// use bevy_app::*;
 use bevy::log::LogPlugin;
 use bevy::prelude::*;
 use bevy::winit::WinitPlugin;
