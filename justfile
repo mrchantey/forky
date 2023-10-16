@@ -131,7 +131,7 @@ watch *command:
 ### PLAY ###
 
 vis-w crate example:
-	just watch just vis {{crate}} {{example}}
+	just serve-vis & just watch just vis {{crate}} {{example}}
 
 vis crate example:
 	just run {{crate}} {{example}}

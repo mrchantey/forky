@@ -30,29 +30,29 @@ pub fn sequence<N: AiNode>(
 
 		let next_index = children.iter_mut().find_map(|(running, out)| {
 			match (running.get(), out.get()) {
-				(_, Some(NodeState::Success)) => {
-					running.set(&mut commands, None); //should be done in cleanup
+				(_, Some(NodeState::Success)) => {// returned success
+					// running.set(&mut commands, None); //should be done in cleanup
 					Some(running.index() + 1)
 				}
-				(_, Some(NodeState::Failure)) => {
-					running.set(&mut commands, None); //should be done in cleanup
+				(_, Some(NodeState::Failure)) => {// returned failure
+					// running.set(&mut commands, None); //should be done in cleanup
 					commands
 						.entity(entity)
 						.insert(Prop::<_, N>::new(NodeState::Failure));
 					None
 				}
-				(Some(_), _) => None,
-				(_, None) => Some(0),
+				(Some(_), _) => None,//still running
+				(None, None) => Some(0),//not running
 			}
 		});
 		if let Some(next_index) = next_index {
 			if let Some((running, _)) = children.get_mut(next_index) {
+				// println!("setting child");
 				running.set(&mut commands, Some(Running));
 			} else {
 				commands
 					.entity(entity)
 					.insert(Prop::<_, N>::new(NodeState::Success));
-				// **state = NodeState::Success;
 			}
 		}
 		// } else {

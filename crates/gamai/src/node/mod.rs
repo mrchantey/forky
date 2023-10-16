@@ -1,5 +1,7 @@
 mod action;
 pub use self::action::*;
+mod action_set;
+pub use self::action_set::*;
 mod ai_component;
 pub use self::ai_component::*;
 mod ai_node;

@@ -5,31 +5,17 @@ use bevy_mod_debugdump::schedule_graph::Settings;
 use gamai::*;
 use std::fs::File;
 use std::io::Write;
+#[derive(Debug, Default, SystemSet, Clone, Eq, PartialEq, Hash)]
+pub struct Set1;
+#[derive(Debug, Default, SystemSet, Clone, Eq, PartialEq, Hash)]
+pub struct Set2(pub usize);
 
-
-#[action]
-fn root() {}
-#[action]
-fn child1() {}
-#[action]
-fn child2() {}
-#[action]
-fn child3() {}
 
 pub fn main() -> Result<()> {
-	let tree1 = tree! {
-		<root>
-				<child1 apply_deferred>
-					<child2 apply_deferred>
-						<child3 apply_deferred/>
-					</child2>
-				</child1>
-		</root>
-	};
-
 	let mut app = App::new();
 
-	app.add_plugins(tree1.plugin());
+	app.configure_set(Update, Set1.before(Set2(1)));
+	app.configure_set(Update, Set1.before(Set2(7)));
 	// app.add_plugins(tree2.plugin());
 	app.add_plugins(
 		DefaultPlugins

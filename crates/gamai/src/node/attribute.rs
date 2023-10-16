@@ -17,6 +17,7 @@ pub struct Attributes<
 	pub post_update: PostUpdate,
 }
 
+
 impl<
 		PreParentUpdate: IntoAction,
 		PreUpdate: IntoAction,
@@ -65,32 +66,29 @@ impl<
 	fn into_action_configs<Node: AiNode>(
 		self,
 	) -> bevy_ecs::schedule::SystemConfigs {
-		let mut systems = (
+		let self_update = self
+			.update
+			.into_action_configs::<Node>()
+			.in_set(Node::update_set());
+
+		(
 			self.pre_parent_update
 				.into_action_configs::<Node>()
 				.in_set(Node::pre_parent_update_set()),
 			self.pre_update
 				.into_action_configs::<Node>()
 				.in_set(Node::pre_update_set()),
-			self.update
-				.into_action_configs::<Node>()
-				.in_set(Node::update_set()),
+			if self.update_apply_deferred {
+				// println!("applying deferred");
+				(self_update, apply_deferred).chain()
+			} else {
+				self_update
+			}
+			.in_set(Node::update_set()),
 			self.post_update
 				.into_action_configs::<Node>()
 				.in_set(Node::post_update_set()),
 		)
-			.into_configs();
-
-		if self.update_apply_deferred {
-			systems = (
-				systems,
-				apply_deferred
-					.after(Node::update_set())
-					.before(Node::post_update_set()),
-			)
-				.into_configs();
-		}
-
-		systems
+			.into_configs()
 	}
 }

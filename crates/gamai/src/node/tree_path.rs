@@ -12,6 +12,16 @@ pub trait TreePath:
 
 	const GRAPH_ID: usize = Self::Parent::GRAPH_ID;
 	const DEPTH: usize = Self::Parent::DEPTH + 1;
+
+	fn as_string() -> String {
+		format!(
+			"depth: {}, child_index: {}, graph_id: {}",
+			Self::DEPTH,
+			Self::CHILD_INDEX,
+			Self::GRAPH_ID
+		)
+	}
+
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -42,5 +52,21 @@ impl<const CHILD_INDEX: usize, Parent: TreePath>
 		Self {
 			phantom: PhantomData,
 		}
+	}
+}
+
+#[derive(Clone, Eq, PartialEq, Hash)]
+pub struct TreePathInstance {
+	parent: Option<Box<TreePathInstance>>,
+	graph_id: usize,
+	depth: usize,
+	child_index: usize,
+}
+
+impl Debug for TreePathInstance {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		f.debug_struct("Path")
+			.field("parent", &self.parent)
+			.finish()
 	}
 }

@@ -22,9 +22,10 @@ pub fn parse_action(
 		use gamai::exports::*;
 		use gamai::*;
 
-		#[derive(Default, Debug, Clone, Eq, PartialEq, std::hash::Hash)]
+		#[derive(Debug, Default, Clone, Eq, PartialEq, std::hash::Hash)]
 		#[allow(non_camel_case_types)]
 		#vis struct #ident;
+
 		#impl_into_action
 	}
 	.into()
