@@ -33,23 +33,32 @@ pub fn sequence<N: AiNode>(
 			continue;
 		}
 
-		let next_index = children.iter_mut().find_map(|(running, out)| {
-			match (running.get(), out.get()) {
-				(_, Some(NodeState::Success)) => Some(running.index() + 1),
-				(_, Some(NodeState::Failure)) => None,
-				_ => Some(0), //time for first child
-			}
-		});
+		// for (running, out) in children.iter() {
+		// 	println!(
+		// "index: {:?} running: {:?} out: {:?}",
+		// 		running.index(),
+		// 		running.get(),
+		// 		out.get()
+		// 	);
+		// }
 
-		println!("index: {:?}", next_index);
+		let next_index =
+			children.iter_mut().fold(Some(0), |prev, (running, out)| {
+				match (running.get(), out.get()) {
+					(_, Some(NodeState::Success)) => Some(running.index() + 1),
+					(_, Some(NodeState::Failure)) => None,
+					_ => prev,
+				}
+			});
+
 		if let Some(next_index) = next_index {
 			if let Some((running, _)) = children.get_mut(next_index) {
-				println!("running: {:?}", next_index);
+				// println!("running: {:?}", next_index);
 				running.set(&mut commands, Some(Running));
 			} else {
-				println!("success");
+				// println!("success");
 				commands
-				.entity(entity)
+					.entity(entity)
 					.insert(Prop::<_, N>::new(NodeState::Success));
 			}
 		} else {
