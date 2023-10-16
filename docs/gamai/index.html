@@ -184,23 +184,21 @@
 <li>🌈 Multi-paradigm</li>
 <li>🌍 With or without Bevy</li>
 </ul>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Gamai has three fundamental concepts: <code>Props</code>, <code>Actions</code> &amp; <code>Trees</code>.</p>
 <h2 id="props"><a class="header" href="#props">Props</a></h2>
 <p>A <code>Prop</code> is a regular bevy Component with an added <code>AiNode</code> generic argument, meaning the same prop can be used to represent the state of individual nodes in the tree.</p>
-<h2 id="node-systems"><a class="header" href="#node-systems">Node Systems</a></h2>
-<p>A <code>node_system</code> is a bevy systems with an added generic <code>AiNode</code> argument:</p>
-<pre><code class="language-rs">#[node_system]
-fn say_hello&lt;N: AiNode&gt;(mut query: Query&lt;&amp;mut Prop&lt;NodeState,N&gt;){
-	
+<h2 id="actions"><a class="header" href="#actions">Actions</a></h2>
+<p>An <code>action</code> is a bevy systems with an added generic <code>AiNode</code> argument which can be used to access props and children:</p>
+<pre><code class="language-rs">#[action]
+fn say_hello&lt;N: AiNode&gt;(mut query: Query&lt;Entity, With&lt;Prop&lt;Running,N&gt;&gt;){	
 	for mut state in query.iter_mut(){
 		println!(&quot;hello&quot;);
-		assert_eq!(**state, NodeState::Running);
-		//tell parent it can go to the next node now
-		**state = NodeState::Success;
 	}
 }
 </code></pre>
 <h2 id="trees"><a class="header" href="#trees">Trees</a></h2>
-<p>Trees are defined using familiar RSX patterns like those found in web UI libraries. They contain either node systems or other trees.</p>
+<p>Trees are defined using familiar RSX patterns like those found in web UI libraries. Each node can be either an action or a sub-tree.</p>
 <pre><code class="language-rs">#[tree_builder]
 pub fn MyTree() -&gt; impl AiNode {
 	tree! {
@@ -214,12 +212,12 @@ pub fn MyTree() -&gt; impl AiNode {
 <blockquote>
 <p><code>gamai</code> uses a naming convention like web UI libraries:</p>
 <ul>
-<li><code>node_systems</code> have snake_case</li>
-<li><code>tree_builders</code> have PascalCase</li>
+<li><code>actions</code> have snake_case</li>
+<li><code>trees</code> have PascalCase</li>
 </ul>
 </blockquote>
 <h3 id="further-ordering"><a class="header" href="#further-ordering">Further ordering.</a></h3>
-<p>So far each node will run consecutively, but for frame-perfect execution sometimes we need to run something before the parent.</p>
+<p>So far each action will run consecutively according to their depth, but for frame-perfect execution sometimes we need to run something before the parent.</p>
 <p>Other system orderings are accessible via attributes, examples are:</p>
 <ul>
 <li><code>before_parent</code> Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector</li>
@@ -228,7 +226,7 @@ pub fn MyTree() -&gt; impl AiNode {
 </ul>
 <p>They are defined in <code>gamai</code> like so:</p>
 <pre><code class="language-rs">tree!{
-	&lt;my_node
+	&lt;my_action
 		before_parent=set_score
 		before=set_child_scoring_parameter
 		after=cleanup
@@ -260,7 +258,7 @@ dot2[...]
 <li>
 <p>A <code>PropBundle</code> will add given props to specified nodes in the tree.</p>
 <pre><code class="language-rs">// only set the root as running
-app.world.spawn(PropBundle::root(MyTree, NodeState::Running));
+app.world.spawn(PropBundle::root(MyTree, Running));
 // set all nodes in the tree to have a failing score
 app.world.spawn(PropBundle::recursive(MyTree, Score::Fail));
 </code></pre>
@@ -270,7 +268,7 @@ app.world.spawn(PropBundle::recursive(MyTree, Score::Fail));
 <pre><code class="language-rs">fn main(){
 	let mut app = App::new();	
 	app.add_plugins(AiPlugin::new(MyTree));
-	app.world.spawn(PropBundle::root(MyTree, NodeState::Running));
+	app.world.spawn(PropBundle::root(MyTree, Running));
 
 	app.update(); // runs first child
 	app.update(); // runs second child
