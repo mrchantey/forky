@@ -23,7 +23,7 @@ sweet! {
 
 		]);
 
-		let _config = TestRunnerConfig::default();
+		// let _config = TestRunnerConfig::default();
 
 			// suite.run(&config).await;
 

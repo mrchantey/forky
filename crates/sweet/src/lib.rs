@@ -4,7 +4,7 @@
 //!
 //! ```rust
 //! // ./examples/sweet.rs
-//! 
+//!
 //!	#![feature(imported_main)]
 //! use sweet::{sweet_test, expect, Result};
 //!
@@ -14,7 +14,7 @@
 //! }
 //!
 //! ```
-//! 
+//!
 //! ```sh
 //! cargo run --example sweet
 //! ```
@@ -22,16 +22,18 @@
 
 #![feature(async_closure)]
 #![allow(async_fn_in_trait)]
+pub use sweet_macros::*;
 
 mod matchers;
-mod test_case;
 pub use self::matchers::*;
-pub use sweet_macros::*;
+mod test_case;
 pub use test_case::*;
 mod test_suite;
+pub use test_suite::SuiteResult;
 pub use test_suite::*;
-mod test_runner;
-pub use test_runner::*;
+pub mod test_runner;
+// pub use test_runner::*;
+
 #[cfg(not(target_arch = "wasm32"))]
 mod native;
 #[cfg(not(target_arch = "wasm32"))]
@@ -51,6 +53,8 @@ pub use bevy::*;
 
 /// Re-exports for macros
 pub mod exports {
+	// pub use crate::test_case::TestCaseConfig;
+
 	pub use anyhow::Result;
 	#[cfg(not(target_arch = "wasm32"))]
 	pub use futures::future::CatchUnwind;

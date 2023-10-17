@@ -1,4 +1,4 @@
-use crate::*;
+use crate::test_runner::*;
 use anyhow::Result;
 use clap::ArgMatches;
 use glob::Pattern;

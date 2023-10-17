@@ -1,5 +1,5 @@
 use super::*;
-use crate::*;
+use crate::test_runner::*;
 
 pub struct TestCollectorNative(pub Vec<TestSuiteNative>);
 
