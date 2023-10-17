@@ -2,7 +2,7 @@
 pub use sweet::*;
 mod common;
 // #[cfg(not(target_arch = "wasm32"))]
-mod native;
+mod native_tests;
 // #[cfg(target_arch = "wasm32")]
 // mod wasm;
 #[cfg(feature = "bevy")]

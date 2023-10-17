@@ -32,12 +32,10 @@ pub mod test_runner;
 pub mod test_suite;
 // pub use test_runner::*;
 
-#[cfg(not(target_arch = "wasm32"))]
-mod native;
-#[cfg(not(target_arch = "wasm32"))]
-pub use native::*;
 #[cfg(feature = "bevy_ecs")]
 mod bevy_ecs;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod native;
 #[cfg(target_arch = "wasm32")]
 pub mod wasm;
 #[cfg(feature = "bevy_ecs")]
@@ -82,5 +80,5 @@ pub fn main() -> anyhow::Result<()> { wasm::sweet_wasm_entry() }
 // #[tokio::main]
 pub fn main() -> anyhow::Result<()> {
 	use forky_fs::*;
-	RunTestsNativeCommand.run_with_cli_args()
+	native::RunTestsNativeCommand.run_with_cli_args()
 }

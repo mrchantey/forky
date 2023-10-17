@@ -1,6 +1,7 @@
-use std::path::Path;
 use super::*;
 use forky_core::PathExt;
+use std::path::Path;
+use sweet::native::*;
 use sweet::*;
 
 pub fn suite(cases: Vec<TestCaseNative>) -> TestSuiteNative {

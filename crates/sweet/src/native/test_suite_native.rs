@@ -1,7 +1,7 @@
 use crate::test_case::*;
 use crate::test_runner::*;
 use crate::test_suite::*;
-use crate::*;
+use crate::native::*;
 use anyhow::Error;
 use rayon::prelude::*;
 use std::path::PathBuf;
