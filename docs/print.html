@@ -702,9 +702,9 @@ jobs:
 <h2 id="actions"><a class="header" href="#actions">Actions</a></h2>
 <p>An <code>action</code> is a bevy systems with an added generic <code>AiNode</code> argument which can be used to access props and children:</p>
 <pre><code class="language-rs">#[action]
-fn say_hello&lt;N: AiNode&gt;(mut query: Query&lt;Entity, With&lt;Prop&lt;Running,N&gt;&gt;){	
-	for mut state in query.iter_mut(){
-		println!(&quot;hello&quot;);
+fn say_hello&lt;N: AiNode&gt;(query: Query&lt;Entity, With&lt;Prop&lt;Running,N&gt;&gt;){	
+	for _entity in query.iter(){
+		println!(&quot;this action is running!&quot;);
 	}
 }
 </code></pre>
