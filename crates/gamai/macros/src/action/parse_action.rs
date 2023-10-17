@@ -18,6 +18,8 @@ pub fn parse_action(
 	let func_as_inner = func_as_inner(&func);
 	let impl_into_action = impl_into_action(&func);
 	quote! {
+
+		#[doc(hidden)]
 		#func_as_inner
 		use gamai::exports::*;
 		use gamai::*;

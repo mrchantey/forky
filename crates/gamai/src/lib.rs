@@ -2,6 +2,8 @@
 //!
 //! # Usage
 //! ```rust
+//! use gamai::*;
+//!
 //! #[action]
 //! fn say_hello<N: AiNode>(query: Query<Entity, With<Prop<Running,N>>){
 //! 	for _entity in query.iter(){
