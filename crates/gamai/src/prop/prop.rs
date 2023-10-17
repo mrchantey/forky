@@ -1,4 +1,4 @@
-use crate::*;
+use crate::node::*;
 use bevy_ecs::prelude::*;
 use std::marker::PhantomData;
 use std::ops::Deref;

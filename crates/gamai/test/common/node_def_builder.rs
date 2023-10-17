@@ -1,5 +1,5 @@
 //this example is used for macro expansion, for usage see the `tests` directory
-use gamai::*;
+use gamai::node::*;
 use sweet::*;
 
 #[sweet_test]

@@ -1,4 +1,4 @@
-use crate::*;
+use super::*;
 use bevy_ecs::prelude::*;
 use bevy_ecs::schedule::SystemConfigs;
 use std::fmt::Debug;

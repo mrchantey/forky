@@ -1,3 +1,4 @@
+use super::*;
 use crate::*;
 use bevy_app::Plugin;
 use bevy_ecs::prelude::*;

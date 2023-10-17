@@ -93,7 +93,7 @@ impl AttributeParser {
 			post_update,
 		} = self;
 		quote! {
-		Attributes::new(
+		gamai::node::Attributes::new(
 			#pre_parent_update,
 			#pre_update,
 			#update,
@@ -161,7 +161,7 @@ impl<'a> TreeParser<'a> {
 			Span::call_site(),
 		);
 		if self.children.len() <= 16 {
-			quote!(gamai::#ident)
+			quote!(gamai::node::#ident)
 		} else {
 			ident.to_token_stream()
 		}
@@ -201,7 +201,7 @@ impl<'a> TreeParser<'a> {
 			let child_instances = self.child_instances();
 			let attribute = attribute.to_attributes_tokens();
 			quote! {
-				#ident::<TreePathRoot<#graph_id>,
+				#ident::<gamai::node::TreePathRoot<#graph_id>,
 				_, //for action
 				#child_types
 				>::new(#attribute,#child_instances)

@@ -48,16 +48,21 @@
 //allow proc macros to work internally
 extern crate self as gamai;
 pub use gamai_macros::*;
-mod node;
-pub use self::node::*;
+pub mod node;
+#[doc(inline)]
+pub use node::AiNode;
+#[doc(inline)]
+pub use node::AiPlugin;
+#[doc(inline)]
+pub use node::IntoNode;
 mod prop;
 pub use self::prop::*;
 pub mod builtin_nodes;
-mod selectors;
-pub use self::selectors::*;
-pub use anyhow::bail;
-pub use anyhow::Result;
+pub mod selectors;
+
 pub mod exports {
+	pub use anyhow::bail;
+	pub use anyhow::Result;
 	pub use bevy_ecs::prelude::*;
 	pub use bevy_ecs::query::WorldQuery;
 	pub use bevy_ecs::schedule::SystemConfigs;

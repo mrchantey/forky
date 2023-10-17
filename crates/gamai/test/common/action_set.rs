@@ -1,6 +1,7 @@
 use bevy_app::prelude::*;
-use gamai::*;
 use gamai::builtin_nodes::*;
+use gamai::selectors::*;
+use gamai::*;
 use sweet::*;
 
 #[sweet_test]

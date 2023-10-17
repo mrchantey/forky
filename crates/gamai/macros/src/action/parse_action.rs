@@ -22,6 +22,7 @@ pub fn parse_action(
 		#[doc(hidden)]
 		#func_as_inner
 		use gamai::exports::*;
+		use gamai::node::*;
 		use gamai::*;
 
 		#[derive(Debug, Default, Clone, Eq, PartialEq, std::hash::Hash)]
