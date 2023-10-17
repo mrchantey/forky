@@ -1,4 +1,5 @@
 use crate::test_runner::*;
+use crate::test_suite::*;
 use crate::*;
 use anyhow::Error;
 use rayon::prelude::*;

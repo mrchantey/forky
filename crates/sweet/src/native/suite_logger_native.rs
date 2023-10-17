@@ -1,4 +1,4 @@
-use crate::*;
+use crate::test_suite::*;
 use crossterm::*;
 use std::io::stdout;
 

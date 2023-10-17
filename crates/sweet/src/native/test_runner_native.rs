@@ -1,6 +1,6 @@
 use super::*;
 use crate::test_runner::*;
-use crate::*;
+use crate::test_suite::*;
 use anyhow::Result;
 use forky_fs::*;
 use futures::future::join_all;

@@ -1,4 +1,4 @@
-use crate::*;
+use crate::test_suite::*;
 use forky_core::*;
 
 #[derive(Default, Debug, Clone)]

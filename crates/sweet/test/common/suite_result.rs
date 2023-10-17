@@ -1,4 +1,5 @@
 use forky_core::*;
+use sweet::test_suite::*;
 use sweet::*;
 
 sweet! {

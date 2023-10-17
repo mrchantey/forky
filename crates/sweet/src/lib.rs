@@ -28,10 +28,8 @@ mod matchers;
 pub use self::matchers::*;
 mod test_case;
 pub use test_case::*;
-mod test_suite;
-pub use test_suite::SuiteResult;
-pub use test_suite::*;
 pub mod test_runner;
+pub mod test_suite;
 // pub use test_runner::*;
 
 #[cfg(not(target_arch = "wasm32"))]
