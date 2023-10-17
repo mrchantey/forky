@@ -6,7 +6,7 @@ use syn::parse_macro_input;
 /// Mark a function to be ran by the sweet test runner.
 ///
 /// # Accepted Signatures
-/// ```rs
+/// ```rust
 ///
 /// #[sweet_test]
 /// fn empty() {}
@@ -34,7 +34,9 @@ pub fn sweet_test(attr: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 
-/// Macro for declaring several tests with less boilerplate:
+/// Macro for declaring several tests with less boilerplate.
+///
+/// # Example
 ///
 /// ```rust
 ///

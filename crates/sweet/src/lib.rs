@@ -3,7 +3,7 @@
 //! # Usage
 //!
 //! ```rust
-//! // ./examples/sweet.rs
+//! // examples/sweet.rs
 //!
 //!	#![feature(imported_main)]
 //! use sweet::{sweet_test, expect, Result};
@@ -24,30 +24,36 @@
 #![allow(async_fn_in_trait)]
 pub use sweet_macros::*;
 
+mod common;
+pub use common::*;
+
+// #[doc(hidden)]
+/// Matchers used for assertions: `expect(true).to_be_true()`
 pub mod matchers;
-pub use matchers::expect;
-pub use matchers::MatcherTExt;
+#[doc(inline)]
+pub use matchers::MatcherExtClose;
+/// Test case module
 pub mod test_case;
+/// Test runner module
 pub mod test_runner;
+/// Test suite module
 pub mod test_suite;
-// pub use test_runner::*;
 
 #[cfg(feature = "bevy_ecs")]
 mod bevy_ecs_matchers;
 #[cfg(feature = "bevy_ecs")]
 pub use bevy_ecs_matchers::*;
 #[cfg(not(target_arch = "wasm32"))]
+#[doc(hidden)]
 pub mod native;
 #[cfg(target_arch = "wasm32")]
 pub mod wasm;
-// #[cfg(feature = "bevy_ecs")]
-// pub use bevy_ecs_matchers::;
 #[cfg(target_arch = "wasm32")]
 pub use wasm::visit;
 #[cfg(target_arch = "wasm32")]
 pub use wasm::MatcherHtml;
 #[cfg(feature = "bevy")]
-#[doc(cfg(feature = "bevy"))]
+// #[doc(cfg(feature = "bevy"))]
 mod bevy_matchers;
 #[cfg(feature = "bevy")]
 pub use bevy_matchers::*;
@@ -79,6 +85,7 @@ pub mod exports {
 #[cfg(target_arch = "wasm32")]
 pub fn main() -> anyhow::Result<()> { wasm::sweet_wasm_entry() }
 
+/// Entry point for Sweet to run all automatically collected tests.
 #[cfg(not(target_arch = "wasm32"))]
 // #[tokio::main]
 pub fn main() -> anyhow::Result<()> {

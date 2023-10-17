@@ -17,7 +17,7 @@ impl SweetInto<Entity> for EntityMut<'_> {
 
 #[ext(name=MatcherExtWorld)]
 #[doc(cfg(feature = "bevy_ecs"))]
-// #[doc(hidden)]
+/// Matcher extensions for `bevy::World`
 pub impl<'a, W> Matcher<W>
 where
 	W: 'a + SweetBorrow<&'a World>,

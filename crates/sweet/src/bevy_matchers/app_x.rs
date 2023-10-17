@@ -7,8 +7,8 @@ use bevy::winit::WinitSettings;
 use extend::ext;
 use std::time::Duration;
 
-pub fn exit_system(mut exit: EventWriter<AppExit>) { exit.send(AppExit); }
-pub fn exit_in_frames(
+fn exit_system(mut exit: EventWriter<AppExit>) { exit.send(AppExit); }
+fn exit_in_frames(
 	count: u32,
 ) -> impl Fn(Res<FrameCount>, EventWriter<AppExit>) {
 	move |frames, mut exit| {
@@ -20,6 +20,7 @@ pub fn exit_in_frames(
 
 #[ext(name=AppExtSweet)]
 #[doc(cfg(feature = "bevy"))]
+/// Ease-of-use extensions for `bevy::App`
 pub impl App {
 	fn run_once(&mut self) {
 		self.insert_resource(WinitSettings {

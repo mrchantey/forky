@@ -3,6 +3,9 @@
 ## TODO
 - Kill long-running tests
 
+## `0.1.33` - 17/10/2023
+- modularity & improved documentation
+
 ## `0.1.32` - 17/10/2023
 - attribute macros
 

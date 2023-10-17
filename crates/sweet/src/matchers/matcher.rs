@@ -2,30 +2,35 @@
 pub use crate::wasm::MatcherHtml;
 use anyhow::Result; //TODO should probably be in matcher module
 
-/// Entry point for making an assertion:
-/// 
-/// ```rust
-/// expect(true).to_be_true()?;
-/// expect("foobar").not().to_start_with("bar")?;
-/// 
-/// ```
-pub fn expect<T>(value: T) -> Matcher<T> { Matcher::new(value) }
-
+/// The base struct for all matchers.
 pub struct Matcher<T> {
 	pub value: T,
 	pub negated: bool,
 }
 
 impl<T> Matcher<T> {
+	/// Create a new Matcher.
+	/// ```rust
+	/// Matcher::new(false).to_be_true()?;
+	/// ```
+	/// 
 	pub fn new(value: T) -> Matcher<T> {
 		Matcher {
 			value,
 			negated: false,
 		}
 	}
+
+	/// Map the value of this matcher to a new matcher with the mapped value.
 	pub fn map<T2>(&self, func: impl FnOnce(&T) -> T2) -> Matcher<T2> {
 		Matcher::new(func(&self.value))
 	}
+	/// Some assertions do not support negation, in that case call this function within the matcher.
+	/// 
+	/// This will return an error if the matcher is already negated.
+	/// ```rust
+	/// self.disallow_negated()?;
+	/// ```
 	pub fn disallow_negated(&self) -> Result<()> {
 		if self.negated {
 			Err(Self::to_custom_error("Unsupported: Negation not supported for this matcher, please remove `.not()`"))
@@ -34,11 +39,16 @@ impl<T> Matcher<T> {
 		}
 	}
 
+	/// Negate this matcher to flip the result of an assertion.
+	/// ```rust
+	/// expect(true).not().to_be_false()?;
+	/// ```
 	pub fn not(&mut self) -> &mut Self {
 		self.negated = true;
 		self
 	}
 
+	/// Parse a boolean as-is if not negated, otherwise flip it.
 	pub fn is_true_with_negated(&self, received: bool) -> bool {
 		if self.negated {
 			!received

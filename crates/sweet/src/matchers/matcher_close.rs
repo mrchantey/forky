@@ -2,7 +2,8 @@ use super::*;
 use anyhow::Result;
 use extend::ext;
 
-#[ext]
+#[ext(name=MatcherExtClose)]
+/// Matcher Extensions for types that implement `CloseTo`: `f32`, `f64`, `Vec3`, etc.
 pub impl<T, U> Matcher<T>
 where
 	T: SweetBorrow<U>,
