@@ -1,3 +1,4 @@
+use gamai::builtin_nodes::*;
 use gamai::*;
 use sweet::*;
 

@@ -1,5 +1,6 @@
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
+use gamai::builtin_nodes::*;
 use gamai::*;
 use sweet::*;
 

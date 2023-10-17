@@ -1,7 +1,7 @@
 use bevy_app::App;
+use gamai::builtin_nodes::*;
 use gamai::*;
 use sweet::*;
-
 
 #[tree_builder]
 pub fn MyTree() -> impl AiNode {

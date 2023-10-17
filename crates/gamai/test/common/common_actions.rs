@@ -1,4 +1,5 @@
 use bevy_app::App;
+use gamai::builtin_nodes::*;
 use gamai::*;
 use sweet::*;
 

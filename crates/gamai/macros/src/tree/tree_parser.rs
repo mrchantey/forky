@@ -105,11 +105,11 @@ impl AttributeParser {
 impl Default for AttributeParser {
 	fn default() -> Self {
 		Self {
-			pre_parent_update: quote!(gamai::empty_node),
-			pre_update: quote!(gamai::empty_node),
+			pre_parent_update: quote!(gamai::builtin_nodes::empty_node),
+			pre_update: quote!(gamai::builtin_nodes::empty_node),
 			update_apply_deferred: false,
-			update: quote!(gamai::empty_node),
-			post_update: quote!(gamai::empty_node),
+			update: quote!(gamai::builtin_nodes::empty_node),
+			post_update: quote!(gamai::builtin_nodes::empty_node),
 		}
 	}
 }

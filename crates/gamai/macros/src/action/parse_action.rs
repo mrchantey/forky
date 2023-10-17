@@ -33,7 +33,7 @@ pub fn parse_action(
 	.into()
 }
 
-// const GENERIC_ERROR:&str = "a `action` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<Node: AiNode>()`";
+// const GENERIC_ERROR:&str = "an `action` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<Node: AiNode>()`";
 
 fn impl_into_action(func: &ItemFn) -> TokenStream {
 	let ident = &func.sig.ident;

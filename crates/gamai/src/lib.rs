@@ -41,7 +41,7 @@
 	impl_trait_in_fn_trait_return,
 	fn_traits,
 	// inherent_associated_types,
-	generic_const_exprs,
+	// generic_const_exprs,
 )]
 // suppress generic_const_exprs warning
 #![allow(incomplete_features)]
@@ -52,8 +52,7 @@ mod node;
 pub use self::node::*;
 mod prop;
 pub use self::prop::*;
-mod builtin_nodes;
-pub use self::builtin_nodes::*;
+pub mod builtin_nodes;
 mod selectors;
 pub use self::selectors::*;
 pub use anyhow::bail;
