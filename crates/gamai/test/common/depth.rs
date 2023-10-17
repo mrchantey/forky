@@ -1,4 +1,4 @@
-use gamai::builtin_nodes::*;
+use gamai::common_actions::*;
 use gamai::node::*;
 use gamai::*;
 use sweet::*;

@@ -71,8 +71,8 @@ pub use prop::Running;
 #[doc(inline)]
 pub use prop::Score;
 
-pub mod builtin_nodes;
-pub mod selectors;
+pub mod common_actions;
+pub mod common_selectors;
 
 pub mod exports {
 	pub use anyhow::bail;

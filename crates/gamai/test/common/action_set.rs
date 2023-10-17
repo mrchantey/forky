@@ -1,6 +1,6 @@
 use bevy_app::prelude::*;
-use gamai::builtin_nodes::*;
-use gamai::selectors::*;
+use gamai::common_actions::*;
+use gamai::common_selectors::*;
 use gamai::*;
 use sweet::*;
 
