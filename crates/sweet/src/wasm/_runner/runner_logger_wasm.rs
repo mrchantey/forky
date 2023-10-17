@@ -1,4 +1,4 @@
-use crate::*;
+use crate::test_runner::*;
 use forky_core::*;
 use forky_web::*;
 use std::time::Duration;

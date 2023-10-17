@@ -2,13 +2,14 @@ use super::*;
 use anyhow::Result;
 use fantoccini::Client;
 use fantoccini::ClientBuilder;
-use forky_fs::retry_async;
 use forky_core::OptionTExt;
+use forky_fs::retry_async;
 use serde::de::DeserializeOwned;
 use std::process::Command;
 use std::time::Duration;
 use std::time::Instant;
-use sweet::*;
+use sweet::test_runner::TestRunnerResult;
+use sweet::test_suite::SuiteResult;
 
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

@@ -22,7 +22,7 @@ pub fn file_context_depth(frame_depth: usize) -> String {
 	let min_frame = PREFIX_STACK_FRAMES + frame_depth;
 	let frame = &bt.frames()[min_frame..][0];
 	let symbol = &frame.symbols()[0];
-	if let Some(file) = crate::BacktraceFile::new(symbol) {
+	if let Some(file) = crate::test_case::BacktraceFile::new(symbol) {
 		return file.file_context().unwrap_or_default();
 	}
 	String::new()

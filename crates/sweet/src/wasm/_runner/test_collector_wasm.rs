@@ -1,5 +1,5 @@
 use super::*;
-use crate::*;
+use crate::test_runner::*;
 use anyhow::Result;
 use js_sys::*;
 use wasm_bindgen::prelude::*;

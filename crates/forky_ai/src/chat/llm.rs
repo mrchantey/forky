@@ -1,6 +1,6 @@
-use std::io::{stdout, Write};
-
 use anyhow::Result;
+use std::io::stdout;
+use std::io::Write;
 
 //
 

@@ -37,12 +37,12 @@ impl TestCaseFlags {
 		let skip = self.skip;
 		let only = self.only;
 		let context = if self.e2e {
-			quote!(sweet::TestRunEnvironment::EndToEnd)
+			quote!(sweet::test_case::TestRunEnvironment::EndToEnd)
 		} else {
-			quote!(sweet::TestRunEnvironment::Unit)
+			quote!(sweet::test_case::TestRunEnvironment::Unit)
 		};
 
-		quote! {sweet::TestCaseConfig{
+		quote! {sweet::test_case::TestCaseConfig{
 				skip:#skip,
 				only:#only,
 				context:#context,

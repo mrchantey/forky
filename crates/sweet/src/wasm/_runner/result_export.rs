@@ -1,5 +1,5 @@
-use crate::SuiteResult;
-use crate::TestRunnerResult;
+use crate::test_runner::*;
+use crate::test_suite::*;
 use js_sys::Reflect;
 use wasm_bindgen::JsValue;
 use web_sys::window;

@@ -1,6 +1,6 @@
 use super::*;
+use crate::test_case::*;
 use crate::test_suite::*;
-use crate::*;
 use std::collections::HashMap;
 use std::path::PathBuf;
 

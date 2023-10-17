@@ -1,6 +1,6 @@
 use super::settings::*;
 use crate::suite_matches_none;
-use crate::TestRunnerConfig;
+use crate::test_runner::*;
 use crate::TestRunnerWasm;
 use forky_web::*;
 use leptos::html::Iframe;

@@ -26,8 +26,7 @@ pub use sweet_macros::*;
 
 mod matchers;
 pub use self::matchers::*;
-mod test_case;
-pub use test_case::*;
+pub mod test_case;
 pub mod test_runner;
 pub mod test_suite;
 // pub use test_runner::*;

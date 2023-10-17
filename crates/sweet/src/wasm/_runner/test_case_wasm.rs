@@ -1,4 +1,4 @@
-use crate::*;
+use crate::test_case::*;
 use anyhow::Result;
 use forky_core::*;
 use js_sys::Function;

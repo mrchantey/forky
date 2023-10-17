@@ -1,4 +1,4 @@
-use crate::TestCaseConfig;
+use crate::test_case::TestCaseConfig;
 use serde::Deserialize;
 use serde::Serialize;
 

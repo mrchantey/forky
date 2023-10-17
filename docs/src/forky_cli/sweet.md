@@ -32,6 +32,8 @@ forky sweet --example my_test --help
 		# linux
 		sudo apt install chromium-chromedriver
 		```
+	- If your chrome version gets updated you will need to update chromedriver too:
+	- `choco upgrade chromedriver` etc
 
 ## Help
 
