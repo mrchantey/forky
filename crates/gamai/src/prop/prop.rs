@@ -74,15 +74,6 @@ impl<T: IntoProp, N: NodeInspector> Prop<T, N> {
 	}
 }
 
-
-
-#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
-pub enum Lifecycle {
-	#[default]
-	Running,
-	Success,
-	Failure,
-}
 impl<T: IntoProp, N: NodeInspector> Prop<T, N>
 where
 	T: PartialEq,

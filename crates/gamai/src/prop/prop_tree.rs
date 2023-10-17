@@ -1,5 +1,5 @@
+use super::*;
 use crate::node::*;
-use crate::*;
 use bevy_ecs::prelude::*;
 use std::fmt::Debug;
 use std::fmt::Display;

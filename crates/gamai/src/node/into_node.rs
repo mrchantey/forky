@@ -1,5 +1,5 @@
 use super::*;
-use crate::*;
+use crate::prop::*;
 use bevy_ecs::entity::Entity;
 use bevy_ecs::world::World;
 

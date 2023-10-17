@@ -48,6 +48,7 @@
 //allow proc macros to work internally
 extern crate self as gamai;
 pub use gamai_macros::*;
+
 pub mod node;
 #[doc(inline)]
 pub use node::AiNode;
@@ -55,8 +56,21 @@ pub use node::AiNode;
 pub use node::AiPlugin;
 #[doc(inline)]
 pub use node::IntoNode;
-mod prop;
-pub use self::prop::*;
+
+pub mod prop;
+#[doc(inline)]
+pub use prop::NodeState;
+#[doc(inline)]
+pub use prop::Prop;
+#[doc(inline)]
+pub use prop::PropBundle;
+#[doc(inline)]
+pub use prop::PropTree;
+#[doc(inline)]
+pub use prop::Running;
+#[doc(inline)]
+pub use prop::Score;
+
 pub mod builtin_nodes;
 pub mod selectors;
 

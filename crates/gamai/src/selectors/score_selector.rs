@@ -1,5 +1,6 @@
 use crate::*;
 use crate::node::*;
+use crate::prop::*;
 use bevy_ecs::prelude::*;
 
 #[action]

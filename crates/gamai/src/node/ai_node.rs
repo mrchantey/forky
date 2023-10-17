@@ -1,5 +1,5 @@
 use super::*;
-use crate::*;
+use crate::prop::*;
 use bevy_app::Plugin;
 use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;

@@ -1,4 +1,5 @@
 use crate::*;
+use super::*;
 
 pub struct PropBundle;
 
