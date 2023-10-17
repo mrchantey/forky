@@ -118,8 +118,13 @@ test-all-wasm-no-bevy *args:
 test-wasm crate *args:
 	just cli sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
 
-docs:
-	cd docs && mdbook serve
+
+doc crate *args:
+  forky serve ./target/doc & just watch cargo doc -p {{crate}} {{args}}
+# RUSTDOCFLAGS='--show-coverage -Z unstable-options' cargo doc  -p {{crate}} {{args}}
+
+book:
+	cd book && mdbook serve
 
 watch *command:
 	forky watch \

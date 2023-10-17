@@ -1,3 +1,25 @@
+//! Declarative full-stack test framework.
+//!
+//! # Usage
+//!
+//! ```rust
+//! // ./examples/sweet.rs
+//! 
+//!	#![feature(imported_main)]
+//! use sweet::{sweet_test, expect, Result};
+//!
+//! #[sweet_test]
+//! fn it_passes() -> Result<()>{
+//! 	expect(true).to_be_true()
+//! }
+//!
+//! ```
+//! 
+//! ```sh
+//! cargo run --example sweet
+//! ```
+//!
+
 #![feature(async_closure)]
 #![allow(async_fn_in_trait)]
 
@@ -27,6 +49,7 @@ mod bevy;
 #[cfg(feature = "bevy")]
 pub use bevy::*;
 
+/// Re-exports for macros
 pub mod exports {
 	pub use anyhow::Result;
 	#[cfg(not(target_arch = "wasm32"))]
@@ -49,7 +72,6 @@ pub mod exports {
 }
 
 #[cfg(target_arch = "wasm32")]
-// pub fn main() -> anyhow::Result<()> { wasm::sweet_wasm_entry() }
 pub fn main() -> anyhow::Result<()> { wasm::sweet_wasm_entry() }
 
 #[cfg(not(target_arch = "wasm32"))]
