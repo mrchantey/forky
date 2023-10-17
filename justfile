@@ -31,6 +31,7 @@ cli *args:
 
 install-cli *args:
 	cargo install --path ./crates/forky_cli {{args}}
+	cargo install --path ./crates/sweet/cli {{args}}
 
 run-w *args:
 	just watch just run {{args}}
@@ -80,6 +81,7 @@ publish-all:
 	just publish forky_test 		| true
 	just publish sweet_macros		| true
 	just publish sweet 					| true
+	just publish sweet-cli			| true
 	just publish forky_cli 			| true
 	just publish forky_ai 			| true
 	just publish forky_play 		| true
@@ -116,7 +118,7 @@ test-all-wasm-no-bevy *args:
 	just test-wasm forky_web_test {{args}}
 
 test-wasm crate *args:
-	just cli sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
+	cargo run -p sweet-cli -- -p {{crate}} --example test_{{crate}}_wasm {{args}}
 
 
 doc crate *args:

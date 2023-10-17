@@ -3,7 +3,6 @@
 [Forky](./index.md)
 # Crates
 - [Command Line Interface](./forky_cli/index.md)
-	- [sweet](./forky_cli/sweet.md)
 	- [watch](./forky_cli/watch.md)
 	- [mod](./forky_cli/mod.md)
 ---
@@ -16,6 +15,7 @@
 		- [Matchers](./sweet/web/matchers.md)
 		- [End-To-End](./sweet/web/end-to-end.md)
 	- [Matchers](./sweet/matchers.md)
+	- [CLI](./sweet/cli.md)
 	- [Macros](./sweet/macros.md)
 	- [Workspaces](./sweet/workspaces.md)
 	- [CI / CD](./sweet/cicd.md)

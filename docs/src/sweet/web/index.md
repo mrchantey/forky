@@ -1,10 +1,10 @@
 # Quickstart - Web
 
 1. Follow [native quickstart](../native/index.md)
-1. Install the helper cli: `cargo install forky_cli`
-	- More details on the [cli page](../../forky_cli/sweet.md)
-1. Run `forky sweet`
-1. Optional - update your test to do some web stuff:
+1. Install the helper cli: `cargo install sweet`
+	- More details on the [cli page](../cli.md)
+2. Run `sweet --example my_example`
+3. Optional - update your test to do some web stuff:
 	```rs
 	web_sys::window().unwrap()
 			.document().unwrap()

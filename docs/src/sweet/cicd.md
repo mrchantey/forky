@@ -46,14 +46,14 @@ jobs:
       uses: baptiste0928/cargo-install@v2
       with:
         crate: wasm-bindgen-cli
-    - name: 🔨 Install Forky Cli
+    - name: 🔨 Install Sweet Cli
       uses: baptiste0928/cargo-install@v2
       with:
-        crate: forky_cli
+        crate: sweet-cli
     - name: 🔨 Build
       run: cargo build
     - name: 🔎 Test Native
       run: cargo run --example sweet
     - name: 🔎 Test Wasm
-      run: forky sweet --example sweet
+      run: sweet --example sweet
 ```
