@@ -1,6 +1,6 @@
-pub mod bevy;
+pub mod bevy_tests;
 pub mod common;
-pub mod native;
+pub mod native_tests;
 mod sweet_wasm;
 pub use self::sweet_wasm::*;
-pub mod wasm;
+pub mod wasm_tests;

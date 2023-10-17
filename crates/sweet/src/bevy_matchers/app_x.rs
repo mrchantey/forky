@@ -19,6 +19,7 @@ pub fn exit_in_frames(
 }
 
 #[ext(name=AppExtSweet)]
+#[doc(cfg(feature = "bevy"))]
 pub impl App {
 	fn run_once(&mut self) {
 		self.insert_resource(WinitSettings {

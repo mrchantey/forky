@@ -2,6 +2,13 @@
 pub use crate::wasm::MatcherHtml;
 use anyhow::Result; //TODO should probably be in matcher module
 
+/// Entry point for making an assertion:
+/// 
+/// ```rust
+/// expect(true).to_be_true()?;
+/// expect("foobar").not().to_start_with("bar")?;
+/// 
+/// ```
 pub fn expect<T>(value: T) -> Matcher<T> { Matcher::new(value) }
 
 pub struct Matcher<T> {

@@ -1,6 +1,6 @@
 use crate::matchers::*;
-use ::bevy_ecs::world::EntityMut;
 use ::bevy_ecs::prelude::*;
+use ::bevy_ecs::world::EntityMut;
 // use ::bevy_ecs::resource::*;
 use anyhow::Result;
 use extend::ext;
@@ -15,7 +15,9 @@ impl SweetInto<Entity> for EntityMut<'_> {
 	fn sweet_into(self) -> Entity { self.id() }
 }
 
-#[ext]
+#[ext(name=MatcherExtWorld)]
+#[doc(cfg(feature = "bevy_ecs"))]
+// #[doc(hidden)]
 pub impl<'a, W> Matcher<W>
 where
 	W: 'a + SweetBorrow<&'a World>,

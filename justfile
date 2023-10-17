@@ -121,7 +121,7 @@ test-wasm crate *args:
 
 doc crate *args:
   echo "Navigate to the crate, ie http://127.0.0.1:3000/sweet"
-  forky serve ./target/doc & just watch cargo doc -p {{crate}} {{args}}
+  forky serve ./target/doc & just watch cargo doc --all-features -p {{crate}} {{args}}
 # RUSTDOCFLAGS='--show-coverage -Z unstable-options' cargo doc  -p {{crate}} {{args}}
 
 book:

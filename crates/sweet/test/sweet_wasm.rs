@@ -3,4 +3,4 @@ pub use sweet::*;
 mod common;
 mod wasm_tests;
 #[cfg(feature = "bevy")]
-mod bevy;
+mod bevy_tests;

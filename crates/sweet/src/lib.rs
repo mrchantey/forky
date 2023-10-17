@@ -20,7 +20,7 @@
 //! ```
 //!
 
-#![feature(async_closure)]
+#![feature(async_closure, doc_cfg)]
 #![allow(async_fn_in_trait)]
 pub use sweet_macros::*;
 
@@ -33,21 +33,24 @@ pub mod test_suite;
 // pub use test_runner::*;
 
 #[cfg(feature = "bevy_ecs")]
-mod bevy_ecs;
+mod bevy_ecs_matchers;
+#[cfg(feature = "bevy_ecs")]
+pub use bevy_ecs_matchers::*;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod native;
 #[cfg(target_arch = "wasm32")]
 pub mod wasm;
-#[cfg(feature = "bevy_ecs")]
-pub use bevy_ecs::*;
+// #[cfg(feature = "bevy_ecs")]
+// pub use bevy_ecs_matchers::;
 #[cfg(target_arch = "wasm32")]
 pub use wasm::visit;
 #[cfg(target_arch = "wasm32")]
 pub use wasm::MatcherHtml;
 #[cfg(feature = "bevy")]
-mod bevy;
+#[doc(cfg(feature = "bevy"))]
+mod bevy_matchers;
 #[cfg(feature = "bevy")]
-pub use bevy::*;
+pub use bevy_matchers::*;
 
 /// Re-exports for macros
 pub mod exports {
