@@ -19,6 +19,8 @@ mod prop;
 pub use self::prop::*;
 mod builtin_nodes;
 pub use self::builtin_nodes::*;
+mod selectors;
+pub use self::selectors::*;
 pub use anyhow::bail;
 pub use anyhow::Result;
 pub mod exports {

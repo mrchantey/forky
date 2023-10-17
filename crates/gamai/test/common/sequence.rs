@@ -42,5 +42,12 @@ pub fn works() -> Result<()> {
 	expect(out.value).to_be_some()?;
 	expect(out.children[0].value).to_be_none()?;
 	expect(out.children[1].value).to_be_none()?;
+
+
+	app.update();
+
+	let out = my_tree.get_recursive::<NodeState>(&app.world, entity);
+	expect(out.value).to_be_none()?;
+
 	Ok(())
 }

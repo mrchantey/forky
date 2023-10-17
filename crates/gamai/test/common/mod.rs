@@ -1,5 +1,7 @@
 mod action;
 pub use self::action::*;
+mod action_set;
+pub use self::action_set::*;
 mod common_actions;
 pub use self::common_actions::*;
 mod depth;
@@ -16,8 +18,6 @@ mod prop_bundle;
 pub use self::prop_bundle::*;
 mod sequence;
 pub use self::sequence::*;
-mod action_set;
-pub use self::action_set::*;
 mod tree;
 pub use self::tree::*;
 mod utility_tree;
