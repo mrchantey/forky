@@ -1,3 +1,36 @@
+//! A flexible task switching library suitable for game AI & robotics.
+//!
+//! # Usage
+//! ```rust
+//! #[action]
+//! fn say_hello<N: AiNode>(query: Query<Entity, With<Prop<Running,N>>){
+//! 	for _entity in query.iter(){
+//! 		println!("this action is running!");
+//! 	}
+//! }
+//!
+//! #[tree_builder]
+//! fn MyTree() -> impl AiNode {
+//! 	tree! {
+//! 		<sequence>
+//! 			<say_hello/>
+//! 			<say_hello/>
+//! 		</sequence>
+//! 	}
+//! }
+//!
+//! fn main(){
+//! 	let mut app = App::new();
+//! 	app.add_plugins(AiPlugin::new(MyTree));
+//! 	app.world.spawn(PropBundle::root(MyTree, Running));
+//!
+//! 	app.update(); // runs first child
+//! 	app.update(); // runs second child
+//! }
+//!
+//! ```
+//!
+//!
 #![feature(
 	let_chains,
 	associated_type_defaults,

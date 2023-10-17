@@ -32,9 +32,9 @@ A `Prop` is a regular bevy Component with an added `AiNode` generic argument, me
 An `action` is a bevy systems with an added generic `AiNode` argument which can be used to access props and children:
 ```rs
 #[action]
-fn say_hello<N: AiNode>(mut query: Query<Entity, With<Prop<Running,N>>){	
-	for mut state in query.iter_mut(){
-		println!("hello");
+fn say_hello<N: AiNode>(query: Query<Entity, With<Prop<Running,N>>){	
+	for _entity in query.iter(){
+		println!("this action is running!");
 	}
 }
 ```
