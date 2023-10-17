@@ -1,5 +1,5 @@
 #![cfg_attr(rustfmt, rustfmt_skip)]
-use crate::*;
+use crate::matchers::*;
 use web_sys::*;
 
 impl SweetBorrow<HtmlElement> for fn() -> Option<Window> { 

@@ -1,10 +1,11 @@
-use crate::*;
+use crate::matchers::*;
 use anyhow::Result;
 use forky_web::*;
 use web_sys::*;
 
 pub trait MatcherHtml<T>: MatcherTrait<T>
-where	T: SweetBorrow<HtmlElement>,
+where
+	T: SweetBorrow<HtmlElement>,
 {
 	fn get(&self, selector: &str) -> Result<Matcher<HtmlElement>> {
 		let matcher = self.get_matcher();

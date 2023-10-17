@@ -24,8 +24,9 @@
 #![allow(async_fn_in_trait)]
 pub use sweet_macros::*;
 
-mod matchers;
-pub use self::matchers::*;
+pub mod matchers;
+pub use matchers::expect;
+pub use matchers::MatcherTExt;
 pub mod test_case;
 pub mod test_runner;
 pub mod test_suite;
@@ -43,6 +44,8 @@ pub mod wasm;
 pub use bevy_ecs::*;
 #[cfg(target_arch = "wasm32")]
 pub use wasm::visit;
+#[cfg(target_arch = "wasm32")]
+pub use wasm::MatcherHtml;
 #[cfg(feature = "bevy")]
 mod bevy;
 #[cfg(feature = "bevy")]
