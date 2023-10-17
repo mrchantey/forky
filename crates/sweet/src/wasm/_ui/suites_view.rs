@@ -1,6 +1,6 @@
 use super::*;
 use crate::test_runner::*;
-use crate::*;
+use crate::wasm::*;
 use forky_core::*;
 use forky_web::forky_style;
 use leptos::*;

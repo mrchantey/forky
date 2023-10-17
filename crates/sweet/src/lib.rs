@@ -35,14 +35,14 @@ pub mod test_suite;
 mod native;
 #[cfg(not(target_arch = "wasm32"))]
 pub use native::*;
-#[cfg(target_arch = "wasm32")]
-mod wasm;
-#[cfg(target_arch = "wasm32")]
-pub use wasm::*;
 #[cfg(feature = "bevy_ecs")]
 mod bevy_ecs;
+#[cfg(target_arch = "wasm32")]
+pub mod wasm;
 #[cfg(feature = "bevy_ecs")]
 pub use bevy_ecs::*;
+#[cfg(target_arch = "wasm32")]
+pub use wasm::visit;
 #[cfg(feature = "bevy")]
 mod bevy;
 #[cfg(feature = "bevy")]

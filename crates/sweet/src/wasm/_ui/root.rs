@@ -1,6 +1,6 @@
 use super::settings::Settings;
 use super::*;
-use crate::MATCHES_KEY;
+use crate::wasm::MATCHES_KEY;
 use forky_web::*;
 use leptos::*;
 

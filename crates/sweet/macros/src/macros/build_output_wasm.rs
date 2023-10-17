@@ -24,7 +24,7 @@ pub fn parse_test_case_wasm(
 				let func: Closure<dyn Fn() -> Promise> = Closure::new(#func);
 				let func = func.into_js_value();
 
-				sweet::build_test_case(
+				sweet::wasm::build_test_case(
 					&#id.into(),
 					&#name.into(),
 					&file!().into(),

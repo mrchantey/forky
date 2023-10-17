@@ -1,4 +1,6 @@
-use anyhow::Result;
+#[cfg(target_arch = "wasm32")]
+pub use crate::wasm::MatcherHtml;
+use anyhow::Result; //TODO should probably be in matcher module
 
 pub fn expect<T>(value: T) -> Matcher<T> { Matcher::new(value) }
 
