@@ -3,11 +3,19 @@ name = "sweet-cli"
 version = { workspace = true }
 edition = { workspace = true }
 authors = { workspace = true }
-documentation = { workspace = true }
 license = { workspace = true }
-readme = "README.md"
-description = { workspace = true }
 repository = { workspace = true }
+readme = "README.md"
+description = "CLI for the Sweet test framework"
+documentation = "https://mrchantey.github.io/forky/docs/sweet/cli"
+categories = ["development-tools::testing"]
+keywords = [
+	"cli",
+	"test",
+	"e2e",
+	"browser",
+	"webdriver",
+]
 
 [[bin]]
 name = "sweet"

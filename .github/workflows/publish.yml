@@ -2,7 +2,7 @@
 name: 🌍 Publish Crates
 on:
   push:
-    tags: '*'
+    tags: 'v*.*.never'
   workflow_dispatch:
 jobs:
   publish:

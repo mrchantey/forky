@@ -8,14 +8,14 @@ The Sweet CLI is a tool for building, serving & running tests in-browser. It can
 
 ## Usage:
 ```sh
-# run - requires chromedriver
+# headless
 sweet --example my_test
 # interactive
 sweet --example my_test --interactive
-# workspaces - expects an example called sweet_my_crate
+# workspaces
 sweet --example my_test -p my_crate
 # help
-sweet --example my_test --help
+sweet --help
 ```
 
 ## Requirements

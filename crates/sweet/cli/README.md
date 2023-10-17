@@ -3,7 +3,7 @@
 <div align="center">
 
   <p>
-    <strong>Cli for the [`sweet`]() test framework.</strong>
+    <strong>Cli for the <a href="https://crates.io/crates/sweet">sweet</a> test framework.</strong>
   </p>
 
   <p>
