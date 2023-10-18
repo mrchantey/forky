@@ -762,24 +762,24 @@ dot2[...]
 <p>Before we can run the above example we need two things:</p>
 <ul>
 <li>
-<p>An <code>AiPlugin</code> schedules all systems in the tree:</p>
-<pre><code class="language-rs">app.add_plugins(AiPlugin::new(MyTree));
+<p>An <code>TreePlugin</code> schedules all systems in the tree:</p>
+<pre><code class="language-rs">app.add_plugins(TreePlugin::new(MyTree));
 </code></pre>
 </li>
 <li>
-<p>A <code>PropBundle</code> will add given props to specified nodes in the tree.</p>
+<p>A <code>TreeBundle</code> will add given props to specified nodes in the tree.</p>
 <pre><code class="language-rs">// only set the root as running
-app.world.spawn(PropBundle::root(MyTree, Running));
+app.world.spawn(TreeBundle::root(MyTree, Running));
 // set all nodes in the tree to have a failing score
-app.world.spawn(PropBundle::recursive(MyTree, Score::Fail));
+app.world.spawn(TreeBundle::recursive(MyTree, Score::Fail));
 </code></pre>
 </li>
 </ul>
 <p>Putting it all together we get something like this:</p>
 <pre><code class="language-rs">fn main(){
 	let mut app = App::new();	
-	app.add_plugins(AiPlugin::new(MyTree));
-	app.world.spawn(PropBundle::root(MyTree, Running));
+	app.add_plugins(TreePlugin::new(MyTree));
+	app.world.spawn(TreeBundle::root(MyTree, Running));
 
 	app.update(); // runs first child
 	app.update(); // runs second child
