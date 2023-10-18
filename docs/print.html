@@ -733,16 +733,20 @@ pub fn MyTree() -&gt; impl AiNode {
 <ul>
 <li>
 <p>A <code>TreePlugin</code> schedules all systems in the tree:</p>
-<pre><code class="language-rs">app.add_plugins(TreePlugin::new(MyTree));
-</code></pre>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>app.add_plugins(TreePlugin::new(MyTree));
+<span class="boring">}</span></code></pre></pre>
 </li>
 <li>
 <p>A <code>TreeBundle</code> will add given props to specified nodes in the tree.</p>
-<pre><code class="language-rs">// only set the root as running
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// only set the root as running
 app.world.spawn(TreeBundle::root(MyTree, Running));
 // set all nodes in the tree to have a failing score
 app.world.spawn(TreeBundle::recursive(MyTree, Score::Fail));
-</code></pre>
+<span class="boring">}</span></code></pre></pre>
 </li>
 </ul>
 <p>Putting it all together:</p>
@@ -798,13 +802,9 @@ dot2[...]
 <p>The ordering can also be viewed using <a href="https://crates.io/crates/bevy_mod_debugdump"><code>bevy_mod_debug_dump</code></a>
 <img src="gamai/../gamai/images/system-ordering.png" alt="system ordering" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="selectors"><a class="header" href="#selectors">Selectors</a></h1>
-<p>Selectors are Nodes with children, their job is to decide which child should run.</p>
-<p>Nodes with children are usually tasked witk deciding which child should run. Depending on the paradigm used these may have These have several names depending on the paradigm, here are a few synonyms:</p>
-<blockquote>
-<p>In some paradigms selectors are also known as <code>planners</code> or <code>reasoners</code></p>
-</blockquote>
+<p>Selectors are actions that run on nodes with children, their job is to decide which child should run. In some paradigms selectors are also known as <code>planners</code>, <code>reasoners</code> or <code>thinkers</code>.</p>
 <h2 id="sequence"><a class="header" href="#sequence">Sequence</a></h2>
-<p>Perhaps the simples selector is the <code>sequence</code>. It runs each child in sequence until either completion or one fails.</p>
+<p>Perhaps the simplest selector is the <code>sequence</code>. It runs each child in order until completion, but will end if one fails.</p>
 <pre><code class="language-rs">#[tree_builder]
 pub fn MyTree() -&gt; impl AiNode {
 	tree! {
@@ -816,8 +816,8 @@ pub fn MyTree() -&gt; impl AiNode {
 }
 </code></pre>
 <h2 id="utility-ai"><a class="header" href="#utility-ai">Utility AI</a></h2>
-<p>Nodes can accept a <code>before_parent</code> attribute, which is a Node System that runs <em>before</em> the parent. It can be used to provide a <code>Score</code> for each child. Here's an example of an edge system that always sets its score to <code>Pass</code>. Other options are <code>Fail</code> or <code>Weight(u32)</code></p>
-<pre><code class="language-rs">#[node_system]
+<p>Nodes can accept a <code>before_parent</code> attribute, which is a Node System that runs <em>before</em> the parent. It can be used to provide a <code>Score</code> for each child. Here's an example of an action that always sets its score to <code>Pass</code>. Other options are <code>Fail</code> or <code>Weight(u32)</code></p>
+<pre><code class="language-rs">#[action]
 fn score_always_pass&lt;Node: AiNode&gt;(query: Query&lt;&amp;mut Prop&lt;Score, Node&gt;&gt;){
 	for state in query.iter_mut(){
 			**state = Score::Pass;
@@ -828,28 +828,32 @@ fn score_always_pass&lt;Node: AiNode&gt;(query: Query&lt;&amp;mut Prop&lt;Score,
 <pre><code class="language-rs">#[tree_builder]
 pub fn MyTree() -&gt; impl AiNode {
 	tree! {
-		&lt;first_valid_edge&gt;
+		&lt;first_passing_score&gt;
 			&lt;child1 before_parent=score_always_fail/&gt;
 			&lt;child2 before_parent=score_always_pass/&gt;
-		&lt;/first_valid_edge&gt;
+		&lt;/first_passing_score&gt;
 	}
 }
 </code></pre>
 <p>It would produce the following system ordering:</p>
-<pre><code class="language-mermaid">graph LR;
-	root --&gt; edgeA
-	root --&gt; edgeB
+<pre><code class="language-mermaid">
+graph LR;
 	edgeA --&gt; selector;
 	edgeB --&gt; selector;
 	selector -- skips --- nodeA;
 	selector -- runs --- nodeB;
 
-	root[Root]
-	selector[first_valid_edge]
-	edgeA[edge_always_fail]
-	edgeB[edge_always_pass]
+	selector[first_passing_score]
+	edgeA[score_always_fail]
+	edgeB[score_always_pass]
 	nodeA[child1]
 	nodeB[child2]
+</code></pre>
+<p>Actions that determine scores are sometimes referred to as <code>considerations</code> , <code>conditions</code>, <code>filters</code>, or <code>scorers</code>.
+It can also be helpful to think of them as the <code>edges</code> of child nodes when diagramming:</p>
+<pre><code class="language-mermaid">graph TB;
+	first_passing_score -- score_always_fail --- child1;
+	first_passing_score -- score_always_pass --- child2;
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-webxr"><a class="header" href="#bevy-webxr">Bevy WebXR</a></h1>
 <p>A proof-of-concept for WebXR in Bevy <code>0.11.0</code>. Visit this page in your Oculus Quest to see it in action!</p>

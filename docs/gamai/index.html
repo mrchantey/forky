@@ -222,16 +222,20 @@ pub fn MyTree() -&gt; impl AiNode {
 <ul>
 <li>
 <p>A <code>TreePlugin</code> schedules all systems in the tree:</p>
-<pre><code class="language-rs">app.add_plugins(TreePlugin::new(MyTree));
-</code></pre>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>app.add_plugins(TreePlugin::new(MyTree));
+<span class="boring">}</span></code></pre></pre>
 </li>
 <li>
 <p>A <code>TreeBundle</code> will add given props to specified nodes in the tree.</p>
-<pre><code class="language-rs">// only set the root as running
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// only set the root as running
 app.world.spawn(TreeBundle::root(MyTree, Running));
 // set all nodes in the tree to have a failing score
 app.world.spawn(TreeBundle::recursive(MyTree, Score::Fail));
-</code></pre>
+<span class="boring">}</span></code></pre></pre>
 </li>
 </ul>
 <p>Putting it all together:</p>
