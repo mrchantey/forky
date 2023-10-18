@@ -118,7 +118,7 @@ test-all-wasm-no-bevy *args:
 	just test-wasm forky_web_test {{args}}
 
 test-wasm crate *args:
-	cargo run -p sweet-cli -- -p {{crate}} --example test_{{crate}}_wasm {{args}}
+	sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
 
 
 doc-w crate *args:
