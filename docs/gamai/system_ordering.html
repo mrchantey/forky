@@ -188,7 +188,7 @@
 }
 </code></pre>
 <p>For example, the following tree would produce this system ordering:</p>
-<pre><code class="language-mermaid">graph TB
+<pre class="mermaid">graph TB
 
 Node1 --- dot1
 Node1 --- Node2
@@ -196,15 +196,15 @@ Node2 --- dot2
 Node2 --- Node3
 dot1[...]
 dot2[...]
-</code></pre>
-<pre><code class="language-mermaid">graph LR;
+</pre>
+<pre class="mermaid">graph LR;
 	node1 --- node2.before 
 	node1 --- node1.after 
 	node1 --- node3.before_parent 
 	node2.before --- node2
 	node1.after --- node2
 	node3.before_parent --- node2
-</code></pre>
+</pre>
 <p>The ordering can also be viewed using <a href="https://crates.io/crates/bevy_mod_debugdump"><code>bevy_mod_debug_dump</code></a>
 <img src="../gamai/images/system-ordering.png" alt="system ordering" /></p>
 

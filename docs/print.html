@@ -782,7 +782,7 @@ world
 }
 </code></pre>
 <p>For example, the following tree would produce this system ordering:</p>
-<pre><code class="language-mermaid">graph TB
+<pre class="mermaid">graph TB
 
 Node1 --- dot1
 Node1 --- Node2
@@ -790,15 +790,15 @@ Node2 --- dot2
 Node2 --- Node3
 dot1[...]
 dot2[...]
-</code></pre>
-<pre><code class="language-mermaid">graph LR;
+</pre>
+<pre class="mermaid">graph LR;
 	node1 --- node2.before 
 	node1 --- node1.after 
 	node1 --- node3.before_parent 
 	node2.before --- node2
 	node1.after --- node2
 	node3.before_parent --- node2
-</code></pre>
+</pre>
 <p>The ordering can also be viewed using <a href="https://crates.io/crates/bevy_mod_debugdump"><code>bevy_mod_debug_dump</code></a>
 <img src="gamai/../gamai/images/system-ordering.png" alt="system ordering" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="selectors"><a class="header" href="#selectors">Selectors</a></h1>
@@ -836,7 +836,7 @@ pub fn MyTree() -&gt; impl AiNode {
 }
 </code></pre>
 <p>It would produce the following system ordering:</p>
-<pre><code class="language-mermaid">
+<pre class="mermaid">
 graph LR;
 	edgeA --&gt; selector;
 	edgeB --&gt; selector;
@@ -848,13 +848,13 @@ graph LR;
 	edgeB[score_always_pass]
 	nodeA[child1]
 	nodeB[child2]
-</code></pre>
+</pre>
 <p>Actions that determine scores are sometimes referred to as <code>considerations</code> , <code>conditions</code>, <code>filters</code>, or <code>scorers</code>.
 It can also be helpful to think of them as the <code>edges</code> of child nodes when diagramming:</p>
-<pre><code class="language-mermaid">graph TB;
+<pre class="mermaid">graph TB;
 	first_passing_score -- score_always_fail --- child1;
 	first_passing_score -- score_always_pass --- child2;
-</code></pre>
+</pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-webxr"><a class="header" href="#bevy-webxr">Bevy WebXR</a></h1>
 <p>A proof-of-concept for WebXR in Bevy <code>0.11.0</code>. Visit this page in your Oculus Quest to see it in action!</p>
 <div style="text-align:center">
