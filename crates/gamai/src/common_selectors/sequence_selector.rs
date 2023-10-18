@@ -28,20 +28,9 @@ pub fn sequence<N: AiNode>(
 		)
 		.collect::<Vec<_>>();
 
-		// a child is running
 		if children.iter().any(|(running, _)| running.get().is_some()) {
-			// println!("its still running!");
 			continue;
 		}
-
-		// for (running, out) in children.iter() {
-		// 	println!(
-		// "index: {:?} running: {:?} out: {:?}",
-		// 		running.index(),
-		// 		running.get(),
-		// 		out.get()
-		// 	);
-		// }
 
 		let next_index =
 			children.iter_mut().fold(Some(0), |prev, (running, out)| {
@@ -56,10 +45,8 @@ pub fn sequence<N: AiNode>(
 
 		if let Some(next_index) = next_index {
 			if let Some((running, _)) = children.get_mut(next_index) {
-				// println!("running: {:?}", next_index);
 				running.set(&mut commands, Some(Running));
 			} else {
-				// println!("success");
 				commands
 					.entity(entity)
 					.insert(Prop::<_, N>::new(ActionResult::Success));

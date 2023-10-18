@@ -25,7 +25,7 @@
 - [Gamai](./gamai/index.md)
 	- [System Ordering](./gamai/system_ordering.md)
 	- [Selectors](./gamai/selectors.md)
-	<!-- - [Resources](./gamai/resources.md) -->
+	- [Resources](./gamai/resources.md)
 ---
 
 # Demos
