@@ -14,8 +14,8 @@ pub fn always_fail() -> Result<()> {
 
 	app.update();
 
-	expect(Prop::<NodeState, _>::get(my_tree, &app.world, entity))
-		.to_be(Some(&NodeState::Failure))?;
+	expect(Prop::<ActionResult, _>::get(my_tree, &app.world, entity))
+		.to_be(Some(&ActionResult::Failure))?;
 
 	Ok(())
 }
@@ -29,8 +29,8 @@ pub fn always_succeed() -> Result<()> {
 
 	app.update();
 
-	expect(Prop::<NodeState, _>::get(my_tree, &app.world, entity))
-		.to_be(Some(&NodeState::Success))?;
+	expect(Prop::<ActionResult, _>::get(my_tree, &app.world, entity))
+		.to_be(Some(&ActionResult::Success))?;
 
 	Ok(())
 }

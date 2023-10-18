@@ -22,17 +22,18 @@ pub fn works() -> Result<()> {
 	app.add_plugins(TreePlugin::new(tree));
 	// let entity = app
 	// 	.world
-	// 	.spawn(TreeBundle::new(tree, NodeState::Running))
+	// 	.spawn(TreeBundle::new(tree, ActionResult::Running))
 	// 	.id();
 	let entity = app.world.spawn_empty().id();
 
-	expect(Prop::<NodeState, _>::get(tree, &app.world, entity)).to_be_none()?;
+	expect(Prop::<ActionResult, _>::get(tree, &app.world, entity))
+		.to_be_none()?;
 	app.update();
 	expect(Prop::get(tree, &app.world, entity))
-		.to_be(Some(&NodeState::Success))?;
+		.to_be(Some(&ActionResult::Success))?;
 
 
-	let val = tree.get_recursive::<NodeState>(&app.world, entity);
+	let val = tree.get_recursive::<ActionResult>(&app.world, entity);
 	expect(val.to_string().as_str()).to_be(OUT)?;
 
 	Ok(())
@@ -47,11 +48,11 @@ const OUT: &str = r#"Success
 #[action]
 fn adds_my_thing<Node: AiNode>(
 	mut commands: Commands,
-	query: Query<Entity, Without<Prop<NodeState, Node>>>,
+	query: Query<Entity, Without<Prop<ActionResult, Node>>>,
 ) {
 	for entity in query.iter() {
 		commands
 			.entity(entity)
-			.insert(Prop::<_, Node>::new(NodeState::default()));
+			.insert(Prop::<_, Node>::new(ActionResult::default()));
 	}
 }

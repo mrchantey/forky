@@ -1,13 +1,13 @@
 use std::fmt::Debug;
 
 /// Marker prop indicating a node is currently running.
-/// 
-/// This gets removed automatically when a [NodeState] is added.
+///
+/// This gets removed automatically when a [ActionResult] is added.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Running;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
-pub enum NodeState {
+pub enum ActionResult {
 	#[default]
 	/// Set by a child node to indicate success
 	Success,

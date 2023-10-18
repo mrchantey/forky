@@ -35,7 +35,7 @@ pub fn node_always_succeed<N: AiNode>(
 	for entity in query.iter_mut() {
 		commands
 			.entity(entity)
-			.insert(Prop::<_, N>::new(NodeState::Success));
+			.insert(Prop::<_, N>::new(ActionResult::Success));
 	}
 }
 #[action]
@@ -46,7 +46,7 @@ pub fn node_always_fail<N: AiNode>(
 	for entity in query.iter_mut() {
 		commands
 			.entity(entity)
-			.insert(Prop::<_, N>::new(NodeState::Failure));
+			.insert(Prop::<_, N>::new(ActionResult::Failure));
 	}
 }
 
@@ -59,7 +59,7 @@ pub fn always_succeed_and_print<N: AiNode>(
 		println!("Node running: {}", N::DEPTH);
 		commands
 			.entity(entity)
-			.insert(Prop::<_, N>::new(NodeState::Success));
+			.insert(Prop::<_, N>::new(ActionResult::Success));
 	}
 }
 
@@ -69,7 +69,7 @@ pub fn remove_running<N: AiNode>(
 	mut commands: Commands,
 	added_result: Query<
 		Entity,
-		(With<Prop<NodeState, N>>, With<Prop<Running, N>>),
+		(With<Prop<ActionResult, N>>, With<Prop<Running, N>>),
 	>,
 	mut removed_running: RemovedComponents<Prop<Running, N>>,
 	//TODO added_interrupt, recursive cleanup
@@ -82,6 +82,6 @@ pub fn remove_running<N: AiNode>(
 	// Second time around ensure parent doesnt read state again
 	for entity in removed_running.iter() {
 		// println!("removing result");
-		commands.entity(entity).remove::<Prop<NodeState, N>>();
+		commands.entity(entity).remove::<Prop<ActionResult, N>>();
 	}
 }

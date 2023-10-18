@@ -1,6 +1,7 @@
 use super::*;
 use crate::*;
 
+/// A bundle that adds props to all nodes in a tree.
 pub struct TreeBundle;
 
 impl TreeBundle {

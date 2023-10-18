@@ -19,8 +19,8 @@ pub fn it_works() -> Result<()> {
 
 	app.update();
 
-	let out = PropTree::<NodeState>::new(my_tree, &app.world, entity);
-	expect(out.value).to_be(Some(&NodeState::Success))?;
+	let out = PropTree::<ActionResult>::new(my_tree, &app.world, entity);
+	expect(out.value).to_be(Some(&ActionResult::Success))?;
 
 	Ok(())
 }

@@ -1,7 +1,4 @@
-#![feature(
-	associated_const_equality,
-	generic_const_exprs
-)]
+#![feature(associated_const_equality, generic_const_exprs)]
 #![allow(incomplete_features)]
 //this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
@@ -15,10 +12,10 @@ gamai::define_node!(1);
 // // }
 
 // impl<'a, N, Q> MyTrait<N, Q>
-// 	for <<N as AiNode>::ChildQueryOpt<NodeState> as WorldQuery>::Item<'a>
+// 	for <<N as AiNode>::ChildQueryOpt<ActionResult> as WorldQuery>::Item<'a>
 // where
 // 	N: AiNode,
-// 	Q: WorldQuery<Item<'a> = NodeState>,
+// 	Q: WorldQuery<Item<'a> = ActionResult>,
 // {
 // 	// implementation goes here
 // }

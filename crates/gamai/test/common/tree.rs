@@ -26,8 +26,8 @@ pub fn it_works() -> Result<()> {
 	// app.update();
 	// app.update();
 
-	// expect(Prop::<NodeState, _>::get(MyTree, &app.world, entity))
-	// 	.to_be(Some(&NodeState::Success))?;
+	// expect(Prop::<ActionResult, _>::get(MyTree, &app.world, entity))
+	// 	.to_be(Some(&ActionResult::Success))?;
 
 	Ok(())
 }

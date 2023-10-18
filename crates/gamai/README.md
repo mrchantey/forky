@@ -37,12 +37,12 @@ pub fn MyTree() -> impl AiNode {
 }
 
 #[action]
-fn say_hello<Node: AiNode>(mut query: Query<&mut NodeState<Node>>){
+fn say_hello<Node: AiNode>(mut query: Query<&mut ActionResult<Node>>){
 	
 	for mut state in query.iter_mut(){
 		println!("hello");
 		//tell parent it can go to the next node now
-		**state = NodeState::Success;
+		**state = ActionResult::Success;
 	}
 }
 ```

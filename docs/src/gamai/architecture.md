@@ -46,14 +46,14 @@ a `node_system` is a bevy system with a single `AiNode` generic argument which a
 
 
 ### Example Action
-An action can use the `NodeState` component to check whether it should run, and inform its parent of the current state.
+An action can use the `ActionResult` component to check whether it should run, and inform its parent of the current state.
 ```rs
 // nodes run if their parent lets them
 #[node_system]
-fn child<Node: AiNode>(mut query: Query<&mut NodeState<Node>>){
+fn child<Node: AiNode>(mut query: Query<&mut ActionResult<Node>>){
 	for mut state in query.iter_mut(){
 		println!("this node is running, its state is {}", state);
-		**state = NodeState::Success;
+		**state = ActionResult::Success;
 	}
 }
 ```

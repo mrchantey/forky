@@ -61,7 +61,7 @@ pub use node::TreePlugin;
 /// A prop is a per-node `Bevy::Component`.
 pub mod prop;
 #[doc(inline)]
-pub use prop::NodeState;
+pub use prop::ActionResult;
 #[doc(inline)]
 pub use prop::Prop;
 #[doc(inline)]

@@ -1,7 +1,7 @@
 mod child_prop;
 pub use self::child_prop::*;
-mod node_state;
-pub use self::node_state::*;
+mod action_result;
+pub use self::action_result::*;
 mod prop;
 pub use self::prop::*;
 mod tree_bundle;

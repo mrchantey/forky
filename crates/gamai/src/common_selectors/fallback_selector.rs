@@ -19,14 +19,14 @@
 // 		for child in children.iter_mut() {
 // 			// if **child.edge != EdgeState::Fail {
 // 			// 	println!("first_passing_score: setting node state..");
-// 			// 	child.set_node_state(&mut commands, NodeState::Running);
+// 			// 	child.set_node_state(&mut commands, ActionResult::Running);
 // 			// }
 // 		}
 // 		// let a = N::children(node.clone());
 // 		// for child in N::children(node).iter_mut() {
 // 		// if **child.edge != EdgeState::Fail {
 // 		// 	println!("first_passing_score: setting node state..");
-// 		// 	child.set_node_state(&mut commands, NodeState::Running);
+// 		// 	child.set_node_state(&mut commands, ActionResult::Running);
 // 		// }
 // 		// }
 // 	}

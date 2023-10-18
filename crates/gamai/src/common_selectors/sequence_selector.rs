@@ -16,7 +16,7 @@ pub fn sequence<N: AiNode>(
 		(
 			Entity,
 			N::ChildQueryOptMut<Running>,
-			N::ChildQueryOptMut<NodeState>,
+			N::ChildQueryOptMut<ActionResult>,
 		),
 		With<Prop<Running, N>>,
 	>,
@@ -46,8 +46,10 @@ pub fn sequence<N: AiNode>(
 		let next_index =
 			children.iter_mut().fold(Some(0), |prev, (running, out)| {
 				match (running.get(), out.get()) {
-					(_, Some(NodeState::Success)) => Some(running.index() + 1),
-					(_, Some(NodeState::Failure)) => None,
+					(_, Some(ActionResult::Success)) => {
+						Some(running.index() + 1)
+					}
+					(_, Some(ActionResult::Failure)) => None,
 					_ => prev,
 				}
 			});
@@ -60,12 +62,12 @@ pub fn sequence<N: AiNode>(
 				// println!("success");
 				commands
 					.entity(entity)
-					.insert(Prop::<_, N>::new(NodeState::Success));
+					.insert(Prop::<_, N>::new(ActionResult::Success));
 			}
 		} else {
 			commands
 				.entity(entity)
-				.insert(Prop::<_, N>::new(NodeState::Failure));
+				.insert(Prop::<_, N>::new(ActionResult::Failure));
 		};
 	}
 }
