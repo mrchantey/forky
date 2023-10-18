@@ -16,6 +16,10 @@ jobs:
         uses: peaceiris/actions-mdbook@v1
         with:
           mdbook-version: '0.4.34'
+      - name: 🔨 Install mdbook-mermaid
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: mdbook-mermaid
       - name: 🔨 Build Book
         run: mdbook build
         working-directory: ./docs
