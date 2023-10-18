@@ -3,7 +3,7 @@
 <div align="center">
 
   <p>
-    <strong>A flexible task switching library suitable for game AI & robotics</strong>
+    <strong>An ECS task switching library suitable for game AI & robotics</strong>
   </p>
 
   <p>

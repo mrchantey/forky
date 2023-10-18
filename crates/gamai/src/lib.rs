@@ -1,4 +1,4 @@
-//! A flexible task switching library suitable for game AI & robotics.
+//! An ECS task switching library suitable for game AI & robotics.
 //!
 //! # Usage
 //! ```rust

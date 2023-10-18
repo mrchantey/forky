@@ -6,7 +6,7 @@ authors = { workspace = true }
 license = { workspace = true }
 repository = { workspace = true }
 readme = "README.md"
-description = "A flexible task switching library suitable for game AI & robotics"
+description = "An ECS task switching library suitable for game AI & robotics"
 documentation = "https://mrchantey.github.io/forky/docs/gamai"
 categories = ["game-engines", "game-development", "data-structures"]
 keywords = [
