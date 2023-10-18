@@ -23,7 +23,7 @@
 //!
 //! fn main(){
 //! 	let mut app = App::new();
-//! 	app.add_plugins(AiPlugin::new(MyTree));
+//! 	app.add_plugins(TreePlugin::new(MyTree));
 //! 	app.world.spawn(PropBundle::root(MyTree, Running));
 //!
 //! 	app.update(); // runs first child
@@ -54,9 +54,9 @@ pub mod node;
 #[doc(inline)]
 pub use node::AiNode;
 #[doc(inline)]
-pub use node::AiPlugin;
-#[doc(inline)]
 pub use node::IntoNode;
+#[doc(inline)]
+pub use node::TreePlugin;
 
 /// A prop is a per-node `Bevy::Component`.
 pub mod prop;

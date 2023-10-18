@@ -67,7 +67,7 @@ pub trait AiNode: 'static + Send + Sync + TreePath {
 	/// Fixes paths of all children to be relative to self.
 	fn into_root(self) -> impl AiNode { self.into_child::<Self>() }
 
-	fn plugin(self) -> impl Plugin { AiPlugin::new(self) }
+	fn plugin(self) -> impl Plugin { TreePlugin::new(self) }
 }
 
 #[derive(Debug, Default, Clone, Component)]

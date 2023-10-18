@@ -19,7 +19,7 @@ pub fn works() -> Result<()> {
 	};
 
 	let mut app = App::new();
-	app.add_plugins(AiPlugin::new(tree));
+	app.add_plugins(TreePlugin::new(tree));
 	// let entity = app
 	// 	.world
 	// 	.spawn(PropBundle::new(tree, NodeState::Running))

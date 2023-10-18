@@ -10,6 +10,6 @@ fn main() {
 	let tree1 = || tree! {<my_system/>};
 	let _bundle = AiBundle::new(tree1);
 	let _bundle = AiBundle::new(tree1);
-	let _plugin = AiPlugin::new(tree1);
-	let _plugin = AiPlugin::new(tree1);
+	let _plugin = TreePlugin::new(tree1);
+	let _plugin = TreePlugin::new(tree1);
 }

@@ -1,17 +1,16 @@
 use super::*;
 use bevy_app::prelude::*;
 
+/// A plugin that adds all systems in a tree to the app's `Update` schedule.
 #[derive(Debug, Clone)]
-pub struct AiPlugin<Node>
+pub struct TreePlugin<Node>
 where
 	Node: AiNode,
-	// Builder: 'static + Send + Sync + IntoRootNode<Out = Node>,
 {
-	node: Node, // builder: Builder,
-	            // phantom: PhantomData<Node>,
+	node: Node,
 }
 
-impl<Node> AiPlugin<Node>
+impl<Node> TreePlugin<Node>
 where
 	Node: AiNode,
 	// Builder: 'static + Send + Sync + IntoRootNode<Out = Node>,
@@ -23,7 +22,7 @@ where
 	}
 }
 
-impl<Node> Plugin for AiPlugin<Node>
+impl<Node> Plugin for TreePlugin<Node>
 where
 	Node: AiNode,
 {

@@ -10,8 +10,8 @@ pub fn works() -> Result<()> {
 		Node1::<Root, _, _>::new(DefaultAttributes::default(), a).into_root()
 	};
 
-	let _ = AiPlugin::new(tree);
-	let _ = AiPlugin::new(tree);
+	let _ = TreePlugin::new(tree);
+	let _ = TreePlugin::new(tree);
 
 	Ok(())
 }

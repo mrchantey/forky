@@ -21,7 +21,7 @@ pub fn delayed_commands() -> Result<()> {
 
 	let mut app = App::new();
 
-	app.add_plugins(AiPlugin::new(my_tree));
+	app.add_plugins(TreePlugin::new(my_tree));
 	let entity = app.world.spawn(Prop::from_node(my_tree, Running)).id();
 
 	app.update();
@@ -53,7 +53,7 @@ pub fn apply_deferred() -> Result<()> {
 
 	let mut app = App::new();
 
-	app.add_plugins(AiPlugin::new(my_tree));
+	app.add_plugins(TreePlugin::new(my_tree));
 	let entity = app.world.spawn(Prop::from_node(my_tree, Running)).id();
 
 	app.update();

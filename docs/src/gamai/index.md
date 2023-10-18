@@ -101,10 +101,10 @@ graph LR;
 ### Running
 
 Before we can run the above example we need two things:
-- An `AiPlugin` schedules all systems in the tree:
+- An `TreePlugin` schedules all systems in the tree:
   
 	```rs 
-	app.add_plugins(AiPlugin::new(MyTree));
+	app.add_plugins(TreePlugin::new(MyTree));
 	```
 - A `PropBundle` will add given props to specified nodes in the tree.
 	```rs
@@ -119,7 +119,7 @@ Putting it all together we get something like this:
 ```rs
 fn main(){
 	let mut app = App::new();	
-	app.add_plugins(AiPlugin::new(MyTree));
+	app.add_plugins(TreePlugin::new(MyTree));
 	app.world.spawn(PropBundle::root(MyTree, Running));
 
 	app.update(); // runs first child

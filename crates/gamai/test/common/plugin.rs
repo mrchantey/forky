@@ -9,7 +9,7 @@ pub fn it_works() -> Result<()> {
 
 	let mut app = App::new();
 
-	app.add_plugins(AiPlugin::new(my_tree));
+	app.add_plugins(TreePlugin::new(my_tree));
 
 	let entity = app.world.spawn(PropBundle::root(my_tree, Running)).id();
 

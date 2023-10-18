@@ -18,7 +18,7 @@ pub fn MyTree() -> impl AiNode {
 pub fn it_works() -> Result<()> {
 	let mut app = App::new();
 
-	app.add_plugins(AiPlugin::new(MyTree));
+	app.add_plugins(TreePlugin::new(MyTree));
 
 	let entity = app
 		.world

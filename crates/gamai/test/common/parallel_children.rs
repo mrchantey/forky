@@ -17,7 +17,7 @@
 
 // 	let mut app = App::new();
 
-// 	app.add_plugins(AiPlugin::new(my_tree));
+// 	app.add_plugins(TreePlugin::new(my_tree));
 // 	let entity = app.world.spawn(AiBundle::new(my_tree)).id();
 
 // 	expect(my_tree.child(0).node_state(&app.world, entity)).to_be_none()?;
