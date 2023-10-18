@@ -130,7 +130,7 @@ doc crate *args:
 # RUSTDOCFLAGS='--show-coverage -Z unstable-options' cargo doc  -p {{crate}} {{args}}
 
 book:
-	cd book && mdbook serve
+	cd docs && mdbook serve
 
 watch *command:
 	forky watch \

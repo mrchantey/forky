@@ -12,7 +12,7 @@ The lightweight [`bevy_ecs`][1] crate that drives Gamai has a great storage patt
 
 ## Features
 
-- 🌴 Declarative Tree Definition
+- 🌴 Composable Tree Definitions
 - 🔥 Compile-time Parallel Optimization
 - ✍️ No Blackboard
 - 🌈 Multi-paradigm
@@ -23,25 +23,27 @@ The lightweight [`bevy_ecs`][1] crate that drives Gamai has a great storage patt
 
 Gamai has three fundamental concepts: `Props`, `Actions` & `Trees`.
 
-## Props
+### Props
 
 A `Prop` is a regular bevy Component with an added `AiNode` generic argument, meaning the same prop can be used to represent the state of individual nodes in the tree.
 
-## Actions
+For instance the `Running` prop is used to indicate whether an action is currently running.
+
+### Actions
 
 An `action` is a bevy systems with an added generic `AiNode` argument which can be used to access props and children:
 ```rs
 #[action]
 fn say_hello<N: AiNode>(query: Query<Entity, With<Prop<Running,N>>){	
-	for _entity in query.iter(){
+	for _ in query.iter(){
 		println!("this action is running!");
 	}
 }
 ```
 
-## Trees
+### Trees
 
-Trees are defined using familiar RSX patterns like those found in web UI libraries. Each node can be either an action or a sub-tree.
+Trees are defined using the same proven RSX pattern used in web UI libraries. Each node can be either an action or a sub-tree.
 
 ```rs
 #[tree_builder]
@@ -59,49 +61,11 @@ pub fn MyTree() -> impl AiNode {
 > - `actions` have snake_case
 > - `trees` have PascalCase
 
-### Further ordering.
 
-So far each action will run consecutively according to their depth, but for frame-perfect execution sometimes we need to run something before the parent.
+## Running
 
-Other system orderings are accessible via attributes, examples are:
-- `before_parent` Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector
-- `before` - Tell children something before their `before_parent_system`
-- `after` Good for frame-perfect nodes, with `apply_deferred` in between each layer
-
-They are defined in `gamai` like so:
-```rs
-tree!{
-	<my_action
-		before_parent=set_score
-		before=set_child_scoring_parameter
-		after=cleanup
-	/>
-}
-```
-
-For example, the following tree would produce this system ordering:
-
-```mermaid
-graph TB
-
-Node1 --- dot1
-Node1 --- Node2
-Node2 --- dot2
-Node2 --- Node3
-dot1[...]
-dot2[...]
-```
-```mermaid
-graph LR;
-	node2.before_parent --- node1 --- node2.before --- node1.after --- node3.before_parent --- node2 
-	node2[node2 etc.]
-```
-
-
-### Running
-
-Before we can run the above example we need two things:
-- An `TreePlugin` schedules all systems in the tree:
+Running a tree requires setting up of state and systems:
+- A `TreePlugin` schedules all systems in the tree:
   
 	```rs 
 	app.add_plugins(TreePlugin::new(MyTree));
@@ -114,7 +78,7 @@ Before we can run the above example we need two things:
 	app.world.spawn(TreeBundle::recursive(MyTree, Score::Fail));
 	```
 
-Putting it all together we get something like this:
+Putting it all together:
 
 ```rs
 fn main(){
