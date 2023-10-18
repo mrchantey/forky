@@ -67,11 +67,11 @@ pub fn MyTree() -> impl AiNode {
 Running a tree requires setting up of state and systems:
 - A `TreePlugin` schedules all systems in the tree:
   
-	```rs 
+	```rust
 	app.add_plugins(TreePlugin::new(MyTree));
 	```
 - A `TreeBundle` will add given props to specified nodes in the tree.
-	```rs
+	```rust
 	// only set the root as running
 	app.world.spawn(TreeBundle::root(MyTree, Running));
 	// set all nodes in the tree to have a failing score

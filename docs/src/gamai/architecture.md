@@ -38,30 +38,12 @@ The primitive of `gamai` is the `node`,  Nodes are composed together using two f
 
 > Vocabulary from **graph theory** is used to reflect the unopinionated nature of `gamai`, here are some synonyms:
 > - Node: `Action, Behaviour, Reasoner, Thinker`
-> - Edge: `Consideration, Condition, Filter, Sensor, Scorer`
-
-### Generic Systems
-
-a `node_system` is a bevy system with a single `AiNode` generic argument which allows us to reuse the system in any context. Note the use of the generic parameter in queries:
-
-
-### Example Action
-An action can use the `ActionResult` component to check whether it should run, and inform its parent of the current state.
-```rs
-// nodes run if their parent lets them
-#[node_system]
-fn child<Node: AiNode>(mut query: Query<&mut ActionResult<Node>>){
-	for mut state in query.iter_mut(){
-		println!("this node is running, its state is {}", state);
-		**state = ActionResult::Success;
-	}
-}
-```
+> - Edge: `Consideration, Condition, Filter, Scorer`
 
 ### Example Reasoner
 The parent node is also concerned about the state of its children. In this example it will select the first child that has a passing edge state.
 ```rs
-#[node_system]
+#[action]
 fn parent<Node: AiNode>(mut commands: Commands, mut query: Query<Node::ChildQuery>) {
 	for (entity, edges) in Node::child_states(&mut query).iter() {
 		for (index, edge) in edges.iter().enumerate() {
