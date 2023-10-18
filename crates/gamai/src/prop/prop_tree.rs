@@ -5,6 +5,7 @@ use std::fmt::Debug;
 use std::fmt::Display;
 use std::fmt::Formatter;
 
+/// Get all values for a given prop in a tree.
 #[derive(Debug, Clone)]
 pub struct PropTree<'a, T: IntoProp> {
 	pub depth: usize,
@@ -21,6 +22,8 @@ impl<'a, T: IntoProp> PropTree<'a, T> {
 		node.into_node().get_recursive(world, entity)
 	}
 
+
+	/// Get all values, in a depth-first order.
 	pub fn flatten(&self) -> Vec<Option<&T>> {
 		let mut out = self
 			.children
