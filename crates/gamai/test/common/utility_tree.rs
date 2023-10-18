@@ -23,8 +23,8 @@ pub fn it_works() -> Result<()> {
 	let entity = app
 		.world
 		.spawn((
-			PropBundle::recursive(MyTree, Score::Fail),
-			PropBundle::root(MyTree, Running),
+			TreeBundle::recursive(MyTree, Score::Fail),
+			TreeBundle::root(MyTree, Running),
 		))
 		.id();
 	app.update();

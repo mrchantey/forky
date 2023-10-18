@@ -15,7 +15,7 @@ pub trait AiNode: 'static + Send + Sync + TreePath {
 	type ChildQueryMut<T: IntoProp>: WorldQuery;
 	type ChildQueryOptMut<T: IntoProp>: WorldQuery;
 
-	type TreeBundle<T: IntoProp>: Bundle;
+	type BundleRecursive<T: IntoProp>: Bundle;
 	// type Query<'w, 's> = Query<'w, 's, Self::ChildQuery>;
 	fn entity<'a, T: IntoProp>(
 		item: &<Self::ChildQuery<T> as WorldQuery>::Item<'a>,
@@ -40,7 +40,7 @@ pub trait AiNode: 'static + Send + Sync + TreePath {
 
 	fn add_systems(self, schedule: &mut Schedule);
 
-	fn tree_bundle<T: IntoProp + Clone>(value: T) -> Self::TreeBundle<T>;
+	fn tree_bundle<T: IntoProp + Clone>(value: T) -> Self::BundleRecursive<T>;
 
 	fn get_child(&self, index: usize) -> &dyn NodeInspector;
 	fn get_child_owned(self, index: usize) -> Box<dyn NodeInspector>;

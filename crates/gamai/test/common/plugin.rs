@@ -11,7 +11,7 @@ pub fn it_works() -> Result<()> {
 
 	app.add_plugins(TreePlugin::new(my_tree));
 
-	let entity = app.world.spawn(PropBundle::root(my_tree, Running)).id();
+	let entity = app.world.spawn(TreeBundle::root(my_tree, Running)).id();
 
 	let out = PropTree::<Running>::new(my_tree, &app.world, entity);
 

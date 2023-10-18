@@ -27,7 +27,7 @@ pub fn root() -> Result<()> {
 	let mut app = App::new();
 	let entity = app
 		.world
-		.spawn(PropBundle::root(tree, State::default()))
+		.spawn(TreeBundle::root(tree, State::default()))
 		.id();
 	let out = PropTree::<State>::new(tree, &app.world, entity);
 	expect(out.value).to_be(Some(&State::default()))?;
@@ -39,7 +39,7 @@ pub fn recursive() -> Result<()> {
 	let mut app = App::new();
 	let entity = app
 		.world
-		.spawn(PropBundle::recursive(tree, State::Terrible))
+		.spawn(TreeBundle::recursive(tree, State::Terrible))
 		.id();
 	let out = PropTree::<State>::new(tree, &app.world, entity);
 	expect(out.value).to_be(Some(&State::Terrible))?;
@@ -51,7 +51,7 @@ pub fn flatten() -> Result<()> {
 	let mut app = App::new();
 	let entity = app
 		.world
-		.spawn(PropBundle::recursive(tree, State::Terrible))
+		.spawn(TreeBundle::recursive(tree, State::Terrible))
 		.id();
 	let out = PropTree::<State>::new(tree, &app.world, entity);
 	expect(out.flatten()).to_be(vec![Some(&State::Terrible); 5])?;

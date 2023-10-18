@@ -24,7 +24,7 @@
 //! fn main(){
 //! 	let mut app = App::new();
 //! 	app.add_plugins(TreePlugin::new(MyTree));
-//! 	app.world.spawn(PropBundle::root(MyTree, Running));
+//! 	app.world.spawn(TreeBundle::root(MyTree, Running));
 //!
 //! 	app.update(); // runs first child
 //! 	app.update(); // runs second child
@@ -65,13 +65,13 @@ pub use prop::NodeState;
 #[doc(inline)]
 pub use prop::Prop;
 #[doc(inline)]
-pub use prop::PropBundle;
-#[doc(inline)]
 pub use prop::PropTree;
 #[doc(inline)]
 pub use prop::Running;
 #[doc(inline)]
 pub use prop::Score;
+#[doc(inline)]
+pub use prop::TreeBundle;
 
 /// Collection of commonly used actions
 pub mod common_actions;

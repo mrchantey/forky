@@ -22,7 +22,7 @@ pub fn works() -> Result<()> {
 	app.add_plugins(TreePlugin::new(tree));
 	// let entity = app
 	// 	.world
-	// 	.spawn(PropBundle::new(tree, NodeState::Running))
+	// 	.spawn(TreeBundle::new(tree, NodeState::Running))
 	// 	.id();
 	let entity = app.world.spawn_empty().id();
 

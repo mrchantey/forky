@@ -106,12 +106,12 @@ Before we can run the above example we need two things:
 	```rs 
 	app.add_plugins(TreePlugin::new(MyTree));
 	```
-- A `PropBundle` will add given props to specified nodes in the tree.
+- A `TreeBundle` will add given props to specified nodes in the tree.
 	```rs
 	// only set the root as running
-	app.world.spawn(PropBundle::root(MyTree, Running));
+	app.world.spawn(TreeBundle::root(MyTree, Running));
 	// set all nodes in the tree to have a failing score
-	app.world.spawn(PropBundle::recursive(MyTree, Score::Fail));
+	app.world.spawn(TreeBundle::recursive(MyTree, Score::Fail));
 	```
 
 Putting it all together we get something like this:
@@ -120,7 +120,7 @@ Putting it all together we get something like this:
 fn main(){
 	let mut app = App::new();	
 	app.add_plugins(TreePlugin::new(MyTree));
-	app.world.spawn(PropBundle::root(MyTree, Running));
+	app.world.spawn(TreeBundle::root(MyTree, Running));
 
 	app.update(); // runs first child
 	app.update(); // runs second child

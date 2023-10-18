@@ -74,9 +74,9 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			);
 
 			#[allow(unused_parens)]
-			type TreeBundle<T:IntoProp> = (Prop<T,Self>,#child_tree_bundle_types);
+			type BundleRecursive<T:IntoProp> = (Prop<T,Self>,#child_tree_bundle_types);
 
-			fn tree_bundle<T:IntoProp + Clone>(value: T) -> Self::TreeBundle<T>{
+			fn tree_bundle<T:IntoProp + Clone>(value: T) -> Self::BundleRecursive<T>{
 				(
 					Prop::new(value.clone()),
 					#child_tree_bundle_values
@@ -229,7 +229,7 @@ fn child_tree_bundle_types(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.fold(TokenStream::new(), |prev, index| {
 			let ident = child_type_name(index);
-			quote!((#ident::TreeBundle<T>, #prev))
+			quote!((#ident::BundleRecursive<T>, #prev))
 		})
 		.into_token_stream()
 }

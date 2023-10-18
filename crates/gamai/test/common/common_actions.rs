@@ -10,7 +10,7 @@ pub fn always_fail() -> Result<()> {
 
 	let mut app = App::new();
 	app.add_plugins(TreePlugin::new(my_tree));
-	let entity = app.world.spawn(PropBundle::root(my_tree, Running)).id();
+	let entity = app.world.spawn(TreeBundle::root(my_tree, Running)).id();
 
 	app.update();
 
@@ -25,7 +25,7 @@ pub fn always_succeed() -> Result<()> {
 
 	let mut app = App::new();
 	app.add_plugins(TreePlugin::new(my_tree));
-	let entity = app.world.spawn(PropBundle::root(my_tree, Running)).id();
+	let entity = app.world.spawn(TreeBundle::root(my_tree, Running)).id();
 
 	app.update();
 

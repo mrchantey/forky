@@ -25,8 +25,8 @@ impl <Path:TreePath,System:IntoAction,Child0:AiNode, >AiNode for Node1<Path,Syst
   type ChildQueryMut<T:IntoNodeComponent>  = (Entity,(&'static mut NodeComponent<T,Child0> ,));
   type ChildQueryOptMut<T:IntoNodeComponent>  = (Entity,(Option< &'static mut NodeComponent<T,Child0>> ,));
   #[allow(unused_parens)]
-  type TreeBundle<T:IntoNodeComponent>  = (NodeComponent<T,Self> ,(Child0::TreeBundle<T> ,));
-  fn tree_bundle<T:IntoNodeComponent+Clone>(value:T) -> Self::TreeBundle<T>{
+  type BundleRecursive<T:IntoNodeComponent>  = (NodeComponent<T,Self> ,(Child0::BundleRecursive<T> ,));
+  fn tree_bundle<T:IntoNodeComponent+Clone>(value:T) -> Self::BundleRecursive<T>{
     (NodeComponent::new(value.clone()),(Child0::tree_bundle:: <T>(value.clone()),))
   }
   fn add_systems(self,schedule: &mut Schedule){
