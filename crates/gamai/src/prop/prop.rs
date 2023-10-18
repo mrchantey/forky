@@ -13,8 +13,9 @@ pub type DerefProp<T> = dyn Deref<Target = T>;
 
 #[derive(Debug, Clone, Component)]
 #[component(storage = "SparseSet")]
-/// Container of per-node components. Props
-/// are often added and removed, so get stored in a sparse set.
+/// Container of per-node components. 
+/// 
+/// Props are often added and removed, so get stored in a sparse set.
 pub struct Prop<T: IntoProp, Node: NodeInspector> {
 	pub value: T,
 	pub marker: PhantomData<Node>,

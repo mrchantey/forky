@@ -49,6 +49,7 @@
 extern crate self as gamai;
 pub use gamai_macros::*;
 
+/// A node is a container for actions in a tree.
 pub mod node;
 #[doc(inline)]
 pub use node::AiNode;
@@ -57,6 +58,7 @@ pub use node::AiPlugin;
 #[doc(inline)]
 pub use node::IntoNode;
 
+/// A prop is a per-node `Bevy::Component`.
 pub mod prop;
 #[doc(inline)]
 pub use prop::NodeState;
@@ -71,9 +73,12 @@ pub use prop::Running;
 #[doc(inline)]
 pub use prop::Score;
 
+/// Collection of commonly used actions
 pub mod common_actions;
+/// Collection of commonly used selectors
 pub mod common_selectors;
 
+/// Re-exports for macros
 pub mod exports {
 	pub use anyhow::bail;
 	pub use anyhow::Result;
