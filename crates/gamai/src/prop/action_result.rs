@@ -6,12 +6,12 @@ use std::fmt::Debug;
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Running;
 
-#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
+/// Prop added to actions to indicate their result.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ActionResult {
-	#[default]
-	/// Set by a child node to indicate success
+	/// Set by an action to indicate success
 	Success,
-	/// Set by a child node to indicate failure
+	/// Set by an action to indicate failure
 	Failure,
 	// Interrupt,
 }

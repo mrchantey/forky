@@ -6,9 +6,13 @@ use std::hash::Hash;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub enum ActionStage {
+	/// Run before parent update.
 	PreParentUpdate,
+	/// Run after parent update, before update.
 	PreUpdate,
+	/// Default update stage for actions.
 	Update,
+	/// Run after update, before child update.
 	PostUpdate,
 }
 

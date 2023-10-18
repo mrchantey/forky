@@ -1,7 +1,24 @@
 use super::*;
+#[allow(unused_imports)]
+use crate::node::ActionStage;
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
+/// Prop for actions to indicate how favourable they would be to run.
+///
+/// Usually run in [ActionStage::PreParentUpdate].
+///
+/// # Example
+///
+/// ```rust
+/// use gamai::tree;
+/// use gamai::common_actions::{empty_node,score_always_pass};
+///
+/// let my_tree = tree!{
+/// 	<empty_node before_parent=score_always_pass/>
+/// };
+///
+/// ```
 #[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub enum Score {
 	Pass,

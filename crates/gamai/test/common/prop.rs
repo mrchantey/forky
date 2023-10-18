@@ -53,6 +53,6 @@ fn adds_my_thing<Node: AiNode>(
 	for entity in query.iter() {
 		commands
 			.entity(entity)
-			.insert(Prop::<_, Node>::new(ActionResult::default()));
+			.insert(Prop::<_, Node>::new(ActionResult::Success));
 	}
 }

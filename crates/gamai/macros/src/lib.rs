@@ -60,7 +60,7 @@ pub fn tree(item: TokenStream) -> TokenStream {
 	.into()
 }
 
-/// A tree is a function that returns `impl IntoTree`
+/// A tree is a function that returns `impl IntoNode`
 #[proc_macro_attribute]
 pub fn tree_builder(attr: TokenStream, item: TokenStream) -> TokenStream {
 	parse_tree_builder(attr, item)

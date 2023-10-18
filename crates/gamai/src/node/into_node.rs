@@ -8,6 +8,7 @@ pub struct IntoNodeMarkerNode;
 /// marker for any func that returns an AiNode, ie `|| tree!{<empty_node/>}`
 pub struct IntoNodeMarkerFunc;
 
+/// Trait for nodes and functions that return nodes.
 pub trait IntoNode<Marker>: Sized {
 	type Out: AiNode;
 	fn into_node(self) -> Self::Out;
