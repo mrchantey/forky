@@ -19,7 +19,7 @@ pub fn MyTree() -> impl AiNode {
 
 ## Utility AI
 
-Nodes can accept a `before_parent` attribute, which is a Node System that runs *before* the parent. It can be used to provide a `Score` for each child. Here's an example of an action that always sets its score to `Pass`. Other options are `Fail` or `Weight(u32)`
+Nodes can accept a `before_parent` attribute, which is an `action` that runs *before* the parent. It can be used to provide a `Score` for each child. Here's an example of an action that always sets its score to `Pass`. Other options are `Fail` or `Weight(u32)`
 
 ```rs
 #[action]
@@ -61,7 +61,7 @@ graph LR;
 ```
 
 Actions that determine scores are sometimes referred to as `considerations` , `conditions`, `filters`, or `scorers`.
-It can also be helpful to think of them as the `edges` of child nodes when diagramming:
+It can also be helpful to think of them as the `edges` of child nodes when creating a diagram:
 ```mermaid
 graph TB;
 	first_passing_score -- score_always_fail --- child1;

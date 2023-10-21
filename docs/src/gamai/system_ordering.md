@@ -2,12 +2,11 @@
 
 Each action will run consecutively according to their depth, but for single-frame execution sometimes we need to run something before the parent.
 
-Other system orderings are accessible via attributes, examples are:
-- `before_parent` Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector
-- `before` - Do something before a node runs, ie skip.
-- `after` Good for single-frame execution, ie cleaning up run states.
+System orderings are accessible via attributes, examples are:
+- `before_parent` Useful for GOAP / Utility selectors, allows preparing of score for each child node of a selector.
+- `before` - Do something before, ie skip.
+- `after` Do something after, ie cleaning up run states.
 
-They are defined in `gamai` like so:
 ```rs
 tree!{
 	<my_action
@@ -18,7 +17,7 @@ tree!{
 }
 ```
 
-For example, the following tree would produce this system ordering:
+Consider the following tree:
 
 ```mermaid
 graph TB
@@ -30,6 +29,8 @@ Node2 --- Node3
 dot1[...]
 dot2[...]
 ```
+
+It would produce this system ordering:
 ```mermaid
 graph LR;
 	node1 --- node2.before 

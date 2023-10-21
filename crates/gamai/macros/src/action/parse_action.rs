@@ -4,6 +4,7 @@ use quote::quote;
 use syn::parse_macro_input;
 use syn::Ident;
 use syn::ItemFn;
+use syn::Visibility;
 
 
 pub fn parse_action(
@@ -75,6 +76,7 @@ fn func_inner_ident(ident: &Ident) -> Ident {
 fn func_as_inner(func: &ItemFn) -> ItemFn {
 	let mut func_inner = func.clone();
 	func_inner.sig.ident = func_inner_ident(&func.sig.ident);
+	func_inner.vis = Visibility::Inherited;
 	func_inner
 }
 // use proc_macro2::Span;

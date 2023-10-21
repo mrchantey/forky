@@ -25,57 +25,50 @@ Gamai has three fundamental concepts: `Props`, `Actions` & `Trees`.
 
 ### Props
 
-A `Prop` is a regular bevy Component with an added `AiNode` generic argument, meaning the same prop can be used to represent the state of individual nodes in the tree.
+A `Prop` is a regular bevy Component with an added `AiNode` generic argument, meaning props can be used to represent the state of individual nodes in the tree.
 
 For instance the `Running` prop is used to indicate whether an action is currently running.
 
 ### Actions
 
-An `action` is a bevy systems with an added generic `AiNode` argument which can be used to access props and children:
+An `action` is a bevy system with an added generic `AiNode` argument which can be used to access props and children:
 ```rs
 #[action]
-fn say_hello<N: AiNode>(query: Query<Entity, With<Prop<Running,N>>){	
+fn say_hello<N: AiNode>(query: Query<Entity, With<Prop<Running,N>>){
 	for _ in query.iter(){
-		println!("this action is running!");
+		println!("hello");
 	}
 }
 ```
 
 ### Trees
 
-Trees are defined using the same proven RSX pattern used in web UI libraries. Each node can be either an action or a sub-tree.
-
+Trees are a collection of actions and other trees. To reduce boilerplate they can be defined with [rsx](https://crates.io/crates/rstml).
 ```rs
 #[tree_builder]
 pub fn MyTree() -> impl AiNode {
 	tree! {
 		<sequence>
 			<say_hello/>
-			<SayWorld/> //a tree declared elsewhere
+			<SayWorld/> //another tree declared elsewhere
 		</sequence>
 	}
 }
 ```
 
-> `gamai` uses a naming convention like web UI libraries:
+> The `tree!` macro uses the web UI naming convention:
 > - `actions` have snake_case
 > - `trees` have PascalCase
 
-
 ## Running
 
-Running a tree requires setting up of state and systems:
-- A `TreePlugin` schedules all systems in the tree:
-  
+- A `TreePlugin` schedules all systems in the tree:  
 	```rust
 	app.add_plugins(TreePlugin::new(MyTree));
 	```
-- A `TreeBundle` will add given props to specified nodes in the tree.
+- A `TreeBundle` adds props to specified nodes in the tree:
 	```rust
-	// only set the root as running
 	app.world.spawn(TreeBundle::root(MyTree, Running));
-	// set all nodes in the tree to have a failing score
-	app.world.spawn(TreeBundle::recursive(MyTree, Score::Fail));
 	```
 
 Putting it all together:

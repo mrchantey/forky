@@ -18,7 +18,7 @@ keywords = [ # 5 at most
 ]
 
 [features]
-bevy_ecs = ["dep:bevy_ecs", "dep:bevy_app"]
+bevy_ecs = ["dep:bevy_ecs", "dep:bevy_app","dep:bevy_time"]
 bevy = ["bevy_ecs", "dep:bevy"]
 
 [dependencies]
@@ -49,6 +49,7 @@ futures = { workspace = true }
 bevy = { workspace = true, optional = true }
 bevy_ecs = { workspace = true, optional = true }
 bevy_app = { workspace = true, optional = true }
+bevy_time = { workspace = true, optional = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 forky_web = { workspace = true }

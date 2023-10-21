@@ -3,12 +3,14 @@
 ## TODO
 - Kill long-running tests
 
+## main
+- move time extensions to `bevy_ecs` feature
+
 ## `0.1.33` - 17/10/2023
 - modularity & improved documentation
 
 ## `0.1.32` - 13/10/2023
 - attribute macros
-
 
 ## `0.1.31` - 13/09/2023
 
