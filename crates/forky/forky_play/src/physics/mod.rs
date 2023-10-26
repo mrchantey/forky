@@ -1,10 +1,10 @@
-mod euler_physics;
+pub mod euler_physics;
 pub use self::euler_physics::*;
-mod kinematic_body;
+pub mod kinematic_body;
 pub use self::kinematic_body::*;
-mod plugin;
+pub mod plugin;
 pub use self::plugin::*;
-mod slerp_joint;
+pub mod slerp_joint;
 pub use self::slerp_joint::*;
-mod steer;
+pub mod steer;
 pub use self::steer::*;

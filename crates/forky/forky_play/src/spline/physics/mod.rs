@@ -1,10 +1,10 @@
-mod components;
+pub mod components;
 pub use self::components::*;
-mod plugin;
+pub mod plugin;
 pub use self::plugin::*;
-mod spline_physics_bundle;
+pub mod spline_physics_bundle;
 pub use self::spline_physics_bundle::*;
-mod systems;
+pub mod systems;
 pub use self::systems::*;
-mod update_current_edge;
+pub mod update_current_edge;
 pub use self::update_current_edge::*;

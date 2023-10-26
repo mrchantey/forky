@@ -1,4 +1,4 @@
-mod misc;
+pub mod misc;
 pub use self::misc::*;
-mod redirect_io;
+pub mod redirect_io;
 pub use self::redirect_io::*;

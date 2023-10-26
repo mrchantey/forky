@@ -1,4 +1,4 @@
-mod fs_watcher;
+pub mod fs_watcher;
 pub use self::fs_watcher::*;
-mod subcommand;
+pub mod subcommand;
 pub use self::subcommand::*;

@@ -1,10 +1,10 @@
-mod ball;
+pub mod ball;
 pub use self::ball::*;
-mod depth_first_backtrace;
+pub mod depth_first_backtrace;
 pub use self::depth_first_backtrace::*;
-mod maze_walls;
+pub mod maze_walls;
 pub use self::maze_walls::*;
-mod plugin;
+pub mod plugin;
 pub use self::plugin::*;
-mod rect_maze;
+pub mod rect_maze;
 pub use self::rect_maze::*;

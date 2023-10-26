@@ -1,6 +1,6 @@
-mod chat_gpt;
+pub mod chat_gpt;
 pub use self::chat_gpt::*;
-mod hello_world;
+pub mod hello_world;
 pub use self::hello_world::*;
-mod llm;
+pub mod llm;
 pub use self::llm::*;

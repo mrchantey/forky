@@ -1,2 +1,2 @@
-mod forky_event;
+pub mod forky_event;
 pub use self::forky_event::*;

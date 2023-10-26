@@ -1,2 +1,2 @@
-mod rstml;
+pub mod rstml;
 pub use self::rstml::*;

@@ -1,2 +1,2 @@
-mod macros;
+pub mod macros;
 pub use self::macros::*;

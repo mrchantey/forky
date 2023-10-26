@@ -1,4 +1,4 @@
-mod macros;
+pub mod macros;
 pub use self::macros::*;
-mod spacecat;
+pub mod spacecat;
 pub use self::spacecat::*;

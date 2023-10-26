@@ -1,4 +1,4 @@
-mod random;
+pub mod random;
 pub use self::random::*;
-mod time;
+pub mod time;
 pub use self::time::*;

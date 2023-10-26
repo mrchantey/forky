@@ -1,4 +1,4 @@
-mod command;
+pub mod command;
 pub use self::command::*;
-mod run;
+pub mod run;
 pub use self::run::*;

@@ -1,4 +1,4 @@
-mod gizmos;
+pub mod gizmos;
 pub use self::gizmos::*;
-mod grid;
+pub mod grid;
 pub use self::grid::*;

@@ -1,2 +1,2 @@
-mod pose_lerp;
+pub mod pose_lerp;
 pub use self::pose_lerp::*;

@@ -1,12 +1,12 @@
-mod lifecycle;
+pub mod lifecycle;
 pub use self::lifecycle::*;
-mod matcher;
+pub mod matcher;
 pub use self::matcher::*;
-mod panic;
+pub mod panic;
 pub use self::panic::*;
-mod suite_result;
+pub mod suite_result;
 pub use self::suite_result::*;
-mod test_case;
+pub mod test_case;
 pub use self::test_case::*;
-mod test_suite;
+pub mod test_suite;
 pub use self::test_suite::*;

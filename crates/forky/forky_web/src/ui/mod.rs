@@ -1,6 +1,6 @@
-mod button;
+pub mod button;
 pub use self::button::*;
-mod slider;
+pub mod slider;
 pub use self::slider::*;
-mod ui_style_g;
+pub mod ui_style_g;
 pub use self::ui_style_g::*;

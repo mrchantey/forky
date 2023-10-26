@@ -1,10 +1,10 @@
-mod app_x;
+pub mod app_x;
 pub use self::app_x::*;
-mod quat;
+pub mod quat;
 pub use self::quat::*;
-mod sweet_into;
+pub mod sweet_into;
 pub use self::sweet_into::*;
-mod vec2;
+pub mod vec2;
 pub use self::vec2::*;
-mod vec3;
+pub mod vec3;
 pub use self::vec3::*;

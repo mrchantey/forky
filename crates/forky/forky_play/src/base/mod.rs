@@ -1,8 +1,8 @@
-mod camera;
+pub mod camera;
 pub use self::camera::*;
-mod debug;
+pub mod debug;
 pub use self::debug::*;
-mod plugin;
+pub mod plugin;
 pub use self::plugin::*;
-mod scene;
+pub mod scene;
 pub use self::scene::*;

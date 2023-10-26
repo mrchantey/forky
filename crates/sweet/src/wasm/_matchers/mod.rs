@@ -1,8 +1,8 @@
-mod matcher_async;
+pub mod matcher_async;
 pub use self::matcher_async::*;
-mod matcher_el;
+pub mod matcher_el;
 pub use self::matcher_el::*;
-mod matcher_end_to_end;
+pub mod matcher_end_to_end;
 pub use self::matcher_end_to_end::*;
-mod sweet_into;
+pub mod sweet_into;
 pub use self::sweet_into::*;

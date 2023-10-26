@@ -1,10 +1,10 @@
-mod _camera;
+pub mod _camera;
 pub use self::_camera::*;
-mod _input_source;
+pub mod _input_source;
 pub use self::_input_source::*;
-mod _materials;
+pub mod _materials;
 pub use self::_materials::*;
-mod _plugins;
+pub mod _plugins;
 pub use self::_plugins::*;
-mod _xr;
+pub mod _xr;
 pub use self::_xr::*;

@@ -1,12 +1,12 @@
-mod boid;
+pub mod boid;
 pub use self::boid::*;
-mod ecs;
+pub mod ecs;
 pub use self::ecs::*;
-mod graphics;
+pub mod graphics;
 pub use self::graphics::*;
-mod kaleid;
+pub mod kaleid;
 pub use self::kaleid::*;
-mod physics;
+pub mod physics;
 pub use self::physics::*;
-mod utility;
+pub mod utility;
 pub use self::utility::*;

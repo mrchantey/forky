@@ -1,4 +1,4 @@
-mod auto_fs;
+pub mod auto_fs;
 pub use self::auto_fs::*;
-mod forky_cli;
+pub mod forky_cli;
 pub use self::forky_cli::*;
