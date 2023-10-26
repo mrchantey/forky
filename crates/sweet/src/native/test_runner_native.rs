@@ -25,16 +25,10 @@ impl TestRunnerNative {
 		let collector = TestCollectorNative::new();
 
 		let to_run = collector.suites_to_run(&config);
-		let contains_non_send = contains_non_send(&to_run);
-		if config.parallel && contains_non_send {
-			config.parallel = false;
-			println!("found non-send tests, ignoring parallel flag\n");
-		}
 
 		let results = if config.parallel {
 			run_group_parallel(to_run, &config).await
 		} else {
-			// TestRunner::run_group_series::<SuiteLoggerDefault, TestCaseNative>(
 			TestRunner::run_group_series::<SuiteLoggerNative, TestCaseNative>(
 				to_run, &config,
 			)
@@ -84,16 +78,6 @@ async fn run_group_parallel(
 		Ok(results) => results.into(),
 		Err(e) => panic!("Error in parallel test suite\n{:?}", e),
 	}
-}
-
-fn contains_non_send(to_run: &Vec<&TestSuiteNative>) -> bool {
-	to_run.iter().any(|suite| suite_contains_non_send(&suite))
-}
-fn suite_contains_non_send(suite: &TestSuiteNative) -> bool {
-	TestCaseNative::split_funcs(suite.tests.iter())
-		.series
-		.iter()
-		.any(|case| !case.0.config.skip)
 }
 
 /*
