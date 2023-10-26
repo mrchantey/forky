@@ -36,6 +36,16 @@ impl<'a, T: IntoProp> PropTree<'a, T> {
 	}
 }
 
+impl<'a, T: IntoProp> PropTree<'a, T>
+where
+	T: Debug,
+{
+	pub fn print(&self) {
+		println!("{self}");
+	}
+}
+
+
 impl<'a, T> Display for PropTree<'a, T>
 where
 	T: IntoProp + Debug,

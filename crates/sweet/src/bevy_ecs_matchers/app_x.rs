@@ -8,6 +8,8 @@ use std::time::Instant;
 #[ext(name=EcsAppExtSweet)]
 /// Ease-of-use extensions for `bevy::App`
 pub impl App {
+	/// Insert a [Time] resource with `Instant::now()` as the last update time.
+	///
 	fn insert_test_timer(&mut self) -> &mut Self {
 		let mut time = Time::default();
 		let now = Instant::now();

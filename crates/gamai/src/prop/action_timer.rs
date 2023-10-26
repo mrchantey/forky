@@ -1,32 +1,19 @@
-use crate::*;
-use bevy_ecs::prelude::*;
-use bevy_time::prelude::*;
-use std::time::Instant;
+use bevy_time::Stopwatch;
+use std::time::Duration;
 
 /// Prop for tracking the last time an action was started and finished.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct ActionTimer {
-	/// The time the [Running] component was last added.
-	pub last_start: Instant,
-	/// The time the [Running] component was last removed.
-	pub last_finish: Instant,
+	/// Resets whenever a [Running] component is added.
+	pub last_start: Stopwatch,
+	/// Resets whenever a [Running] component is removed.
+	pub last_finish: Stopwatch,
 }
 
-#[action]
-pub fn update_action_timer<N: AiNode>(
-	time: Res<Time>,
-	mut timers: Query<&mut Prop<ActionTimer, N>>,
-	added: Query<Entity, Added<Prop<Running, N>>>,
-	mut removed: RemovedComponents<Prop<Running, N>>,
-) {
-	for added in added.iter() {
-		if let Ok(mut timer) = timers.get_mut(added) {
-			timer.last_start = time.startup() + time.elapsed();
-		}
-	}
-	for removed in removed.iter() {
-		if let Ok(mut timer) = timers.get_mut(removed) {
-			timer.last_finish = time.startup() + time.elapsed();
-		}
+
+impl ActionTimer {
+	/// Calculated as [ActionTimer::last_finish] - [ActionTimer::last_start]
+	pub fn last_duration(&self) -> Duration {
+		self.last_finish.elapsed() - self.last_start.elapsed()
 	}
 }

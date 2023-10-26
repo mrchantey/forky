@@ -49,7 +49,7 @@
 extern crate self as gamai;
 pub use gamai_macros::*;
 
-/// A node is a container for actions in a tree.
+/// A node is a set of [Actions] for various points in its lifecycle.
 pub mod node;
 #[doc(inline)]
 pub use node::AiNode;
@@ -62,6 +62,8 @@ pub use node::TreePlugin;
 pub mod prop;
 #[doc(inline)]
 pub use prop::ActionResult;
+#[doc(inline)]
+pub use prop::ActionTimer;
 #[doc(inline)]
 pub use prop::Prop;
 #[doc(inline)]

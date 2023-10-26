@@ -1,6 +1,6 @@
 // use crate::*;
-use crate::common_actions::*;
 use super::*;
+use crate::common_actions::*;
 use bevy_ecs::prelude::*;
 // use bevy_ecs::schedule::SystemConfigs;
 
@@ -14,6 +14,7 @@ pub struct Attributes<
 	pub pre_parent_update: PreParentUpdate,
 	pub pre_update: PreUpdate,
 	pub update: Update,
+	/// indicate that [apply_deferred] should be chained directly after [update], but still in the [Update] set
 	pub update_apply_deferred: bool,
 	pub post_update: PostUpdate,
 }
@@ -89,7 +90,13 @@ impl<
 			self.post_update
 				.into_action_configs::<Node>()
 				.in_set(Node::post_update_set()),
-			remove_running
+			update_action_timer
+				.into_action_configs::<Node>()
+				.in_set(Node::pre_parent_update_set()), //TODO this should be in the `TreeFirstSet`
+			combined_pre_update
+				.into_action_configs::<Node>()
+				.in_set(Node::pre_update_set()),
+			combined_post_update
 				.into_action_configs::<Node>()
 				.in_set(Node::post_update_set()),
 		)

@@ -1,6 +1,7 @@
 use crate::node::*;
 use crate::*;
 use bevy_ecs::prelude::*;
+use std::time::Duration;
 
 #[derive(Default, Debug, Clone, Eq, PartialEq, Hash)]
 #[allow(non_camel_case_types)]
@@ -65,23 +66,16 @@ pub fn always_succeed_and_print<N: AiNode>(
 
 
 #[action]
-pub fn remove_running<N: AiNode>(
+pub fn succeed_in_one_second<N: AiNode>(
 	mut commands: Commands,
-	added_result: Query<
-		Entity,
-		(With<Prop<ActionResult, N>>, With<Prop<Running, N>>),
-	>,
-	mut removed_running: RemovedComponents<Prop<Running, N>>,
-	//TODO added_interrupt, recursive cleanup
+	mut query: Query<(Entity, &Prop<ActionTimer, N>), With<Prop<Running, N>>>,
 ) {
-	// First time around ensure this node doesnt run again
-	for entity in added_result.iter() {
-		// println!("removing running");
-		commands.entity(entity).remove::<Prop<Running, N>>();
-	}
-	// Second time around ensure parent doesnt read state again
-	for entity in removed_running.iter() {
-		// println!("removing result");
-		commands.entity(entity).remove::<Prop<ActionResult, N>>();
+	for (entity, timer) in query.iter_mut() {
+		if timer.last_start.elapsed() >= Duration::from_secs(1) {
+			// println!("last start: {:?}", timer.last_start.elapsed());
+			commands
+				.entity(entity)
+				.insert(Prop::<_, N>::new(ActionResult::Success));
+		}
 	}
 }
