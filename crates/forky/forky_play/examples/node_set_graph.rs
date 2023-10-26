@@ -2,7 +2,7 @@ use bevy::log::LogPlugin;
 use bevy::prelude::*;
 use bevy::winit::WinitPlugin;
 use bevy_mod_debugdump::schedule_graph::Settings;
-use gamai::*;
+// use gamai::*;
 use std::fs::File;
 use std::io::Write;
 #[derive(Debug, Default, SystemSet, Clone, Eq, PartialEq, Hash)]
@@ -11,7 +11,7 @@ pub struct Set1;
 pub struct Set2(pub usize);
 
 
-pub fn main() -> Result<()> {
+pub fn main() -> anyhow::Result<()> {
 	let mut app = App::new();
 
 	app.configure_set(Update, Set1.before(Set2(1)));

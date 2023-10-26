@@ -8,8 +8,8 @@ fn my_system<N: AiNode>() {}
 
 fn main() {
 	let tree1 = || tree! {<my_system/>};
-	let _bundle = AiBundle::new(tree1);
-	let _bundle = AiBundle::new(tree1);
+	let _bundle = TreeBundle::root(tree1);
+	let _bundle = TreeBundle::root(tree1);
 	let _plugin = TreePlugin::new(tree1);
 	let _plugin = TreePlugin::new(tree1);
 }

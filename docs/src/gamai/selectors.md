@@ -36,10 +36,10 @@ This tree will skip `child1` and run `child2`:
 #[tree_builder]
 pub fn MyTree() -> impl AiNode {
 	tree! {
-		<first_passing_score>
+		<highest_score>
 			<child1 before_parent=score_always_fail/>
 			<child2 before_parent=score_always_pass/>
-		</first_passing_score>
+		</highest_score>
 	}
 }
 ```
@@ -53,7 +53,7 @@ graph LR;
 	selector -- skips --- nodeA;
 	selector -- runs --- nodeB;
 
-	selector[first_passing_score]
+	selector[highest_score]
 	edgeA[score_always_fail]
 	edgeB[score_always_pass]
 	nodeA[child1]
@@ -64,6 +64,6 @@ Actions that determine scores are sometimes referred to as `considerations` , `c
 It can also be helpful to think of them as the `edges` of child nodes when creating a diagram:
 ```mermaid
 graph TB;
-	first_passing_score -- score_always_fail --- child1;
-	first_passing_score -- score_always_pass --- child2;
+	highest_score -- score_always_fail --- child1;
+	highest_score -- score_always_pass --- child2;
 ```

@@ -18,6 +18,12 @@ pub fn run() -> Result<()> {
 			.for_each(|p| run_for_crate(p)),
 		_ => run_for_crate(env::current_dir()?),
 	}
+	match fs::read_dir("crates/forky") {
+		Ok(dirs) => dirs
+			.map(|e| e.unwrap().path())
+			.for_each(|p| run_for_crate(p)),
+		_ => {}
+	}
 	terminal::show_cursor();
 	Ok(())
 }
@@ -57,7 +63,8 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 			if is_mod {
 				format!("pub mod {name};\n")
 			} else {
-				format!("mod {name};\npub use self::{name}::*;\n")
+				// format!("mod {name};\npub use self::{name}::*;\n")
+				format!("pub mod {name};\npub use self::{name}::*;\n")
 			}
 		})
 		.collect()

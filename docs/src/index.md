@@ -2,6 +2,8 @@
 
 Forky is a monorepo for kickass rust crates.
 
+Crates in this repo are mature enough for usage but not yet at a stage to warrent individual repos.
+
 > *Very early stage warning:*
 > - breaking changes on patch versions
 > - outdated docs

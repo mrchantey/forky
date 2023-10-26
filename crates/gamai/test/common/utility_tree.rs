@@ -7,10 +7,10 @@ use sweet::*;
 #[tree_builder]
 pub fn MyTree() -> impl AiNode {
 	tree! {
-		<first_passing_score>
+		<highest_score>
 			<empty_node before_parent=score_always_fail/>
 			<empty_node before_parent=score_always_pass/>
-		</first_passing_score>
+		</highest_score>
 	}
 }
 
