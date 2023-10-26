@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use forky_play::spline::*;
 use forky_play::*;
 use sweet::*;
 sweet! {
@@ -9,7 +8,7 @@ sweet! {
 		app.__()
 		.forky_exit_after(10.)
 			.add_plugins(plugins::ForkyDebugPlugin::default())
-			.add_plugins(ecs_graph::EcsSplineGraphPlugin)
+			.add_plugins(spline::ecs_graph::EcsSplineGraphPlugin)
 			.add_plugins(spline::physics::SplinePhysicsPlugin)
 			.add_systems(Startup, spawn_spline)
 			.run();
@@ -17,7 +16,7 @@ sweet! {
 }
 
 fn spawn_spline(mut commands: Commands) {
-	commands.spawn((Spline::Cubic(CubicSpline {
+	commands.spawn((spline::Spline::Cubic(spline::CubicSpline {
 		p0: Vec3::new(-1., 1., 0.),
 		p1: Vec3::new(-1., 0., 0.),
 		p2: Vec3::new(1., 0., 0.),

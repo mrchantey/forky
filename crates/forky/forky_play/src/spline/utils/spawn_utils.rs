@@ -1,6 +1,6 @@
 use crate::physics;
 use crate::spline::graph::*;
-use crate::spline::*;
+// use crate::spline::*;
 use crate::*;
 use bevy::prelude::*;
 
@@ -20,7 +20,7 @@ pub fn spawn_spline_cube(
 		spline::physics::SplineVelocity::default(),
 		physics::Friction(0.1),
 		physics::AccelerationForce(Vec3::DOWN),
-		Spline::Cubic(CubicSpline {
+		spline::Spline::Cubic(spline::CubicSpline {
 			p0: Vec3::new(-1., 1., 0.),
 			p1: Vec3::new(-1., 0., 0.),
 			p2: Vec3::new(1., 0., 0.),
@@ -40,12 +40,12 @@ pub fn spawn_spline_graph_cube(
 	let pos2 = Vec3::new(0., 0., 0.);
 	let pos3 = Vec3::new(1., -1., 0.);
 
-	let spline1 = Spline::Quadratic(QuadraticSpline {
+	let spline1 = spline::Spline::Quadratic(spline::QuadraticSpline {
 		p0: pos1,
 		p1: Vec3::new(-1., 0., 0.),
 		p2: pos2,
 	});
-	let spline2 = Spline::Quadratic(QuadraticSpline {
+	let spline2 = spline::Spline::Quadratic(spline::QuadraticSpline {
 		p0: pos2,
 		p1: Vec3::new(1., 0., 0.),
 		p2: pos3,

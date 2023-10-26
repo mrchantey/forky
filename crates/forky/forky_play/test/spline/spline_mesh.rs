@@ -1,6 +1,5 @@
 use bevy::ecs::query;
 use bevy::prelude::*;
-use forky_play::spline::*;
 use forky_play::*;
 use sweet::*;
 // impl Matchable for Vec3 {}
@@ -8,7 +7,7 @@ sweet! {
 
 	test "spline mesh" {
 
-		let spline = Spline::Linear(LinearSpline {
+		let spline = spline::Spline::Linear(spline::LinearSpline {
 			p0: Vec3::new(0., 0., 0.),
 			p1: Vec3::new(0., 0., -10.),
 		});

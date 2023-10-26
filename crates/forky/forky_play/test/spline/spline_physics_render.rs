@@ -1,6 +1,5 @@
 use bevy::ecs::query;
 use bevy::prelude::*;
-use forky_play::spline::*;
 use forky_play::*;
 use sweet::*;
 

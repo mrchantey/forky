@@ -7,9 +7,13 @@ use sweet::*;
 #[tree_builder]
 pub fn MyTree() -> impl AiNode {
 	tree! {
-		<highest_score>
-			<empty_node before_parent=score_always_fail/>
-			<empty_node before_parent=score_always_pass/>
+		<highest_score apply_deferred>
+			<node_always_succeed
+				apply_deferred
+				before_parent=score_always_fail/>
+			<node_always_succeed
+				apply_deferred
+				before_parent=score_always_pass/>
 		</highest_score>
 	}
 }
@@ -27,12 +31,19 @@ pub fn it_works() -> Result<()> {
 			TreeBundle::root(MyTree, Running),
 		))
 		.id();
+
 	app.update();
 
-	let tree = PropTree::<Running>::new(MyTree, &app.world, entity);
-
+	let tree = PropTree::<ActionResult>::new(MyTree, &app.world, entity);
+	expect(tree.value).to_be_none()?;
 	expect(tree.children[0].value).to_be_none()?;
 	expect(tree.children[1].value).to_be_some()?;
 
+	app.update();
+
+	let tree = PropTree::<ActionResult>::new(MyTree, &app.world, entity);
+	expect(tree.value).to_be_some()?;
+	expect(tree.children[0].value).to_be_none()?;
+	expect(tree.children[1].value).to_be_none()?;
 	Ok(())
 }

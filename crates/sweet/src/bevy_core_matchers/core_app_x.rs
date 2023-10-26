@@ -5,7 +5,7 @@ use extend::ext;
 use std::time::Duration;
 
 
-#[ext(name=EcsAppExtSweet)]
+#[ext(name=CoreAppExtSweet)]
 /// Ease-of-use extensions for `bevy::App`
 pub impl App {
 	/// Insert a [Time] resource with `Instant::now()` as the last update time.

@@ -1,6 +1,5 @@
 use super::*;
 use crate::spline::*;
-use crate::*;
 use bevy::{
 	prelude::*,
 	utils::{HashMap, HashSet},
@@ -61,7 +60,7 @@ impl SplineGraph {
 		node1: SplineNode,
 		node2: SplineNode,
 	) -> SplineEdge {
-		let spline = Spline::Linear(spline::LinearSpline {
+		let spline = Spline::Linear(LinearSpline {
 			p0: self.positions[&node1],
 			p1: self.positions[&node2],
 		});
@@ -150,7 +149,7 @@ impl SplineGraph {
 				//TODO currently double calculating for middle nodes
 				let node_prev_pos = self.positions[&node_prev];
 				let (handle_prev, handle_next) =
-					spline::CatmullRom::solve_three(
+					CatmullRom::solve_three(
 						node_pos,
 						node_prev_pos,
 						node_next_pos,
@@ -162,7 +161,7 @@ impl SplineGraph {
 			} else {
 				// println!("linking {node},{node_next}");
 				let handle_next =
-					spline::CatmullRom::solve_two(node_pos, node_next_pos);
+					CatmullRom::solve_two(node_pos, node_next_pos);
 				solved.insert((node, node_next), handle_next);
 			}
 		}

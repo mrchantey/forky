@@ -1,5 +1,5 @@
-pub mod app_x;
-pub use self::app_x::*;
+pub mod bevy_app_x;
+pub use self::bevy_app_x::*;
 pub mod quat;
 pub use self::quat::*;
 pub mod sweet_into;
