@@ -67,4 +67,3 @@ graph TB;
 	first_passing_score -- score_always_fail --- child1;
 	first_passing_score -- score_always_pass --- child2;
 ```
-

@@ -42,4 +42,5 @@ graph LR;
 ```
 
 The ordering can also be viewed using [`bevy_mod_debug_dump`](https://crates.io/crates/bevy_mod_debugdump)
+
 ![system ordering](../gamai/images/system-ordering.png)
