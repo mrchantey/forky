@@ -1,7 +1,6 @@
 use crate::node::*;
 use crate::*;
 use bevy_ecs::prelude::*;
-use std::time::Duration;
 
 #[derive(Default, Debug, Clone, Eq, PartialEq, Hash)]
 #[allow(non_camel_case_types)]
@@ -61,21 +60,5 @@ pub fn always_succeed_and_print<N: AiNode>(
 		commands
 			.entity(entity)
 			.insert(Prop::<_, N>::new(ActionResult::Success));
-	}
-}
-
-
-#[action]
-pub fn succeed_in_one_second<N: AiNode>(
-	mut commands: Commands,
-	mut query: Query<(Entity, &Prop<ActionTimer, N>), With<Prop<Running, N>>>,
-) {
-	for (entity, timer) in query.iter_mut() {
-		if timer.last_start.elapsed() >= Duration::from_secs(1) {
-			// println!("last start: {:?}", timer.last_start.elapsed());
-			commands
-				.entity(entity)
-				.insert(Prop::<_, N>::new(ActionResult::Success));
-		}
 	}
 }

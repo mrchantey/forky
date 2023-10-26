@@ -1,10 +1,8 @@
-mod action_combined_post_update;
-pub use self::action_combined_post_update::*;
-mod action_combined_pre_update;
-pub use self::action_combined_pre_update::*;
-mod action_remove_running;
-pub use self::action_remove_running::*;
-mod action_update_action_timer;
-pub use self::action_update_action_timer::*;
-mod common_actions;
-pub use self::common_actions::*;
+mod post_update_actions;
+pub use self::post_update_actions::*;
+mod pre_update_actions;
+pub use self::pre_update_actions::*;
+mod simple_actions;
+pub use self::simple_actions::*;
+mod timer_actions;
+pub use self::timer_actions::*;

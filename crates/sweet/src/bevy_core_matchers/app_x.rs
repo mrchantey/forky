@@ -1,8 +1,8 @@
 use bevy_app::prelude::*;
 use bevy_time::prelude::*;
+use bevy_utils::Instant;
 use extend::ext;
 use std::time::Duration;
-use std::time::Instant;
 
 
 #[ext(name=EcsAppExtSweet)]

@@ -39,10 +39,10 @@ pub mod test_runner;
 /// Test suite module
 pub mod test_suite;
 
-#[cfg(feature = "bevy_ecs")]
-mod bevy_ecs_matchers;
-#[cfg(feature = "bevy_ecs")]
-pub use bevy_ecs_matchers::*;
+#[cfg(feature = "bevy_core")]
+mod bevy_core_matchers;
+#[cfg(feature = "bevy_core")]
+pub use bevy_core_matchers::*;
 #[cfg(not(target_arch = "wasm32"))]
 #[doc(hidden)]
 pub mod native;

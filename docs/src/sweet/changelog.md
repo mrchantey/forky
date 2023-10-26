@@ -4,7 +4,8 @@
 - Kill long-running tests
 
 ## main
-- move time extensions to `bevy_ecs` feature
+- rename `bevy_ecs` feature to `bevy_core`
+- move time extensions to `bevy_core` feature
 
 ## `0.1.33` - 17/10/2023
 - modularity & improved documentation

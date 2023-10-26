@@ -3,7 +3,7 @@ set positional-arguments
 
 crates := 'forky forky_cli forky_core forky_play sweet'
 # features := '--features forky_play/shader_debug_internal'
-features := '--features sweet/bevy_ecs'
+features := '--features sweet/bevy_core'
 # features := ''
 # forky_esp
 backtrace := '0'
@@ -96,7 +96,7 @@ ci:
 	just test-all-wasm
 
 test-all *args:
-	cargo run -p gamai			--example test_gamai 			--features sweet/bevy_ecs -- --parallel
+	cargo run -p gamai			--example test_gamai 			--features sweet/bevy_core -- --parallel
 	cargo run -p sweet			--example test_sweet 			--features sweet/bevy -- --parallel
 	cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
 	cargo run -p forky_cli	--example test_forky_cli	-- --parallel

@@ -18,8 +18,8 @@ keywords = [ # 5 at most
 ]
 
 [features]
-bevy_ecs = ["dep:bevy_ecs", "dep:bevy_app","dep:bevy_time"]
-bevy = ["bevy_ecs", "dep:bevy"]
+bevy_core = ["dep:bevy_ecs", "dep:bevy_app", "dep:bevy_time", "dep:bevy_utils"]
+bevy = ["bevy_core", "dep:bevy"]
 
 [dependencies]
 ### internal ###
@@ -50,6 +50,7 @@ bevy = { workspace = true, optional = true }
 bevy_ecs = { workspace = true, optional = true }
 bevy_app = { workspace = true, optional = true }
 bevy_time = { workspace = true, optional = true }
+bevy_utils = { workspace = true, optional = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 forky_web = { workspace = true }
@@ -75,7 +76,7 @@ fantoccini = { workspace = true }
 [[example]]
 name = "test_sweet"
 path = "test/sweet.rs"
-required-features = ["bevy_ecs"]
+required-features = ["bevy_core"]
 
 [[example]]
 name = "test_sweet_wasm"

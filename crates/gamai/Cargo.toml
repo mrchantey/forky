@@ -22,6 +22,7 @@ gamai_macros = { workspace = true }
 bevy_ecs = { workspace = true }
 bevy_app = { workspace = true }
 bevy_time = { workspace = true }
+bevy_utils = { workspace = true }
 extend = { workspace = true }
 anyhow = { workspace = true }
 
@@ -35,5 +36,5 @@ proc-macro2 = { workspace = true }
 
 [[example]]
 name = "test_gamai"
-required-features = ["sweet/bevy_ecs"]
+required-features = ["sweet/bevy_core"]
 path = "test/sweet.rs"
