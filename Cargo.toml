@@ -5,17 +5,17 @@ resolver = "2" # Important! wgpu/Bevy needs this!
 members = [
 	# "crates/*"
 	"crates/forky",
-	"crates/forky_ai",
-	"crates/forky_cli",
-	"crates/forky_core",
-	"crates/forky_core/test",
-	"crates/forky_esp",
-	"crates/forky_fs",
-	"crates/forky_fs/test",
-	"crates/forky_play",
-	"crates/forky_test",
-	"crates/forky_web",
-	"crates/forky_web/test",
+	"crates/forky/forky_ai",
+	"crates/forky/forky_cli",
+	"crates/forky/forky_core",
+	"crates/forky/forky_core/test",
+	"crates/forky/forky_esp",
+	"crates/forky/forky_fs",
+	"crates/forky/forky_fs/test",
+	"crates/forky/forky_play",
+	"crates/forky/forky_test",
+	"crates/forky/forky_web",
+	"crates/forky/forky_web/test",
 	"crates/gamai",
 	"crates/gamai/macros",
 	"crates/sweet",
@@ -37,13 +37,13 @@ repository = "https://github.com/mrchantey/forky"
 [workspace.dependencies]
 ### internal ###
 forky = { path = "./crates/forky", version = "0.*" }
-forky_ai = { path = "./crates/forky_ai", version = "0.*" }
-forky_cli = { path = "./crates/forky_cli", version = "0.*" }
-forky_core = { path = "./crates/forky_core", version = "0.*" }
-forky_fs = { path = "./crates/forky_fs", version = "0.*" }
-forky_esp = { path = "./crates/forky_esp", version = "0.*" }
-forky_play = { path = "./crates/forky_play", version = "0.*" }
-forky_web = { path = "./crates/forky_web", version = "0.*" }
+forky_ai = { path = "./crates/forky/forky_ai", version = "0.*" }
+forky_cli = { path = "./crates/forky/forky_cli", version = "0.*" }
+forky_core = { path = "./crates/forky/forky_core", version = "0.*" }
+forky_fs = { path = "./crates/forky/forky_fs", version = "0.*" }
+forky_esp = { path = "./crates/forky/forky_esp", version = "0.*" }
+forky_play = { path = "./crates/forky/forky_play", version = "0.*" }
+forky_web = { path = "./crates/forky/forky_web", version = "0.*" }
 sweet = { path = "./crates/sweet", version = "0.*" }
 sweet_macros = { path = "./crates/sweet/macros", version = "0.*" }
 gamai = { path = "./crates/gamai", version = "0.*" }

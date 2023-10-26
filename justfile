@@ -30,7 +30,7 @@ cli *args:
 	cargo run -p forky_cli -- {{args}}
 
 install-cli *args:
-	cargo install --path ./crates/forky_cli {{args}}
+	cargo install --path ./crates/forky/forky_cli {{args}}
 	cargo install --path ./crates/sweet/cli {{args}}
 
 run-w *args:
@@ -191,7 +191,7 @@ serve-https *args:
 
 copy-wasm-assets:
 	rm -rf ./html/assets
-	cp -r ./crates/forky_play/assets ./html/assets
+	cp -r ./crates/forky/forky_play/assets ./html/assets
 
 ssl:
 	openssl genrsa -out target/client-key.pem 2048
@@ -253,6 +253,6 @@ esp-monitor:
 	cargo espflash serial-monitor {{port}}
 
 idf *args:
-	cd ./crates/forky_idf; just {{args}}
+	cd ./crates/forky/forky_idf; just {{args}}
 @idf-w *args:
 	just watch 'just idf {{args}}'

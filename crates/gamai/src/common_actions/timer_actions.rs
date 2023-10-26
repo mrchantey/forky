@@ -36,3 +36,27 @@ pub fn succeed_in_one_second<N: AiNode>(
 		}
 	}
 }
+
+
+
+/// Generic action that succeeds after a given duration.
+/// # Props
+/// - [Duration]
+/// - [ActionTimer]
+#[action]
+pub fn succeed_in_duration<N: AiNode>(
+	mut commands: Commands,
+	mut query: Query<
+		(Entity, &Prop<ActionTimer, N>, &Prop<Duration, N>),
+		With<Prop<Running, N>>,
+	>,
+) {
+	for (entity, timer, duration) in query.iter_mut() {
+		if timer.last_start.elapsed() >= **duration {
+			// println!("last start: {:?}", timer.last_start.elapsed());
+			commands
+				.entity(entity)
+				.insert(Prop::<_, N>::new(ActionResult::Success));
+		}
+	}
+}
