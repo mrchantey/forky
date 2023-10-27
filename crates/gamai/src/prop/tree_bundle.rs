@@ -1,11 +1,19 @@
 use super::*;
 use crate::*;
+use bevy_ecs::bundle::Bundle;
 
 /// A bundle that adds props to all nodes in a tree.
 pub struct TreeBundle;
 
 impl TreeBundle {
-	pub fn new() -> Self { Self }
+	/// Create a bundle with the 
+	/// [Components](bevy_ecs::component::Component) 
+	/// and [Props](Prop) specified in this tree.
+	pub fn new<M, T: IntoProp + Clone, Node: AiNode>(
+		node: impl IntoNode<M, Out = Node>,
+	) -> impl Bundle {
+		node.into_node().into_bundle()
+	}
 
 	/// Recursively create a prop with the given value for each node in the tree.
 	pub fn recursive<M, T: IntoProp + Clone, Node: AiNode>(

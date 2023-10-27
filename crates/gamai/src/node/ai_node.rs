@@ -38,6 +38,7 @@ pub trait AiNode: 'static + Send + Sync + TreePath {
 	// 	item.out()
 	// }
 
+	fn into_bundle(self) -> impl Bundle;
 	fn add_systems(self, schedule: &mut Schedule);
 
 	fn tree_bundle<T: IntoProp + Clone>(value: T) -> Self::BundleRecursive<T>;

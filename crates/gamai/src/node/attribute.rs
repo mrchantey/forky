@@ -65,6 +65,15 @@ impl<
 		PostUpdate: IntoAction,
 	> IntoAction for Attributes<PreParentUpdate, PreUpdate, Update, PostUpdate>
 {
+	fn into_bundle<Node: AiNode>(self) -> impl Bundle {
+		(
+			self.pre_parent_update.into_bundle::<Node>(),
+			self.pre_update.into_bundle::<Node>(),
+			self.update.into_bundle::<Node>(),
+			self.post_update.into_bundle::<Node>(),
+		)
+	}
+
 	fn into_action_configs<Node: AiNode>(
 		self,
 	) -> bevy_ecs::schedule::SystemConfigs {

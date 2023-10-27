@@ -11,10 +11,13 @@ pub trait IntoAction:
 	const IS_EMPTY: bool = false;
 	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs;
 
-	fn into_bundle<Node: AiNode>(self) -> impl Bundle { () }
+	fn into_bundle<Node: AiNode>(self) -> impl Bundle;
 }
 
 impl<T1: IntoAction, T2: IntoAction> IntoAction for (T1, T2) {
+	fn into_bundle<Node: AiNode>(self) -> impl Bundle {
+		(self.0.into_bundle::<Node>(), self.1.into_bundle::<Node>())
+	}
 	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs {
 		(
 			self.0.into_action_configs::<Node>(),
@@ -35,6 +38,7 @@ impl IntoAction for EmptyAction {
 	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs {
 		(|| {}).into_configs()
 	}
+	fn into_bundle<Node: AiNode>(self) -> impl Bundle { () }
 }
 // impl<T: IntoSystemConfigs<M>, M> IntoAction for T {
 // 	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs {

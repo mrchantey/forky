@@ -45,6 +45,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let children_inferred_types = children_inferred_types(*num_children);
 	let children_into_child = children_into_child(*num_children);
 	let recursive_children = recursive_children(*num_children);
+	let children_into_bundles = children_into_bundles(*num_children);
 
 	// let query_ext = Ident::new(&format!("QueryTrait{}", ident), ident.span());
 
@@ -80,6 +81,13 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				(
 					Prop::new(value.clone()),
 					#child_tree_bundle_values
+				)
+			}
+
+			fn into_bundle(self) -> impl Bundle{
+				(
+					self.system.into_bundle::<Self>(),
+					#children_into_bundles
 				)
 			}
 
@@ -238,6 +246,14 @@ fn child_tree_bundle_values(num_children: usize) -> TokenStream {
 		.fold(TokenStream::new(), |prev, index| {
 			let ident = child_type_name(index);
 			quote!((#ident::tree_bundle::<T>(value.clone()), #prev))
+		})
+		.into_token_stream()
+}
+fn children_into_bundles(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.fold(TokenStream::new(), |prev, index| {
+			let name = child_field_name(index);
+			quote!((self.#name.into_bundle(), #prev))
 		})
 		.into_token_stream()
 }

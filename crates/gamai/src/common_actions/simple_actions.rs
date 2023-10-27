@@ -8,6 +8,7 @@ pub struct empty_node;
 
 impl IntoAction for empty_node {
 	const IS_EMPTY: bool = true;
+	fn into_bundle<Node: AiNode>(self) -> impl Bundle { () }
 	fn into_action_configs<Node: AiNode>(
 		self,
 	) -> bevy_ecs::schedule::SystemConfigs {
