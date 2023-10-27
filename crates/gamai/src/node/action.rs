@@ -4,22 +4,14 @@ use bevy_ecs::schedule::SystemConfigs;
 use std::fmt::Debug;
 use std::hash::Hash;
 
-/// Marker type that tells attributes to ignore that system
-#[derive(Default, Debug, Clone, Eq, PartialEq, Hash)]
-pub struct EmptyAction;
-
-impl IntoAction for EmptyAction {
-	const IS_EMPTY: bool = true;
-	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs {
-		(|| {}).into_configs()
-	}
-}
 /// Node systems are stored in Nodes as `||-> IntoAction` closures, which also implement `IntoAction`
 pub trait IntoAction:
 	'static + Send + Sync + Sized + Eq + Hash + Clone + Debug
 {
 	const IS_EMPTY: bool = false;
 	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs;
+
+	fn into_bundle<Node: AiNode>(self) -> impl Bundle { () }
 }
 
 impl<T1: IntoAction, T2: IntoAction> IntoAction for (T1, T2) {
@@ -29,6 +21,19 @@ impl<T1: IntoAction, T2: IntoAction> IntoAction for (T1, T2) {
 			self.1.into_action_configs::<Node>(),
 		)
 			.into_configs()
+	}
+}
+
+
+
+/// Marker type that tells attributes to ignore that system
+#[derive(Default, Debug, Clone, Eq, PartialEq, Hash)]
+pub struct EmptyAction;
+
+impl IntoAction for EmptyAction {
+	const IS_EMPTY: bool = true;
+	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs {
+		(|| {}).into_configs()
 	}
 }
 // impl<T: IntoSystemConfigs<M>, M> IntoAction for T {

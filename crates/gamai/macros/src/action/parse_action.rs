@@ -1,22 +1,24 @@
 // use crate::*;
+use super::*;
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::parse_macro_input;
 use syn::Ident;
 use syn::ItemFn;
+use syn::Result;
 
 pub fn parse_action(
-	_attr: proc_macro::TokenStream,
+	attr: proc_macro::TokenStream,
 	item: proc_macro::TokenStream,
-) -> proc_macro::TokenStream {
-	let func = parse_macro_input!(item as ItemFn);
-	// let node = NodeParser::new(item, 0);
+) -> Result<TokenStream> {
+	let func = syn::parse::<ItemFn>(item)?;
+	let args = ActionArgs::from_tokens(attr.into())?;
+
 	let ItemFn { vis, sig, .. } = func.clone();
 	let ident = &sig.ident;
 
 	let func_as_inner = func_as_inner(&func);
-	let impl_into_action = impl_into_action(&func);
-	quote! {
+	let impl_into_action = impl_into_action(&func, &args);
+	Ok(quote! {
 
 		#[doc(hidden)]
 		#func_as_inner
@@ -29,16 +31,15 @@ pub fn parse_action(
 		#vis struct #ident;
 
 		#impl_into_action
-	}
-	.into()
+	})
 }
 
 // const GENERIC_ERROR:&str = "an `action` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<Node: AiNode>()`";
 
-fn impl_into_action(func: &ItemFn) -> TokenStream {
+fn impl_into_action(func: &ItemFn, args: &ActionArgs) -> TokenStream {
 	let ident = &func.sig.ident;
 	let func_inner = func_inner_ident(&func.sig.ident);
-
+	let props = &args.props;
 	// let generic_err = assert_single_generic_bound(
 	// 	func.sig.generics.clone(),
 	// 	"AiNode",
@@ -58,6 +59,7 @@ fn impl_into_action(func: &ItemFn) -> TokenStream {
 			fn into_action_configs<Node: AiNode>(self) -> SystemConfigs{
 				#func_inner #func_generic.into_configs()
 			}
+			fn into_bundle<Node: AiNode>(self) -> impl Bundle { #props }
 		}
 		// #generic_err
 	}
@@ -77,6 +79,9 @@ fn func_as_inner(func: &ItemFn) -> ItemFn {
 	func_inner.vis = syn::Visibility::Inherited;
 	func_inner
 }
+
+
+
 // use proc_macro2::Span;
 // use proc_macro2::TokenStream;
 // use syn::Generics;

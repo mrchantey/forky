@@ -6,7 +6,8 @@ mod node_def;
 use node_def::*;
 mod action;
 use action::*;
-
+mod utils;
+// pub(crate) use utils::*;
 
 /// Used to define number of children allowed per node, defaults to `16`.
 ///
@@ -25,7 +26,7 @@ use action::*;
 pub fn define_node(attr: TokenStream) -> TokenStream { parse_node(attr) }
 
 /// An action is a `bevy::system` that accepts a generic `AiNode` type parameter.
-/// 
+///
 /// # Example
 /// ```rust
 /// #[action]
@@ -38,26 +39,28 @@ pub fn define_node(attr: TokenStream) -> TokenStream { parse_node(attr) }
 #[proc_macro_attribute]
 pub fn action(attr: TokenStream, item: TokenStream) -> TokenStream {
 	parse_action(attr, item)
+		.unwrap_or_else(syn::Error::into_compile_error)
+		.into()
 }
 
 
 /// Macro used for defining trees in RSX format.
-/// 
+///
 /// # Example
-/// 
+///
 /// ```rust
 /// let my_tree = || tree!{
 /// 	<sequence>
 /// 		<empty_node>
 /// 	</sequence>
 /// };
-/// 
+///
 /// ```
 #[proc_macro]
 pub fn tree(item: TokenStream) -> TokenStream {
 	parse_tree(item)
-	.unwrap_or_else(syn::Error::into_compile_error)
-	.into()
+		.unwrap_or_else(syn::Error::into_compile_error)
+		.into()
 }
 
 /// A tree is a function that returns `impl IntoNode`
