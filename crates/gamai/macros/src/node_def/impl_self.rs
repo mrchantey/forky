@@ -14,7 +14,7 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 
 	let child_fields_def = child_fields_def(*num_children);
 	let child_fields_args = child_fields_args(*num_children);
-	let child_fields = child_fields(*num_children);
+	let child_fields = child_fields_assignment(*num_children);
 	let child_fields_markers = child_fields_markers(*num_children);
 
 	quote! {
@@ -51,7 +51,7 @@ fn child_fields_args(num_children: usize) -> TokenStream {
 		.collect()
 }
 
-fn child_fields(num_children: usize) -> TokenStream {
+fn child_fields_assignment(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
 			let field = child_field_name(index);
