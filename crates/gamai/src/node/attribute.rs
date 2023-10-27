@@ -1,6 +1,7 @@
 // use crate::*;
 use super::*;
 use crate::common_actions::*;
+use crate::prop::IntoPropBundle;
 use bevy_ecs::prelude::*;
 // use bevy_ecs::schedule::SystemConfigs;
 
@@ -58,12 +59,14 @@ impl Default for DefaultAttributes {
 		}
 	}
 }
+
 impl<
 		PreParentUpdate: IntoAction,
 		PreUpdate: IntoAction,
 		Update: IntoAction,
 		PostUpdate: IntoAction,
-	> IntoAction for Attributes<PreParentUpdate, PreUpdate, Update, PostUpdate>
+	> IntoPropBundle
+	for Attributes<PreParentUpdate, PreUpdate, Update, PostUpdate>
 {
 	fn into_bundle<Node: AiNode>(self) -> impl Bundle {
 		(
@@ -73,7 +76,15 @@ impl<
 			self.post_update.into_bundle::<Node>(),
 		)
 	}
+}
 
+impl<
+		PreParentUpdate: IntoAction,
+		PreUpdate: IntoAction,
+		Update: IntoAction,
+		PostUpdate: IntoAction,
+	> IntoAction for Attributes<PreParentUpdate, PreUpdate, Update, PostUpdate>
+{
 	fn into_action_configs<Node: AiNode>(
 		self,
 	) -> bevy_ecs::schedule::SystemConfigs {

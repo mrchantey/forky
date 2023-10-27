@@ -24,6 +24,7 @@ pub fn parse_action(
 		#func_as_inner
 		use gamai::exports::*;
 		use gamai::node::*;
+		use gamai::prop::*;
 		use gamai::*;
 
 		#[derive(Debug, Default, Clone, Eq, PartialEq, std::hash::Hash)]
@@ -54,12 +55,16 @@ fn impl_into_action(func: &ItemFn, args: &ActionArgs) -> TokenStream {
 	};
 
 	quote! {
+		impl IntoPropBundle for #ident
+		{
+			fn into_bundle<Node: AiNode>(self) -> impl Bundle { #bundle }
+		}
+
 		impl IntoAction for #ident
 		{
 			fn into_action_configs<Node: AiNode>(self) -> SystemConfigs{
 				#func_inner #func_generic.into_configs()
 			}
-			fn into_bundle<Node: AiNode>(self) -> impl Bundle { #bundle }
 		}
 		// #generic_err
 	}

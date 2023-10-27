@@ -22,6 +22,7 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 		pub struct #ident<#self_bounds>{
 			phantom: std::marker::PhantomData<Path>,
 			system: System,
+			// prop_overrides: Option<Props>,
 			#child_fields_def
 		}
 
@@ -29,6 +30,7 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 			pub fn new<#child_fields_markers>(system: System, #child_fields_args) -> Self {
 				Self {
 					system,
+					// prop_overrides: None,
 					phantom: std::marker::PhantomData,
 					#child_fields
 				}

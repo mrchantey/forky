@@ -55,6 +55,15 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			const CHILD_INDEX: usize = Path::CHILD_INDEX;
 		}
 
+		impl<#self_bounds> IntoBundle for #ident<#self_params> {
+			fn into_bundle(self) -> impl Bundle{
+				(
+					self.system.into_bundle::<Self>(),
+					#children_into_bundles
+				)
+			}
+		}
+
 		impl<#self_bounds> AiNode for #ident<#self_params> {
 
 			type ChildQuery<T:IntoProp> = (
@@ -81,13 +90,6 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 				(
 					Prop::new(value.clone()),
 					#child_tree_bundle_values
-				)
-			}
-
-			fn into_bundle(self) -> impl Bundle{
-				(
-					self.system.into_bundle::<Self>(),
-					#children_into_bundles
 				)
 			}
 

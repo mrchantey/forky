@@ -1,4 +1,5 @@
 use crate::node::*;
+use crate::prop::IntoPropBundle;
 use crate::*;
 use bevy_ecs::prelude::*;
 
@@ -6,9 +7,12 @@ use bevy_ecs::prelude::*;
 #[allow(non_camel_case_types)]
 pub struct empty_node;
 
+impl IntoPropBundle for empty_node {
+	fn into_bundle<Node: AiNode>(self) -> impl Bundle { () }
+}
+
 impl IntoAction for empty_node {
 	const IS_EMPTY: bool = true;
-	fn into_bundle<Node: AiNode>(self) -> impl Bundle { () }
 	fn into_action_configs<Node: AiNode>(
 		self,
 	) -> bevy_ecs::schedule::SystemConfigs {

@@ -1,5 +1,3 @@
-pub mod action;
-pub use self::action::*;
 pub mod action_set;
 pub use self::action_set::*;
 pub mod ai_component;
@@ -8,6 +6,8 @@ pub mod ai_node;
 pub use self::ai_node::*;
 pub mod attribute;
 pub use self::attribute::*;
+pub mod into_action;
+pub use self::into_action::*;
 pub mod into_node;
 pub use self::into_node::*;
 pub mod node_def;

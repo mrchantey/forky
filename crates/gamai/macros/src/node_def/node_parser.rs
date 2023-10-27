@@ -34,11 +34,13 @@ impl NodeParser {
 		let self_params = quote! {
 			Path,
 			System,
+			// Props,
 			#child_params
 		};
 		let self_bounds = quote! {
 			Path: TreePath,
 			System: IntoAction,
+			// Props: IntoBundleWithSystem,
 			#child_bounds
 		};
 

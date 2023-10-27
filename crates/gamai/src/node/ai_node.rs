@@ -8,7 +8,7 @@ use std::marker::PhantomData;
 
 /// An AiNode is a `TreePath` with actions and typed children.
 // pub trait AiNode {
-pub trait AiNode: 'static + Send + Sync + TreePath {
+pub trait AiNode: 'static + Send + Sync + TreePath + IntoBundle {
 	/// Tuple Query used to access child states: `(Entity,(Child1,(Child2)))`
 	type ChildQuery<T: IntoProp>: WorldQuery;
 	type ChildQueryOpt<T: IntoProp>: WorldQuery;
@@ -38,7 +38,6 @@ pub trait AiNode: 'static + Send + Sync + TreePath {
 	// 	item.out()
 	// }
 
-	fn into_bundle(self) -> impl Bundle;
 	fn add_systems(self, schedule: &mut Schedule);
 
 	fn tree_bundle<T: IntoProp + Clone>(value: T) -> Self::BundleRecursive<T>;
