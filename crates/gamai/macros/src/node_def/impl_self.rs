@@ -39,15 +39,7 @@ pub fn impl_self(node: &NodeParser) -> TokenStream {
 	}
 }
 
-fn child_fields_def(num_children: usize) -> TokenStream {
-	(0..num_children)
-		.map(|index| {
-			let field = child_field_name(index);
-			let ty = child_type_name(index);
-			quote!(#field: #ty,)
-		})
-		.collect()
-}
+
 fn child_fields_args(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {

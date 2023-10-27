@@ -5,6 +5,12 @@ use bevy_ecs::schedule::SystemConfigs;
 use std::fmt::Debug;
 use std::hash::Hash;
 
+
+pub trait AddSystems {
+	fn add_systems(self, schedule: &mut Schedule);
+}
+
+
 /// Node systems are stored in Nodes as `||-> IntoAction` closures, which also implement `IntoAction`
 pub trait IntoAction:
 	'static + Send + Sync + Sized + Eq + Hash + Clone + Debug + IntoPropBundle

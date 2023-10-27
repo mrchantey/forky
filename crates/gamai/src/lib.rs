@@ -75,6 +75,9 @@ pub use prop::Score;
 #[doc(inline)]
 pub use prop::TreeBundle;
 
+/// A tree is a collection of nodes, Actions and Props.
+pub mod tree;
+
 /// Collection of commonly used actions
 pub mod common_actions;
 /// Collection of commonly used selectors
