@@ -6,10 +6,21 @@ use bevy_ecs::bundle::Bundle;
 pub struct TreeBundle;
 
 impl TreeBundle {
-	/// Create a bundle with the 
-	/// [Components](bevy_ecs::component::Component) 
+	/// Create a bundle with the [Running] prop on the root node as well as the
+	/// [Components](bevy_ecs::component::Component)
 	/// and [Props](Prop) specified in this tree.
-	pub fn new<M, T: IntoProp + Clone, Node: AiNode>(
+	pub fn new<M, Node: AiNode>(
+		node: impl IntoNode<M, Out = Node>,
+	) -> impl Bundle {
+		(
+			Prop::<_, Node>::new(Running),
+			node.into_node().into_bundle(),
+		)
+	}
+	/// Create a bundle with the
+	/// [Components](bevy_ecs::component::Component)
+	/// and [Props](Prop) specified in this tree.
+	pub fn inactive<M, Node: AiNode>(
 		node: impl IntoNode<M, Out = Node>,
 	) -> impl Bundle {
 		node.into_node().into_bundle()

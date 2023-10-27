@@ -24,7 +24,7 @@
 //! fn main(){
 //! 	let mut app = App::new();
 //! 	app.add_plugins(TreePlugin::new(MyTree));
-//! 	app.world.spawn(TreeBundle::root(MyTree, Running));
+//! 	app.world.spawn(TreeBundle::new(MyTree));
 //!
 //! 	app.update(); // runs first child
 //! 	app.update(); // runs second child

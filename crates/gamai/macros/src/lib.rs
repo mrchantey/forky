@@ -36,6 +36,11 @@ pub fn define_node(attr: TokenStream) -> TokenStream { parse_node(attr) }
 /// 	}
 /// }
 /// ```
+/// 
+/// It can also accept a list of props to be added to the node, when calling `AiBundle::new()`.
+/// ```rust
+/// #[action(props=Score::Fail)]
+/// ```
 #[proc_macro_attribute]
 pub fn action(attr: TokenStream, item: TokenStream) -> TokenStream {
 	parse_action(attr, item)

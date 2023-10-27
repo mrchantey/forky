@@ -20,7 +20,7 @@ pub fn works() -> Result<()> {
 	let mut app = App::new();
 
 	app.add_plugins(TreePlugin::new(my_tree));
-	let entity = app.world.spawn(Prop::from_node(my_tree, Running)).id();
+	let entity = app.world.spawn(TreeBundle::new(my_tree)).id();
 
 	app.update();
 

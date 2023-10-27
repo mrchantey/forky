@@ -1,4 +1,3 @@
-use super::*;
 #[allow(unused_imports)]
 use crate::node::ActionStage;
 use std::cmp::Ordering;
@@ -27,8 +26,6 @@ pub enum Score {
 	Weight(f32),
 	// RankedWeight(u32, f32), TODO
 }
-
-pub type ScoreProp<N> = Prop<Score, N>;
 
 impl Score {
 	pub fn set(&mut self, other: Self) { *self = other; }

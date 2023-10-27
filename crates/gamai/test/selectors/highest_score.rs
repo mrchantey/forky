@@ -24,13 +24,7 @@ pub fn it_works() -> Result<()> {
 
 	app.add_plugins(TreePlugin::new(MyTree));
 
-	let entity = app
-		.world
-		.spawn((
-			TreeBundle::recursive(MyTree, Score::Fail),
-			TreeBundle::root(MyTree, Running),
-		))
-		.id();
+	let entity = app.world.spawn(TreeBundle::new(MyTree)).id();
 
 	app.update();
 

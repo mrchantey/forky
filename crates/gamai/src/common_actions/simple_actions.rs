@@ -15,19 +15,6 @@ impl IntoAction for empty_node {
 		(|| {}).into_configs()
 	}
 }
-
-#[action]
-pub fn score_always_pass<N: AiNode>(mut query: Query<&mut Prop<Score, N>>) {
-	for mut score in query.iter_mut() {
-		**score = Score::Pass;
-	}
-}
-#[action]
-pub fn score_always_fail<N: AiNode>(mut query: Query<&mut Prop<Score, N>>) {
-	for mut score in query.iter_mut() {
-		**score = Score::Fail;
-	}
-}
 #[action]
 pub fn node_always_succeed<N: AiNode>(
 	mut commands: Commands,

@@ -19,7 +19,7 @@ pub fn it_works() -> Result<()> {
 
 	app.add_plugins(TreePlugin::new(MyTree));
 
-	let entity = app.world.spawn(TreeBundle::root(MyTree, Running)).id();
+	let entity = app.world.spawn(TreeBundle::new(MyTree)).id();
 
 	expect(Prop::<Running, _>::get(MyTree, &app.world, entity)).to_be_some()?;
 
