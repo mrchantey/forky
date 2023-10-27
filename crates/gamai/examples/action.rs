@@ -6,7 +6,10 @@ fn main() {}
 #[derive(bevy_ecs::prelude::Component)]
 struct MyBundle;
 
-#[gamai::action(props=MyBundle)]
+#[gamai::action(
+	props=(MyBundle,MyBundle),
+	components=(MyBundle,MyBundle))
+]
 pub fn action<N: gamai::AiNode>() {}
 // #[gamai::action]
 // pub fn bevy_system() {}

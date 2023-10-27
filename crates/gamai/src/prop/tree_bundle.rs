@@ -5,6 +5,8 @@ use crate::*;
 pub struct TreeBundle;
 
 impl TreeBundle {
+	pub fn new() -> Self { Self }
+
 	/// Recursively create a prop with the given value for each node in the tree.
 	pub fn recursive<M, T: IntoProp + Clone, Node: AiNode>(
 		_node: impl IntoNode<M, Out = Node>,
