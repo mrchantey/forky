@@ -1,4 +1,5 @@
 use super::*;
+use crate::utils::*;
 use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream;
@@ -22,8 +23,7 @@ pub struct NodeParser {
 
 impl NodeParser {
 	pub fn new(num_children: usize) -> Self {
-		let ident =
-			Ident::new(&format!("Node{num_children}"), Span::call_site());
+		let ident = parent_node(num_children);
 
 		let child_params = child_params(num_children);
 		let child_bounds = child_bounds(num_children);

@@ -1,4 +1,4 @@
-use proc_macro2::Span;
+use crate::utils::parent_node;
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
@@ -156,10 +156,7 @@ impl<'a> TreeParser<'a> {
 	}
 
 	fn from_action_ident(&self) -> TokenStream {
-		let ident = syn::Ident::new(
-			&format!("Node{}", self.children.len()),
-			Span::call_site(),
-		);
+		let ident = parent_node(self.children.len());
 		if self.children.len() <= 16 {
 			quote!(gamai::node::#ident)
 		} else {

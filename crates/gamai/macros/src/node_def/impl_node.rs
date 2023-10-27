@@ -47,8 +47,6 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let recursive_children = recursive_children(*num_children);
 	let children_into_bundles = children_into_bundles(*num_children);
 
-	// let query_ext = Ident::new(&format!("QueryTrait{}", ident), ident.span());
-
 	quote! {
 		impl<#self_bounds> TreePath for #ident<#self_params> {
 			type Parent = Path::Parent;

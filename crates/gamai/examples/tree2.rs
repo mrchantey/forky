@@ -7,7 +7,11 @@ use gamai::*;
 fn my_system<N: AiNode>() {}
 
 fn main() {
-	let _tree0 = tree! {<MyTree/>};
+	let tree1 = || tree! {<MyTree/>};
+	let _bundle = TreeBundle::new(tree1);
+	let _bundle = TreeBundle::new(tree1);
+	let _plugin = TreePlugin::new(tree1);
+	let _plugin = TreePlugin::new(tree1);
 	// let _tree1 = tree! {
 	// 	<my_system>
 	// 		<my_system>

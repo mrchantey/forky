@@ -1,6 +1,4 @@
 use super::*;
-use proc_macro2::Ident;
-use proc_macro2::Span;
 // use proc_macro2::Ident;
 use proc_macro2::TokenStream;
 use quote::quote;
@@ -18,9 +16,7 @@ pub fn impl_action(node: &NodeParser) -> TokenStream {
 	let child_fields_def = child_fields_def(*num_children);
 	let child_fields_args = child_fields_args(*num_children);
 	let child_fields_assignment = child_fields_assignment(*num_children);
-	let ident =
-		Ident::new(&format!("ParentAction{num_children}"), Span::call_site());
-
+	let ident = crate::utils::parent_action(*num_children);
 	let self_bounds = quote!(Action: AddSystems, #child_bounds);
 	let self_params = quote!(Action, #child_params);
 

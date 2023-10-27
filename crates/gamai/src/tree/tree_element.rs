@@ -1,6 +1,5 @@
 use crate::node::*;
 use crate::prop::*;
-use bevy_ecs::prelude::*;
 // use crate::*;
 
 /// Track the node, props and action of an element. In the case where no
@@ -28,7 +27,7 @@ impl<Node: AiNode, Props: IntoPropBundle, Action: IntoAction>
 // impl IntoBundle
 
 
-pub trait IntoTreeElement {
-	fn add_systems(self, schedule: &mut Schedule);
-	fn into_bundle(self) -> impl Bundle;
-}
+pub trait IntoElement: AddSystems + IntoBundle {}
+
+
+impl<T: AddSystems + IntoBundle> IntoElement for T {}
