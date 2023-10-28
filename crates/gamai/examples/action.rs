@@ -7,6 +7,7 @@ fn main() {}
 struct MyBundle;
 
 #[gamai::action(
+	// props={foo=MyBundle,bar=MyBundle},
 	props=(MyBundle,MyBundle),
 	components=(MyBundle,MyBundle))
 ]

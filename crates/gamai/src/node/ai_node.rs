@@ -32,15 +32,6 @@ pub trait AiNode: 'static + Send + Sync + TreePath {
 	fn children_opt_mut<'a, T: IntoProp>(
 		item: <Self::ChildQueryOptMut<T> as WorldQuery>::Item<'a>,
 	) -> Vec<Box<dyn IntoChildPropOptMut<'a, T> + 'a>>;
-	// fn parse_query<'a, T: IntoProp, Q: IntoChildQuery<Self, T>>(
-	// 	item: Q,
-	// ) -> Q::Out {
-	// 	item.out()
-	// }
-
-	fn add_systems(self, _schedule: &mut Schedule) {
-		panic!("this has been deprecated, use elements instead.")
-	}
 
 	fn tree_bundle<T: IntoProp + Clone>(value: T) -> Self::BundleRecursive<T>;
 
@@ -79,6 +70,7 @@ impl<T> PhantomComponent<T> {
 }
 
 /// Base type for nodes, must be Send/Sync because used in components for distinguishing nodes
+/// Useful for finding out info for a node at runtime.
 pub trait NodeInspector: 'static + Send + Sync {
 	// fn node_inspector_into_node(self) -> impl AiNode;
 	fn child(&self, index: usize) -> &dyn NodeInspector;

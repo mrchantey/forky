@@ -27,7 +27,7 @@ pub fn parse_action(
 		use gamai::prop::*;
 		use gamai::*;
 
-		#[derive(Debug, Default, Clone, Eq, PartialEq, std::hash::Hash)]
+		#[derive(Debug, Clone, Eq, PartialEq, std::hash::Hash)]
 		#[allow(non_camel_case_types)]
 		#vis struct #ident;
 
