@@ -1,3 +1,5 @@
+pub mod attribute_parser;
+pub use self::attribute_parser::*;
 pub mod html_to_string;
 pub use self::html_to_string::*;
 pub mod parse_tree;

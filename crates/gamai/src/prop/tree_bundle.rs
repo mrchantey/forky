@@ -19,8 +19,8 @@ impl TreeBundle {
 	/// Create a bundle with the
 	/// [Components](bevy_ecs::component::Component)
 	/// and [Props](Prop) specified in this tree.
-	pub fn inactive<T: IntoBundle>(bundle: T) -> impl Bundle {
-		bundle.into_bundle()
+	pub fn inactive<M, T: IntoElement<M>>(el: T) -> impl Bundle {
+		el.into_element().into_bundle()
 	}
 
 	/// Recursively create a prop with the given value for each node in the tree.

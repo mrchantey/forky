@@ -1,15 +1,14 @@
+use super::*;
 use crate::utils::parent_element;
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
-use rstml::node::KeyedAttribute;
-use rstml::node::NodeElement;
 use syn::spanned::Spanned;
 use syn::Result;
 
-type XmlNode = rstml::node::Node;
-type XmlNodeAttribute = rstml::node::NodeAttribute;
-type XmlNodeElement = rstml::node::NodeElement;
+pub type XmlNode = rstml::node::Node;
+pub type XmlNodeAttribute = rstml::node::NodeAttribute;
+pub type XmlNodeElement = rstml::node::NodeElement;
 
 pub struct TreeParser<'a> {
 	pub node: &'a XmlNodeElement,
@@ -18,101 +17,6 @@ pub struct TreeParser<'a> {
 	pub graph_depth: usize,
 	pub attribute: AttributeParser,
 	pub children: Vec<TreeParser<'a>>,
-}
-
-pub struct AttributeParser {
-	// pub props:TokenStream,
-	pub pre_parent_update: TokenStream,
-	pub pre_update: TokenStream,
-	pub update_apply_deferred: bool,
-	pub update: TokenStream,
-	pub post_update: TokenStream,
-}
-impl AttributeParser {
-	pub fn from_attributes(node: &NodeElement) -> Result<Self> {
-		let mut attributes = Self::default();
-		attributes.update = node.name().to_token_stream();
-
-
-		let has_no_value = |attr: &KeyedAttribute| {
-			syn::Error::new(attr.key.span(), "this attribute must have a value")
-		};
-		for attribute in node.attributes() {
-			match attribute {
-				XmlNodeAttribute::Block(block) => {
-					return Err(syn::Error::new(
-						block.span(),
-						format!("block attributes not currently supported"),
-					));
-				}
-				XmlNodeAttribute::Attribute(attr) => {
-					match attr.key.to_string().as_str() {
-						"apply_deferred" => {
-							attributes.update_apply_deferred = true
-						}
-						"before_parent" => {
-							attributes.pre_parent_update = attr
-								.value()
-								.map(|a| a.to_token_stream())
-								.ok_or_else(|| has_no_value(attr))?;
-						}
-						"before" => {
-							attributes.pre_update = attr
-								.value()
-								.map(|a| a.to_token_stream())
-								.ok_or_else(|| has_no_value(attr))?;
-						}
-						"after" => {
-							attributes.post_update = attr
-								.value()
-								.map(|a| a.to_token_stream())
-								.ok_or_else(|| has_no_value(attr))?;
-						}
-						_ => {
-							return Err(syn::Error::new(
-								attr.key.span(),
-								format!(
-									"attribute '{}' not supported",
-									attr.key
-								),
-							));
-						}
-					}
-				}
-			}
-		}
-
-
-		Ok(attributes)
-	}
-	pub fn to_attributes_tokens(&self) -> TokenStream {
-		let Self {
-			update,
-			pre_update,
-			update_apply_deferred,
-			pre_parent_update,
-			post_update,
-		} = self;
-		quote! {
-		gamai::node::Attributes::new(
-			#pre_parent_update,
-			#pre_update,
-			#update,
-			#update_apply_deferred,
-			#post_update)
-		}
-	}
-}
-impl Default for AttributeParser {
-	fn default() -> Self {
-		Self {
-			pre_parent_update: quote!(gamai::common_actions::empty_node),
-			pre_update: quote!(gamai::common_actions::empty_node),
-			update_apply_deferred: false,
-			update: quote!(gamai::common_actions::empty_node),
-			post_update: quote!(gamai::common_actions::empty_node),
-		}
-	}
 }
 
 impl<'a> TreeParser<'a> {
@@ -197,12 +101,13 @@ impl<'a> TreeParser<'a> {
 			let ident = self.from_action_ident();
 			let child_types = self.child_types();
 			let child_instances = self.child_instances();
-			let attribute = attribute.to_attributes_tokens();
+			let action = attribute.to_action();
+			let props = attribute.to_prop_bundle();
 			quote! {
 				#ident::<gamai::node::TreePathRoot<#graph_id>,
 				_,_, //for action & props
 				#child_types
-				>::new(#attribute, #attribute, #child_instances)
+				>::new(#action, #props, #child_instances)
 			}
 		}
 	}

@@ -19,11 +19,6 @@ pub trait IntoAction:
 	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs;
 }
 
-impl<T1: IntoAction, T2: IntoAction> IntoPropBundle for (T1, T2) {
-	fn into_bundle<Node: AiNode>(self) -> impl Bundle {
-		(self.0.into_bundle::<Node>(), self.1.into_bundle::<Node>())
-	}
-}
 impl<T1: IntoAction, T2: IntoAction> IntoAction for (T1, T2) {
 	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs {
 		(
