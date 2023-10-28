@@ -21,6 +21,7 @@ pub struct TreeParser<'a> {
 }
 
 pub struct AttributeParser {
+	// pub props:TokenStream,
 	pub pre_parent_update: TokenStream,
 	pub pre_update: TokenStream,
 	pub update_apply_deferred: bool,

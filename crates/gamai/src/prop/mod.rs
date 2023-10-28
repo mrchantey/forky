@@ -8,8 +8,6 @@ pub mod into_prop_bundle;
 pub use self::into_prop_bundle::*;
 pub mod prop;
 pub use self::prop::*;
-pub mod prop_bundle_overrides;
-pub use self::prop_bundle_overrides::*;
 pub mod prop_tree;
 pub use self::prop_tree::*;
 pub mod score;

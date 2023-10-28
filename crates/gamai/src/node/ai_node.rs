@@ -4,9 +4,9 @@ use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;
 use std::marker::PhantomData;
 
-/// An AiNode is a `TreePath` with actions and typed children.
+/// An AiNode is a `TreePath` with children.
 // pub trait AiNode {
-pub trait AiNode: 'static + Send + Sync + TreePath + IntoBundle {
+pub trait AiNode: 'static + Send + Sync + TreePath {
 	type WithPath<NewPath: TreePath>: AiNode;
 
 	/// Tuple Query used to access child states: `(Entity,(Child1,(Child2)))`
