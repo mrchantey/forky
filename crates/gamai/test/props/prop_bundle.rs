@@ -10,7 +10,7 @@ pub enum State {
 	Terrible,
 }
 
-fn tree() -> impl AiNode {
+fn tree() -> impl TreeElement {
 	tree! {
 		<empty_node>
 			<empty_node/>

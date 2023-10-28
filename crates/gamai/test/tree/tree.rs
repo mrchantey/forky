@@ -5,7 +5,7 @@ use gamai::*;
 use sweet::*;
 
 #[tree_builder]
-pub fn MyTree() -> impl AiNode {
+pub fn MyTree() -> impl TreeElement {
 	tree! {
 		<sequence>
 			<node_always_succeed/>

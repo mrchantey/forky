@@ -1,4 +1,4 @@
-use crate::utils::parent_node;
+use crate::utils::parent_element;
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
@@ -156,7 +156,7 @@ impl<'a> TreeParser<'a> {
 	}
 
 	fn from_action_ident(&self) -> TokenStream {
-		let ident = parent_node(self.children.len());
+		let ident = parent_element(self.children.len());
 		if self.children.len() <= 16 {
 			quote!(gamai::node::#ident)
 		} else {
@@ -199,9 +199,9 @@ impl<'a> TreeParser<'a> {
 			let attribute = attribute.to_attributes_tokens();
 			quote! {
 				#ident::<gamai::node::TreePathRoot<#graph_id>,
-				_, //for action
+				_,_, //for action & props
 				#child_types
-				>::new(#attribute,#child_instances)
+				>::new(#attribute, #attribute, #child_instances)
 			}
 		}
 	}

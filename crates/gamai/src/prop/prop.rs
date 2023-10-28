@@ -1,4 +1,5 @@
 use crate::node::*;
+use crate::tree::IntoElement;
 use bevy_ecs::prelude::*;
 use std::marker::PhantomData;
 use std::ops::Deref;
@@ -13,8 +14,8 @@ pub type DerefProp<T> = dyn Deref<Target = T>;
 
 #[derive(Debug, Clone, Component)]
 #[component(storage = "SparseSet")]
-/// Container of per-node components. 
-/// 
+/// Container of per-node components.
+///
 /// Props are often added and removed, so get stored in a sparse set.
 pub struct Prop<T: IntoProp, Node: NodeInspector> {
 	pub value: T,
@@ -36,7 +37,7 @@ impl<T: IntoProp, N: NodeInspector> Prop<T, N> {
 			marker: PhantomData,
 		}
 	}
-	pub fn from_node<M>(_n: impl IntoNode<M, Out = N>, value: T) -> Self {
+	pub fn from_node<M>(_n: impl IntoElement<M, Node = N>, value: T) -> Self {
 		Self {
 			value,
 			marker: PhantomData,
@@ -46,7 +47,7 @@ impl<T: IntoProp, N: NodeInspector> Prop<T, N> {
 	pub fn into_inner(self) -> T { self.value }
 
 	pub fn get<'a, M>(
-		_n: impl IntoNode<M, Out = N>,
+		_n: impl IntoElement<M, Node = N>,
 		world: &'a World,
 		entity: Entity,
 	) -> Option<&'a T> {
@@ -54,7 +55,7 @@ impl<T: IntoProp, N: NodeInspector> Prop<T, N> {
 	}
 
 	pub fn get_ref<'a, M>(
-		_n: impl IntoNode<M, Out = N>,
+		_n: impl IntoElement<M, Node = N>,
 		world: &'a World,
 		entity: Entity,
 	) -> Option<&'a Self> {
@@ -103,12 +104,3 @@ where
 		}
 	}
 }
-// impl<'a, T: IntoProp> PropTree<'a, T> {
-// 	pub fn new<N, M>(
-// 		n: impl IntoNode<M, Out = N>,
-// 		world: &'a World,
-// 		entity: Entity,
-// 	) -> Self {
-// 		n.into_node().get_recursive::<T>(world, entity)
-// 	}
-// }

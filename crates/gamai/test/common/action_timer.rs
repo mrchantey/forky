@@ -28,26 +28,26 @@ pub fn works() -> Result<()> {
 
 	app.update_with_millis(1); //start running 1
 
-	let out = my_tree.get_recursive::<ActionTimer>(&app.world, entity);
+	let out = PropTree::<ActionTimer>::new(my_tree, &app.world, entity);
 	expect(out.value).to_be_some()?;
 	expect(out.children[0].value).to_be_some()?;
-	let out = my_tree.get_recursive::<ActionResult>(&app.world, entity);
+	let out = PropTree::<ActionResult>::new(my_tree, &app.world, entity);
 	expect(out.children[0].value).to_be_none()?;
 	expect(out.children[1].value).to_be_none()?;
 
 	app.update_with_secs(1); //end running 1
 
-	let out = my_tree.get_recursive::<ActionResult>(&app.world, entity);
+	let out = PropTree::<ActionResult>::new(my_tree, &app.world, entity);
 	expect(out.children[0].value).to_be_some()?;
 	expect(out.children[1].value).to_be_none()?;
-	let out = my_tree.get_recursive::<Running>(&app.world, entity);
+	let out = PropTree::<Running>::new(my_tree, &app.world, entity);
 	expect(out.children[0].value).to_be_none()?;
 	expect(out.children[1].value).to_be_none()?;
 
 	app.update(); //start running 2
 	app.update_with_secs(1); //end running 2
 
-	let out = my_tree.get_recursive::<ActionResult>(&app.world, entity);
+	let out = PropTree::<ActionResult>::new(my_tree, &app.world, entity);
 	expect(out.children[0].value).to_be_none()?;
 	expect(out.children[1].value).to_be_some()?;
 

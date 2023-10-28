@@ -26,7 +26,7 @@ fn main() {
 }
 
 #[tree_builder]
-pub fn MyTree() -> impl AiNode {
+pub fn MyTree() -> impl TreeElement {
 	tree! {
 		<my_system>
 			<my_system/>

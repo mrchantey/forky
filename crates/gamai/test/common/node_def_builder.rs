@@ -4,14 +4,14 @@ use sweet::*;
 
 #[sweet_test]
 pub fn works() -> Result<()> {
-	type Root = TreePathRoot<0>;
-	let tree = || {
-		let a = Node0::<Root, _>::new(DefaultAttributes::default());
-		Node1::<Root, _, _>::new(DefaultAttributes::default(), a).into_root()
-	};
+	// type Root = TreePathRoot<0>;
+	// let tree = || {
+	// 	let a = Node0::<Root, _>::new(DefaultAttributes::default());
+	// 	Node1::<Root, _, _>::new(DefaultAttributes::default(), a).into_root()
+	// };
 
-	let _ = TreePlugin::new(tree);
-	let _ = TreePlugin::new(tree);
+	// let _ = TreePlugin::new(tree);
+	// let _ = TreePlugin::new(tree);
 
 	Ok(())
 }

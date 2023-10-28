@@ -41,7 +41,7 @@ fn child_fields_args(num_children: usize) -> TokenStream {
 		.map(|index| {
 			let field = child_field_name(index);
 			let ty = child_type_name(index);
-			let marker = child_marker_name(index);
+			let marker = child_marker_type(index);
 			quote!(#field: impl IntoNode<#marker, Out=#ty>,)
 		})
 		.collect()
@@ -57,15 +57,14 @@ fn child_fields_assignment(num_children: usize) -> TokenStream {
 }
 
 
-pub fn child_marker_name(index: usize) -> TokenStream {
-	field_ident("IntoChildMarker", index).to_token_stream()
+pub fn child_marker_type(index: usize) -> TokenStream {
+	field_ident("ChildMarker", index).to_token_stream()
 }
-
 
 fn child_fields_markers(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
-			let field = child_marker_name(index);
+			let field = child_marker_type(index);
 			quote!(#field,)
 		})
 		.collect()

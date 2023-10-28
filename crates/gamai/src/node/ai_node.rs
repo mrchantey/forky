@@ -1,6 +1,5 @@
 use super::*;
 use crate::prop::*;
-use bevy_app::Plugin;
 use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;
 use std::marker::PhantomData;
@@ -50,16 +49,14 @@ pub trait AiNode: 'static + Send + Sync + TreePath + IntoBundle {
 	fn get_children(&self) -> Vec<&dyn NodeInspector>;
 	fn get_children_owned(self) -> Vec<Box<dyn NodeInspector>>;
 
-
+	/// Retrieve a recursive [`PropTree`] of values for a given type.
 	fn get_recursive<T: IntoProp>(
-		self,
 		world: &World,
 		entity: Entity,
 	) -> PropTree<T> {
-		self.get_recursive_inner::<T>(world, entity, 0)
+		Self::get_recursive_inner::<T>(world, entity, 0)
 	}
 	fn get_recursive_inner<T: IntoProp>(
-		self,
 		world: &World,
 		entity: Entity,
 		depth: usize,
@@ -70,7 +67,7 @@ pub trait AiNode: 'static + Send + Sync + TreePath + IntoBundle {
 	/// Fixes paths of all children to be relative to self.
 	fn into_root(self) -> impl AiNode { self.into_child::<Self>() }
 
-	fn plugin(self) -> impl Plugin { TreePlugin::new(self) }
+	// fn plugin(self) -> impl Plugin { TreePlugin::new(self) }
 }
 
 #[derive(Debug, Default, Clone, Component)]

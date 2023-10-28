@@ -137,7 +137,6 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			}
 
 			fn get_recursive_inner<T: IntoProp>(
-				self,
 				world: &World,
 				entity: Entity,
 				depth:usize,
@@ -312,8 +311,8 @@ fn get_children(num_children: usize) -> TokenStream {
 fn recursive_children(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
-			let child_ident = child_field_name(index);
-			quote!(self.#child_ident.get_recursive_inner::<T>(world,entity,depth + 1),)
+			let child_ident = child_type_name(index);
+			quote!(#child_ident::get_recursive_inner::<T>(world,entity,depth + 1),)
 		})
 		.collect()
 }

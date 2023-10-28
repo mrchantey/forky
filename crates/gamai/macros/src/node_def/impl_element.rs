@@ -22,6 +22,7 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 	let child_fields_assignment = child_fields_assignment(*num_children);
 	let children_inferred_types = children_inferred_types(*num_children);
 	let children_with_path = children_with_path(*num_children);
+	let child_markers = child_markers(*num_children);
 
 	let self_bounds = quote! {
 		Path: TreePath,
@@ -47,7 +48,7 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 		}
 
 		impl <#self_bounds> #ident<#self_params>{
-			pub fn new(action: Action, props: Props, #child_fields_args)->Self{
+			pub fn new<#child_markers>(action: Action, props: Props, #child_fields_args)->Self{
 				Self{
 					action,
 					props,
@@ -76,7 +77,6 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 
 		impl<#self_bounds> TreeElement for #ident<#self_params>{
 			type Node = <#node_ident::<Path,#child_nodes> as AiNode>::WithPath<Path>;
-			// fn into_node(self)-> Self::Node { self.node }
 			fn with_path<NewPath: TreePath>(self)->impl TreeElement{
 				#ident::<NewPath, Action, Props, #children_inferred_types>::new(
 					self.action,
@@ -110,7 +110,8 @@ fn child_fields_args(num_children: usize) -> TokenStream {
 		.map(|index| {
 			let field = child_field_name(index);
 			let ty = child_type_name(index);
-			quote!(#field: #ty,)
+			let marker = child_marker_type(index);
+			quote!(#field: impl IntoElement<#marker, Out=#ty>,)
 		})
 		.collect()
 }
@@ -118,7 +119,7 @@ fn child_fields_assignment(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
 			let field = child_field_name(index);
-			quote!(#field:#field,)
+			quote!(#field:#field.into_element(),)
 		})
 		.collect()
 }
@@ -149,6 +150,14 @@ fn children_with_path(num_children: usize) -> TokenStream {
 		.map(|index| {
 			let name = child_field_name(index);
 			quote!(self.#name.with_path::<TreePathSegment<#index, NewPath>>(),)
+		})
+		.collect()
+}
+fn child_markers(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let ty = child_marker_type(index);
+			quote!(#ty,)
 		})
 		.collect()
 }

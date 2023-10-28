@@ -26,7 +26,7 @@ pub fn delayed_commands() -> Result<()> {
 
 	app.update();
 
-	let out = my_tree.get_recursive::<Running>(&app.world, entity);
+	let out = PropTree::<Running>::new(my_tree, &app.world, entity);
 	expect(out.value).to_be_some()?;
 	// the first child got set at the end of Update
 	expect(out.children[0].value).to_be_some()?;
@@ -58,7 +58,7 @@ pub fn apply_deferred() -> Result<()> {
 
 	app.update();
 
-	let out = my_tree.get_recursive::<Running>(&app.world, entity);
+	let out = PropTree::<Running>::new(my_tree, &app.world, entity);
 	// println!("{out}");
 	expect(out.value).to_be_some()?;
 	expect(out.children[0].value).to_be_some()?;

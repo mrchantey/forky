@@ -1,5 +1,6 @@
 use super::*;
 use crate::node::*;
+use crate::tree::*;
 use bevy_ecs::prelude::*;
 use std::fmt::Debug;
 use std::fmt::Display;
@@ -15,11 +16,11 @@ pub struct PropTree<'a, T: IntoProp> {
 
 impl<'a, T: IntoProp> PropTree<'a, T> {
 	pub fn new<M, N: AiNode>(
-		node: impl IntoNode<M, Out = N>,
+		_el: impl IntoElement<M, Node = N>,
 		world: &World,
 		entity: Entity,
 	) -> PropTree<T> {
-		node.into_node().get_recursive(world, entity)
+		N::get_recursive(world, entity)
 	}
 
 

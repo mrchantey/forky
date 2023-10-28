@@ -1,34 +1,43 @@
 use super::*;
+use crate::tree::IntoElement;
 use bevy_app::prelude::*;
+use std::marker::PhantomData;
 
 /// A plugin that adds all systems in a tree to the app's `Update` schedule.
 #[derive(Debug, Clone)]
-pub struct TreePlugin<Node>
+pub struct TreePlugin<F, M>
 where
-	Node: AiNode,
+	M: 'static + Send + Sync,
+	F: IntoElement<M> + Clone + 'static + Send + Sync,
 {
-	node: Node,
+	phantom: PhantomData<M>,
+	into_element: F,
 }
 
-impl<Node> TreePlugin<Node>
+impl<F, M> TreePlugin<F, M>
 where
-	Node: AiNode,
-	// Builder: 'static + Send + Sync + IntoRootNode<Out = Node>,
+	M: 'static + Send + Sync,
+	F: IntoElement<M> + Clone + 'static + Send + Sync,
 {
-	pub fn new<M>(node: impl IntoNode<M, Out = Node>) -> Self {
+	pub fn new(into_element: F) -> Self {
 		Self {
-			node: node.into_node(),
+			into_element,
+			phantom: PhantomData,
 		}
 	}
 }
 
-impl<Node> Plugin for TreePlugin<Node>
+impl<F, M> Plugin for TreePlugin<F, M>
 where
-	Node: AiNode,
+	M: 'static + Send + Sync,
+	F: IntoElement<M> + Clone + 'static + Send + Sync,
 {
 	fn build(&self, app: &mut bevy_app::App) {
 		app.init_schedule(Update);
 		let schedule = app.get_schedule_mut(Update).unwrap();
-		self.node.clone().add_systems(schedule);
+		self.into_element
+			.clone()
+			.into_element()
+			.add_systems(schedule);
 	}
 }

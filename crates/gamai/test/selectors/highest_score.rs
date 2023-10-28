@@ -5,7 +5,7 @@ use gamai::*;
 use sweet::*;
 
 #[tree_builder]
-pub fn MyTree() -> impl AiNode {
+pub fn MyTree() -> impl TreeElement {
 	tree! {
 		<highest_score apply_deferred>
 			<node_always_succeed

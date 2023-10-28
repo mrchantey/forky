@@ -13,7 +13,7 @@ fn main() {
 			my_system,
 			ParentElement0::<TreePathRoot<0>, _, _>::new(my_system, my_system),
 		)
-		.as_root()
+		.into_root()
 	};
 
 	// let tree1 = || tree! {<my_system/>};

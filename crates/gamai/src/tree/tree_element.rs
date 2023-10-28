@@ -4,7 +4,7 @@ use crate::prop::*;
 
 pub trait TreeElement: AddSystems + IntoBundle + Sized {
 	type Node: AiNode;
-	fn as_root(self) -> impl TreeElement { self.with_path::<Self::Node>() }
+	fn into_root(self) -> impl TreeElement { self.with_path::<Self::Node>() }
 	fn with_path<NewPath: TreePath>(self) -> impl TreeElement;
 }
 

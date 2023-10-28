@@ -12,7 +12,7 @@
 //! }
 //!
 //! #[tree_builder]
-//! fn MyTree() -> impl AiNode {
+//! fn MyTree() -> impl TreeElement {
 //! 	tree! {
 //! 		<sequence>
 //! 			<say_hello/>

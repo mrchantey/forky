@@ -27,7 +27,7 @@
 
 ```rs
 #[tree_builder]
-pub fn MyTree() -> impl AiNode {
+pub fn MyTree() -> impl TreeElement {
 	tree! {
 		<sequence>
 			<say_hello/>

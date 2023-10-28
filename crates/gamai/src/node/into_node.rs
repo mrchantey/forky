@@ -1,7 +1,4 @@
 use super::*;
-use crate::prop::*;
-use bevy_ecs::entity::Entity;
-use bevy_ecs::world::World;
 
 /// marker for any AiNode, ie `tree!{<empty_node/>}`
 pub struct IntoNodeMarkerNode;
@@ -12,14 +9,6 @@ pub struct IntoNodeMarkerFunc;
 pub trait IntoNode<Marker>: Sized {
 	type Out: AiNode;
 	fn into_node(self) -> Self::Out;
-
-	fn get_recursive<T: IntoProp>(
-		self,
-		world: &World,
-		entity: Entity,
-	) -> PropTree<T> {
-		AiNode::get_recursive(self.into_node(), world, entity)
-	}
 
 	/// wrapper for `NodeInspector::child_owned`
 	fn child(self, index: usize) -> Box<dyn NodeInspector> {
