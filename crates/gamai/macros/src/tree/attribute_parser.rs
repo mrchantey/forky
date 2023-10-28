@@ -88,29 +88,39 @@ impl AttributeParser {
 	fn parse_props(expr: &Expr) -> TokenStream {
 		match expr {
 			Expr::Tuple(tup) => {
+				let num_props = tup.elems.len();
+				if num_props >= 16{
+					return syn::Error::new(
+						tup.span(),
+						"Too many props, max is 15",
+					)
+					.to_compile_error();
+				}
 				let intos = tup
 					.elems
 					.iter()
 					.map(|e| {
-						quote! {Prop::<_,Node>::new(#e),}
+						quote! {#e,}
 					})
 					.collect::<TokenStream>();
+
+
+				let ident = syn::Ident::new(
+					&format!("RawProp{num_props}"),
+					tup.span(),
+				);
 				quote! {
-					{struct MyStruct;
-						impl gamai::prop::IntoPropBundle for MyStruct {
-							fn into_bundle<Node: gamai::AiNode>(self) -> impl Bundle {
-								(#intos)
-							}
-						}
-						MyStruct
-					}
+					gamai::prop::#ident(#intos)
 				}
 			}
-			_ => syn::Error::new(
-				expr.span(),
-				"Expected Tuple, ie (Prop1::default(),Prop2::default())",
-			)
-			.to_compile_error(),
+			val=> {
+				quote!{gamai::prop::RawProp1(#val)}
+			}
+			// _ => syn::Error::new(
+			// 	expr.span(),
+			// 	"Expected Tuple, ie (Prop1::default(),Prop2::default())",
+			// )
+			// .to_compile_error(),
 		}
 	}
 

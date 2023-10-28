@@ -1,3 +1,5 @@
+pub mod element_props;
+pub use self::element_props::*;
 pub mod tree;
 pub use self::tree::*;
 pub mod tree_bundle;

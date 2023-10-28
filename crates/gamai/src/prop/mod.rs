@@ -10,6 +10,8 @@ pub mod prop;
 pub use self::prop::*;
 pub mod prop_tree;
 pub use self::prop_tree::*;
+pub mod raw_prop;
+pub use self::raw_prop::*;
 pub mod score;
 pub use self::score::*;
 pub mod tree_bundle;

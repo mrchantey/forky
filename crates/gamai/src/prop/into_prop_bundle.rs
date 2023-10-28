@@ -5,7 +5,6 @@ pub trait IntoBundle {
 	fn into_bundle(self) -> impl Bundle;
 }
 
-
 pub trait IntoPropBundle {
 	fn into_bundle<Node: AiNode>(self) -> impl Bundle;
 }
