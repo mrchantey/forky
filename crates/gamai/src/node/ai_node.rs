@@ -54,11 +54,12 @@ pub trait AiNode: 'static + Send + Sync + TreePath + IntoBundle {
 		world: &World,
 		entity: Entity,
 	) -> PropTree<T> {
-		Self::get_recursive_inner::<T>(world, entity, 0)
+		Self::get_recursive_inner::<T>(world, entity, 0, 0)
 	}
 	fn get_recursive_inner<T: IntoProp>(
 		world: &World,
 		entity: Entity,
+		child_index: usize,
 		depth: usize,
 	) -> PropTree<T>;
 

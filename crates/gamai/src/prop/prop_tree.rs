@@ -9,6 +9,7 @@ use std::fmt::Formatter;
 /// Get all values for a given prop in a tree.
 #[derive(Debug, Clone)]
 pub struct PropTree<'a, T: IntoProp> {
+	pub child_index: usize,
 	pub depth: usize,
 	pub value: Option<&'a T>,
 	pub children: Vec<PropTree<'a, T>>,

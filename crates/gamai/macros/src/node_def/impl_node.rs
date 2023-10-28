@@ -139,9 +139,11 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			fn get_recursive_inner<T: IntoProp>(
 				world: &World,
 				entity: Entity,
+				child_index:usize,
 				depth:usize,
 			) -> PropTree<T>{
 				PropTree{
+					child_index,
 					depth,
 					value:Prop::<T,Self>::get_ref_from_node(world,entity).map(|v|&v.value),
 					children:vec![#recursive_children]
@@ -312,7 +314,7 @@ fn recursive_children(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
 			let child_ident = child_type_name(index);
-			quote!(#child_ident::get_recursive_inner::<T>(world,entity,depth + 1),)
+			quote!(#child_ident::get_recursive_inner::<T>(world,entity,#index,depth + 1),)
 		})
 		.collect()
 }

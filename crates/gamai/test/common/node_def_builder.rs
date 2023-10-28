@@ -1,17 +1,23 @@
 //this example is used for macro expansion, for usage see the `tests` directory
-use gamai::node::*;
+use gamai::*;
 use sweet::*;
+
+#[action]
+fn my_system<N: AiNode>() {}
 
 #[sweet_test]
 pub fn works() -> Result<()> {
-	// type Root = TreePathRoot<0>;
-	// let tree = || {
-	// 	let a = Node0::<Root, _>::new(DefaultAttributes::default());
-	// 	Node1::<Root, _, _>::new(DefaultAttributes::default(), a).into_root()
-	// };
+	let el = || {
+		ParentElement1::<TreePathRoot<0>, _, _, _>::new(
+			my_system,
+			my_system,
+			ParentElement0::<TreePathRoot<0>, _, _>::new(my_system, my_system),
+		)
+		.into_root()
+	};
 
-	// let _ = TreePlugin::new(tree);
-	// let _ = TreePlugin::new(tree);
-
+	// let tree1 = || tree! {<my_system/>};
+	let _bundle = TreeBundle::new(el);
+	let _bundle = TreeBundle::new(el);
 	Ok(())
 }
