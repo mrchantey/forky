@@ -64,14 +64,14 @@ impl AttributeParser {
 									.ok_or_else(|| has_no_value(attr))?,
 							));
 						}
-						"override_props" => {
+						"replace_props" => {
 							attributes.replace_props = true;
 						}
 						_ => {
 							return Err(syn::Error::new(
 								attr.key.span(),
 								format!(
-									"attribute '{}' not supported",
+									"attribute '{}' not supported\nSupported attributes are: [before, before_parent, after, props, override_props]",
 									attr.key
 								),
 							));
