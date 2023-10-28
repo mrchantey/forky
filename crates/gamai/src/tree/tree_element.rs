@@ -1,33 +1,35 @@
 use crate::node::*;
 use crate::prop::*;
-// use crate::*;
 
-/// Track the node, props and action of an element. In the case where no
-/// additional props are added, the `props` and `action` will be the same.
-#[derive(Debug, Clone, Copy)]
-pub struct TreeElement<Node: AiNode, Props: IntoPropBundle, Action: IntoAction>
-{
-	pub node: Node,
-	pub props: Props,
-	pub action: Action,
+
+pub trait TreeElement: AddSystems + IntoBundle + Sized {
+	type Node: AiNode;
+	fn as_root(self) -> impl TreeElement { self.with_path::<Self::Node>() }
+	fn with_path<NewPath: TreePath>(self) -> impl TreeElement;
 }
 
-impl<Node: AiNode, Props: IntoPropBundle, Action: IntoAction>
-	TreeElement<Node, Props, Action>
-{
-	pub fn new(node: Node, props: Props, action: Action) -> Self {
-		Self {
-			node,
-			props,
-			action,
-		}
-	}
+pub trait IntoElement<M>: Sized {
+	type Out: TreeElement;
+	type Node: AiNode = <Self::Out as TreeElement>::Node;
+	fn into_element(self) -> Self::Out;
 }
 
-// impl IntoBundle
+pub struct IntoElementStruct;
+pub struct IntoElementFunc;
 
+impl<T> IntoElement<IntoElementStruct> for T
+where
+	T: TreeElement,
+{
+	type Out = T;
+	fn into_element(self) -> Self::Out { self }
+}
 
-pub trait IntoElement: AddSystems + IntoBundle {}
-
-
-impl<T: AddSystems + IntoBundle> IntoElement for T {}
+impl<F, T> IntoElement<IntoElementFunc> for F
+where
+	F: Fn() -> T,
+	T: TreeElement,
+{
+	type Out = T;
+	fn into_element(self) -> Self::Out { self() }
+}

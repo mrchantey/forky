@@ -28,19 +28,12 @@ impl NodeParser {
 		let child_params = child_params(num_children);
 		let child_bounds = child_bounds(num_children);
 
-		// let node_id_params = node_id_params();
-		// let node_id_bounds = node_id_bounds();
-
 		let self_params = quote! {
 			Path,
-			System,
-			// Props,
 			#child_params
 		};
 		let self_bounds = quote! {
 			Path: TreePath,
-			System: IntoAction,
-			// Props: IntoBundleWithSystem,
 			#child_bounds
 		};
 

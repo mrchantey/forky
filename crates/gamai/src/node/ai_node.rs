@@ -5,10 +5,11 @@ use bevy_ecs::prelude::*;
 use bevy_ecs::query::WorldQuery;
 use std::marker::PhantomData;
 
-
 /// An AiNode is a `TreePath` with actions and typed children.
 // pub trait AiNode {
 pub trait AiNode: 'static + Send + Sync + TreePath + IntoBundle {
+	type WithPath<NewPath: TreePath>: AiNode;
+
 	/// Tuple Query used to access child states: `(Entity,(Child1,(Child2)))`
 	type ChildQuery<T: IntoProp>: WorldQuery;
 	type ChildQueryOpt<T: IntoProp>: WorldQuery;
@@ -38,7 +39,9 @@ pub trait AiNode: 'static + Send + Sync + TreePath + IntoBundle {
 	// 	item.out()
 	// }
 
-	fn add_systems(self, schedule: &mut Schedule);
+	fn add_systems(self, _schedule: &mut Schedule) {
+		panic!("this has been deprecated, use elements instead.")
+	}
 
 	fn tree_bundle<T: IntoProp + Clone>(value: T) -> Self::BundleRecursive<T>;
 

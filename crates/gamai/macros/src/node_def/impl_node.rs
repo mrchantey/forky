@@ -36,7 +36,6 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 
 	let child_tree_bundle_types = child_tree_bundle_types(*num_children);
 	let child_tree_bundle_values = child_tree_bundle_values(*num_children);
-	let add_systems_children = add_systems_children(*num_children);
 	let get_children = get_children(*num_children);
 	let get_children_owned = get_children_owned(*num_children);
 	let match_get_children = match_get_children(*num_children);
@@ -44,8 +43,8 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 
 	let children_inferred_types = children_inferred_types(*num_children);
 	let children_into_child = children_into_child(*num_children);
+	let children_with_path = children_with_path(*num_children);
 	let recursive_children = recursive_children(*num_children);
-	let children_into_bundles = children_into_bundles(*num_children);
 
 	quote! {
 		impl<#self_bounds> TreePath for #ident<#self_params> {
@@ -55,14 +54,13 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 
 		impl<#self_bounds> IntoBundle for #ident<#self_params> {
 			fn into_bundle(self) -> impl Bundle{
-				(
-					self.system.into_bundle::<Self>(),
-					#children_into_bundles
-				)
+				panic!("this has been deprecated, use elements instead.")
 			}
 		}
 
 		impl<#self_bounds> AiNode for #ident<#self_params> {
+
+			type WithPath<NewPath: TreePath> = #ident<NewPath,#children_with_path>;
 
 			type ChildQuery<T:IntoProp> = (
 				Entity,
@@ -89,13 +87,6 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 					Prop::new(value.clone()),
 					#child_tree_bundle_values
 				)
-			}
-
-			fn add_systems(self, schedule: &mut Schedule){
-				Self::configure_sets(schedule);
-				schedule.add_systems(self.system.into_action_configs::<Self>());
-
-				#add_systems_children
 			}
 
 			fn entity<'a,T:IntoProp>(val: &<Self::ChildQuery<T> as WorldQuery>::Item<'a>) ->Entity{
@@ -159,10 +150,7 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 			}
 
 			fn into_child<NewPath: TreePath>(self) -> impl AiNode {
-				#ident::<NewPath, _, #children_inferred_types>::new(
-					self.system,
-					#children_into_child
-				)
+				#ident::<NewPath, #children_inferred_types>::new(#children_into_child)
 			}
 		}
 	}
@@ -249,14 +237,6 @@ fn child_tree_bundle_values(num_children: usize) -> TokenStream {
 		})
 		.into_token_stream()
 }
-fn children_into_bundles(num_children: usize) -> TokenStream {
-	(0..num_children)
-		.fold(TokenStream::new(), |prev, index| {
-			let name = child_field_name(index);
-			quote!((self.#name.into_bundle(), #prev))
-		})
-		.into_token_stream()
-}
 
 // there is probably a better way to do this
 // fn state_recast(num_children: usize) -> TokenStream {
@@ -313,14 +293,6 @@ fn state_recast_opt_mut(num_children: usize) -> TokenStream {
 		.collect()
 }
 
-fn add_systems_children(num_children: usize) -> TokenStream {
-	(0..num_children)
-		.map(|index| {
-			let child_ident = child_field_name(index);
-			quote!(self.#child_ident.add_systems(schedule);)
-		})
-		.collect()
-}
 fn match_get_children(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {
@@ -370,6 +342,14 @@ fn children_into_child(num_children: usize) -> TokenStream {
 		.map(|index| {
 			let child_field = child_field_name(index);
 			quote!(self.#child_field.into_child::<TreePathSegment<#index, NewPath>>(),)
+		})
+		.collect()
+}
+fn children_with_path(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let ty = child_type_name(index);
+			quote!(#ty::WithPath::<TreePathSegment<#index, NewPath>>,)
 		})
 		.collect()
 }

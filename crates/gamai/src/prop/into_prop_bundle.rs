@@ -11,3 +11,13 @@ pub trait IntoPropBundle {
 impl IntoPropBundle for () {
 	fn into_bundle<Node: AiNode>(self) -> impl Bundle { () }
 }
+
+
+// for bundle factories
+impl<F, B> IntoBundle for F
+where
+	F: Fn() -> B,
+	B: Bundle,
+{
+	fn into_bundle(self) -> impl Bundle { self() }
+}
