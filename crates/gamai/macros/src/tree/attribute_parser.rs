@@ -4,7 +4,9 @@ use quote::quote;
 use quote::ToTokens;
 use rstml::node::KeyedAttribute;
 use rstml::node::NodeElement;
+use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
+use syn::token::Comma;
 use syn::Expr;
 use syn::Result;
 
@@ -88,32 +90,36 @@ impl<'a> AttributeParser<'a> {
 	}
 
 	fn parse_props(expr: &Expr) -> TokenStream {
+		let parse_arr = |elems: &Punctuated<Expr, Comma>| -> TokenStream {
+			let num_props = elems.len();
+			if num_props >= 16 {
+				return syn::Error::new(
+					expr.span(),
+					"Too many props, max is 15",
+				)
+				.to_compile_error();
+			}
+			let intos = elems
+				.iter()
+				.map(|e| {
+					quote! {#e,}
+				})
+				.collect::<TokenStream>();
+
+
+			let ident =
+				syn::Ident::new(&format!("RawProp{num_props}"), expr.span());
+			quote! {
+				gamai::prop::#ident(#intos)
+			}
+		};
+
 		match expr {
 			Expr::Tuple(tup) => {
-				let num_props = tup.elems.len();
-				if num_props >= 16{
-					return syn::Error::new(
-						tup.span(),
-						"Too many props, max is 15",
-					)
-					.to_compile_error();
-				}
-				let intos = tup
-					.elems
-					.iter()
-					.map(|e| {
-						quote! {#e,}
-					})
-					.collect::<TokenStream>();
-
-
-				let ident = syn::Ident::new(
-					&format!("RawProp{num_props}"),
-					tup.span(),
-				);
-				quote! {
-					gamai::prop::#ident(#intos)
-				}
+				parse_arr(&tup.elems)
+			}
+			Expr::Array(arr)=>{
+				parse_arr(&arr.elems)
 			}
 			val=> {
 				quote!{gamai::prop::RawProp1(#val)}
