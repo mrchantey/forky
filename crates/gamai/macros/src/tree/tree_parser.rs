@@ -15,17 +15,17 @@ pub struct TreeParser<'a> {
 	pub graph_id: usize,
 	pub child_index: usize,
 	pub graph_depth: usize,
-	pub attribute: AttributeParser,
+	pub attribute: AttributeParser<'a>,
 	pub children: Vec<TreeParser<'a>>,
 }
 
 impl<'a> TreeParser<'a> {
-	pub fn root(node: &'a XmlNode, graph_id: usize) -> Result<Self> {
+	pub fn root(node: &'a XmlNode, graph_id: usize) -> Result<TokenStream> {
 		let node = match node {
 			XmlNode::Element(el) => Ok(el),
 			val => Err(syn::Error::new(val.span(), "Expected element node")),
 		}?;
-		Ok(Self::new(node, graph_id, 0, 0)?)
+		Ok(Self::new(node, graph_id, 0, 0)?.to_instance()?)
 	}
 
 	fn new(
@@ -34,7 +34,7 @@ impl<'a> TreeParser<'a> {
 		graph_depth: usize,
 		child_index: usize,
 	) -> Result<Self> {
-		let attribute = AttributeParser::from_attributes(node)?;
+		let attribute = AttributeParser::from_node(node)?;
 
 		let children = node
 			.children
@@ -69,14 +69,14 @@ impl<'a> TreeParser<'a> {
 		}
 	}
 
-	pub fn to_instance(&self) -> TokenStream {
-		let tokens_root = self.to_instance_tokens();
-		quote! {
+	pub fn to_instance(&self) -> Result<TokenStream> {
+		let tokens_root = self.to_instance_tokens()?;
+		Ok(quote! {
 			#tokens_root.into_root()
-		}
+		})
 	}
 
-	pub fn to_instance_tokens(&self) -> TokenStream {
+	pub fn to_instance_tokens(&self) -> Result<TokenStream> {
 		let TreeParser {
 			node,
 			graph_id,
@@ -86,29 +86,19 @@ impl<'a> TreeParser<'a> {
 		} = self;
 
 		if self.is_tree() {
-			if let Some(child) = self.children.first() {
-				return syn::Error::new(
-					child.node.span(),
-					"Subtrees cannot contain additional children",
-				)
-				.to_compile_error()
-				.into();
-			}
-			let name = node.name();
-			// if its a tree function, call it
-			quote!(#name())
+			parse_subtree(node)
 		} else {
 			let ident = self.from_action_ident();
 			let child_types = self.child_types();
-			let child_instances = self.child_instances();
+			let child_instances = self.child_instances()?;
 			let action = attribute.to_action();
 			let props = attribute.to_prop_bundle();
-			quote! {
+			Ok(quote! {
 				#ident::<gamai::node::TreePathRoot<#graph_id>,
 				_,_, //for action & props
 				#child_types
 				>::new(#action, #props, #child_instances)
-			}
+			})
 		}
 	}
 	fn child_types(&self) -> TokenStream {
@@ -116,14 +106,17 @@ impl<'a> TreeParser<'a> {
 			.take(self.children.len())
 			.collect()
 	}
-	fn child_instances(&self) -> TokenStream {
-		self.children
+	fn child_instances(&self) -> Result<TokenStream> {
+		Ok(self
+			.children
 			.iter()
 			.map(|c| {
-				let child = c.to_instance_tokens();
-				quote!(#child,)
+				let child = c.to_instance_tokens()?;
+				Ok(quote!(#child,))
 			})
-			.collect()
+			.collect::<Result<Vec<_>>>()?
+			.into_iter()
+			.collect::<TokenStream>())
 	}
 	fn is_tree(&self) -> bool {
 		let name = self.node.name().to_string();

@@ -25,6 +25,7 @@ bevy_time = { workspace = true }
 bevy_utils = { workspace = true }
 extend = { workspace = true }
 anyhow = { workspace = true }
+typed-builder = { workspace = true }
 
 [dev-dependencies]
 sweet = { workspace = true }

@@ -13,7 +13,7 @@ pub fn only_action_props() -> Result<()> {
 	let mut world = World::new();
 	let entity = world.spawn(TreeBundle::inactive(my_tree)).id();
 
-	expect(world.all_component_ids(entity).count()).to_be(1)?;
+	expect(world.inspect_entity(entity).len()).to_be(1)?;
 
 	Ok(())
 }
@@ -29,7 +29,7 @@ pub fn combined() -> Result<()> {
 	let mut world = World::new();
 	let entity = world.spawn(TreeBundle::inactive(my_tree)).id();
 
-	expect(world.all_component_ids(entity).count()).to_be(2)?;
+	expect(world.inspect_entity(entity).len()).to_be(2)?;
 
 	Ok(())
 }
@@ -47,7 +47,7 @@ pub fn replace() -> Result<()> {
 	let mut world = World::new();
 	let entity = world.spawn(TreeBundle::inactive(my_tree)).id();
 
-	expect(world.all_component_ids(entity).count()).to_be(2)?;
+	expect(world.inspect_entity(entity).len()).to_be(2)?;
 
 	Ok(())
 }
@@ -62,7 +62,7 @@ pub fn remove() -> Result<()> {
 	let mut world = World::new();
 	let entity = world.spawn(TreeBundle::inactive(my_tree)).id();
 
-	expect(world.all_component_ids(entity).count()).to_be(0)?;
+	expect(world.inspect_entity(entity).len()).to_be(0)?;
 
 	Ok(())
 }

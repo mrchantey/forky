@@ -6,6 +6,8 @@ mod node_def;
 use node_def::*;
 mod action;
 use action::*;
+mod tree_builder;
+use tree_builder::*;
 mod utils;
 // pub(crate) use utils::*;
 
@@ -36,7 +38,7 @@ pub fn define_node(attr: TokenStream) -> TokenStream { parse_node(attr) }
 /// 	}
 /// }
 /// ```
-/// 
+///
 /// It can also accept a list of props to be added to the node, when calling `AiBundle::new()`.
 /// ```rust
 /// #[action(props=Score::Fail)]
@@ -72,6 +74,8 @@ pub fn tree(item: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn tree_builder(attr: TokenStream, item: TokenStream) -> TokenStream {
 	parse_tree_builder(attr, item)
+		.unwrap_or_else(syn::Error::into_compile_error)
+		.into()
 }
 
 #[doc(hidden)]

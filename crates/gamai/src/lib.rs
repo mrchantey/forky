@@ -92,6 +92,7 @@ pub mod exports {
 	pub use bevy_ecs::prelude::*;
 	pub use bevy_ecs::query::WorldQuery;
 	pub use bevy_ecs::schedule::SystemConfigs;
+	pub use typed_builder;
 	// currently no macros depend on bevy_app
 	// pub use bevy_app::prelude::*;
 }

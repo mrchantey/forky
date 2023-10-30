@@ -118,6 +118,7 @@ proc-macro2 = "1.0.47"
 syn = { version = "2.0.*", features = ["full"] }
 quote = "1.0.21"
 rstml = "0.11.2"
+typed-builder = "0.18.0"
 
 ### esp ###
 wasmi = "0.20.0"

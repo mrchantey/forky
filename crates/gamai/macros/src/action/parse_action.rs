@@ -1,8 +1,8 @@
 // use crate::*;
 use super::*;
+use crate::utils::*;
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::Ident;
 use syn::ItemFn;
 use syn::Result;
 
@@ -39,7 +39,7 @@ pub fn parse_action(
 
 fn impl_into_action(func: &ItemFn, args: &ActionArgs) -> TokenStream {
 	let ident = &func.sig.ident;
-	let func_inner = func_inner_ident(&func.sig.ident);
+	let func_inner = func_inner_ident(func);
 	let bundle = &args.bundle;
 	// let generic_err = assert_single_generic_bound(
 	// 	func.sig.generics.clone(),
@@ -73,19 +73,6 @@ fn impl_into_action(func: &ItemFn, args: &ActionArgs) -> TokenStream {
 fn func_is_generic(func: &ItemFn) -> bool {
 	false == func.sig.generics.params.is_empty()
 }
-
-fn func_inner_ident(ident: &Ident) -> Ident {
-	Ident::new(&format!("{}_inner", ident), ident.span())
-}
-
-fn func_as_inner(func: &ItemFn) -> ItemFn {
-	let mut func_inner = func.clone();
-	func_inner.sig.ident = func_inner_ident(&func.sig.ident);
-	func_inner.vis = syn::Visibility::Inherited;
-	func_inner
-}
-
-
 
 // use proc_macro2::Span;
 // use proc_macro2::TokenStream;

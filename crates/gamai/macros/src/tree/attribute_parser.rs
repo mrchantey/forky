@@ -9,7 +9,7 @@ use syn::Expr;
 use syn::Result;
 
 
-pub struct AttributeParser {
+pub struct AttributeParser<'a> {
 	pub props: Option<TokenStream>,
 	pub replace_props: bool,
 	pub pre_parent_update: TokenStream,
@@ -17,9 +17,10 @@ pub struct AttributeParser {
 	pub update_apply_deferred: bool,
 	pub update: TokenStream,
 	pub post_update: TokenStream,
+	pub other_props: Vec<&'a KeyedAttribute>,
 }
-impl AttributeParser {
-	pub fn from_attributes(node: &NodeElement) -> Result<Self> {
+impl<'a> AttributeParser<'a> {
+	pub fn from_node(node: &'a NodeElement) -> Result<Self> {
 		let mut attributes = Self::default();
 		attributes.update = node.name().to_token_stream();
 
@@ -68,13 +69,14 @@ impl AttributeParser {
 							attributes.replace_props = true;
 						}
 						_ => {
-							return Err(syn::Error::new(
-								attr.key.span(),
-								format!(
-									"attribute '{}' not supported\nSupported attributes are: [before, before_parent, after, props, override_props]",
-									attr.key
-								),
-							));
+							attributes.other_props.push(attr);
+							// return Err(syn::Error::new(
+							// 	attr.key.span(),
+							// 	format!(
+							// 		"attribute '{}' not supported\nSupported attributes are: [before, before_parent, after, props, replace_props]",
+							// 		attr.key
+							// 	),
+							// ));
 						}
 					}
 				}
@@ -166,10 +168,11 @@ impl AttributeParser {
 		}
 	}
 }
-impl Default for AttributeParser {
+impl<'a> Default for AttributeParser<'a> {
 	fn default() -> Self {
 		Self {
 			props: None,
+			other_props: Vec::new(),
 			replace_props: false,
 			pre_parent_update: quote!(gamai::common_actions::empty_node),
 			pre_update: quote!(gamai::common_actions::empty_node),

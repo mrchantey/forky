@@ -19,7 +19,7 @@ pub fn MyTree() -> impl TreeElement {
 pub fn tree_props() -> Result<()> {
 	let mut world = World::new();
 	let _entity = world.spawn(TreeBundle::inactive(MyTree)).id();
-	// expect(world.all_component_ids(entity).count()).to_be(1)?;
+	// expect(world.inspect_entity(entity).count()).to_be(1)?;
 
 	Ok(())
 }

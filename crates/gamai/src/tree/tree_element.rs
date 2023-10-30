@@ -16,6 +16,7 @@ pub trait IntoElement<M>: Sized {
 
 pub struct IntoElementStruct;
 pub struct IntoElementFunc;
+pub struct IntoElementPropsFunc;
 
 impl<T> IntoElement<IntoElementStruct> for T
 where
@@ -32,4 +33,13 @@ where
 {
 	type Out = T;
 	fn into_element(self) -> Self::Out { self() }
+}
+impl<F, P, T> IntoElement<(IntoElementPropsFunc, P)> for F
+where
+	F: Fn(P) -> T,
+	P: Default,
+	T: TreeElement,
+{
+	type Out = T;
+	fn into_element(self) -> Self::Out { self(P::default()) }
 }
