@@ -33,7 +33,7 @@ fn main() {
 pub fn OtherTree(
 	foo: u32,
 	#[default = 3] bar: u8,
-	bazz: Option<&'static str>,
+	#[default] bazz: Option<&'static str>,
 ) -> impl TreeElement {
 	tree! {
 		<my_system props=(foo,bar,bazz)/>
@@ -50,7 +50,7 @@ pub fn EmptyTree() -> impl TreeElement {
 #[tree_builder]
 pub fn MyTree() -> impl TreeElement {
 	tree! {
-		<OtherTree foo=3 bazz="howdy"/>
+		<OtherTree foo=3/>
 		// <EmptyTree foo=3/>
 		// <my_system props=(foo,bar,bazz)/>
 	}
