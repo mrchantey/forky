@@ -3,21 +3,13 @@
 //this example is used for macro expansion, for usage see the `tests` directory
 fn main() {}
 
-// #[derive(bevy_ecs::prelude::Component)]
-// struct MyBundle;
-
-// pub struct ActionProps {
-// 	foo: u32,
-// }
-
 
 #[gamai::action(
+	apply_deferred,
+	order=ActionOrder::PreParentUpdate
 	// props={foo=MyBundle,bar=MyBundle},
 	// props=(MyBundle,MyBundle),
 	// components=(MyBundle,MyBundle)
 )
 ]
-// #[prop(default = 100)]
 pub fn action<N: gamai::AiNode>() {}
-// #[gamai::action]
-// pub fn bevy_system() {}

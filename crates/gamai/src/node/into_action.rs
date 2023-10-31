@@ -14,19 +14,11 @@ pub trait AddSystems {
 pub trait IntoAction:
 	'static + Send + Sync + Sized + Eq + Hash + Clone + Debug + IntoPropBundle
 {
-	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs;
+	fn action_into_system_configs<Node: AiNode>(self) -> SystemConfigs;
 }
 
-/// Marker type that tells attributes to ignore that system
-#[derive(Default, Debug, Clone, Eq, PartialEq, Hash)]
-pub struct EmptyAction;
-
-impl IntoPropBundle for EmptyAction {
-	fn into_bundle<Node: AiNode>(self) -> impl Bundle { () }
-}
-
-impl IntoAction for EmptyAction {
-	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs {
+impl IntoAction for () {
+	fn action_into_system_configs<Node: AiNode>(self) -> SystemConfigs {
 		(|| {}).into_configs()
 	}
 }
@@ -34,11 +26,11 @@ impl IntoAction for EmptyAction {
 macro_rules! tuples_into_action {
 	($($name: ident),*) => {
 		impl<$($name: IntoAction),*> IntoAction for ($($name,)*) {
-			fn into_action_configs<Node: AiNode>(self) -> SystemConfigs {
+			fn action_into_system_configs<Node: AiNode>(self) -> SystemConfigs {
 				#[allow(non_snake_case)]
 				let ($($name,)*) = self;
 				(
-					$($name.into_action_configs::<Node>(),)*
+					$($name.action_into_system_configs::<Node>(),)*
 				)
 				.into_configs()
 			}

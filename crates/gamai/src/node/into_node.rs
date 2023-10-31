@@ -1,8 +1,8 @@
 use super::*;
 
-/// marker for any AiNode, ie `tree!{<empty_node/>}`
+/// marker for any AiNode, ie `tree!{<my_action/>}`
 pub struct IntoNodeMarkerNode;
-/// marker for any func that returns an AiNode, ie `|| tree!{<empty_node/>}`
+/// marker for any func that returns an AiNode, ie `|| tree!{<my_action/>}`
 pub struct IntoNodeMarkerFunc;
 
 /// Trait for nodes and functions that return nodes.

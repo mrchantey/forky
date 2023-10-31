@@ -1,5 +1,4 @@
 use bevy_ecs::prelude::*;
-use gamai::common_actions::*;
 use gamai::*;
 use sweet::*;
 
@@ -17,10 +16,10 @@ pub fn my_action() {}
 pub fn works() -> Result<()> {
 	let my_tree = || {
 		tree! {
-			<empty_node>
-				<empty_node/>
+			<group>
+				<group/>
 				<my_action/>
-			</empty_node>
+			</group>
 		}
 	};
 

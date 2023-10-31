@@ -58,7 +58,7 @@ pub fn action(attr: TokenStream, item: TokenStream) -> TokenStream {
 /// ```rust
 /// let my_tree = || tree!{
 /// 	<sequence>
-/// 		<empty_node>
+/// 		<group>
 /// 	</sequence>
 /// };
 ///

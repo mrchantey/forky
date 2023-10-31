@@ -21,11 +21,11 @@ pub fn parse_tree(tokens: proc_macro::TokenStream) -> Result<TokenStream> {
 	if let Some(node_rsx) = nodes_rsx.first() {
 		let errors = errors.into_iter().map(|e| e.emit_as_expr_tokens());
 		let graph_id = GRAPH_ID.fetch_add(1, Ordering::SeqCst);
-		let root = TreeParser::root(node_rsx, graph_id)?;
+		let root = TreeParser::new(node_rsx, graph_id)?.to_tokens()?;
 
 		Ok(quote! {
 			#(#errors;)*
-			#root
+			#root.into_root()
 		})
 	} else {
 		Err(syn::Error::new(Span::call_site(), "Expected a root node"))

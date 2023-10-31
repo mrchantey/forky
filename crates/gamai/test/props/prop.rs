@@ -1,6 +1,5 @@
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
-use gamai::common_actions::*;
 use gamai::*;
 use sweet::*;
 
@@ -12,7 +11,7 @@ pub fn works() -> Result<()> {
 				<adds_my_thing/>
 				<adds_my_thing/>
 				<adds_my_thing>
-						<empty_node/>
+						<group/>
 				</adds_my_thing>
 			</adds_my_thing>
 		}

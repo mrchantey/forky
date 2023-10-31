@@ -17,19 +17,21 @@ fn child2() {}
 fn child3() {}
 
 pub fn main() -> Result<()> {
-	let tree1 = tree! {
-		<root>
-				<child1 apply_deferred>
-					<child2 apply_deferred>
-						<child3 apply_deferred/>
-					</child2>
-				</child1>
-		</root>
+	let tree1 = || {
+		tree! {
+			<root>
+					<child1 apply_deferred>
+						<child2 apply_deferred>
+							<child3 apply_deferred/>
+						</child2>
+					</child1>
+			</root>
+		}
 	};
 
 	let mut app = App::new();
 
-	app.add_plugins(tree1.plugin());
+	app.add_plugins(TreePlugin::new(tree1));
 	// app.add_plugins(tree2.plugin());
 	app.add_plugins(
 		DefaultPlugins

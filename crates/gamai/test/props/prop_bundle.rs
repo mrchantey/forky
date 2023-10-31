@@ -1,5 +1,4 @@
 use bevy_app::prelude::*;
-use gamai::common_actions::*;
 use gamai::*;
 use sweet::*;
 
@@ -12,13 +11,13 @@ pub enum State {
 
 fn tree() -> impl TreeElement {
 	tree! {
-		<empty_node>
-			<empty_node/>
-			<empty_node/>
-			<empty_node>
-				<empty_node/>
-			</empty_node>
-		</empty_node>
+		<group>
+			<group/>
+			<group/>
+			<group>
+				<group/>
+			</group>
+		</group>
 	}
 }
 

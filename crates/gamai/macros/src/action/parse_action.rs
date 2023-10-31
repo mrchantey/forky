@@ -40,7 +40,16 @@ pub fn parse_action(
 fn impl_into_action(func: &ItemFn, args: &ActionArgs) -> TokenStream {
 	let ident = &func.sig.ident;
 	let func_inner = func_inner_ident(func);
-	let ActionArgs { bundle, order } = args;
+
+	let ActionArgs {
+		components,
+		props,
+		order,
+		apply_deferred,
+	} = args;
+
+	let bundle = quote!(((#props), (#components)));
+
 	// let generic_err = assert_single_generic_bound(
 	// 	func.sig.generics.clone(),
 	// 	"AiNode",
@@ -62,13 +71,21 @@ fn impl_into_action(func: &ItemFn, args: &ActionArgs) -> TokenStream {
 
 		impl IntoAction for #ident
 		{
-			fn into_action_configs<Node: AiNode>(self) -> SystemConfigs{
+			fn action_into_system_configs<Node: AiNode>(self) -> SystemConfigs{
 				#func_inner #func_generic
-					.in_set(ActionSet::new::<Node>(#order))
 					.into_configs()
 			}
 		}
-		// #generic_err
+
+		impl IntoActionConfig<#ident> for #ident {
+			fn into_action_config(self) -> ActionConfig<#ident> {
+				ActionConfig {
+					action: self,
+					apply_deferred: #apply_deferred,
+					order: #order,
+				}
+			}
+		}
 	}
 }
 

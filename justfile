@@ -148,7 +148,7 @@ vis crate example:
 	just run {{crate}} {{example}}
 	just dot-to-svg target/graph/render_graph.dot
 
-serve-vis:
+vis-serve:
 	cd ./target/graph && forky serve
 
 # requires https://graphviz.org/download/

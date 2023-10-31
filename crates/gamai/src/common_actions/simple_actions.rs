@@ -3,21 +3,6 @@ use crate::prop::IntoPropBundle;
 use crate::*;
 use bevy_ecs::prelude::*;
 
-#[derive(Default, Debug, Clone, Eq, PartialEq, Hash)]
-#[allow(non_camel_case_types)]
-pub struct empty_node;
-
-impl IntoPropBundle for empty_node {
-	fn into_bundle<Node: AiNode>(self) -> impl Bundle { () }
-}
-
-impl IntoAction for empty_node {
-	fn into_action_configs<Node: AiNode>(
-		self,
-	) -> bevy_ecs::schedule::SystemConfigs {
-		(|| {}).into_configs()
-	}
-}
 #[action]
 pub fn node_always_succeed<N: AiNode>(
 	mut commands: Commands,

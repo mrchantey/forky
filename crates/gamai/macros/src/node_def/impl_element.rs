@@ -41,14 +41,14 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 
 		#[derive(Clone)]
 		pub struct #ident<#self_bounds>{
-			action: Action,
+			action: ActionConfig<Action>,
 			props: Props,
 			phantom: std::marker::PhantomData<Path>,
 			#child_fields_def
 		}
 
 		impl <#self_bounds> #ident<#self_params>{
-			pub fn new<#child_markers>(action: Action, props: Props, #child_fields_args)->Self{
+			pub fn new<#child_markers>(action: ActionConfig<Action>, props: Props, #child_fields_args)->Self{
 				Self{
 					action,
 					props,
@@ -61,7 +61,8 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 		impl <#self_bounds> AddSystems for #ident<#self_params>{
 			fn add_systems(self, schedule: &mut Schedule) {
 				Path::configure_sets(schedule);
-				schedule.add_systems(self.action.into_action_configs::<<Self as TreeElement>::Node>());
+				// schedule.add_systems(self.action.action_into_system_configs::<<Self as TreeElement>::Node>());
+				schedule.add_systems(self.action.action_config_into_system_config::<<Self as TreeElement>::Node>());
 				#children_add_systems
 			}
 		}

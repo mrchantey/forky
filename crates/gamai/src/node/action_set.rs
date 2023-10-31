@@ -4,13 +4,14 @@ use std::fmt::Debug;
 use std::hash::Hash;
 
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
+#[derive(Default, Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub enum ActionOrder {
 	/// Run before parent update.
 	PreParentUpdate,
 	/// Run after parent update, before update.
 	PreUpdate,
 	/// Default update stage for actions.
+	#[default]
 	Update,
 	/// Run after update, before child update.
 	PostUpdate,

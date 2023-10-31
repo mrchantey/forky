@@ -54,6 +54,8 @@ pub mod node;
 #[doc(inline)]
 pub use node::AiNode;
 #[doc(inline)]
+pub use node::IntoActionConfig;
+#[doc(inline)]
 pub use node::IntoNode;
 #[doc(inline)]
 pub use node::TreePlugin;

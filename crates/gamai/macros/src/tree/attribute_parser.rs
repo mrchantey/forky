@@ -10,32 +10,22 @@ use syn::token::Comma;
 use syn::Expr;
 use syn::Result;
 
-
 pub struct AttributeParser<'a> {
 	pub props: Option<TokenStream>,
 	pub replace_props: bool,
-	pub actions: Option<&'a Expr>,
+	pub actions: TokenStream,
+	pub apply_deferred: Option<TokenStream>,
 	pub other_props: Vec<&'a KeyedAttribute>,
-
-	pub pre_parent_update: TokenStream,
-	pub pre_update: TokenStream,
-	pub update_apply_deferred: bool,
-	pub update: TokenStream,
-	pub post_update: TokenStream,
 }
 
 impl<'a> Default for AttributeParser<'a> {
 	fn default() -> Self {
 		Self {
 			props: None,
-			actions: None,
+			actions: TokenStream::new(),
 			other_props: Vec::new(),
 			replace_props: false,
-			pre_parent_update: quote!(gamai::common_actions::empty_node),
-			pre_update: quote!(gamai::common_actions::empty_node),
-			update_apply_deferred: false,
-			update: quote!(gamai::common_actions::empty_node),
-			post_update: quote!(gamai::common_actions::empty_node),
+			apply_deferred: None,
 		}
 	}
 }
@@ -43,8 +33,17 @@ impl<'a> Default for AttributeParser<'a> {
 impl<'a> AttributeParser<'a> {
 	pub fn from_node(node: &'a NodeElement) -> Result<Self> {
 		let mut attributes = Self::default();
-		attributes.update = node.name().to_token_stream();
 
+		let is_group = match node.name().to_string().as_str() {
+			"group" => true,
+			_ => false,
+		};
+
+		attributes.actions = if is_group {
+			quote! {()}
+		} else {
+			node.name().to_token_stream()
+		};
 
 		let has_no_value = |attr: &KeyedAttribute| {
 			syn::Error::new(attr.key.span(), "this attribute must have a value")
@@ -60,25 +59,21 @@ impl<'a> AttributeParser<'a> {
 				XmlNodeAttribute::Attribute(attr) => {
 					match attr.key.to_string().as_str() {
 						"apply_deferred" => {
-							attributes.update_apply_deferred = true
+							if let Some(value) = attr.value() {
+								attributes.apply_deferred =
+									Some(value.to_token_stream());
+							} else {
+								attributes.apply_deferred = Some(quote!(true));
+							}
 						}
 						"before_parent" => {
-							attributes.pre_parent_update = attr
-								.value()
-								.map(|a| a.to_token_stream())
-								.ok_or_else(|| has_no_value(attr))?;
+							panic!("deprecated");
 						}
 						"before" => {
-							attributes.pre_update = attr
-								.value()
-								.map(|a| a.to_token_stream())
-								.ok_or_else(|| has_no_value(attr))?;
+							panic!("deprecated");
 						}
 						"after" => {
-							attributes.post_update = attr
-								.value()
-								.map(|a| a.to_token_stream())
-								.ok_or_else(|| has_no_value(attr))?;
+							panic!("deprecated");
 						}
 						"props" => {
 							attributes.props = Some(Self::parse_props(
@@ -90,7 +85,8 @@ impl<'a> AttributeParser<'a> {
 							attributes.replace_props = true;
 						}
 						"actions" => {
-							attributes.actions = attr.value();
+							attributes.actions =
+								attr.value().unwrap().to_token_stream();
 						}
 						_ => {
 							attributes.other_props.push(attr);
@@ -175,21 +171,7 @@ impl<'a> AttributeParser<'a> {
 	}
 
 	pub fn to_action(&self) -> TokenStream {
-		let Self {
-			update,
-			pre_update,
-			update_apply_deferred,
-			pre_parent_update,
-			post_update,
-			..
-		} = self;
-		quote! {
-		gamai::node::Attributes::new(
-			#pre_parent_update,
-			#pre_update,
-			#update,
-			#update_apply_deferred,
-			#post_update)
-		}
+		let actions = &self.actions;
+		quote! {#actions.into_action_config()}
 	}
 }

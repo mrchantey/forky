@@ -1,5 +1,4 @@
 use bevy_ecs::prelude::*;
-use gamai::common_actions::*;
 use gamai::*;
 use sweet::*;
 
@@ -8,12 +7,12 @@ use sweet::*;
 pub fn prop_tree() -> Result<()> {
 	let my_tree = || {
 		tree! {
-			<empty_node>//1
-				<empty_node/>
-				<empty_node>//1
-					<empty_node/>//2
-				</empty_node>
-			</empty_node>
+			<group>//1
+				<group/>
+				<group>//1
+					<group/>//2
+				</group>
+			</group>
 		}
 	};
 
