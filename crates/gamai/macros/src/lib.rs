@@ -39,7 +39,7 @@ pub fn define_node(attr: TokenStream) -> TokenStream { parse_node(attr) }
 /// }
 /// ```
 ///
-/// It can also accept a list of props to be added to the node, when calling `AiBundle::new()`.
+/// It can also accept a list of props to be added to the node when calling `TreeBundle::new()`.
 /// ```rust
 /// #[action(props=Score::Fail)]
 /// ```

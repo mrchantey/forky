@@ -14,7 +14,6 @@ pub trait AddSystems {
 pub trait IntoAction:
 	'static + Send + Sync + Sized + Eq + Hash + Clone + Debug + IntoPropBundle
 {
-	const IS_EMPTY: bool = false;
 	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs;
 }
 
@@ -27,7 +26,6 @@ impl IntoPropBundle for EmptyAction {
 }
 
 impl IntoAction for EmptyAction {
-	const IS_EMPTY: bool = true;
 	fn into_action_configs<Node: AiNode>(self) -> SystemConfigs {
 		(|| {}).into_configs()
 	}

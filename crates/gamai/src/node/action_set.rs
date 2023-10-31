@@ -5,7 +5,7 @@ use std::hash::Hash;
 
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
-pub enum ActionStage {
+pub enum ActionOrder {
 	/// Run before parent update.
 	PreParentUpdate,
 	/// Run after parent update, before update.
@@ -18,7 +18,7 @@ pub enum ActionStage {
 
 #[derive(SystemSet, Clone, Eq, PartialEq, Hash)]
 pub struct ActionSet {
-	pub stage: ActionStage,
+	pub order: ActionOrder,
 	pub graph_id: usize,
 	pub depth: usize,
 	/// internal, used to distinguish sets
@@ -28,25 +28,25 @@ pub struct ActionSet {
 
 impl ActionSet {
 	pub fn pre_parent_update<P: TreePath>() -> Self {
-		Self::new::<P>(ActionStage::PreParentUpdate)
+		Self::new::<P>(ActionOrder::PreParentUpdate)
 	}
 	pub fn pre_update<P: TreePath>() -> Self {
-		Self::new::<P>(ActionStage::PreUpdate)
+		Self::new::<P>(ActionOrder::PreUpdate)
 	}
-	pub fn update<P: TreePath>() -> Self { Self::new::<P>(ActionStage::Update) }
+	pub fn update<P: TreePath>() -> Self { Self::new::<P>(ActionOrder::Update) }
 	pub fn post_update<P: TreePath>() -> Self {
-		Self::new::<P>(ActionStage::PostUpdate)
+		Self::new::<P>(ActionOrder::PostUpdate)
 	}
 
-	pub fn new<P: TreePath>(stage: ActionStage) -> Self {
+	pub fn new<P: TreePath>(order: ActionOrder) -> Self {
 		let parent = if P::DEPTH == 0 {
 			None
 		} else {
-			Some(Box::new(ActionSet::new::<P::Parent>(stage)))
+			Some(Box::new(ActionSet::new::<P::Parent>(order)))
 		};
 		Self {
 			parent,
-			stage,
+			order,
 			graph_id: P::GRAPH_ID,
 			depth: P::DEPTH,
 		}
@@ -56,7 +56,7 @@ impl ActionSet {
 impl Debug for ActionSet {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		f.debug_struct("ActionSet")
-			.field("stage", &self.stage)
+			.field("order", &self.order)
 			.field("graph_id", &self.graph_id)
 			.field("depth", &self.depth)
 			.finish()

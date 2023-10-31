@@ -14,13 +14,32 @@ use syn::Result;
 pub struct AttributeParser<'a> {
 	pub props: Option<TokenStream>,
 	pub replace_props: bool,
+	pub actions: Option<&'a Expr>,
+	pub other_props: Vec<&'a KeyedAttribute>,
+
 	pub pre_parent_update: TokenStream,
 	pub pre_update: TokenStream,
 	pub update_apply_deferred: bool,
 	pub update: TokenStream,
 	pub post_update: TokenStream,
-	pub other_props: Vec<&'a KeyedAttribute>,
 }
+
+impl<'a> Default for AttributeParser<'a> {
+	fn default() -> Self {
+		Self {
+			props: None,
+			actions: None,
+			other_props: Vec::new(),
+			replace_props: false,
+			pre_parent_update: quote!(gamai::common_actions::empty_node),
+			pre_update: quote!(gamai::common_actions::empty_node),
+			update_apply_deferred: false,
+			update: quote!(gamai::common_actions::empty_node),
+			post_update: quote!(gamai::common_actions::empty_node),
+		}
+	}
+}
+
 impl<'a> AttributeParser<'a> {
 	pub fn from_node(node: &'a NodeElement) -> Result<Self> {
 		let mut attributes = Self::default();
@@ -70,6 +89,9 @@ impl<'a> AttributeParser<'a> {
 						"replace_props" => {
 							attributes.replace_props = true;
 						}
+						"actions" => {
+							attributes.actions = attr.value();
+						}
 						_ => {
 							attributes.other_props.push(attr);
 							// return Err(syn::Error::new(
@@ -106,9 +128,6 @@ impl<'a> AttributeParser<'a> {
 				})
 				.collect::<TokenStream>();
 
-
-			// let ident =
-			// 	syn::Ident::new(&format!("RawProp{num_props}"), expr.span());
 			quote! {
 				gamai::prop::RawProps((#intos))
 			}
@@ -171,20 +190,6 @@ impl<'a> AttributeParser<'a> {
 			#update,
 			#update_apply_deferred,
 			#post_update)
-		}
-	}
-}
-impl<'a> Default for AttributeParser<'a> {
-	fn default() -> Self {
-		Self {
-			props: None,
-			other_props: Vec::new(),
-			replace_props: false,
-			pre_parent_update: quote!(gamai::common_actions::empty_node),
-			pre_update: quote!(gamai::common_actions::empty_node),
-			update_apply_deferred: false,
-			update: quote!(gamai::common_actions::empty_node),
-			post_update: quote!(gamai::common_actions::empty_node),
 		}
 	}
 }

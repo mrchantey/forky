@@ -6,6 +6,7 @@ use quote::ToTokens;
 use syn::Result;
 
 pub struct ActionArgs {
+	pub order: TokenStream,
 	pub bundle: TokenStream,
 }
 
@@ -15,6 +16,7 @@ impl ActionArgs {
 			attribute_args(tokens, Some(&["props", "components", "ordering"]))?;
 		let mut props = quote::quote!(());
 		let mut components = quote::quote!(());
+		let mut order = quote::quote!(ActionOrder::Update);
 
 		for (key, value) in args.iter() {
 			match key.to_string().as_str() {
@@ -35,15 +37,20 @@ impl ActionArgs {
 				"components" => {
 					components = value.into_token_stream();
 				}
-				"ordering" => {
-					todo!("ordering = before_parent")
+				"order" => {
+					order = value.into_token_stream();
 				}
-				_ => {}
+				name => {
+					return Err(syn::Error::new(
+						key.span(),
+						format!("Unknown attribute key: {name}"),
+					))
+				}
 			}
 		}
 
 		let bundle = quote!(((#props), (#components)));
 
-		Ok(Self { bundle })
+		Ok(Self { bundle, order })
 	}
 }
