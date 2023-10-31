@@ -42,7 +42,8 @@ impl<'a> AttributeParser<'a> {
 		attributes.actions = if is_group {
 			quote! {()}
 		} else {
-			node.name().to_token_stream()
+			let action = node.name().to_token_stream();
+			quote! {#action.into_action_config()}
 		};
 
 		let has_no_value = |attr: &KeyedAttribute| {
@@ -85,8 +86,29 @@ impl<'a> AttributeParser<'a> {
 							attributes.replace_props = true;
 						}
 						"actions" => {
-							attributes.actions =
-								attr.value().unwrap().to_token_stream();
+							let map_elems =
+								|elems: &Punctuated<Expr, Comma>| {
+									let elems = elems
+										.iter()
+										.map(|e| {
+											quote! {#e.into_action_config(),}
+										})
+										.collect::<TokenStream>();
+									// elems.to_token_stream()
+									quote!((#elems))
+								};
+
+							attributes.actions = if let Some(expr) =
+								attr.value()
+							{
+								match expr {
+									Expr::Array(arr) => map_elems(&arr.elems),
+									Expr::Tuple(tup) => map_elems(&tup.elems),
+									_ => todo!(),
+								}
+							} else {
+								quote! {()}
+							}
 						}
 						_ => {
 							attributes.other_props.push(attr);
@@ -159,19 +181,14 @@ impl<'a> AttributeParser<'a> {
 					()
 				}
 			}
+
 			(false, Some(props)) => {
-				let self_attr = self.to_action();
-				// 2xtuples implement IntoPropBundle
+				let actions = &self.actions;
 				quote! {
-					(#self_attr,#props)
+					(#actions,#props)
 				}
 			}
-			(false, None) => self.to_action(),
+			(false, None) => self.actions.clone(),
 		}
-	}
-
-	pub fn to_action(&self) -> TokenStream {
-		let actions = &self.actions;
-		quote! {#actions.into_action_config()}
 	}
 }

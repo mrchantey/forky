@@ -3,8 +3,11 @@ use crate::common_actions::*;
 use crate::prop::IntoPropBundle;
 use bevy_ecs::prelude::*;
 use bevy_ecs::schedule::IntoSystemConfigs;
+use bevy_ecs::schedule::SystemConfigs;
 // use bevy_utils::all_tuples;
 
+
+// must be generic because `IntoAction` cannot be made into an object
 #[derive(Debug, Clone, Hash, Eq, PartialEq)]
 pub struct ActionConfig<A: IntoAction> {
 	pub action: A,
@@ -13,37 +16,7 @@ pub struct ActionConfig<A: IntoAction> {
 	// TODO update timer
 }
 
-impl<A: IntoAction> ActionConfig<A> {
-	pub fn action_config_into_system_config<Node: AiNode>(
-		self,
-	) -> bevy_ecs::schedule::SystemConfigs {
-		let action = self.action.action_into_system_configs::<Node>();
-		//TODO add these
-
-
-		let action = if self.apply_deferred {
-			(action, apply_deferred).chain()
-		} else {
-			action
-		}
-		.in_set(ActionSet::new::<Node>(self.order));
-
-		(
-			action,
-			//TODO this should be in the `TreeFirstSet`
-			update_action_timer
-				.action_into_system_configs::<Node>()
-				.in_set(Node::pre_parent_update_set()),
-			combined_pre_update
-				.action_into_system_configs::<Node>()
-				.in_set(Node::pre_update_set()),
-			combined_post_update
-				.action_into_system_configs::<Node>()
-				.in_set(Node::post_update_set()),
-		)
-			.into_configs()
-	}
-}
+impl<A: IntoAction> ActionConfig<A> {}
 
 impl<A: IntoAction> IntoActionConfig<A> for ActionConfig<A> {
 	fn into_action_config(self) -> ActionConfig<A> { self }
@@ -80,21 +53,32 @@ impl<A: IntoAction> IntoPropBundle for ActionConfig<A> {
 	}
 }
 
-// impl<A: IntoAction> IntoAction for ActionConfig<A> {
-// 	fn action_into_system_configs<Node: AiNode>(
-// 		self,
-// 	) -> bevy_ecs::schedule::SystemConfigs {
-// 		let action = self.action.action_into_system_configs::<Node>();
+impl<A: IntoAction> IntoAction for ActionConfig<A> {
+	fn action_into_system_configs<Node: AiNode>(self) -> SystemConfigs {
+		let action = self.action.action_into_system_configs::<Node>();
 
-// 		if self.apply_deferred {
-// 			(action, apply_deferred).chain()
-// 		} else {
-// 			action
-// 		}
-// 		.in_set(ActionSet::new::<Node>(self.order))
-// 		.into_configs()
-// 	}
-// }
+		let action = if self.apply_deferred {
+			(action, apply_deferred).chain()
+		} else {
+			action
+		}
+		.in_set(ActionSet::new::<Node>(self.order));
+		(
+			action,
+			//TODO this should be in the `TreeFirstSet`
+			update_action_timer
+				.action_into_system_configs::<Node>()
+				.in_set(Node::pre_parent_update_set()),
+			combined_pre_update
+				.action_into_system_configs::<Node>()
+				.in_set(Node::pre_update_set()),
+			combined_post_update
+				.action_into_system_configs::<Node>()
+				.in_set(Node::post_update_set()),
+		)
+			.into_configs()
+	}
+}
 
 
 
@@ -119,4 +103,3 @@ impl<A: IntoAction> IntoPropBundle for ActionConfig<A> {
 
 // // limit appears to be 12, not sure why
 // all_tuples!(tuples_into_action_config, 1, 12, T);
-

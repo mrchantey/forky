@@ -9,7 +9,7 @@ fn my_system<N: AiNode>() {}
 pub fn works() -> Result<()> {
 	let el = || {
 		ParentElement1::<TreePathRoot<0>, _, _, _>::new(
-			my_system.into_action_config(),
+			(my_system, my_system),
 			my_system,
 			ParentElement0::<TreePathRoot<0>, _, _>::new(
 				my_system.into_action_config(),

@@ -23,7 +23,7 @@ pub fn parse_action_node(tree: &TreeParser) -> Result<TokenStream> {
 	let child_types = child_types(num_children);
 	let child_instances = child_instances(children)?;
 	let attribute = AttributeParser::from_node(node)?;
-	let action = attribute.to_action();
+	let action = &attribute.actions;
 	let action = if let Some(deff) = &attribute.apply_deferred {
 		quote!(#action.apply_deferred(#deff))
 	} else {

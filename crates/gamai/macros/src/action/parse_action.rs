@@ -72,8 +72,7 @@ fn impl_into_action(func: &ItemFn, args: &ActionArgs) -> TokenStream {
 		impl IntoAction for #ident
 		{
 			fn action_into_system_configs<Node: AiNode>(self) -> SystemConfigs{
-				#func_inner #func_generic
-					.into_configs()
+				#func_inner #func_generic.into_configs()
 			}
 		}
 
