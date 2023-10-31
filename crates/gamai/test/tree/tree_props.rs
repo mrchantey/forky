@@ -9,7 +9,7 @@ fn my_system<N: AiNode>() {}
 #[tree_builder]
 pub fn OtherTree(
 	foo: u32,
-	#[default = 3] bar: u8,
+	#[default = 8] bar: u8,
 	#[default] bazz: Option<&'static str>,
 ) -> impl TreeElement {
 	tree! {

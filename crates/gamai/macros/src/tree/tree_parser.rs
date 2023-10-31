@@ -11,11 +11,10 @@ pub type XmlNodeAttribute = rstml::node::NodeAttribute;
 pub type XmlNodeElement = rstml::node::NodeElement;
 
 pub struct TreeParser<'a> {
-	pub node: &'a XmlNodeElement,
 	pub graph_id: usize,
 	pub child_index: usize,
 	pub graph_depth: usize,
-	pub attribute: AttributeParser<'a>,
+	pub node: &'a XmlNodeElement,
 	pub children: Vec<TreeParser<'a>>,
 }
 
@@ -34,8 +33,6 @@ impl<'a> TreeParser<'a> {
 		graph_depth: usize,
 		child_index: usize,
 	) -> Result<Self> {
-		let attribute = AttributeParser::from_node(node)?;
-
 		let children = node
 			.children
 			.iter()
@@ -53,7 +50,6 @@ impl<'a> TreeParser<'a> {
 		Ok(Self {
 			node,
 			children,
-			attribute,
 			graph_id,
 			graph_depth,
 			child_index,
@@ -81,7 +77,6 @@ impl<'a> TreeParser<'a> {
 			node,
 			graph_id,
 			// child_index,			// dont need to set child index because if child, intochildnode will set it
-			attribute,
 			..
 		} = self;
 
@@ -91,6 +86,7 @@ impl<'a> TreeParser<'a> {
 			let ident = self.from_action_ident();
 			let child_types = self.child_types();
 			let child_instances = self.child_instances()?;
+			let attribute = AttributeParser::from_node(node)?;
 			let action = attribute.to_action();
 			let props = attribute.to_prop_bundle();
 			Ok(quote! {

@@ -107,10 +107,10 @@ impl<'a> AttributeParser<'a> {
 				.collect::<TokenStream>();
 
 
-			let ident =
-				syn::Ident::new(&format!("RawProp{num_props}"), expr.span());
+			// let ident =
+			// 	syn::Ident::new(&format!("RawProp{num_props}"), expr.span());
 			quote! {
-				gamai::prop::#ident(#intos)
+				gamai::prop::RawProps((#intos))
 			}
 		};
 
@@ -122,7 +122,7 @@ impl<'a> AttributeParser<'a> {
 				parse_arr(&arr.elems)
 			}
 			val=> {
-				quote!{gamai::prop::RawProp1(#val)}
+				quote!{gamai::prop::RawProps((#val,))}
 			}
 			// _ => syn::Error::new(
 			// 	expr.span(),
