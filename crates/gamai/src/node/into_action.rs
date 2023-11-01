@@ -3,17 +3,20 @@ use crate::prop::IntoPropBundle;
 use bevy_ecs::all_tuples;
 use bevy_ecs::prelude::*;
 use bevy_ecs::schedule::SystemConfigs;
-use std::fmt::Debug;
-use std::hash::Hash;
-
 
 pub trait AddSystems {
 	fn add_systems(self, schedule: &mut Schedule);
 }
 
-pub trait IntoAction:
-	'static + Send + Sync + Sized + Eq + Hash + Clone + Debug + IntoPropBundle
-{
+// impl<T: IntoAction> AddSystems for T {
+// 	fn add_systems(self, schedule: &mut Schedule) {
+// 		let configs = self.action_into_system_configs::<Self::Node>();
+// 		schedule.add_system(configs);
+// 	}
+// }
+
+// at some point should probably remove this dependency
+pub trait IntoAction: IntoPropBundle {
 	fn action_into_system_configs<Node: AiNode>(self) -> SystemConfigs;
 }
 

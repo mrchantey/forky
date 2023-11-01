@@ -66,7 +66,7 @@ fn impl_into_action(func: &ItemFn, args: &ActionArgs) -> TokenStream {
 	quote! {
 		impl IntoPropBundle for #ident
 		{
-			fn into_bundle<Node: AiNode>(self) -> impl Bundle { #bundle }
+			fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle { #bundle }
 		}
 
 		impl IntoAction for #ident

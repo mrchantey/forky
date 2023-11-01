@@ -7,7 +7,16 @@ pub trait IntoBundle {
 }
 
 pub trait IntoPropBundle {
-	fn into_bundle<Node: AiNode>(self) -> impl Bundle;
+	fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle;
+}
+
+impl<T> IntoPropBundle for T
+where
+	T: IntoBundle,
+{
+	fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle {
+		IntoBundle::into_bundle(self)
+	}
 }
 
 impl<F, B> IntoBundle for F
@@ -21,11 +30,11 @@ where
 macro_rules! tuples_into_prop_bundle {
 	($($name: ident),*) => {
 		impl<$($name: IntoPropBundle),*> IntoPropBundle for ($($name,)*) {
-			fn into_bundle<Node: AiNode>(self) -> impl Bundle {
+			fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle {
 				#[allow(non_snake_case)]
 				let ($($name,)*) = self;
 				(
-					$($name.into_bundle::<Node>(),)*
+					$($name.into_prop_bundle::<Node>(),)*
 				)
 			}
 		}

@@ -2,7 +2,7 @@ use crate::node::*;
 use crate::prop::*;
 
 
-pub trait TreeElement: AddSystems + IntoBundle + Sized {
+pub trait TreeElement: AddSystems + IntoBundle + IntoAction + Sized {
 	type Node: AiNode;
 	fn into_root(self) -> impl TreeElement { self.with_path::<Self::Node>() }
 	fn with_path<NewPath: TreePath>(self) -> impl TreeElement;

@@ -8,7 +8,7 @@ use bevy_ecs::schedule::SystemConfigs;
 
 
 // must be generic because `IntoAction` cannot be made into an object
-#[derive(Debug, Clone, Hash, Eq, PartialEq)]
+#[derive(Debug, Clone)]
 pub struct ActionConfig<A: IntoAction> {
 	pub action: A,
 	pub apply_deferred: bool,
@@ -48,8 +48,8 @@ impl IntoActionConfig<()> for () {
 }
 
 impl<A: IntoAction> IntoPropBundle for ActionConfig<A> {
-	fn into_bundle<Node: AiNode>(self) -> impl Bundle {
-		self.action.into_bundle::<Node>()
+	fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle {
+		self.action.into_prop_bundle::<Node>()
 	}
 }
 
@@ -79,27 +79,3 @@ impl<A: IntoAction> IntoAction for ActionConfig<A> {
 			.into_configs()
 	}
 }
-
-
-
-// impl<A: IntoAction> IntoActionConfig<A> for ActionConfig<A> {
-// 	fn into_action_config(self) -> ActionConfig<A> { self }
-// }
-
-// macro_rules! tuples_into_action_config {
-// 	($($name: ident),*) => {
-// 		impl<$($name: IntoAction),*> IntoAction for ($($name,)*) {
-// 			fn action_into_system_configs<Node: AiNode>(self) -> SystemConfigs {
-// 				#[allow(non_snake_case)]
-// 				let ($($name,)*) = self;
-// 				(
-// 					$($name.action_into_system_configs::<Node>(),)*
-// 				)
-// 				.into_configs()
-// 			}
-// 		}
-// 	}
-// }
-
-// // limit appears to be 12, not sure why
-// all_tuples!(tuples_into_action_config, 1, 12, T);

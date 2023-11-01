@@ -66,10 +66,16 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 			}
 		}
 
+		impl<#self_bounds> IntoAction for #ident<#self_params>{
+			fn action_into_system_configs<Node: AiNode>(self)-> SystemConfigs{
+				self.action.action_into_system_configs::<Node>()
+			}
+		}
+
 		impl<#self_bounds> IntoBundle for #ident<#self_params>{
 			fn into_bundle(self)->impl Bundle{
 				(
-				self.props.into_bundle::<<Self as TreeElement>::Node>(),
+				self.props.into_prop_bundle::<<Self as TreeElement>::Node>(),
 				#children_into_bundle
 				)
 			}

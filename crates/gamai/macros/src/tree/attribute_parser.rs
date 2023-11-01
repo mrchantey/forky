@@ -104,7 +104,7 @@ impl<'a> AttributeParser<'a> {
 								match expr {
 									Expr::Array(arr) => map_elems(&arr.elems),
 									Expr::Tuple(tup) => map_elems(&tup.elems),
-									_ => todo!(),
+									other => other.to_token_stream(),
 								}
 							} else {
 								quote! {()}

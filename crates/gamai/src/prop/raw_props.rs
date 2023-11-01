@@ -10,7 +10,7 @@ pub trait IntoRawProps {
 pub struct RawProps<T: IntoRawProps>(pub T);
 
 impl<T: IntoRawProps> IntoPropBundle for RawProps<T> {
-	fn into_bundle<Node: AiNode>(self) -> impl Bundle {
+	fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle {
 		self.0.into_wrapped_bundle::<Node>()
 	}
 }
