@@ -15,7 +15,9 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 
 	let child_bounds = child_bounds(*num_children);
 	let child_nodes = child_nodes(*num_children);
+	let children_into_action = children_into_action(*num_children);
 	let children_into_bundle = children_into_bundle(*num_children);
+	let children_into_prop_bundle = children_into_prop_bundle(*num_children);
 	let children_add_systems = children_add_systems(*num_children);
 	let child_fields_def = child_fields_def(*num_children);
 	let child_fields_args = child_fields_args(*num_children);
@@ -68,10 +70,17 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 
 		impl<#self_bounds> IntoAction for #ident<#self_params>{
 			fn action_into_system_configs<Node: AiNode>(self)-> SystemConfigs{
-				self.action.action_into_system_configs::<Node>()
+				(
+					self.action.action_into_system_configs::<Node>(),
+				#children_into_action
+			).into_configs()
 			}
 		}
-
+		impl<#self_bounds> IntoPropBundle for #ident<#self_params>{
+			fn into_prop_bundle<Node: AiNode>(self)->impl Bundle{
+				self.with_path::<Node>().into_bundle()
+			}
+		}
 		impl<#self_bounds> IntoBundle for #ident<#self_params>{
 			fn into_bundle(self)->impl Bundle{
 				(
@@ -94,11 +103,30 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 	}
 }
 
+fn children_into_action(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.fold(TokenStream::new(), |prev, index| {
+			let name = child_field_name(index);
+			quote!((self.#name.action_into_system_configs::<Node>(), #prev))
+		})
+		.into_token_stream()
+}
+
+
 fn children_into_bundle(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.fold(TokenStream::new(), |prev, index| {
 			let name = child_field_name(index);
 			quote!((self.#name.into_bundle(), #prev))
+			// quote!((self.#name.into_prop_bundle::<Self>(), #prev))
+		})
+		.into_token_stream()
+}
+fn children_into_prop_bundle(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.fold(TokenStream::new(), |prev, index| {
+			let name = child_field_name(index);
+			quote!((self.#name.with_path::<TreePathSegment<#index, Node>>().into_prop_bundle::<Self>(), #prev))
 		})
 		.into_token_stream()
 }

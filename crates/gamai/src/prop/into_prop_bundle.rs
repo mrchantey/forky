@@ -10,14 +10,14 @@ pub trait IntoPropBundle {
 	fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle;
 }
 
-impl<T> IntoPropBundle for T
-where
-	T: IntoBundle,
-{
-	fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle {
-		IntoBundle::into_bundle(self)
-	}
-}
+// impl<T> IntoPropBundle for T
+// where
+// 	T: IntoBundle,
+// {
+// 	fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle {
+// 		self.into_bundle()
+// 	}
+// }
 
 impl<F, B> IntoBundle for F
 where

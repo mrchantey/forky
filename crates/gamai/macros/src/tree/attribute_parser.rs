@@ -42,8 +42,7 @@ impl<'a> AttributeParser<'a> {
 		attributes.actions = if is_group {
 			quote! {()}
 		} else {
-			let action = node.name().to_token_stream();
-			quote! {#action.into_action_config()}
+			node.name().to_token_stream()
 		};
 
 		let has_no_value = |attr: &KeyedAttribute| {
@@ -91,7 +90,7 @@ impl<'a> AttributeParser<'a> {
 									let elems = elems
 										.iter()
 										.map(|e| {
-											quote! {#e.into_action_config(),}
+											quote! {#e,}
 										})
 										.collect::<TokenStream>();
 									// elems.to_token_stream()
