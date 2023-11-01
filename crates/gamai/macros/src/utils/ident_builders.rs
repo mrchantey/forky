@@ -7,7 +7,7 @@ use syn::ItemFn;
 
 
 pub fn parent_node(index: usize) -> Ident {
-	Ident::new(&format!("Node{index}"), Span::call_site())
+	Ident::new(&format!("ParentNode{index}"), Span::call_site())
 }
 
 pub fn parent_action(index: usize) -> Ident {
