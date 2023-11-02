@@ -42,6 +42,12 @@ impl ActionSet {
 	pub fn new<P: TreePath>(order: ActionOrder) -> Self {
 		let parent = if P::DEPTH == 0 {
 			None
+			// Some(Box::new(ActionSet {
+			// 	parent: None,
+			// 	order,
+			// 	graph_id: P::GRAPH_ID,
+			// 	depth: P::DEPTH,
+			// }))
 		} else {
 			Some(Box::new(ActionSet::new::<P::Parent>(order)))
 		};

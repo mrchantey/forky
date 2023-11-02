@@ -10,23 +10,6 @@ pub trait IntoPropBundle {
 	fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle;
 }
 
-// impl<T> IntoPropBundle for T
-// where
-// 	T: IntoBundle,
-// {
-// 	fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle {
-// 		self.into_bundle()
-// 	}
-// }
-
-impl<F, B> IntoBundle for F
-where
-	F: Fn() -> B,
-	B: Bundle,
-{
-	fn into_bundle(self) -> impl Bundle { self() }
-}
-
 macro_rules! tuples_into_prop_bundle {
 	($($name: ident),*) => {
 		impl<$($name: IntoPropBundle),*> IntoPropBundle for ($($name,)*) {
@@ -41,3 +24,20 @@ macro_rules! tuples_into_prop_bundle {
 	}
 }
 all_tuples!(tuples_into_prop_bundle, 0, 15, T);
+
+// impl<T> IntoPropBundle for T
+// where
+// 	T: IntoBundle,
+// {
+// 	fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle {
+// 		self.into_bundle()
+// 	}
+// }
+
+// impl<F, B> IntoBundle for F
+// where
+// 	F: Fn() -> B,
+// 	B: Bundle,
+// {
+// 	fn into_bundle(self) -> impl Bundle { self() }
+// }

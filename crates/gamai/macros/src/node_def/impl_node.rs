@@ -41,21 +41,37 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 	let match_get_children = match_get_children(*num_children);
 	let match_get_children_owned = match_get_children_owned(*num_children);
 
+
+	let child_fields_def = child_fields_def(*num_children);
+	let child_fields_args = child_fields_args(*num_children);
+	let child_fields = child_fields_assignment(*num_children);
+	let child_fields_markers = child_fields_markers(*num_children);
+
+
 	let children_inferred_types = children_inferred_types(*num_children);
 	let children_into_child = children_into_child(*num_children);
 	let children_with_path = children_with_path(*num_children);
 	let recursive_children = recursive_children(*num_children);
 
 	quote! {
+		#[derive(Debug, Clone, Default, Hash, PartialEq, Eq)]
+		pub struct #ident<#self_bounds>{
+			phantom: std::marker::PhantomData<Path>,
+			#child_fields_def
+		}
+
+		impl<#self_bounds> #ident<#self_params> {
+			pub fn new<#child_fields_markers>(#child_fields_args) -> Self {
+				Self {
+					phantom: std::marker::PhantomData,
+					#child_fields
+				}
+			}
+		}
+
 		impl<#self_bounds> TreePath for #ident<#self_params> {
 			type Parent = Path::Parent;
 			const CHILD_INDEX: usize = Path::CHILD_INDEX;
-		}
-
-		impl<#self_bounds> IntoBundle for #ident<#self_params> {
-			fn into_bundle(self) -> impl Bundle{
-				panic!("this has been deprecated, use elements instead.")
-			}
 		}
 
 		impl<#self_bounds> AiNode for #ident<#self_params> {
@@ -156,6 +172,43 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 		}
 	}
 }
+
+
+
+fn child_fields_args(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let field = child_field_name(index);
+			let ty = child_type_name(index);
+			let marker = child_marker_type(index);
+			quote!(#field: impl IntoNode<#marker, Out=#ty>,)
+		})
+		.collect()
+}
+
+fn child_fields_assignment(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let field = child_field_name(index);
+			quote!(#field:#field.into_node(),)
+		})
+		.collect()
+}
+
+
+pub fn child_marker_type(index: usize) -> TokenStream {
+	field_ident("ChildMarker", index).to_token_stream()
+}
+
+fn child_fields_markers(num_children: usize) -> TokenStream {
+	(0..num_children)
+		.map(|index| {
+			let field = child_marker_type(index);
+			quote!(#field,)
+		})
+		.collect()
+}
+
 
 fn child_query(num_children: usize) -> TokenStream {
 	(0..num_children)

@@ -24,8 +24,8 @@ pub fn parse_tree(tokens: proc_macro::TokenStream) -> Result<TokenStream> {
 		.into_iter()
 		.map(|node_rsx| {
 			let graph_id = GRAPH_ID.fetch_add(1, Ordering::SeqCst);
-			let root = TreeParser::new(&node_rsx, graph_id)?.to_tokens()?;
-			Ok(quote! {#root.into_root()})
+			let el = TreeParser::new(&node_rsx, graph_id)?.to_tokens()?;
+			Ok(quote! {#el.into_root()})
 		})
 		.collect::<Result<Punctuated<TokenStream, Token![,]>>>()?;
 

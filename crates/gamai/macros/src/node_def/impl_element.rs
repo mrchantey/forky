@@ -1,4 +1,5 @@
 use super::*;
+use crate::utils;
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
@@ -10,14 +11,14 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 		..
 	} = node;
 
-	let ident = crate::utils::parent_element(*num_children);
-	let node_ident = crate::utils::parent_node(*num_children);
+	let ident = utils::parent_element(*num_children);
+	let node_ident = utils::parent_node(*num_children);
 
 	let child_bounds = child_bounds(*num_children);
 	let child_nodes = child_nodes(*num_children);
 	let children_into_action = children_into_action(*num_children);
 	let children_into_bundle = children_into_bundle(*num_children);
-	let children_into_prop_bundle = children_into_prop_bundle(*num_children);
+	// let children_into_prop_bundle = children_into_prop_bundle(*num_children);
 	let children_add_systems = children_add_systems(*num_children);
 	let child_fields_def = child_fields_def(*num_children);
 	let child_fields_args = child_fields_args(*num_children);
@@ -26,6 +27,18 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 	let children_with_path = children_with_path(*num_children);
 	let child_markers = child_markers(*num_children);
 
+	let self_bounds_root = quote! {
+		const GRAPH_ID: usize,
+		Action: IntoAction,
+		Props: IntoPropBundle,
+		#child_bounds
+	};
+	let self_params_root = quote! {
+		TreePathRoot<GRAPH_ID>,
+		Action,
+		Props,
+		#child_params
+	};
 	let self_bounds = quote! {
 		Path: TreePath,
 		Action: IntoAction,
@@ -47,6 +60,17 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 			props: Props,
 			phantom: std::marker::PhantomData<Path>,
 			#child_fields_def
+		}
+
+		impl<#self_bounds_root> #ident<#self_params_root>{
+			pub fn root<#child_markers>(action: Action, props: Props, #child_fields_args)->Self{
+				Self{
+					action,
+					props,
+					phantom: std::marker::PhantomData,
+					#child_fields_assignment
+				}
+			}
 		}
 
 		impl <#self_bounds> #ident<#self_params>{
@@ -118,18 +142,17 @@ fn children_into_bundle(num_children: usize) -> TokenStream {
 		.fold(TokenStream::new(), |prev, index| {
 			let name = child_field_name(index);
 			quote!((self.#name.into_bundle(), #prev))
-			// quote!((self.#name.into_prop_bundle::<Self>(), #prev))
 		})
 		.into_token_stream()
 }
-fn children_into_prop_bundle(num_children: usize) -> TokenStream {
-	(0..num_children)
-		.fold(TokenStream::new(), |prev, index| {
-			let name = child_field_name(index);
-			quote!((self.#name.with_path::<TreePathSegment<#index, Node>>().into_prop_bundle::<Self>(), #prev))
-		})
-		.into_token_stream()
-}
+// fn children_into_prop_bundle(num_children: usize) -> TokenStream {
+// 	(0..num_children)
+// 		.fold(TokenStream::new(), |prev, index| {
+// 			let name = child_field_name(index);
+// 			quote!((self.#name.with_path::<TreePathSegment<#index, Node>>().into_bundle(), #prev))
+// 		})
+// 		.into_token_stream()
+// }
 fn children_add_systems(num_children: usize) -> TokenStream {
 	(0..num_children)
 		.map(|index| {

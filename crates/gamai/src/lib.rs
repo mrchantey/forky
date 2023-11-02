@@ -41,7 +41,7 @@
 	impl_trait_in_fn_trait_return,
 	fn_traits,
 	// inherent_associated_types,
-	// generic_const_exprs,
+	generic_const_exprs,
 )]
 // suppress generic_const_exprs warning
 #![allow(incomplete_features)]

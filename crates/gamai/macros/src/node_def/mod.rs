@@ -8,8 +8,6 @@ pub mod impl_node;
 pub use self::impl_node::*;
 pub mod impl_prop_bundle;
 pub use self::impl_prop_bundle::*;
-pub mod impl_self;
-pub use self::impl_self::*;
 pub mod node_parser;
 pub use self::node_parser::*;
 pub mod parse_node;

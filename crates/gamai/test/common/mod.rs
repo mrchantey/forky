@@ -8,6 +8,8 @@ pub mod common_actions;
 pub use self::common_actions::*;
 pub mod depth;
 pub use self::depth::*;
+pub mod group;
+pub use self::group::*;
 pub mod node_def_builder;
 pub use self::node_def_builder::*;
 pub mod parallel_children;

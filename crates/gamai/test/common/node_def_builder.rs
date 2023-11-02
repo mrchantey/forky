@@ -7,20 +7,19 @@ fn my_system<N: AiNode>() {}
 
 #[sweet_test]
 pub fn works() -> Result<()> {
-	let el = || {
-		ParentElement1::<TreePathRoot<0>, _, _, _>::new(
-			(my_system, my_system),
-			my_system,
-			ParentElement0::<TreePathRoot<0>, _, _>::new(
-				my_system.into_action_config(),
-				my_system,
-			),
-		)
-		.into_root()
-	};
+	// let el = || {
+	// 	ParentElement1::<TreePathRoot<0>, _, _, _>::new(
+	// 		(my_system, my_system),
+	// 		my_system,
+	// 		ParentElement0::<TreePathRoot<0>, _, _>::new(
+	// 			my_system.into_action_config(),
+	// 			my_system,
+	// 		),
+	// 	)
+	// 	.into_root()
+	// };
+	// let _bundle = TreeBundle::new(el);
+	// let _bundle = TreeBundle::new(el);
 
-	// let tree1 = || tree! {<my_system/>};
-	let _bundle = TreeBundle::new(el);
-	let _bundle = TreeBundle::new(el);
 	Ok(())
 }

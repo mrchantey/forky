@@ -6,7 +6,9 @@ pub trait TreeElement:
 	AddSystems + IntoBundle + IntoPropBundle + IntoAction + Sized
 {
 	type Node: AiNode;
+	fn path_as_string(&self) -> String { Self::Node::as_string() }
 	fn into_root(self) -> impl TreeElement { self.with_path::<Self::Node>() }
+	// fn into_root(self) -> impl TreeElement { self.with_path::<<Self::Node as TreePath>::Root>() }
 	fn with_path<NewPath: TreePath>(self) -> impl TreeElement;
 }
 

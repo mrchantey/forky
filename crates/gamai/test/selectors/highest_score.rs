@@ -8,13 +8,13 @@ use sweet::*;
 pub fn MyTree() -> impl TreeElement {
 	tree! {
 		<highest_score apply_deferred>
-		// <group actions=(node_always_succeed.apply_deferred(true),score_always_fail)/>
-		<group actions={
-			tree!{
-				<node_always_succeed apply_deferred/>
-				<score_always_fail/>
-			}
-		}/>
+		<group actions=(node_always_succeed.apply_deferred(true),score_always_fail)/>
+		// <group actions={
+		// 	tree!{
+		// 		<node_always_succeed apply_deferred/>
+		// 		<score_always_fail/>
+		// 	}
+		// }/>
 		<group actions=(node_always_succeed.apply_deferred(true),score_always_pass)/>
 		</highest_score>
 	}

@@ -7,6 +7,7 @@ use std::marker::PhantomData;
 pub trait TreePath:
 	'static + Send + Sync + Sized + Eq + Hash + Clone + Debug
 {
+	type Root: TreePath = <Self::Parent as TreePath>::Root;
 	type Parent: TreePath;
 	const CHILD_INDEX: usize;
 
@@ -21,7 +22,6 @@ pub trait TreePath:
 			Self::GRAPH_ID
 		)
 	}
-
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -29,6 +29,7 @@ pub struct TreePathRoot<const GRAPH_ID: usize>;
 impl<const GRAPH_ID: usize> TreePath for TreePathRoot<GRAPH_ID> {
 	//careful here, could cause infinite loops
 	type Parent = Self;
+	type Root = Self;
 	const CHILD_INDEX: usize = 0;
 	const GRAPH_ID: usize = GRAPH_ID;
 	const DEPTH: usize = 0;
