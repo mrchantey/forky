@@ -56,6 +56,7 @@ jobs:
       uses: baptiste0928/cargo-install@v2
       with:
         crate: wasm-bindgen-cli
+        version: '0.2.87'
     - name: 🔨 Build Crates
       run: just all build
     # - name: 🔎 Test Fantoccini

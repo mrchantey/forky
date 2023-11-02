@@ -46,6 +46,7 @@ jobs:
       uses: baptiste0928/cargo-install@v2
       with:
         crate: wasm-bindgen-cli
+        version: '0.2.87' # TODO ensure this matches your wasm-bindgen version
     - name: 🔨 Install Sweet Cli
       uses: baptiste0928/cargo-install@v2
       with:
