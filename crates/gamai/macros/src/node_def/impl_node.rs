@@ -72,6 +72,8 @@ pub fn impl_node(node: &NodeParser) -> TokenStream {
 		impl<#self_bounds> TreePath for #ident<#self_params> {
 			type Parent = Path::Parent;
 			const CHILD_INDEX: usize = Path::CHILD_INDEX;
+			// explicitly define depth, because `Path` may be root
+			const DEPTH: usize = Path::DEPTH;
 		}
 
 		impl<#self_bounds> AiNode for #ident<#self_params> {

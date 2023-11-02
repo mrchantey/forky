@@ -87,6 +87,8 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 		impl <#self_bounds> AddSystems for #ident<#self_params>{
 			fn add_systems(self, schedule: &mut Schedule) {
 				Path::configure_sets(schedule);
+				// println!("path: {}",Path::as_string());
+				// println!("path: {}",<Self as TreeElement>::Node::as_string());
 				schedule.add_systems(self.action.action_into_system_configs::<<Self as TreeElement>::Node>());
 				#children_add_systems
 			}

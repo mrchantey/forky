@@ -11,7 +11,7 @@ where
 	F: IntoElement<M> + Clone + 'static + Send + Sync,
 {
 	phantom: PhantomData<M>,
-	into_element: F,
+	element: F,
 }
 
 impl<F, M> TreePlugin<F, M>
@@ -21,7 +21,7 @@ where
 {
 	pub fn new(into_element: F) -> Self {
 		Self {
-			into_element,
+			element: into_element,
 			phantom: PhantomData,
 		}
 	}
@@ -35,7 +35,7 @@ where
 	fn build(&self, app: &mut bevy_app::App) {
 		app.init_schedule(Update);
 		let schedule = app.get_schedule_mut(Update).unwrap();
-		self.into_element
+		self.element
 			.clone()
 			.into_element()
 			.add_systems(schedule);

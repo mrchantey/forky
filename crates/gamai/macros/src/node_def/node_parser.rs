@@ -10,9 +10,9 @@ pub struct NodeParser {
 	pub num_children: usize,
 	/// The name of this node: `Node0`
 	pub ident: Ident,
-	/// all generic params for this type: `NODE_ID, GRAPH_ID, GRAPH_DEPTH, CHILD_INDEX, Child1, Child2`
+	/// all generic params for this type: `Path, Child1, Child2`
 	pub self_params: TokenStream,
-	/// all generic bounds for this type: `const NODE_ID: usize, Child1: AiNode, ...`
+	/// all generic bounds for this type: `Path: TreePath, Child1: AiNode, ...`
 	pub self_bounds: TokenStream,
 	/// types of the children: `Child1, Child2`
 	pub child_params: TokenStream,

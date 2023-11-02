@@ -18,15 +18,16 @@ fn child3() {}
 
 pub fn main() -> Result<()> {
 	let tree1 = || {
-		tree! {
-			<root>
-					<child1 apply_deferred>
-						<child2 apply_deferred>
-							<child3 apply_deferred/>
-						</child2>
-					</child1>
-			</root>
-		}
+		tree! {<root/>}
+		// tree! {
+		// 	<root>
+		// 			<child1 apply_deferred>
+		// 				<child2 apply_deferred>
+		// 					<child3 apply_deferred/>
+		// 				</child2>
+		// 			</child1>
+		// 	</root>
+		// }
 	};
 
 	let mut app = App::new();

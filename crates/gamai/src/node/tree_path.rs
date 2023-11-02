@@ -7,10 +7,10 @@ use std::marker::PhantomData;
 pub trait TreePath:
 	'static + Send + Sync + Sized + Eq + Hash + Clone + Debug
 {
-	type Root: TreePath = <Self::Parent as TreePath>::Root;
 	type Parent: TreePath;
+	
+	type Root: TreePath = <Self::Parent as TreePath>::Root;
 	const CHILD_INDEX: usize;
-
 	const GRAPH_ID: usize = Self::Parent::GRAPH_ID;
 	const DEPTH: usize = Self::Parent::DEPTH + 1;
 

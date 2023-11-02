@@ -12,8 +12,8 @@ pub trait IntoNodeSets: TreePath + Clone + Debug {
 	fn update_set() -> impl SystemSet { ActionSet::update::<Self>() }
 	fn post_update_set() -> impl SystemSet { ActionSet::post_update::<Self>() }
 	fn configure_sets(schedule: &mut Schedule) {
-		if Self::DEPTH > 1 {
-			if Self::DEPTH > 2 {
+		if Self::DEPTH > 0 {
+			if Self::DEPTH > 1 {
 				schedule.configure_set(
 					Self::pre_parent_update_set()
 						.before(Self::Parent::update_set())

@@ -13,7 +13,7 @@ pub struct ActionConfig<A: IntoAction> {
 	pub action: A,
 	pub apply_deferred: bool,
 	pub order: ActionOrder,
-	// TODO update timer
+	// TODO update timer, pre/post update settings
 }
 
 impl<A: IntoAction> ActionConfig<A> {}
