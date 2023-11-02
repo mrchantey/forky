@@ -10,6 +10,7 @@ pub trait TreeElement:
 	// fn into_root(self) -> impl TreeElement { self.with_path::<Self::Node>() }
 	fn into_root(self) -> impl TreeElement { self.with_path::<<Self::Node as TreePath>::Root>() }
 	fn with_path<NewPath: TreePath>(self) -> impl TreeElement;
+	
 }
 
 pub trait IntoElement<M>: Sized {

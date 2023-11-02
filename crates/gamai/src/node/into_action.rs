@@ -15,7 +15,7 @@ pub trait AddSystems {
 // 	}
 // }
 
-// at some point should probably remove this dependency
+// TODO at some point should probably remove this dependency
 pub trait IntoAction: IntoPropBundle {
 	fn action_into_system_configs<Node: AiNode>(self) -> SystemConfigs;
 }

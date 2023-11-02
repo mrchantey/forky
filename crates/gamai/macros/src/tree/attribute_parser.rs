@@ -90,10 +90,9 @@ impl<'a> AttributeParser<'a> {
 									let elems = elems
 										.iter()
 										.map(|e| {
-											quote! {#e,}
+											quote! {#e.into_action_config(),}
 										})
 										.collect::<TokenStream>();
-									// elems.to_token_stream()
 									quote!((#elems))
 								};
 
@@ -103,7 +102,10 @@ impl<'a> AttributeParser<'a> {
 								match expr {
 									Expr::Array(arr) => map_elems(&arr.elems),
 									Expr::Tuple(tup) => map_elems(&tup.elems),
-									other => other.to_token_stream(),
+									other => {
+										let action = other.to_token_stream();
+										quote! {#action.into_action_config()}
+									}
 								}
 							} else {
 								quote! {()}

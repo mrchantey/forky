@@ -23,20 +23,21 @@ pub fn parse_action_node(tree: &TreeParser) -> Result<TokenStream> {
 	let child_types = child_types(num_children);
 	let child_instances = child_instances(children)?;
 	let attribute = AttributeParser::from_node(node)?;
-	let action = &attribute.actions;
-	let action = if let Some(deff) = &attribute.apply_deferred {
-		quote!(#action.apply_deferred(#deff))
+	let actions = &attribute.actions;
+	let actions = if let Some(deff) = &attribute.apply_deferred {
+		quote!(#actions.apply_deferred(#deff))
 	} else {
-		//TODO shouldnt need to do this, some issue with ActionConfig
-		quote!(#action.into_action_config())
-		// quote!(#action)
+		actions.clone()
+		// //TODO shouldnt need to do this, some issue with ActionConfig
+		// quote!(#actions.into_action_config())
+		// // quote!(#action)
 	};
 	let props = attribute.to_prop_bundle();
 	Ok(quote! {
 		#ident::<gamai::node::TreePathRoot<#graph_id>,
 		_,_, //for action & props
 		#child_types
-		>::new(#action, #props, #child_instances)
+		>::new(#actions, #props, #child_instances)
 	})
 }
 

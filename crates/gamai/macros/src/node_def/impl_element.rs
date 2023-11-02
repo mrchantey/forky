@@ -96,6 +96,7 @@ pub fn impl_element(node: &NodeParser) -> TokenStream {
 
 		impl<#self_bounds> IntoAction for #ident<#self_params>{
 			fn action_into_system_configs<Node: AiNode>(self)-> SystemConfigs{
+				//TODO this should be self.with_path::<Node>().add_systems?
 				(
 					self.action.action_into_system_configs::<Node>(),
 				#children_into_action
