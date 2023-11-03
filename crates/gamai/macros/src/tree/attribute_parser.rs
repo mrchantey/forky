@@ -67,13 +67,13 @@ impl<'a> AttributeParser<'a> {
 							}
 						}
 						"before_parent" => {
-							panic!("deprecated");
+							todo!("update action order when this tag present");
 						}
 						"before" => {
-							panic!("deprecated");
+							todo!("update action order when this tag present");
 						}
 						"after" => {
-							panic!("deprecated");
+							todo!("update action order when this tag present");
 						}
 						"props" => {
 							attributes.props = Some(Self::parse_props(

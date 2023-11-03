@@ -22,7 +22,7 @@ pub fn update_action_timer<N: AiNode>(
 
 
 
-#[action]
+#[action(props=ActionTimer::default())]
 pub fn succeed_in_one_second<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<(Entity, &Prop<ActionTimer, N>), With<Prop<Running, N>>>,
@@ -43,7 +43,7 @@ pub fn succeed_in_one_second<N: AiNode>(
 /// # Props
 /// - [Duration]
 /// - [ActionTimer]
-#[action]
+#[action(props=ActionTimer::default())]
 pub fn succeed_in_duration<N: AiNode>(
 	mut commands: Commands,
 	mut query: Query<

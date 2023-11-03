@@ -4,9 +4,6 @@ use crate::prop::IntoPropBundle;
 use bevy_ecs::prelude::*;
 use bevy_ecs::schedule::IntoSystemConfigs;
 use bevy_ecs::schedule::SystemConfigs;
-use bevy_utils::all_tuples;
-// use bevy_utils::all_tuples;
-
 
 // must be generic because `IntoAction` cannot be made into an object
 #[derive(Debug, Clone)]
@@ -16,8 +13,6 @@ pub struct ActionConfig<A: IntoAction> {
 	pub order: ActionOrder,
 	// TODO update timer, pre/post update settings
 }
-
-// impl<A: IntoAction> ActionConfig<A> {}
 
 impl<A: IntoAction> IntoActionConfig<A> for ActionConfig<A> {
 	fn into_action_config(self) -> ActionConfig<A> { self }

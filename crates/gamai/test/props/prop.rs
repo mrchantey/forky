@@ -19,10 +19,6 @@ pub fn works() -> Result<()> {
 
 	let mut app = App::new();
 	app.add_plugins(TreePlugin::new(my_tree));
-	// let entity = app
-	// 	.world
-	// 	.spawn(TreeBundle::new(tree, ActionResult::Running))
-	// 	.id();
 	let entity = app.world.spawn_empty().id();
 
 	expect(Prop::<ActionResult, _>::get(my_tree, &app.world, entity))

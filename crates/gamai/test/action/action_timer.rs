@@ -18,18 +18,12 @@ pub fn works() -> Result<()> {
 
 	app.add_plugins(TreePlugin::new(my_tree));
 	app.insert_test_timer();
-	let entity = app
-		.world
-		.spawn((
-			Prop::from_node(my_tree, Running),
-			TreeBundle::recursive(my_tree, ActionTimer::default()),
-		))
-		.id();
+
+	let entity = app.world.spawn(TreeBundle::new(my_tree)).id();
 
 	app.update_with_millis(1); //start running 1
 
 	let out = PropTree::<ActionTimer>::new(my_tree, &app.world, entity);
-	expect(out.value).to_be_some()?;
 	expect(out.children[0].value).to_be_some()?;
 	let out = PropTree::<ActionResult>::new(my_tree, &app.world, entity);
 	expect(out.children[0].value).to_be_none()?;
