@@ -98,10 +98,10 @@ impl<'a, T: IntoProp, N: AiNode> IntoChildPropOptMut<'a, T>
 	fn get(&self) -> Option<&T> { self.value.as_ref().map(|v| v.deref()) }
 	fn value(&'a mut self) -> &mut Option<Mut<'a, T>> { &mut self.value }
 	/// Sets child state to given value, with least effort possible.
-	/// If both are equal, do nothing
-	/// If current is None, use insert command
-	/// If next is None, use remove command
-	/// If both are Some, mutate self
+	/// If both are [None], do nothing
+	/// If current is [None], use insert command
+	/// If next is [None], use remove command
+	/// If both are [Some], mutate self
 	fn set(&mut self, commands: &mut Commands, next: Option<T>) {
 		match (self.value.as_mut(), next) {
 			(None, None) => {

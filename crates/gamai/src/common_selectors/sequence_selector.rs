@@ -22,11 +22,10 @@ pub fn sequence<N: AiNode>(
 	>,
 ) {
 	for (entity, running, out) in query.iter_mut() {
-		let mut children = std::iter::zip(
-			N::children_opt_mut(running).into_iter(),
-			N::children_opt_mut(out).into_iter(),
-		)
-		.collect::<Vec<_>>();
+		let mut children = N::children_opt_mut(running)
+			.into_iter()
+			.zip(N::children_opt_mut(out).into_iter())
+			.collect::<Vec<_>>();
 
 		if children.iter().any(|(running, _)| running.get().is_some()) {
 			continue;
