@@ -1,9 +1,14 @@
 # Changelog
 
 ## TODO
-- interrupts (recursive cleanup)
-- single post_update system for a tree
-	- all cleanups etc in a single system
+- recursive queries
+	- all timers, cleanups etc in single pre and post systems per tree
+	- interrupts (recursive cleanup)
+	- requires apply_deferred before post tree
+- expose first & final sets, single parent set?
+- investigate closer bevy integration
+	- new ui format: bsn
+	- bevy entity relations: aery
 
 ## main
 - private action inners

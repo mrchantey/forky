@@ -8,8 +8,8 @@ use bevy_ecs::prelude::*;
 pub fn combined_post_update<N: AiNode>(
 	mut commands: Commands,
 	mut added_result: Query<
-	(Entity, Option<&mut Prop<ActionTimer, N>>),
-	(With<Prop<ActionResult, N>>, With<Prop<Running, N>>),
+		(Entity, Option<&mut Prop<ActionTimer, N>>),
+		(With<Prop<ActionResult, N>>, With<Prop<Running, N>>),
 	>,
 	// for second time around, remove the [ActionResult]
 	mut removed_running: RemovedComponents<Prop<Running, N>>,
@@ -24,11 +24,12 @@ pub fn combined_post_update<N: AiNode>(
 			timer.last_finish.reset();
 		}
 	}
-	
-	
+
+
 	for entity in removed_running.iter() {
-		// println!("removing result");
-		commands.entity(entity).remove::<Prop<ActionResult, N>>();
+		if let Some(mut commands) = commands.get_entity(entity) {
+			commands.remove::<Prop<ActionResult, N>>();
+		}
 	}
 }
 
