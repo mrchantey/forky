@@ -2,6 +2,7 @@
 
 ## TODO
 - Kill long-running tests
+- Display typename in failed tests: `tests::foo::works`
 
 ## main
 - rename `bevy_ecs` feature to `bevy_core`

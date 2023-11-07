@@ -15,6 +15,21 @@ impl SweetInto<Entity> for EntityMut<'_> {
 	fn sweet_into(self) -> Entity { self.id() }
 }
 
+#[ext(name=MatcherMutExtWorld)]
+#[doc(cfg(feature = "bevy_core"))]
+/// Matcher extensions for `bevy::World`
+pub impl<'a, W> Matcher<W>
+where
+	W: 'a + SweetInto<&'a mut World>,
+{
+	fn num_components<T: Component>(self) -> Matcher<usize> {
+		let world = self.value.sweet_into();
+		let mut arr = world.query::<&T>();
+		let received = arr.iter(world).count();
+		Matcher::new(received)
+	}
+}
+
 #[ext(name=MatcherExtWorld)]
 #[doc(cfg(feature = "bevy_core"))]
 /// Matcher extensions for `bevy::World`
