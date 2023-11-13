@@ -18,3 +18,8 @@ Misc:
 
 - YouTube - [Introduction to Behaviour Trees](https://www.youtube.com/watch?v=KeShMInMjro&list=PLFQdM4LOGDr_vYJuo8YTRcmv3FrwczdKg)
 - YouTube - [GDC Game AI Playlist](https://www.youtube.com/playlist?list=PLk-SPWGynZmM3jv0TCV-Shhe_ltgc7qxq)
+
+Flecs / Entity Relationships
+- [State Machine Example](https://github.com/SanderMertens/flecs/blob/master/examples/cpp/game_mechanics/factory/src/main.cpp)
+- [Games as databases](https://ajmmertens.medium.com/e7971da33ac3)
+- [Why storing state machines in ecs is a bad idea](https://ajmmertens.medium.com/742de7a18e59)

@@ -25,8 +25,8 @@
 - [Gamai](./gamai/index.md)
 	- [System Ordering](./gamai/system_ordering.md)
 	- [Selectors](./gamai/selectors.md)
-	<!-- - [Action Timers](./gamai/action_timers.md) -->
 	- [Resources](./gamai/resources.md)
+	<!-- - [Action Timers](./gamai/action_timers.md) -->
 ---
 
 # Demos

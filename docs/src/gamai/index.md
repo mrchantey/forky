@@ -1,4 +1,8 @@
-# Gamai
+<div style="display:flex; justify-content:space-between">
+<h1>Gamai</h1>
+<img src="images/spotted-gum.jpg" height=200px>
+</div>
+<br/>
 
 Gamai is an ECS task switching library suitable for game AI, robotics & other performance-critical environments. The primitives it provies can be used for multiple decision-making paradigms like Behaviour Trees, Utility AI and Goal Oriented Action Planning (GOAP). The ECS implementation uses opportunistic parallelism, ensuring trees are processed as quickly as possible.
 

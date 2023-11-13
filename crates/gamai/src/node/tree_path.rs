@@ -55,19 +55,3 @@ impl<const CHILD_INDEX: usize, Parent: TreePath>
 		}
 	}
 }
-
-#[derive(Clone, Eq, PartialEq, Hash)]
-pub struct TreePathInstance {
-	parent: Option<Box<TreePathInstance>>,
-	graph_id: usize,
-	depth: usize,
-	child_index: usize,
-}
-
-impl Debug for TreePathInstance {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		f.debug_struct("Path")
-			.field("parent", &self.parent)
-			.finish()
-	}
-}
