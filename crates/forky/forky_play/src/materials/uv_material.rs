@@ -1,18 +1,15 @@
 use super::*;
-use bevy::{
-	pbr::{MaterialPipeline, MaterialPipelineKey},
-	prelude::*,
-	reflect::TypeUuid,
-	render::{
-		mesh::MeshVertexBufferLayout,
-		render_resource::{
-			AsBindGroup, RenderPipelineDescriptor, ShaderRef,
-			SpecializedMeshPipelineError,
-		},
-	},
-};
+use bevy::pbr::MaterialPipeline;
+use bevy::pbr::MaterialPipelineKey;
+use bevy::prelude::*;
+use bevy::reflect::TypeUuid;
+use bevy::render::mesh::MeshVertexBufferLayout;
+use bevy::render::render_resource::AsBindGroup;
+use bevy::render::render_resource::RenderPipelineDescriptor;
+use bevy::render::render_resource::ShaderRef;
+use bevy::render::render_resource::SpecializedMeshPipelineError;
 
-#[derive(Reflect, AsBindGroup, TypeUuid, Debug, Clone, Default)]
+#[derive(Asset, Reflect, AsBindGroup, TypeUuid, Debug, Clone, Default)]
 #[uuid = "f1b849ae-a498-4059-9e46-16b7e3f66722"]
 pub struct UvMaterial {
 	#[uniform(0)]

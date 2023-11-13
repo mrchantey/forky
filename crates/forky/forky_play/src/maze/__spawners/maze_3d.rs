@@ -25,7 +25,7 @@ pub fn despawn(
 	mut commands: Commands,
 	q_items: Query<Entity, With<MazeItemTag>>,
 ) {
-	for _ in despawn_event.iter() {
+	for _ in despawn_event.read() {
 		for entity in q_items.iter() {
 			commands.entity(entity).despawn_recursive();
 		}

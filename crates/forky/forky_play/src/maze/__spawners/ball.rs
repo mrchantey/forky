@@ -14,7 +14,7 @@ pub fn respawn(
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-	for e in spawn_event.iter() {
+	for e in spawn_event.read() {
 		let h_cell_width = e.cell_width / 2.;
 		let diameter = h_cell_width * 0.5;
 		let start_offset = tern!(e.num_cols % 2 == 0;-h_cell_width;0.);

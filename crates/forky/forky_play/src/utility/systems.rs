@@ -1,4 +1,5 @@
-use bevy::{app::AppExit, prelude::*};
+use bevy::app::AppExit;
+use bevy::prelude::*;
 // use enigo::*;
 
 pub fn spawn_camera_at_position(position: Vec3) -> impl FnMut(Commands) {
@@ -18,38 +19,32 @@ pub fn spawn_default_lights(mut commands: Commands) {
 		..default()
 	});
 
-	commands.spawn((
-		Name::new("Left Light"),
-		PointLightBundle {
-			transform: Transform::from_xyz(-5., 5., 3.),
-			point_light: PointLight {
-				intensity: 1000.,
-				// color: Color::FUCHSIA,
-				shadows_enabled: true,
-				..default()
-			},
+	commands.spawn((Name::new("Left Light"), PointLightBundle {
+		transform: Transform::from_xyz(-5., 5., 3.),
+		point_light: PointLight {
+			intensity: 1000.,
+			// color: Color::FUCHSIA,
+			shadows_enabled: true,
 			..default()
 		},
-	));
-	commands.spawn((
-		Name::new("Right Light"),
-		PointLightBundle {
-			transform: Transform::from_xyz(3., 5., -5.),
-			point_light: PointLight {
-				intensity: 1000.,
-				shadows_enabled: true,
-				// color: Color::CYAN,
-				..default()
-			},
+		..default()
+	}));
+	commands.spawn((Name::new("Right Light"), PointLightBundle {
+		transform: Transform::from_xyz(3., 5., -5.),
+		point_light: PointLight {
+			intensity: 1000.,
+			shadows_enabled: true,
+			// color: Color::CYAN,
 			..default()
 		},
-	));
+		..default()
+	}));
 }
 
 
 pub fn create_exit_after_system(
 	secs: f64,
-) -> impl Fn(EventWriter<AppExit>, Res<Time>) {
+) -> impl Fn(EventWriter<AppExit>, Res<Time<Real>>) {
 	move |mut exit, time| {
 		if time.elapsed_seconds_f64() > secs {
 			exit.send(AppExit);
@@ -57,9 +52,7 @@ pub fn create_exit_after_system(
 	}
 }
 
-pub fn exit_system(mut exit: EventWriter<AppExit>) {
-	exit.send(AppExit);
-}
+pub fn exit_system(mut exit: EventWriter<AppExit>) { exit.send(AppExit); }
 
 pub fn surrender_focus() {
 	// let mut enigo = Enigo::new();

@@ -10,7 +10,7 @@ pub fn respawn(
 	mut materials: ResMut<Assets<StandardMaterial>>,
 	mut spawn_event: EventReader<RespawnEvent>,
 ) {
-	for e in spawn_event.iter() {
+	for e in spawn_event.read() {
 		let mut maze = RectMazeSpatial::new(
 			e.num_cols,
 			e.num_rows,

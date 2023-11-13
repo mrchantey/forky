@@ -1,17 +1,20 @@
-use bevy::prelude::*;
-use forky_core::math::*;
 //https://bevy-cheatbook.github.io/input/keyboard.html
 use super::*;
 use crate::*;
+use bevy::prelude::*;
+use forky_core::math::*;
 
 pub fn orbit_keyboard_controller(
-	time: Res<Time>,
+	time: Res<Time<Real>>,
 	keys: Res<Input<KeyCode>>,
-	mut query: Query<(
-		&input::TransformController,
-		&mut OrbitController,
-		&mut Transform,
-	),With<ActiveCamera>>,
+	mut query: Query<
+		(
+			&input::TransformController,
+			&mut OrbitController,
+			&mut Transform,
+		),
+		With<ActiveCamera>,
+	>,
 ) {
 	for (kb, mut orbit, mut tran) in query.iter_mut() {
 		let pos_scalar = kb.translate_speed * time.delta_seconds();

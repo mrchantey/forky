@@ -26,7 +26,7 @@ pub fn combined_post_update<N: AiNode>(
 	}
 
 
-	for entity in removed_running.iter() {
+	for entity in removed_running.read() {
 		if let Some(mut commands) = commands.get_entity(entity) {
 			commands.remove::<Prop<ActionResult, N>>();
 		}
@@ -50,7 +50,7 @@ pub fn remove_running<N: AiNode>(
 		commands.entity(entity).remove::<Prop<Running, N>>();
 	}
 	// Second time around ensure parent doesnt read state again
-	for entity in removed_running.iter() {
+	for entity in removed_running.read() {
 		commands.entity(entity).remove::<Prop<ActionResult, N>>();
 	}
 }

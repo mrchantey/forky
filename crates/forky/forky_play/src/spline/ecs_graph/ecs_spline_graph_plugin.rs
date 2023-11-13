@@ -17,8 +17,8 @@ impl Plugin for EcsSplineGraphPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
 			.insert_resource(EcsSplineGraphLookup::new())
-			.configure_set(Update,EcsSplineGraphSet::Update)
-			.configure_set(Update,EcsSplineGraphSet::Modify
+			.configure_sets(Update,EcsSplineGraphSet::Update)
+			.configure_sets(Update,EcsSplineGraphSet::Modify
 				.after(EcsSplineGraphSet::Update))
 			.add_systems(Update,(
 				on_handle_moved,

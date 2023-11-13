@@ -41,8 +41,8 @@ impl Plugin for WebXrPlugin {
 				WebXrSet::Prepare, 
 				WebXrSet::Tracking
 				))
-			.configure_set(PreUpdate,WebXrSet::Prepare.after(WebXrSet::PrePrepare))
-			.configure_set(PreUpdate,WebXrSet::Tracking.after(WebXrSet::Prepare))
+			.configure_sets(PreUpdate,WebXrSet::Prepare.after(WebXrSet::PrePrepare))
+			.configure_sets(PreUpdate,WebXrSet::Tracking.after(WebXrSet::Prepare))
 			//Config
 			.add_systems(Startup,xr_utils::set_canvas_size)
 			.add_systems(PreUpdate, bevy_utils::insert_gl_layer.in_set(WebXrSet::PrePrepare))

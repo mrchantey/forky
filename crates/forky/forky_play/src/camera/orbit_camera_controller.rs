@@ -54,16 +54,16 @@ pub fn orbit_camera_controller(
 	let mut orbit_button_changed = false;
 
 	if mouse.pressed(orbit_button) {
-		for ev in ev_motion.iter() {
+		for ev in ev_motion.read() {
 			rotation_move += ev.delta;
 		}
 	} else if mouse.pressed(pan_button) {
 		// Pan only if we're not rotating at the moment
-		for ev in ev_motion.iter() {
+		for ev in ev_motion.read() {
 			pan += ev.delta;
 		}
 	}
-	for ev in ev_scroll.iter() {
+	for ev in ev_scroll.read() {
 		scroll += ev.y;
 	}
 	if mouse.just_released(orbit_button) || mouse.just_pressed(orbit_button) {

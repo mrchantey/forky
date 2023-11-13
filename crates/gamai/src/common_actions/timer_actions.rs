@@ -7,7 +7,7 @@ use std::time::Duration;
 /// The timer will update even if the node is not running.
 #[action]
 pub fn update_action_timer<N: AiNode>(
-	time: Option<Res<Time>>,
+	time: Option<Res<Time<Real>>>,
 	mut timers: Query<&mut Prop<ActionTimer, N>>,
 ) {
 	if let Some(time) = time {

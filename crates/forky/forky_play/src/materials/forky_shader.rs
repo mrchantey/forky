@@ -9,13 +9,10 @@ macro_rules! forky_shader {
 			inline: LoadMode::External,
 			name: $name,
 			id: $id,
-			handle: HandleUntyped::weak_from_u64(
-				bevy::prelude::Shader::TYPE_UUID,
-				$id,
-			),
+			handle: Handle::<Shader>::weak_from_u128($id),
 			asset_path: concat!($local, $name, ".wgsl"),
 			load_asset: |app: &mut bevy::prelude::App,
-			             handle: bevy::prelude::HandleUntyped| {
+			             handle: bevy::prelude::Handle<Shader>| {
 				bevy::asset::load_internal_asset!(
 					app,
 					handle,
@@ -34,10 +31,10 @@ macro_rules! forky_shader {
 pub struct ForkyShader {
 	pub inline: LoadMode,
 	pub name: &'static str,
-	pub id: u64,
-	pub handle: HandleUntyped,
+	pub id: u128,
+	pub handle: Handle<Shader>,
 	pub asset_path: &'static str,
-	pub load_asset: fn(&mut App, HandleUntyped),
+	pub load_asset: fn(&mut App, Handle<Shader>),
 }
 
 pub enum LoadMode {
@@ -47,14 +44,14 @@ pub enum LoadMode {
 }
 
 impl ForkyShader {
-	pub const fn mode(mut self,mode:LoadMode) -> Self {
+	pub const fn mode(mut self, mode: LoadMode) -> Self {
 		self.inline = mode;
 		self
 	}
 	pub fn is_inline(&self) -> bool {
-		match self.inline{
+		match self.inline {
 			LoadMode::External => !cfg!(feature = "shader_debug"),
-			LoadMode::Inline =>true,
+			LoadMode::Inline => true,
 			LoadMode::Internal => !cfg!(feature = "shader_debug_internal"),
 		}
 	}
@@ -68,7 +65,7 @@ impl ForkyShader {
 impl From<ForkyShader> for ShaderRef {
 	fn from(value: ForkyShader) -> Self {
 		if value.is_inline() {
-			value.handle.typed().into()
+			value.handle.into()
 		} else {
 			value.asset_path.into()
 		}

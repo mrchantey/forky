@@ -15,7 +15,7 @@ pub struct KinematicBody {
 // 	// body.velocity += body.acceleration;
 // }
 pub fn update_kinematic_bodies(
-	time: Res<Time>,
+	time: Res<Time<Real>>,
 	mut query: Query<(&mut Transform, &mut KinematicBody)>,
 ) {
 	let delta = time.delta_seconds();

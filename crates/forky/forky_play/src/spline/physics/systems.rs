@@ -26,7 +26,7 @@ pub fn update_velocity_from_force(
 		&SplinePosition,
 		&SplineEdge,
 	)>,
-	time: Res<Time>,
+	time: Res<Time<Real>>,
 ) {
 	for (acceleration, mut velocity, position, edge) in query.iter_mut() {
 		**velocity += edge
@@ -37,7 +37,7 @@ pub fn update_velocity_from_force(
 
 pub fn update_velocity_from_friction(
 	mut query: Query<(&physics::Friction, &mut SplineVelocity)>,
-	time: Res<Time>,
+	time: Res<Time<Real>>,
 ) {
 	for (friction, mut velocity) in query.iter_mut() {
 		let force = velocity.signum() * -1. * **friction * time.delta_seconds();
@@ -47,7 +47,7 @@ pub fn update_velocity_from_friction(
 
 pub fn update_spline_position(
 	mut query: Query<(&mut SplinePosition, &SplineVelocity)>,
-	time: Res<Time>,
+	time: Res<Time<Real>>,
 ) {
 	for (mut position, velocity) in query.iter_mut() {
 		**position += **velocity * time.delta_seconds();

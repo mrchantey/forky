@@ -12,7 +12,7 @@ pub struct EulerPhysicsPlugin;
 impl Plugin for EulerPhysicsPlugin {
 	fn build(&self, app: &mut App) {
 		app.__()
-			.configure_set(PostUpdate, EulerPhysicsSet::Update)
+			.configure_sets(PostUpdate, EulerPhysicsSet::Update)
 			.add_systems(PostUpdate,(
 				update_velocity_from_impulse,
 				update_velocity_from_force,
@@ -44,16 +44,16 @@ pub fn update_velocity_from_impulse(
 	}
 }
 pub fn update_velocity_from_force(
+	time: Res<Time<Real>>,
 	mut query_force: Query<(&AccelerationForce, &mut Velocity)>,
-	time: Res<Time>,
 ) {
 	for (acceleration, mut velocity) in query_force.iter_mut() {
 		**velocity += **acceleration * time.delta_seconds();
 	}
 }
 pub fn update_velocity_from_friction(
+	time: Res<Time<Real>>,
 	mut query_force: Query<(&Friction, &mut Velocity)>,
-	time: Res<Time>,
 ) {
 	for (friction, mut velocity) in query_force.iter_mut() {
 		let force =
@@ -63,8 +63,8 @@ pub fn update_velocity_from_friction(
 }
 
 pub fn update_position(
+	time: Res<Time<Real>>,
 	mut query: Query<(&mut Transform, &Velocity)>,
-	time: Res<Time>,
 ) {
 	for (mut transform, velocity) in query.iter_mut() {
 		transform.translation += **velocity * time.delta_seconds();

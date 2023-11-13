@@ -1,14 +1,12 @@
 use bevy::prelude::*;
 
 /// Bundle to complement the `TransformBundle`
-#[derive(Bundle, Clone, Default)]
+#[derive(Bundle, Default)]
 pub struct RenderBundle<M: Material> {
 	pub mesh: Handle<Mesh>,
 	pub material: Handle<M>,
-	pub visibility: Visibility,
-	pub computed_visibility: ComputedVisibility,
+	pub visibility: VisibilityBundle,
 }
-
 
 impl<M> RenderBundle<M>
 where
@@ -19,7 +17,6 @@ where
 			mesh,
 			material,
 			visibility: default(),
-			computed_visibility: default(),
 		}
 	}
 }

@@ -1,7 +1,6 @@
 use super::*;
-use crate::spline::{
-	ecs_graph::EcsSplineGraphLookup, physics::SplinePhysicsBundle,
-};
+use crate::spline::ecs_graph::EcsSplineGraphLookup;
+use crate::spline::physics::SplinePhysicsBundle;
 use bevy::prelude::*;
 use std::time::Duration;
 
@@ -15,7 +14,7 @@ pub fn spawn_carts(
 	mut commands: Commands,
 	node_settings: Res<GraphSettings>,
 	cart_settings: Res<CartSettings>,
-	time: Res<Time>,
+	time: Res<Time<Real>>,
 	mut last_cart_spawn: ResMut<LastCartSpawn>,
 	graph_lookup: Res<EcsSplineGraphLookup>,
 	query: Query<&Cart>,

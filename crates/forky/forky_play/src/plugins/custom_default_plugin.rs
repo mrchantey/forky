@@ -1,10 +1,8 @@
 use crate::*;
-use bevy::asset::ChangeWatcher;
 use bevy::log::LogPlugin;
 use bevy::prelude::*;
 use bevy::window::PresentMode;
 use bevy::window::WindowResolution;
-use std::time::Duration;
 
 #[derive(Debug, Clone)]
 pub struct CustomDefaultPlugin {
@@ -25,10 +23,6 @@ impl Plugin for CustomDefaultPlugin {
 			.add_plugins(
 				DefaultPlugins
 					.set(AssetPlugin {
-						// watch_for_changes: true,
-						watch_for_changes: ChangeWatcher::with_delay(
-							Duration::from_millis(200),
-						),
 						..Default::default()
 					})
 					.set(WindowPlugin {

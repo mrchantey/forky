@@ -1,11 +1,11 @@
-use bevy::prelude::*;
-use forky_core::math::TAU;
 //https://bevy-cheatbook.github.io/input/keyboard.html
 use super::*;
 use crate::*;
+use bevy::prelude::*;
+use forky_core::math::TAU;
 
 pub fn keyboard_controller(
-	time: Res<Time>,
+	time: Res<Time<Real>>,
 	keys: Res<Input<KeyCode>>,
 	mut query: Query<
 		(&TransformController, &mut Transform),

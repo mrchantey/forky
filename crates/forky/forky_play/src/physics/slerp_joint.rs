@@ -28,7 +28,7 @@ impl Plugin for SlerpJointPlugin {
 
 
 fn update_slerp(
-	time: Res<Time>,
+	time: Res<Time<Real>>,
 	mut timer: ResMut<ChangeTargetTimer>,
 	mut query: Query<(&mut Transform, &mut SlerpTarget)>,
 ) {

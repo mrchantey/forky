@@ -1,8 +1,7 @@
 use super::*;
-use crate::{
-	materials::RenderBundle,
-	spline::graph::{SplineEdge, SplineNode},
-};
+use crate::materials::RenderBundle;
+use crate::spline::graph::SplineEdge;
+use crate::spline::graph::SplineNode;
 use bevy::prelude::*;
 
 
@@ -15,7 +14,7 @@ pub struct EcsSplineEdge {
 	pub handles: Vec<Entity>,
 }
 
-#[derive(Bundle, Clone)]
+#[derive(Bundle)]
 pub struct SplineEdgeBundle<T: Material> {
 	pub transform: TransformBundle,
 	pub render: RenderBundle<T>,

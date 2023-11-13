@@ -5,7 +5,7 @@ pub fn adjust_camera_on_respawn(
 	mut respawn_event: EventReader<RespawnEvent>,
 	mut query: Query<(Entity, &mut Transform, &mut OrbitController)>,
 ) {
-	for e in respawn_event.iter() {
+	for e in respawn_event.read() {
 		for (_entity, mut transform, mut controller) in query.iter_mut() {
 			let dist = 1. + usize::max(e.num_rows, e.num_cols) as f32 * 3.;
 			transform.translation.x = 0.;

@@ -11,15 +11,16 @@ pub impl App {
 	/// Insert a [Time] resource with `Instant::now()` as the last update time.
 	///
 	fn insert_test_timer(&mut self) -> &mut Self {
-		let mut time = Time::default();
+		let mut time = Time::<Real>::default();
 		let now = Instant::now();
 		time.update_with_instant(now);
 		self.insert_resource(time);
 		self
 	}
 	fn update_with_duration(&mut self, duration: Duration) -> &mut Self {
-		let mut time = self.world.resource_mut::<Time>();
+		let mut time = self.world.resource_mut::<Time<Real>>();
 		let last_update = time.last_update().unwrap();
+
 		time.update_with_instant(last_update + duration);
 		self.update();
 		self

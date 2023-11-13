@@ -1,9 +1,9 @@
 use super::*;
 use crate::forky_shader;
-use bevy::{prelude::*, reflect::TypeUuid};
+use bevy::prelude::*;
 
-const SHADER_HANDLE_OFFSET_INTERNAL: u64 = 7_000_000_000_000_000;
-pub const SHADER_HANDLE_OFFSET: u64 = SHADER_HANDLE_OFFSET_INTERNAL + 1000;
+const SHADER_HANDLE_OFFSET_INTERNAL: u128 = 7_000_000_000_000_000;
+pub const SHADER_HANDLE_OFFSET: u128 = SHADER_HANDLE_OFFSET_INTERNAL + 1000;
 
 const SHADER_UTILITY: ForkyShader =
 	forky_shader!("utility", SHADER_HANDLE_OFFSET_INTERNAL + 0)

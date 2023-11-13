@@ -21,8 +21,8 @@ impl Plugin for ToolPlugin {
 			.init_resource::<CameraRay>()
 			.insert_resource(self.settings.clone())
 			.add_systems(PreStartup,spawn_resources)
-			.configure_set(PreUpdate,ToolSystemSet::Select)
-			.configure_set(PreUpdate,ToolSystemSet::ModifySelection
+			.configure_sets(PreUpdate,ToolSystemSet::Select)
+			.configure_sets(PreUpdate,ToolSystemSet::ModifySelection
 				.after(ToolSystemSet::Select))
 			.add_systems(PreUpdate,(
 				cast_camera_ray, 

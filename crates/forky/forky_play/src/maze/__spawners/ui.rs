@@ -71,7 +71,7 @@ pub fn update(
 	mut spawn_event: EventReader<RespawnEvent>,
 	mut query: Query<&mut Text, With<ScoreUI>>,
 ) {
-	for e in spawn_event.iter() {
+	for e in spawn_event.read() {
 		for mut text in query.iter_mut() {
 			text.sections[0].value = format!("Score:  {}", e.level - 1);
 		}

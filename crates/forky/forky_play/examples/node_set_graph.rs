@@ -14,8 +14,8 @@ pub struct Set2(pub usize);
 pub fn main() -> anyhow::Result<()> {
 	let mut app = App::new();
 
-	app.configure_set(Update, Set1.before(Set2(1)));
-	app.configure_set(Update, Set1.before(Set2(7)));
+	app.configure_sets(Update, Set1.before(Set2(1)));
+	app.configure_sets(Update, Set1.before(Set2(7)));
 	// app.add_plugins(tree2.plugin());
 	app.add_plugins(
 		DefaultPlugins
