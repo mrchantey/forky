@@ -8,7 +8,6 @@ use web_sys::console;
 
 #[component]
 pub fn SuitesView(
-	cx: Scope,
 	#[prop(into)] set_matches: WriteSignal<Vec<String>>,
 ) -> impl IntoView {
 	let config = TestRunnerConfig::default();
@@ -20,7 +19,7 @@ pub fn SuitesView(
 		.map(|s| (*s).clone())
 		.collect::<Vec<_>>();
 
-	view! {cx,
+	view! {
 	<h3
 		class=forky_style::BUTTON_LIKE
 		on:click= move|_|{
@@ -34,7 +33,7 @@ pub fn SuitesView(
 		set_matches
 	/>
 	{suites.iter()
-		.map(|suite|view!{cx,<SuiteView suite set_matches/>})
+		.map(|suite|view!{<SuiteView suite set_matches/>})
 		.collect::<Vec<_>>()
 	}
 	}
@@ -42,7 +41,6 @@ pub fn SuitesView(
 
 #[component]
 pub fn SuiteView<'a>(
-	cx: Scope,
 	#[prop(into)] set_matches: WriteSignal<Vec<String>>,
 	suite: &'a TestSuiteWasm,
 ) -> impl IntoView {
@@ -63,7 +61,7 @@ pub fn SuiteView<'a>(
 			acc
 		})
 		.replace(".rs > ", "");
-	view! {cx,
+	view! {
 	<div class=spacecat!(forky_style::BUTTON_LIKE,sweet_style::SWEET_SUITE)
 		on:click=move|_|set_matches(vec![file_str.clone()])
 	>
@@ -74,12 +72,11 @@ pub fn SuiteView<'a>(
 
 #[component]
 pub fn SuiteButton(
-	cx: Scope,
 	name: String,
 	matcher: String,
 	#[prop(into)] set_matches: WriteSignal<Vec<String>>,
 ) -> impl IntoView {
-	view! {cx,
+	view! {
 	<div class=spacecat!(forky_style::BUTTON_LIKE,sweet_style::SWEET_SUITE)
 		on:click=move|_|set_matches(vec![matcher.clone()])
 	>

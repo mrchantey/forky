@@ -4,7 +4,7 @@ use sweet::*;
 
 sweet! {
 	it "works" {
-		mount(|cx| view! {cx,
+		mount(|| view! {
 			<Button>"click me!"</Button>
 		});
 	}

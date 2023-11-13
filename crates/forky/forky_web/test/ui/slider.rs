@@ -3,10 +3,10 @@ use leptos::*;
 use sweet::*;
 
 #[component]
-fn TestSlider(cx: Scope) -> impl IntoView {
-	let (value, set_value) = create_signal(cx, 50.);
+fn TestSlider() -> impl IntoView {
+	let (value, set_value) = create_signal(50.);
 
-	view! {cx,
+	view! {
 		<div class=forky_style::FLEX_COL style="width:30em">
 			<div>
 			<div>"value: "{value}</div>
@@ -19,7 +19,7 @@ fn TestSlider(cx: Scope) -> impl IntoView {
 
 sweet! {
 	it "works" {
-		mount(|cx| view! {cx,
+		mount(|| view! {
 			<>
 			<TestSlider/>
 		</>

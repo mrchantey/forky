@@ -139,8 +139,8 @@ js-sys = "0.3.63"
 wasm-bindgen = "0.2.86"
 wasm-bindgen-futures = "0.4.36"
 console_error_panic_hook = "0.1.7"
-leptos = { version = "0.4.10", features = ["csr", "nightly"] }
-leptos_router = { version = "0.4.10", features = ["csr"] }
+leptos = { version = "0.5.2", features = ["csr", "nightly"] }
+leptos_router = { version = "0.5.2", features = ["csr"] }
 cssparser = "0.31.2"
 
 #https://rustwasm.github.io/wasm-bindgen/api/web_sys/

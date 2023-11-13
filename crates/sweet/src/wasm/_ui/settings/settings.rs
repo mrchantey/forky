@@ -2,8 +2,8 @@ use forky_web::*;
 use leptos::*;
 
 #[component]
-pub fn Settings(cx: Scope) -> impl IntoView {
-	view! {cx,
+pub fn Settings() -> impl IntoView {
+	view! {
 	<h3>"Settings"</h3>
 	<DarkIframe/>
 	}
@@ -12,15 +12,15 @@ pub fn Settings(cx: Scope) -> impl IntoView {
 pub const DARK_IFRAME_KEY: &str = "dark-iframe";
 
 #[component]
-pub fn DarkIframe(cx: Scope) -> impl IntoView {
+pub fn DarkIframe() -> impl IntoView {
 	let (checked, set_checked) =
-		create_signal(cx, SearchParams::get_flag(DARK_IFRAME_KEY));
+		create_signal(SearchParams::get_flag(DARK_IFRAME_KEY));
 
-	create_effect(cx, move |_| {
+	create_effect(move |_| {
 		SearchParams::set_flag(DARK_IFRAME_KEY, checked());
 	});
 
-	view! {cx,
+	view! {
 	<div>
 		<label for="dark-iframe-checkbox">"dark iframe"</label>
 		<input

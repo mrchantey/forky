@@ -8,23 +8,22 @@ use web_sys::HtmlIFrameElement;
 
 #[component]
 pub fn RunnerContainer(
-	cx: Scope,
 	#[prop(into)] suite_matches: Signal<Vec<String>>,
 ) -> impl IntoView {
 	// let file_unwrapped = move || file().unwrap();
 	move || {
 		let suite_matches = suite_matches();
 		if suite_matches_none(&suite_matches) {
-			view!(cx,
+			view!(
 				<div class = "center-parent">
 					<h2>"🤘 sweet as! 🤘"</h2>
 				</div>
 			)
-			.into_view(cx)
+			.into_view()
 		} else {
-			view! {cx,<Runner _suite_matches=suite_matches/>}
-				// view! {cx,<RunnerContainerActual file=Signal::derive(cx, file_unwrapped)/>}
-				.into_view(cx)
+			view! {<Runner _suite_matches=suite_matches/>}
+				// view! {<RunnerContainerActual file=Signal::derive(file_unwrapped)/>}
+				.into_view()
 		}
 	}
 }
@@ -32,16 +31,15 @@ pub fn RunnerContainer(
 
 #[component]
 pub fn Runner(
-	cx: Scope,
 	#[prop(into)] _suite_matches: Vec<String>,
 	// #[prop(into)] file: Signal<String>,
 ) -> impl IntoView {
-	let (loaded, set_loaded) = create_signal(cx, false);
+	let (loaded, set_loaded) = create_signal(false);
 	let dark_iframe = SearchParams::get_flag(DARK_IFRAME_KEY);
 
-	let iframe: NodeRef<Iframe> = create_node_ref(cx);
+	let iframe: NodeRef<Iframe> = create_node_ref();
 
-	create_effect(cx, move |_| {
+	create_effect(move |_| {
 		if let Some(iframe) = iframe() {
 			let iframe: &HtmlIFrameElement = &iframe;
 			let config = TestRunnerConfig::from_search_params();
@@ -67,7 +65,7 @@ pub fn Runner(
 		"background: #FFFFFF;"
 	};
 
-	view!(cx,
+	view!(
 		<div class="full-size" style=style>
 			<iframe
 				allow-same-origin

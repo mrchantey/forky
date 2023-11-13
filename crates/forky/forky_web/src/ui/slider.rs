@@ -4,11 +4,10 @@ use leptos::*;
 
 #[component]
 pub fn Slider(
-	cx: Scope,
 	#[prop(into)] value: ReadSignal<f32>,
 	#[prop(into)] set_value: WriteSignal<f32>,
 ) -> impl IntoView {
-	view! {cx,
+	view! {
 		<input
 		type="range"
 		class={spacecat!(ui_style::SLIDER_RANGE_INPUT,ui_style::SLIDER_CONTAINER)}
@@ -24,14 +23,13 @@ pub fn Slider(
 
 #[component]
 pub fn TextSlider(
-	cx: Scope,
 	#[prop(default = 0.)] min: f32,
 	#[prop(default = 1.)] max: f32,
 	#[prop(default = 0.01)] step: f32,
 	#[prop(into)] value: ReadSignal<f32>,
 	#[prop(into)] set_value: WriteSignal<f32>,
 ) -> impl IntoView {
-	// let (value, set_value) = create_signal(cx, 50.);
+	// let (value, set_value) = create_signal(50.);
 
 	let text_value = move || {
 		let value = value();
@@ -42,7 +40,7 @@ pub fn TextSlider(
 			format!("{:.2}", rounded_value)
 		}
 	};
-	view! {cx,
+	view! {
 		<div class=ui_style::SLIDER_CONTAINER>
 		<input
 			type="text"

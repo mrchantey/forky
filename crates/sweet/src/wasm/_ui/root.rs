@@ -11,10 +11,10 @@ pub fn suite_matches_none(matches: &Vec<String>) -> bool {
 }
 
 #[component]
-pub fn Root(cx: Scope) -> impl IntoView {
+pub fn Root() -> impl IntoView {
 	let (suite_matches, set_matches) =
-		create_signal(cx, SearchParams::get_all(MATCHES_KEY));
-	create_effect(cx, move |_| {
+		create_signal(SearchParams::get_all(MATCHES_KEY));
+	create_effect(move |_| {
 		let suite_matches = suite_matches();
 		History::remove_param(MATCHES_KEY);
 		for suite_match in suite_matches.iter() {
@@ -22,7 +22,7 @@ pub fn Root(cx: Scope) -> impl IntoView {
 		}
 	});
 
-	view! {cx,
+	view! {
 		<div class=sweet_style::SWEET_ROOT>
 			<div class=sweet_style::SWEET_CONTENTS>
 				<Settings/>

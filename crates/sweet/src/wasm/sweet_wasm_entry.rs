@@ -23,7 +23,7 @@ fn entry() -> Result<()> {
 	if let Some(testid) = SearchParams::get("testid") {
 		TestRunnerWasm::run_case(testid.parse().unwrap())
 	} else {
-		mount_to_body(|cx| view! {cx,<Root/>});
+		mount_to_body(|| view! {<Root/>});
 		Ok(())
 	}
 }

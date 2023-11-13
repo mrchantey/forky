@@ -1,21 +1,27 @@
+// use forky_web::*;
 use leptos::*;
 
-// fn main() {
-//     mount_to_body(|| view! { <p>"Hello, world!"</p> })
-// }
+fn main() {
+	mount_to_body(|| {
+		view! {
+			<div>
+			<App/>
+			</div>
+		}
+	})
+}
 
 #[component]
 fn App(
-	cx: Scope,
-	foo: u32,
-	#[prop(default = false)] bar: bool,
+	// foo: u32,
+	#[prop(default = false)] _bar: bool,
 ) -> impl IntoView {
-	let (count, set_count) = create_signal(cx, 0);
+	let (count, set_count) = create_signal(0);
 
-	view! {cx,
+	view! {
 		<button
 			on:click=move |_| {
-				set_count(3);
+				set_count(count.get() + 1);
 			}
 		>
 			"Click me: "
