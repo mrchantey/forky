@@ -1,4 +1,4 @@
-use super::*;
+use crate::node::*;
 use bevy_ecs::prelude::*;
 use std::fmt::Debug;
 use std::hash::Hash;

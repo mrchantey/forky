@@ -1,4 +1,4 @@
-use super::*;
+use crate::node::*;
 use crate::prop::IntoPropBundle;
 use bevy_ecs::all_tuples;
 use bevy_ecs::prelude::*;

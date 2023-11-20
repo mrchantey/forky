@@ -51,13 +51,13 @@ pub use gamai_macros::*;
 
 
 pub mod action;
+#[doc(inline)]
+pub use action::IntoActionConfig;
 
 /// A node is a set of [Actions] for various points in its lifecycle.
 pub mod node;
 #[doc(inline)]
 pub use node::AiNode;
-#[doc(inline)]
-pub use node::IntoActionConfig;
 #[doc(inline)]
 pub use node::IntoNode;
 #[doc(inline)]

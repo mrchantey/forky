@@ -1,3 +1,4 @@
+use crate::action::*;
 use crate::node::*;
 use crate::prop::*;
 
@@ -8,9 +9,10 @@ pub trait TreeElement:
 	type Node: AiNode;
 	fn path_as_string(&self) -> String { Self::Node::as_string() }
 	// fn into_root(self) -> impl TreeElement { self.with_path::<Self::Node>() }
-	fn into_root(self) -> impl TreeElement { self.with_path::<<Self::Node as TreePath>::Root>() }
+	fn into_root(self) -> impl TreeElement {
+		self.with_path::<<Self::Node as TreePath>::Root>()
+	}
 	fn with_path<NewPath: TreePath>(self) -> impl TreeElement;
-	
 }
 
 pub trait IntoElement<M>: Sized {

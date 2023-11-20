@@ -1,4 +1,4 @@
-use super::*;
+use crate::action::AddSystems;
 use crate::tree::IntoElement;
 use bevy_app::prelude::*;
 use std::marker::PhantomData;
@@ -35,9 +35,6 @@ where
 	fn build(&self, app: &mut bevy_app::App) {
 		app.init_schedule(Update);
 		let schedule = app.get_schedule_mut(Update).unwrap();
-		self.element
-			.clone()
-			.into_element()
-			.add_systems(schedule);
+		self.element.clone().into_element().add_systems(schedule);
 	}
 }

@@ -1,5 +1,6 @@
 use super::*;
 use crate::common_actions::*;
+use crate::node::*;
 use crate::prop::IntoPropBundle;
 use bevy_ecs::prelude::*;
 use bevy_ecs::schedule::IntoSystemConfigs;

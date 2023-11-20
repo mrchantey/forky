@@ -23,6 +23,7 @@ pub fn parse_action(
 		#[doc(hidden)]
 		#func_as_inner
 		use gamai::exports::*;
+		use gamai::action::*;
 		use gamai::node::*;
 		use gamai::prop::*;
 		use gamai::*;

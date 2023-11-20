@@ -13,6 +13,7 @@ pub fn parse_node(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
 	quote! {
 		use gamai::*;
 		use gamai::exports::*;
+		use gamai::action::*;
 		use gamai::node::*;
 		use gamai::prop::*;
 		use gamai::tree::*;

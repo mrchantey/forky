@@ -33,7 +33,6 @@ pub fn combined_post_update<N: AiNode>(
 	}
 }
 
-use crate::node::*;
 
 // TODO deprecate
 #[action]
