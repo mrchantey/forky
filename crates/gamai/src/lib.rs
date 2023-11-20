@@ -49,6 +49,9 @@
 extern crate self as gamai;
 pub use gamai_macros::*;
 
+
+pub mod action;
+
 /// A node is a set of [Actions] for various points in its lifecycle.
 pub mod node;
 #[doc(inline)]

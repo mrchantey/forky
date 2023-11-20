@@ -32,9 +32,11 @@ pub impl RcCell<App> {
 	}
 
 	#[cfg(target_arch = "wasm32")]
-	async fn run_forever(self) {
-		let _frame = self.run_on_animation_frame();
-		forky_web::loop_forever().await;
+	fn run_forever(self) -> impl std::future::Future<Output = ()> {
+		async {
+			let _frame = self.run_on_animation_frame();
+			forky_web::loop_forever().await;
+		}
 	}
 
 	#[cfg(target_arch = "wasm32")]
