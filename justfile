@@ -3,8 +3,8 @@ set positional-arguments
 
 crates := 'forky forky_cli forky_core forky_play sweet'
 # features := '--features forky_play/shader_debug_internal'
-# features := '--features sweet/bevy_core'
-features := '--features sweet/bevy'
+features := '--features sweet/bevy_core'
+# features := '--features sweet/bevy'
 # features := ''
 # forky_esp
 backtrace := '0'
