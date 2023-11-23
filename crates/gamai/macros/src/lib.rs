@@ -1,5 +1,3 @@
-#![feature(associated_type_bounds)]
-
 use proc_macro::TokenStream;
 mod tree;
 use tree::*;

@@ -4,6 +4,14 @@
 </div>
 <br/>
 
+> **Update - 23/11/23**
+> 
+> I'm currently looking into an architectural overhaul for this library with the following goals:
+> - create trees at runtime
+> - remove generic node architecture
+> - remove dependency on `nightly` channel
+> - reduce dependency on macros
+
 Gamai is an ECS task switching library suitable for game AI, robotics & other performance-critical environments. The primitives it provies can be used for multiple decision-making paradigms like Behaviour Trees, Utility AI and Goal Oriented Action Planning (GOAP). `gamai` is highly parallelizable, with systems running down the tree
 
 

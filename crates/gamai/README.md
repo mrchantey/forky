@@ -46,3 +46,10 @@ fn say_hello<Node: AiNode>(mut query: Query<&mut ActionResult<Node>>){
 	}
 }
 ```
+
+## Bevy Versions
+
+| `bevy` | `gamai` |
+| ------ | ------- |
+| 0.12   | 0.1.37  |
+| 0.11   | 0.1.31  |
