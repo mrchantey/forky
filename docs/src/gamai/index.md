@@ -61,7 +61,7 @@ fn say_hello<N: AiNode>(query: Query<Entity, With<Prop<Running,N>>){
 Trees are a collection of actions and other trees. To reduce boilerplate they can be defined with [rsx](https://crates.io/crates/rstml).
 ```rs
 #[tree_builder]
-pub fn MyTree() -> impl AiNode {
+pub fn MyTree() -> impl TreeElement {
 	tree! {
 		<sequence>
 			<say_hello/>

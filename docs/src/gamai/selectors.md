@@ -7,7 +7,7 @@ Selectors are actions that run on nodes with children, their job is to decide wh
 Perhaps the simplest selector is the `sequence`. It runs each child in order until completion, but will end if one fails.
 ```rs
 #[tree_builder]
-pub fn MyTree() -> impl AiNode {
+pub fn MyTree() -> impl TreeElement {
 	tree! {
 		<sequence>
 			<say_hello/>
@@ -34,7 +34,7 @@ This tree will skip `child1` and run `child2`:
 
 ```rs
 #[tree_builder]
-pub fn MyTree() -> impl AiNode {
+pub fn MyTree() -> impl TreeElement {
 	tree! {
 		<highest_score>
 			<child1 before_parent=score_always_fail/>
