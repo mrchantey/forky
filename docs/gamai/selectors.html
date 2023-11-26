@@ -175,7 +175,7 @@
 <h2 id="sequence"><a class="header" href="#sequence">Sequence</a></h2>
 <p>Perhaps the simplest selector is the <code>sequence</code>. It runs each child in order until completion, but will end if one fails.</p>
 <pre><code class="language-rs">#[tree_builder]
-pub fn MyTree() -&gt; impl AiNode {
+pub fn MyTree() -&gt; impl TreeElement {
 	tree! {
 		&lt;sequence&gt;
 			&lt;say_hello/&gt;
@@ -195,7 +195,7 @@ fn score_always_pass&lt;Node: AiNode&gt;(query: Query&lt;&amp;mut Prop&lt;Score,
 </code></pre>
 <p>This tree will skip <code>child1</code> and run <code>child2</code>:</p>
 <pre><code class="language-rs">#[tree_builder]
-pub fn MyTree() -&gt; impl AiNode {
+pub fn MyTree() -&gt; impl TreeElement {
 	tree! {
 		&lt;highest_score&gt;
 			&lt;child1 before_parent=score_always_fail/&gt;

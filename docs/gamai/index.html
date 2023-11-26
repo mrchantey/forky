@@ -216,7 +216,7 @@ fn say_hello&lt;N: AiNode&gt;(query: Query&lt;Entity, With&lt;Prop&lt;Running,N&
 <h3 id="trees"><a class="header" href="#trees">Trees</a></h3>
 <p>Trees are a collection of actions and other trees. To reduce boilerplate they can be defined with <a href="https://crates.io/crates/rstml">rsx</a>.</p>
 <pre><code class="language-rs">#[tree_builder]
-pub fn MyTree() -&gt; impl AiNode {
+pub fn MyTree() -&gt; impl TreeElement {
 	tree! {
 		&lt;sequence&gt;
 			&lt;say_hello/&gt;
