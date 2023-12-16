@@ -22,7 +22,7 @@ impl<T> Matcher<T> {
 		received: Option<T2>,
 	) -> Result<()> {
 		if self.negated && received.is_some() {
-			Err(self.to_error_with_received(&"None", &"Some"))
+			Err(self.to_error_with_received(&"Some", &"Some"))
 		} else if !self.negated && received.is_none() {
 			Err(self.to_error_with_received(&"Some", &"None"))
 		} else {

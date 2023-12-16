@@ -33,7 +33,7 @@ dot2[...]
 It would produce this system ordering:
 ```mermaid
 graph LR;
-	node1 --- node2.before 
+	node1 --- node2.before
 	node1 --- node1.after 
 	node1 --- node3.before_parent 
 	node2.before --- node2

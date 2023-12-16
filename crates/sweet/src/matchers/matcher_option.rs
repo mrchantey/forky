@@ -5,6 +5,15 @@ impl<T> Matcher<Option<T>>
 where
 	T: std::fmt::Debug,
 {
+	pub fn to_be_option(&self, expected: bool) -> Result<()> {
+		if expected {
+			let result = self.value.is_some();
+			self.assert_correct(result, &"Some")
+		} else {
+			let result = self.value.is_none();
+			self.assert_correct(result, &"None")
+		}
+	}
 	pub fn to_be_some(&self) -> Result<()> {
 		let result = self.value.is_some();
 		self.assert_correct(result, &"Some")
