@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use bevy_math::prelude::*;
 use extend::ext;
 use forky_core::*;
 
@@ -15,12 +15,16 @@ pub impl Quat {
 	fn from_forward() -> Quat { Quat::look_at(Vec3::Z) }
 	fn from_back() -> Quat { Quat::look_at(-Vec3::Z) }
 
-
-	fn look_at(target: Vec3) -> Quat {
-		let up = tern!(target.x == 0. && target.z == 0.; -Vec3::Z; Vec3::Y);
+	fn look_at_with_up(target: Vec3, up: Vec3) -> Quat {
 		let mat = Mat4::look_at_rh(target, Vec3::ZERO, up).inverse();
 		Quat::from_mat4(&mat)
 	}
+
+	fn look_at(target: Vec3) -> Quat {
+		let up = tern!(target.x == 0. && target.z == 0.; -Vec3::Z; Vec3::Y);
+		Self::look_at_with_up(target, up)
+	}
+
 	fn look_away(target: Vec3) -> Quat { Self::look_at(target * -1.) }
 
 

@@ -8,7 +8,7 @@ sweet! {
 	it skip "works" {
 		let mut app = App::new();
 		app.__()
-			.forky_exit_after(3.)
+			.add_systems(Update,utility::create_exit_after_system(3.))
 			.add_plugins(plugins::ForkyDebugPlugin::default())
 			.__()
 			.run();

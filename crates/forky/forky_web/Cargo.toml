@@ -9,7 +9,6 @@ readme = { workspace = true }
 description = { workspace = true }
 repository = { workspace = true }
 
-
 [dependencies]
 forky_core = { workspace = true }
 anyhow = { workspace = true }

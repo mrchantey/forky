@@ -1,4 +1,4 @@
-use bevy::utils::HashMap;
+use bevy_utils::HashMap;
 use extend::ext;
 use std::hash::Hash;
 

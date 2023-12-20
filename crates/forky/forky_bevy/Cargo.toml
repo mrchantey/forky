@@ -1,0 +1,42 @@
+[package]
+name = "forky_bevy"
+version = { workspace = true }
+edition = { workspace = true }
+authors = { workspace = true }
+documentation = { workspace = true }
+license = { workspace = true }
+readme = { workspace = true }
+description = { workspace = true }
+repository = { workspace = true }
+
+[dependencies]
+forky_core = { workspace = true }
+bevy_app = { workspace = true }
+bevy_derive = { workspace = true }
+bevy_ecs = { workspace = true }
+bevy_math = { workspace = true }
+bevy_time = { workspace = true }
+bevy_transform = { workspace = true }
+bevy_utils = { workspace = true }
+# bevy = { workspace = true, optional = true }
+
+anyhow = { workspace = true }
+extend = { workspace = true }
+
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+forky_web = { workspace = true }
+leptos = { workspace = true }
+js-sys = { workspace = true }
+# wasm-bindgen = { workspace = true, optional = true }
+# wasm-bindgen-futures = { workspace = true, optional = true }
+# web-sys = { workspace = true, optional = true }
+
+[dev-dependencies]
+sweet = { workspace = true }
+
+[[example]]
+name = "test_forky_bevy"
+path = "test/sweet.rs"

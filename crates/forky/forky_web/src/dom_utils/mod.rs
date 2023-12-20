@@ -1,5 +1,7 @@
 pub mod animation_frame;
 pub use self::animation_frame::*;
+pub mod bevy_canvas;
+pub use self::bevy_canvas::*;
 pub mod document_interaction_listener;
 pub use self::document_interaction_listener::*;
 pub mod file;

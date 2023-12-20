@@ -4,7 +4,7 @@ use forky_play::*;
 fn main() {
 	let mut app = App::new();
 	app.__()
-		// .forky_exit_after(10.)
+		.add_systems(Update, utility::create_exit_after_system(10.))
 		.add_plugins(plugins::ForkyFullPlugin::default())
 		.add_plugins(spline::SplinePlugin)
 		.add_systems(Startup, setup)

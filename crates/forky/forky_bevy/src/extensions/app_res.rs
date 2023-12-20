@@ -1,6 +1,9 @@
-use bevy::prelude::*;
+use bevy_app::prelude::*;
+use bevy_derive::Deref;
+use bevy_derive::DerefMut;
 use extend::ext;
 use forky_core::*;
+
 #[derive(Deref, DerefMut)]
 pub struct AppRes(pub RcCell<App>);
 

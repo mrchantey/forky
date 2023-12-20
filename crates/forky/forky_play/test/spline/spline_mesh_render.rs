@@ -6,7 +6,7 @@ sweet! {
 	test skip "spline mesh" {
 		let mut app = App::new();
 		app.__()
-		.forky_exit_after(10.)
+		.add_systems(Update,utility::create_exit_after_system(10.))
 			.add_plugins(plugins::ForkyDebugPlugin::default())
 			.add_plugins(spline::ecs_graph::EcsSplineGraphPlugin)
 			.add_plugins(spline::physics::SplinePhysicsPlugin)

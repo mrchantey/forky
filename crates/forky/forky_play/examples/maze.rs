@@ -6,6 +6,6 @@ fn main() {
 	App::new()
 		.add_plugins(plugins::ForkyFullPlugin::default())
 		.add_plugins(MazePlugin)
-		// .forky_exit_after(2)
+		// .add_systems(Update,utility::create_exit_after_system(3.))
 		.run();
 }

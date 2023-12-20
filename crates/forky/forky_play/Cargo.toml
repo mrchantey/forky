@@ -16,6 +16,7 @@ shader_debug_internal = []
 [dependencies]
 ### Internal ###
 forky_core = { workspace = true }
+forky_bevy = { workspace = true }
 gamai = { workspace = true }
 
 ### Game ###

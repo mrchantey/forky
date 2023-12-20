@@ -51,9 +51,10 @@ pub fn orbit_camera_controller(
 	let mut pan = Vec2::ZERO;
 	let mut rotation_move = Vec2::ZERO;
 	let mut scroll = 0.0;
-	let mut orbit_button_changed = false;
+	let orbit_button_changed =
+		mouse.just_released(orbit_button) || mouse.just_pressed(orbit_button);
 
-	if mouse.pressed(orbit_button) {
+	if mouse.pressed(orbit_button) && !orbit_button_changed {
 		for ev in ev_motion.read() {
 			rotation_move += ev.delta;
 		}
@@ -65,9 +66,6 @@ pub fn orbit_camera_controller(
 	}
 	for ev in ev_scroll.read() {
 		scroll += ev.y;
-	}
-	if mouse.just_released(orbit_button) || mouse.just_pressed(orbit_button) {
-		orbit_button_changed = true;
 	}
 
 	let window_size = Vec2::new(window.width(), window.height());

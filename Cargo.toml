@@ -4,8 +4,8 @@
 resolver = "2" # Important! wgpu/Bevy needs this!
 members = [
 	# "crates/*"
-	"crates/forky",
 	"crates/forky/forky_ai",
+	"crates/forky/forky_bevy",
 	"crates/forky/forky_cli",
 	"crates/forky/forky_core",
 	"crates/forky/forky_core/test",
@@ -36,8 +36,8 @@ repository = "https://github.com/mrchantey/forky"
 
 [workspace.dependencies]
 ### internal ###
-forky = { path = "./crates/forky", version = "0.*" }
 forky_ai = { path = "./crates/forky/forky_ai", version = "0.*" }
+forky_bevy = { path = "./crates/forky/forky_bevy", version = "0.*" }
 forky_cli = { path = "./crates/forky/forky_cli", version = "0.*" }
 forky_core = { path = "./crates/forky/forky_core", version = "0.*" }
 forky_fs = { path = "./crates/forky/forky_fs", version = "0.*" }
@@ -50,10 +50,13 @@ gamai = { path = "./crates/gamai", version = "0.*" }
 gamai_macros = { path = "./crates/gamai/macros", version = "0.*" }
 
 ### game ###
-bevy = { version = "0.12.0" }
+bevy = { version = "0.12.*" }
 bevy_ecs = { version = "0.12.*" }
 bevy_app = { version = "0.12.*" }
+bevy_derive = { version = "0.12.*" }
+bevy_math = { version = "0.12.*" }
 bevy_time = { version = "0.12.*" }
+bevy_transform = { version = "0.12.*" }
 bevy_utils = { version = "0.12.*" }
 bevy-inspector-egui = "0.21.0"
 bevy_mod_debugdump = "0.9.0"

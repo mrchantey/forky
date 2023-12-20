@@ -1,7 +1,7 @@
-use bevy::prelude::*;
+use crate::prelude::*;
+use bevy_math::prelude::*;
+use bevy_transform::prelude::*;
 use extend::ext;
-
-use crate::*;
 
 #[ext]
 pub impl Transform {
@@ -101,6 +101,7 @@ pub impl Transform {
 	fn translate_flat_z(&mut self, val: f32) {
 		self.translation += self.flat_z() * val;
 	}
+
 	fn translate_local(&mut self, val: Vec3) {
 		let translation = self.local_x() * val.x
 			+ self.local_y() * val.y

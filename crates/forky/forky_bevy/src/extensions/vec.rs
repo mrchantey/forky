@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use bevy_math::prelude::*;
 use extend::ext;
 use forky_core::utility::random_value;
 

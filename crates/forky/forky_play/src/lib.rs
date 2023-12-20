@@ -1,4 +1,6 @@
 // #![allow(incomplete_features)]
+pub use forky_bevy::prelude::*;
+
 pub mod animation;
 pub mod base;
 pub mod camera;

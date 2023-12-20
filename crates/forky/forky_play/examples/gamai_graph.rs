@@ -40,7 +40,7 @@ pub fn main() -> Result<()> {
 			.disable::<LogPlugin>()
 			.disable::<WinitPlugin>(),
 	);
-	let render_graph =
+	let graph =
 		bevy_mod_debugdump::schedule_graph_dot(&mut app, Update, &Settings {
 			// include_system: Some(Box::new(|_| false)),
 			..default()
@@ -48,6 +48,6 @@ pub fn main() -> Result<()> {
 	let path = "target/graph";
 	std::fs::create_dir_all(path)?;
 	let mut file = File::create("target/graph/render_graph.dot").unwrap();
-	file.write_all(render_graph.as_bytes()).unwrap();
+	file.write_all(graph.as_bytes()).unwrap();
 	Ok(())
 }

@@ -8,7 +8,7 @@ sweet! {
 	test skip "spline physics render" {
 		let mut app = App::new();
 		app.__()
-		.forky_exit_after(10.)
+			.add_systems(Update,utility::create_exit_after_system(3.))
 			.add_plugins(plugins::ForkyDebugPlugin::default())
 			.add_plugins(spline::graph::SplineGraphPlugin)
 			.add_plugins(spline::physics::SplinePhysicsPlugin)

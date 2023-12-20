@@ -9,7 +9,7 @@ sweet! {
 			.add_plugins(plugins::ForkyFullPlugin::default())
 			.add_plugins(maze::MazePlugin)
 			.add_systems(Startup, utility::surrender_focus)
-			.forky_exit_after(2.)
+			.add_systems(Update,utility::create_exit_after_system(2.))
 			.run();
 
 	}

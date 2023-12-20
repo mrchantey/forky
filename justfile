@@ -1,10 +1,10 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_cli forky_core forky_play sweet'
+crates := 'forky forky_cli forky_core forky_play forky_bevy sweet'
 # features := '--features forky_play/shader_debug_internal'
-features := '--features sweet/bevy_core'
-# features := '--features sweet/bevy'
+# features := '--features sweet/bevy_core'
+features := '--features sweet/bevy'
 # features := ''
 # forky_esp
 backtrace := '0'
@@ -22,10 +22,15 @@ default:
 run crate example *args:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} {{args}}
 
-fix crate *args:
-	cargo fix --allow-dirty --lib -p {{crate}} {{args}}
-fix-all *args:
-	cargo fix --allow-dirty --workspace {{args}}
+fix *args:
+	for file in {{crates}}; do \
+			cargo fix --allow-dirty --lib -p $file {{args}}; \
+	done
+
+fmt *args:
+	for file in {{crates}}; do \
+			cargo fmt -p $file {{args}}; \
+	done
 
 cli *args:
 	cargo run -p forky_cli -- {{args}}
@@ -77,6 +82,7 @@ publish crate *args:
 publish-all:
 	just publish forky 					| true
 	just publish forky_core 		| true
+	just publish forky_bevy 		| true
 	just publish forky_fs 			| true
 	just publish forky_web 			| true
 	just publish forky_test 		| true
@@ -86,8 +92,8 @@ publish-all:
 	just publish forky_cli 			| true
 	just publish forky_ai 			| true
 	just publish forky_play 		| true
-	just publish gamai_macros	| true
-	just publish gamai 				| true
+	just publish gamai_macros		| true
+	just publish gamai 					| true
 
 start crate: 
 	./target/debug/{{crate}}.exe

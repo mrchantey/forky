@@ -12,7 +12,7 @@ sweet! {
 			// .add_plugins(maze::MazePlugin)
 			.add_systems(Startup, spawn_all_walls)
 			.add_systems(Startup, surrender_focus)
-			// .forky_exit_after(2)
+			.add_systems(Update,utility::create_exit_after_system(2.))
 			.run();
 	}
 }
