@@ -4,6 +4,7 @@
 resolver = "2" # Important! wgpu/Bevy needs this!
 members = [
 	# "crates/*"
+	"crates/forky/forky",
 	"crates/forky/forky_ai",
 	"crates/forky/forky_bevy",
 	"crates/forky/forky_cli",
@@ -36,6 +37,7 @@ repository = "https://github.com/mrchantey/forky"
 
 [workspace.dependencies]
 ### internal ###
+forky = { path = "./crates/forky/forky", version = "0.*" }
 forky_ai = { path = "./crates/forky/forky_ai", version = "0.*" }
 forky_bevy = { path = "./crates/forky/forky_bevy", version = "0.*" }
 forky_cli = { path = "./crates/forky/forky_cli", version = "0.*" }

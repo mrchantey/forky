@@ -1,0 +1,10 @@
+[package]
+name = "forky"
+version = { workspace = true }
+edition = { workspace = true }
+authors = { workspace = true }
+documentation = { workspace = true }
+license = { workspace = true }
+readme = { workspace = true }
+description = { workspace = true }
+repository = { workspace = true }
