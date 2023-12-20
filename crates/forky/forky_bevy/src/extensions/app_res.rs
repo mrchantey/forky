@@ -44,14 +44,21 @@ pub impl RcCell<App> {
 
 	#[cfg(target_arch = "wasm32")]
 	fn run_while_mounted(self) {
-		leptos::spawn_local(async move {
-			let mounted = forky_web::is_mounted();
-			let _frame = forky_web::AnimationFrame::new(move || {
-				if mounted() {
-					self.borrow_mut().update();
-				}
-			});
-			forky_web::loop_while_mounted().await;
-		})
+		todo!("broken in 12.1?");
+		// let mut app = self.borrow_mut();
+		// app.finish();
+		// app.cleanup();
+		// drop(app);
+		// leptos::spawn_local(async move {
+		// 	forky_web::wait_for_16_millis().await;
+		// 	let mounted = forky_web::is_mounted();
+		// 	let _frame = forky_web::AnimationFrame::new(move || {
+		// 		if mounted() {
+		// 			self.borrow_mut().update();
+		// 		}
+		// 	});
+		// 	// block until unmount
+		// 	forky_web::loop_while_mounted().await;
+		// })
 	}
 }
