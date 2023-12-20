@@ -6,9 +6,15 @@ authors = { workspace = true }
 license = { workspace = true }
 repository = { workspace = true }
 readme = "README.md"
-description = "An ECS task switching library suitable for game AI & robotics"
 documentation = "https://mrchantey.github.io/forky/docs/gamai"
-categories = ["game-engines", "game-development", "data-structures"]
+description = "Modular task switching library suitable for Game AI and Robotics."
+categories = [
+	"game-engines",
+	"game-development",
+	"data-structures",
+	"algorithms",
+	"science::robotics",
+]
 keywords = [
 	"game-ai",
 	"robotics",
@@ -19,23 +25,24 @@ keywords = [
 
 [dependencies]
 gamai_macros = { workspace = true }
+
+
+anyhow = { workspace = true }
+petgraph = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+typetag = { workspace = true }
+extend = { workspace = true }
+
 bevy_ecs = { workspace = true }
 bevy_app = { workspace = true }
 bevy_time = { workspace = true }
 bevy_utils = { workspace = true }
-extend = { workspace = true }
-anyhow = { workspace = true }
-typed-builder = { workspace = true }
+bevy_derive = { workspace = true }
 
 [dev-dependencies]
 sweet = { workspace = true }
-## test macros ##
-rstml = { workspace = true }
-quote = { workspace = true }
-syn = { workspace = true }
-proc-macro2 = { workspace = true }
 
 [[example]]
 name = "test_gamai"
-required-features = ["sweet/bevy_core"]
 path = "test/sweet.rs"

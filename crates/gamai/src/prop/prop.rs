@@ -1,106 +1,114 @@
-use crate::node::*;
-use crate::tree::IntoElement;
-use bevy_ecs::prelude::*;
-use std::marker::PhantomData;
-use std::ops::Deref;
-use std::ops::DerefMut;
+// use std::ops::Deref;
+// use std::ops::DerefMut;
 
-/// Marker for types that can be used as component fields.
-pub trait IntoProp: 'static + Send + Sync {}
-impl<T> IntoProp for T where T: 'static + Send + Sync {}
+// /// Trait for structs that implement Deref and DerefMut, required for use as a prop.
+// pub trait Prop<T>: Deref<Target = T> + DerefMut<Target = T> {}
+// impl<T> Prop<T> for T where T: Deref<Target = T> + DerefMut<Target = T> {}
+// /// Trait for structs that implement Deref and DerefMut, required for use as a prop.
+// pub trait Prop<T> {
+// 	fn get(&self) -> &T;
+// 	fn set(&mut self, value: T);
+// }
+// impl<T> Prop<T> for T where T: Deref<Target = T> + DerefMut<Target = T> {}
 
-pub type DerefProp<T> = dyn Deref<Target = T>;
 
+// pub trait PropList<T> {
+// 	fn get_props() -> Vec<Box<dyn Prop<T>>>;
+// }
 
-#[derive(Debug, Clone, Component)]
-#[component(storage = "SparseSet")]
-/// Container of per-node components.
-///
-/// Props are often added and removed, so get stored in a sparse set.
-pub struct Prop<T: IntoProp, Node: NodeInspector> {
+pub struct SetPropError(pub String);
+
+pub struct PropHandle<PropT, ValueT> {
+	pub get: fn(prop: &PropT) -> ValueT,
+	pub set: fn(prop: &mut PropT, value: ValueT) -> Result<(), SetPropError>,
+	pub show_if: fn(prop: &PropT) -> bool,
+}
+
+pub trait PropInput<T> {
+	fn get(&self) -> &T;
+	fn set(&mut self, value: T);
+	fn show_if(&self) -> bool { true }
+}
+
+pub struct RangeProp<T> {
 	pub value: T,
-	pub marker: PhantomData<Node>,
+	pub min: T,
+	pub max: T,
+	pub step: T,
 }
 
-impl<T: IntoProp, N: NodeInspector> Deref for Prop<T, N> {
-	type Target = T;
-	fn deref(&self) -> &Self::Target { &self.value }
+// impl PropInput<u32> for SliderProp<u32> {
+// 	fn get(&self) -> &u32 { &self.value }
+// 	fn set(&mut self, value: u32) { self.value = value }
+// }
+
+pub struct DropdownProp<T> {
+	pub value: T,
+	pub index: usize,
+	pub display_names: Vec<String>,
 }
-impl<T: IntoProp, N: NodeInspector> DerefMut for Prop<T, N> {
-	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.value }
-}
 
-impl<T: IntoProp, N: NodeInspector> Prop<T, N> {
-	pub fn new(value: T) -> Self {
-		Self {
-			value,
-			marker: PhantomData,
-		}
-	}
-	pub fn from_node<M>(_n: impl IntoElement<M, Node = N>, value: T) -> Self {
-		Self {
-			value,
-			marker: PhantomData,
-		}
-	}
+// impl PropInput<u32> for DropdownProp<u32> {
+// 	fn get(&self) -> &u32 { &self.value }
+// 	fn set(&mut self, value: u32) { self.value = value }
+// }
 
-	pub fn into_inner(self) -> T { self.value }
 
-	pub fn get<'a, M>(
-		_n: impl IntoElement<M, Node = N>,
-		world: &'a World,
-		entity: Entity,
-	) -> Option<&'a T> {
-		Self::get_from_node(world, entity)
-	}
 
-	pub fn get_ref<'a, M>(
-		_n: impl IntoElement<M, Node = N>,
-		world: &'a World,
-		entity: Entity,
-	) -> Option<&'a Self> {
-		Self::get_ref_from_node(world, entity)
-	}
-	pub fn get_from_node<'a>(
-		world: &'a World,
-		entity: Entity,
-	) -> Option<&'a T> {
-		world.entity(entity).get::<Self>().map(|v| &v.value)
-	}
+pub trait UiBuilder<T> {
+	fn get_binding(){
 
-	pub fn get_ref_from_node<'a>(
-		world: &'a World,
-		entity: Entity,
-	) -> Option<&'a Self> {
-		world.entity(entity).get::<Self>()
 	}
 }
 
-impl<T: IntoProp, N: NodeInspector> Prop<T, N>
-where
-	T: PartialEq,
-{
-	pub fn set(
-		entity: Entity,
-		commands: &mut Commands,
-		current: Option<&mut Self>,
-		next: Option<T>,
-	) {
-		match (current, next) {
-			(None, None) => {
-				//noop
-			}
-			(None, Some(next)) => {
-				commands.entity(entity).insert(Self::new(next));
-			}
-			(Some(_), None) => {
-				commands.entity(entity).remove::<Self>();
-			}
-			(Some(current), Some(next)) => {
-				if **current != next {
-					**current = next;
-				}
-			}
-		}
+pub enum BuiltinUiBindings {
+	Group,
+	Slider,
+	Dropdown,
+}
+
+
+pub enum BuiltinUiComponents {}
+
+
+
+
+
+
+/*
+1. example implementation
+
+struct Foobar {
+	a:u32,
+	b:u32,
+}
+
+impl PropList<Foobar> for Foobar {
+	fn get_props() -> Vec<Box<dyn Prop<Foobar>>> {
+		vec![
+			Box::new(PropHandle {
+				get: |prop: &Foobar| prop.a,
+			}),
+			Box::new(PropHandle {
+				get: |prop: &Foobar| prop.b,
+			}),
+		]
 	}
 }
+
+fn SliderComponent<T:AcceptsSlider>(entity:Entity){
+
+
+
+}
+
+
+
+
+trait PropInput<T>{
+
+
+}
+
+
+*/

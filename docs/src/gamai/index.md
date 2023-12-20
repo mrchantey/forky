@@ -4,105 +4,69 @@
 </div>
 <br/>
 
-> **Update - 23/11/23**
-> 
-> I'm currently looking into an architectural overhaul for this library with the following goals:
-> - create trees at runtime
-> - remove generic node architecture
-> - remove dependency on `nightly` channel
-> - reduce dependency on macros
+> *Very early stage warning:*
+> - breaking changes on patch versions
+> - continued development not guaranteed
+> - outdated docs
+> - bugs ahoy
 
-Gamai is an ECS task switching library suitable for game AI, robotics & other performance-critical environments. The primitives it provies can be used for multiple decision-making paradigms like Behaviour Trees, Utility AI and Goal Oriented Action Planning (GOAP). `gamai` is highly parallelizable, with systems running down the tree
-
-
-The ECS implementation uses opportunistic parallelism, ensuring trees are processed as quickly as possible.
-
-**With Bevy**
-
-If used with Bevy there is no blackboard, each node is a regular Bevy system with the same access to entities & resources.
-
-**Without Bevy**
-
-The lightweight [`bevy_ecs`][1] crate that drives Gamai has a great storage pattern, scheduling systems to safely run in parallel and storing data efficiently for the CPU cache.
+Gamai is a modular task switching library suitable for game AI, robotics & other performance-critical environments. It is built with `bevy_ecs` which allows for parallelism and no blackboard. The primitives it provies can be used for multiple selector paradigms like Behaviour Trees, State Machines and Utility AI.
 
 ## Features
 
-- 🌴 Composable Tree Definitions
-- 🔥 Compile-time Parallel Optimization
+- 🐦 Powered by `bevy_ecs` and `petgraph`
+- 🔥 Highly Parallel
 - ✍️ No Blackboard
 - 🌈 Multi-paradigm
-- 🌍 With or without Bevy
-
+- 🌍 With or without Bevy Engine
+- 🌴 Create/edit graphs at runtime
+- 🧩 Multiple graphs per entity
 
 ## Overview
 
-Gamai has three fundamental concepts: `Props`, `Actions` & `Trees`.
+This is my third attempt at a modular AI architecture for ECS, the previous two attempts went the way of the dodo:
+1. Shoehorn non-ecs solutions into bevy, which sucked mostly because of blackboards. 
+2. Get clever with generics and create distinct types *per node* of a graph. This allowed for an entire graph to be stored as components on a single entity but was not great for a bunch of reasons. The dealbreaker was not being able to create/edit graphs at runtime.
 
-### Props
-
-A `Prop` is a regular bevy Component with an added `AiNode` generic argument, meaning props can be used to represent the state of individual nodes in the tree.
-
-For instance the `Running` prop is used to indicate whether an action is currently running.
+I'm quite confident in this third approach, representing graphs as linked entities. 
 
 ### Actions
 
-An `action` is a bevy system with an added generic `AiNode` argument which can be used to access props and children:
-```rs
-#[action]
-fn say_hello<N: AiNode>(query: Query<Entity, With<Prop<Running,N>>){
-	for _ in query.iter(){
-		println!("hello");
+Actions without children usually execute some behavior then return a `RunResult::Success` or a `RunResult::Failure`.
+
+An `action` is a bevy component struct with an associated system. Currently all actions must implement `Clone`, `Component`, `serde::Serialize` and `serde::Deserialize`.
+
+```rust
+#[action(system=print_action)]
+#[derive(Clone, Component, Serialize, Deserialize)]
+pub struct PrintAction(pub value: String);
+
+fn print_action(mut commands: Commands, query: Query<(Entity,&PrintAction), With<Running>){
+	for (entity, action) in query.iter(){
+		println!("Print Action: {}", action.0);
+		commands.entity(entity).insert(RunResult::Success);
 	}
 }
 ```
 
-### Trees
+### Shared Actions
+To solve the problem of, say every scoring system wanting a `Query<&mut Score>` which would break parallelism, each action has a distinct component, and fields marked as `#[shared]` will be copied at the end of each tick when they change.
 
-Trees are a collection of actions and other trees. To reduce boilerplate they can be defined with [rsx](https://crates.io/crates/rstml).
-```rs
-#[tree_builder]
-pub fn MyTree() -> impl TreeElement {
-	tree! {
-		<sequence>
-			<say_hello/>
-			<SayWorld/> //another tree declared elsewhere
-		</sequence>
-	}
-}
+The below action will add a `Score` component to this entity and update it whenever the `ScoringAction` changes.
+
+```rust
+#[action(system=scoring_action)]
+pub struct ScoringAction{
+	#[shared]
+	pub score: Score
+};
 ```
 
-> The `tree!` macro uses the web UI naming convention:
-> - `actions` have snake_case
-> - `trees` have PascalCase
+Now we can have a utility selector that immutably queries the `Score` component of its children, allowing for full parallelism.
 
-## Running
+### Next Steps
 
-- A `TreePlugin` schedules all systems in the tree:  
-	```rust
-	app.add_plugins(TreePlugin::new(MyTree));
-	```
-- A `TreeBundle` adds props to specified nodes in the tree:
-	```rust
-	app.world.spawn(TreeBundle::root(MyTree, Running));
-	```
+Documentation is WIP, in the meantime have a look at `./crates/gamai/test/selectors` for examples of selectors and how they are used.
 
-Putting it all together:
-
-```rs
-fn main(){
-	let mut app = App::new();	
-	app.add_plugins(TreePlugin::new(MyTree));
-	app.world.spawn(TreeBundle::root(MyTree, Running));
-
-	app.update(); // runs first child
-	app.update(); // runs second child
-}
-```
-```sh
-> cargo run
-hello
-world
-```
-<!-- > This example uses `bevy`, see [no_bevy](./no_bevy) for more examples. -->
-
-[1]: https://crates.io/crates/bevy_ecs
+### Name
+`Gamai` is a library based on trees and is named after one of my favorites, the [Australian Spotted Gum](https://en.wikipedia.org/wiki/Corymbia_maculata). It also sounds like `game ai`.

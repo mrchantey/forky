@@ -25,7 +25,7 @@ members = [
 exclude = ["crates/bevy_webxr"]
 
 [workspace.package]
-version = "0.1.37"
+version = "0.1.38"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
@@ -65,9 +65,9 @@ bevy_easings = "0.12.2"
 wgpu = { version = "0.17.1" }
 
 ### utility ###
-anyhow = "1"
+anyhow = "1.0.75"
 time = "0.3.20"
-petgraph = "0.6.3"
+petgraph = { version = "0.6.4", features = ["serde-1"] }
 bytemuck = "1.13.1"
 
 ## Attributes ###
@@ -86,8 +86,9 @@ gag = "1.0.0"
 glob = "0.3.1"
 notify = "6.0.1"
 notify-debouncer-full = "0.2.0"
-serde = { version = "1.0.160", features = ["derive"] }
-serde_json = "1.0.96"
+serde = { version = "1.0.193", features = ["derive"] }
+serde_json = "1.0.108"
+typetag = "0.2.14"
 postcard = { version = "1.0.4", features = ["alloc"] }
 
 ### Math ###

@@ -1,103 +1,37 @@
-//! An ECS task switching library suitable for game AI & robotics.
-//!
-//! # Usage
-//! ```rust
-//! use gamai::*;
-//!
-//! #[action]
-//! fn say_hello<N: AiNode>(query: Query<Entity, With<Prop<Running,N>>){
-//! 	for _ in query.iter(){
-//! 		println!("this action is running!");
-//! 	}
-//! }
-//!
-//! #[tree_builder]
-//! fn MyTree() -> impl TreeElement {
-//! 	tree! {
-//! 		<sequence>
-//! 			<say_hello/>
-//! 			<say_hello/>
-//! 		</sequence>
-//! 	}
-//! }
-//!
-//! fn main(){
-//! 	let mut app = App::new();
-//! 	app.add_plugins(TreePlugin::new(MyTree));
-//! 	app.world.spawn(TreeBundle::new(MyTree));
-//!
-//! 	app.update(); // runs first child
-//! 	app.update(); // runs second child
-//! }
-//!
-//! ```
-//!
-//!
-#![feature(
-	let_chains,
-	associated_type_defaults,
-	associated_type_bounds,
-	associated_const_equality,
-	impl_trait_in_fn_trait_return,
-	fn_traits,
-	// inherent_associated_types,
-	generic_const_exprs,
-)]
-// suppress generic_const_exprs warning
-#![allow(incomplete_features)]
-//allow proc macros to work internally
-extern crate self as gamai;
-pub use gamai_macros::*;
-
-
 pub mod action;
-#[doc(inline)]
-pub use action::IntoActionConfig;
-
-/// A node is a set of [Actions] for various points in its lifecycle.
+pub mod builtin_nodes;
+pub mod edge;
+pub mod graph_utils;
+pub mod message;
 pub mod node;
-#[doc(inline)]
-pub use node::AiNode;
-#[doc(inline)]
-pub use node::IntoNode;
-#[doc(inline)]
-pub use node::TreePlugin;
-
-/// A prop is a per-node `Bevy::Component`.
 pub mod prop;
-#[doc(inline)]
-pub use prop::ActionResult;
-#[doc(inline)]
-pub use prop::ActionTimer;
-#[doc(inline)]
-pub use prop::Prop;
-#[doc(inline)]
-pub use prop::PropTree;
-#[doc(inline)]
-pub use prop::Running;
-#[doc(inline)]
-pub use prop::Score;
-#[doc(inline)]
-pub use prop::TreeBundle;
+pub mod extensions;
 
-/// A tree is a collection of nodes, Actions and Props.
-pub mod tree;
-#[doc(inline)]
-pub use tree::TreeElement;
+// allows proc macros to work internally
+extern crate self as gamai;
 
-/// Collection of commonly used actions
-pub mod common_actions;
-/// Collection of commonly used selectors
-pub mod common_selectors;
+pub mod prelude {
+	
+	pub use crate::action::*;
+	pub use crate::builtin_nodes::actions::*;
+	pub use crate::builtin_nodes::selectors::*;
+	pub use crate::builtin_nodes::*;
+	pub use crate::edge::*;
+	pub use crate::graph_utils::*;
+	pub use crate::message::*;
+	pub use crate::node::*;
+	pub use crate::prop::*;
+	pub use crate::extensions::*;
+	pub use gamai_macros::*;
+}
 
-/// Re-exports for macros
+
 pub mod exports {
-	pub use anyhow::bail;
-	pub use anyhow::Result;
 	pub use bevy_ecs::prelude::*;
-	pub use bevy_ecs::query::WorldQuery;
 	pub use bevy_ecs::schedule::SystemConfigs;
-	pub use typed_builder;
-	// currently no macros depend on bevy_app
-	// pub use bevy_app::prelude::*;
+	pub use bevy_ecs::system::EntityCommands;
+	pub use serde;
+	pub use serde::Deserialize;
+	pub use serde::Serialize;
+	pub use typetag;
 }

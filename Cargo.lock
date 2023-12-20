@@ -1084,7 +1084,7 @@ dependencies = [
  "bevy_reflect_derive",
  "bevy_utils",
  "downcast-rs",
- "erased-serde",
+ "erased-serde 0.3.31",
  "glam",
  "serde",
  "smallvec",
@@ -2334,6 +2334,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "erased-serde"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4adbf0983fe06bd3a5c19c8477a637c2389feb0994eca7a59e3b961054aa7c0a"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "errno"
 version = "0.3.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2619,7 +2628,7 @@ checksum = "aa9a19cbb55df58761df49b23516a86d432839add4af60fc256da840f66ed35b"
 
 [[package]]
 name = "forky_ai"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "dotenv",
@@ -2632,7 +2641,7 @@ dependencies = [
 
 [[package]]
 name = "forky_bevy"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "bevy_app",
@@ -2654,7 +2663,7 @@ dependencies = [
 
 [[package]]
 name = "forky_cli"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "axum",
@@ -2681,7 +2690,7 @@ dependencies = [
 
 [[package]]
 name = "forky_core"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
@@ -2698,7 +2707,7 @@ dependencies = [
 
 [[package]]
 name = "forky_core_test"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
@@ -2717,7 +2726,7 @@ dependencies = [
 
 [[package]]
 name = "forky_esp"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "esp-backtrace",
  "esp-hal-common",
@@ -2731,7 +2740,7 @@ dependencies = [
 
 [[package]]
 name = "forky_fs"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "clap",
@@ -2751,7 +2760,7 @@ dependencies = [
 
 [[package]]
 name = "forky_fs_test"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "forky_fs",
  "sweet",
@@ -2759,7 +2768,7 @@ dependencies = [
 
 [[package]]
 name = "forky_play"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "bevy",
@@ -2783,11 +2792,11 @@ dependencies = [
 
 [[package]]
 name = "forky_test"
-version = "0.1.37"
+version = "0.1.38"
 
 [[package]]
 name = "forky_web"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
@@ -2804,7 +2813,7 @@ dependencies = [
 
 [[package]]
 name = "forky_web_test"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
@@ -2983,31 +2992,30 @@ dependencies = [
 
 [[package]]
 name = "gamai"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "bevy_app",
+ "bevy_derive",
  "bevy_ecs",
  "bevy_time",
  "bevy_utils",
  "extend",
  "gamai_macros",
- "proc-macro2",
- "quote",
- "rstml",
+ "petgraph",
+ "serde",
+ "serde_json",
  "sweet",
- "syn 2.0.41",
- "typed-builder",
+ "typetag",
 ]
 
 [[package]]
 name = "gamai_macros"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "proc-macro2",
  "quote",
- "rstml",
  "syn 2.0.41",
 ]
 
@@ -4765,6 +4773,8 @@ checksum = "e1d3afd2628e69da2be385eb6f2fd57c8ac7977ceeff6dc166ff1657b0e386a9"
 dependencies = [
  "fixedbitset",
  "indexmap 2.1.0",
+ "serde",
+ "serde_derive",
 ]
 
 [[package]]
@@ -5937,7 +5947,7 @@ checksum = "8fb1df15f412ee2e9dfc1c504260fa695c1c3f10fe9f4a6ee2d2184d7d6450e2"
 
 [[package]]
 name = "sweet"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "backtrace",
@@ -5974,7 +5984,7 @@ dependencies = [
 
 [[package]]
 name = "sweet-cli"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "axum",
@@ -6002,7 +6012,7 @@ dependencies = [
 
 [[package]]
 name = "sweet_macros"
-version = "0.1.37"
+version = "0.1.38"
 dependencies = [
  "anyhow",
  "proc-macro2",
@@ -6527,6 +6537,30 @@ name = "typenum"
 version = "1.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "42ff0bf0c66b8238c6f3b578df37d0b7848e55df8577b3f74f92a69acceeb825"
+
+[[package]]
+name = "typetag"
+version = "0.2.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "196976efd4a62737b3a2b662cda76efb448d099b1049613d7a5d72743c611ce0"
+dependencies = [
+ "erased-serde 0.4.1",
+ "inventory",
+ "once_cell",
+ "serde",
+ "typetag-impl",
+]
+
+[[package]]
+name = "typetag-impl"
+version = "0.2.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2eea6765137e2414c44c7b1e07c73965a118a72c46148e1e168b3fc9d3ccf3aa"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.41",
+]
 
 [[package]]
 name = "unicase"

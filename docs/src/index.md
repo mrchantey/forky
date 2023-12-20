@@ -6,8 +6,8 @@ Crates in this repo are mature enough for usage but not yet at a stage to warren
 
 > *Very early stage warning:*
 > - breaking changes on patch versions
-> - outdated docs
 > - continued development not guaranteed
+> - outdated docs
 > - bugs ahoy
 
 ## Crates

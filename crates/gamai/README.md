@@ -3,7 +3,7 @@
 <div align="center">
 
   <p>
-    <strong>An ECS task switching library suitable for game AI & robotics</strong>
+    <strong>Modular task switching library suitable for Game AI and Robotics.</strong>
   </p>
 
   <p>
@@ -22,30 +22,6 @@
 
   <sub>made with ❤️‍🔥 by mrchantey</a></sub>
 </div>
-
-## Usage
-
-```rs
-#[tree_builder]
-pub fn MyTree() -> impl TreeElement {
-	tree! {
-		<sequence>
-			<say_hello/>
-			<say_world/>
-		</sequence>
-	}
-}
-
-#[action]
-fn say_hello<Node: AiNode>(mut query: Query<&mut ActionResult<Node>>){
-	
-	for mut state in query.iter_mut(){
-		println!("hello");
-		//tell parent it can go to the next node now
-		**state = ActionResult::Success;
-	}
-}
-```
 
 ## Bevy Versions
 

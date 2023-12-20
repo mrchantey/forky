@@ -1,123 +1,166 @@
-// use crate::*;
-use super::*;
 use crate::utils::*;
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::ItemFn;
+use std::collections::HashMap;
+use std::sync::atomic::AtomicUsize;
+use std::sync::atomic::Ordering;
+use syn::Expr;
+use syn::ItemStruct;
 use syn::Result;
+
 
 pub fn parse_action(
 	attr: proc_macro::TokenStream,
 	item: proc_macro::TokenStream,
 ) -> Result<TokenStream> {
-	let func = syn::parse::<ItemFn>(item)?;
-	let args = ActionArgs::from_tokens(attr.into())?;
+	let mut input = syn::parse::<ItemStruct>(item)?;
+	let args = &attributes_map(attr.into(), Some(&["system"]))?;
 
-	let ItemFn { vis, sig, .. } = func.clone();
-	let ident = &sig.ident;
+	let action_trait = action_trait(&input, args);
 
-	let func_as_inner = func_as_inner(&func);
-	let impl_into_action = impl_into_action(&func, &args);
+	remove_field_attributes(&mut input);
+
 	Ok(quote! {
-
-		#[doc(hidden)]
-		#func_as_inner
+		use gamai::prelude::*;
 		use gamai::exports::*;
-		use gamai::action::*;
-		use gamai::node::*;
-		use gamai::prop::*;
-		use gamai::*;
-
-		#[derive(Debug, Clone, Eq, PartialEq, std::hash::Hash)]
-		#[allow(non_camel_case_types)]
-		#vis struct #ident;
-
-		#impl_into_action
+		#input
+		#action_trait
 	})
 }
 
-// const GENERIC_ERROR:&str = "an `action` must have a single type parameter bound by `gamai::AiNode` ie: \npub fn my_func<Node: AiNode>()`";
+fn remove_field_attributes(input: &mut ItemStruct) {
+	for field in input.fields.iter_mut() {
+		field.attrs = vec![];
+	}
+}
 
-fn impl_into_action(func: &ItemFn, args: &ActionArgs) -> TokenStream {
-	let ident = &func.sig.ident;
-	let func_inner = func_inner_ident(func);
+fn action_trait(
+	input: &ItemStruct,
+	args: &HashMap<String, Option<Expr>>,
+) -> TokenStream {
+	let ident = &input.ident;
 
-	let ActionArgs {
-		components,
-		props,
-		order,
-		apply_deferred,
-	} = args;
-
-	let bundle = quote!(((#props), (#components)));
-
-	// let generic_err = assert_single_generic_bound(
-	// 	func.sig.generics.clone(),
-	// 	"AiNode",
-	// 	GENERIC_ERROR,
-	// )
-	// .unwrap_or_else(syn::Error::into_compile_error);
-
-	let func_generic = if func_is_generic(&func) {
-		quote!(::<Node>)
-	} else {
-		quote!()
-	};
+	let meta = meta(input);
+	let spawn = spawn(input);
+	let tick_system = tick_system(args);
+	let post_tick_system = post_tick_system(input);
 
 	quote! {
-		impl IntoPropBundle for #ident
-		{
-			fn into_prop_bundle<Node: AiNode>(self) -> impl Bundle { #bundle }
-		}
-
-		impl IntoAction for #ident
-		{
-			fn action_into_system_configs<Node: AiNode>(self) -> SystemConfigs{
-				#func_inner #func_generic.into_configs()
+		#[typetag::serde]
+		impl Action for #ident {
+			fn duplicate(&self) -> Box<dyn Action> {
+				Box::new(self.clone())
 			}
-		}
+			#meta
 
-		impl IntoActionConfig<#ident> for #ident {
-			fn into_action_config(self) -> ActionConfig<#ident> {
-				ActionConfig {
-					action: self,
-					apply_deferred: #apply_deferred,
-					order: #order,
-				}
+			#spawn
+
+			#tick_system
+			#post_tick_system
+		}
+	}
+}
+
+static ACTION_ID: AtomicUsize = AtomicUsize::new(0);
+
+
+fn meta(input: &ItemStruct) -> TokenStream {
+	let ident = &input.ident;
+	let name = ident.to_string();
+	let action_id = ACTION_ID.fetch_add(1, Ordering::SeqCst);
+
+	quote! {
+		fn meta(&self) -> ActionMeta {
+			ActionMeta {
+				id: #action_id,
+				name: #name
 			}
 		}
 	}
 }
 
-fn func_is_generic(func: &ItemFn) -> bool {
-	false == func.sig.generics.params.is_empty()
+fn tick_system(args: &HashMap<String, Option<Expr>>) -> TokenStream {
+	let expr = args.get("system").unwrap().as_ref().unwrap();
+	quote! {
+		fn tick_system(&self) -> SystemConfigs {
+			#expr.into_configs()
+		}
+	}
 }
 
-// use proc_macro2::Span;
-// use proc_macro2::TokenStream;
-// use syn::Generics;
+fn post_tick_system(input: &ItemStruct) -> TokenStream {
+	let ident = &input.ident;
 
-// pub fn assert_single_generic_bound(
-// 	generics: Generics,
-// 	expected_bound:&str,
-// 	err:&str,
-// ) -> Result<TokenStream, syn::parse::Error> {
-// 	if generics.params.len() == 1 {
-// 		let param = generics.params.first().unwrap();
-// 		if let syn::GenericParam::Type(param) = param {
-// 			if param.bounds.len() == 1 {
-// 				if let syn::TypeParamBound::Trait(bound) =
-// 					param.bounds.first().unwrap()
-// 				{
-// 					if let Some(path) = bound.path.segments.last() {
-// 						if path.ident.to_string().as_str() == expected_bound {
-// 							return Ok(TokenStream::new());
-// 							// return Ok(param.ident.clone().into_token_stream());
-// 						}
-// 					}
-// 				}
-// 			}
-// 		}
-// 	}
-// 	return Err(syn::Error::new(Span::call_site(), err));
-// }
+	let shared_fields = input.fields.iter().filter(is_shared);
+
+	let prop_types = shared_fields
+		.clone()
+		.map(|field| {
+			let ty = &field.ty;
+			quote!(&mut #ty, )
+		})
+		.collect::<TokenStream>();
+
+	let prop_destructs = shared_fields
+		.clone()
+		.map(|field| {
+			let field_ident = &field.ident;
+			quote!(mut #field_ident, )
+		})
+		.collect::<TokenStream>();
+
+	let prop_assignments = shared_fields
+		.map(|field| {
+			let field_ident = &field.ident;
+			quote!(*#field_ident = value.#field_ident;)
+		})
+		.collect::<TokenStream>();
+
+	quote! {
+		fn post_tick_system(&self) -> SystemConfigs {
+
+			fn post_sync_system(mut query: Query<(&#ident,#prop_types), Changed<#ident>>){
+				for (value, #prop_destructs) in query.iter_mut(){
+					#prop_assignments
+				}
+			}
+
+			post_sync_system.into_configs()
+		}
+	}
+}
+
+
+fn is_shared(field: &&syn::Field) -> bool {
+	field
+		.attrs
+		.iter()
+		.any(|attr| attr.meta.path().is_ident("shared"))
+}
+
+fn spawn(input: &ItemStruct) -> TokenStream {
+	let insert_props = input
+		.fields
+		.iter()
+		.filter(is_shared)
+		.map(|field| {
+			let field_name = &field.ident;
+			// let field_type = &field.ty;
+			quote! {
+				entity.insert(self.#field_name.clone());
+			}
+		})
+		.collect::<TokenStream>();
+
+
+	quote! {
+		fn spawn(&self, entity: &mut EntityWorldMut<'_>) {
+			entity.insert(self.clone());
+			#insert_props
+		}
+		fn spawn_with_command(&self, entity: &mut EntityCommands) {
+			entity.insert(self.clone());
+			#insert_props
+		}
+	}
+}
