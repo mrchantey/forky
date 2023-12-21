@@ -4,7 +4,7 @@ use serde::Deserialize;
 use serde::Serialize;
 
 #[action(system=empty_action)]
-#[derive(Clone, Serialize, Deserialize, Component)]
+#[derive(Default, Clone, Serialize, Deserialize, Component)]
 pub struct SetScore {
 	#[shared]
 	pub score: Score,

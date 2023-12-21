@@ -12,7 +12,8 @@ pub fn works() -> Result<()> {
 
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = SetRunResult::default().into_tree().into_graph();
+	let action_graph = ActionTree::new(vec![Box::new(SetRunResult::default())])
+		.into_action_graph();
 	action_graph.add_systems(&mut app);
 
 	let entity_graph = action_graph.spawn(&mut app.world, target);

@@ -1,8 +1,8 @@
-/// Define a node list. This macro accepts a name and a list of actions.
+/// Define an action list. This macro accepts a name and a list of actions.
 ///
 /// ```rust
 ///
-/// node_list!(AgentNodes, [
+/// action_list!(AgentNodes, [
 /// 	Run,
 /// 	Hide,
 /// 	ChooseWhatToDo
@@ -10,13 +10,15 @@
 /// ```
 ///
 #[macro_export]
-macro_rules! node_list {
+macro_rules! action_list {
 	($name:ident, [$($variant:ident),*]) => {
 		#[allow(unused_imports)]
 		use gamai::prelude::*;
 		#[allow(unused_imports)]
 		use gamai::exports::*;
-		#[derive(Clone, Serialize, Deserialize)]
+		use strum::IntoEnumIterator;
+		use strum_macros::EnumIter;
+		#[derive(EnumIter, Clone, Serialize, Deserialize)]
 		pub enum $name {
 			$($variant($variant),)*
 		}

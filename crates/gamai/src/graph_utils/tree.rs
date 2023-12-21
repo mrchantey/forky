@@ -1,13 +1,8 @@
+use crate::prelude::*;
+use petgraph::graph::DiGraph;
+use std::fmt;
 use std::fmt::Debug;
 use std::fmt::Formatter;
-use std::fmt::{self,};
-
-pub trait IntoTree<T> {
-	fn into_tree(self) -> Tree<T>;
-	fn with_child(self, child: impl IntoTree<T>) -> Tree<T>;
-	fn with_leaf(self, child: T) -> Tree<T>;
-}
-
 
 pub struct Tree<T> {
 	pub value: T,
@@ -42,49 +37,6 @@ impl<T: PartialEq> PartialEq for Tree<T> {
 	}
 }
 
-
-impl<T> IntoTree<T> for Tree<T> {
-	fn into_tree(self) -> Tree<T> { self }
-	fn with_child(mut self, child: impl IntoTree<T>) -> Tree<T> {
-		self.children.push(child.into_tree());
-		self
-	}
-	fn with_leaf(self, child: T) -> Tree<T> {
-		self.with_child(Tree::new(child))
-	}
-}
-// impl<T> IntoTree<T> for T {
-// 	fn into_tree(self) -> Tree<T> { Tree::new(self) }
-// 	fn with_child(self, child: impl IntoTree<T>) -> Tree<T> {
-// 		let mut this = self.into_tree();
-// 		this.children.push(child.into_tree());
-// 		this
-// 	}
-// }
-
-impl<T> IntoTree<T> for (T, Vec<Tree<T>>) {
-	fn into_tree(self) -> Tree<T> {
-		Tree {
-			value: self.0,
-			children: self.1,
-		}
-	}
-	fn with_child(self, child: impl IntoTree<T>) -> Tree<T> {
-		let mut this = self.into_tree();
-		this.children.push(child.into_tree());
-		this
-	}
-	fn with_leaf(self, child: T) -> Tree<T> {
-		let mut this = self.into_tree();
-		this.children.push(Tree::new(child));
-		this
-	}
-}
-
-// impl<T> Into<Tree<T>> for (T, Vec<Tree<T>>) {
-// 	fn into(self) -> Tree<T> { Tree::<T>::new_with_children(self.0, self.1) }
-// }
-
 impl<T> Tree<T> {
 	pub fn new(value: T) -> Self {
 		Self {
@@ -92,11 +44,22 @@ impl<T> Tree<T> {
 			children: Vec::new(),
 		}
 	}
-	pub fn with_child(mut self, child: impl IntoTree<T>) -> Self {
-		self.children.push(child.into_tree());
+	pub fn with_child(mut self, child: impl Into<Tree<T>>) -> Self {
+		self.children.push(child.into());
+		self
+	}
+	pub fn with_leaf(mut self, child: T) -> Self {
+		self.children.push(Tree::new(child));
 		self
 	}
 	pub fn new_with_children(value: T, children: Vec<Self>) -> Self {
 		Self { value, children }
 	}
+
+	pub fn into_graph(self) -> DiGraph<T, ()> { DiGraph::from_tree(self) }
 }
+
+
+// pub trait IntoTree<T, M> {
+// 	fn into_tree(self) -> Tree<T>;
+// }

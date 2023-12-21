@@ -1,64 +1,42 @@
 use crate::prelude::*;
-use anyhow::Result;
-use bevy_derive::Deref;
-use bevy_derive::DerefMut;
-use petgraph::graph::NodeIndex;
+use petgraph::graph::DiGraph;
 use serde::Deserialize;
 use serde::Serialize;
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum GamaiMessage<T: IntoAction + Serialize> {
+	SetUpdateSpeed(UpdateSpeed),
+	SetGraph(DiGraph<Vec<T>, ()>),
+	SetAction(SetActionMessage<T>),
+}
+
+#[derive(Debug, Copy, Clone, Serialize, Deserialize)]
 pub enum UpdateSpeed {
 	Playing,
 	PlayingAtSpeed(f32),
 	Paused,
 }
 
-pub enum BuiltinMessage {
-	SetUpdateSpeed(UpdateSpeed),
-	// LoadTree(TypedNode<BuiltinNodes>),
-	SetAction(SetActionMessage),
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SetActionMessage<T: IntoAction> {
+	pub value: T,
+	pub node_index: usize,
+	pub vec_index: usize,
 }
 
 
-pub trait MessageReader<T> {
-	fn read_messages(&mut self, messages: Vec<T>) -> Result<()>;
-}
-pub trait MessageWriter<T> {
-	fn write_messages(&mut self) -> Result<Vec<T>>;
-}
-
-#[derive(
-	Debug,
-	Copy,
-	Clone,
-	PartialEq,
-	Eq,
-	Hash,
-	Serialize,
-	Deserialize,
-	Deref,
-	DerefMut,
-)]
-pub struct SerializedNodeIndex(pub usize);
-
-impl From<NodeIndex> for SerializedNodeIndex {
-	fn from(index: NodeIndex) -> Self { Self(index.index()) }
-}
-
-impl From<SerializedNodeIndex> for NodeIndex {
-	fn from(index: SerializedNodeIndex) -> Self { Self::new(index.0) }
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct SetActionMessage {
-	pub index: SerializedNodeIndex,
-	pub value: Box<dyn Action>,
-}
-
-impl SetActionMessage {
-	pub fn new(index: NodeIndex, value: Box<dyn Action>) -> Self {
+impl<T: IntoAction> SetActionMessage<T> {
+	pub fn new(value: T, node_index: usize, vec_index: usize) -> Self {
 		Self {
-			index: index.into(),
 			value,
+			node_index,
+			vec_index,
 		}
 	}
 }
+// pub trait MessageReader<T: IntoAction> {
+// 	fn read_messages(&mut self, messages: Vec<GamaiMessage<T>>) -> Result<()>;
+// }
+// pub trait MessageWriter<T: IntoAction> {
+// 	fn write_messages(&mut self) -> Result<Vec<GamaiMessage<T>>>;
+// }

@@ -1,5 +1,6 @@
 use bevy_ecs::prelude::*;
 use gamai::prelude::*;
+use std::vec;
 
 
 #[action(system=test_action)]
@@ -22,12 +23,11 @@ fn test_action() {}
 /// 		Child0
 ///
 pub fn test_action_graph() -> ActionGraph {
-	TestAction::default()
-		.with_child(TestAction::default())
+	ActionTree::new(vec![Box::new(TestAction::default())])
+		.with_leaf(vec![Box::new(TestAction::default())])
 		.with_child(
-			TestAction::default()
-				.into_tree()
-				.with_child(TestAction::default()),
+			ActionTree::new(vec![Box::new(TestAction::default())])
+				.with_leaf(vec![Box::new(TestAction::default())]),
 		)
-		.into_graph()
+		.into_action_graph()
 }

@@ -14,6 +14,7 @@ pub impl<N, E> DiGraph<N, E> {
 		self.node_weight(NodeIndex::new(index))
 	}
 }
+
 #[ext(name=DiGraphExtUnitEdge)]
 pub impl<N> DiGraph<N, ()> {
 	fn from_tree(root: Tree<N>) -> Self {

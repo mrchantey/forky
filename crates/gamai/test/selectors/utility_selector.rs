@@ -7,7 +7,7 @@ fn setup() -> (App, EntityGraph) {
 	let mut app = App::new();
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = UtilitySelector
+	let action_graph = ActionTree::new(vec![Box::new(UtilitySelector)])
 		.with_leaf(vec![
 			Box::new(SetScore::new(Score::Fail)),
 			Box::new(SetRunResult::new(RunResult::Failure)),
@@ -16,7 +16,7 @@ fn setup() -> (App, EntityGraph) {
 			Box::new(SetScore::new(Score::Pass)),
 			Box::new(SetRunResult::new(RunResult::Success)),
 		])
-		.into_graph();
+		.into_action_graph();
 
 	action_graph.add_systems(&mut app);
 	let entity_graph = action_graph.spawn(&mut app.world, target);

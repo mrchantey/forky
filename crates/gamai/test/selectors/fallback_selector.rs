@@ -8,10 +8,10 @@ pub fn works() -> Result<()> {
 	let mut app = App::new();
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = FallbackSelector
-		.with_child(SetRunResult::new(RunResult::Failure))
-		.with_child(SetRunResult::new(RunResult::Success))
-		.into_graph();
+	let action_graph = ActionTree::new(vec![Box::new(FallbackSelector)])
+		.with_leaf(vec![Box::new(SetRunResult::new(RunResult::Failure))])
+		.with_leaf(vec![Box::new(SetRunResult::new(RunResult::Success))])
+		.into_action_graph();
 
 	action_graph.add_systems(&mut app);
 	let entity_graph = action_graph.spawn(&mut app.world, target);

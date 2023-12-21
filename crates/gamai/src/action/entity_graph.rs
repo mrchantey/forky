@@ -11,18 +11,18 @@ use petgraph::graph::NodeIndex;
 pub struct EntityGraph(pub DiGraph<Entity, ()>);
 
 impl EntityGraph {
-	pub fn set_action(
+	pub fn set_action<T: IntoAction>(
 		&self,
 		world: &mut World,
-		message: &SetActionMessage,
+		message: &SetActionMessage<T>,
 	) -> Result<()> {
 		let mut entity = self
 			.0
-			.node_weight(NodeIndex::new(*message.index))
+			.node_weight(NodeIndex::new(message.node_index))
 			.map(|entity| world.entity_mut(*entity))
-			.ok_or_else(|| anyhow!("Node not found: {}", *message.index))?;
+			.ok_or_else(|| anyhow!("Node not found: {}", message.node_index))?;
 
-		message.value.spawn(&mut entity);
+		message.value.into_action_ref().spawn(&mut entity);
 		Ok(())
 	}
 	pub fn into_tree(self) -> Tree<Entity> { self.0.into_tree() }

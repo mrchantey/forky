@@ -1,7 +1,7 @@
-use gamai::node_list;
+use gamai::action_list;
 use gamai::prelude::*;
 
-node_list!(MyNodes, [
+action_list!(MyNodes, [
 	EmptyAction,
 	SetRunResult,
 	SetScore,

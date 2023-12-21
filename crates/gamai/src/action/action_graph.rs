@@ -17,6 +17,18 @@ impl Into<ActionTree> for Box<dyn Action> {
 }
 
 
+// pub struct IntoTreeVecMarker;
+// pub struct IntoTreeSelfMarker;
+// pub struct IntoTreeBoxMarker;
+
+// impl<T: Action> IntoTree<Vec<T>, IntoTreeVecMarker> for T {
+// 	fn into_tree(self) -> Tree<Vec<T>> { Tree::new(vec![self]) }
+// }
+// impl<T: Action> IntoTree<T, IntoTreeSelfMarker> for T {
+// 	fn into_tree(self) -> Tree<T> { Tree::new(self) }
+// }
+
+
 impl ActionTree {
 	pub fn from_action(value: impl Action) -> Self {
 		Self {
@@ -24,7 +36,9 @@ impl ActionTree {
 			children: vec![],
 		}
 	}
-	pub fn into_graph(self) -> ActionGraph { ActionGraph::from_tree(self) }
+	pub fn into_action_graph(self) -> ActionGraph {
+		ActionGraph::from_tree(self)
+	}
 }
 
 #[derive(Default, Deref, DerefMut, Serialize, Deserialize)]
@@ -52,7 +66,7 @@ impl ActionGraph {
 		Self(DiGraph::from_tree(root.into()))
 	}
 
-	pub fn from_graph<T: IntoAction>(graph: DiGraph<Vec<T>, ()>) -> Self {
+	pub fn from_graph<T: IntoAction>(graph: &DiGraph<Vec<T>, ()>) -> Self {
 		Self(graph.map(
 			|_, action_list| {
 				action_list

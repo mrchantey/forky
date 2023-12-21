@@ -1,4 +1,3 @@
-use crate::prelude::*;
 use anyhow::Result;
 use bevy_ecs::schedule::SystemConfigs;
 use bevy_ecs::system::EntityCommands;
@@ -16,16 +15,6 @@ pub trait Action: 'static {
 	fn post_tick_system(&self) -> SystemConfigs;
 
 	fn meta(&self) -> ActionMeta;
-}
-
-impl<T: Action> IntoTree<ActionList> for T {
-	fn into_tree(self) -> Tree<ActionList> { Tree::new(vec![Box::new(self)]) }
-	fn with_child(self, child: impl IntoTree<ActionList>) -> Tree<ActionList> {
-		self.into_tree().with_child(child)
-	}
-	fn with_leaf(self, child: ActionList) -> Tree<ActionList> {
-		self.into_tree().with_leaf(child)
-	}
 }
 
 pub type SetActionFunc = Box<dyn Fn(&mut EntityCommands) -> Result<()>>;
@@ -52,7 +41,6 @@ impl<T: Clone + Action> IntoAction for T {
 	fn into_action_ref(&self) -> &dyn Action { self }
 	fn into_action_mut(&mut self) -> &mut dyn Action { self }
 }
-
 
 // impl<T> Action for T
 // where

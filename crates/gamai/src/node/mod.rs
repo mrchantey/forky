@@ -2,8 +2,6 @@ pub mod interrupt;
 pub use self::interrupt::*;
 pub mod node;
 pub use self::node::*;
-pub mod node_list;
-pub use self::node_list::*;
 pub mod running;
 pub use self::running::*;
 pub mod run_timer;

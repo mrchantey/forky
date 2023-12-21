@@ -8,10 +8,13 @@ pub fn works() -> Result<()> {
 	let mut app = App::new();
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = EmptyAction
-		.with_child(EmptyAction)
-		.with_child(EmptyAction.with_child(EmptyAction))
-		.into_graph();
+	let action_graph = ActionTree::new(vec![Box::new(EmptyAction)])
+		.with_leaf(vec![Box::new(EmptyAction)])
+		.with_child(
+			ActionTree::new(vec![Box::new(EmptyAction)])
+				.with_leaf(vec![Box::new(EmptyAction)]),
+		)
+		.into_action_graph();
 	action_graph.add_systems(&mut app);
 	let entity_graph = action_graph.spawn(&mut app.world, target);
 

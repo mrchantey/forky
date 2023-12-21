@@ -4,7 +4,7 @@ use gamai::prelude::*;
 use sweet::*;
 
 #[sweet_test]
-pub fn works() -> Result<()> {
+pub fn set_action_message() -> Result<()> {
 	let mut app = App::new();
 	let target = app.world.spawn_empty().id();
 	let actions = test_action_graph();
@@ -12,7 +12,7 @@ pub fn works() -> Result<()> {
 	let index = entities.0.node_indices().next().unwrap();
 
 	let message =
-		SetActionMessage::new(index, Box::new(TestAction::new(Score::Pass)));
+		SetActionMessage::new(TestAction::new(Score::Pass), index.index(), 0);
 
 	entities.set_action(&mut app.world, &message)?;
 

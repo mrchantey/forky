@@ -156,6 +156,7 @@ features = [
 	'Document',
 	'Element',
 	'Window',
+	'HtmlIFrameElement',
 	'ResizeObserver',
 	'ResizeObserverBoxOptions',
 	'ResizeObserverEntry',
