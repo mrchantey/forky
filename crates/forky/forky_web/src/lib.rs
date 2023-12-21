@@ -1,8 +1,4 @@
 #![allow(async_fn_in_trait)]
-#[cfg(feature = "bevy")]
-mod bevy_utils;
-#[cfg(feature = "bevy")]
-pub use self::bevy_utils::*;
 mod dom_utils;
 pub use self::dom_utils::*;
 mod logging;
@@ -13,3 +9,12 @@ mod extensions;
 pub use self::extensions::*;
 mod net;
 pub use self::net::*;
+
+
+pub mod prelude {
+	pub use crate::dom_utils::*;
+	pub use crate::extensions::*;
+	pub use crate::logging::*;
+	pub use crate::net::*;
+	pub use crate::ui::*;
+}

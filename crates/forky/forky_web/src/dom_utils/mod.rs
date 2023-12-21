@@ -16,6 +16,8 @@ pub mod html_event_listener;
 pub use self::html_event_listener::*;
 pub mod lifecycle;
 pub use self::lifecycle::*;
+pub mod location;
+pub use self::location::*;
 pub mod loop_utils;
 pub use self::loop_utils::*;
 pub mod mount;
