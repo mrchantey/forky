@@ -52,6 +52,19 @@ impl ActionGraph {
 		Self(DiGraph::from_tree(root.into()))
 	}
 
+	pub fn from_graph<T: IntoAction>(graph: DiGraph<Vec<T>, ()>) -> Self {
+		Self(graph.map(
+			|_, action_list| {
+				action_list
+					.into_iter()
+					.map(|action| action.clone().into_action())
+					.collect::<Vec<_>>()
+			},
+			|_, _| (),
+		))
+	}
+
+
 	pub fn spawn(
 		&self,
 		world: &mut impl WorldOrCommands,
