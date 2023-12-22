@@ -18,57 +18,28 @@ pub struct MessagePlugin<T: IntoAction> {
 	phantom: PhantomData<T>,
 }
 
+impl<T: IntoAction> Default for MessagePlugin<T> {
+	fn default() -> Self {
+		Self {
+			phantom: PhantomData,
+		}
+	}
+}
+
 impl<T: 'static + Send + Sync + IntoAction> Plugin for MessagePlugin<T> {
 	fn build(&self, app: &mut App) {
 		app.insert_resource(Inbox::<T>::default())
 			.insert_resource(Outbox::<T>::default())
+			.insert_non_send_resource(InboxNonSend::<T>::new())
 			.add_systems(
 				PreUpdate,
-				collect_inbox::<T>.in_set(MessagePreUpdateSet),
-			)
-			.add_systems(
-				PostUpdate,
-				collect_outbox::<T>.in_set(MessagePostUpdateSet),
+				sync_non_send_inbox::<T>.in_set(MessagePreUpdateSet),
 			);
 	}
 }
 
 
 
-#[derive(Default)]
-pub struct MessageService<T: IntoAction> {
-	/// Messages received
-	pub inbox: Arc<Mutex<Vec<GamaiMessage<T>>>>,
-	/// Messages pending send
-	pub outbox: Arc<Mutex<Vec<GamaiMessage<T>>>>,
-}
-
-
-impl<T: IntoAction> MessageService<T> {
-	pub fn new() -> Self {
-		Self {
-			inbox: Default::default(),
-			outbox: Default::default(),
-		}
-	}
-	pub fn take_inbox(&self) -> Vec<GamaiMessage<T>> { Self::take(&self.inbox) }
-
-	pub fn take_outbox(&self) -> Vec<GamaiMessage<T>> {
-		Self::take(&self.outbox)
-	}
-	pub fn push_outbox(&self, item: GamaiMessage<T>) {
-		self.outbox.lock().unwrap().push(item);
-	}
-	pub fn extend_outbox(&self, items: Vec<GamaiMessage<T>>) {
-		self.outbox.lock().unwrap().extend(items);
-	}
-
-
-	fn take(list: &Arc<Mutex<Vec<GamaiMessage<T>>>>) -> Vec<GamaiMessage<T>> {
-		let mut list = list.lock().unwrap();
-		std::mem::replace(&mut *list, Vec::new())
-	}
-}
 
 #[derive(Clone, Serialize, Deserialize, Resource, Deref, DerefMut)]
 pub struct Inbox<T: IntoAction>(pub Vec<GamaiMessage<T>>);
@@ -82,16 +53,23 @@ impl<T: IntoAction> Default for Outbox<T> {
 }
 
 
-fn collect_inbox<T: IntoAction>(
-	mut inbox: ResMut<Inbox<T>>,
-	service: NonSend<MessageService<T>>,
-) {
-	**inbox = service.take_inbox();
+#[derive(Clone, Deref, DerefMut)]
+pub struct InboxNonSend<T: IntoAction>(pub Arc<Mutex<Inbox<T>>>);
+impl<T: IntoAction> InboxNonSend<T> {
+	pub fn push(&self, item: GamaiMessage<T>) {
+		self.lock().unwrap().push(item);
+	}
 }
 
-fn collect_outbox<T: IntoAction>(
-	mut outbox: ResMut<Outbox<T>>,
-	service: NonSend<MessageService<T>>,
+impl<T: IntoAction> InboxNonSend<T> {
+	pub fn new() -> Self { Self(Default::default()) }
+	pub fn clear(&self) -> Vec<GamaiMessage<T>> {
+		std::mem::replace(&mut *self.lock().unwrap(), Vec::new())
+	}
+}
+pub fn sync_non_send_inbox<T: IntoAction>(
+	mut inbox: ResMut<Inbox<T>>,
+	inbox_non_send: NonSend<InboxNonSend<T>>,
 ) {
-	service.extend_outbox(std::mem::replace(&mut **outbox, Vec::new()));
+	**inbox = inbox_non_send.clear();
 }
