@@ -2,6 +2,7 @@ use anyhow::Result;
 use bevy_ecs::schedule::SystemConfigs;
 use bevy_ecs::system::EntityCommands;
 use bevy_ecs::world::EntityWorldMut;
+use serde::Serialize;
 
 #[typetag::serde]
 pub trait Action: 'static {
@@ -30,13 +31,13 @@ pub struct ActionMeta {
 }
 
 
-pub trait IntoAction: Clone {
+pub trait IntoAction: 'static + Clone + Send + Sync + Serialize {
 	fn into_action(self) -> Box<dyn Action>;
 	fn into_action_ref(&self) -> &dyn Action;
 	fn into_action_mut(&mut self) -> &mut dyn Action;
 }
 
-impl<T: Clone + Action> IntoAction for T {
+impl<T: 'static + Clone + Send + Sync + Serialize + Action> IntoAction for T {
 	fn into_action(self) -> Box<dyn Action> { Box::new(self) }
 	fn into_action_ref(&self) -> &dyn Action { self }
 	fn into_action_mut(&mut self) -> &mut dyn Action { self }

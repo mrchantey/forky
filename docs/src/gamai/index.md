@@ -34,11 +34,11 @@ I'm quite confident in this third approach, representing graphs as linked entiti
 
 Actions without children usually execute some behavior then return a `RunResult::Success` or a `RunResult::Failure`.
 
-An `action` is a bevy component struct with an associated system. Currently all actions must implement `Clone`, `Component`, `serde::Serialize` and `serde::Deserialize`.
+An `action` is a bevy component struct with an associated system. Currently all actions must implement `Default, Clone, Component, serde::Serialize, serde::Deserialize`.
 
 ```rust
 #[action(system=print_action)]
-#[derive(Clone, Component, Serialize, Deserialize)]
+#[derive(Default, Clone, Component, Serialize, Deserialize)]
 pub struct PrintAction(pub value: String);
 
 fn print_action(mut commands: Commands, query: Query<(Entity,&PrintAction), With<Running>){
