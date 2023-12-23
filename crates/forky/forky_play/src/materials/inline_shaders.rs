@@ -20,20 +20,24 @@ const SHADER_SDF3: ForkyShader =
 pub const SHADER_UNLIT: ForkyShader =
 	forky_shader!("unlit", SHADER_HANDLE_OFFSET_INTERNAL + 100)
 		.mode(LoadMode::Internal);
+pub const SHADER_UNLIT_TEXTURE: ForkyShader =
+	forky_shader!("unlit_texture", SHADER_HANDLE_OFFSET_INTERNAL + 102)
+		.mode(LoadMode::Internal);
 pub const SHADER_UV: ForkyShader =
 	forky_shader!("uv", SHADER_HANDLE_OFFSET_INTERNAL + 101)
 		.mode(LoadMode::Internal);
 
-const SHADERS: [ForkyShader; 6] = [
+const SHADERS: [ForkyShader; 7] = [
 	SHADER_UTILITY,
 	SHADER_NOISE,
 	SHADER_SDF2,
 	SHADER_SDF3,
 	SHADER_UNLIT,
+	SHADER_UNLIT_TEXTURE,
 	SHADER_UV,
 ];
 
-pub fn load_shaders(app: &mut App) {
+pub fn try_inline_shaders(app: &mut App) {
 	for shader in SHADERS.iter() {
 		shader.try_load_inline(app);
 	}
