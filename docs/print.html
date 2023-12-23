@@ -723,11 +723,11 @@ jobs:
 <p>I'm quite confident in this third approach, representing graphs as linked entities. </p>
 <h3 id="actions"><a class="header" href="#actions">Actions</a></h3>
 <p>Actions without children usually execute some behavior then return a <code>RunResult::Success</code> or a <code>RunResult::Failure</code>.</p>
-<p>An <code>action</code> is a bevy component struct with an associated system. Currently all actions must implement <code>Clone</code>, <code>Component</code>, <code>serde::Serialize</code> and <code>serde::Deserialize</code>.</p>
+<p>An <code>action</code> is a bevy component struct with an associated system. Currently all actions must implement <code>Default, Clone, Component, serde::Serialize, serde::Deserialize</code>.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[action(system=print_action)]
-#[derive(Clone, Component, Serialize, Deserialize)]
+#[derive(Default, Clone, Component, Serialize, Deserialize)]
 pub struct PrintAction(pub value: String);
 
 fn print_action(mut commands: Commands, query: Query&lt;(Entity,&amp;PrintAction), With&lt;Running&gt;){
