@@ -12,6 +12,8 @@ pub struct PreTickSet;
 #[derive(Debug, Clone, PartialEq, Eq, Hash, SystemSet)]
 pub struct TickSet;
 #[derive(Debug, Clone, PartialEq, Eq, Hash, SystemSet)]
+pub struct TickSyncSet;
+#[derive(Debug, Clone, PartialEq, Eq, Hash, SystemSet)]
 pub struct PostTickSet;
 
 
@@ -37,15 +39,28 @@ impl<T: IntoEnumIterator + IntoAction, Schedule: ScheduleLabel + Clone> Plugin
 	fn build(&self, app: &mut App) {
 		app.configure_sets(self.schedule.clone(), PreTickSet);
 		app.configure_sets(self.schedule.clone(), TickSet.after(PreTickSet));
-		app.configure_sets(self.schedule.clone(), PostTickSet.after(TickSet));
+		app.configure_sets(self.schedule.clone(), TickSyncSet.after(TickSet));
+		app.configure_sets(
+			self.schedule.clone(),
+			PostTickSet.after(TickSyncSet),
+		);
 
 		app.add_systems(
 			self.schedule.clone(),
-			apply_deferred.after(TickSet).before(PostTickSet),
+			apply_deferred.after(PreTickSet).before(TickSet),
 		);
 		app.add_systems(
 			self.schedule.clone(),
-			(sync_running, sync_interrupts).in_set(PostTickSet),
+			apply_deferred.after(TickSet).before(TickSyncSet),
+		);
+		app.add_systems(
+			self.schedule.clone(),
+			apply_deferred.after(TickSyncSet).before(PostTickSet),
+		);
+
+		app.add_systems(
+			self.schedule.clone(),
+			(sync_running, sync_interrupts).in_set(TickSyncSet),
 		);
 		for action in T::iter().map(|item| item.into_action()) {
 			app.add_systems(
@@ -54,7 +69,7 @@ impl<T: IntoEnumIterator + IntoAction, Schedule: ScheduleLabel + Clone> Plugin
 			);
 			app.add_systems(
 				self.schedule.clone(),
-				action.post_tick_system().in_set(PostTickSet),
+				action.post_tick_system().in_set(TickSyncSet),
 			);
 		}
 	}

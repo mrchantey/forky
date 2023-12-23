@@ -17,6 +17,7 @@ bevy_ecs = { workspace = true }
 bevy_math = { workspace = true }
 bevy_time = { workspace = true }
 bevy_transform = { workspace = true }
+bevy_hierarchy = { workspace = true }
 bevy_utils = { workspace = true }
 # bevy = { workspace = true, optional = true }
 

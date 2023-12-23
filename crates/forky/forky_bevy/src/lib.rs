@@ -1,8 +1,8 @@
 pub mod extensions;
-pub mod utility;
+pub mod components;
 
 
 pub mod prelude {
 	pub use crate::extensions::*;
-	pub use crate::utility::*;
+	pub use crate::components::*;
 }
