@@ -16,7 +16,7 @@ macro_rules! action_list {
 		use gamai::prelude::*;
 		#[allow(unused_imports)]
 		use gamai::exports::*;
-		use strum::IntoEnumIterator;
+		// use strum::IntoEnumIterator;
 		use strum_macros::EnumIter;
 		#[derive(Debug, Clone, EnumIter, Serialize, Deserialize)]
 		pub enum $name {

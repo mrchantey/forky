@@ -9,12 +9,12 @@ pub fn works() -> Result<()> {
 
 
 	let mut app = App::new();
+	app.add_plugins(ActionPlugin::<BuiltinNode, _>::default());
 
 	let target = app.world.spawn_empty().id();
 
 	let action_graph = ActionTree::new(vec![Box::new(SetRunResult::default())])
 		.into_action_graph();
-	action_graph.add_systems(&mut app);
 
 	let entity_graph = action_graph.spawn(&mut app.world, target);
 	let root = *entity_graph.root().unwrap();

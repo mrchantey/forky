@@ -1,6 +1,20 @@
 use crate::prelude::*;
 use extend::ext;
+use gamai::action_list;
 use petgraph::graph::DiGraph;
+
+
+action_list!(BuiltinNode, [
+	EmptyAction,
+	SetRunResult,
+	SetScore,
+	SucceedInDuration,
+	SequenceSelector,
+	FallbackSelector,
+	UtilitySelector
+]);
+
+
 
 #[ext]
 pub impl ActionGraph {

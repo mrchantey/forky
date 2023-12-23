@@ -6,6 +6,8 @@ use sweet::*;
 #[sweet_test]
 pub fn works() -> Result<()> {
 	let mut app = App::new();
+	app.add_plugins(ActionPlugin::<BuiltinNode, _>::default());
+
 	let target = app.world.spawn_empty().id();
 
 	let action_graph = ActionTree::new(vec![Box::new(FallbackSelector)])
@@ -13,7 +15,6 @@ pub fn works() -> Result<()> {
 		.with_leaf(vec![Box::new(SetRunResult::new(RunResult::Success))])
 		.into_action_graph();
 
-	action_graph.add_systems(&mut app);
 	let entity_graph = action_graph.spawn(&mut app.world, target);
 
 	app.update();

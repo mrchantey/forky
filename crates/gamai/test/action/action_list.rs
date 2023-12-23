@@ -1,25 +1,10 @@
-use gamai::action_list;
-use gamai::prelude::*;
+use gamai::builtin_nodes::BuiltinNode;
+use strum::IntoEnumIterator;
 use sweet::*;
-
-action_list!(MyNodes, [
-	EmptyAction,
-	SetRunResult,
-	SetScore,
-	SucceedInDuration,
-	SequenceSelector,
-	FallbackSelector,
-	UtilitySelector
-]);
-
 
 #[sweet_test]
 pub fn works() -> Result<()> {
-	// expect(true).to_be_false()?;
-
-	// for item in MyNodes::iter() {
-	// 	println!("{:?}", item);
-	// }
+	expect(BuiltinNode::iter().count()).to_be_greater_than(0)?;
 
 	Ok(())
 }

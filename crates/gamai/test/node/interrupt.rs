@@ -6,6 +6,8 @@ use sweet::*;
 #[sweet_test]
 pub fn works() -> Result<()> {
 	let mut app = App::new();
+	app.add_plugins(ActionPlugin::<BuiltinNode, _>::default());
+
 	let target = app.world.spawn_empty().id();
 
 	let action_graph = ActionTree::new(vec![Box::new(EmptyAction)])
@@ -15,7 +17,7 @@ pub fn works() -> Result<()> {
 				.with_leaf(vec![Box::new(EmptyAction)]),
 		)
 		.into_action_graph();
-	action_graph.add_systems(&mut app);
+
 	let entity_graph = action_graph.spawn(&mut app.world, target);
 
 	for entity in entity_graph.node_weights() {
