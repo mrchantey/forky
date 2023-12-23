@@ -10,7 +10,7 @@ use serde::Serialize;
 /// If a child succeeds it will succeed.
 ///
 /// If the last child fails it will fail.
-#[derive(Default, Clone, Serialize, Deserialize, Component)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize, Component)]
 #[action(system=fallback)]
 pub struct FallbackSelector;
 pub fn fallback(

@@ -14,7 +14,7 @@ pub struct Scoring;
 
 /// Used to indicate to selectors how favorable a child node would be to run.
 #[derive(
-	Default, Serialize, Deserialize, Debug, Clone, Copy, Component, PartialEq,
+	Debug, Default, Serialize, Deserialize, Clone, Copy, Component, PartialEq,
 )]
 pub enum Score {
 	#[default]

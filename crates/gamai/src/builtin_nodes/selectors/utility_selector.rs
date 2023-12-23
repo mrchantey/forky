@@ -5,7 +5,7 @@ use bevy_ecs::schedule::SystemConfigs;
 use serde::Deserialize;
 use serde::Serialize;
 
-#[derive(Default, Clone, Serialize, Deserialize, Component)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize, Component)]
 #[action(system=utility_selector)]
 pub struct UtilitySelector;
 

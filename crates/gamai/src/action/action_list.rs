@@ -18,7 +18,7 @@ macro_rules! action_list {
 		use gamai::exports::*;
 		use strum::IntoEnumIterator;
 		use strum_macros::EnumIter;
-		#[derive(EnumIter, Clone, Serialize, Deserialize)]
+		#[derive(Debug, Clone, EnumIter, Serialize, Deserialize)]
 		pub enum $name {
 			$($variant($variant),)*
 		}
