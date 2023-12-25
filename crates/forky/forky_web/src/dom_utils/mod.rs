@@ -24,6 +24,8 @@ pub mod mount;
 pub use self::mount::*;
 pub mod poll;
 pub use self::poll::*;
+pub mod resizable_canvas;
+pub use self::resizable_canvas::*;
 pub mod resize_listener;
 pub use self::resize_listener::*;
 pub mod search_params;
