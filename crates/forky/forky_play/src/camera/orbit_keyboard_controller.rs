@@ -5,7 +5,7 @@ use bevy::prelude::*;
 use forky_core::math::*;
 
 pub fn orbit_keyboard_controller(
-	time: Res<Time<Real>>,
+	time: Res<Time>,
 	keys: Res<Input<KeyCode>>,
 	mut query: Query<
 		(

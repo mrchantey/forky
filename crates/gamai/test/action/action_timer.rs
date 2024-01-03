@@ -17,7 +17,7 @@
 // 	};
 
 // 	app.add_plugins(TreePlugin::new(my_tree));
-// 	app.insert_test_timer();
+// 	app.insert_time();
 
 // 	let entity = app.world.spawn(TreeBundle::new(my_tree)).id();
 

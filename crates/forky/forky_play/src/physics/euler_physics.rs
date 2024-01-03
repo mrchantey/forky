@@ -44,7 +44,7 @@ pub fn update_velocity_from_impulse(
 	}
 }
 pub fn update_velocity_from_force(
-	time: Res<Time<Real>>,
+	time: Res<Time>,
 	mut query_force: Query<(&AccelerationForce, &mut Velocity)>,
 ) {
 	for (acceleration, mut velocity) in query_force.iter_mut() {
@@ -52,7 +52,7 @@ pub fn update_velocity_from_force(
 	}
 }
 pub fn update_velocity_from_friction(
-	time: Res<Time<Real>>,
+	time: Res<Time>,
 	mut query_force: Query<(&Friction, &mut Velocity)>,
 ) {
 	for (friction, mut velocity) in query_force.iter_mut() {
@@ -63,7 +63,7 @@ pub fn update_velocity_from_friction(
 }
 
 pub fn update_position(
-	time: Res<Time<Real>>,
+	time: Res<Time>,
 	mut query: Query<(&mut Transform, &Velocity)>,
 ) {
 	for (mut transform, velocity) in query.iter_mut() {

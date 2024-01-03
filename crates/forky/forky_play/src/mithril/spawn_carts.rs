@@ -14,7 +14,7 @@ pub fn spawn_carts(
 	mut commands: Commands,
 	node_settings: Res<GraphSettings>,
 	cart_settings: Res<CartSettings>,
-	time: Res<Time<Real>>,
+	time: Res<Time>,
 	mut last_cart_spawn: ResMut<LastCartSpawn>,
 	graph_lookup: Res<EcsSplineGraphLookup>,
 	query: Query<&Cart>,

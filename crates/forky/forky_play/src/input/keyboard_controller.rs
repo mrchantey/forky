@@ -5,7 +5,7 @@ use bevy::prelude::*;
 use forky_core::math::TAU;
 
 pub fn keyboard_controller(
-	time: Res<Time<Real>>,
+	time: Res<Time>,
 	keys: Res<Input<KeyCode>>,
 	mut query: Query<
 		(&TransformController, &mut Transform),

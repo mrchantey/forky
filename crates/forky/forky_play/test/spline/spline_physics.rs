@@ -8,7 +8,7 @@ sweet! {
 	// before {
 		// let mut app = App::new();
 		// app.__()
-		// 	.insert_test_timer()
+		// 	.insert_time()
 		// 	.add_plugins(plugins::ForkyFullPlugin::default())
 		// 	.add_plugins(spline::SplinePlugin)
 		// 	.__();

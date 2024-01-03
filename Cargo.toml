@@ -54,6 +54,7 @@ gamai_macros = { path = "./crates/gamai/macros", version = "0.*" }
 ### game ###
 bevy = { version = "0.12.*" }
 bevy_app = { version = "0.12.*" }
+bevy_core = { version = "0.12.*" }
 bevy_derive = { version = "0.12.*" }
 bevy_ecs = { version = "0.12.*" }
 bevy_hierarchy = { version = "0.12.*" }

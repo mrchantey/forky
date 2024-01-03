@@ -42,7 +42,7 @@ pub fn spawn_cube(
 
 fn rotate(
 	mut query: Query<&mut Transform, With<Shape>>,
-	time: Res<Time<Real>>,
+	time: Res<Time>,
 	speed: Res<Speed>,
 ) {
 	for mut transform in &mut query {

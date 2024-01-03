@@ -1,6 +1,5 @@
 use bevy_app::prelude::*;
 use bevy_time::prelude::*;
-use bevy_utils::Instant;
 use extend::ext;
 use std::time::Duration;
 
@@ -8,20 +7,15 @@ use std::time::Duration;
 #[ext(name=CoreAppExtSweet)]
 /// Ease-of-use extensions for `bevy::App`
 pub impl App {
-	/// Insert a [Time] resource with `Instant::now()` as the last update time.
+	/// Insert a [Time] resource
 	///
-	fn insert_test_timer(&mut self) -> &mut Self {
-		let mut time = Time::<Real>::default();
-		let now = Instant::now();
-		time.update_with_instant(now);
-		self.insert_resource(time);
+	fn insert_time(&mut self) -> &mut Self {
+		self.insert_resource::<Time>(Time::default());
 		self
 	}
 	fn update_with_duration(&mut self, duration: Duration) -> &mut Self {
-		let mut time = self.world.resource_mut::<Time<Real>>();
-		let last_update = time.last_update().unwrap();
-
-		time.update_with_instant(last_update + duration);
+		let mut time = self.world.resource_mut::<Time>();
+		time.advance_by(duration);
 		self.update();
 		self
 	}

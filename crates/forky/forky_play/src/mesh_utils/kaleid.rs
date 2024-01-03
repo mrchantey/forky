@@ -32,7 +32,7 @@ impl Kaleid {
 			.insert(CompanionCube);
 	}
 	pub fn rotate_cube(
-		time: Res<Time<Real>>,
+		time: Res<Time>,
 		mut query: Query<&mut Transform, With<CompanionCube>>,
 	) {
 		for mut transform in &mut query {

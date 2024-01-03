@@ -3001,6 +3001,7 @@ version = "0.1.38"
 dependencies = [
  "anyhow",
  "bevy_app",
+ "bevy_core",
  "bevy_derive",
  "bevy_ecs",
  "bevy_time",

@@ -44,7 +44,7 @@ pub fn spawn_default_lights(mut commands: Commands) {
 
 pub fn create_exit_after_system(
 	secs: f64,
-) -> impl Fn(EventWriter<AppExit>, Res<Time<Real>>) {
+) -> impl Fn(EventWriter<AppExit>, Res<Time>) {
 	move |mut exit, time| {
 		if time.elapsed_seconds_f64() > secs {
 			exit.send(AppExit);

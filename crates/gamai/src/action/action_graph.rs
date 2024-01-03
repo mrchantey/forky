@@ -2,6 +2,8 @@ use crate::prelude::*;
 use bevy_derive::Deref;
 use bevy_derive::DerefMut;
 use bevy_ecs::prelude::*;
+use bevy_core::prelude::*;
+use core::panic;
 use petgraph::graph::DiGraph;
 use serde::Deserialize;
 use serde::Serialize;
@@ -62,17 +64,25 @@ impl ActionGraph {
 		))
 	}
 
-
+	/// # Panics
+	/// Panics if the graph is empty.
 	pub fn spawn(
 		&self,
 		world: &mut impl WorldOrCommands,
 		target: Entity,
 	) -> EntityGraph {
+		if self.node_count() == 0 {
+			panic!("ActionGraph is empty");
+		}
+
 		// create entities & actions
 		let entity_graph = self.map(
 			|_, actions| {
-				let entity =
-					world.spawn((TargetEntity(target), RunTimer::default()));
+				let entity = world.spawn((
+					Name::from("Action Graph Node"),
+					TargetEntity(target),
+					RunTimer::default(),
+				));
 
 				for action in actions.iter() {
 					world.apply_action(action.as_ref(), entity);

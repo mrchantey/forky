@@ -7,7 +7,7 @@ use sweet::*;
 fn setup() -> App {
 	let mut app = App::new();
 	app.__()
-		.insert_test_timer()
+		.insert_time()
 		.add_plugins(physics::EulerPhysicsPlugin)
 		.__();
 	app
