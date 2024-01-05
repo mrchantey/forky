@@ -46,7 +46,7 @@ pub impl<N> DiGraph<N, ()> {
 	}
 
 
-	/// Discards unused edges.
+	/// Discards edges to previously visited nodes (dfs).
 	fn into_tree(self) -> Tree<N> {
 		let index_tree = self
 			.index_tree_recursive(NodeIndex::new(0), &mut HashSet::default());

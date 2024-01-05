@@ -13,8 +13,9 @@ pub fn expect_tree<T>(
 where
 	T: Component + PartialEq + std::fmt::Debug,
 {
-	let running_tree = ComponentGraph::<T>::new(&app.world, &entity_graph)
-		.clone()
-		.into_tree();
+	let running_tree =
+		ComponentGraph::<T>::from_world(&app.world, &entity_graph)
+			.clone()
+			.into_tree();
 	expect(running_tree).to_be(expected)
 }

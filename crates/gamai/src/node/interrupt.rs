@@ -15,7 +15,9 @@ pub fn sync_interrupts(
 ) {
 	for entity in interrupts.iter() {
 		Edges::visit_dfs(entity, &edges, |edge| {
-			commands.entity(edge).remove::<(Running, RunResult)>();
+			commands
+				.entity(edge)
+				.remove::<(Interrupt, Running, RunResult)>();
 		});
 	}
 }

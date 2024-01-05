@@ -40,24 +40,27 @@ pub fn utility_selector(
 		if any_child_score_changed(children, &children_scores_changed)
 			|| false == any_child_running(children, &children_running)
 		{
-			if let Some((child, _)) = highest_score(children, &children_scores)
+			if let Some((highest_child, _)) =
+				highest_score(children, &children_scores)
 			{
 				// continue if highest score already running
-				if children_running.contains(child) {
+				if children_running.contains(highest_child) {
 					continue;
 				}
 
 				// interrupt other running children
 				for child in children
 					.iter()
+					// .filter(|child| **child != highest_child)
 					.filter(|child| children_running.contains(**child))
 				{
 					commands.entity(*child).insert(Interrupt);
 				}
 
 				// run highest score
-				commands.entity(child).insert(Running);
+				commands.entity(highest_child).insert(Running);
 			}
+			// else no passing score, do nothing
 		}
 	}
 }

@@ -6,7 +6,7 @@ use std::fmt::Debug;
 
 /// Indicate this node is currently running.
 /// As this is frequently added and removed, it is `SparseSet`.
-#[derive(Default, Debug, Component, PartialEq)]
+#[derive(Default, Debug, Copy, Clone, Component, PartialEq)]
 #[component(storage = "SparseSet")]
 pub struct Running;
 

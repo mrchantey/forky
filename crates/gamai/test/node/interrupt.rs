@@ -44,6 +44,13 @@ pub fn works() -> Result<()> {
 			.with_leaf(Some(&Running))
 			.with_child(Tree::new(None).with_leaf(None)),
 	)?;
+	expect_tree::<Interrupt>(
+		&mut app,
+		&entity_graph,
+		Tree::new(None)
+			.with_leaf(None)
+			.with_child(Tree::new(None).with_leaf(None)),
+	)?;
 
 	Ok(())
 }
