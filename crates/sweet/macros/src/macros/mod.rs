@@ -12,5 +12,3 @@ pub mod test_case_attr;
 pub use self::test_case_attr::*;
 pub mod test_case_flags;
 pub use self::test_case_flags::*;
-pub mod test_case_func;
-pub use self::test_case_func::*;

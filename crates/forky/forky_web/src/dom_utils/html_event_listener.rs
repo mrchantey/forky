@@ -11,9 +11,9 @@ use web_sys::window;
 use web_sys::EventTarget;
 
 pub struct HtmlEventListener<T> {
-	closure: FnClosure<T>,
-	target: EventTarget,
-	name: &'static str,
+	pub closure: FnClosure<T>,
+	pub target: EventTarget,
+	pub name: &'static str,
 }
 
 impl<T> HtmlEventListener<T> {

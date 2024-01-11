@@ -1,6 +1,8 @@
 use wasm_bindgen::prelude::*;
 use web_sys::Event;
 
+/// # Leaks
+/// The closure is forgotten, only call this function once
 pub fn prevent_context_menu() {
 	let closure = Closure::wrap(Box::new(move |event: Event| {
 		event.prevent_default();
