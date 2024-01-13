@@ -14,15 +14,14 @@ For up to date instructions see the [book](https://esp-rs.github.io/book/introdu
 
 1. [Board Drivers](https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/get-started/establish-serial-connection.html)
    - Device may appear in `Device Manager -> Other Devices -> USB to UART ...`
-   - Download [vcp drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads)
+   - Some boards use this one: [vcp drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads)
 		- Universal Windows Driver -> `silabser.inf`->right click->install
-   - Download [ftdi drivers](https://ftdichip.com/drivers/vcp-drivers/) (is this needed? also whats next step after download)
+   - Some boards use this one: [ftdi drivers](https://ftdichip.com/drivers/vcp-drivers/) (Whats next step after download)
 		- Windows (Desktop) X64 (both VCP & D2XX)
 	- Device should appear in `Device Manager -> Ports (COM & LPT) -> Silicon Labs CP210x USB to UART Bridge (COMX)`
-1. Rust Board connection
+2. Rust Board connection
 ```sh
-cargo binstall cargo-espflash --no-confirm
-cargo binstall espmonitor --no-confirm
+cargo binstall --no-confirm espup ldproxy cargo-espflash espmonitor
 # cargo install cargo-espmonitor # not required?
 espflash board-info
 espmonitor COM3
@@ -39,7 +38,7 @@ rustup toolchain install nightly --component rust-src
 rustup default nightly
 # cargo install ldproxy #handled by espup?
 ```
-2. (Optional) Create idf project
+1. (Optional) Create idf project
 ```sh
 cargo install cargo-generate
 cargo generate --git https://github.com/esp-rs/esp-idf-template cargo
