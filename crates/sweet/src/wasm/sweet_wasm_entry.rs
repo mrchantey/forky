@@ -5,7 +5,7 @@ use forky_web::*;
 use leptos::*;
 
 
-pub fn interactive_mode() -> bool { !SearchParams::get_flag("run") }
+pub fn interactive_mode() -> bool { false == SearchParams::get_flag("run") }
 
 pub fn sweet_wasm_entry() -> Result<()> {
 	match entry() {
@@ -22,6 +22,14 @@ fn entry() -> Result<()> {
 	forky_web::set_panic_hook();
 	if let Some(testid) = SearchParams::get("testid") {
 		TestRunnerWasm::run_case(testid.parse().unwrap())
+	} else if interactive_mode() {
+		mount_to_body(|| {
+			view! {
+				<link rel="stylesheet" href="sweet-style.css"/>
+				<Root/>
+			}
+		});
+		Ok(())
 	} else {
 		mount_to_body(|| view! {<Root/>});
 		Ok(())

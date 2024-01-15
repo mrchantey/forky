@@ -90,6 +90,18 @@ impl SweetCli{
 		std::fs::create_dir_all(&dst)?;
 		println!("copying runner files to {:?}", dst);
 
+		// empty file to be overwritten if static contains a style.css
+		std::fs::write(
+			dst.join("style.css"),
+			include_bytes!("html___/style.css"),
+		)?;
+
+		if let Some(static_dir) = &self.static_dir {
+			println!("copying static files from {:?}", static_dir);
+			copy_recursive(static_dir, dst)?;
+		}
+
+		// this will overwrite the static index.html if it exists
 		std::fs::write(
 			dst.join("index.html"),
 			include_bytes!("html___/index.html"),
@@ -99,10 +111,6 @@ impl SweetCli{
 			include_bytes!("html___/sweet-style.css"),
 		)?;
 
-		if let Some(static_dir) = &self.static_dir {
-			println!("copying static files from {:?}", static_dir);
-			copy_recursive(static_dir, dst)?;
-		}
 
 		Ok(())
 	}
