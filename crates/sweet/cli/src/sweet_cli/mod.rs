@@ -1,10 +1,11 @@
-mod build_wasm;
-pub use self::build_wasm::*;
-mod command;
-pub use self::command::*;
-mod run;
-pub use self::run::*;
-mod run_tests;
+#![allow(unused_imports)]
+pub mod run_tests;
 pub use self::run_tests::*;
-mod sweet_cli;
+pub mod build_wasm;
+pub use self::build_wasm::*;
+pub mod sweet_cli;
 pub use self::sweet_cli::*;
+pub mod command;
+pub use self::command::*;
+pub mod run;
+pub use self::run::*;
