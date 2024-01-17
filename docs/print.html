@@ -727,7 +727,7 @@ jobs:
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[action(system=print_action)]
-#[derive(Default, Clone, Component, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct PrintAction(pub value: String);
 
 fn print_action(mut commands: Commands, query: Query&lt;(Entity,&amp;PrintAction), With&lt;Running&gt;){
