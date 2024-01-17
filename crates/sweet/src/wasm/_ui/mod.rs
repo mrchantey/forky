@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod root;
 pub use self::root::*;
 pub mod sweet_style_g;

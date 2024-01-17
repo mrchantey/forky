@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod resizable_canvas;
 pub use self::resizable_canvas::*;
 pub mod file;

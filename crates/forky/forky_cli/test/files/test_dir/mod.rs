@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod test_mod;
 pub use self::test_mod::*;
 pub mod __test_sub_dir;

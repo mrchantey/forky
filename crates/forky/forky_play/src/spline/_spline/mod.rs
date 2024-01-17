@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod linear_spline;
 pub use self::linear_spline::*;
 pub mod cubic_spline;

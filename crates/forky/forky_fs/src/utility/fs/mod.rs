@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod file;
 pub use self::file::*;
 pub mod dir;

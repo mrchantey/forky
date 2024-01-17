@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod misc;
 pub mod maze;
 pub mod physics;

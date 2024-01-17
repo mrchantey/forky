@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod run_bevy_webxr;
 pub use self::run_bevy_webxr::*;
 pub mod webxr_plugin;

@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod clear_color;
 pub use self::clear_color::*;
 pub mod blit_graph_plugin;

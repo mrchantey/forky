@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod bezier;
 pub use self::bezier::*;
 pub mod bezier_render;

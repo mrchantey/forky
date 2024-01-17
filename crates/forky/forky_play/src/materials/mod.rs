@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod forky_shader;
 pub use self::forky_shader::*;
 pub mod uv_material;

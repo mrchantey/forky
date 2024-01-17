@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod interrupt;
 pub use self::interrupt::*;
 pub mod run_timer;

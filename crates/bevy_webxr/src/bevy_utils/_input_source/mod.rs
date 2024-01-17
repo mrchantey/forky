@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod webxr_input_profiles;
 pub use self::webxr_input_profiles::*;
 pub mod insert_input_sources;

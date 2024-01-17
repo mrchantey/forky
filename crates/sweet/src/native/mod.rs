@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod suite_logger_native_parallel;
 pub use self::suite_logger_native_parallel::*;
 pub mod suite_logger_native;

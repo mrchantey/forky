@@ -1,29 +1,28 @@
 //https://danielkeep.github.io/tlborm/book/pat-repetition-replacement.html
 
 /// Container for macros
-pub mod macros_inner {
-	#[macro_export]
-	macro_rules! replace_expr {
-		($_t:tt $sub:expr) => {
-			$sub
-		};
-	}
+#[macro_export]
+macro_rules! replace_expr {
+	($_t:tt $sub:expr) => {
+		$sub
+	};
+}
 
-	// #[macro_export]
-	// macro_rules! fmt {
-	// 	($($x:expr) +) => {
-	// 		$(format!("{} ",$x))+
-	// 	};
-	// }
-	// #[macro_export]
-	// macro_rules! log {
-	// 	($($x:expr) +) => {
-	// 		$(print!("{}",$x));+;
-	// 		print!("\n");
-	// 	};
-	// }
-	#[macro_export]
-	macro_rules! log {
+// #[macro_export]
+// macro_rules! fmt {
+// 	($($x:expr) +) => {
+// 		$(format!("{} ",$x))+
+// 	};
+// }
+// #[macro_export]
+// macro_rules! log {
+// 	($($x:expr) +) => {
+// 		$(print!("{}",$x));+;
+// 		print!("\n");
+// 	};
+// }
+#[macro_export]
+macro_rules! log {
 	( $( $t:tt )* ) => {
 			#[cfg(not(target_arch = "wasm32"))]
 			println!($( $t )*);
@@ -32,27 +31,27 @@ pub mod macros_inner {
 	}
 }
 
-	#[macro_export]
-	macro_rules! dir {
+#[macro_export]
+macro_rules! dir {
 	($($x:expr) +) => {
 		$(print!("{:#?}",$x));+;
 		print!("\n");
 	};
 }
 
-	#[macro_export]
-	macro_rules! tern {
-		($pred:expr; $a:expr; $b:expr) => {
-			if $pred {
-				$a
-			} else {
-				$b
-			}
-		};
-	}
+#[macro_export]
+macro_rules! tern {
+	($pred:expr; $a:expr; $b:expr) => {
+		if $pred {
+			$a
+		} else {
+			$b
+		}
+	};
+}
 
-	#[macro_export]
-	macro_rules! spacecat {
+#[macro_export]
+macro_rules! spacecat {
 	// ($single_item:expr) => {
 	// 		$single_item
 	// };
@@ -64,9 +63,8 @@ pub mod macros_inner {
 	};
 }
 
-	// macro_rules! fmt {
-	// 	($($x:expr) +) => {
-	// 		[$(replace_expr!($x "{}")),+].join("baz")
-	// 	};
-	// }
-}
+// macro_rules! fmt {
+// 	($($x:expr) +) => {
+// 		[$(replace_expr!($x "{}")),+].join("baz")
+// 	};
+// }

@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod matcher_async;
 pub use self::matcher_async::*;
 pub mod matcher_el;

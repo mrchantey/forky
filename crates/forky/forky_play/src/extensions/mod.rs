@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod color;
 pub use self::color::*;
 pub mod bundle;

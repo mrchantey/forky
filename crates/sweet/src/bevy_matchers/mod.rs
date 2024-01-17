@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod vec3;
 pub use self::vec3::*;
 pub mod bevy_app_x;

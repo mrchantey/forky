@@ -10,7 +10,7 @@ pub mod forky_event;
 pub use self::forky_event::*;
 pub use self::utils::*;
 pub mod macros;
-pub use self::macros::macros_inner::*;
+// pub use self::macros::*;
 pub mod net;
 
 
@@ -19,7 +19,7 @@ pub mod prelude {
 	pub use crate::forky_event::*;
 	pub use crate::graph::*;
 	pub use crate::macros::*;
-	pub use crate::math::*;
+	// pub use crate::math::*;
 	// pub use crate::math_f64::*;
 	pub use crate::net::*;
 	pub use crate::utility::*;

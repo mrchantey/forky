@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod result_export;
 pub use self::result_export::*;
 pub mod test_runner_wasm;

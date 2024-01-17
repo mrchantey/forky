@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod cubic;
 pub use self::cubic::*;
 pub mod quadratic;

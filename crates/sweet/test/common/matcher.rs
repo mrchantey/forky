@@ -66,11 +66,13 @@ sweet! {
 		expect(Ok(())).to_be_ok()?;
 		expect(Ok(())).not().to_be_err()?;
 
-		expect(Err(anyhow!("foo"))).to_be_err()?;
-		expect(Err(anyhow!("foo"))).not().to_be_ok()?;
+		let err = || -> anyhow::Result<(), anyhow::Error> { Err(anyhow!("foo")) };
 
-		expect(Err(anyhow!("foo"))).to_be_err_str("foo")?;
-		expect(Err(anyhow!("foo"))).not().to_be_err_str("foobar")?;
+		expect(err()).to_be_err()?;
+		expect(err()).not().to_be_ok()?;
+
+		expect(err()).to_be_err_str("foo")?;
+		expect(err()).not().to_be_err_str("foobar")?;
 	}
 
 

@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod _timer;
 pub mod _smart_leds_adapter_rgbw;
 pub mod _esp_device;

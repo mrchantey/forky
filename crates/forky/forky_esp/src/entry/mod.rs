@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod hello_led;
 pub use self::hello_led::*;
 pub mod hello_world;

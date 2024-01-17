@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod proxy;
 pub use self::proxy::*;
 pub mod tls;

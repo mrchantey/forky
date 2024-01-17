@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod rect_maze;
 pub use self::rect_maze::*;
 pub mod rect_maze_spatial;

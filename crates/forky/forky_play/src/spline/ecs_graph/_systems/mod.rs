@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod on_edge_modified;
 pub use self::on_edge_modified::*;
 pub mod on_node_moved;

@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod matcher_close;
 pub use self::matcher_close::*;
 pub mod matcher;

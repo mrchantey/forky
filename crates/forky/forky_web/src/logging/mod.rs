@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod set_panic_hook;
 pub use self::set_panic_hook::*;
 pub mod replace_func;

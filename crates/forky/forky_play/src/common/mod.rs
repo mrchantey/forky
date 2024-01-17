@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod id_hashmap;
 pub use self::id_hashmap::*;
 pub mod tag_components;

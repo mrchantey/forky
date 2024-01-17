@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod board;
 pub mod ball;
 pub mod ui;

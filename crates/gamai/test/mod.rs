@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod selectors;
 pub mod edge;
 pub mod utils;

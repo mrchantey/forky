@@ -1,6 +1,6 @@
 use bevy_math::prelude::*;
 use extend::ext;
-use forky_core::utility::random_value;
+use forky_core::prelude::*;
 
 #[ext]
 pub impl Vec3 {

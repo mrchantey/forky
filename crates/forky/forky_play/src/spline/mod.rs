@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 pub mod _solvers;
 pub use self::_solvers::*;
 pub mod graph;
