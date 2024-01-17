@@ -7,8 +7,8 @@ use std::time::Duration;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-	// let mut chromedriver =
-	// 	Command::new("chromedriver").args(["--port=9515"]).spawn()?;
+	let mut chromedriver =
+		Command::new("chromedriver").args(["--port=9515"]).spawn()?;
 	let client = retry_async(
 		async || {
 			let cap = serde_json::from_str(
@@ -30,6 +30,6 @@ async fn main() -> Result<()> {
 	assert!(url.as_ref().contains("example.com"));
 
 	client.close().await?;
-	// chromedriver.kill()?;
+	chromedriver.kill()?;
 	Ok(())
 }

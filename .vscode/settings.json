@@ -31,6 +31,7 @@
 		"crates\\bevy_webxr"
 	],
 	"search.exclude": {
+		"Cargo.lock": true,
 		"**/assets/*": true,
 		"**.svg": true
 	}
