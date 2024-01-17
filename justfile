@@ -4,8 +4,8 @@ set positional-arguments
 crates := 'forky forky_cli forky_core forky_play forky_bevy sweet'
 # features := '--features forky_play/shader_debug_internal'
 # features := '--features sweet/bevy_core'
-features := '--features sweet/bevy'
-# features := ''
+# features := '--features sweet/bevy'
+features := ''
 # forky_esp
 backtrace := '0'
 # backtrace := '1'
@@ -42,8 +42,8 @@ install-cli *args:
 run-w *args:
 	just watch just run {{args}}
 
-build crate *args:
-	RUST_BACKTRACE={{backtrace}} cargo build -p {{crate}} {{args}}
+build crate example *args:
+	RUST_BACKTRACE={{backtrace}} cargo build -p {{crate}} --example {{example}} {{args}}
 
 check crate *args:
 	RUST_BACKTRACE={{backtrace}} cargo check -p {{crate}} {{args}}

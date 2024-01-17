@@ -47,7 +47,7 @@ pub fn run_for_crate_folder(path: PathBuf) {
 pub fn create_mod_text(path: &PathBuf) -> String {
 	let treat_as_mod = path.filestem_contains_double_underscore();
 
-	fs::read_dir(&path)
+	let files_str: String = fs::read_dir(&path)
 		.unwrap()
 		.map(|p| p.unwrap().path())
 		.filter(|p| p.is_dir() || !p.filename_included(IGNORE_FILES))
@@ -67,7 +67,8 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 				format!("pub mod {name};\npub use self::{name}::*;\n")
 			}
 		})
-		.collect()
+		.collect();
+	format!("#![allow(unused_imports)]\n{files_str}")
 }
 
 fn save_to_file(path: &PathBuf, content: String) {

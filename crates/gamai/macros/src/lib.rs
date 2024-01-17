@@ -51,6 +51,11 @@ pub fn child_props(_attr: TokenStream, _item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
+/// ## Derives
+///
+/// [`Debug`], [`Clone`], [`PartialEq`], [`serde::Serialize`], [`serde::Deserialize`], [`bevy::Component`]
+///
+///
 #[proc_macro_attribute]
 pub fn action(attr: TokenStream, item: TokenStream) -> TokenStream {
 	parse_action(attr, item)

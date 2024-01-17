@@ -12,7 +12,7 @@ use serde::Serialize;
 /// If there are no more children to run it will succeed.
 ///
 /// If a child fails it will fail.
-#[derive(Debug, Default, Clone, Serialize, Deserialize, Component)]
+#[derive(Default)]
 #[action(system=sequence)]
 pub struct SequenceSelector;
 pub fn sequence(

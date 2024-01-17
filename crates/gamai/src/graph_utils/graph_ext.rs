@@ -5,6 +5,32 @@ use extend::ext;
 use petgraph::graph::DiGraph;
 use petgraph::graph::NodeIndex;
 use petgraph::Direction;
+use petgraph::Graph;
+
+
+#[ext]
+pub impl<N, E, Ty, Ix> Graph<N, E, Ty, Ix>
+where
+	N: PartialEq,
+	E: PartialEq,
+	Ty: petgraph::EdgeType,
+	Ix: petgraph::graph::IndexType + PartialEq,
+{
+	/// This is a strict equality, nodes and edges must be identical in order
+	fn is_identical(&self, b: &Self) -> bool {
+		let a_ns = self.raw_nodes().iter().map(|n| &n.weight);
+		let b_ns = b.raw_nodes().iter().map(|n| &n.weight);
+		let a_es = self
+			.raw_edges()
+			.iter()
+			.map(|e| (e.source(), e.target(), &e.weight));
+		let b_es = b
+			.raw_edges()
+			.iter()
+			.map(|e| (e.source(), e.target(), &e.weight));
+		a_ns.eq(b_ns) && a_es.eq(b_es)
+	}
+}
 
 
 #[ext]

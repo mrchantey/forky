@@ -23,6 +23,7 @@ pub fn parse_action(
 	Ok(quote! {
 		use gamai::prelude::*;
 		use gamai::exports::*;
+		#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Component)]
 		#input
 		#action_trait
 	})

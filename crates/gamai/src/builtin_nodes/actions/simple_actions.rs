@@ -6,13 +6,13 @@ use serde::Serialize;
 
 
 #[action(system=empty_action)]
-#[derive(Debug, Default, Clone, Component, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct EmptyAction;
 pub fn empty_action() {}
 
 // intentionally dont deref to avoid bugs.
 #[action(system=set_run_result)]
-#[derive(Debug, Default, Clone, Serialize, Deserialize, Component)]
+#[derive(Default)]
 pub struct SetRunResult(pub RunResult);
 
 impl SetRunResult {
@@ -29,7 +29,7 @@ pub fn set_run_result(
 }
 
 #[action(system=succeed_in_duration)]
-#[derive(Debug, Default, Clone, Serialize, Deserialize, Component)]
+#[derive(Default)]
 pub struct SucceedInDuration {
 	pub duration: Duration,
 }

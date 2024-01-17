@@ -5,7 +5,7 @@ use gamai::prelude::*;
 pub fn main() {}
 
 #[action(system=foo)]
-#[derive(Clone, Serialize, Deserialize, Component)]
+#[derive(Default)]
 pub struct Foo {
 	health: u32,
 	#[shared]

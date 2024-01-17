@@ -38,7 +38,7 @@ An `action` is a bevy component struct with an associated system. Currently all 
 
 ```rust
 #[action(system=print_action)]
-#[derive(Default, Clone, Component, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct PrintAction(pub value: String);
 
 fn print_action(mut commands: Commands, query: Query<(Entity,&PrintAction), With<Running>){

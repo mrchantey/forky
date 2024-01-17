@@ -1,6 +1,9 @@
 use forky_core::*;
 // use std::rc::Rc;
-use std::sync::{Arc, Mutex};
+use std::sync::{
+	Arc,
+	Mutex,
+};
 use std::thread;
 use sweet::*;
 

@@ -6,6 +6,7 @@ use wasm_bindgen::closure::WasmClosure;
 
 #[ext]
 pub impl<T1, T2> Closure<dyn FnMut(T1) -> T2> {
+	/// Equivelant of `new` but without need for explicit type annotations
 	fn from_func<F>(func: F) -> Self
 	where
 		dyn FnMut(T1) -> T2: WasmClosure,

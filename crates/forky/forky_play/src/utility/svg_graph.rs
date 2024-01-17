@@ -11,6 +11,7 @@ use std::path::Path;
 pub struct ScheduleGraphSvg;
 
 impl ScheduleGraphSvg {
+	/// don't add default plugins, this will be done for you
 	pub fn write_default(app: &mut App) -> Result<()> {
 		Self::write(app, Update, Path::new("target/graph/graph_out.dot"))
 	}
