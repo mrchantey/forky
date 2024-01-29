@@ -14,7 +14,7 @@
 		"**/.embuild/": true,
 		// "**/.cargo/": true,
 		// "**/Cargo.lock": true,
-		// "**/mod.rs": true,
+		"**/mod.rs": true,
 		// "out/": true,
 		// "**/target/": true,
 		"**/sdkconfig.defaults": true,
@@ -26,7 +26,7 @@
 	// "rust-analyzer.cargo.features": [
 	// 	"web_sys_unstable_apis"
 	// ],
-	"rust-analyzer.cargo.target": "wasm32-unknown-unknown",
+	// "rust-analyzer.cargo.target": "wasm32-unknown-unknown",
 	"rust-analyzer.files.excludeDirs": [
 		"crates\\bevy_webxr"
 	],
@@ -34,5 +34,6 @@
 		"Cargo.lock": true,
 		"**/assets/*": true,
 		"**.svg": true
-	}
+	},
+	"rust-analyzer.showUnlinkedFileNotification": false
 }

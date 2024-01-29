@@ -4,7 +4,7 @@ pub mod edge;
 pub mod extensions;
 pub mod graph_utils;
 pub mod node;
-pub mod prop;
+pub mod ui;
 
 // allows proc macros to work internally
 extern crate self as gamai;
@@ -19,7 +19,7 @@ pub mod prelude {
 	pub use crate::extensions::*;
 	pub use crate::graph_utils::*;
 	pub use crate::node::*;
-	pub use crate::prop::*;
+	pub use crate::ui::*;
 	pub use gamai_macros::*;
 }
 

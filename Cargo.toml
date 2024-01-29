@@ -74,15 +74,16 @@ anyhow = "1.0.75"
 time = "0.3.20"
 petgraph = { version = "0.6.4", features = ["serde-1"] }
 bytemuck = "1.13.1"
+heck = "0.4.1"
 
-## Attributes ###
+## attributes ###
 num-traits = "0.2.15"
 derive_deref = "1.1.1"
 strum = "0.25.0"
 strum_macros = "0.25.0"
 extend = "1.1.2"
 
-### IO ###
+### io ###
 clap = { version = "4.2.2", features = ["derive"] }
 colorize = "0.1.0"
 crossterm = "0.25.0"
@@ -96,7 +97,7 @@ serde_json = "1.0.108"
 typetag = "0.2.14"
 postcard = { version = "1.0.4", features = ["alloc"] }
 
-### Math ###
+### math ###
 sha2 = "0.10.7"
 hex = "0.4.3"
 rand = { version = "0.8.5" }
@@ -105,7 +106,7 @@ rgb = "0.8.34"
 plotters = "0.3.4"
 plotters-canvas = "0.3.0"
 
-### Async ###
+### async ###
 futures = "0.3.28"
 futures-util = "0.3.28"
 tokio = { version = "1.27.0", features = [

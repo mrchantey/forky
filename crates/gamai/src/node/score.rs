@@ -20,7 +20,7 @@ pub enum Score {
 	#[default]
 	/// The node should not run.
 	Fail,
-	/// The node has a `0..1` weight where 1 is most favourable.
+	/// The node has a weight, conventionally in the range `0..1`, where higher is more favorable.
 	Weight(f32),
 	/// The node should run.
 	Pass,

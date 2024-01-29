@@ -2999,6 +2999,7 @@ dependencies = [
  "bevy_utils",
  "extend",
  "gamai_macros",
+ "heck",
  "petgraph",
  "serde",
  "serde_json",

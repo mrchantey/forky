@@ -28,6 +28,7 @@ gamai_macros = { workspace = true }
 
 
 anyhow = { workspace = true }
+heck = { workspace = true }
 petgraph = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
