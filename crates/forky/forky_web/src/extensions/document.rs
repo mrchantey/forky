@@ -1,20 +1,36 @@
+use crate::prelude::*;
 use extend::ext;
+use forky_core::OptionTExt;
 use wasm_bindgen::JsCast;
 use web_sys::*;
 
+const ERROR: &str = "Very basic dom query error, this is very weird.";
+
 #[ext]
 pub impl Document {
-	fn get() -> Document { window().unwrap().document().unwrap() }
-	fn x_body() -> HtmlElement { Self::get().body().unwrap() }
+	fn get() -> Document { window().expect(ERROR).document().expect(ERROR) }
+	fn x_head() -> HtmlHeadElement { Self::get().head().expect(ERROR) }
+	fn x_body() -> HtmlElement { Self::get().body().expect(ERROR) }
+
+	async fn x_await_load_by_id(id: &str) -> anyhow::Result<()> {
+		HtmlEventListener::wait_with_target(
+			"load",
+			Self::get()
+				.get_element_by_id(id)
+				.ok()?
+				.dyn_into().unwrap(),
+		).await;
+		Ok(())
+	}
 
 	fn x_append_child(node: &Node) {
-		Self::x_body().append_child(node).unwrap();
+		Self::x_body().append_child(node).expect(ERROR);
 	}
 
 	fn x_clear() {
 		let body = Self::x_body();
 		while let Some(child) = body.first_child() {
-			body.remove_child(&child).unwrap();
+			body.remove_child(&child).expect(ERROR);
 		}
 	}
 

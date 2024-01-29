@@ -1,5 +1,6 @@
 use crate::*;
 use leptos::*;
+use wasm_bindgen::JsCast;
 use web_sys::Document;
 
 pub fn mount<F, N>(f: F)
@@ -9,6 +10,15 @@ where
 {
 	set_panic_hook();
 	leptos::mount_to_body(f)
+}
+
+pub fn mount_to_head<F, N>(f: F)
+where
+	F: Fn() -> N + 'static,
+	N: IntoView,
+{
+	set_panic_hook();
+	leptos::mount_to(Document::x_head().dyn_into().unwrap(), f);
 }
 
 
