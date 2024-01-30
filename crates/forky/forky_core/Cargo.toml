@@ -24,11 +24,3 @@ wasm-bindgen-futures = { workspace = true }
 web-sys = { workspace = true }
 console_error_panic_hook = { workspace = true }
 leptos = { workspace = true }
-
-
-[dev-dependencies]
-sweet = { workspace = true }
-
-[[example]]
-name = "test_forky_core"
-path = "test/sweet.rs"

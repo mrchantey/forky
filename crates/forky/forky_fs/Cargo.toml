@@ -32,10 +32,3 @@ notify-debouncer-full = { workspace = true }
 ## async
 tokio = { workspace = true }
 futures = { workspace = true }
-
-[dev-dependencies]
-sweet = { workspace = true }
-
-[[example]]
-name = "test_forky_fs"
-path = "test/sweet.rs"

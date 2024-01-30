@@ -2695,7 +2695,6 @@ dependencies = [
  "leptos",
  "num-traits",
  "rand",
- "sweet",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
@@ -2750,7 +2749,6 @@ dependencies = [
  "notify",
  "notify-debouncer-full",
  "sha2",
- "sweet",
  "tokio",
 ]
 
@@ -2995,6 +2993,7 @@ dependencies = [
  "bevy_core",
  "bevy_derive",
  "bevy_ecs",
+ "bevy_reflect",
  "bevy_time",
  "bevy_utils",
  "extend",

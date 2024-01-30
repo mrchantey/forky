@@ -1,4 +1,5 @@
 #![feature(imported_main)]
+#![cfg(target_arch = "wasm32")]
 pub use sweet::*;
 // #[cfg(target_arch = "wasm32")]
 mod net;

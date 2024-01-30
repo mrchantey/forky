@@ -1,3 +1,4 @@
+use bevy_reflect::Reflect;
 use gamai::prelude::*;
 use std::any::Any;
 use std::cell::Ref;
@@ -6,7 +7,7 @@ use std::rc::Rc;
 use sweet::*;
 
 
-#[derive(Debug)]
+#[derive(Debug, Reflect)]
 pub struct MyAction {
 	pub value_str: String,
 	pub value_bool: bool,
@@ -18,42 +19,21 @@ impl IntoActionUi<Self> for MyAction {
 		on_change: impl 'static + Clone + Fn(&Self),
 	) -> ActionUi<Self> {
 		let this = Rc::new(RefCell::new(self));
+		let on_change = Box::new(on_change);
 		ActionUi {
 			label: "My Action".to_string(),
 			value: this.clone(),
 			fields: vec![
-				{
-					let this2 = this.clone();
-					let this3 = this.clone();
-					let on_change = on_change.clone();
-					TextProp {
-						label: heck::AsTitleCase("value_str").to_string(),
-						get_cb: Box::new(move || {
-							this2.borrow().value_str.clone()
-						}),
-						set_cb: Box::new(move |value| {
-							this3.borrow_mut().value_str = value.to_string();
-							on_change(&*this3.borrow());
-						}),
-					}
-					.into()
-				},
-				{
-					let this2 = this.clone();
-					let this3 = this.clone();
-					let on_change = on_change.clone();
-					CheckboxProp {
-						label: heck::AsTitleCase("value_bool").to_string(),
-						get_cb: Box::new(move || {
-							this2.borrow().value_bool.clone()
-						}),
-						set_cb: Box::new(move |value| {
-							this3.borrow_mut().value_bool = value;
-							on_change(&*this3.borrow());
-						}),
-					}
-					.into()
-				},
+				String::into_field_ui(FieldReflect::new(
+					this.clone(),
+					"value_str".to_string(),
+					Some(on_change.clone()),
+				)),
+				bool::into_field_ui(FieldReflect::new(
+					this.clone(),
+					"value_bool".to_string(),
+					Some(on_change.clone()),
+				)),
 			],
 		}
 	}
@@ -71,9 +51,9 @@ pub fn works() -> Result<()> {
 	expect(ui.label).to_be("My Action".to_string())?;
 
 	match &ui.fields[0] {
-		PropUi::Text(text) => {
-			text.set("hello2");
-			expect(&text.label).to_be(&"Value Str".to_string())?;
+		FieldUi::Text(text) => {
+			text.set("hello2".to_string());
+			expect(&text.display_name).to_be(&"Value Str".to_string())?;
 			expect(&text.get()).to_be(&"hello2".to_string())?;
 		}
 		_ => panic!("expected text"),
