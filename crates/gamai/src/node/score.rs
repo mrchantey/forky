@@ -1,5 +1,7 @@
 // use crate::prelude::*;
+use crate::prelude::*;
 use bevy_ecs::prelude::*;
+use bevy_reflect::Reflect;
 use serde::Deserialize;
 use serde::Serialize;
 use std::cmp::Ordering;
@@ -14,7 +16,18 @@ pub struct Scoring;
 
 /// Used to indicate to selectors how favorable a child node would be to run.
 #[derive(
-	Debug, Default, Serialize, Deserialize, Clone, Copy, Component, PartialEq,
+	Debug,
+	Default,
+	Serialize,
+	Deserialize,
+	Reflect,
+	Clone,
+	Copy,
+	Component,
+	PartialEq,
+	// strum
+	strum_macros::Display,
+	strum_macros::EnumIter,
 )]
 pub enum Score {
 	#[default]
@@ -25,6 +38,7 @@ pub enum Score {
 	/// The node should run.
 	Pass,
 }
+impl SelectFieldValue for Score {}
 
 
 impl PartialOrd for Score {
@@ -41,11 +55,3 @@ impl PartialOrd for Score {
 		Some(val)
 	}
 }
-
-
-// impl PropInput
-
-// impl DropdownProp<Score> for Score{
-
-
-// }

@@ -18,15 +18,15 @@ pub struct ActionUi<T: Struct> {
 	pub fields: Vec<FieldUi<T>>,
 }
 
-impl<T: Struct> Display for ActionUi<T> {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", self.label)?;
-		for field in &self.fields {
-			write!(f, "\n  {}", field)?;
-		}
-		Ok(())
-	}
-}
+// impl<T: Struct> Display for ActionUi<T> {
+// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+// 		write!(f, "{}", self.label)?;
+// 		for field in &self.fields {
+// 			write!(f, "\n  {}", field)?;
+// 		}
+// 		Ok(())
+// 	}
+// }
 
 pub trait IntoActionUi<T: Struct> {
 	fn into_action_ui(

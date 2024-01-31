@@ -1,5 +1,7 @@
 mod action;
 use action::*;
+mod field_ui;
+use field_ui::*;
 use proc_macro::TokenStream;
 mod utils;
 // pub(crate) use utils::*;
@@ -59,6 +61,15 @@ pub fn child_props(_attr: TokenStream, _item: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn action(attr: TokenStream, item: TokenStream) -> TokenStream {
 	parse_action(attr, item)
+		.unwrap_or_else(syn::Error::into_compile_error)
+		.into()
+}
+
+
+
+#[proc_macro_attribute]
+pub fn field_ui(attr: TokenStream, item: TokenStream) -> TokenStream {
+	parse_field_ui(attr, item)
 		.unwrap_or_else(syn::Error::into_compile_error)
 		.into()
 }
