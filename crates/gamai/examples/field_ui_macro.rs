@@ -1,4 +1,6 @@
-use gamai::prelude::*;
+use gamai::ui::FieldUiRoot;
+use gamai_macros::FieldUi;
+// use gamai::prelude::*;
 use strum_macros::Display;
 use strum_macros::EnumIter;
 // use gamai_macros::*;
