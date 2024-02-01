@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod keycode;
 pub use self::keycode::*;
 pub mod svg_graph;

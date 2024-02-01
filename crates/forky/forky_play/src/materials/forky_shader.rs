@@ -17,8 +17,7 @@ macro_rules! forky_shader {
 					app,
 					handle,
 					concat!($root, $local, $name, ".wgsl"),
-					Shader::from_wgsl
-					// Shader::from_wgsl
+					Shader::from_wgsl // Shader::from_wgsl
 				);
 			},
 		}

@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod test_runner_result;
 pub use self::test_runner_result::*;
 pub mod test_collector;

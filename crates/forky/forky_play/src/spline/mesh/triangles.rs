@@ -1,6 +1,3 @@
-
-
-
 pub fn spline_to_triangles(
 	edge_loop_len: usize,
 	subdivisions: usize,

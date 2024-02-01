@@ -1,8 +1,7 @@
 use super::*;
-use crate::{
-	spline::{ecs_graph::EcsSplineGraphId, graph::SplineEdge},
-	*,
-};
+use crate::spline::ecs_graph::EcsSplineGraphId;
+use crate::spline::graph::SplineEdge;
+use crate::*;
 use bevy::prelude::*;
 
 #[derive(Bundle)]

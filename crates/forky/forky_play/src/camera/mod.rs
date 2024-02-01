@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod fly_camera_bundle;
 pub use self::fly_camera_bundle::*;
 pub mod fps_camera_bundle;

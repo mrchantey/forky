@@ -1,7 +1,6 @@
+use super::*;
 use bevy::prelude::*;
 use bevy::render::RenderApp;
-
-use super::*;
 
 pub struct CustomPipelinePlugin;
 

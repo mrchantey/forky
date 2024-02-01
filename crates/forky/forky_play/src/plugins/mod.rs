@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod forky_debug_plugin;
 pub use self::forky_debug_plugin::*;
 pub mod forky_full_plugin;

@@ -1,4 +1,5 @@
-use crate::{camera::OrbitController, maze::*};
+use crate::camera::OrbitController;
+use crate::maze::*;
 use bevy::prelude::*;
 
 pub fn adjust_camera_on_respawn(

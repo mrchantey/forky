@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod ecs_spline_graph_plugin;
 pub use self::ecs_spline_graph_plugin::*;
 pub mod ecs_spline_graph;

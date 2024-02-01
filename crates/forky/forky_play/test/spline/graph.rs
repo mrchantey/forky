@@ -1,4 +1,4 @@
-use petgraph::graph::{Graph};
+use petgraph::graph::Graph;
 use petgraph::graphmap::UnGraphMap;
 use sweet::*;
 

@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod web_sys_utils;
 pub use self::web_sys_utils::*;
 pub mod math;

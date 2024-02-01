@@ -1,7 +1,6 @@
+use crate::*;
 use bevy::prelude::*;
 use extend::ext;
-
-use crate::*;
 
 #[ext]
 pub impl SpatialBundle {

@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod spline_physics_bundle;
 pub use self::spline_physics_bundle::*;
 pub mod components;

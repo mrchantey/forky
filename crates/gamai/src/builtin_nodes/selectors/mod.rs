@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod fallback_selector;
 pub use self::fallback_selector::*;
 pub mod sequence_selector;

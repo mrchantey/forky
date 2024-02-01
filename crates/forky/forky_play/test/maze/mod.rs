@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod ball;
 pub use self::ball::*;
 pub mod depth_first_backtrace;

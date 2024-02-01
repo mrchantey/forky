@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod run_tests;
 pub use self::run_tests::*;
 pub mod build_wasm;

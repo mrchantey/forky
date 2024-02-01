@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod link_spline_nodes;
 pub use self::link_spline_nodes::*;
 pub mod spline_tool_plugin;

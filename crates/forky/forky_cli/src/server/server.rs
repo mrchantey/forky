@@ -35,7 +35,7 @@ impl Default for Server {
 			clear: true,
 			quiet: false,
 			any_origin: false,
-			proxy:false,
+			proxy: false,
 			// proxies:Vec::new(),
 		}
 	}
@@ -122,7 +122,7 @@ impl Server {
 		(livereload, reload_handle)
 	}
 
-//not yet implemented
+	//not yet implemented
 	fn _default_shutdown(&self) -> Pin<Box<dyn Future<Output = ()>>> {
 		let dir = self.dir.clone();
 		let quiet = self.quiet;
@@ -149,16 +149,15 @@ impl Server {
 		} else {
 			""
 		};
-		let proxy = if self.proxy {
-			"\nproxy: true"
-		} else {
-			""
-		};
-		println!("serving '{}' at {}{any_origin}{proxy}", self.dir, self.address);
+		let proxy = if self.proxy { "\nproxy: true" } else { "" };
+		println!(
+			"serving '{}' at {}{any_origin}{proxy}",
+			self.dir, self.address
+		);
 	}
 }
 
-async fn ping(req:Request<Body>)->Response<String>{
-	let body = format!("request was {:?}",req);
+async fn ping(req: Request<Body>) -> Response<String> {
+	let body = format!("request was {:?}", req);
 	Response::new(body)
 }

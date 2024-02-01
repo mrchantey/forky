@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod test_case;
 pub use self::test_case::*;
 pub mod matcher;

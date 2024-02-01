@@ -1,6 +1,7 @@
 use super::*;
 use crate::*;
-use bevy::{input::mouse::*, prelude::*};
+use bevy::input::mouse::*;
+use bevy::prelude::*;
 
 
 #[cfg(not(target_arch = "wasm32"))]

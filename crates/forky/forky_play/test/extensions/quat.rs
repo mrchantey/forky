@@ -1,6 +1,5 @@
 use bevy::prelude::*;
 use forky_play::*;
-
 use sweet::*;
 
 sweet! {

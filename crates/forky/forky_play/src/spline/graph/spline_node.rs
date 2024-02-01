@@ -1,6 +1,6 @@
-use std::fmt::{Display, Formatter};
-
 use bevy::prelude::*;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 // #[derive(Component)]
 // pub struct NodeTag;

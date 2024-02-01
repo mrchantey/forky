@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod native_tests;
 pub mod wasm_tests;
 pub mod common;

@@ -1,5 +1,6 @@
 use crate::maze::*;
-use forky_core::{graph::*, *};
+use forky_core::graph::*;
+use forky_core::*;
 use std::collections::HashSet;
 
 pub trait DepthFirstBacktrace: Maze {

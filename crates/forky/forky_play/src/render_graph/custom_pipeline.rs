@@ -1,21 +1,23 @@
-use bevy::{
-	core_pipeline::fullscreen_vertex_shader::fullscreen_shader_vertex_state,
-	prelude::*,
-	render::{
-		render_resource::{
-			CachedRenderPipelineId, FragmentState, PipelineCache,
-			RenderPipelineDescriptor,
-		},
-		renderer::RenderDevice,
-	},
-};
-use wgpu::{
-	BindGroupLayoutDescriptor, BindGroupLayoutEntry,
-	BindingType, BufferBindingType, ColorTargetState,
-	ColorWrites, MultisampleState, PrimitiveState,
-	SamplerBindingType, ShaderStages, TextureFormat,
-	TextureSampleType, TextureViewDimension,
-};
+use bevy::core_pipeline::fullscreen_vertex_shader::fullscreen_shader_vertex_state;
+use bevy::prelude::*;
+use bevy::render::render_resource::CachedRenderPipelineId;
+use bevy::render::render_resource::FragmentState;
+use bevy::render::render_resource::PipelineCache;
+use bevy::render::render_resource::RenderPipelineDescriptor;
+use bevy::render::renderer::RenderDevice;
+use wgpu::BindGroupLayoutDescriptor;
+use wgpu::BindGroupLayoutEntry;
+use wgpu::BindingType;
+use wgpu::BufferBindingType;
+use wgpu::ColorTargetState;
+use wgpu::ColorWrites;
+use wgpu::MultisampleState;
+use wgpu::PrimitiveState;
+use wgpu::SamplerBindingType;
+use wgpu::ShaderStages;
+use wgpu::TextureFormat;
+use wgpu::TextureSampleType;
+use wgpu::TextureViewDimension;
 
 
 #[derive(Resource)]
@@ -84,7 +86,7 @@ impl FromWorld for CustomPipeline {
 				layout: vec![bind_group_layout.clone()],
 				vertex: fullscreen_shader_vertex_state(),
 				fragment: Some(FragmentState {
-					shader: shader,
+					shader,
 					shader_defs: vec![],
 					entry_point: "fragment".into(),
 					targets: vec![Some(ColorTargetState {

@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod parse_utils;
 pub use self::parse_utils::*;
 pub mod test_case_flags;

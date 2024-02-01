@@ -1,5 +1,5 @@
-use crate::*;
 use crate::spline::*;
+use crate::*;
 use bevy::prelude::*;
 
 /// Create Vertices
@@ -28,7 +28,7 @@ pub fn spline_to_vertices(
 		// let normal = spline.normal(t);
 		// let binormal = spline.binormal(t,Vec3::UP);
 		// let normal = tangent.cross(binormal).normalize();
-		let normal = spline.normal_up(t,Vec3::UP);
+		let normal = spline.normal_up(t, Vec3::UP);
 		let binormal = tangent.cross(normal).normalize();
 		for point in edge_loop.iter() {
 			let vertex = pos + binormal * point.x + normal * point.y;

@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod replace_standard_material;
 pub use self::replace_standard_material::*;
 pub mod unlit_material;

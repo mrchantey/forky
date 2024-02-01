@@ -1,8 +1,9 @@
-use forky_play::maze::{rect_maze::RectMaze, *};
+use forky_play::maze::rect_maze::RectMaze;
+use forky_play::maze::*;
 use sweet::*;
 
 sweet! {
-	
+
 	it "works" {
 		let width = 50;
 		let height = 20;

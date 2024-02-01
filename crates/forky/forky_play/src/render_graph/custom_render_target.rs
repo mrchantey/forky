@@ -1,20 +1,10 @@
-
-
-
+// use bevy::window::Windows;
+use super::create_image;
+use super::BlitSource;
 use bevy::core_pipeline::clear_color::ClearColorConfig;
 use bevy::prelude::*;
 use bevy::render::camera::RenderTarget;
 use bevy::render::renderer::RenderDevice;
-
-
-
-// use bevy::window::Windows;
-
-
-
-
-use super::create_image;
-use super::BlitSource;
 
 pub fn create_blit_source(app: &mut App) -> BlitSource {
 	let _device = app.world.resource::<RenderDevice>().wgpu_device();

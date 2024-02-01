@@ -1,6 +1,7 @@
 // use std::f32;
 // pub use num_traits::*;
-use num_traits::{AsPrimitive, Num};
+use num_traits::AsPrimitive;
+use num_traits::Num;
 
 pub const TAU: f32 = std::f32::consts::TAU;
 pub const QUARTER_TAU: f32 = TAU * 0.25;

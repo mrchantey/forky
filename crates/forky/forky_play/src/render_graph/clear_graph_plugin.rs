@@ -1,13 +1,11 @@
+use super::*;
 use bevy::prelude::*;
 use bevy::render::RenderApp;
-
-use super::*;
 
 pub struct ClearGraphPlugin;
 
 impl Plugin for ClearGraphPlugin {
 	fn build(&self, app: &mut App) {
-
 		let render_app = app.get_sub_app_mut(RenderApp).unwrap();
 		render_app.insert_resource(CustomClearColor {
 			r: 0.0,
@@ -23,6 +21,6 @@ impl Plugin for ClearGraphPlugin {
 			my_node,
 			"clear_pass",
 			ClearNode::IN_VIEW,
-		);		
+		);
 	}
 }

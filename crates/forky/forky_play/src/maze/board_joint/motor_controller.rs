@@ -1,6 +1,7 @@
 use super::*;
 use bevy::prelude::*;
-use bevy_rapier3d::{prelude::*, rapier::prelude::JointAxis};
+use bevy_rapier3d::prelude::*;
+use bevy_rapier3d::rapier::prelude::JointAxis;
 
 pub fn motor_controller(
 	params: Res<MazeJointParams>,

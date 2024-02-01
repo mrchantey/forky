@@ -1,9 +1,8 @@
 use super::*;
 use crate::spline::*;
-use bevy::{
-	prelude::*,
-	utils::{HashMap, HashSet},
-};
+use bevy::prelude::*;
+use bevy::utils::HashMap;
+use bevy::utils::HashSet;
 use petgraph::graphmap::UnGraphMap;
 
 #[derive(Debug, Clone, Default)]
@@ -148,12 +147,11 @@ impl SplineGraph {
 			if let Some(node_prev) = self.next_neighbour(node, node_next) {
 				//TODO currently double calculating for middle nodes
 				let node_prev_pos = self.positions[&node_prev];
-				let (handle_prev, handle_next) =
-					CatmullRom::solve_three(
-						node_pos,
-						node_prev_pos,
-						node_next_pos,
-					);
+				let (handle_prev, handle_next) = CatmullRom::solve_three(
+					node_pos,
+					node_prev_pos,
+					node_next_pos,
+				);
 				// println!("linking {node},{node_prev}");
 				solved.insert((node, node_prev), handle_prev);
 				// println!("linking {node},{node_next}");

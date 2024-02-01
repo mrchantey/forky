@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod command_all;
 pub use self::command_all::*;
 pub mod lightning;

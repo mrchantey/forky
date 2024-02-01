@@ -1,6 +1,5 @@
-use std::path::PathBuf;
-
 use glob::Pattern;
+use std::path::PathBuf;
 
 #[derive(Debug, Clone)]
 pub struct TestRunnerConfig {

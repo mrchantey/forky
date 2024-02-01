@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod boid;
 pub use self::boid::*;
 pub mod utility;

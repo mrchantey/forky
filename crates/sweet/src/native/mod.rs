@@ -1,6 +1,5 @@
-#![allow(unused_imports)]
 pub mod suite_logger_native_parallel;
-pub use self::suite_logger_native_parallel::*;
+
 pub mod suite_logger_native;
 pub use self::suite_logger_native::*;
 pub mod panic;
@@ -20,4 +19,3 @@ pub use self::test_collector_native::*;
 pub mod command;
 pub use self::command::*;
 pub mod test_runner_config_native;
-pub use self::test_runner_config_native::*;

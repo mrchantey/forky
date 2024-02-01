@@ -1,6 +1,9 @@
 use crate::*;
 use bevy::prelude::*;
-use bevy::render::mesh::{self, PrimitiveTopology};
+use bevy::render::mesh::PrimitiveTopology;
+use bevy::render::mesh::{
+	self,
+};
 /// set up a simple 3D scene
 pub fn create_mesh(
 	mut commands: Commands,

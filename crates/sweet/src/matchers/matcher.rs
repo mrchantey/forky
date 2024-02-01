@@ -13,7 +13,7 @@ impl<T> Matcher<T> {
 	/// ```rust
 	/// Matcher::new(false).to_be_true()?;
 	/// ```
-	/// 
+	///
 	pub fn new(value: T) -> Matcher<T> {
 		Matcher {
 			value,
@@ -26,7 +26,7 @@ impl<T> Matcher<T> {
 		Matcher::new(func(&self.value))
 	}
 	/// Some assertions do not support negation, in that case call this function within the matcher.
-	/// 
+	///
 	/// This will return an error if the matcher is already negated.
 	/// ```rust
 	/// self.disallow_negated()?;

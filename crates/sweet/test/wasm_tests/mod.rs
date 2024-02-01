@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod matcher_el;
 pub use self::matcher_el::*;
 pub mod macro_expands;

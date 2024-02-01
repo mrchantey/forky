@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod scorers;
 pub use self::scorers::*;
 pub mod simple_actions;

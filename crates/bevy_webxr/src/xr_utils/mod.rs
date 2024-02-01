@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod webgl_context;
 pub use self::webgl_context::*;
 pub mod test;

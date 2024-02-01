@@ -4,7 +4,6 @@ use clap::ArgMatches;
 use glob::Pattern;
 
 impl TestRunnerConfig {
-
 	///Errors on malformed glob pattern.
 	pub fn from_arg_matchers(value: &ArgMatches) -> Result<Self> {
 		let watch = value.get_flag("watch");

@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod variants;
 pub use self::variants::*;
 pub mod interrupt;

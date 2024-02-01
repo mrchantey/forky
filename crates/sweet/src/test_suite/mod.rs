@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod suite_result;
 pub use self::suite_result::*;
 pub mod suite_logger_default;

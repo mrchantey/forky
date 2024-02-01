@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod ui_style_g;
 pub use self::ui_style_g::*;
 pub mod button;

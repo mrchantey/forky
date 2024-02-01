@@ -34,15 +34,12 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
 			));
 			parent
 				.spawn(
-					TextBundle::from_section(
-						"Score:  0",
-						TextStyle {
-							font: asset_server.load("fonts/FiraSans-Bold.ttf"),
-							font_size: 40.0,
-							color: Color::WHITE,
-							..default()
-						},
-					)
+					TextBundle::from_section("Score:  0", TextStyle {
+						font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+						font_size: 40.0,
+						color: Color::WHITE,
+						..default()
+					})
 					.with_style(Style {
 						margin: UiRect::new(
 							Val::Px(0.),

@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod spline_edge;
 pub use self::spline_edge::*;
 pub mod spline_graph_lookup;

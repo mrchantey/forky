@@ -21,8 +21,13 @@ pub fn cast_camera_ray(
 	rapier_context: Res<RapierContext>,
 ) {
 	let (camera, camera_transform) = camera_query.single();
-	let Some(cursor_position) = windows.single().cursor_position() else { return; };
-	let Some(ray) = camera.viewport_to_world(camera_transform, cursor_position) else { return; };
+	let Some(cursor_position) = windows.single().cursor_position() else {
+		return;
+	};
+	let Some(ray) = camera.viewport_to_world(camera_transform, cursor_position)
+	else {
+		return;
+	};
 
 	camera_ray.ray = ray;
 

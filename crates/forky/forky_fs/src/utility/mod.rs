@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod terminal;
 pub mod fs;
 pub mod process;

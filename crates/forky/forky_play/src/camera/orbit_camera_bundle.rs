@@ -4,7 +4,7 @@ use bevy::prelude::*;
 
 #[derive(Bundle)]
 pub struct OrbitCameraBundle {
-	name:Name,
+	name: Name,
 	camera: Camera3dBundle,
 	parent: CameraParent,
 	view_type: CameraViewType,

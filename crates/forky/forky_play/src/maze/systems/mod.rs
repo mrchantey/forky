@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod game;
 pub use self::game::*;
 pub mod camera;

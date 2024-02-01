@@ -10,5 +10,4 @@ where
 	fn pretty_print_intro(config: &TestRunnerConfig) -> String {
 		format!("\n🤘 sweet as! 🤘\n\n{config}")
 	}
-
 }

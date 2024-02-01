@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod slerp_joint;
 pub use self::slerp_joint::*;
 pub mod kinematic_body;

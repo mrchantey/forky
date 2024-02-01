@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod vec;
 pub use self::vec::*;
 pub mod str_x;

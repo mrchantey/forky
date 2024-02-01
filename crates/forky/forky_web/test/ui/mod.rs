@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod document;
 pub use self::document::*;
 pub mod button;

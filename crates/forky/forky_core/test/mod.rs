@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 pub mod graph;
 pub mod misc;
 pub mod pointers;
