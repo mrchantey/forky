@@ -1,71 +1,98 @@
-// use gamai::prelude::*;
-// use std::any::Any;
-// use std::cell::Ref;
-// use std::cell::RefCell;
-// use std::fmt::Display;
-// use std::rc::Rc;
-// use sweet::*;
-
-// #[derive(Debug, Clone, Reflect)]
-// pub struct MyStruct {
-// 	pub val_score: Score,
-// }
+use gamai::prelude::*;
+use std::cell::RefCell;
+use sweet::*;
 
 
-// impl<ParentT: FieldParent> IntoFieldUi<ParentT, Self> for MyStruct {
-// 	fn into_field_ui(reflect: FieldReflect<ParentT, Self>) -> FieldUi<ParentT> {
-// 		let mut path = reflect.path.to_string();
-// 		path.push_str("val_score");
-// 		let path = ParsedPath::parse(&path).unwrap();
-// 		GroupField {
-// 			name: "MyStruct".to_string(),
-// 			children: vec![],
-// 			// children: vec![Score::into_field_ui(FieldReflect::new(
-// 			// 	reflect.root.clone(),
-// 			// 	"val_score".to_string(),
-// 			// 	path,
-// 			// 	reflect.on_change,
-// 			// ))],
-// 		}
-// 		.into()
-// 	}
-// }
+#[derive(Clone, FieldUi)]
+struct MyAction {
+	#[slider(min = 0, max = 100, step = 1)]
+	pub health: u32,
+	pub score: Score,
+	pub nested: NestedAction,
+}
+
+#[derive(Clone, FieldUi)]
+struct NestedAction {
+	pub nested_field: u32,
+}
 
 
-// // impl<Root: FieldParent> IntoFieldReflect<Root> for MyStruct {
-// // 	fn into_field_reflect(
-// // 		self,
-// // 		root: Rc<RefCell<Root>>,
-// // 		name: String,
-// // 		path: ParsedPath,
-// // 		on_change: Option<Box<dyn Fn(&Root)>>,
-// // 	) -> FieldReflect<Root, Self> {
-// // 		FieldReflect::new(root, name, path, on_change)
-// // 	}
-// // }
+fn setup() -> FieldUiRoot<MyAction> {
+	FieldUiRoot::new(MyAction {
+		health: 100,
+		score: Score::Pass,
+		nested: NestedAction { nested_field: 0 },
+	})
+}
 
 
-// #[sweet_test]
-// pub fn works() -> Result<()> {
-// 	let val = MyStruct {
-// 		val_score: Score::Weight(0.5),
-// 	};
+#[sweet_test]
+pub fn sets_value() -> Result<()> {
+	let root = setup();
 
-// 	val.val_score.iter_fields().for_each(|field| {
-// 		println!("field: {:?}", field.name());
-// 	});
+	if let FieldUi::Group(group) = root.get_ui() {
+		if let FieldUi::SliderU32(slider) = &group.children[0] {
+			slider.set(50);
+		} else {
+			anyhow::bail!("Expected FieldUi");
+		}
+	} else {
+		anyhow::bail!("Expected FieldUi");
+	}
 
-// 	let field_ui = MyStruct::into_field_ui(FieldReflect::new(
-// 		Rc::new(RefCell::new(val)),
-// 		"Foobar".to_string(),
-// 		ParsedPath::parse("").unwrap(),
-// 		None,
-// 	));
+	expect(root.borrow().health).to_be(50)?;
 
-// 	let val = field_ui.into_string_tree().to_string();
-// 	println!("{}", val);
+	Ok(())
+}
 
-// 	// expect(true).to_be_false()?;
 
-// 	Ok(())
-// }
+#[sweet_test]
+pub fn sets_nested_value() -> Result<()> {
+	let root = setup();
+
+	if let FieldUi::Group(group) = root.get_ui() {
+		if let FieldUi::Group(nested_group) = &group.children[2] {
+			if let FieldUi::NumberU32(nested_field) = &nested_group.children[0]
+			{
+				nested_field.set(50);
+			} else {
+				anyhow::bail!("Expected FieldUi");
+			}
+		} else {
+			anyhow::bail!("Expected FieldUi");
+		}
+	} else {
+		anyhow::bail!("Expected FieldUi");
+	}
+
+	expect(root.borrow().nested.nested_field).to_be(50)?;
+
+	Ok(())
+}
+
+
+#[sweet_test]
+pub fn recalculates_ui() -> Result<()> {
+	let root = setup().with_on_ui_change(|ui| {
+		println!("UI Refresh: \n{}", ui.into_string_tree());
+	});
+
+	if let FieldUi::Group(group) = root.get_ui() {
+		if let FieldUi::Select(select) = &group.children[1] {
+			select.set(Score::Weight(0.1))?;
+		} else {
+			anyhow::bail!("Expected Select");
+		}
+	// if let FieldUi::Group(group) = &group.children[1] {
+	// 	// select.set(Score::Weight(0.1));
+	// } else {
+	// 	anyhow::bail!("Expected Group");
+	// }
+	} else {
+		anyhow::bail!("Expected FieldUi");
+	}
+
+	expect(root.borrow().score).to_be(Score::Weight(0.1))?;
+
+	Ok(())
+}

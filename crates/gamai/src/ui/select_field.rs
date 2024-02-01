@@ -1,5 +1,6 @@
 use super::*;
 use crate::prelude::Score;
+use anyhow::Result;
 use std::fmt::Display;
 use std::ops::Deref;
 use std::ops::DerefMut;
@@ -34,6 +35,19 @@ impl SelectField {
 			),
 		}
 	}
+	pub fn set_index(&self, index: usize) { self.reflect.set(index); }
+	pub fn set(&self, val: impl Display) -> Result<()> {
+		todo!("this ignores non-unit variant values");
+		let val_str = val.to_string();
+		let index = self
+			.options
+			.iter()
+			.position(|s| s == &val_str)
+			.ok_or_else(|| anyhow::anyhow!("key not found: {}", val))?;
+		self.reflect.set(index);
+		Ok(())
+	}
+
 	pub fn selected_option(&self) -> String {
 		self.options[self.reflect.get()].clone()
 	}

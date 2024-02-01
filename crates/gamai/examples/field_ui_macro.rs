@@ -12,8 +12,8 @@ fn main() {
 		// },
 		attack: AttackType::Ranged(32., 88),
 	};
-	let ui = foo.into_field_ui_root();
-	println!("{}", ui.into_string_tree());
+	let root = FieldUiRoot::new(foo);
+	println!("{}", root.get_ui().into_string_tree());
 
 	// match foo.attack {
 	// 	AttackType::Melee => println!("melee"),
@@ -22,13 +22,6 @@ fn main() {
 	// }
 }
 
-
-
-#[derive(Clone, FieldUi)]
-pub struct Foo {
-	health: u32,
-	attack: AttackType,
-}
 #[derive(Clone, EnumIter, Display, FieldUi)]
 pub enum AttackType {
 	Melee,
@@ -40,4 +33,11 @@ pub enum AttackType {
 		left: u32,
 		right: u32,
 	},
+}
+
+#[derive(Clone, FieldUi)]
+pub struct Foo {
+	#[slider(min = 0, max = 100, step = 1)]
+	health: u32,
+	attack: AttackType,
 }

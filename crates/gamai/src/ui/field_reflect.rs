@@ -15,7 +15,7 @@ pub type GetFunc<T> = Rc<Box<dyn Fn() -> T>>;
 pub type SetFunc<T> = Rc<Box<dyn Fn(T)>>;
 
 
-// #[derive(Clone)]
+#[derive(Clone)]
 pub struct FieldReflect<T: FieldValue> {
 	pub field_name: String,
 	pub display_name: String,

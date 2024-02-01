@@ -96,63 +96,7 @@ impl IntoFieldUi for Foo {
 
 #[sweet_test]
 pub fn works() -> Result<()> {
-	// let a = Bar { foo: Foo::A };
-	let a = Bar { foo: Foo::C(23) };
-
-	let root = a.into_field_ui_root();
-
-	println!("{}", root.into_string_tree());
-
-	// expect(true).to_be_false()?;
-
+	let _ = FieldUiRoot::new(Bar { foo: Foo::C(23) });
+	// println!("{}", root.into_string_tree());
 	Ok(())
 }
-
-
-// fn foobar() -> FieldUi {
-// 	let foo = Foo::C(32);
-// 	let foo = Rc::new(RefCell::new(foo));
-// 	let foo_select = SelectField::new(
-// 		"foo".to_string(),
-// 		{
-// 			let foo = foo.clone();
-// 			move || foo.borrow().clone()
-// 		},
-// 		{
-// 			let foo = foo.clone();
-// 			move |val| *foo.borrow_mut() = val
-// 		},
-// 	);
-// 	let val = foo.borrow();
-// 	match *val {
-// 		Foo::A => foo_select.into(),
-// 		Foo::B => foo_select.into(),
-// 		Foo::C(_) => GroupField::new("foo".to_string(), vec![
-// 			foo_select.into(),
-// 			SliderField::new(
-// 				"foo".to_string(),
-// 				{
-// 					let foo = foo.clone();
-// 					move || match *foo.borrow() {
-// 						// getter
-// 						Foo::C(x) => x,
-// 						_ => panic!("Expected Foo::C"),
-// 					}
-// 				},
-// 				{
-// 					let foo = foo.clone();
-// 					move |val| match *foo.borrow_mut() {
-// 						// setter
-// 						Foo::C(ref mut x) => *x = val,
-// 						_ => panic!("Expected Foo::C"),
-// 					}
-// 				},
-// 				0,
-// 				100,
-// 				1,
-// 			)
-// 			.into(),
-// 		])
-// 		.into(),
-// 	}
-// }

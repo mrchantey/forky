@@ -51,7 +51,7 @@ fn parse_struct_field(field: &Field) -> Result<TokenStream> {
 					set_cb(parent);
 				}
 			},
-		),
+		)
 	};
 
 	Ok(field_ui_option(field, &reflect)?)
