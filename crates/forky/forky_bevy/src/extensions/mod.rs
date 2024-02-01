@@ -7,7 +7,7 @@ pub use self::app::*;
 pub mod quat;
 pub use self::quat::*;
 pub mod global_transform;
-
+pub use self::global_transform::*;
 pub mod map;
 pub use self::map::*;
 pub mod app_res;
