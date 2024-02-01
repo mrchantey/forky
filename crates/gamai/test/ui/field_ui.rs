@@ -73,6 +73,28 @@ pub fn sets_nested_value() -> Result<()> {
 
 
 #[sweet_test]
+pub fn calls_on_change() -> Result<()> {
+	let was_called = Rc::new(RefCell::new(Score::Pass));
+	let was_called2 = was_called.clone();
+	let root = setup().with_on_change(move |val| {
+		*was_called2.borrow_mut() = val.score;
+	});
+
+	if let FieldUi::Group(group) = root.get_ui() {
+		if let FieldUi::Select(select) = &group.children[1] {
+			select.set_variant_ignoring_value(Score::Fail)?;
+		} else {
+			anyhow::bail!("Expected Select");
+		}
+	} else {
+		anyhow::bail!("Expected FieldUi");
+	}
+
+	expect(*was_called.borrow()).to_be(Score::Fail)?;
+
+	Ok(())
+}
+#[sweet_test]
 pub fn does_not_recalculates_ui() -> Result<()> {
 	let was_called = Rc::new(RefCell::new(false));
 	let was_called2 = was_called.clone();
