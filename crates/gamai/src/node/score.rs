@@ -1,7 +1,6 @@
 // use crate::prelude::*;
 use crate::prelude::*;
 use bevy_ecs::prelude::*;
-use bevy_reflect::Reflect;
 use serde::Deserialize;
 use serde::Serialize;
 use std::cmp::Ordering;
@@ -20,11 +19,11 @@ pub struct Scoring;
 	Default,
 	Serialize,
 	Deserialize,
-	Reflect,
 	Clone,
 	Copy,
 	Component,
 	PartialEq,
+	// FieldUi,
 	// strum
 	strum_macros::Display,
 	strum_macros::EnumIter,
@@ -38,8 +37,6 @@ pub enum Score {
 	/// The node should run.
 	Pass,
 }
-impl SelectFieldValue for Score {}
-
 
 impl PartialOrd for Score {
 	fn partial_cmp(&self, other: &Self) -> Option<Ordering> {

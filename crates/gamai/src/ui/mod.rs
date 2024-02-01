@@ -1,4 +1,6 @@
 #![allow(unused_imports)]
+pub mod slider_field;
+pub use self::slider_field::*;
 pub mod graph_ui;
 pub use self::graph_ui::*;
 pub mod action_ui;

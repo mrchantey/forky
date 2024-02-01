@@ -1,36 +1,34 @@
+use crate::parse_enum;
+use crate::parse_struct;
 use crate::utils::*;
 use proc_macro2::TokenStream;
 use quote::quote;
 use std::collections::HashMap;
 use std::sync::atomic::AtomicUsize;
 use std::sync::atomic::Ordering;
+use syn::DeriveInput;
 use syn::Expr;
+use syn::Field;
 use syn::ItemStruct;
 use syn::Result;
+use syn::Variant;
 
+pub fn parse_field_ui(item: proc_macro::TokenStream) -> Result<TokenStream> {
+	let input = syn::parse::<DeriveInput>(item)?;
+	let ident = &input.ident;
 
-pub fn parse_field_ui(
-	_attr: proc_macro::TokenStream,
-	_item: proc_macro::TokenStream,
-) -> Result<TokenStream> {
-	// let mut input = syn::parse::<ItemStruct>(item)?;
-	// let args = &attributes_map(attr.into(), Some(&["system"]))?;
+	let out: TokenStream = match input.data {
+		syn::Data::Struct(input) => parse_struct(input)?,
+		syn::Data::Enum(input) => parse_enum(input)?,
+		syn::Data::Union(_) => unimplemented!(),
+	};
 
-	// let action_trait = action_trait(&input, args);
-
-	// remove_field_attributes(&mut input);
 
 	Ok(quote! {
-		// #input
-
-		impl FooBar for BB{
-
-
+		impl IntoFieldUi for #ident{
+			fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
+				#out
+			}
 		}
-		// use gamai::prelude::*;
-		// use gamai::exports::*;
-		// #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Component)]
-		// #input
-		// #action_trait
 	})
 }

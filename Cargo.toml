@@ -59,7 +59,7 @@ bevy_derive = { version = "0.12.*" }
 bevy_ecs = { version = "0.12.*" }
 bevy_hierarchy = { version = "0.12.*" }
 bevy_math = { version = "0.12.*" }
-bevy_reflect = { version = "0.12.*" }
+# bevy_reflect = { version = "0.12.*" }
 bevy_time = { version = "0.12.*" }
 bevy_transform = { version = "0.12.*" }
 bevy_utils = { version = "0.12.*" }

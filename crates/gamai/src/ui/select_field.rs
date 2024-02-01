@@ -1,79 +1,66 @@
 use super::*;
 use crate::prelude::Score;
-use bevy_reflect::Reflect;
 use std::fmt::Display;
 use std::ops::Deref;
 use std::ops::DerefMut;
 use strum::IntoEnumIterator;
 
-pub trait SelectFieldValue:
-	Clone + Display + Reflect + IntoEnumIterator
-{
+pub trait SelectFieldValue: FieldValue + Display + IntoEnumIterator {}
+impl<T: FieldValue + Display + IntoEnumIterator> SelectFieldValue for T {}
+
+pub struct SelectField {
+	pub options: Vec<String>,
+	pub reflect: FieldReflect<usize>,
 }
 
-pub trait SelectFieldReflect<T: FieldParent> {
-	// fn option(&self) -> String;
-	fn display_name(&self) -> &str;
-	fn options(&self) -> Vec<String>;
-	fn get_index(&self) -> usize;
-	fn set_index(&self, index: usize);
-}
-
-impl<T: FieldParent, V: SelectFieldValue> SelectFieldReflect<T>
-	for FieldReflect<T, V>
-{
-	fn display_name(&self) -> &str { &self.display_name }
-
-	fn options(&self) -> Vec<String> {
-		V::iter().map(|s| s.to_string()).collect()
-	}
-	fn get_index(&self) -> usize {
-		let a = self.get().to_string();
-		V::iter().position(|s| s.to_string() == a).unwrap()
-	}
-	fn set_index(&self, index: usize) {
-		let options = V::iter().collect::<Vec<_>>();
-		self.set(options[index].clone());
-	}
-}
-
-pub struct SelectField<T: FieldParent> {
-	pub reflect: Box<dyn SelectFieldReflect<T>>,
-}
-
-impl<T: FieldParent> Deref for SelectField<T> {
-	type Target = Box<dyn SelectFieldReflect<T>>;
-	fn deref(&self) -> &Self::Target { &self.reflect }
-}
-
-impl<T: FieldParent> DerefMut for SelectField<T> {
-	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.reflect }
-}
-
-impl<T: FieldParent> Into<FieldUi<T>> for SelectField<T> {
-	fn into(self) -> FieldUi<T> { FieldUi::Select(self) }
-}
-
-impl<ParentT: FieldParent, ValueT: SelectFieldValue>
-	IntoFieldUi<ParentT, ValueT> for ValueT
-{
-	fn into_field_ui(
-		reflect: FieldReflect<ParentT, ValueT>,
-	) -> FieldUi<ParentT> {
-		SelectField {
-			reflect: Box::new(reflect),
+impl SelectField {
+	pub fn new<T: 'static + SelectFieldValue>(
+		field_name: String,
+		get_cb: GetFunc<T>,
+		set_cb: SetFunc<T>,
+	) -> Self {
+		Self {
+			options: T::iter().map(|s| s.to_string()).collect(),
+			reflect: FieldReflect::new(
+				field_name,
+				move || {
+					let a = get_cb().to_string();
+					T::iter().position(|s| s.to_string() == a).unwrap()
+				},
+				move |index| {
+					let options = T::iter().collect::<Vec<_>>();
+					set_cb(options[index].clone());
+				},
+			),
 		}
-		.into()
+	}
+	pub fn selected_option(&self) -> String {
+		self.options[self.reflect.get()].clone()
 	}
 }
 
-impl<ParentT: FieldParent> Display for Box<dyn SelectFieldReflect<ParentT>> {
+
+impl Into<FieldUi> for SelectField {
+	fn into(self) -> FieldUi { FieldUi::Select(self) }
+}
+
+
+impl Display for SelectField {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(
-			f,
-			"{}: {}",
-			self.display_name(),
-			self.options()[self.get_index()]
-		)
+		f.debug_struct("SelectField")
+			.field("name", &self.reflect.field_name)
+			.field("value", &self.selected_option())
+			.field("index", &self.reflect.get())
+			.field("options", &self.options)
+			.finish()
 	}
 }
+
+// impl IntoFieldUi<ValueT> for ValueT {
+// 	fn into_field_ui(reflect: FieldReflect<ValueT>) -> FieldUi {
+// 		SelectField {
+// 			reflect: Box::new(reflect),
+// 		}
+// 		.into()
+// 	}
+// }

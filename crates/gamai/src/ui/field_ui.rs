@@ -1,10 +1,6 @@
-use crate::prelude::Tree;
 use super::*;
+use crate::prelude::Tree;
 use anyhow::Result;
-use bevy_reflect::GetField;
-use bevy_reflect::Reflect;
-use bevy_reflect::ReflectRef;
-use bevy_reflect::Struct;
 use bevy_utils::tracing::Value;
 use gamai::action::IntoAction;
 use petgraph::graph::DiGraph;
@@ -17,228 +13,209 @@ use std::rc::Rc;
 use strum::IntoEnumIterator;
 
 // #[derive(Display)]
-pub enum FieldUi<T: FieldParent> {
-	Group(GroupField<T>),
-	Text(TextField<T>),
-	Checkbox(CheckboxField<T>),
-	Select(SelectField<T>),
+pub enum FieldUi {
+	Group(GroupField),
+	Text(TextField),
+	Checkbox(CheckboxField),
+	Select(SelectField),
 	// number
-	NumberF32(NumberField<T, f32>),
-	NumberF64(NumberField<T, f64>),
-	NumberI8(NumberField<T, i8>),
-	NumberI16(NumberField<T, i16>),
-	NumberI32(NumberField<T, i32>),
-	NumberI64(NumberField<T, i64>),
-	NumberU8(NumberField<T, u8>),
-	NumberU16(NumberField<T, u16>),
-	NumberU32(NumberField<T, u32>),
-	NumberU64(NumberField<T, u64>),
+	NumberF32(NumberField<f32>),
+	NumberF64(NumberField<f64>),
+	NumberI8(NumberField<i8>),
+	NumberI16(NumberField<i16>),
+	NumberI32(NumberField<i32>),
+	NumberI64(NumberField<i64>),
+	NumberU8(NumberField<u8>),
+	NumberU16(NumberField<u16>),
+	NumberU32(NumberField<u32>),
+	NumberU64(NumberField<u64>),
 	// slider
-	SliderF32(SliderField<T, f32>),
-	SliderF64(SliderField<T, f64>),
-	SliderI8(SliderField<T, i8>),
-	SliderI16(SliderField<T, i16>),
-	SliderI32(SliderField<T, i32>),
-	SliderI64(SliderField<T, i64>),
-	SliderU8(SliderField<T, u8>),
-	SliderU16(SliderField<T, u16>),
-	SliderU32(SliderField<T, u32>),
-	SliderU64(SliderField<T, u64>),
-}
-impl<T: FieldParent> Into<FieldUi<T>> for CheckboxField<T> {
-	fn into(self) -> FieldUi<T> { FieldUi::Checkbox(self) }
-}
-impl<T: FieldParent> Into<FieldUi<T>> for TextField<T> {
-	fn into(self) -> FieldUi<T> { FieldUi::Text(self) }
-}
-impl<T: FieldParent> Into<FieldUi<T>> for GroupField<T> {
-	fn into(self) -> FieldUi<T> { FieldUi::Group(self) }
+	SliderF32(SliderField<f32>),
+	SliderF64(SliderField<f64>),
+	SliderI8(SliderField<i8>),
+	SliderI16(SliderField<i16>),
+	SliderI32(SliderField<i32>),
+	SliderI64(SliderField<i64>),
+	SliderU8(SliderField<u8>),
+	SliderU16(SliderField<u16>),
+	SliderU32(SliderField<u32>),
+	SliderU64(SliderField<u64>),
 }
 
-impl<T: FieldParent> FieldUi<T> {
-	pub fn into_string_tree(&self)-> Tree<String>{
-					match self{
-			FieldUi::Group(val) => Tree{
-				value: val.name.clone(),
-				children: val.children.iter().map(|child| child.into_string_tree()).collect(),
+impl FieldUi {
+	pub fn into_string_tree(&self) -> Tree<String> {
+		match self {
+			FieldUi::Group(val) => Tree {
+				value: val.to_string(),
+				children: val
+					.children
+					.iter()
+					.map(|child| child.into_string_tree())
+					.collect(),
 			},
-			FieldUi::Text(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::Checkbox(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::Select(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::NumberF32(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::NumberF64(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::NumberI8(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::NumberI16(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::NumberI32(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::NumberI64(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::NumberU8(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::NumberU16(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::NumberU32(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::NumberU64(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::SliderF32(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::SliderF64(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::SliderI8(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::SliderI16(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::SliderI32(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::SliderI64(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::SliderU8(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::SliderU16(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::SliderU32(val) => Tree::new(val.reflect.to_string()),
-			FieldUi::SliderU64(val) => Tree::new(val.reflect.to_string()),
-		}
-	}
-
-	pub fn parse(parent: &T) -> FieldUi<T> {
-		let name = parent
-			.get_represented_type_info()
-			.unwrap()
-			.type_path_table()
-			.short_path()
-			.to_string();
-
-		Self::parse_inner(parent, name)
-	}
-	fn parse_inner(val: &dyn Reflect, name: String) -> FieldUi<T> {
-		match val.reflect_ref() {
-			ReflectRef::Struct(val) => FieldUi::Group(GroupField {
-				name,
-				children: val
-					.iter_fields()
-					.enumerate()
-					.map(|(index, field)| {
-						Self::parse_inner(
-							field,
-							val.name_at(index).unwrap().to_string(),
-						)
-					})
-					.collect(),
-			}),
-			ReflectRef::TupleStruct(val) => FieldUi::Group(GroupField {
-				name,
-				children: val
-					.iter_fields()
-					.enumerate()
-					.map(|(index, field)| {
-						Self::parse_inner(field, index.to_string())
-					})
-					.collect(),
-			}),
-			ReflectRef::Tuple(val) => FieldUi::Group(GroupField {
-				name,
-				children: val
-					.iter_fields()
-					.enumerate()
-					.map(|(index, field)| {
-						Self::parse_inner(field, index.to_string())
-					})
-					.collect(),
-			}),
-			ReflectRef::List(val) => FieldUi::Group(GroupField {
-				name,
-				children: val
-					.iter()
-					.enumerate()
-					.map(|(index, field)| {
-						Self::parse_inner(field, index.to_string())
-					})
-					.collect(),
-			}),
-			ReflectRef::Array(val) => FieldUi::Group(GroupField {
-				name,
-				children: val
-					.iter()
-					.enumerate()
-					.map(|(index, field)| {
-						Self::parse_inner(field, index.to_string())
-					})
-					.collect(),
-			}),
-			ReflectRef::Map(val) => FieldUi::Group(GroupField {
-				name,
-				children: val
-					.iter()
-					.map(|(key, field)| {
-						Self::parse_inner(
-							field,
-							key.downcast_ref::<String>().expect("Currently only maps with String keys are supported").clone(),
-						)
-					})
-					.collect(),
-			}),
-			// // ReflectRef::Value(val)=> 
-			// // ReflectRef::Enum(_) => todo!(),
-			// ReflectRef::Value(val) => {
-			// 	if let Some(val) = val.downcast_ref::<bool>(){
-
-
-			// 	}
-
-				
-				
-			// },
-			_ => todo!(),
+			FieldUi::Text(val) => Tree::new(val.to_string()),
+			FieldUi::Checkbox(val) => Tree::new(val.to_string()),
+			FieldUi::Select(val) => Tree::new(val.to_string()),
+			FieldUi::NumberF32(val) => Tree::new(val.to_string()),
+			FieldUi::NumberF64(val) => Tree::new(val.to_string()),
+			FieldUi::NumberI8(val) => Tree::new(val.to_string()),
+			FieldUi::NumberI16(val) => Tree::new(val.to_string()),
+			FieldUi::NumberI32(val) => Tree::new(val.to_string()),
+			FieldUi::NumberI64(val) => Tree::new(val.to_string()),
+			FieldUi::NumberU8(val) => Tree::new(val.to_string()),
+			FieldUi::NumberU16(val) => Tree::new(val.to_string()),
+			FieldUi::NumberU32(val) => Tree::new(val.to_string()),
+			FieldUi::NumberU64(val) => Tree::new(val.to_string()),
+			FieldUi::SliderF32(val) => Tree::new(val.to_string()),
+			FieldUi::SliderF64(val) => Tree::new(val.to_string()),
+			FieldUi::SliderI8(val) => Tree::new(val.to_string()),
+			FieldUi::SliderI16(val) => Tree::new(val.to_string()),
+			FieldUi::SliderI32(val) => Tree::new(val.to_string()),
+			FieldUi::SliderI64(val) => Tree::new(val.to_string()),
+			FieldUi::SliderU8(val) => Tree::new(val.to_string()),
+			FieldUi::SliderU16(val) => Tree::new(val.to_string()),
+			FieldUi::SliderU32(val) => Tree::new(val.to_string()),
+			FieldUi::SliderU64(val) => Tree::new(val.to_string()),
 		}
 	}
 }
 
-
-pub struct GroupField<T: FieldParent> {
-	pub name: String,
-	pub children: Vec<FieldUi<T>>,
+pub struct GroupField {
+	pub display_name: String,
+	pub children: Vec<FieldUi>,
 }
 
-// impl<T:FieldParent> ToIndentString for GroupField<T>{
-// 		fn to_indent_string_recursive(&self,val: &mut String,indent:usize) {
-// 			let indent_str = " ".repeat(indent);
-// 			val.push_str(&format!("{indent_str}{}",self.name));
-// 			for child in self.children.iter(){
-// 				child.to_string_pretty_inner(val,indent+1);
-// 			}
-// 		}
-// }
-
-pub struct CheckboxField<T: FieldParent> {
-	pub reflect: FieldReflect<T, bool>,
+impl GroupField {
+	pub fn new(display_name: String, children: Vec<FieldUi>) -> Self {
+		Self {
+			display_name,
+			children,
+		}
+	}
+}
+impl Display for GroupField {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		f.debug_struct("GroupField")
+			.field("display_name", &self.display_name)
+			.finish()
+	}
 }
 
-pub struct TextField<T: FieldParent> {
-	pub reflect: FieldReflect<T, String>,
+pub struct CheckboxField {
+	pub reflect: FieldReflect<bool>,
+}
+
+impl Display for CheckboxField {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		f.debug_struct("CheckboxField")
+			.field("name", &self.reflect.field_name)
+			.field("value", &self.reflect.get())
+			.finish()
+	}
 }
 
 
-pub struct SliderField<T: FieldParent, ValueT: NumberFieldValue> {
-	pub reflect: FieldReflect<T, ValueT>,
-	pub min: ValueT,
-	pub max: ValueT,
-	pub step: ValueT,
+pub struct TextField {
+	pub reflect: FieldReflect<String>,
+}
+impl Display for TextField {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		f.debug_struct("TextField")
+			.field("name", &self.reflect.field_name)
+			.field("value", &self.reflect.get())
+			.finish()
+	}
 }
 
 
-impl<T: FieldParent> Deref for TextField<T> {
-	type Target = FieldReflect<T, String>;
+impl Deref for TextField {
+	type Target = FieldReflect<String>;
 	fn deref(&self) -> &Self::Target { &self.reflect }
 }
-impl<T: FieldParent> DerefMut for TextField<T> {
+impl DerefMut for TextField {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.reflect }
 }
 
-impl<T: FieldParent> Deref for CheckboxField<T> {
-	type Target = FieldReflect<T, bool>;
+impl Deref for CheckboxField {
+	type Target = FieldReflect<bool>;
 	fn deref(&self) -> &Self::Target { &self.reflect }
 }
-impl<T: FieldParent> DerefMut for CheckboxField<T> {
+impl DerefMut for CheckboxField {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.reflect }
 }
 
-impl<T: FieldParent, ValueT: NumberFieldValue> Deref
-	for SliderField<T, ValueT>
-{
-	type Target = FieldReflect<T, ValueT>;
-	fn deref(&self) -> &Self::Target { &self.reflect }
-}
 
-impl<T: FieldParent, ValueT: NumberFieldValue> DerefMut
-	for SliderField<T, ValueT>
-{
-	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.reflect }
+
+
+
+
+
+impl Into<FieldUi> for CheckboxField {
+	fn into(self) -> FieldUi { FieldUi::Checkbox(self) }
+}
+impl Into<FieldUi> for TextField {
+	fn into(self) -> FieldUi { FieldUi::Text(self) }
+}
+impl Into<FieldUi> for GroupField {
+	fn into(self) -> FieldUi { FieldUi::Group(self) }
+}
+impl Into<FieldUi> for NumberField<u8> {
+	fn into(self) -> FieldUi { FieldUi::NumberU8(self) }
+}
+impl Into<FieldUi> for NumberField<u16> {
+	fn into(self) -> FieldUi { FieldUi::NumberU16(self) }
+}
+impl Into<FieldUi> for NumberField<u32> {
+	fn into(self) -> FieldUi { FieldUi::NumberU32(self) }
+}
+impl Into<FieldUi> for NumberField<u64> {
+	fn into(self) -> FieldUi { FieldUi::NumberU64(self) }
+}
+impl Into<FieldUi> for NumberField<i8> {
+	fn into(self) -> FieldUi { FieldUi::NumberI8(self) }
+}
+impl Into<FieldUi> for NumberField<i16> {
+	fn into(self) -> FieldUi { FieldUi::NumberI16(self) }
+}
+impl Into<FieldUi> for NumberField<i32> {
+	fn into(self) -> FieldUi { FieldUi::NumberI32(self) }
+}
+impl Into<FieldUi> for NumberField<i64> {
+	fn into(self) -> FieldUi { FieldUi::NumberI64(self) }
+}
+impl Into<FieldUi> for NumberField<f32> {
+	fn into(self) -> FieldUi { FieldUi::NumberF32(self) }
+}
+impl Into<FieldUi> for NumberField<f64> {
+	fn into(self) -> FieldUi { FieldUi::NumberF64(self) }
+}
+impl Into<FieldUi> for SliderField<u8> {
+	fn into(self) -> FieldUi { FieldUi::SliderU8(self) }
+}
+impl Into<FieldUi> for SliderField<u16> {
+	fn into(self) -> FieldUi { FieldUi::SliderU16(self) }
+}
+impl Into<FieldUi> for SliderField<u32> {
+	fn into(self) -> FieldUi { FieldUi::SliderU32(self) }
+}
+impl Into<FieldUi> for SliderField<u64> {
+	fn into(self) -> FieldUi { FieldUi::SliderU64(self) }
+}
+impl Into<FieldUi> for SliderField<i8> {
+	fn into(self) -> FieldUi { FieldUi::SliderI8(self) }
+}
+impl Into<FieldUi> for SliderField<i16> {
+	fn into(self) -> FieldUi { FieldUi::SliderI16(self) }
+}
+impl Into<FieldUi> for SliderField<i32> {
+	fn into(self) -> FieldUi { FieldUi::SliderI32(self) }
+}
+impl Into<FieldUi> for SliderField<i64> {
+	fn into(self) -> FieldUi { FieldUi::SliderI64(self) }
+}
+impl Into<FieldUi> for SliderField<f32> {
+	fn into(self) -> FieldUi { FieldUi::SliderF32(self) }
+}
+impl Into<FieldUi> for SliderField<f64> {
+	fn into(self) -> FieldUi { FieldUi::SliderF64(self) }
 }

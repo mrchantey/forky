@@ -23,9 +23,9 @@ impl<T: Debug> Debug for Tree<T> {
 	}
 }
 
-impl<T: Debug> Display for Tree<T> {
+impl<T: Display> Display for Tree<T> {
 	fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-		write!(f, "{}", self.pretty_string(0))
+		write!(f, "{}", self.pretty_string_display(0))
 	}
 }
 
@@ -76,7 +76,7 @@ impl<T: Debug> Tree<T> {
 	/// 	Child1.value
 	/// etc.
 	/// ```
-	pub fn pretty_string(&self, depth: usize) -> String {
+	pub fn pretty_string_debug(&self, depth: usize) -> String {
 		let mut string = String::new();
 		string.push_str(&format!(
 			"{}{:?}\n",
@@ -84,7 +84,29 @@ impl<T: Debug> Tree<T> {
 			self.value
 		));
 		for child in self.children.iter() {
-			string.push_str(&child.pretty_string(depth + 1));
+			string.push_str(&child.pretty_string_debug(depth + 1));
+		}
+		string
+	}
+}
+impl<T: Display> Tree<T> {
+	/// Creates a string from this tree, in the format
+	/// ```
+	/// value
+	/// 	Child0.value
+	/// 		Child0.Child0.value
+	/// 	Child1.value
+	/// etc.
+	/// ```
+	pub fn pretty_string_display(&self, depth: usize) -> String {
+		let mut string = String::new();
+		string.push_str(&format!(
+			"{}{}\n",
+			String::from_utf8(vec![b'\t'; depth]).unwrap(),
+			self.value
+		));
+		for child in self.children.iter() {
+			string.push_str(&child.pretty_string_display(depth + 1));
 		}
 		string
 	}
