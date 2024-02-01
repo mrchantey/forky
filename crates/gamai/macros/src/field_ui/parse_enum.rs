@@ -1,19 +1,12 @@
 use crate::field_ui_option;
-use crate::parse_struct;
 use crate::utils::*;
 use proc_macro2::Ident;
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
-use std::collections::HashMap;
-use std::sync::atomic::AtomicUsize;
-use std::sync::atomic::Ordering;
 use syn::spanned::Spanned;
 use syn::DataEnum;
-use syn::DeriveInput;
-use syn::Expr;
 use syn::Field;
-use syn::ItemStruct;
 use syn::Result;
 use syn::Variant;
 
