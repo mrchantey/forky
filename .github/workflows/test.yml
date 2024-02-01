@@ -57,8 +57,8 @@ jobs:
       with:
         crate: wasm-bindgen-cli
         version: '0.2.88'
-    - name: 🔨 Build Crates
-      run: just all build
+    # - name: 🔨 Build Crates
+    #   run: just all build
     # - name: 🔎 Test Fantoccini
     #   run: just run sweet fantoccini
     - name: 🔎 Test Native
