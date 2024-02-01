@@ -3,7 +3,7 @@ pub use self::slider_field::*;
 pub mod group_field;
 pub use self::group_field::*;
 pub mod graph_ui;
-pub use self::graph_ui::*;
+
 pub mod number_field;
 pub use self::number_field::*;
 pub mod field_ui_root;

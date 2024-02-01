@@ -1,9 +1,6 @@
 use super::*;
-use crate::prelude::Score;
 use anyhow::Result;
 use std::fmt::Display;
-use std::ops::Deref;
-use std::ops::DerefMut;
 use strum::IntoEnumIterator;
 
 pub trait SelectFieldValue: FieldValue + Display + IntoEnumIterator {}

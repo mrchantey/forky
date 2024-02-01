@@ -68,7 +68,8 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 			}
 		})
 		.collect();
-	format!("#![allow(unused_imports)]\n{files_str}")
+	// format!("#![allow(unused_imports)]\n{files_str}")
+	files_str
 }
 
 fn save_to_file(path: &PathBuf, content: String) {
