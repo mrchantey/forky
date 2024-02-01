@@ -35,6 +35,9 @@ impl SelectField {
 			),
 		}
 	}
+	// TODO set from Vec<u8> using ciborium
+
+
 	pub fn set_index(&self, index: usize) { self.reflect.set(index); }
 	/// This ignores the value of the variant, but updates the ui for it to be set,
 	/// ie `MyEnum::Variant1(0.5)` will be set to `MyEnum::Variant1(0.0)`

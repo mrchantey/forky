@@ -17,6 +17,7 @@ use strum::IntoEnumIterator;
 #[derive(Clone)]
 pub struct FieldUiRoot<T: IntoFieldUi> {
 	pub value: Rc<RefCell<T>>,
+	pub on_change: Option<Rc<Box<dyn Fn(&T)>>>,
 	pub on_ui_change: Option<Rc<Box<dyn Fn(FieldUi)>>>,
 }
 
@@ -26,10 +27,15 @@ impl<T: IntoFieldUi> FieldUiRoot<T> {
 		let value = Rc::new(RefCell::new(value));
 		Self {
 			value,
+			on_change: None,
 			on_ui_change: None,
 		}
 	}
 
+	pub fn with_on_change(mut self, on_change: impl Fn(&T) + 'static) -> Self {
+		self.on_change = Some(Rc::new(Box::new(on_change)));
+		self
+	}
 	pub fn with_on_ui_change(
 		mut self,
 		on_ui_change: impl Fn(FieldUi) + 'static,
@@ -40,7 +46,8 @@ impl<T: IntoFieldUi> FieldUiRoot<T> {
 
 	pub fn get_ui(&self) -> FieldUi {
 		let reflect = FieldReflect::new(
-			"root".to_string(),
+			std::any::type_name::<T>().to_string(),
+			// "root".to_string(),
 			{
 				let this = self.value.clone();
 				move || this.borrow().clone()
@@ -48,9 +55,12 @@ impl<T: IntoFieldUi> FieldUiRoot<T> {
 			{
 				let this = self.clone();
 				move |val| {
-					// can we cache current ui?
 					let current_ui = this.get_ui();
+					// set val
 					*this.borrow_mut() = val;
+					this.on_change.as_ref().map(|cb| cb(&this.borrow()));
+
+					// handle ui
 					let new_ui = this.get_ui();
 					if false == current_ui.is_equal_graph(&new_ui) {
 						this.on_ui_change.as_ref().map(|cb| cb(new_ui));

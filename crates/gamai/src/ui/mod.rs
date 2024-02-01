@@ -1,15 +1,21 @@
 #![allow(unused_imports)]
 pub mod slider_field;
 pub use self::slider_field::*;
+pub mod group_field;
+pub use self::group_field::*;
 pub mod graph_ui;
 pub use self::graph_ui::*;
 pub mod number_field;
 pub use self::number_field::*;
-pub mod into_field_ui;
-pub use self::into_field_ui::*;
+pub mod field_ui_root;
+pub use self::field_ui_root::*;
 pub mod field_ui;
 pub use self::field_ui::*;
+pub mod text_field;
+pub use self::text_field::*;
 pub mod field_reflect;
 pub use self::field_reflect::*;
+pub mod checkbox_field;
+pub use self::checkbox_field::*;
 pub mod select_field;
 pub use self::select_field::*;
