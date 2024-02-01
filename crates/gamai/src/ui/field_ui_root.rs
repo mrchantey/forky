@@ -4,7 +4,6 @@ use std::ops::Deref;
 use std::ops::DerefMut;
 use std::rc::Rc;
 
-
 // Marker for fields
 
 #[derive(Clone)]

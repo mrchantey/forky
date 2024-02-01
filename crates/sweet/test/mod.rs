@@ -3,4 +3,5 @@ pub mod wasm_tests;
 pub mod common;
 pub mod bevy_tests;
 pub mod sweet_wasm;
+#[allow(unused_imports)]
 pub use self::sweet_wasm::*;

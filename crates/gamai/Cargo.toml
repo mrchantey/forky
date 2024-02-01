@@ -51,3 +51,4 @@ sweet = { workspace = true }
 [[example]]
 name = "test_gamai"
 path = "test/sweet.rs"
+required-features = ["sweet/bevy_core"]

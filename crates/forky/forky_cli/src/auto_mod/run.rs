@@ -64,7 +64,7 @@ pub fn create_mod_text(path: &PathBuf) -> String {
 				format!("pub mod {name};\n")
 			} else {
 				// format!("mod {name};\npub use self::{name}::*;\n")
-				format!("pub mod {name};\npub use self::{name}::*;\n")
+				format!("pub mod {name};\n#[allow(unused_imports)]\npub use self::{name}::*;\n")
 			}
 		})
 		.collect();
