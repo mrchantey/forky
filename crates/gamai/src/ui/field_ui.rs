@@ -78,6 +78,113 @@ impl FieldUi {
 			FieldUi::SliderU64(val) => Tree::new(val.to_string()),
 		}
 	}
+
+	pub fn is_equal_graph(&self, other: &FieldUi) -> bool {
+		match (self, other) {
+			(FieldUi::Group(val), FieldUi::Group(other)) => {
+				val.display_name == other.display_name
+					&& val.children.len() == other.children.len()
+					&& val
+						.children
+						.iter()
+						.zip(other.children.iter())
+						.all(|(a, b)| a.is_equal_graph(b))
+			}
+			(FieldUi::Text(val), FieldUi::Text(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::Checkbox(val), FieldUi::Checkbox(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::Select(val), FieldUi::Select(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::NumberF32(val), FieldUi::NumberF32(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::NumberF64(val), FieldUi::NumberF64(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::NumberI8(val), FieldUi::NumberI8(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::NumberI16(val), FieldUi::NumberI16(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::NumberI32(val), FieldUi::NumberI32(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::NumberI64(val), FieldUi::NumberI64(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::NumberU8(val), FieldUi::NumberU8(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::NumberU16(val), FieldUi::NumberU16(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::NumberU32(val), FieldUi::NumberU32(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::NumberU64(val), FieldUi::NumberU64(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::SliderF32(val), FieldUi::SliderF32(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::SliderF64(val), FieldUi::SliderF64(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::SliderI8(val), FieldUi::SliderI8(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::SliderI16(val), FieldUi::SliderI16(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::SliderI32(val), FieldUi::SliderI32(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::SliderI64(val), FieldUi::SliderI64(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::SliderU8(val), FieldUi::SliderU8(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::SliderU16(val), FieldUi::SliderU16(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::SliderU32(val), FieldUi::SliderU32(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			(FieldUi::SliderU64(val), FieldUi::SliderU64(other)) => {
+				val.reflect.field_name == other.reflect.field_name
+					&& val.reflect.get() == other.reflect.get()
+			}
+			_ => false,
+		}
+	}
 }
 
 pub struct GroupField {

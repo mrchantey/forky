@@ -48,10 +48,13 @@ impl<T: IntoFieldUi> FieldUiRoot<T> {
 			{
 				let this = self.clone();
 				move |val| {
+					// can we cache current ui?
+					let current_ui = this.get_ui();
 					*this.borrow_mut() = val;
 					let new_ui = this.get_ui();
-					this.on_ui_change.as_ref().map(|cb| cb(new_ui));
-					//TODO check if ui needs refresh
+					if false == current_ui.is_equal_graph(&new_ui) {
+						this.on_ui_change.as_ref().map(|cb| cb(new_ui));
+					}
 				}
 			},
 		);

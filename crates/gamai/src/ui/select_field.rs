@@ -36,8 +36,9 @@ impl SelectField {
 		}
 	}
 	pub fn set_index(&self, index: usize) { self.reflect.set(index); }
-	pub fn set(&self, val: impl Display) -> Result<()> {
-		todo!("this ignores non-unit variant values");
+	/// This ignores the value of the variant, but updates the ui for it to be set,
+	/// ie `MyEnum::Variant1(0.5)` will be set to `MyEnum::Variant1(0.0)`
+	pub fn set_variant_ignoring_value(&self, val: impl Display) -> Result<()> {
 		let val_str = val.to_string();
 		let index = self
 			.options

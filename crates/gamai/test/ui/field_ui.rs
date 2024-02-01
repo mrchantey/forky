@@ -1,5 +1,6 @@
 use gamai::prelude::*;
 use std::cell::RefCell;
+use std::rc::Rc;
 use sweet::*;
 
 
@@ -72,27 +73,68 @@ pub fn sets_nested_value() -> Result<()> {
 
 
 #[sweet_test]
-pub fn recalculates_ui() -> Result<()> {
-	let root = setup().with_on_ui_change(|ui| {
-		println!("UI Refresh: \n{}", ui.into_string_tree());
+pub fn does_not_recalculates_ui() -> Result<()> {
+	let was_called = Rc::new(RefCell::new(false));
+	let was_called2 = was_called.clone();
+	let root = setup().with_on_ui_change(move |_| {
+		*was_called2.borrow_mut() = true;
 	});
 
 	if let FieldUi::Group(group) = root.get_ui() {
 		if let FieldUi::Select(select) = &group.children[1] {
-			select.set(Score::Weight(0.1))?;
+			select.set_variant_ignoring_value(Score::Pass)?;
 		} else {
 			anyhow::bail!("Expected Select");
 		}
-	// if let FieldUi::Group(group) = &group.children[1] {
-	// 	// select.set(Score::Weight(0.1));
-	// } else {
-	// 	anyhow::bail!("Expected Group");
-	// }
+	} else {
+		anyhow::bail!("Expected FieldUi");
+	}
+	if let FieldUi::Group(group) = root.get_ui() {
+		if let FieldUi::Select(_) = &group.children[1] {
+		} else {
+			anyhow::bail!("Expected Select");
+		}
 	} else {
 		anyhow::bail!("Expected FieldUi");
 	}
 
-	expect(root.borrow().score).to_be(Score::Weight(0.1))?;
+	expect(*was_called.borrow()).to_be_false()?;
+
+	Ok(())
+}
+#[sweet_test]
+pub fn recalculates_ui() -> Result<()> {
+	let was_called = Rc::new(RefCell::new(false));
+	let was_called2 = was_called.clone();
+	let root = setup().with_on_ui_change(move |_| {
+		*was_called2.borrow_mut() = true;
+	});
+
+	if let FieldUi::Group(group) = root.get_ui() {
+		if let FieldUi::Select(select) = &group.children[1] {
+			select.set_variant_ignoring_value(Score::Weight(0.1))?;
+		} else {
+			anyhow::bail!("Expected Select");
+		}
+	} else {
+		anyhow::bail!("Expected FieldUi");
+	}
+	if let FieldUi::Group(group) = root.get_ui() {
+		if let FieldUi::Group(_) = &group.children[1] {
+			// pass
+		} else {
+			anyhow::bail!("Expected Group");
+		}
+	} else {
+		anyhow::bail!("Expected FieldUi");
+	}
+
+	expect(*was_called.borrow()).to_be_true()?;
+
+	// note that the actual value is not set, it just updates the ui
+	expect(root.borrow().score)
+		.not()
+		.to_be(Score::Weight(0.1))?;
 
 	Ok(())
 }
