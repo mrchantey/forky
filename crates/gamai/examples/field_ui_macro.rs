@@ -6,11 +6,11 @@ use strum_macros::EnumIter;
 fn main() {
 	let foo = Foo {
 		health: 100,
-		attack: AttackType::Punch {
-			left: 32,
-			right: 88,
-		},
-		// attack: AttackType::Ranged(32., 88),
+		// attack: AttackType::Punch {
+		// 	left: 32,
+		// 	right: 88,
+		// },
+		attack: AttackType::Ranged(32., 88),
 	};
 	let ui = foo.into_field_ui_root();
 	println!("{}", ui.into_string_tree());
@@ -32,6 +32,12 @@ pub struct Foo {
 #[derive(Clone, EnumIter, Display, FieldUi)]
 pub enum AttackType {
 	Melee,
-	Ranged(f32, u32),
-	Punch { left: u32, right: u32 },
+	Ranged(
+		#[slider(min = 0., max = 1., step = 0.01)] f32,
+		#[number(step = 2)] u32,
+	),
+	Punch {
+		left: u32,
+		right: u32,
+	},
 }

@@ -19,6 +19,24 @@ pub struct NumberField<T: NumberFieldValue> {
 	pub reflect: FieldReflect<T>,
 	pub step: T,
 }
+
+impl<T: NumberFieldValue> NumberField<T> {
+	pub fn new(
+		field_name: String,
+		get_cb: impl 'static + Fn() -> T,
+		set_cb: impl 'static + Fn(T),
+		step: T,
+	) -> Self {
+		Self {
+			reflect: FieldReflect::new(field_name, get_cb, set_cb),
+			step,
+		}
+	}
+	pub fn from_reflect(reflect: FieldReflect<T>, step: T) -> Self {
+		Self { reflect, step }
+	}
+}
+
 impl<T: NumberFieldValue> Deref for NumberField<T> {
 	type Target = FieldReflect<T>;
 	fn deref(&self) -> &Self::Target { &self.reflect }

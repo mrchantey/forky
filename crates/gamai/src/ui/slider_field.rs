@@ -36,6 +36,19 @@ impl<ValueT: NumberFieldValue> SliderField<ValueT> {
 			step,
 		}
 	}
+	pub fn from_reflect(
+		reflect: FieldReflect<ValueT>,
+		min: ValueT,
+		max: ValueT,
+		step: ValueT,
+	) -> Self {
+		Self {
+			reflect,
+			min,
+			max,
+			step,
+		}
+	}
 }
 
 impl<T: NumberFieldValue> Deref for SliderField<T> {

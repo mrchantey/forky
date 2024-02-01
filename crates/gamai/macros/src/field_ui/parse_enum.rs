@@ -1,3 +1,4 @@
+use crate::field_ui_option;
 use crate::parse_struct;
 use crate::utils::*;
 use proc_macro2::Ident;
@@ -17,8 +18,6 @@ use syn::Result;
 use syn::Variant;
 
 pub fn parse_enum(input: DataEnum) -> Result<TokenStream> {
-	// let ident = &input.;
-
 	let variants = input
 		.variants
 		.iter()
@@ -36,7 +35,6 @@ pub fn parse_enum(input: DataEnum) -> Result<TokenStream> {
 		let val = reflect.get();
 		#[allow(unused_variables)]
 		match val{
-			// _=>{select.into()}
 			#variants
 		}
 	})
@@ -51,7 +49,8 @@ fn parse_enum_variant(variant: &Variant) -> Result<TokenStream> {
 		}
 		syn::Fields::Unnamed(fields) => {
 			let field_idents = unnamed_field_idents(fields);
-			let variant_with_fields = quote! {Self::#variant_ident(#field_idents)};
+			let variant_with_fields =
+				quote! {Self::#variant_ident(#field_idents)};
 			let fields = fields
 				.unnamed
 				.iter()
@@ -78,7 +77,8 @@ fn parse_enum_variant(variant: &Variant) -> Result<TokenStream> {
 				.map(|f| f.ident.to_token_stream())
 				.collect::<Vec<_>>()
 				.collect_comma_punct();
-			let variant_with_fields = quote! {Self::#variant_ident{#field_idents}};
+			let variant_with_fields =
+				quote! {Self::#variant_ident{#field_idents}};
 			let fields = fields
 				.named
 				.iter()
@@ -117,10 +117,9 @@ fn parse_enum_field(
 	variant_with_fields: &TokenStream,
 ) -> Result<TokenStream> {
 	let field_ident = field.ident.as_ref().expect("field must have an ident");
-	// let ident = field.ident.as_ref().expect("field must have an ident");
 	let ident_str = field_ident.to_string();
-	let ty = &field.ty;
-	Ok(quote! {
+
+	let reflect = quote! {
 		{
 			let checked_get = {
 				let get_cb = reflect.clone_get_cb();
@@ -142,11 +141,13 @@ fn parse_enum_field(
 					_ => panic!(#ERROR),
 				}
 			};
-			#ty::into_field_ui(FieldReflect::new(
+			FieldReflect::new(
 				#ident_str.to_string(),
 				checked_get,
 				checked_set,
-			))
+			)
 		}
-	})
+	};
+
+	Ok(field_ui_option(field, &reflect)?)
 }

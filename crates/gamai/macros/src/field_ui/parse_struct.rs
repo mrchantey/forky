@@ -1,3 +1,4 @@
+use crate::field_ui_option;
 use crate::utils::*;
 use proc_macro2::TokenStream;
 use quote::quote;
@@ -33,26 +34,25 @@ pub fn parse_struct(input: DataStruct) -> Result<TokenStream> {
 fn parse_struct_field(field: &Field) -> Result<TokenStream> {
 	let ident = field.ident.as_ref().expect("field must have an ident");
 	let ident_str = ident.to_string();
-	let ty = &field.ty;
 
-	Ok(quote! {
-		#ty::into_field_ui(
-			FieldReflect::new(
-				#ident_str.to_string(),
-				{
-					let get_cb = reflect.clone_get_cb();
-					move || get_cb().#ident.clone()
-				},
-				{
-					let get_cb = reflect.clone_get_cb();
-					let set_cb = reflect.clone_set_cb();
-					move |val| {
-						let mut parent = get_cb();
-						parent.#ident = val;
-						set_cb(parent);
-					}
-				},
-			),
-		)
-	})
+	let reflect = quote! {
+		FieldReflect::new(
+			#ident_str.to_string(),
+			{
+				let get_cb = reflect.clone_get_cb();
+				move || get_cb().#ident.clone()
+			},
+			{
+				let get_cb = reflect.clone_get_cb();
+				let set_cb = reflect.clone_set_cb();
+				move |val| {
+					let mut parent = get_cb();
+					parent.#ident = val;
+					set_cb(parent);
+				}
+			},
+		),
+	};
+
+	Ok(field_ui_option(field, &reflect)?)
 }

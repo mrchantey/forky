@@ -23,7 +23,7 @@ pub struct Scoring;
 	Copy,
 	Component,
 	PartialEq,
-	// FieldUi,
+	FieldUi,
 	// strum
 	strum_macros::Display,
 	strum_macros::EnumIter,
@@ -33,7 +33,7 @@ pub enum Score {
 	/// The node should not run.
 	Fail,
 	/// The node has a weight, conventionally in the range `0..1`, where higher is more favorable.
-	Weight(f32),
+	Weight(#[slider(min = 0., max = 1., step = 0.01)] f32),
 	/// The node should run.
 	Pass,
 }
