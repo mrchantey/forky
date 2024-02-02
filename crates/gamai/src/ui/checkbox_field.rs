@@ -26,3 +26,9 @@ impl Deref for CheckboxField {
 impl DerefMut for CheckboxField {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.reflect }
 }
+
+impl IntoFieldUi for bool {
+	fn into_field_ui(reflect: FieldReflect<bool>) -> FieldUi {
+		CheckboxField { reflect }.into()
+	}
+}

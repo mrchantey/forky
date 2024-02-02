@@ -1,12 +1,17 @@
 use super::*;
 use crate::prelude::Tree;
 
+pub trait IntoFieldUi: 'static + Clone + Sized {
+	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi;
+}
+
 // #[derive(Display)]
 pub enum FieldUi {
 	Group(GroupField),
 	Text(TextField),
 	Checkbox(CheckboxField),
 	Select(SelectField),
+	// Duration(UnitField<Duration, DurationUnit>),
 	// number
 	NumberF32(NumberField<f32>),
 	NumberF64(NumberField<f64>),
@@ -45,6 +50,7 @@ impl FieldUi {
 			FieldUi::Text(val) => Tree::new(val.to_string()),
 			FieldUi::Checkbox(val) => Tree::new(val.to_string()),
 			FieldUi::Select(val) => Tree::new(val.to_string()),
+			// FieldUi::Duration(val) => Tree::new(val.to_string()),
 			FieldUi::NumberF32(val) => Tree::new(val.to_string()),
 			FieldUi::NumberF64(val) => Tree::new(val.to_string()),
 			FieldUi::NumberI8(val) => Tree::new(val.to_string()),
@@ -171,6 +177,10 @@ impl FieldUi {
 				val.reflect.field_name == other.reflect.field_name
 					&& val.reflect.get() == other.reflect.get()
 			}
+			// (FieldUi::Duration(val), FieldUi::Duration(other)) => {
+			// 	val.reflect.field_name == other.reflect.field_name
+			// 		&& val.reflect.get() == other.reflect.get()
+			// }
 			_ => false,
 		}
 	}
@@ -186,6 +196,9 @@ impl Into<FieldUi> for TextField {
 impl Into<FieldUi> for GroupField {
 	fn into(self) -> FieldUi { FieldUi::Group(self) }
 }
+// impl Into<FieldUi> for UnitField<Duration, DurationUnit> {
+// 	fn into(self) -> FieldUi { FieldUi::Duration(self) }
+// }
 impl Into<FieldUi> for NumberField<u8> {
 	fn into(self) -> FieldUi { FieldUi::NumberU8(self) }
 }

@@ -25,3 +25,10 @@ impl Deref for TextField {
 impl DerefMut for TextField {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.reflect }
 }
+
+
+impl IntoFieldUi for String {
+	fn into_field_ui(reflect: FieldReflect<String>) -> FieldUi {
+		TextField { reflect }.into()
+	}
+}

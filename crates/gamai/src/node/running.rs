@@ -1,7 +1,10 @@
 use bevy_ecs::prelude::*;
+use gamai_macros::FieldUi;
 use serde::Deserialize;
 use serde::Serialize;
 use std::fmt::Debug;
+use strum_macros::Display;
+use strum_macros::EnumIter;
 
 
 /// Indicate this node is currently running.
@@ -16,7 +19,17 @@ pub struct Running;
 /// Indicate the result of an action.
 /// As this is frequently added and removed, it is `SparseSet`.
 #[derive(
-	Default, Debug, Clone, Copy, Component, PartialEq, Serialize, Deserialize,
+	Default,
+	Debug,
+	Clone,
+	Copy,
+	Component,
+	PartialEq,
+	Serialize,
+	Deserialize,
+	EnumIter,
+	Display,
+	FieldUi,
 )]
 #[component(storage = "SparseSet")]
 pub enum RunResult {

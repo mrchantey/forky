@@ -1,14 +1,16 @@
 use super::*;
 use anyhow::Result;
 use std::fmt::Display;
+use std::ops::Deref;
+use std::ops::DerefMut;
 use strum::IntoEnumIterator;
 
 pub trait SelectFieldValue: FieldValue + Display + IntoEnumIterator {}
 impl<T: FieldValue + Display + IntoEnumIterator> SelectFieldValue for T {}
 
 pub struct SelectField {
-	pub options: Vec<String>,
 	pub reflect: FieldReflect<usize>,
+	pub options: Vec<String>,
 }
 
 impl SelectField {
@@ -34,8 +36,7 @@ impl SelectField {
 	}
 	// TODO set from Vec<u8> using ciborium
 
-
-	pub fn set_index(&self, index: usize) { self.reflect.set(index); }
+	// pub fn set_index(&self, index: usize) { self.reflect.set(index); }
 	/// This ignores the value of the variant, but updates the ui for it to be set,
 	/// ie `MyEnum::Variant1(0.5)` will be set to `MyEnum::Variant1(0.0)`
 	pub fn set_variant_ignoring_value(&self, val: impl Display) -> Result<()> {
@@ -57,6 +58,14 @@ impl SelectField {
 
 impl Into<FieldUi> for SelectField {
 	fn into(self) -> FieldUi { FieldUi::Select(self) }
+}
+
+impl Deref for SelectField {
+	type Target = FieldReflect<usize>;
+	fn deref(&self) -> &Self::Target { &self.reflect }
+}
+impl DerefMut for SelectField {
+	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.reflect }
 }
 
 

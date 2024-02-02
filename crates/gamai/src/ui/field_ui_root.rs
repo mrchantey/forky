@@ -70,23 +70,3 @@ impl<T: IntoFieldUi> Deref for FieldUiRoot<T> {
 impl<T: IntoFieldUi> DerefMut for FieldUiRoot<T> {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.value }
 }
-
-
-pub trait IntoFieldUi: 'static + Clone + Sized {
-	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi;
-}
-// pub trait IntoFieldUi<T: FieldValue> {
-// 	fn into_field_ui(reflect: FieldReflect<T>) -> FieldUi;
-// }
-
-impl IntoFieldUi for bool {
-	fn into_field_ui(reflect: FieldReflect<bool>) -> FieldUi {
-		CheckboxField { reflect }.into()
-	}
-}
-
-impl IntoFieldUi for String {
-	fn into_field_ui(reflect: FieldReflect<String>) -> FieldUi {
-		TextField { reflect }.into()
-	}
-}

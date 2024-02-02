@@ -13,6 +13,9 @@ pub use self::number_field::*;
 pub mod field_ui_root;
 #[allow(unused_imports)]
 pub use self::field_ui_root::*;
+pub mod unit_field;
+#[allow(unused_imports)]
+pub use self::unit_field::*;
 pub mod field_ui;
 #[allow(unused_imports)]
 pub use self::field_ui::*;

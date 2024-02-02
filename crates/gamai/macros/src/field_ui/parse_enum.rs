@@ -109,7 +109,10 @@ fn parse_enum_field(
 	field: &Field,
 	variant_with_fields: &TokenStream,
 ) -> Result<TokenStream> {
-	let field_ident = field.ident.as_ref().expect("field must have an ident");
+	let field_ident = field
+		.ident
+		.as_ref()
+		.expect("shouldnt happen, ive set unnamed manually");
 	let ident_str = field_ident.to_string();
 
 	let reflect = quote! {

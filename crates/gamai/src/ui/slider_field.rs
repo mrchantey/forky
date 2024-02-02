@@ -3,9 +3,6 @@ use std::fmt::Display;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-
-
-
 pub struct SliderField<ValueT: NumberFieldValue> {
 	pub reflect: FieldReflect<ValueT>,
 	pub min: ValueT,
@@ -64,3 +61,4 @@ impl<T: NumberFieldValue> Display for SliderField<T> {
 			.finish()
 	}
 }
+

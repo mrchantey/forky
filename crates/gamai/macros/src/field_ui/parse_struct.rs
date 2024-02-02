@@ -12,6 +12,7 @@ use syn::Result;
 pub fn parse_struct(input: DataStruct) -> Result<TokenStream> {
 	let fields = input
 		.fields
+		.into_named()
 		.iter()
 		.map(parse_struct_field)
 		// .collect::<Vec<_>>()
@@ -25,8 +26,10 @@ pub fn parse_struct(input: DataStruct) -> Result<TokenStream> {
 	})
 }
 
-fn parse_struct_field(field: &Field) -> Result<TokenStream> {
-	let ident = field.ident.as_ref().expect("field must have an ident");
+fn parse_struct_field(
+	(ident, field): &(TokenStream, Field),
+) -> Result<TokenStream> {
+	// let ident = field.ident.as_ref().expect("field must have an ident");
 	let ident_str = ident.to_string();
 
 	let reflect = quote! {
