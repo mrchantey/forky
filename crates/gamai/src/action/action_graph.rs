@@ -20,6 +20,11 @@ impl<T: ActionSuper> PartialEq for ActionGraph<T> {
 
 
 impl<T: ActionSuper> ActionGraph<T> {
+
+
+	pub fn new() -> Self { Self(DiGraph::new()) }
+
+
 	pub fn spawn(
 		&self,
 		world: &mut impl WorldOrCommands,

@@ -18,7 +18,7 @@ action_list!(BuiltinNode, [
 
 #[ext]
 pub impl BoxedActionGraph {
-	fn from_other_graph<T: Clone + Into<Box<dyn Action>>>(
+	fn from_typed_graph<T: Clone + Into<Box<dyn Action>>>(
 		graph: DiGraph<Vec<T>, ()>,
 	) -> Self {
 		let graph = graph.map(
@@ -32,7 +32,7 @@ pub impl BoxedActionGraph {
 		);
 		Self(graph)
 	}
-	fn into_other_graph<T: From<Box<dyn Action>>>(self) -> DiGraph<Vec<T>, ()> {
+	fn into_typed_graph<T: From<Box<dyn Action>>>(self) -> DiGraph<Vec<T>, ()> {
 		self.map(
 			|_, action_list| {
 				action_list

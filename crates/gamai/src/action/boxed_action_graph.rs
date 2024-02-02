@@ -59,7 +59,7 @@ impl BoxedActionGraph {
 			|_, action_list| {
 				action_list
 					.into_iter()
-					.map(|action| action.clone().into())
+					.map(|action| action.clone().into_action())
 					.collect::<Vec<_>>()
 			},
 			|_, _| (),

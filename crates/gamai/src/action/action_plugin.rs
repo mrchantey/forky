@@ -24,9 +24,7 @@ pub struct ActionPlugin<
 	pub schedule: Schedule,
 	pub phantom: PhantomData<T>,
 }
-impl<T: IntoEnumIterator + IntoAction> Default
-	for ActionPlugin<T, Update>
-{
+impl<T: IntoEnumIterator + IntoAction> Default for ActionPlugin<T, Update> {
 	fn default() -> Self {
 		Self {
 			schedule: Update,
@@ -35,10 +33,8 @@ impl<T: IntoEnumIterator + IntoAction> Default
 	}
 }
 
-impl<
-		T: IntoEnumIterator + IntoAction,
-		Schedule: ScheduleLabel + Clone,
-	> Plugin for ActionPlugin<T, Schedule>
+impl<T: IntoEnumIterator + IntoAction, Schedule: ScheduleLabel + Clone> Plugin
+	for ActionPlugin<T, Schedule>
 {
 	fn build(&self, app: &mut App) {
 		app.configure_sets(self.schedule.clone(), PreTickSet);
@@ -66,7 +62,7 @@ impl<
 			self.schedule.clone(),
 			(sync_running, sync_interrupts).in_set(TickSyncSet),
 		);
-		for action in T::iter().map(|item| item.into()) {
+		for action in T::iter().map(|item| item.into_action()) {
 			app.add_systems(
 				self.schedule.clone(),
 				action.tick_system().in_set(TickSet),

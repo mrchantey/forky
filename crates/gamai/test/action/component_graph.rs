@@ -1,4 +1,4 @@
-use super::test_action_graph;
+use super::test_action_graph_boxed;
 use bevy_app::App;
 use gamai::prelude::*;
 use sweet::*;
@@ -7,7 +7,7 @@ use sweet::*;
 pub fn works() -> Result<()> {
 	let mut app = App::new();
 	let target = app.world.spawn_empty().id();
-	let actions = test_action_graph();
+	let actions = test_action_graph_boxed();
 	let entities = actions.spawn(&mut app.world, target);
 
 	let entity = *entities.node(2).unwrap();

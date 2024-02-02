@@ -4,7 +4,7 @@ use sweet::*;
 
 #[sweet_test]
 pub fn works() -> Result<()> {
-	let actions1 = test_action_graph();
+	let actions1 = test_action_graph_boxed();
 	let str1 = serde_json::to_string_pretty(&actions1)?;
 	let actions2 = serde_json::from_str::<BoxedActionGraph>(&str1)?;
 	let str2 = serde_json::to_string_pretty(&actions2)?;
