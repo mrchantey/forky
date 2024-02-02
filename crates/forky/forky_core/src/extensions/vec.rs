@@ -54,3 +54,17 @@ pub impl<T> Vec<T> {
 		}
 	}
 }
+
+
+#[ext(name=VecXClone)]
+pub impl<T: Clone> Vec<T> {
+	fn intersperse(self, value: T) -> Vec<T> {
+		let mut new_vec = Vec::with_capacity(self.len() * 2);
+		for item in self.into_iter() {
+			new_vec.push(item);
+			new_vec.push(value.clone());
+		}
+		new_vec.pop();
+		new_vec
+	}
+}
