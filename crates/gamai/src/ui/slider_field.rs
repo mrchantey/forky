@@ -61,4 +61,3 @@ impl<T: NumberFieldValue> Display for SliderField<T> {
 			.finish()
 	}
 }
-

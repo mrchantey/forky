@@ -14,6 +14,17 @@ backtrace := '0'
 default:
 	just --list
 
+
+### common ###
+
+# cargo fix -p gamai --allow-dirty --example test_gamai --features sweet/bevy_core
+fix-all:
+	cargo fix -p gamai --allow-dirty --features sweet/bevy_core
+	cargo fmt -p gamai
+	cargo fix -p sweet --allow-dirty --features sweet/bevy_core --example test_sweet
+
+
+
 @all command:
 	for file in {{crates}}; do \
 		just {{command}} $file; \

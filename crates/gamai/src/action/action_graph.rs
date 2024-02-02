@@ -6,6 +6,7 @@ use bevy_ecs::prelude::*;
 use petgraph::graph::DiGraph;
 use serde::Deserialize;
 use serde::Serialize;
+use std::fmt::Debug;
 
 // pub type ActionList<T> = Vec<T>;
 pub type ActionTree<T> = Tree<Vec<T>>;
@@ -18,6 +19,13 @@ pub struct ActionGraph<T: ActionSuper>(pub DiGraph<Vec<T>, ()>);
 
 impl<T: ActionSuper> PartialEq for ActionGraph<T> {
 	fn eq(&self, other: &Self) -> bool { self.0.is_identical(other) }
+}
+
+impl<T: Debug + ActionSuper> Debug for ActionGraph<T> {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		self.0.fmt(f)
+		// f.debug_tuple("ActionGraph").field(&self.0).finish()
+	}
 }
 
 

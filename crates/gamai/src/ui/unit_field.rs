@@ -21,7 +21,7 @@ impl IntoFieldUi for Duration {
 				{
 					let reflect = reflect.clone();
 					move |val| reflect.set(Duration::from_secs_f64(val))
-				}
+				},
 			),
 			0.,
 			10.,
