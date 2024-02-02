@@ -10,7 +10,7 @@ pub fn works() -> Result<()> {
 
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = ActionTree::new(vec![Box::new(FallbackSelector)])
+	let action_graph = BoxedActionTree::new(vec![Box::new(FallbackSelector)])
 		.with_leaf(vec![Box::new(SetRunResult::new(RunResult::Failure))])
 		.with_leaf(vec![Box::new(SetRunResult::new(RunResult::Success))])
 		.into_action_graph();

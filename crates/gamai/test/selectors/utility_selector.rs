@@ -9,7 +9,7 @@ fn setup() -> (App, EntityGraph) {
 
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = ActionTree::new(vec![Box::new(UtilitySelector)])
+	let action_graph = BoxedActionTree::new(vec![Box::new(UtilitySelector)])
 		.with_leaf(vec![
 			Box::new(SetScore::new(Score::Fail)),
 			Box::new(SetRunResult::new(RunResult::Failure)),

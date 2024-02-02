@@ -10,10 +10,10 @@ pub fn works() -> Result<()> {
 
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = ActionTree::new(vec![Box::new(EmptyAction)])
+	let action_graph = BoxedActionTree::new(vec![Box::new(EmptyAction)])
 		.with_leaf(vec![Box::new(EmptyAction)])
 		.with_child(
-			ActionTree::new(vec![Box::new(EmptyAction)])
+			BoxedActionTree::new(vec![Box::new(EmptyAction)])
 				.with_leaf(vec![Box::new(EmptyAction)]),
 		)
 		.into_action_graph();

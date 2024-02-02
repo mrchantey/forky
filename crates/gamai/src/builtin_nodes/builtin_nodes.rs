@@ -17,7 +17,7 @@ action_list!(BuiltinNode, [
 
 
 #[ext]
-pub impl ActionGraph {
+pub impl BoxedActionGraph {
 	fn from_other_graph<T: Clone + Into<Box<dyn Action>>>(
 		graph: DiGraph<Vec<T>, ()>,
 	) -> Self {

@@ -13,8 +13,9 @@ pub fn works() -> Result<()> {
 
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = ActionTree::new(vec![Box::new(SetRunResult::default())])
-		.into_action_graph();
+	let action_graph =
+		BoxedActionTree::new(vec![Box::new(SetRunResult::default())])
+			.into_action_graph();
 
 	let entity_graph = action_graph.spawn(&mut app.world, target);
 	let root = *entity_graph.root().unwrap();

@@ -25,22 +25,22 @@ macro_rules! action_list {
 			$($variant($variant),)*
 		}
 
-		impl IntoAction for $name {
-			fn into_action(self) -> Box<dyn Action> {
+		impl Into<Box<dyn Action>> for $name {
+			fn into(self) -> Box<dyn Action> {
 				match self {
 					$(Self::$variant(x) => Box::new(x),)*
 				}
 			}
-			fn into_action_ref(&self) -> &dyn Action {
-				match self {
-					$(Self::$variant(x) => x,)*
-				}
-			}
-			fn into_action_mut(&mut self) -> &mut dyn Action {
-				match self {
-					$(Self::$variant(x) => x,)*
-				}
-			}
 		}
+
+		$(
+			impl Into<$name> for $variant {
+				fn into(self) -> $name {
+						$name::$variant(self)
+				}
+			}
+		)*
+
+
 	};
 }

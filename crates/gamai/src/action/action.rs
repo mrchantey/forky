@@ -31,8 +31,14 @@ pub struct ActionMeta {
 }
 
 
-pub trait IntoAction: 'static + Clone + Send + Sync + Serialize {
-	fn into_action(self) -> Box<dyn Action>;
-	fn into_action_ref(&self) -> &dyn Action;
-	fn into_action_mut(&mut self) -> &mut dyn Action;
+pub trait IntoAction:
+	'static + Clone + Send + Sync + Serialize + Into<Box<dyn Action>>
+{
+	// fn into_action(self) -> Box<dyn Action>;
+	// fn into_action_ref(&self) -> &dyn Action;
+	// fn into_action_mut(&mut self) -> &mut dyn Action;
+}
+impl<T> IntoAction for T where
+	T: 'static + Clone + Send + Sync + Serialize + Into<Box<dyn Action>>
+{
 }

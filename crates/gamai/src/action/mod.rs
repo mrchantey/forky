@@ -13,6 +13,9 @@ pub use self::action_plugin::*;
 pub mod action;
 #[allow(unused_imports)]
 pub use self::action::*;
+pub mod boxed_action_graph;
+#[allow(unused_imports)]
+pub use self::boxed_action_graph::*;
 pub mod action_schedule;
 #[allow(unused_imports)]
 pub use self::action_schedule::*;

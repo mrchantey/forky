@@ -10,7 +10,7 @@ pub fn works() -> Result<()> {
 
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = ActionTree::new(vec![Box::new(SequenceSelector)])
+	let action_graph = BoxedActionTree::new(vec![Box::new(SequenceSelector)])
 		.with_leaf(vec![Box::new(SetRunResult::new(RunResult::Success))])
 		.with_leaf(vec![Box::new(SetRunResult::new(RunResult::Failure))])
 		.into_action_graph();
