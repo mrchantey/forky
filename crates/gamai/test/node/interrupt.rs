@@ -10,13 +10,15 @@ pub fn works() -> Result<()> {
 
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = BoxedActionTree::new(vec![Box::new(EmptyAction)])
-		.with_leaf(vec![Box::new(EmptyAction)])
-		.with_child(
-			BoxedActionTree::new(vec![Box::new(EmptyAction)])
-				.with_leaf(vec![Box::new(EmptyAction)]),
-		)
-		.into_action_graph();
+	let action_graph: ActionGraph<BuiltinNode> =
+		ActionGraph::<BuiltinNode>::from_tree(
+			Tree::new(vec![EmptyAction.into()])
+				.with_leaf(vec![EmptyAction.into()])
+				.with_child(
+					Tree::new(vec![EmptyAction.into()])
+						.with_leaf(vec![EmptyAction.into()]),
+				),
+		);
 
 	let entity_graph = action_graph.spawn(&mut app.world, target);
 

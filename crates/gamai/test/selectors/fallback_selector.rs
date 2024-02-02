@@ -10,10 +10,11 @@ pub fn works() -> Result<()> {
 
 	let target = app.world.spawn_empty().id();
 
-	let action_graph = BoxedActionTree::new(vec![Box::new(FallbackSelector)])
-		.with_leaf(vec![Box::new(SetRunResult::new(RunResult::Failure))])
-		.with_leaf(vec![Box::new(SetRunResult::new(RunResult::Success))])
-		.into_action_graph();
+	let action_graph =
+		ActionTree::<BuiltinNode>::new(vec![FallbackSelector.into()])
+			.with_leaf(vec![SetRunResult::failure().into()])
+			.with_leaf(vec![SetRunResult::success().into()])
+			.into_action_graph();
 
 	let entity_graph = action_graph.spawn(&mut app.world, target);
 

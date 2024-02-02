@@ -66,48 +66,48 @@ impl BoxedActionGraph {
 		))
 	}
 
-	/// # Panics
-	/// Panics if the graph is empty.
-	pub fn spawn(
-		&self,
-		world: &mut impl WorldOrCommands,
-		target: Entity,
-	) -> EntityGraph {
-		if self.node_count() == 0 {
-			panic!("ActionGraph is empty");
-		}
+	// / # Panics
+	// / Panics if the graph is empty.
+	// pub fn spawn(
+	// 	&self,
+	// 	world: &mut impl WorldOrCommands,
+	// 	target: Entity,
+	// ) -> EntityGraph {
+	// 	if self.node_count() == 0 {
+	// 		panic!("ActionGraph is empty");
+	// 	}
 
-		// create entities & actions
-		let entity_graph = self.map(
-			|_, actions| {
-				let entity = world.spawn((
-					Name::from("Action Graph Node"),
-					TargetEntity(target),
-					RunTimer::default(),
-				));
+	// 	// create entities & actions
+	// 	let entity_graph = self.map(
+	// 		|_, actions| {
+	// 			let entity = world.spawn((
+	// 				Name::from("Action Graph Node"),
+	// 				TargetEntity(target),
+	// 				RunTimer::default(),
+	// 			));
 
-				for action in actions.iter() {
-					world.apply_action(action.as_ref(), entity);
-				}
-				entity
-			},
-			|_, _| (),
-		);
+	// 			for action in actions.iter() {
+	// 				world.apply_action(action.as_ref(), entity);
+	// 			}
+	// 			entity
+	// 		},
+	// 		|_, _| (),
+	// 	);
 
-		// create edges
-		for (index, entity) in Iterator::zip(
-			entity_graph.node_indices(),
-			entity_graph.node_weights(),
-		) {
-			let children = entity_graph
-				.neighbors_directed(index, petgraph::Direction::Outgoing)
-				.map(|index| entity_graph[index])
-				.collect::<Vec<_>>();
-			world.insert(*entity, Edges(children));
-		}
+	// 	// create edges
+	// 	for (index, entity) in Iterator::zip(
+	// 		entity_graph.node_indices(),
+	// 		entity_graph.node_weights(),
+	// 	) {
+	// 		let children = entity_graph
+	// 			.neighbors_directed(index, petgraph::Direction::Outgoing)
+	// 			.map(|index| entity_graph[index])
+	// 			.collect::<Vec<_>>();
+	// 		world.insert(*entity, Edges(children));
+	// 	}
 
-		world.insert(*entity_graph.root().unwrap(), Running);
+	// 	world.insert(*entity_graph.root().unwrap(), Running);
 
-		EntityGraph(entity_graph)
-	}
+	// 	EntityGraph(entity_graph)
+	// }
 }

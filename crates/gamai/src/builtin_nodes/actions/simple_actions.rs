@@ -17,6 +17,8 @@ pub struct SetRunResult(pub RunResult);
 
 impl SetRunResult {
 	pub fn new(result: RunResult) -> Self { Self(result) }
+	pub fn success() -> Self { Self(RunResult::Success) }
+	pub fn failure() -> Self { Self(RunResult::Failure) }
 }
 
 pub fn set_run_result(

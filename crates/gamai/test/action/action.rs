@@ -27,7 +27,7 @@ pub fn sync_system() -> Result<()> {
 	app.add_plugins(ActionPlugin::<BuiltinNode, _>::default());
 
 	let target = app.world.spawn_empty().id();
-	let actions = test_action_graph_boxed();
+	let actions = test_action_graph_typed();
 	let entities = actions.spawn(&mut app.world, target);
 	let entity = *entities.root().unwrap();
 

@@ -7,6 +7,8 @@ use petgraph::graph::DiGraph;
 use serde::Deserialize;
 use serde::Serialize;
 
+// pub type ActionList<T> = Vec<T>;
+pub type ActionTree<T> = Tree<Vec<T>>;
 
 pub trait ActionSuper: Action + PartialEq {}
 impl<T: Action + PartialEq> ActionSuper for T {}
@@ -19,10 +21,18 @@ impl<T: ActionSuper> PartialEq for ActionGraph<T> {
 }
 
 
+#[extend::ext]
+pub impl<T: ActionSuper> ActionTree<T> {
+	fn into_action_graph(self) -> ActionGraph<T> {
+		ActionGraph(self.into_graph())
+	}
+}
+
 impl<T: ActionSuper> ActionGraph<T> {
-
-
 	pub fn new() -> Self { Self(DiGraph::new()) }
+	pub fn from_tree(tree: ActionTree<T>) -> Self {
+		Self(DiGraph::from_tree(tree))
+	}
 
 
 	pub fn spawn(
