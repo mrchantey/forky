@@ -1,7 +1,7 @@
 use super::*;
 use std::fmt::Display;
 
-
+#[derive(Clone)]
 pub struct GroupField {
 	pub display_name: String,
 	pub children: Vec<FieldUi>,

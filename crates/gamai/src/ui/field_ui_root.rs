@@ -28,6 +28,13 @@ impl<T: IntoFieldUi> FieldUiRoot<T> {
 		self.on_change = Some(Rc::new(Box::new(on_change)));
 		self
 	}
+	pub fn set_on_change(
+		&mut self,
+		on_change: impl Fn(&T) + 'static,
+	) -> &mut Self {
+		self.on_change = Some(Rc::new(Box::new(on_change)));
+		self
+	}
 	pub fn with_on_ui_change(
 		mut self,
 		on_ui_change: impl Fn(FieldUi) + 'static,
@@ -35,10 +42,18 @@ impl<T: IntoFieldUi> FieldUiRoot<T> {
 		self.on_ui_change = Some(Rc::new(Box::new(on_ui_change)));
 		self
 	}
+	pub fn set_on_ui_change(
+		&mut self,
+		on_change: impl Fn(FieldUi) + 'static,
+	) -> &mut Self {
+		self.on_ui_change = Some(Rc::new(Box::new(on_change)));
+		self
+	}
 
 	pub fn get_ui(&self) -> FieldUi {
 		let reflect = FieldReflect::new(
-			std::any::type_name::<T>().to_string(),
+			short_type_name::<T>(),
+			// std::any::type_name::<T>().to_string(),
 			// "root".to_string(),
 			{
 				let this = self.value.clone();
@@ -69,4 +84,13 @@ impl<T: IntoFieldUi> Deref for FieldUiRoot<T> {
 }
 impl<T: IntoFieldUi> DerefMut for FieldUiRoot<T> {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.value }
+}
+
+
+fn short_type_name<T>() -> String {
+	std::any::type_name::<T>()
+		.split("::")
+		.last()
+		.unwrap_or("UnknownType")
+		.to_string()
 }

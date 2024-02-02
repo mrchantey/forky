@@ -8,6 +8,7 @@ use strum::IntoEnumIterator;
 pub trait SelectFieldValue: FieldValue + Display + IntoEnumIterator {}
 impl<T: FieldValue + Display + IntoEnumIterator> SelectFieldValue for T {}
 
+#[derive(Clone)]
 pub struct SelectField {
 	pub reflect: FieldReflect<usize>,
 	pub options: Vec<String>,

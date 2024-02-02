@@ -4,7 +4,7 @@ use std::ops::Deref;
 use std::ops::DerefMut;
 
 
-
+#[derive(Clone)]
 pub struct TextField {
 	pub reflect: FieldReflect<String>,
 }

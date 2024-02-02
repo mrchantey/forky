@@ -13,7 +13,7 @@ impl<T: 'static + FieldValue + PartialOrd + Display + FromStr> NumberFieldValue
 {
 }
 
-
+#[derive(Clone)]
 pub struct NumberField<T: NumberFieldValue> {
 	pub reflect: FieldReflect<T>,
 	pub step: T,

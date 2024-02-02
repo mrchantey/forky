@@ -6,6 +6,7 @@ pub trait IntoFieldUi: 'static + Clone + Sized {
 }
 
 // #[derive(Display)]
+#[derive(Clone)]
 pub enum FieldUi {
 	Group(GroupField),
 	Text(TextField),

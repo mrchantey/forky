@@ -3,6 +3,7 @@ use std::fmt::Display;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
+#[derive(Clone)]
 pub struct SliderField<ValueT: NumberFieldValue> {
 	pub reflect: FieldReflect<ValueT>,
 	pub min: ValueT,
