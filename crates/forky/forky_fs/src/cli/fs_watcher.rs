@@ -58,6 +58,10 @@ impl FsWatcher {
 		self.quiet = quiet;
 		self
 	}
+	pub fn with_run_on_start(mut self, run_on_start: bool) -> Self {
+		self.run_on_start = run_on_start;
+		self
+	}
 
 	pub fn with_mutex(mut self, mutex: ArcMut<()>) -> Self {
 		self.mutex = Some(mutex);
@@ -187,6 +191,7 @@ impl FsWatcher {
 		Ok(())
 	}
 
+	// watch blocking
 	pub fn watch(&self, on_change: impl Fn(&str) -> Result<()>) -> Result<()> {
 		self.try_run_on_start(&on_change)?;
 		let (_watcher, rx) = self.watcher()?;

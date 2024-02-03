@@ -9,12 +9,13 @@ use std::sync::Mutex;
 use std::thread::JoinHandle;
 use std::time::Duration;
 use tower_livereload::LiveReloadLayer;
+// use tower_livereload::Reloader;
 
 pub type AnyhowJoinHandle = JoinHandle<Result<(), Error>>;
 
 impl SweetCli {
 	#[tokio::main]
-	pub async fn run(&self) -> Result<()> {		
+	pub async fn run(&self) -> Result<()> {
 		if self.run_tests_mode.is_some() && !self.watch {
 			self.run_once().await
 		} else {
@@ -22,7 +23,7 @@ impl SweetCli {
 			self.run_forever().await
 		}
 	}
-	
+
 	async fn run_once(&self) -> Result<()> {
 		terminal::print_forky();
 		let server = self.server.clone();
@@ -38,7 +39,7 @@ impl SweetCli {
 			Ok(())
 		}
 	}
-	
+
 	async fn run_forever(&self) -> Result<()> {
 		terminal::clear();
 		terminal::print_forky();
@@ -52,6 +53,8 @@ impl SweetCli {
 			);
 			server.serve_with_reload(livereload)
 		});
+		// let _static_handle = self.watch_static_forever(reload.clone());
+
 
 		let kill = Arc::new(Mutex::new(()));
 		let kill2 = kill.clone();
@@ -73,6 +76,26 @@ impl SweetCli {
 		}
 	}
 
+	// fn watch_static_forever(
+	// 	&self,
+	// 	reload: Reloader,
+	// ) -> JoinHandle<Result<()>> {
+	// 	let watch_str = format!("{}/**", &self.server.dir);
+	// 	println!("\nwatching server dir: {}\n", &watch_str);
+	// 	std::thread::spawn(move || -> Result<()> {
+	// 		FsWatcher::default()
+	// 			.with_run_on_start(false)
+	// 			.with_quiet(true)
+	// 			// .with_watch(&watch_str)
+	// 			.watch(|_| {
+	// 				std::thread::sleep(Duration::from_millis(100));
+	// 				reload.reload();
+	// 				println!("Server dir change detected, reloading");
+	// 				Ok(())
+	// 			})
+	// 	})
+	// }
+
 	fn get_change_listener(&self, kill: Arc<Mutex<()>>) -> AnyhowJoinHandle {
 		let kill2 = kill.clone();
 		let listener = if self.watch {
@@ -80,6 +103,7 @@ impl SweetCli {
 				let kill_lock = kill2.lock().unwrap();
 				FsWatcher::default()
 					.with_watch("**/*.rs")
+					// .with_watch(&format!("{}/**", &self.server.dir))
 					.with_ignore("**/target/**")
 					.block()?;
 				drop(kill_lock);
@@ -90,13 +114,14 @@ impl SweetCli {
 			std::thread::spawn(move || -> Result<()> {
 				let _kill_lock = kill2.lock().unwrap();
 				loop {
+					//TODO use condvar
 					std::thread::sleep(Duration::from_secs(1))
 				}
 			})
 		};
 		//wait for lock
 		while kill.try_lock().is_ok() {
-			std::thread::sleep(Duration::from_millis(1))
+			std::thread::sleep(Duration::from_millis(100))
 		}
 		listener
 	}
