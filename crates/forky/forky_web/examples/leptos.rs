@@ -5,7 +5,7 @@ fn main() {
 	mount_to_body(|| {
 		view! {
 			<div>
-			<App/>
+				<App/>
 			</div>
 		}
 	})
@@ -19,13 +19,11 @@ fn App(
 	let (count, set_count) = create_signal(0);
 
 	view! {
-		<button
-			on:click=move |_| {
-				set_count(count.get() + 1);
-			}
-		>
-			"Click me: "
-			{move || count.get()}
+		<button on:click=move |_| {
+			set_count(count.get() + 1);
+		}>
+
+			"Click me: " {move || count.get()}
 		</button>
 	}
 }

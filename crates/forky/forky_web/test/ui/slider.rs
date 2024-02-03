@@ -9,9 +9,9 @@ fn TestSlider() -> impl IntoView {
 	view! {
 		<div class=forky_style::FLEX_COL style="width:30em">
 			<div>
-			<div>"value: "{value}</div>
-			<Slider value=value set_value=set_value/>
-			<TextSlider value=value set_value=set_value/>
+				<div>"value: " {value}</div>
+				<Slider value=value set_value=set_value/>
+				<TextSlider value=value set_value=set_value/>
 			</div>
 		</div>
 	}

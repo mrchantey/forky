@@ -14,14 +14,14 @@ pub fn RunnerContainer(
 	move || {
 		let suite_matches = suite_matches();
 		if suite_matches_none(&suite_matches) {
-			view!(
-				<div class = "center-parent">
+			view! {
+				<div class="center-parent">
 					<h2>"🤘 sweet as! 🤘"</h2>
 				</div>
-			)
+			}
 			.into_view()
 		} else {
-			view! {<Runner _suite_matches=suite_matches/>}
+			view! { <Runner _suite_matches=suite_matches/> }
 				// view! {<RunnerContainerActual file=Signal::derive(file_unwrapped)/>}
 				.into_view()
 		}
@@ -65,18 +65,18 @@ pub fn Runner(
 		"background: #FFFFFF;"
 	};
 
-	view!(
+	view! {
 		<div class="full-size" style=style>
 			<iframe
 				allow-same-origin
-			  // allow="browsing-topics"
+				// allow="browsing-topics"
 				style=style
 				class=class
 				// src=url
 				node_ref=iframe
 				frameBorder="0"
-				on:load= move |_| {set_loaded(true)}
-			/>
+				on:load=move |_| { set_loaded(true) }
+			></iframe>
 		</div>
-	)
+	}
 }

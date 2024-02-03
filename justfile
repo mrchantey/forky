@@ -33,6 +33,15 @@ fix-all:
 run crate example *args:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} {{args}}
 
+
+
+leptosfmt:
+	just watch just leptosfmt-inner
+
+leptosfmt-inner *args:
+	leptosfmt ./crates/forky/forky_web/src/**/*.rs {{args}}
+	leptosfmt ./crates/sweet/src/wasm/**/*.rs {{args}}
+
 fix *args:
 	for file in {{crates}}; do \
 			cargo fix --allow-dirty --lib -p $file {{args}}; \

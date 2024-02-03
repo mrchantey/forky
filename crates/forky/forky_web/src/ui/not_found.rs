@@ -14,10 +14,8 @@ pub fn NotFound(duration: u8) -> impl IntoView {
 		Duration::from_secs(count() as u64),
 	);
 	view! {
-	<div>
-		{format!("Page Not Found: {}", path_name())}
-		<br/>
-		{format!("Redirecting in ")}{count}
-	</div>
+		<div>
+			{format!("Page Not Found: {}", path_name())} <br/> {format!("Redirecting in ")} {count}
+		</div>
 	}
 }

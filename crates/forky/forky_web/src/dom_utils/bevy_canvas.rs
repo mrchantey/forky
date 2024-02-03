@@ -10,10 +10,5 @@ pub fn BevyCanvas(
 	} else {
 		create_node_ref()
 	};
-	view! {<canvas
-			class="bevy-canvas"
-			data-bevy="primary_window"
-			node_ref = canvas_ref
-			/>
-	}
+	view! { <canvas class="bevy-canvas" data-bevy="primary_window" node_ref=canvas_ref></canvas> }
 }

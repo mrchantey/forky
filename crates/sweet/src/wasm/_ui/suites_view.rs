@@ -20,22 +20,18 @@ pub fn SuitesView(
 		.collect::<Vec<_>>();
 
 	view! {
-	<h3
-		class=forky_style::BUTTON_LIKE
-		on:click= move|_|{
-			console::clear();
-			set_matches(vec!["!".to_string()])
-		}
-	>"Suites"</h3>
-	<SuiteButton
-		name="all".to_string()
-		matcher="".to_string()
-		set_matches
-	/>
-	{suites.iter()
-		.map(|suite|view!{<SuiteView suite set_matches/>})
-		.collect::<Vec<_>>()
-	}
+		<h3
+			class=forky_style::BUTTON_LIKE
+			on:click=move |_| {
+				console::clear();
+				set_matches(vec!["!".to_string()])
+			}
+		>
+
+			"Suites"
+		</h3>
+		<SuiteButton name="all".to_string() matcher="".to_string() set_matches/>
+		{suites.iter().map(|suite| view! { <SuiteView suite set_matches/> }).collect::<Vec<_>>()}
 	}
 }
 
@@ -62,11 +58,12 @@ pub fn SuiteView<'a>(
 		})
 		.replace(".rs > ", "");
 	view! {
-	<div class=spacecat!(forky_style::BUTTON_LIKE,sweet_style::SWEET_SUITE)
-		on:click=move|_|set_matches(vec![file_str.clone()])
-	>
-		{pretty}
-	</div>
+		<div
+			class=spacecat!(forky_style::BUTTON_LIKE, sweet_style::SWEET_SUITE)
+			on:click=move |_| set_matches(vec![file_str.clone()])
+		>
+			{pretty}
+		</div>
 	}
 }
 
@@ -77,10 +74,11 @@ pub fn SuiteButton(
 	#[prop(into)] set_matches: WriteSignal<Vec<String>>,
 ) -> impl IntoView {
 	view! {
-	<div class=spacecat!(forky_style::BUTTON_LIKE,sweet_style::SWEET_SUITE)
-		on:click=move|_|set_matches(vec![matcher.clone()])
-	>
-		{name}
-	</div>
+		<div
+			class=spacecat!(forky_style::BUTTON_LIKE, sweet_style::SWEET_SUITE)
+			on:click=move |_| set_matches(vec![matcher.clone()])
+		>
+			{name}
+		</div>
 	}
 }

@@ -32,8 +32,5 @@ pub fn ResizableCanvas(
 
 	on_cleanup(move || drop(listener));
 
-	view! {<canvas
-			node_ref = canvas_ref
-			/>
-	}
+	view! { <canvas node_ref=canvas_ref></canvas> }
 }

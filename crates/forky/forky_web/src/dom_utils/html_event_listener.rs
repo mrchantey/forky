@@ -47,6 +47,7 @@ impl<T> HtmlEventListener<T> {
 			closure,
 		}
 	}
+	pub fn forget(self) { std::mem::forget(self); }
 }
 
 impl<T> Drop for HtmlEventListener<T> {

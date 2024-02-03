@@ -9,14 +9,15 @@ pub fn Slider(
 ) -> impl IntoView {
 	view! {
 		<input
-		type="range"
-		class={spacecat!(ui_style::SLIDER_RANGE_INPUT,ui_style::SLIDER_CONTAINER)}
-		on:input=move |ev| {
-			if let Ok(value) = event_target_value(&ev).parse::<f32>() {
-				set_value(value);
+			type="range"
+			class=spacecat!(ui_style::SLIDER_RANGE_INPUT, ui_style::SLIDER_CONTAINER)
+			on:input=move |ev| {
+				if let Ok(value) = event_target_value(&ev).parse::<f32>() {
+					set_value(value);
+				}
 			}
-		}
-		prop:value=value
+
+			prop:value=value
 		/>
 	}
 }
@@ -42,28 +43,30 @@ pub fn TextSlider(
 	};
 	view! {
 		<div class=ui_style::SLIDER_CONTAINER>
-		<input
-			type="text"
-			class=ui_style::SLIDER_TEXT_INPUT
-			on:input=move |ev| {
-				if let Ok(value) = event_target_value(&ev).parse::<f32>() {
-					set_value(value);
+			<input
+				type="text"
+				class=ui_style::SLIDER_TEXT_INPUT
+				on:input=move |ev| {
+					if let Ok(value) = event_target_value(&ev).parse::<f32>() {
+						set_value(value);
+					}
 				}
-			}
-			prop:value=text_value
+
+				prop:value=text_value
 			/>
-		<input
-			type="range"
-			min=min
-			max=max
-			step=step
-			class=ui_style::SLIDER_RANGE_INPUT
-			on:input=move |ev| {
-				if let Ok(value) = event_target_value(&ev).parse::<f32>() {
-					set_value(value);
+			<input
+				type="range"
+				min=min
+				max=max
+				step=step
+				class=ui_style::SLIDER_RANGE_INPUT
+				on:input=move |ev| {
+					if let Ok(value) = event_target_value(&ev).parse::<f32>() {
+						set_value(value);
+					}
 				}
-			}
-			prop:value=value
+
+				prop:value=value
 			/>
 		</div>
 	}

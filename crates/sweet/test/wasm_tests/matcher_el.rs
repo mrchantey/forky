@@ -8,9 +8,9 @@ fn create_view() {
 	mount(|| {
 		view! {
 			<div>
-			<h1>"This is a heading"</h1>
-			<p>"This is a paragraph"</p>
-			<p style="display:none">"This is hidden"</p>
+				<h1>"This is a heading"</h1>
+				<p>"This is a paragraph"</p>
+				<p style="display:none">"This is hidden"</p>
 			</div>
 		}
 	})

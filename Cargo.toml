@@ -168,6 +168,8 @@ features = [
 	'ResizeObserverOptions',
 	'ResizeObserverSize',
 	'DomRectReadOnly',
+	# Style
+	'MediaQueryList',
 	# Events
 	'MouseEvent',
 	'KeyboardEvent',

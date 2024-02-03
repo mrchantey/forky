@@ -31,7 +31,7 @@ fn entry() -> Result<()> {
 		});
 		Ok(())
 	} else {
-		mount_to_body(|| view! {<Root/>});
+		mount_to_body(|| view! { <Root/> });
 		Ok(())
 	}
 }
