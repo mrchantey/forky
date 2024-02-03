@@ -2,7 +2,6 @@ use super::*;
 use forky_cli::server::*;
 use std::fmt::Display;
 
-
 #[derive(Debug, Clone)]
 pub struct SweetCli {
 	pub bindgen_args: Option<String>,

@@ -17,9 +17,13 @@ use std::time::Instant;
 #[derive(Debug, Clone)]
 pub struct FsWatcher {
 	pub path: String,
+	/// throttle the on_change callback
 	pub interval: Duration,
+	/// run the on_change callback immediately
 	pub run_on_start: bool,
+	/// No stdout
 	pub quiet: bool,
+	/// if multiple changes happen in the same tick, only run once
 	pub once_per_tick: bool,
 	/// glob for watch patterns
 	pub watches: Vec<glob::Pattern>,
