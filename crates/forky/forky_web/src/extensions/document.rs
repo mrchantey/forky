@@ -2,6 +2,7 @@ use crate::prelude::*;
 use extend::ext;
 use forky_core::OptionTExt;
 use wasm_bindgen::JsCast;
+use wasm_bindgen::JsValue;
 use web_sys::*;
 
 const ERROR: &str = "Very basic dom query error, this is very weird.";
@@ -15,11 +16,9 @@ pub impl Document {
 	async fn x_await_load_by_id(id: &str) -> anyhow::Result<()> {
 		HtmlEventListener::wait_with_target(
 			"load",
-			Self::get()
-				.get_element_by_id(id)
-				.ok()?
-				.dyn_into().unwrap(),
-		).await;
+			Self::get().get_element_by_id(id).ok()?.dyn_into().unwrap(),
+		)
+		.await;
 		Ok(())
 	}
 
@@ -84,5 +83,42 @@ pub impl Document {
 			.unwrap()
 			.dyn_into::<HtmlParagraphElement>()
 			.unwrap()
+	}
+
+
+	fn add_script_src_to_head(src: &str) -> Result<HtmlScriptElement, JsValue> {
+		let el = Document::get()
+			.create_element("script")
+			.unwrap()
+			.dyn_into::<HtmlScriptElement>()?;
+		el.set_src(src);
+		el.set_type("text/javascript");
+		Document::x_head().append_child(&el).unwrap();
+		Ok(el)
+	}
+
+	fn add_script_content_to_body(
+		body: &str,
+	) -> Result<HtmlScriptElement, JsValue> {
+		let el = Document::get()
+			.create_element("script")
+			.unwrap()
+			.dyn_into::<HtmlScriptElement>()?;
+		el.set_type("text/javascript");
+		el.set_inner_html(body);
+		Document::x_body().append_child(&el).unwrap();
+		Ok(el)
+	}
+
+	fn add_style_src_to_head(src: &str) -> Result<HtmlLinkElement, JsValue> {
+		let el = Document::get()
+			.create_element("link")
+			.unwrap()
+			.dyn_into::<HtmlLinkElement>()?;
+		el.set_href(src);
+		el.set_rel("stylesheet");
+		el.set_type("text/css");
+		Document::x_head().append_child(&el).unwrap();
+		Ok(el)
 	}
 }
