@@ -9,36 +9,33 @@ use serde::Serialize;
 use std::fmt::Debug;
 
 // pub type ActionList<T> = Vec<T>;
-pub type ActionTree<T> = Tree<Vec<T>>;
-
-pub trait ActionSuper: Action + PartialEq {}
-impl<T: Action + PartialEq> ActionSuper for T {}
+pub type BehaviorTree<T> = Tree<BehaviorNode<T>>;
 
 #[derive(Default, Clone, Deref, DerefMut, Serialize, Deserialize)]
-pub struct ActionGraph<T: ActionSuper>(pub DiGraph<Vec<T>, ()>);
+pub struct BehaviorGraph<T: ActionSuper>(pub DiGraph<BehaviorNode<T>, ()>);
 
-impl<T: ActionSuper> PartialEq for ActionGraph<T> {
+impl<T: ActionSuper> PartialEq for BehaviorGraph<T> {
 	fn eq(&self, other: &Self) -> bool { self.0.is_identical(other) }
 }
 
-impl<T: Debug + ActionSuper> Debug for ActionGraph<T> {
+impl<T: Debug + ActionSuper> Debug for BehaviorGraph<T> {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		self.0.fmt(f)
-		// f.debug_tuple("ActionGraph").field(&self.0).finish()
+		// f.debug_tuple("BehaviorGraph").field(&self.0).finish()
 	}
 }
 
 
 #[extend::ext]
-pub impl<T: ActionSuper> ActionTree<T> {
-	fn into_action_graph(self) -> ActionGraph<T> {
-		ActionGraph(self.into_graph())
+pub impl<T: ActionSuper> BehaviorTree<T> {
+	fn into_action_graph(self) -> BehaviorGraph<T> {
+		BehaviorGraph(self.into_graph())
 	}
 }
 
-impl<T: ActionSuper> ActionGraph<T> {
+impl<T: ActionSuper> BehaviorGraph<T> {
 	pub fn new() -> Self { Self(DiGraph::new()) }
-	pub fn from_tree(tree: ActionTree<T>) -> Self {
+	pub fn from_tree(tree: BehaviorTree<T>) -> Self {
 		Self(DiGraph::from_tree(tree))
 	}
 
@@ -49,7 +46,7 @@ impl<T: ActionSuper> ActionGraph<T> {
 		target: Entity,
 	) -> EntityGraph {
 		if self.node_count() == 0 {
-			panic!("ActionGraph is empty");
+			panic!("BehaviorGraph is empty");
 		}
 
 		// create entities & actions

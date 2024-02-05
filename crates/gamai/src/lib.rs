@@ -2,7 +2,7 @@ pub mod action;
 pub mod builtin_nodes;
 pub mod edge;
 pub mod extensions;
-pub mod graph_utils;
+pub mod graph;
 pub mod node;
 pub mod ui;
 
@@ -17,7 +17,7 @@ pub mod prelude {
 	pub use crate::builtin_nodes::*;
 	pub use crate::edge::*;
 	pub use crate::extensions::*;
-	pub use crate::graph_utils::*;
+	pub use crate::graph::*;
 	pub use crate::node::*;
 	pub use crate::ui::*;
 	pub use gamai_macros::*;

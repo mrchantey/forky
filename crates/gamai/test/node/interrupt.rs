@@ -10,13 +10,13 @@ pub fn works() -> Result<()> {
 
 	let target = app.world.spawn_empty().id();
 
-	let action_graph: ActionGraph<BuiltinNode> =
-		ActionGraph::<BuiltinNode>::from_tree(
-			Tree::new(vec![EmptyAction.into()])
-				.with_leaf(vec![EmptyAction.into()])
+	let action_graph: BehaviorGraph<BuiltinNode> =
+		BehaviorGraph::<BuiltinNode>::from_tree(
+			Tree::new(vec![EmptyAction.into()].into())
+				.with_leaf(vec![EmptyAction.into()].into())
 				.with_child(
-					Tree::new(vec![EmptyAction.into()])
-						.with_leaf(vec![EmptyAction.into()]),
+					Tree::new(vec![EmptyAction.into()].into())
+						.with_leaf(vec![EmptyAction.into()].into()),
 				),
 		);
 

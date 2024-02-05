@@ -6,22 +6,24 @@ use gamai::prelude::*;
 /// 	Child1
 /// 		Child0
 ///
-// pub fn test_action_graph_boxed() -> BoxedActionGraph {
-// 	BoxedActionTree::new(vec![Box::new(SetScore::default())])
+// pub fn test_action_graph_boxed() -> BoxedBehaviorGraph {
+// 	BoxedBehaviorTree::new(vec![Box::new(SetScore::default())])
 // 		.with_leaf(vec![Box::new(SetScore::default())])
 // 		.with_child(
-// 			BoxedActionTree::new(vec![Box::new(SetScore::default())])
+// 			BoxedBehaviorTree::new(vec![Box::new(SetScore::default())])
 // 				.with_leaf(vec![Box::new(SetScore::default())]),
 // 		)
 // 		.into_action_graph()
 // }
 
-pub fn test_action_graph_typed() -> ActionGraph<BuiltinNode> {
-	Tree::new(vec![BuiltinNode::SetScore(SetScore::default())])
-		.with_leaf(vec![BuiltinNode::SetScore(SetScore::default())])
-		.with_child(
-			Tree::new(vec![BuiltinNode::SetScore(SetScore::default())])
-				.with_leaf(vec![BuiltinNode::SetScore(SetScore::default())]),
-		)
-		.into_action_graph()
+pub fn test_action_graph_typed() -> BehaviorGraph<BuiltinNode> {
+	BehaviorTree::<BuiltinNode>::new(
+		vec![BuiltinNode::SetScore(SetScore::default())].into(),
+	)
+	.with_leaf(vec![BuiltinNode::SetScore(SetScore::default())].into())
+	.with_child(
+		Tree::new(vec![BuiltinNode::SetScore(SetScore::default())].into())
+			.with_leaf(vec![BuiltinNode::SetScore(SetScore::default())].into()),
+	)
+	.into_action_graph()
 }

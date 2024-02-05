@@ -10,15 +10,21 @@ fn setup() -> (App, EntityGraph) {
 	let target = app.world.spawn_empty().id();
 
 	let action_graph =
-		ActionTree::<BuiltinNode>::new(vec![UtilitySelector.into()])
-			.with_leaf(vec![
-				SetScore::new(Score::Fail).into(),
-				SetRunResult::failure().into(),
-			])
-			.with_leaf(vec![
-				SetScore::new(Score::Pass).into(),
-				SetRunResult::success().into(),
-			])
+		BehaviorTree::<BuiltinNode>::new(vec![UtilitySelector.into()].into())
+			.with_leaf(
+				vec![
+					SetScore::new(Score::Fail).into(),
+					SetRunResult::failure().into(),
+				]
+				.into(),
+			)
+			.with_leaf(
+				vec![
+					SetScore::new(Score::Pass).into(),
+					SetRunResult::success().into(),
+				]
+				.into(),
+			)
 			.into_action_graph();
 
 	let entity_graph = action_graph.spawn(&mut app.world, target);

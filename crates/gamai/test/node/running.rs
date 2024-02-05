@@ -13,9 +13,10 @@ pub fn works() -> Result<()> {
 
 	let target = app.world.spawn_empty().id();
 
-	let action_graph =
-		ActionTree::<BuiltinNode>::new(vec![SetRunResult::default().into()])
-			.into_action_graph();
+	let action_graph = BehaviorTree::<BuiltinNode>::new(
+		vec![SetRunResult::default().into()].into(),
+	)
+	.into_action_graph();
 
 	let entity_graph = action_graph.spawn(&mut app.world, target);
 	let root = *entity_graph.root().unwrap();
