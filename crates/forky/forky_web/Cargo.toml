@@ -10,6 +10,7 @@ description = { workspace = true }
 repository = { workspace = true }
 
 [dependencies]
+forky_web_macros = { workspace = true }
 forky_core = { workspace = true }
 anyhow = { workspace = true }
 extend = { workspace = true }

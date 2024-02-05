@@ -2796,6 +2796,7 @@ dependencies = [
  "console_error_panic_hook",
  "extend",
  "forky_core",
+ "forky_web_macros",
  "js-sys",
  "leptos",
  "serde",
@@ -2803,6 +2804,16 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
+]
+
+[[package]]
+name = "forky_web_macros"
+version = "0.1.39"
+dependencies = [
+ "anyhow",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.48",
 ]
 
 [[package]]
@@ -2998,6 +3009,7 @@ dependencies = [
  "extend",
  "gamai_macros",
  "heck",
+ "num-traits",
  "petgraph",
  "serde",
  "serde_json",

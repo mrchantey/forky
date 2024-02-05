@@ -5,13 +5,13 @@ use std::ops::DerefMut;
 
 
 #[derive(Clone)]
-pub struct CheckboxField {
+pub struct BoolField {
 	pub reflect: FieldReflect<bool>,
 }
 
-impl Display for CheckboxField {
+impl Display for BoolField {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		f.debug_struct("CheckboxField")
+		f.debug_struct("BoolField")
 			.field("name", &self.reflect.field_name)
 			.field("value", &self.reflect.get())
 			.finish()
@@ -19,16 +19,16 @@ impl Display for CheckboxField {
 }
 
 
-impl Deref for CheckboxField {
+impl Deref for BoolField {
 	type Target = FieldReflect<bool>;
 	fn deref(&self) -> &Self::Target { &self.reflect }
 }
-impl DerefMut for CheckboxField {
+impl DerefMut for BoolField {
 	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.reflect }
 }
 
 impl IntoFieldUi for bool {
 	fn into_field_ui(reflect: FieldReflect<bool>) -> FieldUi {
-		CheckboxField { reflect }.into()
+		BoolField { reflect }.into()
 	}
 }

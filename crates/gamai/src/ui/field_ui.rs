@@ -10,7 +10,7 @@ pub trait IntoFieldUi: 'static + Clone + Sized {
 pub enum FieldUi {
 	Group(GroupField),
 	Text(TextField),
-	Checkbox(CheckboxField),
+	Bool(BoolField),
 	Select(SelectField),
 	// Duration(UnitField<Duration, DurationUnit>),
 	// number
@@ -24,17 +24,6 @@ pub enum FieldUi {
 	NumberU16(NumberField<u16>),
 	NumberU32(NumberField<u32>),
 	NumberU64(NumberField<u64>),
-	// slider
-	SliderF32(SliderField<f32>),
-	SliderF64(SliderField<f64>),
-	SliderI8(SliderField<i8>),
-	SliderI16(SliderField<i16>),
-	SliderI32(SliderField<i32>),
-	SliderI64(SliderField<i64>),
-	SliderU8(SliderField<u8>),
-	SliderU16(SliderField<u16>),
-	SliderU32(SliderField<u32>),
-	SliderU64(SliderField<u64>),
 }
 
 impl FieldUi {
@@ -49,7 +38,7 @@ impl FieldUi {
 					.collect(),
 			},
 			FieldUi::Text(val) => Tree::new(val.to_string()),
-			FieldUi::Checkbox(val) => Tree::new(val.to_string()),
+			FieldUi::Bool(val) => Tree::new(val.to_string()),
 			FieldUi::Select(val) => Tree::new(val.to_string()),
 			// FieldUi::Duration(val) => Tree::new(val.to_string()),
 			FieldUi::NumberF32(val) => Tree::new(val.to_string()),
@@ -62,16 +51,6 @@ impl FieldUi {
 			FieldUi::NumberU16(val) => Tree::new(val.to_string()),
 			FieldUi::NumberU32(val) => Tree::new(val.to_string()),
 			FieldUi::NumberU64(val) => Tree::new(val.to_string()),
-			FieldUi::SliderF32(val) => Tree::new(val.to_string()),
-			FieldUi::SliderF64(val) => Tree::new(val.to_string()),
-			FieldUi::SliderI8(val) => Tree::new(val.to_string()),
-			FieldUi::SliderI16(val) => Tree::new(val.to_string()),
-			FieldUi::SliderI32(val) => Tree::new(val.to_string()),
-			FieldUi::SliderI64(val) => Tree::new(val.to_string()),
-			FieldUi::SliderU8(val) => Tree::new(val.to_string()),
-			FieldUi::SliderU16(val) => Tree::new(val.to_string()),
-			FieldUi::SliderU32(val) => Tree::new(val.to_string()),
-			FieldUi::SliderU64(val) => Tree::new(val.to_string()),
 		}
 	}
 
@@ -90,7 +69,7 @@ impl FieldUi {
 				val.reflect.field_name == other.reflect.field_name
 					&& val.reflect.get() == other.reflect.get()
 			}
-			(FieldUi::Checkbox(val), FieldUi::Checkbox(other)) => {
+			(FieldUi::Bool(val), FieldUi::Bool(other)) => {
 				val.reflect.field_name == other.reflect.field_name
 					&& val.reflect.get() == other.reflect.get()
 			}
@@ -138,46 +117,6 @@ impl FieldUi {
 				val.reflect.field_name == other.reflect.field_name
 					&& val.reflect.get() == other.reflect.get()
 			}
-			(FieldUi::SliderF32(val), FieldUi::SliderF32(other)) => {
-				val.reflect.field_name == other.reflect.field_name
-					&& val.reflect.get() == other.reflect.get()
-			}
-			(FieldUi::SliderF64(val), FieldUi::SliderF64(other)) => {
-				val.reflect.field_name == other.reflect.field_name
-					&& val.reflect.get() == other.reflect.get()
-			}
-			(FieldUi::SliderI8(val), FieldUi::SliderI8(other)) => {
-				val.reflect.field_name == other.reflect.field_name
-					&& val.reflect.get() == other.reflect.get()
-			}
-			(FieldUi::SliderI16(val), FieldUi::SliderI16(other)) => {
-				val.reflect.field_name == other.reflect.field_name
-					&& val.reflect.get() == other.reflect.get()
-			}
-			(FieldUi::SliderI32(val), FieldUi::SliderI32(other)) => {
-				val.reflect.field_name == other.reflect.field_name
-					&& val.reflect.get() == other.reflect.get()
-			}
-			(FieldUi::SliderI64(val), FieldUi::SliderI64(other)) => {
-				val.reflect.field_name == other.reflect.field_name
-					&& val.reflect.get() == other.reflect.get()
-			}
-			(FieldUi::SliderU8(val), FieldUi::SliderU8(other)) => {
-				val.reflect.field_name == other.reflect.field_name
-					&& val.reflect.get() == other.reflect.get()
-			}
-			(FieldUi::SliderU16(val), FieldUi::SliderU16(other)) => {
-				val.reflect.field_name == other.reflect.field_name
-					&& val.reflect.get() == other.reflect.get()
-			}
-			(FieldUi::SliderU32(val), FieldUi::SliderU32(other)) => {
-				val.reflect.field_name == other.reflect.field_name
-					&& val.reflect.get() == other.reflect.get()
-			}
-			(FieldUi::SliderU64(val), FieldUi::SliderU64(other)) => {
-				val.reflect.field_name == other.reflect.field_name
-					&& val.reflect.get() == other.reflect.get()
-			}
 			// (FieldUi::Duration(val), FieldUi::Duration(other)) => {
 			// 	val.reflect.field_name == other.reflect.field_name
 			// 		&& val.reflect.get() == other.reflect.get()
@@ -188,8 +127,8 @@ impl FieldUi {
 }
 
 
-impl Into<FieldUi> for CheckboxField {
-	fn into(self) -> FieldUi { FieldUi::Checkbox(self) }
+impl Into<FieldUi> for BoolField {
+	fn into(self) -> FieldUi { FieldUi::Bool(self) }
 }
 impl Into<FieldUi> for TextField {
 	fn into(self) -> FieldUi { FieldUi::Text(self) }
@@ -229,34 +168,4 @@ impl Into<FieldUi> for NumberField<f32> {
 }
 impl Into<FieldUi> for NumberField<f64> {
 	fn into(self) -> FieldUi { FieldUi::NumberF64(self) }
-}
-impl Into<FieldUi> for SliderField<u8> {
-	fn into(self) -> FieldUi { FieldUi::SliderU8(self) }
-}
-impl Into<FieldUi> for SliderField<u16> {
-	fn into(self) -> FieldUi { FieldUi::SliderU16(self) }
-}
-impl Into<FieldUi> for SliderField<u32> {
-	fn into(self) -> FieldUi { FieldUi::SliderU32(self) }
-}
-impl Into<FieldUi> for SliderField<u64> {
-	fn into(self) -> FieldUi { FieldUi::SliderU64(self) }
-}
-impl Into<FieldUi> for SliderField<i8> {
-	fn into(self) -> FieldUi { FieldUi::SliderI8(self) }
-}
-impl Into<FieldUi> for SliderField<i16> {
-	fn into(self) -> FieldUi { FieldUi::SliderI16(self) }
-}
-impl Into<FieldUi> for SliderField<i32> {
-	fn into(self) -> FieldUi { FieldUi::SliderI32(self) }
-}
-impl Into<FieldUi> for SliderField<i64> {
-	fn into(self) -> FieldUi { FieldUi::SliderI64(self) }
-}
-impl Into<FieldUi> for SliderField<f32> {
-	fn into(self) -> FieldUi { FieldUi::SliderF32(self) }
-}
-impl Into<FieldUi> for SliderField<f64> {
-	fn into(self) -> FieldUi { FieldUi::SliderF64(self) }
 }

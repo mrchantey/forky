@@ -5,6 +5,13 @@ use web_sys::UrlSearchParams;
 pub struct SearchParams;
 
 impl SearchParams {
+
+	pub fn has(key: &str) -> bool {
+		let search = window().unwrap().location().search().unwrap();
+		let params = UrlSearchParams::new_with_str(search.as_str()).unwrap();
+		params.has(key)
+	}
+
 	pub fn get(key: &str) -> Option<String> {
 		let search = window().unwrap().location().search().unwrap();
 		let params = UrlSearchParams::new_with_str(search.as_str()).unwrap();

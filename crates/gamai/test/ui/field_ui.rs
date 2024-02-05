@@ -6,7 +6,7 @@ use sweet::*;
 
 #[derive(Clone, FieldUi)]
 struct MyAction {
-	#[slider(min = 0, max = 100, step = 1)]
+	#[number(min = 0, max = 100, step = 1,display=NumberFieldDisplay::default())]
 	pub health: u32,
 	pub score: Score,
 	pub nested: NestedAction,
@@ -32,7 +32,7 @@ pub fn sets_value() -> Result<()> {
 	let root = setup();
 
 	if let FieldUi::Group(group) = root.get_ui() {
-		if let FieldUi::SliderU32(slider) = &group.children[0] {
+		if let FieldUi::NumberU32(slider) = &group.children[0] {
 			slider.set(50);
 		} else {
 			anyhow::bail!("Expected FieldUi");

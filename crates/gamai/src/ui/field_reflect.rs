@@ -16,6 +16,20 @@ pub struct FieldReflect<T: FieldValue> {
 	set_cb: SetFunc<T>,
 }
 
+impl<T: FieldValue> Default for FieldReflect<T> {
+	fn default() -> Self {
+		Self::new(
+			"PLACEHOLDER REFLECT VALUE".to_string(),
+			|| {
+				panic!("Placeholder value should not be used");
+			},
+			|_| {
+				panic!("Placeholder value should not be used");
+			},
+		)
+	}
+}
+
 impl<T: FieldValue> FieldReflect<T> {
 	pub fn new(
 		field_name: String,

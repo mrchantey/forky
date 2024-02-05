@@ -1,4 +1,5 @@
 use super::*;
+use bevy_utils::default;
 use std::time::Duration;
 // use std::fmt::Debug;
 // use std::fmt::Display;
@@ -11,8 +12,8 @@ use std::time::Duration;
 
 impl IntoFieldUi for Duration {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
-		FieldUi::SliderF64(SliderField::from_reflect(
-			FieldReflect::<f64>::new(
+		FieldUi::NumberF64(NumberField {
+			reflect: FieldReflect::<f64>::new(
 				reflect.field_name.clone(),
 				{
 					let reflect = reflect.clone();
@@ -23,10 +24,11 @@ impl IntoFieldUi for Duration {
 					move |val| reflect.set(Duration::from_secs_f64(val))
 				},
 			),
-			0.,
-			10.,
-			0.01,
-		))
+			min: 0.,
+			max: 10.,
+			step: 0.01,
+			..default()
+		})
 	}
 }
 

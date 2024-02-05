@@ -1,4 +1,5 @@
-use gamai::ui::FieldUiRoot;
+use gamai::prelude::*;
+use gamai::ui::GroupField;
 use gamai_macros::FieldUi;
 // use gamai::prelude::*;
 use strum_macros::Display;
@@ -6,6 +7,10 @@ use strum_macros::EnumIter;
 // use gamai_macros::*;
 
 fn main() {
+	let a = NumberField::<u32> {
+		step: 2,
+		..Default::default()
+	};
 	let foo = Foo {
 		health: 100,
 		// attack: AttackType::Punch {
@@ -28,7 +33,7 @@ fn main() {
 pub enum AttackType {
 	Melee,
 	Ranged(
-		#[slider(min = 0., max = 1., step = 0.01)] f32,
+		#[number(min = 0., max = 1., step = 0.01)] f32,
 		#[number(step = 2)] u32,
 	),
 	Punch {
@@ -39,7 +44,7 @@ pub enum AttackType {
 
 #[derive(Clone, FieldUi)]
 pub struct Foo {
-	#[slider(min = 0, max = 100, step = 1)]
+	#[number(min = 0, max = 100, step = 1)]
 	health: u32,
 	attack: AttackType,
 }

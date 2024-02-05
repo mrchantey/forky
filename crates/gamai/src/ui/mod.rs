@@ -1,6 +1,3 @@
-pub mod slider_field;
-#[allow(unused_imports)]
-pub use self::slider_field::*;
 pub mod group_field;
 #[allow(unused_imports)]
 pub use self::group_field::*;

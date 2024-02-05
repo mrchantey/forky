@@ -23,6 +23,10 @@ pub impl<T: Display> Vec<T> {
 pub impl<T: Default + Clone> Vec<T> {
 	fn from_len(len: usize) -> Self { vec![T::default(); len] }
 }
+#[ext(name = VecXInto)]
+pub impl<T: Into<U>, U> Vec<T> {
+	fn into_vec(self) -> Vec<U> { self.into_iter().map(|x| x.into()).collect() }
+}
 
 
 #[ext(name = VecX)]

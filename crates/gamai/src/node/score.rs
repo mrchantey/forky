@@ -33,7 +33,7 @@ pub enum Score {
 	/// The node should not run.
 	Fail,
 	/// The node has a weight, conventionally in the range `0..1`, where higher is more favorable.
-	Weight(#[slider(min = 0., max = 1., step = 0.01)] f32),
+	Weight(#[number(min = 0., max = 1., step = 0.01)] f32),
 	/// The node should run.
 	Pass,
 }
