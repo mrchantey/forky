@@ -7,7 +7,8 @@ impl<T: Clone> FieldValue for T {}
 pub type GetFunc<T> = Rc<Box<dyn Fn() -> T>>;
 pub type SetFunc<T> = Rc<Box<dyn Fn(T)>>;
 
-
+// TODO we should consider higher order functions for set, ie update_cb
+// It may mean field reflect needs to know parent type
 #[derive(Clone)]
 pub struct FieldReflect<T: FieldValue> {
 	pub field_name: String,

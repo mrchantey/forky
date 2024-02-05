@@ -86,15 +86,3 @@ impl<T: ActionSuper> ActionGraph<T> {
 		EntityGraph(entity_graph)
 	}
 }
-
-impl<T: ActionSuper + IntoFieldUi> ActionGraph<T> {
-	pub fn into_field_graph(&self) -> FieldGraph<T> {
-		self.0.into_field_graph()
-	}
-}
-#[extend::ext(name=ActionTreeExt2)]
-pub impl<T: ActionSuper + IntoFieldUi> ActionTree<T> {
-	fn into_field_graph(self) -> FieldGraph<T> {
-		self.into_action_graph().into_field_graph()
-	}
-}
