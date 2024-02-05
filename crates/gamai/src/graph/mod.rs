@@ -13,9 +13,6 @@ pub use self::graph_ext::*;
 pub mod behavior_graph;
 #[allow(unused_imports)]
 pub use self::behavior_graph::*;
-pub mod boxed_behavior_graph;
-#[allow(unused_imports)]
-pub use self::boxed_behavior_graph::*;
 pub mod component_graph;
 #[allow(unused_imports)]
 pub use self::component_graph::*;
