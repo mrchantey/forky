@@ -13,8 +13,8 @@ pub type SetFunc<T> = Rc<Box<dyn Fn(T)>>;
 pub struct FieldReflect<T: FieldValue> {
 	pub field_name: String,
 	pub display_name: String,
-	get_cb: GetFunc<T>,
-	set_cb: SetFunc<T>,
+	pub get_cb: GetFunc<T>,
+	pub set_cb: SetFunc<T>,
 }
 
 impl<T: FieldValue> Default for FieldReflect<T> {

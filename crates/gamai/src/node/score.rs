@@ -32,8 +32,8 @@ pub enum Score {
 	#[default]
 	/// The node should not run.
 	Fail,
-	/// The node has a weight, conventionally in the range `0..1`, where higher is more favorable.
-	Weight(#[number(min = 0., max = 1., step = 0.01)] f32),
+	/// The node has a weight in the range `0..100`, where higher is more favorable.
+	Weight(#[number(min = 0, max = 100, step = 1)] u8),
 	/// The node should run.
 	Pass,
 }
@@ -47,7 +47,8 @@ impl PartialOrd for Score {
 			(Score::Pass, Score::Pass) => Ordering::Equal,
 			(Score::Pass, _) => Ordering::Greater,
 			(_, Score::Pass) => Ordering::Less,
-			(Score::Weight(w1), Score::Weight(w2)) => w1.total_cmp(&w2),
+			// (Score::Weight(w1), Score::Weight(w2)) => w1.total_cmp(&w2),
+			(Score::Weight(w1), Score::Weight(w2)) => w1.cmp(&w2),
 		};
 		Some(val)
 	}

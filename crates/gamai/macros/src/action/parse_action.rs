@@ -31,8 +31,19 @@ pub fn parse_action(
 }
 
 fn remove_field_attributes(input: &mut ItemStruct) {
+	let attrs_to_remove = ["shared"];
+
 	for field in input.fields.iter_mut() {
-		field.attrs = vec![];
+		field.attrs = field
+			.attrs
+			.clone()
+			.into_iter()
+			.filter(|attr| {
+				!attrs_to_remove
+					.iter()
+					.any(|&name| attr.path().is_ident(name))
+			})
+			.collect();
 	}
 }
 

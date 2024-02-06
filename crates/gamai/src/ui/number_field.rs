@@ -59,6 +59,35 @@ impl<T: NumberFieldValue> Default for NumberField<T> {
 	}
 }
 
+
+impl Into<NumberField<f64>> for NumberField<f32> {
+	fn into(self) -> NumberField<f64> {
+		let FieldReflect {
+			field_name,
+			get_cb,
+			set_cb,
+			..
+		} = self.reflect;
+		let reflect = FieldReflect::new(
+			field_name,
+			move || get_cb() as f64,
+			move |v| set_cb(round_to_step_f32(v as f32, self.step)),
+		);
+
+		NumberField {
+			reflect,
+			min: self.min as f64,
+			max: self.max as f64,
+			step: self.step as f64,
+			display: self.display,
+		}
+	}
+}
+
+fn round_to_step_f32(value: f32, step: f32) -> f32 {
+	(value / step).round() * step
+}
+
 impl<T: NumberFieldValue> NumberField<T> {
 	pub fn new(
 		field_name: String,
