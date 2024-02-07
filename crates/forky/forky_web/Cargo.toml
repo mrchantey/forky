@@ -9,6 +9,10 @@ readme = { workspace = true }
 description = { workspace = true }
 repository = { workspace = true }
 
+[features]
+default = ["leptos"]
+leptos = ["dep:leptos"]
+
 [dependencies]
 forky_web_macros = { workspace = true }
 forky_core = { workspace = true }
@@ -26,4 +30,4 @@ wasm-bindgen = { workspace = true }
 wasm-bindgen-futures = { workspace = true }
 web-sys = { workspace = true }
 console_error_panic_hook = { workspace = true }
-leptos = { workspace = true }
+leptos = { workspace = true, optional = true }
