@@ -6,7 +6,7 @@
 </head>
 <script type="module">
 	import init, * as mod from './wasm/bindgen.js'
-	window._sweet_wasm = mod
+	window._sweet_wasm = mod;
 	init()
 		.catch((error) => {
 			if (!error.message.startsWith("Using exceptions for control flow,"))

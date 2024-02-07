@@ -8,7 +8,7 @@ use std::ops::DerefMut;
 use std::str::FromStr;
 
 #[derive(Debug, Clone, Default)]
-pub enum NumberFieldDisplay {
+pub enum NumberFieldVariant {
 	Text,
 	Slider,
 	#[default]
@@ -44,7 +44,7 @@ pub struct NumberField<T: NumberFieldValue> {
 	pub min: T,
 	pub max: T,
 	pub step: T,
-	pub display: NumberFieldDisplay,
+	pub variant: NumberFieldVariant,
 }
 
 impl<T: NumberFieldValue> Default for NumberField<T> {
@@ -54,7 +54,7 @@ impl<T: NumberFieldValue> Default for NumberField<T> {
 			min: T::from_i32(0).unwrap(),
 			max: T::from_i32(100).unwrap(),
 			step: T::from_i32(1).unwrap(),
-			display: Default::default(),
+			variant: Default::default(),
 		}
 	}
 }
@@ -79,7 +79,7 @@ impl Into<NumberField<f64>> for NumberField<f32> {
 			min: self.min as f64,
 			max: self.max as f64,
 			step: self.step as f64,
-			display: self.display,
+			variant: self.variant,
 		}
 	}
 }
@@ -96,14 +96,14 @@ impl<T: NumberFieldValue> NumberField<T> {
 		min: T,
 		max: T,
 		step: T,
-		display: NumberFieldDisplay,
+		variant: NumberFieldVariant,
 	) -> Self {
 		Self {
 			reflect: FieldReflect::new(field_name, get_cb, set_cb),
 			min,
 			max,
 			step,
-			display,
+			variant,
 		}
 	}
 	pub fn from_reflect(
@@ -111,11 +111,11 @@ impl<T: NumberFieldValue> NumberField<T> {
 		min: T,
 		max: T,
 		step: T,
-		display: NumberFieldDisplay,
+		variant: NumberFieldVariant,
 	) -> Self {
 		Self {
 			reflect,
-			display,
+			variant,
 			min,
 			max,
 			step,
@@ -140,7 +140,7 @@ impl<T: NumberFieldValue> Display for NumberField<T> {
 			.field("min", &self.min.to_string())
 			.field("max", &self.max.to_string())
 			.field("step", &self.step.to_string())
-			.field("display", &self.display)
+			.field("display", &self.variant)
 			.finish()
 	}
 }
@@ -149,7 +149,7 @@ impl IntoFieldUi for u8 {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
 		FieldUi::NumberU8(NumberField {
 			reflect,
-			display: NumberFieldDisplay::default(),
+			variant: NumberFieldVariant::default(),
 			min: Self::MIN,
 			max: Self::MAX,
 			step: 1,
@@ -161,7 +161,7 @@ impl IntoFieldUi for u16 {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
 		FieldUi::NumberU16(NumberField {
 			reflect,
-			display: NumberFieldDisplay::default(),
+			variant: NumberFieldVariant::default(),
 			min: 0,
 			max: 100,
 			step: 1,
@@ -173,7 +173,7 @@ impl IntoFieldUi for u32 {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
 		FieldUi::NumberU32(NumberField {
 			reflect,
-			display: NumberFieldDisplay::default(),
+			variant: NumberFieldVariant::default(),
 			min: 0,
 			max: 100,
 			step: 1,
@@ -185,7 +185,7 @@ impl IntoFieldUi for u64 {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
 		FieldUi::NumberU64(NumberField {
 			reflect,
-			display: NumberFieldDisplay::default(),
+			variant: NumberFieldVariant::default(),
 			min: 0,
 			max: 100,
 			step: 1,
@@ -197,7 +197,7 @@ impl IntoFieldUi for i8 {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
 		FieldUi::NumberI8(NumberField {
 			reflect,
-			display: NumberFieldDisplay::default(),
+			variant: NumberFieldVariant::default(),
 			min: 0,
 			max: 100,
 			step: 1,
@@ -209,7 +209,7 @@ impl IntoFieldUi for i16 {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
 		FieldUi::NumberI16(NumberField {
 			reflect,
-			display: NumberFieldDisplay::default(),
+			variant: NumberFieldVariant::default(),
 			min: 0,
 			max: 100,
 			step: 1,
@@ -221,7 +221,7 @@ impl IntoFieldUi for i32 {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
 		FieldUi::NumberI32(NumberField {
 			reflect,
-			display: NumberFieldDisplay::default(),
+			variant: NumberFieldVariant::default(),
 			min: 0,
 			max: 100,
 			step: 1,
@@ -233,7 +233,7 @@ impl IntoFieldUi for i64 {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
 		FieldUi::NumberI64(NumberField {
 			reflect,
-			display: NumberFieldDisplay::default(),
+			variant: NumberFieldVariant::default(),
 			min: 0,
 			max: 100,
 			step: 1,
@@ -245,7 +245,7 @@ impl IntoFieldUi for f32 {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
 		FieldUi::NumberF32(NumberField {
 			reflect,
-			display: NumberFieldDisplay::default(),
+			variant: NumberFieldVariant::default(),
 			min: 0.,
 			max: 100.,
 			step: 1.,
@@ -257,7 +257,7 @@ impl IntoFieldUi for f64 {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi {
 		FieldUi::NumberF64(NumberField {
 			reflect,
-			display: NumberFieldDisplay::default(),
+			variant: NumberFieldVariant::default(),
 			min: 0.,
 			max: 100.,
 			step: 1.,

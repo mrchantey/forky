@@ -6,7 +6,7 @@ use sweet::*;
 
 #[derive(Clone, FieldUi)]
 struct MyAction {
-	#[number(min = 0, max = 100, step = 1,display=NumberFieldDisplay::default())]
+	#[number(min = 0, max = 100, step = 1,display=NumberFieldVariant::default())]
 	pub health: u32,
 	pub score: Score,
 	pub nested: NestedAction,
