@@ -22,6 +22,9 @@ pub use self::field_reflect::*;
 pub mod checkbox_field;
 #[allow(unused_imports)]
 pub use self::checkbox_field::*;
+pub mod heading_field;
+#[allow(unused_imports)]
+pub use self::heading_field::*;
 pub mod select_field;
 #[allow(unused_imports)]
 pub use self::select_field::*;

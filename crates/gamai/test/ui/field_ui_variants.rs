@@ -53,18 +53,25 @@ pub fn works() -> Result<()> {
 
 	let ui = FieldUiRoot::new(TestEnum2::Variant1).get_ui();
 	// println!("{}", ui);
-	if let FieldUi::Group(group) = ui {
-		expect(group.children.len()).to_be(0)?;
+	if let FieldUi::Heading(heading) = ui {
+		expect(&heading.text).to_be(&"No Fields".to_string())?;
 	} else {
 		anyhow::bail!("waat");
 	}
+
 	Ok(())
 }
 #[sweet_test]
 pub fn works_for_action_lists() -> Result<()> {
 	let ui = FieldUiRoot::new(BuiltinNode::EmptyAction(EmptyAction)).get_ui();
+	// if let FieldUi::Heading(heading) = ui {
+	// 	expect(&heading.text).to_be(&"".to_string())?;
+	// } else {
+	// 	anyhow::bail!("waat");
+	// }
 	if let FieldUi::Group(group) = ui {
 		expect(group.children.len()).to_be(1)?;
+
 		if let FieldUi::Group(group) = &group.children[0] {
 			expect(group.children.len()).to_be(0)?;
 		} else {

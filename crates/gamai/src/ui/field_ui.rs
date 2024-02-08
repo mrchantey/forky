@@ -9,7 +9,7 @@ pub trait IntoFieldUi: 'static + Clone + Sized {
 // #[derive(Display)]
 #[derive(Clone, Display)]
 pub enum FieldUi {
-	// None,
+	Heading(HeadingField),
 	Group(GroupField),
 	Text(TextField),
 	Bool(BoolField),
@@ -31,6 +31,7 @@ pub enum FieldUi {
 impl FieldUi {
 	pub fn into_string_tree(&self) -> Tree<String> {
 		match self {
+			FieldUi::Heading(val) => Tree::new(val.text.clone()),
 			FieldUi::Group(val) => Tree {
 				value: val.to_string(),
 				children: val
@@ -67,11 +68,12 @@ impl FieldUi {
 						.zip(other.children.iter())
 						.all(|(a, b)| a.is_equal_graph(b))
 			}
-			(FieldUi::Text(val), FieldUi::Text(other)) => {
+			(FieldUi::Heading(val), FieldUi::Heading(other)) => val == other,
+			(FieldUi::Bool(val), FieldUi::Bool(other)) => {
 				val.reflect.field_name == other.reflect.field_name
 					&& val.reflect.get() == other.reflect.get()
 			}
-			(FieldUi::Bool(val), FieldUi::Bool(other)) => {
+			(FieldUi::Text(val), FieldUi::Text(other)) => {
 				val.reflect.field_name == other.reflect.field_name
 					&& val.reflect.get() == other.reflect.get()
 			}
@@ -129,6 +131,9 @@ impl FieldUi {
 }
 
 
+impl Into<FieldUi> for HeadingField {
+	fn into(self) -> FieldUi { FieldUi::Heading(self) }
+}
 impl Into<FieldUi> for BoolField {
 	fn into(self) -> FieldUi { FieldUi::Bool(self) }
 }

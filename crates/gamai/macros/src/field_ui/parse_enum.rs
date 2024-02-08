@@ -64,7 +64,7 @@ fn parse_enum_variant(
 	let out = match &variant.fields {
 		syn::Fields::Unit => {
 			if parent_is_hidden {
-				quote! {Self::#variant_ident => GroupField::new("Empty Enum".to_string(),Vec::new()).into()}
+				quote! {Self::#variant_ident => HeadingField::new("No Fields".to_string()).into()}
 			// quote! {Self::#variant_ident => select.into()}
 			} else {
 				quote! {Self::#variant_ident => select.into()}
