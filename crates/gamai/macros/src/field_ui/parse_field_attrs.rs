@@ -2,34 +2,46 @@ use crate::utils::*;
 use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use quote::quote;
+use quote::ToTokens;
 use std::collections::HashMap;
+use syn::Attribute;
 use syn::Expr;
 use syn::Field;
 use syn::Ident;
 use syn::Result;
 
 
-pub fn field_ui_option(
+pub fn parse_field_attrs(
 	field: &Field,
 	reflect: &TokenStream,
-) -> Result<TokenStream> {
-	let ty = &field.ty;
-
-	let out = match parse_field_attrs(field)? {
-		None => quote! {#ty::into_field_ui(#reflect)},
-		Some(FieldAttrs { ident, fields }) => {
-			quote! {
+) -> Result<Option<TokenStream>> {
+	parse_type_attrs(&field.ty.to_token_stream(), &field.attrs, reflect)
+}
+pub fn parse_type_attrs(
+	ty: &TokenStream,
+	attrs: &Vec<Attribute>,
+	reflect: &TokenStream,
+) -> Result<Option<TokenStream>> {
+	let out = match get_variant(attrs)? {
+		FieldUiVariant::FromType => Some(quote! {#ty::into_field_ui(#reflect)}),
+		FieldUiVariant::FieldAttrs(FieldAttrs { ident, fields }) => {
+			Some(quote! {
 				#ident::<#ty>{
 					reflect: #reflect,
 					#fields,
 					..Default::default()
 				}.into()
-			}
+			})
 		}
+		FieldUiVariant::None => None,
 	};
 	Ok(out)
 }
-
+enum FieldUiVariant {
+	None,
+	FromType,
+	FieldAttrs(FieldAttrs),
+}
 
 struct FieldAttrs {
 	ident: Ident,
@@ -50,36 +62,40 @@ impl FieldAttrs {
 					quote!(#ident: #val)
 				})
 			})
-			.collect::<Vec<_>>()
 			.collect_comma_punct();
 		Self { ident, fields }
 	}
 }
 
-fn parse_field_attrs(field: &Field) -> Result<Option<FieldAttrs>> {
-	for attr in field.attrs.iter() {
-		let args: TokenStream = attr.parse_args()?;
+fn get_variant(attrs: &Vec<Attribute>) -> Result<FieldUiVariant> {
+	for attr in attrs.iter() {
+		let args: TokenStream = attr.parse_args().unwrap_or_default();
 		let args = attributes_map(args, None)?;
 
-		if attr
+		let out = if attr
 			.meta
 			.path()
-			.is_ident(&Ident::new("slider", Span::call_site()))
+			.is_ident(&Ident::new("hide_ui", Span::call_site()))
 		{
-			panic!("deprecated");
+			Some(FieldUiVariant::None)
 		} else if attr
 			.meta
 			.path()
 			.is_ident(&Ident::new("number", Span::call_site()))
 		{
-			return Ok(Some(FieldAttrs::new(
+			Some(FieldUiVariant::FieldAttrs(FieldAttrs::new(
 				"NumberField",
 				&["min", "max", "step", "display"],
 				args,
-			)));
+			)))
+		} else {
+			None
+		};
+		if let Some(out) = out {
+			return Ok(out);
 		}
 	}
-	Ok(None)
+	Ok(FieldUiVariant::FromType)
 }
 // .ok_or_else(|| {
 // 	syn::Error::new(

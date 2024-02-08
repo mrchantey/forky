@@ -1,13 +1,15 @@
 use super::*;
 use crate::prelude::Tree;
+use strum_macros::Display;
 
 pub trait IntoFieldUi: 'static + Clone + Sized {
 	fn into_field_ui(reflect: FieldReflect<Self>) -> FieldUi;
 }
 
 // #[derive(Display)]
-#[derive(Clone)]
+#[derive(Clone, Display)]
 pub enum FieldUi {
+	// None,
 	Group(GroupField),
 	Text(TextField),
 	Bool(BoolField),

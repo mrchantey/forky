@@ -39,6 +39,13 @@ impl<T: ActionSuper> BehaviorGraph<T> {
 		Self(DiGraph::from_tree(tree))
 	}
 
+	pub fn with_indexed_names(mut self) -> Self {
+		self.node_weights_mut().enumerate().for_each(|(i, node)| {
+			node.name = format!("Node {i}");
+		});
+		self
+	}
+
 
 	pub fn spawn(
 		&self,

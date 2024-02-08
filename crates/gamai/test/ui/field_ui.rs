@@ -6,15 +6,22 @@ use sweet::*;
 
 #[derive(Clone, FieldUi)]
 struct MyAction {
-	#[number(min = 0, max = 100, step = 1,display=NumberFieldVariant::default())]
+	#[number(min = 0, max = 100, step = 1, variant=NumberFieldVariant::default())]
 	pub health: u32,
 	pub score: Score,
 	pub nested: NestedAction,
 }
 
-#[derive(Clone, FieldUi)]
+#[derive(Clone, FieldUi, Default)]
 struct NestedAction {
 	pub nested_field: u32,
+	#[hide_ui]
+	#[allow(unused)]
+	pub nested_field_hidden: u32,
+	#[allow(unused)]
+	#[hide_ui]
+	pub nested_field_hidden2: u32,
+	pub nested_field2: u32,
 }
 
 
@@ -22,7 +29,7 @@ fn setup() -> FieldUiRoot<MyAction> {
 	FieldUiRoot::new(MyAction {
 		health: 100,
 		score: Score::Pass,
-		nested: NestedAction { nested_field: 0 },
+		nested: NestedAction::default(),
 	})
 }
 
@@ -53,6 +60,7 @@ pub fn sets_nested_value() -> Result<()> {
 
 	if let FieldUi::Group(group) = root.get_ui() {
 		if let FieldUi::Group(nested_group) = &group.children[2] {
+			expect(nested_group.children.len()).to_be(2)?;
 			if let FieldUi::NumberU32(nested_field) = &nested_group.children[0]
 			{
 				nested_field.set(50);

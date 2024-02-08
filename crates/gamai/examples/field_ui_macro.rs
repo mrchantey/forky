@@ -7,7 +7,7 @@ use strum_macros::EnumIter;
 // use gamai_macros::*;
 
 fn main() {
-	let a = NumberField::<u32> {
+	let _a = NumberField::<u32> {
 		step: 2,
 		..Default::default()
 	};

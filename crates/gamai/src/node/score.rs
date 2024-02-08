@@ -1,4 +1,3 @@
-// use crate::prelude::*;
 use crate::prelude::*;
 use bevy_ecs::prelude::*;
 use serde::Deserialize;
@@ -33,7 +32,8 @@ pub enum Score {
 	/// The node should not run.
 	Fail,
 	/// The node has a weight in the range `0..100`, where higher is more favorable.
-	Weight(#[number(min = 0, max = 100, step = 1)] u8),
+	Weight(u8),
+	// Weight(#[number(min = 0, max = 100, step = 1)] u8),
 	/// The node should run.
 	Pass,
 }

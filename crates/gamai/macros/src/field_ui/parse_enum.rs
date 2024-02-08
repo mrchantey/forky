@@ -1,4 +1,4 @@
-use crate::field_ui_option;
+use crate::parse_field_attrs;
 use crate::utils::*;
 use proc_macro2::Ident;
 use proc_macro2::TokenStream;
@@ -10,21 +10,37 @@ use syn::Field;
 use syn::Result;
 use syn::Variant;
 
-pub fn parse_enum(input: DataEnum) -> Result<TokenStream> {
+pub fn parse_enum(
+	input: DataEnum,
+	enum_field_variant: Option<TokenStream>,
+) -> Result<TokenStream> {
+	let is_hidden = enum_field_variant.is_none();
+
 	let variants = input
 		.variants
 		.iter()
-		.map(parse_enum_variant)
+		.map(|v| parse_enum_variant(v, is_hidden))
 		.collect::<Result<Vec<_>>>()?
+		.into_iter()
 		.collect_comma_punct();
 
-	Ok(quote! {
-		let select = SelectField::new(
-			reflect.field_name.clone(),
-			reflect.clone_get_cb(),
-			reflect.clone_set_cb(),
-		);
+	// input.enum_token
 
+	let parent_def = if is_hidden {
+		TokenStream::new()
+	} else {
+		// TODO use enum_field_variant
+		quote! {
+			let select = SelectField::new(
+				reflect.field_name.clone(),
+				reflect.clone_get_cb(),
+				reflect.clone_set_cb(),
+			);
+		}
+	};
+
+	Ok(quote! {
+		#parent_def
 		let val = reflect.get();
 		#[allow(unused_variables)]
 		match val{
@@ -34,11 +50,25 @@ pub fn parse_enum(input: DataEnum) -> Result<TokenStream> {
 }
 
 
-fn parse_enum_variant(variant: &Variant) -> Result<TokenStream> {
+fn parse_enum_variant(
+	variant: &Variant,
+	parent_is_hidden: bool,
+) -> Result<TokenStream> {
 	let variant_ident = &variant.ident;
+	let parent_iter_val = if parent_is_hidden {
+		TokenStream::new()
+	} else {
+		quote! {select.into(),}
+	};
+
 	let out = match &variant.fields {
 		syn::Fields::Unit => {
-			quote! {Self::#variant_ident => select.into()}
+			if parent_is_hidden {
+				quote! {Self::#variant_ident => GroupField::new("Empty Enum".to_string(),Vec::new()).into()}
+			// quote! {Self::#variant_ident => select.into()}
+			} else {
+				quote! {Self::#variant_ident => select.into()}
+			}
 		}
 		syn::Fields::Unnamed(fields) => {
 			let field_idents = unnamed_field_idents(fields);
@@ -53,13 +83,12 @@ fn parse_enum_variant(variant: &Variant) -> Result<TokenStream> {
 					field.ident = Some(field_ident(i, &field));
 					parse_enum_field(&field, &variant_with_fields)
 				})
-				.collect::<Result<Vec<_>>>()?
-				.collect_comma_punct();
+				.collect_tokens()?;
+
 			quote! {
 				Self::#variant_ident(#field_idents) =>
 				GroupField::new(reflect.display_name.clone(), vec![
-				select.into(),
-				#fields
+				#parent_iter_val #fields
 			]).into()
 			}
 		}
@@ -68,7 +97,6 @@ fn parse_enum_variant(variant: &Variant) -> Result<TokenStream> {
 				.named
 				.iter()
 				.map(|f| f.ident.to_token_stream())
-				.collect::<Vec<_>>()
 				.collect_comma_punct();
 			let variant_with_fields =
 				quote! {Self::#variant_ident{#field_idents}};
@@ -76,12 +104,10 @@ fn parse_enum_variant(variant: &Variant) -> Result<TokenStream> {
 				.named
 				.iter()
 				.map(|field| parse_enum_field(&field, &variant_with_fields))
-				.collect::<Result<Vec<_>>>()?
-				.collect_comma_punct();
+				.collect_tokens()?;
 			quote! {variant_with_fields =>
 					GroupField::new(reflect.display_name.clone(), vec![
-					select.into(),
-					#fields
+					#parent_iter_val #fields
 				]).into()
 			}
 		}
@@ -96,7 +122,6 @@ fn unnamed_field_idents(fields: &syn::FieldsUnnamed) -> TokenStream {
 		.iter()
 		.enumerate()
 		.map(|(i, field)| field_ident(i, field).into_token_stream())
-		.collect::<Vec<_>>()
 		.collect_comma_punct()
 }
 
@@ -108,7 +133,7 @@ const ERROR: &str = "Unexpected enum variant, usually because UI was not recreat
 fn parse_enum_field(
 	field: &Field,
 	variant_with_fields: &TokenStream,
-) -> Result<TokenStream> {
+) -> Result<Option<TokenStream>> {
 	let field_ident = field
 		.ident
 		.as_ref()
@@ -145,5 +170,5 @@ fn parse_enum_field(
 		}
 	};
 
-	Ok(field_ui_option(field, &reflect)?)
+	Ok(parse_field_attrs(field, &reflect)?)
 }

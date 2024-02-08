@@ -1,4 +1,4 @@
-use crate::field_ui_option;
+use crate::parse_field_attrs;
 use crate::utils::*;
 use proc_macro2::TokenStream;
 use quote::quote;
@@ -13,11 +13,9 @@ pub fn parse_struct(input: DataStruct) -> Result<TokenStream> {
 	let fields = input
 		.fields
 		.into_named()
-		.iter()
+		.into_iter()
 		.map(parse_struct_field)
-		// .collect::<Vec<_>>()
-		.collect::<Result<Vec<_>>>()?
-		.collect_comma_punct();
+		.collect_tokens()?;
 
 	Ok(quote! {
 	GroupField::new(reflect.display_name.clone(), vec![
@@ -27,8 +25,8 @@ pub fn parse_struct(input: DataStruct) -> Result<TokenStream> {
 }
 
 fn parse_struct_field(
-	(ident, field): &(TokenStream, Field),
-) -> Result<TokenStream> {
+	(ident, field): (TokenStream, Field),
+) -> Result<Option<TokenStream>> {
 	// let ident = field.ident.as_ref().expect("field must have an ident");
 	let ident_str = ident.to_string();
 
@@ -51,5 +49,5 @@ fn parse_struct_field(
 		)
 	};
 
-	Ok(field_ui_option(field, &reflect)?)
+	Ok(parse_field_attrs(&field, &reflect)?)
 }

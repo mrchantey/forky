@@ -20,7 +20,9 @@ macro_rules! action_list {
 		use strum_macros::Display;
 		use strum_macros::EnumIter;
 		//these should match most action auto impls crates/gamai/macros/src/action/parse_action.rs
+		// #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, EnumIter, Display)]
 		#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, EnumIter, Display, FieldUi)]
+		#[hide_ui]
 		pub enum $name {
 			$($variant($variant),)*
 		}

@@ -68,7 +68,7 @@ pub fn action(attr: TokenStream, item: TokenStream) -> TokenStream {
 
 
 // #[proc_macro_attribute]
-#[proc_macro_derive(FieldUi, attributes(number, slider))]
+#[proc_macro_derive(FieldUi, attributes(number, hide_ui))]
 pub fn field_ui(item: TokenStream) -> TokenStream {
 	parse_field_ui(item)
 		.unwrap_or_else(syn::Error::into_compile_error)
