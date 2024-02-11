@@ -74,6 +74,10 @@ pub impl<N> DiGraph<N, ()> {
 
 	/// Discards edges to previously visited nodes (dfs).
 	fn into_tree(self) -> Tree<N> {
+		if self.node_count() == 0 {
+			panic!("Cannot convert empty graph to tree");
+		}
+
 		let index_tree = self
 			.index_tree_recursive(NodeIndex::new(0), &mut HashSet::default());
 		let mut node_map = self.take_nodes();

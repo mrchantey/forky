@@ -22,7 +22,7 @@ pub fn DarkIframe() -> impl IntoView {
 
 	view! {
 		<div>
-			<label for="dark-iframe-checkbox">"dark iframe"</label>
+			<label for="dark-iframe-checkbox">no flashbang</label>
 			<input
 				id="dark-iframe-checkbox"
 				type="checkbox"

@@ -56,6 +56,11 @@ impl<T> Tree<T> {
 		self.children.push(child.into());
 		self
 	}
+	/// Add child trees, which may have children
+	pub fn with_children(mut self, children: Vec<Tree<T>>) -> Self {
+		self.children.extend(children);
+		self
+	}
 	/// Add a terminating (childless) child node
 	pub fn with_leaf(mut self, child: T) -> Self {
 		self.children.push(Tree::new(child));

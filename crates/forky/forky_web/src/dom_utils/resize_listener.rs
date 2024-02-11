@@ -5,7 +5,11 @@ use web_sys::Element;
 use web_sys::HtmlCanvasElement;
 use web_sys::ResizeObserver;
 use web_sys::ResizeObserverEntry;
+use web_sys::ResizeObserverSize;
 
+
+/// Resize listener
+/// For use with leptos, ensure it is moved to on_cleanup to avoid being dropped
 pub struct ResizeListener {
 	pub observer: ResizeObserver,
 	pub cb: Closure<dyn FnMut(Array, ResizeObserver)>,
@@ -27,6 +31,15 @@ impl ResizeListener {
 			ResizeObserver::new(&cb.as_ref().unchecked_ref()).unwrap();
 		observer.observe(el);
 		Self { cb, observer }
+	}
+	/// utility function for parsing the entry, usually this is what you want
+	/// https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserverEntry/contentBoxSize
+	pub fn parse_entry(entry: &ResizeObserverEntry) -> (u32, u32) {
+		let first = entry.content_box_size().get(0);
+		let first = first.unchecked_ref::<ResizeObserverSize>();
+		let width = first.inline_size();
+		let height = first.block_size();
+		(width as u32, height as u32)
 	}
 	pub fn resize_canvas(canvas: HtmlCanvasElement) -> Self {
 		let canvas2 = canvas.clone();

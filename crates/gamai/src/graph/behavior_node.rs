@@ -4,8 +4,8 @@ use serde::Serialize;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-pub trait ActionSuper: Action + PartialEq {}
-impl<T: Action + PartialEq> ActionSuper for T {}
+pub trait ActionSuper: Clone + PartialEq + Action {}
+impl<T: Clone + PartialEq + Action> ActionSuper for T {}
 
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
