@@ -4,6 +4,8 @@ use bevy_utils::HashSet;
 use extend::ext;
 use petgraph::graph::DiGraph;
 use petgraph::graph::NodeIndex;
+use petgraph::visit::Dfs;
+use petgraph::visit::Walker;
 use petgraph::Direction;
 use petgraph::Graph;
 
@@ -29,6 +31,12 @@ where
 			.iter()
 			.map(|e| (e.source(), e.target(), &e.weight));
 		a_ns.eq(b_ns) && a_es.eq(b_es)
+	}
+
+	fn remove_node_recursive(&mut self, index: NodeIndex<Ix>) {
+		let to_remove =
+			Dfs::new(&*self, index).iter(&*self).collect::<HashSet<_>>();
+		self.retain_nodes(|_, node| !to_remove.contains(&node));
 	}
 }
 
