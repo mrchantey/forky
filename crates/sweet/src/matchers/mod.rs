@@ -22,6 +22,9 @@ pub use self::matcher_result::*;
 pub mod matcher_option;
 #[allow(unused_imports)]
 pub use self::matcher_option::*;
+pub mod matcher_func;
+#[allow(unused_imports)]
+pub use self::matcher_func::*;
 pub mod matcher_eq;
 #[allow(unused_imports)]
 pub use self::matcher_eq::*;
