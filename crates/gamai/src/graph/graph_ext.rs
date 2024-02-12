@@ -4,11 +4,32 @@ use bevy_utils::HashSet;
 use extend::ext;
 use petgraph::graph::DiGraph;
 use petgraph::graph::NodeIndex;
+use petgraph::stable_graph::IndexType;
 use petgraph::visit::Dfs;
 use petgraph::visit::Walker;
 use petgraph::Direction;
+use petgraph::EdgeType;
 use petgraph::Graph;
-
+use std::iter::Rev;
+#[ext(name=GraphExt)]
+pub impl<N, E, Ty, Ix> Graph<N, E, Ty, Ix>
+where
+	Ty: EdgeType,
+	Ix: IndexType,
+{
+	/// Provides neighbors in the order they were added.
+	/// This is the reverse of [`Graph::neighbors_directed`]
+	fn neighbors_directed_in_order(
+		&self,
+		parent: NodeIndex<Ix>,
+		direction: Direction,
+	) -> Rev<std::vec::IntoIter<NodeIndex<Ix>>> {
+		self.neighbors_directed(parent, direction)
+			.collect::<Vec<_>>()
+			.into_iter()
+			.rev()
+	}
+}
 
 #[ext]
 pub impl<N, E, Ty, Ix> Graph<N, E, Ty, Ix>
@@ -61,8 +82,7 @@ pub impl<N> DiGraph<N, ()> {
 		let Tree::<N> { value, children } = tree;
 		let node = self.add_node(value);
 
-		// why do we need to reverse this?
-		for child in children.into_iter().rev() {
+		for child in children.into_iter() {
 			let index = self.from_tree_recursive(child);
 			self.add_edge(node, index, ());
 		}
@@ -73,6 +93,7 @@ pub impl<N> DiGraph<N, ()> {
 	/// Take nodes from a graph, preserving node indices.
 	fn take_nodes(mut self) -> HashMap<NodeIndex, N> {
 		let mut nodes = HashMap::default();
+		// reverse to safely remove
 		for index in self.node_indices().rev() {
 			nodes.insert(index, self.remove_node(index).unwrap());
 		}
@@ -108,6 +129,7 @@ pub impl<N> DiGraph<N, ()> {
 		}
 	}
 
+
 	/// Note: This will empty the graph.
 	fn index_tree_recursive(
 		&self,
@@ -119,7 +141,7 @@ pub impl<N> DiGraph<N, ()> {
 		Tree {
 			value: parent,
 			children: self
-				.neighbors_directed(parent, Direction::Outgoing)
+				.neighbors_directed_in_order(parent, Direction::Outgoing)
 				.filter(|index| !visited.contains(index))
 				.collect::<Vec<_>>()
 				.into_iter()

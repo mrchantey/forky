@@ -75,7 +75,7 @@ impl<T: ActionSuper> BehaviorGraph<T> {
 			entity_graph.node_weights(),
 		) {
 			let children = entity_graph
-				.neighbors_directed(index, petgraph::Direction::Outgoing)
+				.neighbors_directed_in_order(index, petgraph::Direction::Outgoing)
 				.map(|index| entity_graph[index])
 				.collect::<Vec<_>>();
 			world.insert(*entity, Edges(children));
