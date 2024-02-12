@@ -52,10 +52,6 @@ impl<T: ActionSuper> BehaviorGraph<T> {
 		world: &mut impl WorldOrCommands,
 		target: Entity,
 	) -> EntityGraph {
-		if self.node_count() == 0 {
-			panic!("BehaviorGraph is empty");
-		}
-
 		// create entities & actions
 		let entity_graph = self.map(
 			|_, actions| {
@@ -85,7 +81,11 @@ impl<T: ActionSuper> BehaviorGraph<T> {
 			world.insert(*entity, Edges(children));
 		}
 
-		world.insert(*entity_graph.root().unwrap(), Running);
+		if let Some(root) = entity_graph.root() {
+			world.insert(*root, Running);
+		} else {
+			// warn that graph is empty?
+		}
 
 		EntityGraph(entity_graph)
 	}

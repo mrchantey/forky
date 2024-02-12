@@ -1,3 +1,4 @@
+use crate::resizable_canvas;
 use leptos::html::Canvas;
 use leptos::*;
 
@@ -10,5 +11,7 @@ pub fn BevyCanvas(
 	} else {
 		create_node_ref()
 	};
+	resizable_canvas(canvas_ref);
+
 	view! { <canvas id="bevy-canvas" class="bevy-canvas" data-bevy="primary_window" node_ref=canvas_ref></canvas> }
 }
