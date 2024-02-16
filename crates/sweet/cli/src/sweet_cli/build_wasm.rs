@@ -86,9 +86,10 @@ impl SweetCli{
 
 	fn copy_static(&self) -> Result<()> {
 		let dst = Path::new(&self.server.dir);
+		println!("creating target dir {:?}", dst);
+		// its ok if this fails, doesnt exist yet
 		std::fs::remove_dir_all(&dst).ok();
 		std::fs::create_dir_all(&dst)?;
-		println!("copying runner files to {:?}", dst);
 
 		if let Some(static_dir) = &self.static_dir {
 			println!("copying static files from {:?}", static_dir);

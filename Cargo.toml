@@ -73,6 +73,7 @@ bevy_easings = "0.12.2"
 wgpu = { version = "0.17.1" }
 
 ### utility ###
+log = "0.4"
 anyhow = "1.0.75"
 time = "0.3.20"
 petgraph = { version = "0.6.4", features = ["serde-1"] }

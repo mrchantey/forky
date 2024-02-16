@@ -2720,6 +2720,7 @@ dependencies = [
  "getrandom",
  "js-sys",
  "leptos",
+ "log",
  "num-traits",
  "rand",
  "wasm-bindgen",

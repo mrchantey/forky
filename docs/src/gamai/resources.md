@@ -9,11 +9,13 @@ Architecture:
 - Kevin Dill, Dave Mark - [Embracing the Dark Art of Mathematical Modeling in Game AI](https://www.gdcvault.com/play/1015683/Embracing-the-Dark-Art-of)
 - Kevin Dill - [Introducing GAIA](https://www.sisostds.org/DesktopModules/Bring2mind/DMX/Download.aspx?Command=Core_Download&EntryId=35466&PortalId=0&TabId=105)
 
+- Jakob Rasmussen - [Utility AI - Apex Game Tooks - Unite 2016](https://youtu.be/jse_ZleruJU)
+- Nicolas Meuleau - [Unity Labs - GOAP - 2017](https://youtu.be/78nhJNPS0vA)
+	- Follow-up - [2018](https://youtu.be/ZdN8dDa0ff4)
 
 AI libraries:
 - C++ Behavior trees - [BehaviorTree.cpp](https://www.behaviortree.dev/)
--  Bevy Utility AI - [big-brain](https://crates.io/crates/big-brain)
-
+- Bevy Utility AI - [big-brain](https://crates.io/crates/big-brain)
 Misc:
 
 - YouTube - [Introduction to Behaviour Trees](https://www.youtube.com/watch?v=KeShMInMjro&list=PLFQdM4LOGDr_vYJuo8YTRcmv3FrwczdKg)

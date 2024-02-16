@@ -64,7 +64,7 @@ impl SweetCli {
 			let change_listener = self.get_change_listener(kill.clone());
 
 			if let Err(err) = self.build_wasm(should_kill.clone()) {
-				eprintln!("sweet cli - build failed: {:?}", err);
+				eprintln!("sweet cli - wasm-bingden command failed: {:?}", err);
 			} else {
 				reload.reload();
 				if self.run_tests_mode.is_some() {
