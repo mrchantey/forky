@@ -59,7 +59,6 @@ fn action_trait(
 	let post_tick_system = post_tick_system(input);
 
 	quote! {
-		#[typetag::serde]
 		impl Action for #ident {
 			fn duplicate(&self) -> Box<dyn Action> {
 				Box::new(self.clone())

@@ -4,7 +4,6 @@ use bevy_ecs::system::EntityCommands;
 use bevy_ecs::world::EntityWorldMut;
 use serde::Serialize;
 
-#[typetag::serde]
 pub trait Action: 'static {
 	fn duplicate(&self) -> Box<dyn Action>;
 
@@ -59,16 +58,6 @@ impl<T: IntoAction> Action for T {
 	}
 
 	fn meta(&self) -> ActionMeta { self.into_action_ref().meta() }
-
-	#[doc(hidden)]
-	fn typetag_name(&self) -> &'static str {
-		self.into_action_ref().typetag_name()
-	}
-
-	#[doc(hidden)]
-	fn typetag_deserialize(&self) {
-		self.into_action_ref().typetag_deserialize()
-	}
 }
 
 // impl<T> IntoAction for T where

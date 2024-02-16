@@ -31,5 +31,4 @@ pub mod exports {
 	pub use serde;
 	pub use serde::Deserialize;
 	pub use serde::Serialize;
-	pub use typetag;
 }
