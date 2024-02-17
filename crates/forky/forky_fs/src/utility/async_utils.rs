@@ -1,14 +1,11 @@
-use std::future::Future;
+use std::ops::AsyncFn;
 use tokio::time::sleep;
 use tokio::time::Duration;
 
-pub async fn retry_async<T, E, F>(
-	func: impl Fn() -> F,
+pub async fn retry_async<T, E>(
+	func: impl AsyncFn() -> Result<T, E>,
 	timeout: Duration,
-) -> Result<T, E>
-where
-	F: Future<Output = Result<T, E>>,
-{
+) -> Result<T, E> {
 	let start = std::time::Instant::now();
 	loop {
 		match func().await {

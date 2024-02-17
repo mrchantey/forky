@@ -1,3 +1,4 @@
+use fantoccini::Client;
 use fantoccini::ClientBuilder;
 use forky_fs::retry_async;
 use std::process::Command;
@@ -11,15 +12,16 @@ pub async fn works() -> Result<()> {
 		.spawn()?;
 
 	let client = retry_async(
-		async || {
+		async || -> Result<Client> {
 			let cap = serde_json::from_str(
 				r#"{"browserName":"chrome","goog:chromeOptions":{"args":["--headless"]}}"#,
 			)
 			.unwrap();
-			ClientBuilder::native()
+			let client = ClientBuilder::native()
 				.capabilities(cap)
 				.connect("http://localhost:9515")
-				.await
+				.await?;
+			Ok(client)
 		},
 		std::time::Duration::from_secs(1),
 	)

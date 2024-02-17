@@ -24,7 +24,7 @@ const WEBDRIVER_CONNECT_TIMEOUT: Duration = Duration::from_secs(5);
 
 async fn get_client(mode: RunTestsMode) -> Result<Client> {
 	let client = retry_async(
-		async || {
+		async || -> Result<Client> {
 			let cap = if mode == RunTestsMode::Headed {
 				fantoccini::wd::Capabilities::default()
 			} else {
@@ -33,10 +33,11 @@ async fn get_client(mode: RunTestsMode) -> Result<Client> {
 				)
 				.unwrap()
 			};
-			ClientBuilder::native()
+			let client = ClientBuilder::native()
 				.capabilities(cap)
 				.connect(&format!("http://localhost:{WEBDRIVER_PORT}"))
-				.await
+				.await?;
+			Ok(client)
 		},
 		WEBDRIVER_CONNECT_TIMEOUT,
 	)

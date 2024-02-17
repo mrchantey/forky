@@ -28,6 +28,9 @@ pub use self::lifecycle::*;
 pub mod poll;
 #[allow(unused_imports)]
 pub use self::poll::*;
+pub mod html_event_waiter;
+#[allow(unused_imports)]
+pub use self::html_event_waiter::*;
 pub mod context_menu;
 #[allow(unused_imports)]
 pub use self::context_menu::*;
