@@ -17,6 +17,7 @@ pub struct HtmlEventListener<T> {
 }
 
 impl<T> HtmlEventListener<T> {
+	#[must_use]
 	pub fn new<F>(name: &'static str, f: F) -> Self
 	where
 		F: FnMut(T) + 'static,
@@ -24,6 +25,7 @@ impl<T> HtmlEventListener<T> {
 	{
 		Self::new_with_target(name, f, window().unwrap().unchecked_into())
 	}
+	#[must_use]
 	pub fn new_with_target<F>(
 		name: &'static str,
 		f: F,
