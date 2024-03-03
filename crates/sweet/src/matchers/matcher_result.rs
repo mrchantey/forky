@@ -12,14 +12,14 @@ impl<T: Debug, E: Debug> Matcher<Result<T, E>> {
 		self.assert_correct(result, &"Error")
 	}
 }
+// TODO T shouldt need to be debug
 impl<T: Debug, E: Debug + Display> Matcher<Result<T, E>> {
 	pub fn to_be_err_str(&self, value: &str) -> anyhow::Result<()> {
-		let expected = format!("Err({})", value);
 		if let Err(err) = &self.value {
 			let result = err.to_string() == value;
-			self.assert_correct(result, &expected)
+			self.assert_correct(result, &value)
 		} else {
-			self.assert_correct(false, &expected)
+			self.assert_correct_with_received(false, &"Error", &"Ok")
 		}
 	}
 }
