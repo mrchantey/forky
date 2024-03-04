@@ -5,10 +5,9 @@
 			"name": "Debug Rust Binary",
 			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/target/debug/examples/test_gamai.exe",
+			"program": "${workspaceFolder}/target/debug/examples/test_forky_core.exe",
 			"args": [
 				"-w",
-				"fallback_selector"
 			],
 			"cwd": "${workspaceFolder}"
 		}

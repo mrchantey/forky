@@ -13,5 +13,4 @@ Crates in this repo are mature enough for usage but not yet at a stage to warren
 ## Crates
 
 - [CLI](./forky_cli)
-- [Gamai](./gamai)
 - [Sweet](./sweet)

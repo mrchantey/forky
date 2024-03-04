@@ -2,7 +2,6 @@ use bevy::log::LogPlugin;
 use bevy::prelude::*;
 use bevy::winit::WinitPlugin;
 use bevy_mod_debugdump::schedule_graph::Settings;
-// use gamai::*;
 use std::fs::File;
 use std::io::Write;
 #[derive(Debug, Default, SystemSet, Clone, Eq, PartialEq, Hash)]

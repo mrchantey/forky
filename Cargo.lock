@@ -2792,7 +2792,6 @@ dependencies = [
  "forky_bevy",
  "forky_core",
  "forky_web",
- "gamai",
  "leptos",
  "petgraph",
  "strum",
@@ -3011,40 +3010,6 @@ checksum = "a713bee13966e9fbffdf7193af71d54a6b35a0bb34997cd6c9519ebeb5005972"
 dependencies = [
  "filedescriptor",
  "tempfile",
-]
-
-[[package]]
-name = "gamai"
-version = "0.1.39"
-dependencies = [
- "anyhow",
- "bevy_app",
- "bevy_core",
- "bevy_derive",
- "bevy_ecs",
- "bevy_time",
- "bevy_utils",
- "extend",
- "gamai_macros",
- "heck",
- "num-traits",
- "petgraph",
- "serde",
- "serde_json",
- "strum",
- "strum_macros",
- "sweet",
-]
-
-[[package]]
-name = "gamai_macros"
-version = "0.1.39"
-dependencies = [
- "anyhow",
- "extend",
- "proc-macro2",
- "quote",
- "syn 2.0.48",
 ]
 
 [[package]]

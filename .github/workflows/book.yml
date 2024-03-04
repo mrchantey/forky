@@ -1,3 +1,6 @@
+# Github Setup:
+# 1. settings > pages > branch > main/docs
+# 2. settings > actions > general > workflow permissions > read and write permissions
 name: 🌍 Deploy Book
 on:
   push:

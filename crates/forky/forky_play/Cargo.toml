@@ -17,7 +17,6 @@ shader_debug_internal = []
 ### Internal ###
 forky_core = { workspace = true }
 forky_bevy = { workspace = true }
-gamai = { workspace = true }
 
 ### Game ###
 bevy = { workspace = true }

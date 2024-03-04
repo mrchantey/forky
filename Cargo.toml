@@ -18,8 +18,6 @@ members = [
 	"crates/forky/forky_web",
 	"crates/forky/forky_web/test",
 	"crates/forky/forky_web/macros",
-	"crates/gamai",
-	"crates/gamai/macros",
 	"crates/sweet",
 	"crates/sweet/macros",
 	"crates/sweet/cli",
@@ -50,8 +48,6 @@ forky_web = { path = "./crates/forky/forky_web", version = "0.*" }
 forky_web_macros = { path = "./crates/forky/forky_web/macros", version = "0.*" }
 sweet = { path = "./crates/sweet", version = "0.*" }
 sweet_macros = { path = "./crates/sweet/macros", version = "0.*" }
-gamai = { path = "./crates/gamai", version = "0.*" }
-gamai_macros = { path = "./crates/gamai/macros", version = "0.*" }
 
 ### game ###
 bevy = { version = "0.12.*" }

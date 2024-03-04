@@ -17,14 +17,6 @@ default:
 
 ### common ###
 
-# cargo fix -p gamai --allow-dirty --example test_gamai --features sweet/bevy_core
-fix-all:
-	cargo fix -p gamai --allow-dirty --features sweet/bevy_core
-	cargo fmt -p gamai
-	cargo fix -p sweet --allow-dirty --features sweet/bevy_core --example test_sweet
-
-
-
 @all command:
 	for file in {{crates}}; do \
 		just {{command}} $file; \
@@ -112,8 +104,6 @@ publish-all:
 	just publish forky_cli 			| true
 	just publish forky_ai 			| true
 	just publish forky_play 		| true
-	just publish gamai_macros		| true
-	just publish gamai 					| true
 
 start crate: 
 	./target/debug/{{crate}}.exe
@@ -123,7 +113,6 @@ ci:
 	just test-all-wasm
 
 test-all *args:
-	cargo run -p gamai			--example test_gamai 			--features sweet/bevy_core -- --parallel
 	cargo run -p sweet			--example test_sweet 			--features sweet/bevy -- --parallel
 	cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
 	cargo run -p forky_cli	--example test_forky_cli	-- --parallel

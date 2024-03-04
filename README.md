@@ -26,6 +26,5 @@
 
 ## Contents
 - [Forky CLI](./crates/forky/forky_cli/README.md)
-- [Gamai](./crates/gamai/README.md)
 - [Sweet](./crates/sweet/README.md)
 - [Bevy WebXR Demo](./crates/bevy_webxr/README.md)
