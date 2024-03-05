@@ -2842,7 +2842,6 @@ dependencies = [
  "forky_web_macros",
  "js-sys",
  "leptos",
- "log",
  "serde",
  "serde_json",
  "wasm-bindgen",

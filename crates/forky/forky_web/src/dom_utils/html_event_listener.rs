@@ -1,7 +1,9 @@
 use super::*;
 use crate::*;
 use forky_core::*;
+use js_sys::Function;
 use js_sys::Promise;
+use std::rc::Rc;
 use wasm_bindgen::convert::FromWasmAbi;
 use wasm_bindgen::prelude::Closure;
 use wasm_bindgen::JsCast;
@@ -10,11 +12,26 @@ use wasm_bindgen_futures::JsFuture;
 use web_sys::window;
 use web_sys::EventTarget;
 
-pub struct HtmlEventListener<T> {
-	pub closure: FnClosure<T>,
-	pub target: EventTarget,
-	pub name: &'static str,
+pub struct HtmlEventListenerInner<T> {
+	closure: FnClosure<T>,
+	target: EventTarget,
+	name: &'static str,
 }
+
+impl<T> Drop for HtmlEventListenerInner<T> {
+	fn drop(&mut self) {
+		let closure: &Function = self.closure.as_ref().unchecked_ref();
+		self.target
+			.remove_event_listener_with_callback(self.name, closure)
+			.anyhow()
+			.ok_or(|e| web_sys::console::error_1(&format!("{:?}", e).into()));
+	}
+}
+
+/// Event listener that unsubscribes on drop.
+/// It stores an `Rc<Inner>` so can be safely cloned.
+#[derive(Clone)]
+pub struct HtmlEventListener<T>(pub Rc<HtmlEventListenerInner<T>>);
 
 impl<T> HtmlEventListener<T> {
 	#[must_use]
@@ -43,25 +60,15 @@ impl<T> HtmlEventListener<T> {
 				closure.as_ref().unchecked_ref(),
 			)
 			.unwrap();
-		Self {
+		Self(Rc::new(HtmlEventListenerInner {
 			target,
 			name,
 			closure,
-		}
+		}))
 	}
 	pub fn forget(self) { std::mem::forget(self); }
 }
 
-impl<T> Drop for HtmlEventListener<T> {
-	fn drop(&mut self) {
-		self.target
-			.remove_event_listener_with_callback(
-				self.name,
-				self.closure.as_ref().unchecked_ref(),
-			)
-			.unwrap();
-	}
-}
 
 impl HtmlEventListener<JsValue> {
 	pub async fn wait(name: &'static str) -> JsValue {

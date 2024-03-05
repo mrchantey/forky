@@ -93,7 +93,7 @@ impl HtmlEventWaiter {
 }
 
 /// Rejects a promise after a given duration
-fn timeout_reject(duration: Duration) -> Promise {
+pub fn timeout_reject(duration: Duration) -> Promise {
 	Promise::new(&mut |_resolve, reject| {
 		web_sys::window()
 			.unwrap()

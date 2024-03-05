@@ -25,6 +25,9 @@ pub use self::document_interaction_listener::*;
 pub mod lifecycle;
 #[allow(unused_imports)]
 pub use self::lifecycle::*;
+pub mod future_timeout;
+#[allow(unused_imports)]
+pub use self::future_timeout::*;
 pub mod poll;
 #[allow(unused_imports)]
 pub use self::poll::*;

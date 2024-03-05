@@ -21,6 +21,7 @@ where
 	F: Future<Output = Result<JsValue, JsValue>> + 'static,
 {
 	let _ = future_to_promise(fut).catch(&Closure::new(|val| {
-		log::error!("Wasm Error: {:?}", val);
+		// log::error!("Wasm Error: {:?}", val);
+		web_sys::console::error_1(&val)
 	}));
 }

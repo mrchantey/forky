@@ -26,7 +26,7 @@ impl RunnerLogger for RunnerLoggerWasm {
 	}
 }
 
-pub fn log_web(val: &str) { web_sys::console::log_1(&JsValue::from_str(val)); }
+pub fn log_web(val: &str) { console::log_1(&val.into()); }
 
 #[derive(Default, Debug, Clone)]
 pub struct SuiteLoggerWasm;
