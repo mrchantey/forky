@@ -23,17 +23,15 @@ impl AnimationFrame {
 			request_animation_frame(f2.borrow().as_ref().unwrap());
 		Self(handle)
 	}
+}
 
-	pub fn cancel(&self) {
+impl Drop for AnimationFrame {
+	fn drop(&mut self) {
 		window()
 			.unwrap()
 			.cancel_animation_frame(*self.0.borrow())
 			.expect("failed to request animation frame");
 	}
-}
-
-impl Drop for AnimationFrame {
-	fn drop(&mut self) { self.cancel(); }
 }
 
 fn request_animation_frame(f: &Closure<dyn FnMut()>) -> i32 {
