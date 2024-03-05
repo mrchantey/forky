@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use forky_core::*;
 // use std::rc::Rc;
 use std::sync::{

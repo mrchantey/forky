@@ -70,6 +70,7 @@ wgpu = { version = "0.17.1" }
 
 ### utility ###
 log = "0.4"
+pretty_env_logger = "0.4"
 anyhow = "1.0.75"
 time = "0.3.20"
 petgraph = { version = "0.6.4", features = ["serde-1"] }
@@ -141,6 +142,7 @@ tower-livereload = "0.8.0"
 fantoccini = "0.19.3"
 
 ### wasm ###
+console_log = "1.0"
 js-sys = "0.3.63"
 wasm-bindgen = "0.2.86"
 wasm-bindgen-futures = "0.4.36"

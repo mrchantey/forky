@@ -33,6 +33,8 @@ inventory = { workspace = true }
 extend = { workspace = true }
 
 ### console ###
+log = { workspace = true }
+pretty_env_logger = { workspace = true }
 colorize = { workspace = true }
 backtrace = { workspace = true }
 
@@ -53,6 +55,7 @@ bevy_time = { workspace = true, optional = true }
 bevy_utils = { workspace = true, optional = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
+console_log = { workspace = true }
 forky_web = { workspace = true }
 js-sys = { workspace = true }
 wasm-bindgen = { workspace = true }

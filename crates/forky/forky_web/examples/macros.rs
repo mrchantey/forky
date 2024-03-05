@@ -1,4 +1,3 @@
-use forky_web::prelude::*;
 
 
 fn main() {}

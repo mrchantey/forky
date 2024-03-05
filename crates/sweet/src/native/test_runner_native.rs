@@ -65,9 +65,9 @@ async fn run_group_parallel(
 	let handles_parallel = to_run.into_iter().map(|suite| {
 		let suite = (*suite).clone();
 		let config = (*config).clone();
-		tokio::spawn(
-			async move { suite.run::<SuiteLoggerDefault>(&config).await },
-		)
+		tokio::spawn(async move {
+			suite.run::<SuiteLoggerNativeSimple>(&config).await
+		})
 	});
 	let results = join_all(handles_parallel)
 		.await

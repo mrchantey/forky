@@ -1,4 +1,3 @@
-use forky_core::*;
 use std::future::Future;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::future_to_promise;
@@ -22,6 +21,6 @@ where
 	F: Future<Output = Result<JsValue, JsValue>> + 'static,
 {
 	let _ = future_to_promise(fut).catch(&Closure::new(|val| {
-		log!("Wasm Error: {:?}", val);
+		log::error!("Wasm Error: {:?}", val);
 	}));
 }

@@ -3,7 +3,6 @@ use crate::test_case::*;
 use crate::test_runner::*;
 use crate::test_suite::*;
 use anyhow::Result;
-use forky_core::*;
 use wasm_bindgen::JsValue;
 use web_sys::window;
 use web_sys::HtmlIFrameElement;
@@ -25,7 +24,7 @@ impl TestRunnerWasm {
 					if is_iframe {
 						parent.post_message(&JsValue::TRUE, &origin).unwrap();
 					} else {
-						log!("test passed");
+						log_web("test passed");
 					}
 				}
 				Err(err) => {
@@ -33,7 +32,7 @@ impl TestRunnerWasm {
 					if is_iframe {
 						parent.post_message(&err.into(), &origin).unwrap();
 					} else {
-						log!("{err}");
+						log_web("{err}");
 					}
 				}
 			}
@@ -74,7 +73,7 @@ impl TestRunnerWasm {
 
 			let mut results = Vec::with_capacity(to_run.len());
 			for suite in to_run {
-				let result = suite.run::<SuiteLoggerDefault>(&config).await;
+				let result = suite.run::<SuiteLoggerWasm>(&config).await;
 				results.push(result);
 				ResultExport::set_suites(&results);
 			}

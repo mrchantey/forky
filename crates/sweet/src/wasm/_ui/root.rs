@@ -4,12 +4,6 @@ use crate::wasm::MATCHES_KEY;
 use forky_web::*;
 use leptos::*;
 
-// pub fn get_file() -> Option<String> {  }
-
-pub fn suite_matches_none(matches: &Vec<String>) -> bool {
-	matches.len() == 1 && matches[0] == "!"
-}
-
 #[component]
 pub fn Root() -> impl IntoView {
 	let (suite_matches, set_matches) =

@@ -39,3 +39,13 @@ impl SuiteLogger for SuiteLoggerNative {
 		}
 	}
 }
+
+#[derive(Default, Debug, Clone)]
+pub struct SuiteLoggerNativeSimple;
+
+impl SuiteLogger for SuiteLoggerNativeSimple {
+	fn on_start(_: String) -> Self { Self }
+	fn on_end(self, end_str: String) {
+		println!("{end_str}");
+	}
+}

@@ -21,15 +21,6 @@ macro_rules! replace_expr {
 // 		print!("\n");
 // 	};
 // }
-#[macro_export]
-macro_rules! log {
-	( $( $t:tt )* ) => {
-			#[cfg(not(target_arch = "wasm32"))]
-			println!($( $t )*);
-			#[cfg(target_arch = "wasm32")]
-			web_sys::console::log_1(&format!( $( $t )* ).into());
-	}
-}
 
 #[macro_export]
 macro_rules! dir {

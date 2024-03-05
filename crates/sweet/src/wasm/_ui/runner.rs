@@ -6,6 +6,11 @@ use leptos::html::Iframe;
 use leptos::*;
 use web_sys::HtmlIFrameElement;
 
+
+fn suite_matches_none(matches: &Vec<String>) -> bool {
+	matches.len() == 0 || (matches.len() == 1 && matches[0] == "!")
+}
+
 #[component]
 pub fn RunnerContainer(
 	#[prop(into)] suite_matches: Signal<Vec<String>>,

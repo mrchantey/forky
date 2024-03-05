@@ -7,9 +7,9 @@ pub use self::test_runner_wasm::*;
 pub mod test_runner_config_wasm;
 #[allow(unused_imports)]
 pub use self::test_runner_config_wasm::*;
-pub mod runner_logger_wasm;
+pub mod logger_wasm;
 #[allow(unused_imports)]
-pub use self::runner_logger_wasm::*;
+pub use self::logger_wasm::*;
 pub mod test_collector_wasm;
 #[allow(unused_imports)]
 pub use self::test_collector_wasm::*;
