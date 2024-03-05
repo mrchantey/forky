@@ -2,7 +2,6 @@ use crate::test_runner::*;
 use crate::test_suite::SuiteLogger;
 use forky_web::*;
 use std::time::Duration;
-use wasm_bindgen::JsValue;
 use web_sys::console;
 
 pub struct RunnerLoggerWasm {
