@@ -1,6 +1,8 @@
 use bevy_math::prelude::*;
 use extend::ext;
-use forky_core::prelude::*;
+use rand::Rng;
+use std::f32::consts::PI;
+use std::f32::consts::TAU;
 
 #[ext]
 pub impl Vec3 {
@@ -57,8 +59,35 @@ pub impl Vec3 {
 		self
 	}
 
+	/// Random position inside a unit cube
+	fn random_in_cube() -> Self {
+		let mut rng = rand::thread_rng();
 
+		Vec3::new(
+			rng.gen_range(-1.0..1.0),
+			rng.gen_range(-1.0..1.0),
+			rng.gen_range(-1.0..1.0),
+		)
+	}
+
+	/// Random position on a unit sphere
 	fn random_on_sphere() -> Self {
-		Vec3::new(random_value(), random_value(), random_value()) * 2. - 1.
+		let mut rng = rand::thread_rng();
+		let theta = rng.gen_range(0.0..TAU);
+		let phi = rng.gen_range(0.0..PI);
+		Vec3::new(phi.sin() * theta.cos(), phi.sin() * theta.sin(), phi.cos())
+	}
+
+	/// Random position inside a unit sphere
+	fn random_in_sphere() -> Self {
+		let mut rng = rand::thread_rng();
+		let theta = rng.gen_range(0.0..TAU);
+		let phi = rng.gen_range(0.0..PI);
+		let r = rng.gen_range(0.0f32..1.0).powf(1. / 3.);
+		Vec3::new(
+			r * phi.sin() * theta.cos(),
+			r * phi.sin() * theta.sin(),
+			r * phi.cos(),
+		)
 	}
 }

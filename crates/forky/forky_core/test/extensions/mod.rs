@@ -7,6 +7,6 @@ pub use self::str_x::*;
 pub mod path;
 #[allow(unused_imports)]
 pub use self::path::*;
-pub mod int_x;
+pub mod num_x;
 #[allow(unused_imports)]
-pub use self::int_x::*;
+pub use self::num_x::*;

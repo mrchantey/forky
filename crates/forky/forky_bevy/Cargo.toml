@@ -19,6 +19,7 @@ bevy_time = { workspace = true }
 bevy_transform = { workspace = true }
 bevy_hierarchy = { workspace = true }
 bevy_utils = { workspace = true }
+rand = { workspace = true }
 # bevy = { workspace = true, optional = true }
 
 anyhow = { workspace = true }
@@ -26,7 +27,6 @@ extend = { workspace = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 forky_web = { workspace = true }
-leptos = { workspace = true }
 js-sys = { workspace = true }
 # wasm-bindgen = { workspace = true, optional = true }
 # wasm-bindgen-futures = { workspace = true, optional = true }

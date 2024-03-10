@@ -24,7 +24,7 @@ fn clear_terminal() -> Result<()> {
 	let mut stdout = stdout();
 	stdout
 		.queue(terminal::Clear(terminal::ClearType::All))?
-		.queue(cursor::Hide)?
+		// .queue(cursor::Hide)?
 		.queue(cursor::MoveTo(0, 0))?;
 	stdout.flush()?;
 	Ok(())

@@ -34,7 +34,7 @@ pub impl Quat {
 		if angle == 0. {
 			return self;
 		};
-		let t = math::min(1., rad_step / angle);
+		let t = f32::min(1., rad_step / angle);
 		self.clone_from(&self.slerp(rhs, t));
 		return self;
 	}

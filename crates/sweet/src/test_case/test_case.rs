@@ -1,9 +1,6 @@
 use super::*;
-use crate::wasm::log_web;
 use anyhow::Result;
 use colorize::*;
-use core::fmt;
-use std::error::Error;
 use std::panic::RefUnwindSafe;
 use std::path::PathBuf;
 
@@ -30,10 +27,14 @@ where
 			let val = format!("{location}\n\n{msg}\n");
 			// Temporary fix to avoid assertion failed: psize <= size + max_overhead
 			#[cfg(target_arch = "wasm32")]
-			log_web(&val);
-			return anyhow::anyhow!("");
+			{
+				crate::wasm::log_web(&val);
+				anyhow::anyhow!("")
+			}
 			#[cfg(not(target_arch = "wasm32"))]
-			anyhow::anyhow!(val)
+			{
+				anyhow::anyhow!(val)
+			}
 		})
 	}
 

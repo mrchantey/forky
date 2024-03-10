@@ -46,43 +46,42 @@ pub impl Document {
 		Self::get()
 			.create_element(local_name)
 			.unwrap()
-			.dyn_into::<HtmlElement>()
+			.dyn_into()
 			.unwrap()
 	}
 	fn x_create_anchor() -> HtmlAnchorElement {
-		Self::get()
-			.create_element("a")
-			.unwrap()
-			.dyn_into::<HtmlAnchorElement>()
-			.unwrap()
+		Self::get().create_element("a").unwrap().dyn_into().unwrap()
 	}
 	fn x_create_canvas() -> HtmlCanvasElement {
 		Self::get()
 			.create_element("canvas")
 			.unwrap()
-			.dyn_into::<HtmlCanvasElement>()
+			.dyn_into()
 			.unwrap()
 	}
 	fn x_create_div() -> HtmlDivElement {
 		Self::get()
 			.create_element("div")
 			.unwrap()
-			.dyn_into::<HtmlDivElement>()
+			.dyn_into()
 			.unwrap()
 	}
 	fn x_create_input() -> HtmlInputElement {
 		Self::get()
 			.create_element("input")
 			.unwrap()
-			.dyn_into::<HtmlInputElement>()
+			.dyn_into()
+			.unwrap()
+	}
+	fn x_create_button() -> HtmlButtonElement {
+		Self::get()
+			.create_element("button")
+			.unwrap()
+			.dyn_into()
 			.unwrap()
 	}
 	fn x_create_paragraph() -> HtmlParagraphElement {
-		Self::get()
-			.create_element("p")
-			.unwrap()
-			.dyn_into::<HtmlParagraphElement>()
-			.unwrap()
+		Self::get().create_element("p").unwrap().dyn_into().unwrap()
 	}
 
 

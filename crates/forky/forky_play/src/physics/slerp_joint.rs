@@ -34,12 +34,12 @@ fn update_slerp(
 ) {
 	if timer.0.tick(time.delta()).just_finished() {
 		for (_, mut slerp) in query.iter_mut() {
-			slerp.target = Quat::look_at(Vec3::random_on_sphere())
+			slerp.target = Quat::look_at(Vec3::random_in_cube())
 		}
 	}
 	let d = time.delta_seconds();
 	for (mut tran, target) in query.iter_mut() {
-		// tran.rotation = Quat::look_at(Vec3::random_on_sphere());
+		// tran.rotation = Quat::look_at(Vec3::random_in_cube());
 		tran.rotation.rotate_towards(target.target, 1. * d);
 	}
 }

@@ -13,15 +13,18 @@ pub impl App {
 		self.insert_resource::<Time>(Time::default());
 		self
 	}
+	/// Advance time *then* update.
 	fn update_with_duration(&mut self, duration: Duration) -> &mut Self {
 		let mut time = self.world.resource_mut::<Time>();
 		time.advance_by(duration);
 		self.update();
 		self
 	}
+	/// Advance time *then* update.
 	fn update_with_secs(&mut self, secs: u64) -> &mut Self {
 		self.update_with_duration(Duration::from_secs(secs))
 	}
+	/// Advance time *then* update.
 	fn update_with_millis(&mut self, millis: u64) -> &mut Self {
 		self.update_with_duration(Duration::from_millis(millis))
 	}
