@@ -10,6 +10,7 @@ use wasm_bindgen::JsCast;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::window;
+use web_sys::Event;
 use web_sys::EventTarget;
 
 pub struct HtmlEventListenerInner<T> {
@@ -31,7 +32,7 @@ impl<T> Drop for HtmlEventListenerInner<T> {
 /// Event listener that unsubscribes on drop.
 /// It stores an `Rc<Inner>` so can be safely cloned.
 #[derive(Clone)]
-pub struct HtmlEventListener<T>(pub Rc<HtmlEventListenerInner<T>>);
+pub struct HtmlEventListener<T = Event>(pub Rc<HtmlEventListenerInner<T>>);
 
 impl<T> HtmlEventListener<T> {
 	#[must_use]

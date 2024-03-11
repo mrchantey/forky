@@ -25,10 +25,5 @@
 
 ---
 
-# Demos
-
-- [Bevy WebXR](./demos/bevy-webxr.md)
----
-
 # Misc
 - [Contributing](./other/contributing.md)

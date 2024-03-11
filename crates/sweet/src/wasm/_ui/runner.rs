@@ -1,7 +1,5 @@
-use super::settings::*;
 use crate::test_runner::*;
 use crate::wasm::*;
-use forky_web::*;
 use leptos::html::Iframe;
 use leptos::*;
 use web_sys::HtmlIFrameElement;
@@ -40,7 +38,6 @@ pub fn Runner(
 	// #[prop(into)] file: Signal<String>,
 ) -> impl IntoView {
 	let (loaded, set_loaded) = create_signal(false);
-	let dark_iframe = SearchParams::get_flag(DARK_IFRAME_KEY);
 
 	let iframe: NodeRef<Iframe> = create_node_ref();
 
@@ -62,13 +59,8 @@ pub fn Runner(
 			"full-size hidden"
 		}
 	};
-	//iframe body is inheriting #000 not sure why, below will force default white but result in flash
-	//TODO this is all very messy, will need rework when doing proper light/dark mode
-	let style = if dark_iframe {
-		"background: #000000;"
-	} else {
-		"background: #FFFFFF;"
-	};
+	// is this already set in `sweet_style.css?`
+	let style = "background: transparent;";
 
 	view! {
 		<div class="full-size" style=style>

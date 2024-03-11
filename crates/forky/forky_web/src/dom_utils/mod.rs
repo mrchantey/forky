@@ -22,6 +22,9 @@ pub use self::search_params::*;
 pub mod document_interaction_listener;
 #[allow(unused_imports)]
 pub use self::document_interaction_listener::*;
+pub mod interval;
+#[allow(unused_imports)]
+pub use self::interval::*;
 pub mod lifecycle;
 #[allow(unused_imports)]
 pub use self::lifecycle::*;

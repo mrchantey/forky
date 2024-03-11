@@ -22,7 +22,6 @@ members = [
 	"crates/sweet/macros",
 	"crates/sweet/cli",
 ]
-exclude = ["crates/bevy_webxr"]
 
 [workspace.package]
 version = "0.1.42"

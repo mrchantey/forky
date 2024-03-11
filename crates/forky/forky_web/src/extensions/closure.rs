@@ -13,8 +13,17 @@ pub impl<T1, T2> Closure<dyn FnMut(T1) -> T2> {
 		F: IntoWasmClosure<dyn FnMut(T1) -> T2> + 'static,
 	{
 		Closure::new(func)
-		// Closure::new(t)
-		// Self::new(func)
+	}
+}
+#[ext]
+pub impl<T2> Closure<dyn FnMut() -> T2> {
+	/// Equivelant of `new` but without need for explicit type annotations
+	fn from_func_no_args<F>(func: F) -> Self
+	where
+		dyn FnMut() -> T2: WasmClosure,
+		F: IntoWasmClosure<dyn FnMut() -> T2> + 'static,
+	{
+		Closure::new(func)
 	}
 }
 // where
