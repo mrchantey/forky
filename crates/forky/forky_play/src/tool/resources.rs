@@ -44,15 +44,12 @@ pub fn spawn_resources(
 	settings: Res<InteractionSettings>,
 ) {
 	commands.insert_resource(InteractionResources {
-		node_mesh: meshes.add(Mesh::from(shape::UVSphere {
+		node_mesh: meshes.add(Mesh::from(Sphere {
 			radius: settings.node_radius,
-			sectors: 8,
-			stacks: 8,
 		})),
-		highlight_material: materials.add(settings.highlight_color.into()),
-		select_material: materials.add(settings.select_color.into()),
-		select_primary_material: materials
-			.add(settings.select_primary_color.into()),
-		inactive_material: materials.add(settings.inactive_color.into()),
+		highlight_material: materials.add(settings.highlight_color),
+		select_material: materials.add(settings.select_color),
+		select_primary_material: materials.add(settings.select_primary_color),
+		inactive_material: materials.add(settings.inactive_color),
 	});
 }

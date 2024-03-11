@@ -32,7 +32,7 @@ pub fn spawn(
 			transform: Transform::from_xyz(0., -0.1, 0.)
 				.with_scale_xyz(10., 0.2, 10.)
 				.with_rotation_x(0.1),
-			mesh: meshes.add(Mesh::from(shape::Cube::default())),
+			mesh: meshes.add(Mesh::from(Cuboid::default())),
 			material: materials.from_white(),
 			..default()
 		})

@@ -9,7 +9,7 @@ const MAX_DISTANCE: f32 = 1000.;
 pub fn cast_camera_ray(
 	mut commands: Commands,
 	mut camera_ray: ResMut<CameraRay>,
-	mouse: Res<Input<MouseButton>>,
+	mouse: Res<ButtonInput<MouseButton>>,
 	camera_query: Query<
 		(&Camera, &GlobalTransform),
 		With<camera::ActiveCamera>,
@@ -51,7 +51,7 @@ pub fn cast_camera_ray(
 	}
 	camera_ray.entity = if let Some((entity, _dist)) = rapier_context.cast_ray(
 		ray.origin,
-		ray.direction,
+		*ray.direction,
 		MAX_DISTANCE,
 		false,
 		QueryFilter::default(),

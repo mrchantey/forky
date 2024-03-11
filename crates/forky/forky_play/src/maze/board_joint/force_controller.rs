@@ -8,7 +8,7 @@ use bevy_rapier3d::rapier::prelude::JointAxis;
 
 pub fn force_controller(
 	params: Res<MazeJointParams>,
-	keys: Res<Input<KeyCode>>,
+	keys: Res<ButtonInput<KeyCode>>,
 	mut query: Query<(&mut ExternalForce, &Velocity, &Transform, &MazeJoint)>,
 ) {
 	for (mut force, velocity, tran, joint) in query.iter_mut() {
@@ -19,8 +19,8 @@ pub fn force_controller(
 				torque.x = solve_torque(
 					x,
 					velocity.angvel.x,
-					keys.pressed(KeyCode::K),
-					keys.pressed(KeyCode::I),
+					keys.pressed(KeyCode::KeyK),
+					keys.pressed(KeyCode::KeyI),
 					&params,
 				)
 			}
@@ -28,8 +28,8 @@ pub fn force_controller(
 				torque.z = solve_torque(
 					z,
 					velocity.angvel.z,
-					keys.pressed(KeyCode::J),
-					keys.pressed(KeyCode::L),
+					keys.pressed(KeyCode::KeyJ),
+					keys.pressed(KeyCode::KeyL),
 					&params,
 				)
 			}

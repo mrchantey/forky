@@ -4,6 +4,7 @@ use bevy::render::mesh::PrimitiveTopology;
 use bevy::render::mesh::{
 	self,
 };
+use bevy::render::render_asset::RenderAssetUsages;
 /// set up a simple 3D scene
 pub fn create_mesh(
 	mut commands: Commands,
@@ -27,8 +28,11 @@ pub fn create_mesh(
 		uvs.push(*uv);
 	}
 
-	let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
-	mesh.set_indices(Some(indices));
+	let mut mesh = Mesh::new(
+		PrimitiveTopology::TriangleList,
+		RenderAssetUsages::default(),
+	);
+	mesh.insert_indices(indices);
 	mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, positions);
 	mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, normals);
 	mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, uvs);

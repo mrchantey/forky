@@ -23,8 +23,8 @@ impl SplinePhysicsBundle {
 		graph_id: EcsSplineGraphId,
 	) -> Self {
 		Self::new(
-			meshes.add(Mesh::from(shape::Cube { size: 0.2 })),
-			materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+			meshes.add(Mesh::from(Cuboid::from_size(Vec3::splat(0.2)))),
+			materials.add(Color::rgb(0.8, 0.7, 0.6)),
 			edge,
 			graph_id,
 		)

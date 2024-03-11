@@ -12,7 +12,7 @@ pub const SCROLL_SPEED: f32 = 0.00001;
 pub fn mouse_controller(
 	mut ev_motion: EventReader<MouseMotion>,
 	mut ev_scroll: EventReader<MouseWheel>,
-	input_mouse: Res<Input<MouseButton>>,
+	input_mouse: Res<ButtonInput<MouseButton>>,
 	mut query: Query<
 		(&TransformController, &mut Transform),
 		With<ActiveTransformController>,

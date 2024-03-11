@@ -18,8 +18,10 @@ impl CartSettings {
 		Self {
 			max_carts: 2,
 			cart_spawn_interval: Duration::from_secs(1),
-			mesh: meshes.add(Mesh::from(shape::Cube { size: 0.2 })),
-			material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+			mesh: meshes.add(Mesh::from(Cuboid {
+				half_size: Vec3::splat(0.1),
+			})),
+			material: materials.add(Color::rgb(0.8, 0.7, 0.6)),
 		}
 	}
 }

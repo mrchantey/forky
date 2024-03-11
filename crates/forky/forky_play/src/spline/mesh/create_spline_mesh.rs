@@ -2,11 +2,15 @@ use super::*;
 use crate::spline::Spline;
 use bevy::prelude::*;
 use bevy::render::mesh;
+use bevy::render::render_asset::RenderAssetUsages;
 use wgpu::PrimitiveTopology;
 
 
 pub fn create_spline_mesh(spline: &Spline, subdivisions: usize) -> Mesh {
-	let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
+	let mut mesh = Mesh::new(
+		PrimitiveTopology::TriangleList,
+		RenderAssetUsages::default(),
+	);
 
 	let edge_loop = rect_edge_loop(0.1, 0.02);
 	let vertices = spline_to_vertices(&spline, &edge_loop, subdivisions);
@@ -20,7 +24,7 @@ pub fn create_spline_mesh(spline: &Spline, subdivisions: usize) -> Mesh {
 		num_verts
 	]);
 	mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, uvs);
-	mesh.set_indices(Some(mesh::Indices::U32(triangles)));
+	mesh.insert_indices(mesh::Indices::U32(triangles));
 
 	mesh
 }

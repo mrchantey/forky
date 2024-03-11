@@ -23,7 +23,6 @@ bevy = { workspace = true }
 bevy-inspector-egui = { workspace = true }
 # enigo = {path = "../../../../work-ref/enigo", version = "0.0.14"}
 bevy_rapier3d = { workspace = true }
-bevy_easings = { workspace = true }
 bevy_mod_debugdump = { workspace = true }
 wgpu = { workspace = true }
 
@@ -37,7 +36,6 @@ bytemuck = { workspace = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 forky_web = { workspace = true }
-leptos = { workspace = true }
 
 [dev-dependencies]
 sweet = { workspace = true }

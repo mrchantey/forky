@@ -2,8 +2,8 @@ use crate::tool::*;
 use bevy::prelude::*;
 
 pub fn move_selected_interactables(
-	keys: Res<Input<KeyCode>>,
-	mouse: Res<Input<MouseButton>>,
+	keys: Res<ButtonInput<KeyCode>>,
+	mouse: Res<ButtonInput<MouseButton>>,
 	camera_ray: Res<CameraRay>,
 	settings: Res<InteractionSettings>,
 	mut selected_query: Query<&mut Transform, With<Selected>>,

@@ -6,7 +6,7 @@ use forky_core::math::TAU;
 
 pub fn keyboard_controller(
 	time: Res<Time>,
-	keys: Res<Input<KeyCode>>,
+	keys: Res<ButtonInput<KeyCode>>,
 	mut query: Query<
 		(&TransformController, &mut Transform),
 		With<ActiveTransformController>,
@@ -22,7 +22,7 @@ pub fn keyboard_controller(
 			tran.translate_local(pos_delta);
 			if controller.allow_rotation {
 				let axis = tran.up();
-				tran.rotate_axis(axis, rot_delta.y);
+				tran.rotate_axis(*axis, rot_delta.y);
 			}
 		} else {
 			tran.translate_flat_x(pos_delta.x);
@@ -35,34 +35,34 @@ pub fn keyboard_controller(
 	}
 }
 
-pub fn parse_keyboard_translation(keys: &Res<Input<KeyCode>>) -> Vec3 {
+pub fn parse_keyboard_translation(keys: &Res<ButtonInput<KeyCode>>) -> Vec3 {
 	let mut pos_delta = Vec3::default();
-	if keys.any_pressed([KeyCode::W, KeyCode::Up]) {
+	if keys.any_pressed([KeyCode::KeyW, KeyCode::ArrowUp]) {
 		pos_delta.z -= 1.;
 	}
-	if keys.any_pressed([KeyCode::S, KeyCode::Down]) {
+	if keys.any_pressed([KeyCode::KeyS, KeyCode::ArrowDown]) {
 		pos_delta.z += 1.;
 	}
-	if keys.any_pressed([KeyCode::A, KeyCode::Left]) {
+	if keys.any_pressed([KeyCode::KeyA, KeyCode::ArrowLeft]) {
 		pos_delta.x -= 1.;
 	}
-	if keys.any_pressed([KeyCode::D, KeyCode::Right]) {
+	if keys.any_pressed([KeyCode::KeyD, KeyCode::ArrowRight]) {
 		pos_delta.x += 1.;
 	}
-	if keys.pressed(KeyCode::R) {
+	if keys.pressed(KeyCode::KeyR) {
 		pos_delta.y += 1.;
 	}
-	if keys.pressed(KeyCode::F) {
+	if keys.pressed(KeyCode::KeyF) {
 		pos_delta.y -= 1.;
 	}
 	pos_delta
 }
-pub fn parse_keyboard_rotation(keys: &Res<Input<KeyCode>>) -> Vec3 {
+pub fn parse_keyboard_rotation(keys: &Res<ButtonInput<KeyCode>>) -> Vec3 {
 	let mut rot_delta = Vec3::default();
-	if keys.pressed(KeyCode::Q) {
+	if keys.pressed(KeyCode::KeyQ) {
 		rot_delta.y += 1.;
 	}
-	if keys.pressed(KeyCode::E) {
+	if keys.pressed(KeyCode::KeyE) {
 		rot_delta.y -= 1.;
 	}
 	rot_delta

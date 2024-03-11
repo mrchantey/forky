@@ -2,7 +2,6 @@ use super::SHADER_UNLIT_TEXTURE;
 use bevy::pbr::MaterialPipeline;
 use bevy::pbr::MaterialPipelineKey;
 use bevy::prelude::*;
-use bevy::reflect::TypeUuid;
 use bevy::render::mesh::MeshVertexBufferLayout;
 use bevy::render::render_resource::AsBindGroup;
 use bevy::render::render_resource::RenderPipelineDescriptor;
@@ -10,8 +9,7 @@ use bevy::render::render_resource::ShaderRef;
 use bevy::render::render_resource::SpecializedMeshPipelineError;
 
 // This is the struct that will be passed to your shader
-#[derive(Debug, Clone, Asset, Reflect, AsBindGroup, TypeUuid)]
-#[uuid = "9c11a0a4-7f97-4564-9634-cf0c741ae170"]
+#[derive(Debug, Clone, Asset, Reflect, AsBindGroup)]
 pub struct UnlitTextureMaterial {
 	#[uniform(0)]
 	pub color: Color,

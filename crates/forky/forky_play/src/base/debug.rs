@@ -22,7 +22,7 @@ pub fn spawn_cube(
 ) {
 	commands
 		.spawn(PbrBundle {
-			mesh: meshes.add(Mesh::from(shape::Cube::default())),
+			mesh: meshes.add(Mesh::from(Cuboid::default())),
 			material: materials.from_white(),
 			transform: Transform::from_xyz(0., 1., 0.),
 			..default()

@@ -1,7 +1,6 @@
 use super::*;
 use crate::*;
 use bevy::prelude::*;
-use bevy_easings::EasingsPlugin;
 
 #[derive(Default, Clone)]
 pub struct ForkyFullPlugin {
@@ -16,7 +15,6 @@ impl Plugin for ForkyFullPlugin {
 			.add_plugins(self.debug_plugin.clone())
 			.add_plugins(self.physics_plugin.clone())
 			.add_plugins(self.tool_plugin.clone())
-			.add_plugins(EasingsPlugin)
 			// .add_systems(Startup, utility::surrender_focus)
 			// .add_systems(Startup, base::spawn_lights)
 			//MY PLUGINS

@@ -5,9 +5,9 @@ use bevy::prelude::*;
 #[rustfmt::skip]
 pub fn select_entities(
 	mut commands: Commands,
-	keys: Res<Input<KeyCode>>,
+	keys: Res<ButtonInput<KeyCode>>,
 	camera_ray:Res<CameraRay>,
-	mouse: Res<Input<MouseButton>>,
+	mouse: Res<ButtonInput<MouseButton>>,
 	selected: Query<Entity, With<Selected>>,
 ) {
 	let multi_select = keys.any_pressed([KeyCode::ControlLeft, KeyCode::ControlRight]);

@@ -42,7 +42,7 @@ pub fn spawn(
 			commands
 				.spawn(PbrBundle {
 					transform: *transform,
-					mesh: meshes.add(Mesh::from(shape::Cube::default())),
+					mesh: meshes.add(Mesh::from(Cuboid::default())),
 					material: materials.from_rgb(0.8, 0.8, 0.8),
 					..default()
 				})

@@ -26,7 +26,7 @@ pub fn respawn(
 					start_offset,
 				)
 				.with_scale_value(diameter),
-				mesh: meshes.add(Mesh::from(shape::UVSphere::default())),
+				mesh: meshes.add(Mesh::from(Sphere::default())),
 				material: materials.add(StandardMaterial {
 					metallic: 0.5,
 					perceptual_roughness: 0.5,

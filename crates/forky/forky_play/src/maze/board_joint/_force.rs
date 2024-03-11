@@ -20,21 +20,21 @@ pub fn spawn(commands: &mut Commands) -> Entity {
 
 
 pub fn force_controller(
-	keys: Res<Input<KeyCode>>,
+	keys: Res<ButtonInput<KeyCode>>,
 	mut query: Query<(&mut ExternalForce, &Transform), With<MazeBoardTag>>,
 ) {
 	let mut torque = Vec3::ZERO;
 	let force = 10.;
-	if keys.pressed(KeyCode::I) {
+	if keys.pressed(KeyCode::KeyI) {
 		torque.x += force;
 	}
-	if keys.pressed(KeyCode::K) {
+	if keys.pressed(KeyCode::KeyK) {
 		torque.x -= force;
 	}
-	if keys.pressed(KeyCode::J) {
+	if keys.pressed(KeyCode::KeyJ) {
 		torque.z -= force;
 	}
-	if keys.pressed(KeyCode::L) {
+	if keys.pressed(KeyCode::KeyL) {
 		torque.z += force;
 	}
 

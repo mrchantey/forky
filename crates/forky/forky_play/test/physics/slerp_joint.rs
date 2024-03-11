@@ -19,7 +19,7 @@ fn my_startup_system(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>) {
 	commands
 		.spawn(PbrBundle {
 			transform: Transform::from_xyz(0., -0.1, 0.),
-			mesh: meshes.add(Mesh::from(shape::Cube::default())),
+			mesh: meshes.add(Mesh::from(Cuboid::default())),
 			..default()
 		})
 		.insert(physics::SlerpTarget::default());

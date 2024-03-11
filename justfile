@@ -3,8 +3,8 @@ set positional-arguments
 
 crates := 'forky forky_cli forky_core forky_play forky_bevy sweet'
 # features := '--features forky_play/shader_debug_internal'
-features := '--features sweet/bevy_core'
-# features := '--features sweet/bevy'
+# features := '--features sweet/bevy_core'
+features := '--features sweet/bevy'
 # features := ''
 # forky_esp
 backtrace := '0'
@@ -177,7 +177,6 @@ bevy-deps:
 	cargo search bevy-inspector-egui 
 	cargo search bevy_mod_debugdump 
 	cargo search bevy_rapier3d 
-	cargo search bevy_easings
 
 
 ### WASM ###

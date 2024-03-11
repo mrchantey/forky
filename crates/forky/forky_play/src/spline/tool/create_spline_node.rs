@@ -9,7 +9,7 @@ use bevy::prelude::*;
 
 pub fn create_spline_node(
 	mut commands: Commands,
-	keys: Res<Input<KeyCode>>,
+	keys: Res<ButtonInput<KeyCode>>,
 	camera_ray: Res<CameraRay>,
 	mut graphs: ResMut<EcsSplineGraphLookup>,
 	selected_node_query: Query<
@@ -17,7 +17,7 @@ pub fn create_spline_node(
 		With<Selected>,
 	>,
 ) {
-	if !keys.just_pressed(KeyCode::N) {
+	if !keys.just_pressed(KeyCode::KeyN) {
 		return;
 	}
 	let intersect = match &camera_ray.origin_intersect {

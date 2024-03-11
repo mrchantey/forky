@@ -34,7 +34,7 @@ fn next_toggle_state(prev: &CameraViewType) -> CameraViewType {
 pub fn camera_view_toggle(
 	mut commands: Commands,
 	cam_type: Option<ResMut<CameraViewType>>,
-	keys: Res<Input<KeyCode>>,
+	keys: Res<ButtonInput<KeyCode>>,
 	mut query: Query<(Entity, &mut Camera, &CameraViewType)>,
 ) {
 	let cam_type = match cam_type {

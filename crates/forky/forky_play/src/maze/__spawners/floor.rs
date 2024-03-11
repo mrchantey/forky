@@ -17,7 +17,7 @@ pub fn spawn(
 		.spawn(PbrBundle {
 			transform: Transform::from_position_y(-floor_h / 2.)
 				.with_scale_xyz(floor_w, floor_h, floor_d),
-			mesh: meshes.add(Mesh::from(shape::Cube::default())),
+			mesh: meshes.add(Mesh::from(Cuboid::default())),
 			material: materials.from_white(),
 			..default()
 		})

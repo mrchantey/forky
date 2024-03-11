@@ -6,7 +6,7 @@ use forky_core::math::*;
 
 pub fn orbit_keyboard_controller(
 	time: Res<Time>,
-	keys: Res<Input<KeyCode>>,
+	keys: Res<ButtonInput<KeyCode>>,
 	mut query: Query<
 		(
 			&input::TransformController,

@@ -57,16 +57,10 @@ impl Plugin for ForkyDebugPlugin {
 				.add_plugins(WorldInspectorPlugin::default().run_if(
 					bevy::input::common_conditions::input_toggle_active(
 						false,
-						KeyCode::G,
+						KeyCode::KeyG,
 					),
 				))
-				.insert_resource(WinitSettings {
-					return_from_run: cfg!(all(
-						debug_assertions,
-						not(target_family = "wasm")
-					)),
-					..default()
-				})
+				.insert_resource(WinitSettings { ..default() })
 				// .add_systems(Update,toggle_inspector_on_keypress)
 				.__();
 			if self.debug_grid {

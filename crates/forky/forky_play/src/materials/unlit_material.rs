@@ -1,11 +1,9 @@
 use super::*;
 use bevy::prelude::*;
-use bevy::reflect::TypeUuid;
 use bevy::render::render_resource::AsBindGroup;
 use bevy::render::render_resource::ShaderRef;
 
-#[derive(Asset, Reflect, AsBindGroup, TypeUuid, Debug, Clone, Default)]
-#[uuid = "51ecfdd0-839f-47d1-b5cc-edbccaec24ba"]
+#[derive(Asset, Reflect, AsBindGroup,  Debug, Clone, Default)]
 pub struct UnlitMaterial {
 	#[uniform(0)]
 	pub color: Color,

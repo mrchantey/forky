@@ -7,12 +7,12 @@ use extend::ext;
 pub impl Transform {
 	fn flat_y(&self) -> Vec3 { Vec3::Y }
 	fn flat_x(&self) -> Vec3 {
-		let mut vec = self.local_x();
+		let mut vec: Vec3 = self.local_x().into();
 		vec.y = 0.;
 		vec.normalize_or_zero()
 	}
 	fn flat_z(&self) -> Vec3 {
-		let mut vec = self.local_z();
+		let mut vec: Vec3 = self.local_z().into();
 		vec.y = 0.;
 		vec.normalize_or_zero()
 	}

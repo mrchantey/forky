@@ -11,8 +11,8 @@ pub fn spawn_spline_cube(
 ) {
 	commands.spawn((
 		PbrBundle {
-			mesh: meshes.add(Mesh::from(shape::Cube { size: 0.2 })),
-			material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+			mesh: meshes.add(Mesh::from(Cuboid::from_size(Vec3::splat(0.2)))),
+			material: materials.add(Color::rgb(0.8, 0.7, 0.6)),
 			transform: Transform::from_xyz(0.0, 0.0, 0.0),
 			..default()
 		},
@@ -59,8 +59,8 @@ pub fn spawn_spline_graph_cube(
 
 	commands.spawn((
 		PbrBundle {
-			mesh: meshes.add(Mesh::from(shape::Cube { size: 0.2 })),
-			material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+			mesh: meshes.add(Mesh::from(Cuboid::from_size(Vec3::splat(0.2)))),
+			material: materials.add(Color::rgb(0.8, 0.7, 0.6)),
 			transform: Transform::from_xyz(0.0, 0.0, 0.0),
 			..default()
 		},

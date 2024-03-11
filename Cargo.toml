@@ -5,7 +5,7 @@ resolver = "2" # Important! wgpu/Bevy needs this!
 members = [
 	# "crates/*"
 	"crates/forky/forky",
-	"crates/forky/forky_ai",
+	# "crates/forky/forky_ai",
 	"crates/forky/forky_bevy",
 	"crates/forky/forky_cli",
 	"crates/forky/forky_core",
@@ -36,7 +36,7 @@ repository = "https://github.com/mrchantey/forky"
 [workspace.dependencies]
 ### internal ###
 forky = { path = "./crates/forky/forky", version = "0.*" }
-forky_ai = { path = "./crates/forky/forky_ai", version = "0.*" }
+# forky_ai = { path = "./crates/forky/forky_ai", version = "0.*" }
 forky_bevy = { path = "./crates/forky/forky_bevy", version = "0.*" }
 forky_cli = { path = "./crates/forky/forky_cli", version = "0.*" }
 forky_core = { path = "./crates/forky/forky_core", version = "0.*" }
@@ -49,23 +49,22 @@ sweet = { path = "./crates/sweet", version = "0.*" }
 sweet_macros = { path = "./crates/sweet/macros", version = "0.*" }
 
 ### game ###
-bevy = { version = "0.12.*" }
-bevy_app = { version = "0.12.*" }
-bevy_core = { version = "0.12.*" }
-bevy_derive = { version = "0.12.*" }
-bevy_ecs = { version = "0.12.*" }
-bevy_hierarchy = { version = "0.12.*" }
-bevy_math = { version = "0.12.*" }
-# bevy_reflect = { version = "0.12.*" }
-bevy_time = { version = "0.12.*" }
-bevy_transform = { version = "0.12.*" }
-bevy_utils = { version = "0.12.*" }
+bevy = { version = "0.13.*" }
+bevy_app = { version = "0.13.*" }
+bevy_core = { version = "0.13.*" }
+bevy_derive = { version = "0.13.*" }
+bevy_ecs = { version = "0.13.*" }
+bevy_hierarchy = { version = "0.13.*" }
+bevy_math = { version = "0.13.*" }
+# bevy_reflect = { version = "0.13.*" }
+bevy_time = { version = "0.13.*" }
+bevy_transform = { version = "0.13.*" }
+bevy_utils = { version = "0.13.*" }
 
-bevy-inspector-egui = "0.21.0"
-bevy_mod_debugdump = "0.9.0"
-bevy_rapier3d = { version = "0.23.0", features = ["debug-render-3d"] }
-bevy_easings = "0.12.2"
-wgpu = { version = "0.17.1" }
+bevy-inspector-egui = "0.23.4"
+bevy_mod_debugdump = "0.10.0"
+bevy_rapier3d = { version = "0.25.0", features = ["debug-render-3d"] }
+wgpu = { version = "0.19.1" }
 
 ### utility ###
 log = "0.4"

@@ -7,14 +7,14 @@ use bevy::prelude::*;
 
 pub fn link_spline_nodes(
 	mut commands: Commands,
-	keys: Res<Input<KeyCode>>,
+	keys: Res<ButtonInput<KeyCode>>,
 	mut graphs: ResMut<EcsSplineGraphLookup>,
 	selected_node_query: Query<
 		(&Transform, &SplineNode, &EcsSplineGraphId),
 		With<Selected>,
 	>,
 ) {
-	if !keys.just_pressed(KeyCode::L) {
+	if !keys.just_pressed(KeyCode::KeyL) {
 		return;
 	}
 

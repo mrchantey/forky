@@ -15,7 +15,7 @@ fn setup(
 	mut materials: ResMut<Assets<UvMaterial>>,
 ) {
 	commands.spawn(MaterialMeshBundle {
-		mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
+		mesh: meshes.add(Mesh::from(Cuboid::default())),
 		transform: Transform::from_xyz(0.0, 0.5, 0.0),
 		material: materials.add(UvMaterial {
 			color: Color::GREEN,

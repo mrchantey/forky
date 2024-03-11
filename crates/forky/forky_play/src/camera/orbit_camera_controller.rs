@@ -1,8 +1,6 @@
 //https://bevy-cheatbook.github.io/cookbook/pan-orbit-camera.html
 use bevy::input::mouse::*;
 use bevy::prelude::*;
-// use bevy::{input::mouse::*, render::camera::*};
-// use bevy_easings;
 use forky_core::math::*;
 
 #[derive(Component)]
@@ -16,15 +14,6 @@ pub struct OrbitController {
 	pub upside_down: bool,
 }
 
-// impl bevy_easings::Lerp for OrbitController {
-// 	type Scalar = f32;
-// 	fn lerp(&self, other: &Self, scalar: &Self::Scalar) -> Self {
-// 		OrbitController {
-// 			radius: f32::lerp(&self.radius, &other.radius, scalar),
-// 			..self.clone()
-// 		}
-// 	}
-// }
 impl Default for OrbitController {
 	fn default() -> Self {
 		OrbitController {
@@ -37,7 +26,7 @@ impl Default for OrbitController {
 
 pub fn orbit_camera_controller(
 	window: Query<&Window>,
-	mouse: Res<Input<MouseButton>>,
+	mouse: Res<ButtonInput<MouseButton>>,
 	mut ev_motion: EventReader<MouseMotion>,
 	mut ev_scroll: EventReader<MouseWheel>,
 	mut query: Query<(&mut Transform, &mut OrbitController, &Projection)>,
