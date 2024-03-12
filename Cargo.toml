@@ -24,7 +24,7 @@ members = [
 ]
 
 [workspace.package]
-version = "0.1.42"
+version = "0.1.43"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
@@ -49,17 +49,33 @@ sweet = { path = "./crates/sweet", version = "0.*" }
 sweet_macros = { path = "./crates/sweet/macros", version = "0.*" }
 
 ### game ###
-bevy = { version = "0.13.*" }
-bevy_app = { version = "0.13.*" }
-bevy_core = { version = "0.13.*" }
-bevy_derive = { version = "0.13.*" }
-bevy_ecs = { version = "0.13.*" }
-bevy_hierarchy = { version = "0.13.*" }
-bevy_math = { version = "0.13.*" }
-# bevy_reflect = { version = "0.13.*" }
-bevy_time = { version = "0.13.*" }
-bevy_transform = { version = "0.13.*" }
-bevy_utils = { version = "0.13.*" }
+# bevy = { version = "0.13.*" }
+# bevy_app = { version = "0.13.*" }
+# bevy_core = { version = "0.13.*" }
+# bevy_derive = { version = "0.13.*" }
+# bevy_ecs = { version = "0.13.*" }
+# bevy_hierarchy = { version = "0.13.*" }
+# bevy_math = { version = "0.13.*" }
+# # bevy_reflect = { version = "0.13.*" }
+# bevy_time = { version = "0.13.*" }
+# bevy_transform = { version = "0.13.*" }
+# bevy_utils = { version = "0.13.*" }
+# arbitrary sync point https://github.com/bevyengine/bevy/tree/4c47e31be60611d93d440a2d2f4e43aa8bbd64b2
+# allows for recursive type registration
+bevy = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_app = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_core = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_derive = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_ecs = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_hierarchy = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_math = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_reflect = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_scene = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_tasks = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_time = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_transform = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+bevy_utils = { git = "https://github.com/bevyengine/bevy.git", rev = "4c47e31be60611d93d440a2d2f4e43aa8bbd64b2" }
+
 
 bevy-inspector-egui = "0.23.4"
 bevy_mod_debugdump = "0.10.0"

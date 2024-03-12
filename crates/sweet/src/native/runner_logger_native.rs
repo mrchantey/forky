@@ -6,6 +6,8 @@ pub struct RunnerLoggerNative {
 }
 impl RunnerLogger for RunnerLoggerNative {
 	fn start(config: &TestRunnerConfig) -> Self {
+		pretty_env_logger::try_init().ok();
+
 		let start_time = Instant::now();
 		let intro = Self::pretty_print_intro(&config);
 		println!("{intro}");

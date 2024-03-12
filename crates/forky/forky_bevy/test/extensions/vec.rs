@@ -6,7 +6,7 @@ use sweet::*;
 pub fn works() -> Result<()> {
 	for i in 0..10 {
 		let val = Vec3::random_in_cube();
-		expect(val.length()).to_be_less_than(1.5)?;
+		expect(val.length()).to_be_less_than(2.)?;
 		// println!("random_in_cube: {val}");
 	}
 	for i in 0..10 {

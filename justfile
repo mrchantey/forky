@@ -103,8 +103,9 @@ publish-all:
 	just publish sweet 						| true
 	just publish sweet-cli				| true
 	just publish forky_cli 				| true
-	just publish forky_ai 				| true
 	just publish forky_play 			| true
+
+# just publish forky_ai 				| true
 
 start crate: 
 	./target/debug/{{crate}}.exe
@@ -113,9 +114,10 @@ ci:
 	just test-all
 	just test-all-wasm
 
+# cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
 test-all *args:
 	cargo run -p sweet			--example test_sweet 			--features sweet/bevy -- --parallel
-	cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
+	cargo run -p forky_bevy	--example test_forky_bevy	-- --parallel
 	cargo run -p forky_cli	--example test_forky_cli	-- --parallel
 	cargo run -p forky_fs_test		--example test_forky_fs_test		-- --parallel
 	cargo run -p forky_core_test	--example test_forky_core_test	-- --parallel
