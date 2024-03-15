@@ -18,7 +18,7 @@ pub fn RunnerContainer(
 		let suite_matches = suite_matches();
 		if suite_matches_none(&suite_matches) {
 			view! {
-				<div class="center-parent">
+				<div class="iframe-container center-parent">
 					<h2>"🤘 sweet as! 🤘"</h2>
 				</div>
 			}
@@ -59,15 +59,11 @@ pub fn Runner(
 			"full-size hidden"
 		}
 	};
-	// is this already set in `sweet_style.css?`
-	let style = "background: transparent;";
-
 	view! {
-		<div class="full-size" style=style>
+		<div class="iframe-container">
 			<iframe
 				allow-same-origin
 				// allow="browsing-topics"
-				style=style
 				class=class
 				// src=url
 				node_ref=iframe

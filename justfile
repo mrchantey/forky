@@ -25,7 +25,8 @@ default:
 run crate example *args:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} {{args}}
 
-
+build-sweet-css:
+	just lightning ./crates/sweet/src/style/index.css ./crates/sweet/cli/src/sweet_cli/html___/sweet-style.css
 
 leptosfmt:
 	just watch just leptosfmt-inner
@@ -226,10 +227,10 @@ watch-css crate *args:
 	-i '{.git,target,html}/**' \
 
 @build-css crate *args:
-	just lightning ./crates/{{crate}}/src/index.css ./html/style.css {{args}}
+	just lightning ./crates/{{crate}}/src/style/index.css ./html/style.css {{args}}
 
 lightning in out *args:
-	lightningcss {{in}} --bundle -m -o {{out}} {{args}}
+	npx lightningcss {{in}} --bundle -m -o {{out}} {{args}}
 
 ### ESP ###
 
