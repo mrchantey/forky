@@ -31,3 +31,6 @@ fn true_is_true() -> Result<()> {
   expect(true).to_be_true()
 }
 ```
+
+## TODO
+- make the crate rustier like [cargo-pretty-test](https://github.com/josecelano/cargo-pretty-test)

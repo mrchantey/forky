@@ -41,19 +41,20 @@ impl<T> HtmlEventListener<T> {
 		F: FnMut(T) + 'static,
 		T: FromWasmAbi + 'static,
 	{
-		Self::new_with_target(name, f, window().unwrap().unchecked_into())
+		Self::new_with_target(name, f, window().unwrap())
 	}
 	#[must_use]
 	pub fn new_with_target<F>(
 		name: &'static str,
 		f: F,
-		target: EventTarget,
+		target: impl Into<EventTarget>,
 	) -> Self
 	where
 		F: FnMut(T) + 'static,
 		T: FromWasmAbi + 'static,
 	{
 		let closure = Closure::from_func(f);
+		let target = target.into();
 		// let closure = Closure::wrap(Box::new(f) as Box<dyn FnMut(_)>);
 		target
 			.add_event_listener_with_callback(

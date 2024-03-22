@@ -5,7 +5,7 @@ use web_sys::Document;
 
 pub fn mount<F, N>(f: F)
 where
-	F: Fn() -> N + 'static,
+	F: FnOnce() -> N + 'static,
 	N: IntoView,
 {
 	set_panic_hook();
@@ -14,7 +14,7 @@ where
 
 pub fn mount_to_head<F, N>(f: F)
 where
-	F: Fn() -> N + 'static,
+	F: FnOnce() -> N + 'static,
 	N: IntoView,
 {
 	set_panic_hook();

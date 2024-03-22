@@ -32,6 +32,8 @@ impl ResizeListener {
 		observer.observe(el);
 		Self { cb, observer }
 	}
+
+	pub fn forget(self) { std::mem::forget(self); }
 	/// utility function for parsing the entry, usually this is what you want
 	/// https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserverEntry/contentBoxSize
 	pub fn parse_entry(entry: &ResizeObserverEntry) -> (u32, u32) {
@@ -54,6 +56,44 @@ impl ResizeListener {
 impl Drop for ResizeListener {
 	fn drop(&mut self) { self.observer.disconnect(); }
 }
+
+
+#[cfg(feature = "leptos")]
+#[allow(unused)]
+pub use leptos_resize::*;
+#[cfg(feature = "leptos")]
+pub mod leptos_resize {
+	use crate::ResizeListener;
+	use leptos::html::Div;
+	use leptos::*;
+	use std::ops::Deref;
+	use web_sys::ResizeObserverEntry;
+
+	pub fn create_resize_listener(
+		el: NodeRef<Div>,
+	) -> ReadSignal<Option<ResizeObserverEntry>> {
+		let signal = create_rw_signal(None);
+		let resize_listener = create_effect(move |_| {
+			if let Some(container) = el.get() {
+				let el = container.deref();
+				let el: &web_sys::Element = el.as_ref();
+				let listener = ResizeListener::new(el, move |entry| {
+					signal.set(Some(entry.clone()));
+				});
+				Some(listener)
+			} else {
+				None
+			}
+		});
+
+		on_cleanup(move || drop(resize_listener));
+
+		signal.read_only()
+	}
+}
+
+
+
 
 // pub fn sync_canvas_size(
 // 	canvas: HtmlCanvasElement,

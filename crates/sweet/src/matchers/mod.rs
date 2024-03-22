@@ -13,6 +13,9 @@ pub use self::matcher_bool::*;
 pub mod matcher_ord;
 #[allow(unused_imports)]
 pub use self::matcher_ord::*;
+pub mod matcher_mock_value;
+#[allow(unused_imports)]
+pub use self::matcher_mock_value::*;
 pub mod matcher_error;
 #[allow(unused_imports)]
 pub use self::matcher_error::*;

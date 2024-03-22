@@ -72,7 +72,7 @@ impl<T> Matcher<T> {
 			.red();
 
 		let backtrace = file_context_depth(4 + backtrace_depth);
-		anyhow!("Expected: {expected}\nReceived: {received}\n\n{backtrace}",)
+		anyhow!("\nExpected: {expected}\nReceived: {received}\n\n{backtrace}",)
 	}
 	pub fn to_custom_error(err: &str) -> anyhow::Error {
 		Self::to_custom_error_with_backtrace(err, 1)

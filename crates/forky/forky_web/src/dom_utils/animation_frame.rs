@@ -23,6 +23,7 @@ impl AnimationFrame {
 			request_animation_frame(f2.borrow().as_ref().unwrap());
 		Self(handle)
 	}
+	pub fn forget(self) { *self.0.borrow_mut() = i32::MAX; }
 }
 
 impl Drop for AnimationFrame {

@@ -43,6 +43,8 @@ sweet! {
 	}
 
 	test "str"{
+		// expect("foo".to_string()).to_be("foo")?;
+
 		expect("foobar").to_contain("bar")?;
 		expect("foobar").not().to_contain("baz")?;
 

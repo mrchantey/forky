@@ -1,5 +1,23 @@
 #![cfg_attr(rustfmt, rustfmt_skip)]
 
+
+// TODO deprecate sweetinto and sweetborrow in favor of this
+pub trait Sweet<T,M>{
+	fn as_sweet(self) -> T;
+}
+
+pub struct SelfSweetMarker;
+pub struct CloneSweetMarker;
+pub struct IntoSweetMarker;
+
+impl<I,O> Sweet<O,IntoSweetMarker> for I where I:Into<O> {
+	fn as_sweet(self) -> O { self.into() }
+}
+impl<I,O> Sweet<O,CloneSweetMarker> for &I where I:Clone + Into<O> {
+	fn as_sweet(self) -> O { self.clone().into() }
+}
+
+
 pub trait SweetInto<T> {
 	fn sweet_into(self) -> T;
 }

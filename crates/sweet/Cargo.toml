@@ -31,6 +31,7 @@ anyhow = { workspace = true }
 getrandom = { workspace = true }
 inventory = { workspace = true }
 extend = { workspace = true }
+flume = { workspace = true }
 
 ### console ###
 log = { workspace = true }
