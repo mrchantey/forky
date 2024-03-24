@@ -26,7 +26,7 @@
 	// "rust-analyzer.cargo.features": [
 	// 	"web_sys_unstable_apis"
 	// ],
-	// "rust-analyzer.cargo.target": "wasm32-unknown-unknown",
+	"rust-analyzer.cargo.target": "wasm32-unknown-unknown",
 	"search.exclude": {
 		"Cargo.lock": true,
 		"**/assets/*": true,

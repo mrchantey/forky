@@ -9,7 +9,7 @@ use web_sys::ResizeObserverSize;
 
 
 /// Resize listener
-/// For use with leptos, ensure it is moved to on_cleanup to avoid being dropped
+/// When using with leptos, ensure it is moved to [`on_cleanup`] to avoid being dropped
 pub struct ResizeListener {
 	pub observer: ResizeObserver,
 	pub cb: Closure<dyn FnMut(Array, ResizeObserver)>,
@@ -63,21 +63,20 @@ impl Drop for ResizeListener {
 pub use leptos_resize::*;
 #[cfg(feature = "leptos")]
 pub mod leptos_resize {
-	use crate::ResizeListener;
-	use leptos::html::Div;
+	use crate::prelude::*;
+	use leptos::html::ElementDescriptor;
 	use leptos::*;
-	use std::ops::Deref;
+	use web_sys::DomRect;
 	use web_sys::ResizeObserverEntry;
 
-	pub fn create_resize_listener(
-		el: NodeRef<Div>,
+	pub fn use_resize_listener<T: 'static + ElementDescriptor + Clone>(
+		el: NodeRef<T>,
 	) -> ReadSignal<Option<ResizeObserverEntry>> {
 		let signal = create_rw_signal(None);
 		let resize_listener = create_effect(move |_| {
 			if let Some(container) = el.get() {
-				let el = container.deref();
-				let el: &web_sys::Element = el.as_ref();
-				let listener = ResizeListener::new(el, move |entry| {
+				let el = container.into_web_sys();
+				let listener = ResizeListener::new(&el, move |entry| {
 					signal.set(Some(entry.clone()));
 				});
 				Some(listener)
@@ -89,6 +88,84 @@ pub mod leptos_resize {
 		on_cleanup(move || drop(resize_listener));
 
 		signal.read_only()
+	}
+
+
+	/// Memoized version of [`use_resize_listener`], that also sets intial size based on [`get_bounding_client_rect`]
+	pub fn use_size_listener<T: 'static + ElementDescriptor + Clone>(
+		el: NodeRef<T>,
+	) -> Signal<(u32, u32)> {
+		let resize_listener = use_resize_listener(el);
+		let func = create_memo(move |_| {
+			// Default::default()
+			let el = el();
+			resize_listener()
+				.map(|entry| ResizeListener::parse_entry(&entry))
+				.unwrap_or_else(|| {
+					el.map(|el| {
+						let rect = el.into_web_sys().get_bounding_client_rect();
+						(rect.x() as u32, rect.y() as u32)
+					})
+					.unwrap_or_default()
+				})
+		});
+		func.into_signal()
+	}
+
+	/// Memoized version of [`use_resize_listener`], that also sets intial size based on [`get_bounding_client_rect`]
+	pub fn use_size_listener_with_parent<
+		T: 'static + ElementDescriptor + Clone,
+	>(
+		el: NodeRef<T>,
+	) -> Signal<(u32, u32)> {
+		let resize_listener = use_resize_listener(el);
+		let func = create_memo(move |_| {
+			// Default::default()
+			let el = el();
+			resize_listener()
+				.map(|entry| ResizeListener::parse_entry(&entry))
+				.unwrap_or_else(|| {
+					el.map(|el| {
+						let rect = el.into_web_sys().get_bounding_client_rect();
+						(rect.x() as u32, rect.y() as u32)
+					})
+					.unwrap_or_default()
+				})
+		});
+		func.into_signal()
+	}
+
+
+
+	/// calls [`Element::get_bounding_client_rect`] whenever this element or its parent is resized
+	/// The resize calls are memoized
+	pub fn use_dom_rect<T1: ElementDescriptor + Clone>(
+		el: NodeRef<T1>,
+	) -> Signal<DomRect> {
+		let on_resize = use_size_listener(el);
+		let func = move || {
+			let _ = on_resize();
+			el().map(|el| el.into_web_sys().get_bounding_client_rect())
+				.unwrap_or_else(|| DomRect::new().unwrap())
+		};
+		func.into_signal()
+	}
+	pub fn use_dom_rect_with_parent<
+		T1: ElementDescriptor + Clone,
+		T2: ElementDescriptor + Clone,
+	>(
+		el: NodeRef<T1>,
+		parent: NodeRef<T2>,
+	) -> Signal<DomRect> {
+		let on_parent_resize = use_size_listener(parent);
+		let on_resize = use_size_listener(el);
+		let func = move || {
+			let _ = on_resize();
+			let _ = on_parent_resize();
+			el().map(|el| el.into_web_sys().get_bounding_client_rect())
+				.unwrap_or_else(|| DomRect::new().unwrap())
+		};
+		func.into_signal()
 	}
 }
 

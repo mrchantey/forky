@@ -214,7 +214,7 @@ copy-wasm-assets:
 
 ssl:
 	openssl genrsa -out target/client-key.pem 2048
-	openssl req -new -key target/client-key.pem -subj "/CN=$cn\/emailAddress=admin@$cn/C=US/ST=Ohio/L=Columbus/O=Widgets Inc/OU=Some Unit" -out target/client.csr
+	openssl req -new -key target/client-key.pem -subj "/CN=foobar.com\/emailAddress=admin@foobar.com/C=US/ST=Ohio/L=Columbus/O=Widgets Inc/OU=Some Unit" -out target/client.csr
 	openssl x509 -req -in target/client.csr -signkey target/client-key.pem -out target/client-cert.pem
 
 style:
