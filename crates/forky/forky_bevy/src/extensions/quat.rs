@@ -1,4 +1,4 @@
-use bevy_math::prelude::*;
+use bevy::prelude::*;
 use extend::ext;
 use forky_core::*;
 

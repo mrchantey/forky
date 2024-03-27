@@ -39,10 +39,6 @@ pub mod test_runner;
 /// Test suite module
 pub mod test_suite;
 
-#[cfg(feature = "bevy_core")]
-mod bevy_core_matchers;
-#[cfg(feature = "bevy_core")]
-pub use bevy_core_matchers::*;
 #[cfg(not(target_arch = "wasm32"))]
 #[doc(hidden)]
 pub mod native;
@@ -53,7 +49,6 @@ pub use wasm::visit;
 #[cfg(target_arch = "wasm32")]
 pub use wasm::MatcherHtml;
 #[cfg(feature = "bevy")]
-// #[doc(cfg(feature = "bevy"))]
 mod bevy_matchers;
 #[cfg(feature = "bevy")]
 pub use bevy_matchers::*;

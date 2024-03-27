@@ -1,6 +1,4 @@
-use bevy_app::prelude::*;
-use bevy_derive::Deref;
-use bevy_derive::DerefMut;
+use bevy::prelude::*;
 use extend::ext;
 use forky_core::*;
 

@@ -5,8 +5,8 @@
 - Display typename in failed tests: `tests::foo::works`
 
 ## main
-- rename `bevy_ecs` feature to `bevy_core`
-- move time extensions to `bevy_core` feature
+- rename `bevy_ecs` feature to `bevy`
+- move time extensions to `bevy` feature
 
 ## `0.1.33` - 17/10/2023
 - modularity & improved documentation

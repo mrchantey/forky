@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use bevy_app::prelude::*;
+use bevy::prelude::*;
 use extend::ext;
 use forky_core::RcCell;
 

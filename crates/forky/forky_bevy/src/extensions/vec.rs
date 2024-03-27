@@ -1,4 +1,4 @@
-use bevy_math::prelude::*;
+use bevy::prelude::*;
 use extend::ext;
 use rand::Rng;
 use std::f32::consts::PI;

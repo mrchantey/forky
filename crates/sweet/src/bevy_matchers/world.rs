@@ -1,8 +1,6 @@
 use crate::matchers::*;
-use ::bevy_ecs::prelude::*;
-use ::bevy_ecs::world::EntityMut;
-// use ::bevy_ecs::resource::*;
 use anyhow::Result;
+use bevy::prelude::*;
 use extend::ext;
 
 // impl SweetInto<Entity> for &Entity {
@@ -16,7 +14,6 @@ impl SweetInto<Entity> for EntityMut<'_> {
 }
 
 #[ext(name=MatcherMutExtWorld)]
-#[doc(cfg(feature = "bevy_core"))]
 /// Matcher extensions for `bevy::World`
 pub impl<'a, W> Matcher<W>
 where
@@ -31,7 +28,6 @@ where
 }
 
 #[ext(name=MatcherExtWorld)]
-#[doc(cfg(feature = "bevy_core"))]
 /// Matcher extensions for `bevy::World`
 pub impl<'a, W> Matcher<W>
 where

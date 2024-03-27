@@ -1,6 +1,5 @@
 use crate::prelude::*;
-use bevy_math::prelude::*;
-use bevy_transform::prelude::*;
+use bevy::prelude::*;
 use extend::ext;
 
 #[ext]

@@ -18,8 +18,7 @@ keywords = [ # 5 at most
 ]
 
 [features]
-bevy_core = ["dep:bevy_ecs", "dep:bevy_app", "dep:bevy_time", "dep:bevy_utils"]
-bevy = ["bevy_core", "dep:bevy"]
+bevy = ["dep:bevy"]
 
 [dependencies]
 ### internal ###
@@ -50,10 +49,6 @@ futures = { workspace = true }
 
 ### bevy ###
 bevy = { workspace = true, optional = true }
-bevy_ecs = { workspace = true, optional = true }
-bevy_app = { workspace = true, optional = true }
-bevy_time = { workspace = true, optional = true }
-bevy_utils = { workspace = true, optional = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 console_log = { workspace = true }
@@ -80,7 +75,7 @@ fantoccini = { workspace = true }
 [[example]]
 name = "test_sweet"
 path = "test/sweet.rs"
-required-features = ["bevy_core"]
+required-features = ["bevy"]
 
 [[example]]
 name = "test_sweet_wasm"

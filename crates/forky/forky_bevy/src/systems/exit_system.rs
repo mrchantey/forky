@@ -1,5 +1,5 @@
-use bevy_app::AppExit;
-use bevy_core::FrameCount;
+use bevy::prelude::*;
+
 
 pub fn exit_system(mut exit: EventWriter<AppExit>) { exit.send(AppExit); }
 pub fn exit_in_frames(

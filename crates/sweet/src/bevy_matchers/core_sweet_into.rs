@@ -1,6 +1,5 @@
 use crate::matchers::*;
-use ::bevy_app::prelude::*;
-use ::bevy_ecs::prelude::*;
+use bevy::prelude::*;
 
 // impl<'a> SweetInto<&'a World> for &'a World {
 // 	fn sweet_into(self) -> &'a World { &self }

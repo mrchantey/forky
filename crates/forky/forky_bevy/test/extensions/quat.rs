@@ -1,5 +1,4 @@
-use bevy_app::prelude::*;
-use bevy_math::prelude::*;
+use bevy::prelude::*;
 use forky_bevy::prelude::*;
 use sweet::*;
 

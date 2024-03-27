@@ -1,5 +1,4 @@
-use bevy_app::prelude::*;
-use bevy_time::prelude::*;
+use bevy::prelude::*;
 use extend::ext;
 use std::time::Duration;
 
