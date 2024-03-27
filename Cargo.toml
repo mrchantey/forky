@@ -49,8 +49,11 @@ sweet = { path = "./crates/sweet", version = "0.*" }
 sweet_macros = { path = "./crates/sweet/macros", version = "0.*" }
 
 ### game ###
-# recursive type registration https://github.com/bevyengine/bevy/tree/d3e44325b45daf13087a6fe7a425b1744b5f2379
-bevy = { git = "https://github.com/bevyengine/bevy.git", rev = "d3e44325b45daf13087a6fe7a425b1744b5f2379", default-features = false }
+# two requirements for back to release:
+# 1. recursive type registration https://github.com/bevyengine/bevy/tree/d3e44325b45daf13087a6fe7a425b1744b5f2379
+# 2. remove_by_id https://github.com/bevyengine/bevy/pull/9663
+bevy = { path = "../bevy", default-features = false }
+# bevy = { git = "https://github.com/bevyengine/bevy.git", rev = "d3e44325b45daf13087a6fe7a425b1744b5f2379", default-features = false }
 
 bevy-inspector-egui = "0.23.4"
 bevy_mod_debugdump = "0.10.0"
