@@ -10,3 +10,6 @@ pub use self::mount::*;
 pub mod resizable_canvas;
 #[allow(unused_imports)]
 pub use self::resizable_canvas::*;
+pub mod signals;
+#[allow(unused_imports)]
+pub use self::signals::*;

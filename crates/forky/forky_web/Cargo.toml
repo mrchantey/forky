@@ -16,7 +16,7 @@ leptos = ["dep:leptos"]
 [dependencies]
 forky_web_macros = { workspace = true }
 forky_core = { workspace = true }
-# log = { workspace = true }
+log = { workspace = true }
 anyhow = { workspace = true }
 extend = { workspace = true }
 

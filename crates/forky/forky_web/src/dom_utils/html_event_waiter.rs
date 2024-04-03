@@ -4,7 +4,6 @@ use js_sys::Promise;
 use std::cell::RefCell;
 use std::rc::Rc;
 use std::time::Duration;
-use wasm_bindgen::JsCast;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::window;
@@ -24,12 +23,15 @@ pub struct HtmlEventWaiter {
 
 impl HtmlEventWaiter {
 	pub fn new(name: &'static str) -> Self {
-		Self::new_with_target(name, window().unwrap().unchecked_into())
+		Self::new_with_target(name, window().unwrap())
 	}
-	pub fn new_with_target(name: &'static str, target: EventTarget) -> Self {
+	pub fn new_with_target(
+		name: &'static str,
+		target: impl Into<EventTarget>,
+	) -> Self {
 		Self {
 			name,
-			target,
+			target: target.into(),
 			rejects: false,
 		}
 	}

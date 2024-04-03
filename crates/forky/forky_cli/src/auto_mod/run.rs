@@ -10,20 +10,22 @@ const CRATE_FOLDERS: &'static [&str] =
 	&["src", "examples", "tests", "test", "macros/src", "cli/src"];
 const IGNORE_FOLDERS: &'static [&str] = &["src", "examples"];
 const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib", "sweet"];
+const CRATE_DIRS: &'static [&str] = &["./", "crates", "crates/forky"];
+
 
 pub fn run() -> Result<()> {
-	match fs::read_dir("crates") {
-		Ok(dirs) => dirs
-			.map(|e| e.unwrap().path())
-			.for_each(|p| run_for_crate(p)),
-		_ => run_for_crate(env::current_dir()?),
-	}
-	match fs::read_dir("crates/forky") {
-		Ok(dirs) => dirs
-			.map(|e| e.unwrap().path())
-			.for_each(|p| run_for_crate(p)),
-		_ => {}
-	}
+	CRATE_DIRS
+		.into_iter()
+		.map(|dir| {
+			match fs::read_dir(dir) {
+				Ok(dirs) => dirs
+					.map(|e| e.unwrap().path())
+					.for_each(|p| run_for_crate(p)),
+				_ => run_for_crate(env::current_dir()?),
+			}
+			Ok(())
+		})
+		.collect::<Result<_>>()?;
 	terminal::show_cursor();
 	Ok(())
 }

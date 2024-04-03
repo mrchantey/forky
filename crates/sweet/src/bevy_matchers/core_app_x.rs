@@ -14,7 +14,7 @@ pub impl App {
 	}
 	/// Advance time *then* update.
 	fn update_with_duration(&mut self, duration: Duration) -> &mut Self {
-		let mut time = self.world.resource_mut::<Time>();
+		let mut time = self.world_mut().resource_mut::<Time>();
 		time.advance_by(duration);
 		self.update();
 		self

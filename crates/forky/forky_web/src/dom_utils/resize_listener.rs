@@ -94,9 +94,9 @@ pub mod leptos_resize {
 	/// Memoized version of [`use_resize_listener`], that also sets intial size based on [`get_bounding_client_rect`]
 	pub fn use_size_listener<T: 'static + ElementDescriptor + Clone>(
 		el: NodeRef<T>,
-	) -> Signal<(u32, u32)> {
+	) -> Memo<(u32, u32)> {
 		let resize_listener = use_resize_listener(el);
-		let func = create_memo(move |_| {
+		create_memo(move |_| {
 			// Default::default()
 			let el = el();
 			resize_listener()
@@ -108,8 +108,7 @@ pub mod leptos_resize {
 					})
 					.unwrap_or_default()
 				})
-		});
-		func.into_signal()
+		})
 	}
 
 	/// Memoized version of [`use_resize_listener`], that also sets intial size based on [`get_bounding_client_rect`]
@@ -117,9 +116,9 @@ pub mod leptos_resize {
 		T: 'static + ElementDescriptor + Clone,
 	>(
 		el: NodeRef<T>,
-	) -> Signal<(u32, u32)> {
+	) -> Memo<(u32, u32)> {
 		let resize_listener = use_resize_listener(el);
-		let func = create_memo(move |_| {
+		create_memo(move |_| {
 			// Default::default()
 			let el = el();
 			resize_listener()
@@ -131,8 +130,7 @@ pub mod leptos_resize {
 					})
 					.unwrap_or_default()
 				})
-		});
-		func.into_signal()
+		})
 	}
 
 
@@ -150,6 +148,8 @@ pub mod leptos_resize {
 		};
 		func.into_signal()
 	}
+
+	/// relative to viewport, calls bounding_client_rect
 	pub fn use_dom_rect_with_parent<
 		T1: ElementDescriptor + Clone,
 		T2: ElementDescriptor + Clone,

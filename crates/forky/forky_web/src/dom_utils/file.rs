@@ -1,49 +1,81 @@
+use crate::prelude::*;
 use crate::DocumentExt;
+use js_sys::Array;
 use js_sys::Uint8Array;
+use wasm_bindgen::JsCast;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::Blob;
 use web_sys::BlobPropertyBag;
 use web_sys::Document;
+use web_sys::File;
+use web_sys::HtmlInputElement;
 use web_sys::Url;
 
-const TYPE_BIN: &str = "application/octet-stream";
 
-pub async fn download_binary(bytes: &[u8]) -> Result<(), JsValue> {
+//https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+pub fn download_binary(bytes: &[u8], filename: &str) -> Result<(), JsValue> {
 	let bytes: JsValue = Uint8Array::from(bytes).into();
 	let blob = Blob::new_with_u8_array_sequence_and_options(
 		&bytes,
-		BlobPropertyBag::new().type_(TYPE_BIN),
-	)
-	.unwrap();
-	let url = Url::create_object_url_with_blob(&blob).unwrap();
+		BlobPropertyBag::new().type_("application/octet-stream"),
+	)?;
+	download_blob(blob, filename)
+}
+pub fn download_text(text: &str, filename: &str) -> Result<(), JsValue> {
+	let arr = Array::new();
+	arr.push(&JsValue::from_str(text));
+
+	let blob = Blob::new_with_str_sequence_and_options(
+		&arr,
+		BlobPropertyBag::new().type_("text/plain"),
+	)?;
+	download_blob(blob, filename)
+}
+
+pub fn download_blob(blob: Blob, filename: &str) -> Result<(), JsValue> {
+	let url = Url::create_object_url_with_blob(&blob)?;
 	let anchor = Document::x_create_anchor();
-	anchor.set_attribute("href", &url).unwrap();
-	anchor.set_attribute("download", "file.bin").unwrap();
+	anchor.set_attribute("href", &url)?;
+	anchor.set_attribute("download", filename)?;
 	Document::x_append_child(&anchor);
 	anchor.click();
 	anchor.remove();
-	Url::revoke_object_url(&url).unwrap();
+	Url::revoke_object_url(&url)?;
 	Ok(())
 }
 
-pub async fn upload_binary() -> Result<Vec<u8>, JsValue> {
-	let body = Document::x_body();
-	let input = Document::x_create_input();
-	input.set_attribute("type", "file").unwrap();
-	input.set_attribute("accept", TYPE_BIN).unwrap();
-	input.set_attribute("style", "display:none")?;
-	body.append_child(&input)?;
-	let promise = input
-		.clone()
-		.files()
-		.unwrap()
-		.get(0)
-		.unwrap()
-		.array_buffer();
-	let bytes = JsFuture::from(promise).await?;
-	let bytes = Uint8Array::new(&bytes).to_vec();
-	body.remove_child(&input)?;
-	input.remove();
-	Ok(bytes)
+pub async fn upload_file(accept: Option<&str>) -> Result<File, JsValue> {
+	let document = Document::get();
+	let el = document
+		.create_element("input")?
+		.dyn_into::<HtmlInputElement>()?;
+	el.set_type("file");
+	el.set_accept(&accept.unwrap_or("*"));
+
+	document.body().unwrap().append_child(&el)?;
+	el.click();
+	document.body().unwrap().remove_child(&el)?;
+	HtmlEventWaiter::new_with_target("change", el.clone())
+		.wait()
+		.await?;
+
+	let file = el.files().ok_or("no files")?.get(0).ok_or("no file")?;
+
+	Ok(file)
+}
+
+pub async fn upload_text(accept: Option<&str>) -> Result<String, JsValue> {
+	let file = upload_file(accept).await?;
+	let text = JsFuture::from(file.text()).await?;
+	Ok(text.as_string().expect("blob.text() must be string"))
+}
+pub async fn upload_bytes(accept: Option<&str>) -> Result<Vec<u8>, JsValue> {
+	let file = upload_file(accept).await?;
+	let bytes = JsFuture::from(file.array_buffer()).await?;
+	// let bytes: ArrayBuffer = bytes.dyn_into()?;
+	let bytes = Uint8Array::new(&bytes);
+	let mut vec = vec![0; bytes.length() as usize];
+	bytes.copy_to(&mut vec);
+	Ok(vec)
 }
