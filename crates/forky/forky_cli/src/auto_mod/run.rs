@@ -10,7 +10,7 @@ const CRATE_FOLDERS: &'static [&str] =
 	&["src", "examples", "tests", "test", "macros/src", "cli/src"];
 const IGNORE_FOLDERS: &'static [&str] = &["src", "examples"];
 const IGNORE_FILES: &'static [&str] = &["mod", "lib", "main", "_lib", "sweet"];
-const CRATE_DIRS: &'static [&str] = &["./", "crates", "crates/forky"];
+const CRATE_DIRS: &'static [&str] = &["src", "crates", "crates/forky"];
 
 
 pub fn run() -> Result<()> {
