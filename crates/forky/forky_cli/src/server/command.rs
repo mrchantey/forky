@@ -43,6 +43,16 @@ impl Subcommand for ServerCommand {
 					.action(ArgAction::SetTrue),
 			)
 			.arg(
+				Arg::new("no-fallback")
+					.required(false)
+					.help(
+						"if a url is not found, do not fallback to index.html",
+					)
+					.help("run with https")
+					.long("no-fallback")
+					.action(ArgAction::SetTrue),
+			)
+			.arg(
 				Arg::new("any-origin")
 					.required(false)
 					.help("add 'access-control-allow-origin: *' header")
@@ -70,6 +80,7 @@ impl Subcommand for ServerCommand {
 		let port = args.get_one::<String>("port").ok()?;
 		let host = args.get_one::<String>("host").ok()?;
 		let secure = args.get_flag("secure");
+		let index_fallback = false == args.get_flag("no-fallback");
 		let any_origin = args.get_flag("any-origin");
 		let proxy = args.get_flag("proxy");
 		// let proxies = args
@@ -82,6 +93,7 @@ impl Subcommand for ServerCommand {
 			dir: dir.to_string(),
 			any_origin,
 			proxy,
+			index_fallback,
 			address: Address {
 				host: Address::host_from_str(&host)?,
 				port: port.parse::<u16>()?,
