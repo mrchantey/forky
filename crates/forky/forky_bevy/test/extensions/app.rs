@@ -5,6 +5,6 @@ use sweet::*;
 pub fn works() -> Result<()> {
 	let app = AppRes::new();
 	let app = app.borrow_mut();
-	expect(app.world.contains_non_send::<AppRes>()).to_be_true()?;
+	expect(app.world().contains_non_send::<AppRes>()).to_be_true()?;
 	Ok(())
 }

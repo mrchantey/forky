@@ -45,7 +45,7 @@ impl Subcommand for ServerCommand {
 			.arg(
 				Arg::new("any-origin")
 					.required(false)
-					.help("add access-control-allow-origin: * header")
+					.help("add 'access-control-allow-origin: *' header")
 					.long("any-origin")
 					.action(ArgAction::SetTrue),
 			)

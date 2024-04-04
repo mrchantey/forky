@@ -9,6 +9,7 @@ use forky_fs::FsWatcher;
 use futures::Future;
 use hyper::Body;
 use hyper::Request;
+use tower_http::services::ServeFile;
 use std::pin::Pin;
 use std::sync::Arc;
 use std::thread::JoinHandle;
@@ -22,6 +23,7 @@ pub struct Server {
 	pub address: Address,
 	pub clear: bool,
 	pub quiet: bool,
+	pub index_fallback: bool,
 	pub any_origin: bool,
 	pub proxy: bool,
 	// pub proxies: Vec<String>,
@@ -34,6 +36,7 @@ impl Default for Server {
 			address: Address::default(),
 			clear: true,
 			quiet: false,
+			index_fallback: true,
 			any_origin: false,
 			proxy: false,
 			// proxies:Vec::new(),
@@ -69,9 +72,13 @@ impl Server {
 		self.print_start();
 
 		let mut router = Router::new()
-   	  .route_service("/__ping__", get(ping))
-			.nest_service("/", ServeDir::new(self.dir.as_str()));
+   	  .route_service("/__ping__", get(ping));
 
+		if self.index_fallback {
+			router = router.nest_service("/", ServeDir::new(self.dir.as_str()).fallback(ServeFile::new("index.html")));
+		}else{
+			router = router.nest_service("/", ServeDir::new(self.dir.as_str()));
+		}
 		if let Some(livereload) = livereload {
 			router = router.layer(livereload);
 		}
