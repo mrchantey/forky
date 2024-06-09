@@ -3476,11 +3476,11 @@ checksum = "aa9a19cbb55df58761df49b23516a86d432839add4af60fc256da840f66ed35b"
 
 [[package]]
 name = "forky"
-version = "0.1.46"
+version = "0.1.49"
 
 [[package]]
 name = "forky_bevy"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "bevy 0.14.0-rc.2",
@@ -3494,7 +3494,7 @@ dependencies = [
 
 [[package]]
 name = "forky_cli"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "axum",
@@ -3521,7 +3521,7 @@ dependencies = [
 
 [[package]]
 name = "forky_core"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "extend",
@@ -3533,7 +3533,7 @@ dependencies = [
 
 [[package]]
 name = "forky_core_test"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
@@ -3551,7 +3551,7 @@ dependencies = [
 
 [[package]]
 name = "forky_esp"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "esp-backtrace",
  "esp-hal-common",
@@ -3565,7 +3565,7 @@ dependencies = [
 
 [[package]]
 name = "forky_fs"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "clap",
@@ -3584,7 +3584,7 @@ dependencies = [
 
 [[package]]
 name = "forky_fs_test"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "forky_fs",
  "sweet",
@@ -3592,7 +3592,7 @@ dependencies = [
 
 [[package]]
 name = "forky_play"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "bevy 0.14.0-rc.2",
@@ -3612,12 +3612,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "forky_test"
-version = "0.1.46"
-
-[[package]]
 name = "forky_web"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
@@ -3636,7 +3632,7 @@ dependencies = [
 
 [[package]]
 name = "forky_web_macros"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "proc-macro2",
@@ -3646,7 +3642,7 @@ dependencies = [
 
 [[package]]
 name = "forky_web_test"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
@@ -6790,7 +6786,7 @@ checksum = "20e16a0f46cf5fd675563ef54f26e83e20f2366bcf027bcb3cc3ed2b98aaf2ca"
 
 [[package]]
 name = "sweet"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "backtrace",
@@ -6827,7 +6823,7 @@ dependencies = [
 
 [[package]]
 name = "sweet-cli"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "axum",
@@ -6855,7 +6851,7 @@ dependencies = [
 
 [[package]]
 name = "sweet_macros"
-version = "0.1.46"
+version = "0.1.49"
 dependencies = [
  "anyhow",
  "proc-macro2",

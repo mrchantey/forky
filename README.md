@@ -2,7 +2,7 @@
 <div align="center">
 
   <p>
-    <strong>Monorepo for kickass rust crates</strong>
+    <strong>Rust utilities</strong>
   </p>
 
   <p>

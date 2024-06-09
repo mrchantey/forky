@@ -6,7 +6,7 @@ authors = { workspace = true }
 license = { workspace = true }
 repository = { workspace = true }
 readme = "README.md"
-description = "Declarative full-stack test framework"
+description = "A very pretty test runner for rust"
 documentation = "https://mrchantey.github.io/forky/docs/sweet"
 categories = ["development-tools::testing"]
 keywords = [ # 5 at most

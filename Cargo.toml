@@ -14,7 +14,6 @@ members = [
 	"crates/forky/forky_fs",
 	"crates/forky/forky_fs/test",
 	"crates/forky/forky_play",
-	"crates/forky/forky_test",
 	"crates/forky/forky_web",
 	"crates/forky/forky_web/test",
 	"crates/forky/forky_web/macros",
@@ -24,7 +23,7 @@ members = [
 ]
 
 [workspace.package]
-version = "0.1.46"
+version = "0.1.49"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
@@ -35,18 +34,18 @@ repository = "https://github.com/mrchantey/forky"
 
 [workspace.dependencies]
 ### internal ###
-forky = { path = "./crates/forky/forky", version = "0.*" }
-# forky_ai = { path = "./crates/forky/forky_ai", version = "0.*" }
-forky_bevy = { path = "./crates/forky/forky_bevy", version = "0.*" }
-forky_cli = { path = "./crates/forky/forky_cli", version = "0.*" }
-forky_core = { path = "./crates/forky/forky_core", version = "0.*" }
-forky_fs = { path = "./crates/forky/forky_fs", version = "0.*" }
-forky_esp = { path = "./crates/forky/forky_esp", version = "0.*" }
-forky_play = { path = "./crates/forky/forky_play", version = "0.*" }
-forky_web = { path = "./crates/forky/forky_web", version = "0.*" }
-forky_web_macros = { path = "./crates/forky/forky_web/macros", version = "0.*" }
-sweet = { path = "./crates/sweet", version = "0.*" }
-sweet_macros = { path = "./crates/sweet/macros", version = "0.*" }
+forky = { path = "./crates/forky/forky", version = "0.1.49" }
+# forky_ai = { path = "./crates/forky/forky_ai", version = "0.1.43" }
+forky_bevy = { path = "./crates/forky/forky_bevy", version = "0.1.49" }
+forky_cli = { path = "./crates/forky/forky_cli", version = "0.1.49" }
+forky_core = { path = "./crates/forky/forky_core", version = "0.1.49" }
+forky_fs = { path = "./crates/forky/forky_fs", version = "0.1.49" }
+forky_esp = { path = "./crates/forky/forky_esp", version = "0.1.49" }
+forky_play = { path = "./crates/forky/forky_play", version = "0.1.49" }
+forky_web = { path = "./crates/forky/forky_web", version = "0.1.49" }
+forky_web_macros = { path = "./crates/forky/forky_web/macros", version = "0.1.49" }
+sweet = { path = "./crates/sweet", version = "0.1.49" }
+sweet_macros = { path = "./crates/sweet/macros", version = "0.1.49" }
 
 ### game ###
 # two requirements for back to release:
