@@ -12,7 +12,6 @@
 	```
 1. create file `test/sweet.rs`
 	```rs
-	#![feature(imported_main)]
 	pub use sweet::*;
 
 	#[sweet_test]

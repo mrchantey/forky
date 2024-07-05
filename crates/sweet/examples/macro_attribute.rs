@@ -1,4 +1,3 @@
-#![feature(imported_main)]
 pub use sweet::*;
 
 #[sweet_test]

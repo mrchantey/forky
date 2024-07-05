@@ -1,4 +1,4 @@
-#![feature(imported_main, async_closure)]
+#![feature(async_closure)]
 pub use sweet::main;
 mod common;
 // #[cfg(not(target_arch = "wasm32"))]

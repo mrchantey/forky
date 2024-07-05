@@ -98,10 +98,10 @@ publish-all:
 	just publish forky_fs 				| true
 	just publish forky_web_macros	| true
 	just publish forky_web 				| true
-	just publish forky_cli 				| true
 	just publish sweet_macros			| true
 	just publish sweet 						| true
 	just publish sweet-cli				| true
+	just publish forky_cli 				| true
 	just publish forky_bevy 			| true
 	just publish forky_play 			| true
 
@@ -117,10 +117,10 @@ ci:
 # cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
 test-all *args:
 	cargo run -p sweet			--example test_sweet 			--features sweet/bevy -- --parallel
-	cargo run -p forky_bevy	--example test_forky_bevy	-- --parallel
-	cargo run -p forky_cli	--example test_forky_cli	-- --parallel
-	cargo run -p forky_fs_test		--example test_forky_fs_test		-- --parallel
-	cargo run -p forky_core_test	--example test_forky_core_test	-- --parallel
+	cargo run -p forky_bevy	--example test_forky_bevy												-- --parallel
+	cargo run -p forky_cli	--example test_forky_cli												-- --parallel
+	cargo run -p forky_fs_test		--example test_forky_fs_test							-- --parallel
+	cargo run -p forky_core_test	--example test_forky_core_test						-- --parallel
 
 test crate *args:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example test_{{crate}} {{features}} -- {{args}}

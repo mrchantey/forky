@@ -1,4 +1,4 @@
-#![feature(imported_main, async_closure)]
+#![feature(async_closure)]
 pub use sweet::*;
 #[cfg(feature = "bevy")]
 mod bevy_tests;

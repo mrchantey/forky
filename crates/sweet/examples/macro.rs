@@ -1,4 +1,3 @@
-#![feature(imported_main)]
 pub use sweet::*;
 
 async fn foo() {}

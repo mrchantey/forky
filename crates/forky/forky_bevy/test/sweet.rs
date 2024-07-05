@@ -1,4 +1,3 @@
-#![feature(imported_main)]
 #![allow(
 	dead_code,
 	unused_mut,

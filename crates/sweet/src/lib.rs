@@ -5,7 +5,6 @@
 //! ```rust
 //! // examples/sweet.rs
 //!
-//!	#![feature(imported_main)]
 //! use sweet::{sweet_test, expect, Result};
 //!
 //! #[sweet_test]
