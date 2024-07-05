@@ -182,8 +182,7 @@ path = &quot;test/sweet.rs&quot;
 </code></pre>
 </li>
 <li>create file <code>test/sweet.rs</code>
-<pre><code class="language-rs">#![feature(imported_main)]
-pub use sweet::*;
+<pre><code class="language-rs">pub use sweet::*;
 
 #[sweet_test]
 fn it_works() -&gt; Result&lt;()&gt;{
