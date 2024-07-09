@@ -49,12 +49,18 @@ pub fn run_for_crate_folder(path: PathBuf) {
 pub fn create_mod_text(path: &PathBuf) -> String {
 	let treat_as_mod = path.filestem_contains_double_underscore();
 
-	let files_str: String = fs::read_dir(&path)
+	let mut filenames = fs::read_dir(&path)
 		.unwrap()
 		.map(|p| p.unwrap().path())
 		.filter(|p| p.is_dir() || !p.filename_included(IGNORE_FILES))
 		.filter(|p| !p.filestem_ends_with_triple_underscore())
 		.filter(|p| p.is_dir_or_extension("rs"))
+		.collect::<Vec<_>>();
+	filenames.sort();
+
+
+	let files_str: String = filenames
+		.into_iter()
 		.map(|p| {
 			let stem = p.file_stem().unwrap();
 			let name = stem.to_str().unwrap().to_owned();
