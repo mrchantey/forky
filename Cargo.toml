@@ -32,6 +32,12 @@ description = "Rust Utilities"
 documentation = "https://mrchantey.github.io/forky/docs"
 repository = "https://github.com/mrchantey/forky"
 
+[workspace.dependencies.bevy]
+# bevy = "0.14"
+path = "../../work-ref/bevy"
+# git = "https://github.com/mrchantey/bevy"
+# branch = "add-reflect-attributes"
+
 [workspace.dependencies]
 ### internal ###
 forky = { path = "./crates/forky/forky", version = "0.1.50" }
@@ -53,7 +59,6 @@ sweet_macros = { path = "./crates/sweet/macros", version = "0.1.50" }
 # 2. remove_by_id https://github.com/bevyengine/bevy/pull/9663
 # bevy = { path = "../bevy", default-features = false }
 # bevy = { git = "https://github.com/bevyengine/bevy.git", rev = "f516de456be2b65572de1af6956d52157663b9cc", default-features = false }
-bevy = "0.14"
 
 bevy-inspector-egui = "0.23.4"
 bevy_mod_debugdump = "0.10.0"
