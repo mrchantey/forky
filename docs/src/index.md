@@ -10,4 +10,3 @@ Forky is a monorepo for rust utilities.
 ## Crates
 
 - [CLI](./forky_cli)
-- [Sweet](./sweet)

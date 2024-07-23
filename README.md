@@ -25,5 +25,4 @@
 </div>
 
 ## Contents
-- [Forky CLI](./crates/forky/forky_cli/README.md)
-- [Sweet](./crates/sweet/README.md)
+- [Forky CLI](./crates/forky_cli/README.md)

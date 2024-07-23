@@ -6,7 +6,7 @@ use std::io::Write;
 pub fn clear() { clear_terminal().unwrap(); }
 
 pub fn print_forky() {
-	println!("\n🤘 sweet as! 🤘\n");
+	println!("\n🦀 running forky! 🦀\n");
 }
 
 pub fn show_cursor() {

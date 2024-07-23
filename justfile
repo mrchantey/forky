@@ -1,18 +1,16 @@
 set windows-shell := ["C:/tools/cygwin/bin/sh.exe","-c"]
 set positional-arguments
 
-crates := 'forky forky_cli forky_core forky_play forky_bevy sweet'
+crates := 'forky forky_cli forky_core forky_play forky_bevy'
 # features := '--features forky_play/shader_debug_internal'
-# features := '--features sweet/bevy'
-features := '--features sweet/bevy'
-# features := ''
+features := ''
 # forky_esp
 backtrace := '0'
 # backtrace := '1'
 # backtrace := 'full'
 
 default:
-	just --list
+	just --list --unsorted
 
 
 ### common ###
@@ -25,15 +23,11 @@ default:
 run crate example *args:
 	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example {{example}} {{args}}
 
-build-sweet-css:
-	just lightning ./crates/sweet/src/style/index.css ./crates/sweet/cli/src/sweet_cli/html___/sweet-style.css
-
 leptosfmt:
 	just watch just leptosfmt-inner
 
 leptosfmt-inner *args:
-	leptosfmt ./crates/forky/forky_web/src/**/*.rs {{args}}
-	leptosfmt ./crates/sweet/src/wasm/**/*.rs {{args}}
+	leptosfmt ./crates/forky_web/src/**/*.rs {{args}}
 
 fix *args:
 	for file in {{crates}}; do \
@@ -49,8 +43,7 @@ cli *args:
 	cargo run -p forky_cli -- {{args}}
 
 install-cli *args:
-	cargo install --path ./crates/forky/forky_cli {{args}}
-	cargo install --path ./crates/sweet/cli {{args}}
+	cargo install --path ./crates/forky_cli {{args}}
 
 run-w *args:
 	just watch just run {{args}}
@@ -98,9 +91,6 @@ publish-all:
 	just publish forky_fs 				| true
 	just publish forky_web_macros	| true
 	just publish forky_web 				| true
-	just publish sweet_macros			| true
-	just publish sweet 						| true
-	just publish sweet-cli				| true
 	just publish forky_cli 				| true
 	just publish forky_bevy 			| true
 	just publish forky_play 			| true
@@ -116,7 +106,6 @@ ci:
 
 # cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
 test-all *args:
-	cargo run -p sweet			--example test_sweet 			--features sweet/bevy -- --parallel
 	cargo run -p forky_bevy	--example test_forky_bevy												-- --parallel
 	cargo run -p forky_cli	--example test_forky_cli												-- --parallel
 	cargo run -p forky_fs_test		--example test_forky_fs_test							-- --parallel
@@ -129,17 +118,10 @@ test-w crate *args:
 	just watch just test {{crate}} -w {{args}}
 
 test-all-wasm *args:
-	just test-wasm sweet --cargo=--features=bevy {{args}}
-	just test-wasm forky_web_test {{args}}
-
-test-all-wasm-no-bevy *args:
-	just test-wasm sweet {{args}}
 	just test-wasm forky_web_test {{args}}
 
 test-wasm crate *args:
-	cargo run -p sweet-cli -- -p {{crate}} --example test_{{crate}}_wasm {{args}}
-# sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
-
+	sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
 
 doc-w crate *args:
   echo "Navigate to the crate, ie http://127.0.0.1:3000/sweet"
@@ -209,7 +191,7 @@ serve-https *args:
 
 copy-wasm-assets:
 	rm -rf ./html/assets
-	cp -r ./crates/forky/forky_play/assets ./html/assets
+	cp -r ./crates/forky_play/assets ./html/assets
 
 ssl:
 	openssl genrsa -out target/client-key.pem 2048
@@ -271,6 +253,6 @@ esp-monitor:
 	cargo espflash serial-monitor {{port}}
 
 idf *args:
-	cd ./crates/forky/forky_idf; just {{args}}
+	cd ./crates/forky_idf; just {{args}}
 @idf-w *args:
 	just watch 'just idf {{args}}'

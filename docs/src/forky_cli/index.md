@@ -16,6 +16,5 @@ forky --help
 	  serve    serve static files
 	  style    Generate types for styles
 	  mod      generate mod files for your project
-	  sweet    build, serve & run tests in-browser
 	  help     Print this message or the help of the given subcommand(s)
 ```
