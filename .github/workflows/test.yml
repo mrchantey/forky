@@ -59,8 +59,6 @@ jobs:
         version: '0.2.88'
     # - name: 🔨 Build Crates
     #   run: just all build
-    # - name: 🔎 Test Fantoccini
-    #   run: just run sweet fantoccini
     - name: 🔎 Test Native
       run: just test-all
     # - name: 🔎 Test Wasm - Windows # TODO sweet not compiling since cli added

@@ -42,14 +42,8 @@ tower = { workspace = true }
 tower-http = { workspace = true }
 tower-livereload = { workspace = true }
 
-## sweet
-fantoccini = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
+[dev-dependencies]
 sweet = { workspace = true }
-
-# [dev-dependencies]
-# sweet = { workspace = true }
 
 [[example]]
 name = "test_forky_cli"

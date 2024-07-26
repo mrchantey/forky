@@ -7,12 +7,13 @@ use std::io;
 pub trait Subcommand {
 	fn name(&self) -> &'static str;
 	fn about(&self) -> &'static str;
+	fn version(&self) -> &'static str { "0.0.1" }
 	fn append_command(&self, command: Command) -> Command { command }
 
 	fn create_command(&self) -> Command {
 		let mut cmd = Command::new(self.name())
 			.about(self.about())
-			.version("0.1.0");
+			.version(self.version());
 
 		let subs = self.subcommands();
 		if subs.len() > 0 {

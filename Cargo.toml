@@ -43,14 +43,12 @@ forky_web = { path = "./crates/forky_web", version = "0.1.50" }
 forky_web_macros = { path = "./crates/forky_web/macros", version = "0.1.50" }
 
 ### game ###
-# two requirements for back to release:
-# 1. recursive type registration https://github.com/bevyengine/bevy/tree/d3e44325b45daf13087a6fe7a425b1744b5f2379
-# 2. remove_by_id https://github.com/bevyengine/bevy/pull/9663
-# bevy = { path = "../bevy", default-features = false }
-# bevy = { git = "https://github.com/bevyengine/bevy.git", rev = "f516de456be2b65572de1af6956d52157663b9cc", default-features = false }
 
-sweet = { version = "0.1.50", features = ["bevy"] }
-bevy = "0.14"
+# sweet = { version = "0.1.50", features = ["bevy"] }
+sweet = { path = "../sweet", features = ["bevy"] }
+# bevy = { version = "0.14", default-features = false }
+#💡 observer reflect attributes, required until 0.14.1
+bevy = { git = "https://github.com/bevyengine/bevy.git", rev = "b8416b3043eb5d2a49c6044e9680f0c5f189f243", default-features = false }
 bevy-inspector-egui = "0.23.4"
 bevy_mod_debugdump = "0.10.0"
 bevy_rapier3d = { version = "0.25.0", features = ["debug-render-3d"] }
@@ -74,7 +72,7 @@ extend = "1.1.2"
 
 ### io ###
 flume = "0.11.0"
-clap = { version = "4.2.2", features = ["derive"] }
+clap = { version = "4.2", features = ["string"] }
 colorize = "0.1.0"
 crossterm = "0.25.0"
 dotenv = "0.15.0"
@@ -108,8 +106,6 @@ tokio-stream = "0.1.14"
 rayon = "1.7.0"
 
 ### macros ###
-inventory = "0.3.2"
-backtrace = "0.3.66"
 proc-macro2 = "1.0.47"
 syn = { version = "2.0.*", features = ["full"] }
 quote = "1.0.21"
@@ -127,8 +123,6 @@ tower = "0.4.13"
 tower-http = { version = "0.4.3", features = ["fs", "cors"] }
 tower-livereload = "0.8.0"
 
-### browser ###
-fantoccini = "0.19.3"
 
 ### wasm ###
 console_log = "1.0"
