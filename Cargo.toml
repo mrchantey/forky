@@ -49,10 +49,10 @@ sweet = { path = "../sweet", features = ["bevy"] }
 # bevy = { version = "0.14", default-features = false }
 #💡 observer reflect attributes, required until 0.14.1
 bevy = { path = "../bevy", default-features = false }
-bevy-inspector-egui = "0.23.4"
-bevy_mod_debugdump = "0.10.0"
-bevy_rapier3d = { version = "0.25.0", features = ["debug-render-3d"] }
-wgpu = { version = "0.19.1" }
+# bevy-inspector-egui = "0.23.4"
+# bevy_mod_debugdump = "0.10.0"
+# bevy_rapier3d = { version = "0.25.0", features = ["debug-render-3d"] }
+# wgpu = { version = "0.19.1" }
 
 ### utility ###
 log = "0.4"

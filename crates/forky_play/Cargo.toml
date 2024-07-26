@@ -19,12 +19,11 @@ forky_core = { workspace = true }
 forky_bevy = { workspace = true }
 
 ### Game ###
-bevy = { workspace = true }
-bevy-inspector-egui = { workspace = true }
-# enigo = {path = "../../../../work-ref/enigo", version = "0.0.14"}
-bevy_rapier3d = { workspace = true }
-bevy_mod_debugdump = { workspace = true }
-wgpu = { workspace = true }
+# bevy = { workspace = true }
+# bevy-inspector-egui = { workspace = true }
+# bevy_rapier3d = { workspace = true }
+# bevy_mod_debugdump = { workspace = true }
+# wgpu = { workspace = true }
 
 ### Utility ###
 strum = { workspace = true }
