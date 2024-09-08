@@ -41,3 +41,10 @@ hyper = { workspace = true }
 tower = { workspace = true }
 tower-http = { workspace = true }
 tower-livereload = { workspace = true }
+
+[dev-dependencies]
+sweet = { workspace = true }
+
+[[example]]
+name = "test_forky_cli"
+path = "sweet.rs"

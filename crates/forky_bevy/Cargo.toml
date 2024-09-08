@@ -24,10 +24,3 @@ js-sys = { workspace = true }
 # wasm-bindgen = { workspace = true, optional = true }
 # wasm-bindgen-futures = { workspace = true, optional = true }
 # web-sys = { workspace = true, optional = true }
-
-[dev-dependencies]
-sweet = { workspace = true }
-
-[[example]]
-name = "test_forky_bevy"
-path = "test/sweet.rs"

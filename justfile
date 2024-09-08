@@ -85,16 +85,15 @@ publish crate *args:
 	cargo publish -p {{crate}} --allow-dirty --no-verify {{args}}
 	sleep 2
 
-publish-all:
-	just publish forky 						| true
-	just publish forky_core 			| true
-	just publish forky_fs 				| true
-	just publish forky_web_macros	| true
-	just publish forky_web 				| true
-	just publish forky_cli 				| true
-	just publish forky_bevy 			| true
-	just publish forky_play 			| true
-
+publish-all *args:
+	just publish forky_core {{args}} 				| true
+	just publish forky_fs {{args}} 					| true
+	just publish forky_web_macros {{args}}	| true
+	just publish forky_web {{args}} 				| true
+	just publish forky_cli {{args}} 				| true
+	just publish forky_bevy {{args}} 				| true
+	just publish forky {{args}} 						| true
+#just publish forky_play 			| true
 # just publish forky_ai 				| true
 
 start crate: 

@@ -1,6 +1,3 @@
-use forky_core::log;
-
-
 pub fn main() {
-	log!("hello world");
+	log::info!("hello world");
 }
