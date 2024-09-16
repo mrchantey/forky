@@ -1,6 +1,6 @@
 use super::*;
 use crate::*;
-use forky_fs::Subcommand;
+use forky_fs::prelude::*;
 
 pub struct ForkyCli;
 

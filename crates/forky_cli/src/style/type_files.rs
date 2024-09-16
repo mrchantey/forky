@@ -1,6 +1,6 @@
 use anyhow::Result;
 use cssparser::*;
-use forky_core::*;
+use forky_core::prelude::*;
 use glob::*;
 use std::collections::HashSet;
 use std::fs;

@@ -1,4 +1,4 @@
-use crate::*;
+use crate::prelude::*;
 use extend::ext;
 use std::collections::HashSet;
 
@@ -24,7 +24,7 @@ pub impl NodeGraph {
 		let mut to_link: Vec<(usize, usize)> = Vec::new();
 		for (i, node) in possibilities.iter().enumerate() {
 			for neighbor in node.links.iter() {
-				if utility::random_value() < 0.5 {
+				if random_value() < 0.5 {
 					to_link.push((i, neighbor.clone()));
 				}
 			}

@@ -4,7 +4,7 @@ use clap::Arg;
 use clap::ArgAction;
 use clap::ArgMatches;
 use clap::Command;
-use forky_fs::Subcommand;
+use forky_fs::prelude::*;
 
 pub struct StyleCommandAll;
 

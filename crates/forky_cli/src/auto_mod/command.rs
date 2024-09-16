@@ -1,7 +1,6 @@
 use super::*;
-use forky_core::ArcMut;
-use forky_fs::FsWatcher;
-use forky_fs::Subcommand;
+use forky_core::prelude::*;
+use forky_fs::prelude::*;
 
 pub struct AutoModCommand;
 

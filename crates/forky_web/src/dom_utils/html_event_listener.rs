@@ -1,6 +1,6 @@
 use super::*;
 use crate::*;
-use forky_core::*;
+use forky_core::prelude::*;
 use js_sys::Function;
 use js_sys::Promise;
 use std::rc::Rc;

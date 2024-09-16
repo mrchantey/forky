@@ -1,5 +1,5 @@
 [package]
-name = "forky_cli"
+name = "forky_cli_test"
 version = { workspace = true }
 edition = { workspace = true }
 authors = { workspace = true }
@@ -26,6 +26,7 @@ tokio = { workspace = true }
 ## forky
 forky_core = { workspace = true }
 forky_fs = { workspace = true }
+forky_cli = { workspace = true }
 ## fs
 glob = { workspace = true }
 ## cli
@@ -46,5 +47,5 @@ tower-livereload = { workspace = true }
 sweet = { workspace = true }
 
 [[example]]
-name = "test_forky_cli"
+name = "test_forky_cli_test"
 path = "sweet.rs"

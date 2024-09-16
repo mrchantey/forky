@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use bevy::prelude::*;
 use extend::ext;
-use forky_core::RcCell;
+use forky_core::utils::RcCell;
 
 #[ext]
 pub impl App {

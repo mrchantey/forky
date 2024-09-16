@@ -1,6 +1,6 @@
 use anyhow::Result;
 use colorize::AnsiColor;
-use forky_core::OptionTExt;
+use forky_core::prelude::*;
 use hyper::Uri;
 use std::fmt::Display;
 

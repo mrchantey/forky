@@ -31,17 +31,6 @@ macro_rules! dir {
 }
 
 #[macro_export]
-macro_rules! tern {
-	($pred:expr; $a:expr; $b:expr) => {
-		if $pred {
-			$a
-		} else {
-			$b
-		}
-	};
-}
-
-#[macro_export]
 macro_rules! spacecat {
 	// ($single_item:expr) => {
 	// 		$single_item

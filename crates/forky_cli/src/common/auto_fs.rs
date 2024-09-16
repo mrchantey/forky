@@ -4,7 +4,7 @@ use crate::style::StyleCommandAll;
 use anyhow::Ok;
 use anyhow::Result;
 use clap::ArgMatches;
-use forky_fs::Subcommand;
+use forky_fs::prelude::*;
 use std::sync::Arc;
 use std::sync::Mutex;
 

@@ -2,8 +2,7 @@ use super::*;
 use anyhow::Result;
 use clap::Arg;
 use clap::ArgMatches;
-use forky_fs::terminal;
-use forky_fs::Subcommand;
+use forky_fs::prelude::*;
 use std::path::Path;
 
 pub struct StyleCommandFile;

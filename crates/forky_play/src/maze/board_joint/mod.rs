@@ -1,3 +1,4 @@
+pub mod _force;
 pub mod force_controller;
 #[allow(unused_imports)]
 pub use self::force_controller::*;
@@ -13,4 +14,3 @@ pub use self::motor_spawn::*;
 pub mod structs;
 #[allow(unused_imports)]
 pub use self::structs::*;
-pub mod _force;

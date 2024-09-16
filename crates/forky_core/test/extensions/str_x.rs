@@ -1,4 +1,4 @@
-use forky_core::*;
+use forky_core::prelude::*;
 use sweet::*;
 
 sweet! {

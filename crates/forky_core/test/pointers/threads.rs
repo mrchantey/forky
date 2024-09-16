@@ -1,5 +1,5 @@
 #![allow(dead_code)]
-use forky_core::*;
+use forky_core::prelude::*;
 // use std::rc::Rc;
 use std::sync::{
 	Arc,
@@ -14,14 +14,14 @@ sweet! {
 		let handle = thread::spawn(|| {
 			for _ in 1..10 {
 					// println!("hi number {} from the spawned thread!", i);
-					utility::sleep_ms(1);
+					sleep_ms(1);
 				}
 			});
 			handle.join().unwrap();
 
 			for _ in 1..5 {
 				// println!("hi number {} from the main thread!", i);
-				utility::sleep_ms(100);
+				sleep_ms(100);
 			}
 			// println!("all done!");
 	}

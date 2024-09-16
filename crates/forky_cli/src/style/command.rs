@@ -1,5 +1,5 @@
 use super::*;
-use forky_fs::Subcommand;
+use forky_fs::prelude::*;
 
 pub struct StyleCommand;
 

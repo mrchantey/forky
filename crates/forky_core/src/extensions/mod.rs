@@ -16,12 +16,12 @@ pub use self::path_buf::*;
 pub mod result_x;
 #[allow(unused_imports)]
 pub use self::result_x::*;
-pub mod string;
-#[allow(unused_imports)]
-pub use self::string::*;
 pub mod str_x;
 #[allow(unused_imports)]
 pub use self::str_x::*;
+pub mod string;
+#[allow(unused_imports)]
+pub use self::string::*;
 pub mod vec;
 #[allow(unused_imports)]
 pub use self::vec::*;

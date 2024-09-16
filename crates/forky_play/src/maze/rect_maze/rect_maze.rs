@@ -1,7 +1,7 @@
 use crate::maze::*;
 use bevy::prelude::*;
 use forky_core::graph::*;
-use forky_core::*;
+use forky_core::prelude::*;
 
 #[derive(Debug, Component)]
 pub struct RectMaze {

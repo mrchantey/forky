@@ -1,5 +1,5 @@
 use super::*;
-use forky_core::*;
+use forky_core::prelude::*;
 use web_sys::Event;
 use web_sys::KeyboardEvent;
 use web_sys::MouseEvent;

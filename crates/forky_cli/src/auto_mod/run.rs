@@ -1,7 +1,7 @@
 use anyhow::Result;
-use forky_core::*;
-use forky_fs::fs::*;
-use forky_fs::*;
+use forky_core::prelude::*;
+use forky_fs::prelude::*;
+use forky_fs::utility::fs::read_dir_recursive;
 use std::env;
 use std::fs;
 use std::path::PathBuf;
@@ -14,7 +14,7 @@ const CRATE_DIRS: &'static [&str] = &["src", "crates", "crates/forky"];
 
 
 pub fn run() -> Result<()> {
-	CRATE_DIRS
+	let _ = CRATE_DIRS
 		.into_iter()
 		.map(|dir| {
 			match fs::read_dir(dir) {

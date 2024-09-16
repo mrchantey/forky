@@ -1,5 +1,5 @@
 #![allow(unused, unused_mut)]
-use forky_core::*;
+use forky_core::prelude::*;
 use forky_play::maze::rect_maze::RectMaze;
 use forky_play::maze::*;
 use sweet::*;

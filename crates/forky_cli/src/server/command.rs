@@ -2,8 +2,8 @@ use super::*;
 use anyhow::Result;
 use clap::Arg;
 use clap::ArgAction;
-use forky_core::OptionTExt;
-use forky_fs::Subcommand;
+use forky_core::prelude::*;
+use forky_fs::prelude::*;
 
 pub struct ServerCommand;
 

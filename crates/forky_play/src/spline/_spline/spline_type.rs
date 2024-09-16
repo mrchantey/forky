@@ -1,7 +1,7 @@
 use crate::*;
 use anyhow::Result;
 use bevy::prelude::*;
-use forky_core::*;
+use forky_core::prelude::*;
 // cross product visualizer https://www.geogebra.org/m/psMTGDgc
 
 pub trait SplineType {
@@ -21,7 +21,8 @@ pub trait SplineType {
 		let dt = 0.01;
 		let is_at_end = t + dt > 1.;
 		let tangent1 = tern!(is_at_end; self.tangent(t - dt); self.tangent(t));
-		let tangent2 = tern!(is_at_end; self.tangent(t);			self.tangent(t + dt));
+		let tangent2 =
+			tern!(is_at_end; self.tangent(t);			self.tangent(t + dt));
 		let normal = tangent1.cross(tangent2).normalize_or_zero();
 
 		if normal == Vec3::ZERO {

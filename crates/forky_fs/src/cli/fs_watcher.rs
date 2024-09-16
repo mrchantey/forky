@@ -1,6 +1,6 @@
-use crate::terminal;
+use crate::prelude::terminal;
 use anyhow::Result;
-use forky_core::*;
+use forky_core::prelude::*;
 use futures::SinkExt;
 use futures::StreamExt;
 use notify::*;

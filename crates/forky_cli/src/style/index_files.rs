@@ -1,6 +1,7 @@
 use anyhow::Result;
-use forky_core::*;
-use forky_fs::fs::*;
+use forky_core::prelude::*;
+use forky_fs::utility::fs::directories_matching;
+use forky_fs::utility::fs::read_dir_recursive;
 use glob::*;
 use std::collections::HashSet;
 use std::env;

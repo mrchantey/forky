@@ -1,8 +1,8 @@
 use super::*;
 use anyhow::Result;
 use clap::ArgMatches;
-use forky_core::ArcMut;
-use forky_fs::FsWatcher;
+use forky_core::prelude::*;
+use forky_fs::prelude::*;
 
 pub struct StyleAllCli {
 	pub lightning: Option<Lightning>,

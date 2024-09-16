@@ -2,7 +2,7 @@ use anyhow::Result;
 use axum::body::Body;
 use axum::http::*;
 use extend::ext;
-use forky_core::OptionTExt;
+use forky_core::prelude::*;
 use hyper::client::Client;
 
 #[ext]

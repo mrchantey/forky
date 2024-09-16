@@ -1,8 +1,8 @@
-use forky_core::*;
+use forky_core::prelude::*;
 use js_sys::Function;
 use js_sys::Reflect;
-use wasm_bindgen::JsCast;
 use wasm_bindgen::prelude::Closure;
+use wasm_bindgen::JsCast;
 use wasm_bindgen::JsValue;
 
 pub struct LogBuffer {

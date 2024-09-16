@@ -3,10 +3,8 @@ use clap::Arg;
 use clap::ArgAction;
 use clap::Command;
 use colorize::*;
-use forky_fs::process::spawn_command_blocking;
-use forky_fs::FsWatcher;
-use forky_fs::Subcommand;
-
+use forky_fs::prelude::process::spawn_command_blocking;
+use forky_fs::prelude::*;
 
 pub struct WatchCommand;
 

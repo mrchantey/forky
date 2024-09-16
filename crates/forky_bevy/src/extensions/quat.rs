@@ -1,7 +1,5 @@
 use bevy::prelude::*;
 use extend::ext;
-use forky_core::*;
-
 
 #[ext]
 pub impl Quat {
@@ -21,7 +19,11 @@ pub impl Quat {
 	}
 
 	fn look_at(target: Vec3) -> Quat {
-		let up = tern!(target.x == 0. && target.z == 0.; -Vec3::Z; Vec3::Y);
+		let up = if target.x == 0. && target.z == 0. {
+			-Vec3::Z
+		} else {
+			Vec3::Y
+		};
 		Self::look_at_with_up(target, up)
 	}
 

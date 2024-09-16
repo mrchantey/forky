@@ -1,4 +1,4 @@
-use crate::*;
+use crate::prelude::*;
 use extend::ext;
 use std::fmt::Display;
 use std::slice::SliceIndex;
