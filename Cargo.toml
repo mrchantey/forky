@@ -19,7 +19,7 @@ members = [
 ]
 
 [workspace.package]
-version = "0.2.0-rc.3"
+version = "0.2.0-rc.5"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
@@ -30,16 +30,16 @@ repository = "https://github.com/mrchantey/forky"
 
 [workspace.dependencies]
 ### internal ###
-forky = { path = "./", version = "0.2.0-rc.3" }
+forky = { path = "./", version = "0.2.0-rc.5" }
 # forky_ai = { path = "./crates/forky_ai", version = "0.1.43" }
-forky_bevy = { path = "./crates/forky_bevy", version = "0.2.0-rc.3" }
-forky_cli = { path = "./crates/forky_cli", version = "0.2.0-rc.3" }
-forky_core = { path = "./crates/forky_core", version = "0.2.0-rc.3" }
-forky_fs = { path = "./crates/forky_fs", version = "0.2.0-rc.3" }
-forky_esp = { path = "./crates/forky_esp", version = "0.2.0-rc.3" }
-forky_play = { path = "./crates/forky_play", version = "0.2.0-rc.3" }
-forky_web = { path = "./crates/forky_web", version = "0.2.0-rc.3" }
-forky_web_macros = { path = "./crates/forky_web/macros", version = "0.2.0-rc.3" }
+forky_bevy = { path = "./crates/forky_bevy", version = "0.2.0-rc.5" }
+forky_cli = { path = "./crates/forky_cli", version = "0.2.0-rc.5" }
+forky_core = { path = "./crates/forky_core", version = "0.2.0-rc.5" }
+forky_fs = { path = "./crates/forky_fs", version = "0.2.0-rc.5" }
+forky_esp = { path = "./crates/forky_esp", version = "0.2.0-rc.5" }
+forky_play = { path = "./crates/forky_play", version = "0.2.0-rc.5" }
+forky_web = { path = "./crates/forky_web", version = "0.2.0-rc.5" }
+forky_web_macros = { path = "./crates/forky_web/macros", version = "0.2.0-rc.5" }
 
 ### game ###
 
@@ -145,10 +145,10 @@ repository = { workspace = true }
 
 [features]
 default = []
-fs = []
-web = []
-cli = []
-bevy = []
+fs = ["dep:forky_fs"]
+web = ["dep:forky_web"]
+cli = ["dep:forky_cli"]
+bevy = ["dep:forky_bevy"]
 
 [dependencies]
 forky_core.workspace = true
