@@ -19,6 +19,6 @@ pub use self::quat::*;
 pub mod transform_x;
 #[allow(unused_imports)]
 pub use self::transform_x::*;
-pub mod vec;
+pub mod vec3;
 #[allow(unused_imports)]
-pub use self::vec::*;
+pub use self::vec3::*;
