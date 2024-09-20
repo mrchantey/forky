@@ -1,6 +1,7 @@
 use js_sys::Promise;
 use wasm_bindgen::JsValue;
-use wasm_bindgen_futures::{future_to_promise, JsFuture};
+use wasm_bindgen_futures::future_to_promise;
+use wasm_bindgen_futures::JsFuture;
 
 
 pub fn block_forever() {
@@ -10,7 +11,6 @@ pub fn block_forever() {
 
 async fn loop_forever_wasm() -> Result<JsValue, JsValue> {
 	loop_forever().await;
-	Ok(JsValue::UNDEFINED)
 }
 
 pub async fn loop_forever() -> ! {
@@ -40,12 +40,9 @@ where
 	let promise = Promise::new(&mut |resolve, _reject| {
 		web_sys::window()
 			.unwrap()
-			.set_timeout_with_callback_and_timeout_and_arguments_0(
-				&resolve, 0,
-			)
+			.set_timeout_with_callback_and_timeout_and_arguments_0(&resolve, 0)
 			.expect("Should register `setTimeout`.");
 	});
 	JsFuture::from(promise).await.unwrap();
 	f();
 }
-

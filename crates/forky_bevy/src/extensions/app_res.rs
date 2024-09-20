@@ -47,16 +47,5 @@ pub impl RcCell<App> {
 		// app.finish();
 		// app.cleanup();
 		// drop(app);
-		// leptos::spawn_local(async move {
-		// 	forky_web::wait_for_16_millis().await;
-		// 	let mounted = forky_web::is_mounted();
-		// 	let _frame = forky_web::AnimationFrame::new(move || {
-		// 		if mounted() {
-		// 			self.borrow_mut().update();
-		// 		}
-		// 	});
-		// 	// block until unmount
-		// 	forky_web::loop_while_mounted().await;
-		// })
 	}
 }

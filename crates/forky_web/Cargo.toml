@@ -10,7 +10,7 @@ description = { workspace = true }
 repository = { workspace = true }
 
 [features]
-default = ["leptos"]
+default = []
 leptos = ["dep:leptos"]
 
 [dependencies]

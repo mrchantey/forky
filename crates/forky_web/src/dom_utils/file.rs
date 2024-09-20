@@ -16,20 +16,17 @@ use web_sys::Url;
 //https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 pub fn download_binary(bytes: &[u8], filename: &str) -> Result<(), JsValue> {
 	let bytes: JsValue = Uint8Array::from(bytes).into();
-	let blob = Blob::new_with_u8_array_sequence_and_options(
-		&bytes,
-		BlobPropertyBag::new().type_("application/octet-stream"),
-	)?;
+	let opts = BlobPropertyBag::new();
+	opts.set_type("application/octet-stream");
+	let blob = Blob::new_with_u8_array_sequence_and_options(&bytes, &opts)?;
 	download_blob(blob, filename)
 }
 pub fn download_text(text: &str, filename: &str) -> Result<(), JsValue> {
 	let arr = Array::new();
 	arr.push(&JsValue::from_str(text));
-
-	let blob = Blob::new_with_str_sequence_and_options(
-		&arr,
-		BlobPropertyBag::new().type_("text/plain"),
-	)?;
+	let opts = BlobPropertyBag::new();
+	opts.set_type("text/plain");
+	let blob = Blob::new_with_str_sequence_and_options(&arr, &opts)?;
 	download_blob(blob, filename)
 }
 

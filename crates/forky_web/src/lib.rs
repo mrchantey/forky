@@ -8,10 +8,6 @@ mod dom_utils_leptos;
 pub use self::dom_utils_leptos::*;
 mod logging;
 pub use self::logging::*;
-#[cfg(feature = "leptos")]
-mod ui;
-#[cfg(feature = "leptos")]
-pub use self::ui::*;
 mod extensions;
 pub use self::extensions::*;
 mod net;
@@ -25,7 +21,5 @@ pub mod prelude {
 	pub use crate::extensions::*;
 	pub use crate::logging::*;
 	pub use crate::net::*;
-	#[cfg(feature = "leptos")]
-	pub use crate::ui::*;
 	pub use forky_web_macros::*;
 }

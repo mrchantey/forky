@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use extend::ext;
-use forky_core::OptionTExt;
+use forky_core::prelude::OptionTExt;
 use wasm_bindgen::JsCast;
 use wasm_bindgen::JsValue;
 use web_sys::*;
