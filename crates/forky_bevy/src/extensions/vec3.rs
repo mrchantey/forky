@@ -59,14 +59,14 @@ pub impl Vec3 {
 		self
 	}
 
-	/// Random position inside a unit cube
+	/// Random position inside a unit cube (0, 1)
 	fn random_in_cube() -> Self {
 		let mut rng = rand::thread_rng();
 
 		Vec3::new(
-			rng.gen_range(-1.0..1.0),
-			rng.gen_range(-1.0..1.0),
-			rng.gen_range(-1.0..1.0),
+			rng.gen_range(0.0..1.0),
+			rng.gen_range(0.0..1.0),
+			rng.gen_range(0.0..1.0),
 		)
 	}
 
