@@ -4,12 +4,16 @@ use clap::ArgMatches;
 use clap::Command;
 use std::io;
 
+/// A helper for splitting [`clap::Command`] into subcommands, allowing
+/// for modular composition.
 pub trait Subcommand {
 	fn name(&self) -> &'static str;
 	fn about(&self) -> &'static str;
 	fn version(&self) -> &'static str { "0.0.1" }
+	/// Add your arguments here
 	fn append_command(&self, command: Command) -> Command { command }
 
+	/// Usually only used internally Internal use only
 	fn create_command(&self) -> Command {
 		let mut cmd = Command::new(self.name())
 			.about(self.about())
@@ -35,20 +39,20 @@ pub trait Subcommand {
 		let args = self
 			.create_command()
 			.get_matches_from(args.split_whitespace());
-		self.run_subs_or_default(&args)
+		self.run_subcommand_or_default(&args)
 	}
 
 	fn run_with_cli_args(&self) -> Result<()> {
 		let args = self.create_command().get_matches();
-		self.run_subs_or_default(&args)
+		self.run_subcommand_or_default(&args)
 	}
-	fn run_subs_or_default(&self, args: &ArgMatches) -> Result<()> {
+	fn run_subcommand_or_default(&self, args: &ArgMatches) -> Result<()> {
 		let mut sub_match = false;
 		for (name, args) in args.subcommand().iter() {
 			for sub in self.subcommands().iter() {
 				if sub.name() == *name {
 					sub_match = true;
-					sub.run_subs_or_default(args)?;
+					sub.run_subcommand_or_default(args)?;
 				}
 			}
 		}
@@ -73,7 +77,9 @@ pub trait Subcommand {
 		Err(anyhow!("No default function or subcommand entered.."))
 	}
 
-	fn run_loop(&self) -> Result<()> {
+
+	/// Run in a repl loop, reading from stdin.
+	fn run_repl(&self) -> Result<()> {
 		let stdin = io::stdin(); // We get `Stdin` here.
 		loop {
 			let mut input = String::new();
