@@ -26,7 +26,7 @@ pub fn run() -> Result<()> {
 			}
 			Ok(())
 		})
-		.collect::<Result<_>>()?;
+		.collect::<Result<Vec<()>>>()?;
 	terminal::show_cursor();
 	Ok(())
 }
