@@ -21,6 +21,7 @@ pub fn run() -> Result<()> {
 				Ok(dirs) => dirs
 					.map(|e| e.unwrap().path())
 					.for_each(|p| run_for_crate(p)),
+				// what does this do?
 				_ => run_for_crate(env::current_dir()?),
 			}
 			Ok(())

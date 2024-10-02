@@ -1,4 +1,4 @@
-use forky_cli::*;
-use forky_fs::*;
+use ::forky_cli::prelude::*;
+use forky_fs::prelude::*;
 
-fn main() -> anyhow::Result<()> { common::ForkyCli.run_with_cli_args() }
+fn main() -> anyhow::Result<()> { ForkyCli.run_with_cli_args() }

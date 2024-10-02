@@ -34,6 +34,9 @@ colorize = { workspace = true }
 ## style
 cssparser = { workspace = true }
 
+## key
+enigo = "0.2.1"
+
 ## serve
 axum = { workspace = true }
 axum-server = { workspace = true }

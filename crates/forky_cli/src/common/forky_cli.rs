@@ -15,6 +15,7 @@ impl Subcommand for ForkyCli {
 			Box::new(server::ServerCommand),
 			Box::new(style::StyleCommand),
 			Box::new(auto_mod::AutoModCommand),
+			Box::new(key::AutoKeyCommand),
 		]
 	}
 }
