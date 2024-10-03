@@ -98,7 +98,9 @@ impl Proxy {
 	}
 
 	pub async fn handle(&self, req: Request<Body>) -> Response<Body> {
-		(async || -> Result<Response<Body>> {
+		// (async || -> Result<Response<Body>> {
+
+		let result: Result<Response<Body>> = async {
 			let uri = req.uri();
 			let uri = uri.remove_leading_slash()?;
 			let proxied_referrer = referrer_is_proxied(&req);
@@ -111,9 +113,10 @@ impl Proxy {
 				// self.apply_next_origin(&uri)?;
 				handle_proxy_request_from_url(req, &uri).await
 			}
-		})()
-		.await
-		.to_response()
+		}
+		.await;
+		// })()
+		result.to_response()
 	}
 
 	fn apply_last_origin(&self, path: &str) -> Result<Uri> {
