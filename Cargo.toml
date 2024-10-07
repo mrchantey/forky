@@ -48,7 +48,9 @@ forky_web_macros = { path = "./crates/forky_web/macros", version = "0.2.0-rc.6" 
 sweet = { version = "0.2.0-rc.2", features = ["bevy"] }
 # bevy = { version = "0.14", default-features = false }
 #💡 observer reflect attributes, required until 0.14.1
-bevy = { version = "0.14", default-features = false }
+# bevy = { version = "0.14", default-features = false }
+bevy = { git = "https://github.com/bevyengine/bevy", rev = "0c959f77007c29eead7f902bddd3342a1ecbca20", default-features = false }
+
 # bevy-inspector-egui = "0.23.4"
 # bevy_mod_debugdump = "0.10.0"
 # bevy_rapier3d = { version = "0.25.0", features = ["debug-render-3d"] }
