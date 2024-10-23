@@ -3,9 +3,8 @@ use sweet::*;
 
 #[sweet_test(skip)]
 pub async fn html_event_listener() -> Result<()> {
-	leptos::logging::log!("thats ok");
-	HtmlEventWaiter::new("click").wait().await.anyhow()?;
-	leptos::logging::log!("thats ok");
-
-	Ok(())
+    console_log::log!("waiting..");
+    HtmlEventWaiter::new("click").wait().await.anyhow()?;
+    console_log::log!("ok..");
+    Ok(())
 }
