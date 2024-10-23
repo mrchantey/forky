@@ -10,9 +10,6 @@ pub use self::quadratic_spline::*;
 pub mod spline;
 #[allow(unused_imports)]
 pub use self::spline::*;
-pub mod spline_points;
-#[allow(unused_imports)]
-pub use self::spline_points::*;
 pub mod spline_type;
 #[allow(unused_imports)]
 pub use self::spline_type::*;

@@ -1,7 +1,8 @@
 use sweet::*;
 
-sweet! {
-	it "works" {
-		expect(true).to_be_true()?;
-	}
+#[sweet_test]
+fn works() -> Result<()> {
+	expect(true).to_be_true()?;
+
+	Ok(())
 }

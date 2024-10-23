@@ -7,9 +7,6 @@ pub use self::forky_shader::*;
 pub mod inline_shaders;
 #[allow(unused_imports)]
 pub use self::inline_shaders::*;
-pub mod render_bundle;
-#[allow(unused_imports)]
-pub use self::render_bundle::*;
 pub mod unlit_material;
 #[allow(unused_imports)]
 pub use self::unlit_material::*;

@@ -46,7 +46,7 @@ pub fn copy_recursive(
 	source: impl AsRef<Path>,
 	destination: impl AsRef<Path>,
 ) -> Result<()> {
-	fs::create_dir_all(&destination)?;
+	fs::create_dir_all(&destination).ok();
 	for entry in fs::read_dir(source)? {
 		let entry = entry?;
 		let filetype = entry.file_type()?;
