@@ -77,7 +77,7 @@ patch:
 
 publish crate *args:
 	cargo publish -p {{crate}} --allow-dirty --no-verify {{args}}
-	sleep 2
+	sleep 1
 
 publish-all *args:
 	just publish forky_core {{args}} 				| true
