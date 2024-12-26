@@ -19,8 +19,8 @@ impl Server {
 	}
 
 	pub async fn serve_secure(&self, router: Router) -> Result<()> {
-		let cert = include_bytes!("self_signed_certs___/cert.pem");
-		let key = include_bytes!("self_signed_certs___/key.pem");
+		let cert = include_bytes!("_self_signed_certs/cert.pem");
+		let key = include_bytes!("_self_signed_certs/key.pem");
 
 		let config =
 			RustlsConfig::from_pem(cert.to_vec(), key.to_vec()).await?;

@@ -2453,23 +2453,23 @@ dependencies = [
 
 [[package]]
 name = "forky"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "forky_bevy",
  "forky_cli",
- "forky_core 0.2.0",
- "forky_fs 0.2.0",
+ "forky_core 0.2.0-rc.10",
+ "forky_fs 0.2.0-rc.10",
  "forky_web",
 ]
 
 [[package]]
 name = "forky_bevy"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "bevy",
  "extend",
- "forky_core 0.2.0",
+ "forky_core 0.2.0-rc.10",
  "forky_web",
  "js-sys",
  "rand",
@@ -2477,7 +2477,7 @@ dependencies = [
 
 [[package]]
 name = "forky_bevy_test"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "bevy",
  "forky_bevy",
@@ -2486,7 +2486,7 @@ dependencies = [
 
 [[package]]
 name = "forky_cli"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "axum",
@@ -2496,8 +2496,8 @@ dependencies = [
  "cssparser",
  "enigo",
  "extend",
- "forky_core 0.2.0",
- "forky_fs 0.2.0",
+ "forky_core 0.2.0-rc.10",
+ "forky_fs 0.2.0-rc.10",
  "futures",
  "glob",
  "hyper",
@@ -2510,7 +2510,7 @@ dependencies = [
 
 [[package]]
 name = "forky_cli_test"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "axum",
@@ -2520,8 +2520,8 @@ dependencies = [
  "cssparser",
  "extend",
  "forky_cli",
- "forky_core 0.2.0",
- "forky_fs 0.2.0",
+ "forky_core 0.2.0-rc.10",
+ "forky_fs 0.2.0-rc.10",
  "futures",
  "glob",
  "hyper",
@@ -2549,7 +2549,7 @@ dependencies = [
 
 [[package]]
 name = "forky_core"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "extend",
@@ -2561,12 +2561,12 @@ dependencies = [
 
 [[package]]
 name = "forky_core_test"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
  "extend",
- "forky_core 0.2.0",
+ "forky_core 0.2.0-rc.10",
  "getrandom",
  "js-sys",
  "num-traits",
@@ -2600,13 +2600,13 @@ dependencies = [
 
 [[package]]
 name = "forky_fs"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "clap",
  "crossterm",
  "extend",
- "forky_core 0.2.0",
+ "forky_core 0.2.0-rc.10",
  "futures",
  "gag",
  "glob",
@@ -2619,22 +2619,22 @@ dependencies = [
 
 [[package]]
 name = "forky_fs_test"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
- "forky_fs 0.2.0",
+ "forky_fs 0.2.0-rc.10",
  "sweet",
 ]
 
 [[package]]
 name = "forky_play"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "bevy",
  "bytemuck",
  "extend",
  "forky_bevy",
- "forky_core 0.2.0",
+ "forky_core 0.2.0-rc.10",
  "forky_web",
  "petgraph",
  "strum",
@@ -2644,12 +2644,12 @@ dependencies = [
 
 [[package]]
 name = "forky_web"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
  "extend",
- "forky_core 0.2.0",
+ "forky_core 0.2.0-rc.10",
  "forky_web_macros",
  "js-sys",
  "log",
@@ -2662,7 +2662,7 @@ dependencies = [
 
 [[package]]
 name = "forky_web_macros"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "proc-macro2",
@@ -2672,12 +2672,12 @@ dependencies = [
 
 [[package]]
 name = "forky_web_test"
-version = "0.2.0"
+version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
  "extend",
- "forky_core 0.2.0",
+ "forky_core 0.2.0-rc.10",
  "forky_web",
  "js-sys",
  "log",

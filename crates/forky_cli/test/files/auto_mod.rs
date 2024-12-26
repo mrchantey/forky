@@ -2,24 +2,18 @@ use forky_cli::*;
 use std::path::*;
 use sweet::*;
 
-#[sweet_test(skip)]
+#[sweet_test]
 fn works() -> Result<()> {
-	let path = Path::new("test/files/test_dir");
+    const EXPECTED: &str = r#"pub mod included_dir;
+pub mod included_file;
+#[allow(unused_imports)]
+pub use self::included_file::*;
+"#;
 
-	let txt = auto_mod::create_mod_text(&path.to_path_buf());
-	expect(txt.as_str()).to_contain("mod test_mod;\npub use self::test_mod::*;\npub mod _test_use;\nmod __test_sub_dir;\npub use self::__test_sub_dir::*;")?;
+    let path = Path::new("crates/forky_cli/test/files/test_dir");
 
-	Ok(())
-}
+    let txt = auto_mod::create_mod_text(&path.to_path_buf());
+    expect(txt.as_str()).to_be(EXPECTED)?;
 
-#[sweet_test(skip)]
-fn double_underscore() -> Result<()> {
-	let path = Path::new("test/files/test_dir/__test_sub_dir");
-
-	let txt = auto_mod::create_mod_text(&path.to_path_buf());
-	expect(txt.as_str()).to_contain(
-		"pub mod test_mod;\nmod _test_use;\npub use self::_test_use::*;",
-	)?;
-
-	Ok(())
+    Ok(())
 }
