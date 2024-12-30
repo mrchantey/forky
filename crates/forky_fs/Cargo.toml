@@ -1,34 +1,34 @@
 [package]
 name = "forky_fs"
-version = { workspace = true }
-edition = { workspace = true }
-authors = { workspace = true }
-documentation = { workspace = true }
-license = { workspace = true }
-readme = { workspace = true }
-description = { workspace = true }
-repository = { workspace = true }
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+documentation.workspace = true
+license.workspace = true
+readme.workspace = true
+description.workspace = true
+repository.workspace = true
 
 
 [dependencies]
-forky_core = { workspace = true }
+forky_core.workspace = true
 ## utils
-glob = { workspace = true }
-anyhow = { workspace = true }
-extend = { workspace = true }
-sha2 = { workspace = true }
-hex = { workspace = true }
+glob.workspace = true
+anyhow.workspace = true
+extend.workspace = true
+sha2.workspace = true
+hex.workspace = true
 
 ## terminal
-crossterm = { workspace = true }
-gag = { workspace = true }
+crossterm.workspace = true
+gag.workspace = true
 
 ## cli
-clap = { workspace = true }
+clap.workspace = true
 
 ## fs
-notify = { workspace = true }
-notify-debouncer-full = { workspace = true }
+notify.workspace = true
+notify-debouncer-full.workspace = true
 ## async
-tokio = { workspace = true }
-futures = { workspace = true }
+tokio.workspace = true
+futures.workspace = true

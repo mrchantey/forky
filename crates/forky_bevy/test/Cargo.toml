@@ -1,14 +1,14 @@
 [package]
 name = "forky_bevy_test"
-version = { workspace = true }
-edition = { workspace = true }
+version.workspace = true
+edition.workspace = true
 
 [dependencies]
-forky_bevy = { workspace = true }
-bevy = { workspace = true }
+forky_bevy.workspace = true
+bevy.workspace = true
 
 [dev-dependencies]
-sweet = { workspace = true }
+sweet.workspace = true
 
 [[example]]
 name = "test_forky_bevy_test"

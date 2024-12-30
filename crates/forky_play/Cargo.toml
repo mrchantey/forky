@@ -1,13 +1,13 @@
 [package]
 name = "forky_play"
-version = { workspace = true }
-edition = { workspace = true }
-authors = { workspace = true }
-documentation = { workspace = true }
-license = { workspace = true }
-readme = { workspace = true }
-description = { workspace = true }
-repository = { workspace = true }
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+documentation.workspace = true
+license.workspace = true
+readme.workspace = true
+description.workspace = true
+repository.workspace = true
 
 [features]
 shader_debug = []
@@ -15,29 +15,29 @@ shader_debug_internal = []
 
 [dependencies]
 ### Internal ###
-forky_core = { workspace = true }
-forky_bevy = { workspace = true }
+forky_core.workspace = true
+forky_bevy.workspace = true
 
 ### Game ###
 bevy = { workspace = true, default-features = true }
-# bevy-inspector-egui = { workspace = true }
-# bevy_rapier3d = { workspace = true }
-# bevy_mod_debugdump = { workspace = true }
-# wgpu = { workspace = true }
+# bevy-inspector-egui.workspace = true
+# bevy_rapier3d.workspace = true
+# bevy_mod_debugdump.workspace = true
+# wgpu.workspace = true
 
 ### Utility ###
-strum = { workspace = true }
-strum_macros = { workspace = true }
-extend = { workspace = true }
-anyhow = { workspace = true }
-petgraph = { workspace = true }
-bytemuck = { workspace = true }
+strum.workspace = true
+strum_macros.workspace = true
+extend.workspace = true
+anyhow.workspace = true
+petgraph.workspace = true
+bytemuck.workspace = true
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-forky_web = { workspace = true }
+forky_web.workspace = true
 
 [dev-dependencies]
-sweet = { workspace = true }
+sweet.workspace = true
 # forky_fs = {workspace = true }
 
 [[example]]

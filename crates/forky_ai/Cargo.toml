@@ -1,24 +1,24 @@
 [package]
 name = "forky_ai"
-version = { workspace = true }
-edition = { workspace = true }
-authors = { workspace = true }
-documentation = { workspace = true }
-license = { workspace = true }
-readme = { workspace = true }
-description = { workspace = true }
-repository = { workspace = true }
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+documentation.workspace = true
+license.workspace = true
+readme.workspace = true
+description.workspace = true
+repository.workspace = true
 
 [dependencies]
-anyhow = { workspace = true }
-dotenv = { workspace = true }
-forky_core = { workspace = true }
-forky_fs = { workspace = true }
-futures-util = { workspace = true }
-tokio = { workspace = true }
+anyhow.workspace = true
+dotenv.workspace = true
+forky_core.workspace = true
+forky_fs.workspace = true
+futures-util.workspace = true
+tokio.workspace = true
 
 [dev-dependencies]
-sweet = { workspace = true }
+sweet.workspace = true
 
 [[example]]
 name = "test_forky_ai"

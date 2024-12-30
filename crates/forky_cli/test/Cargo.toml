@@ -1,13 +1,13 @@
 [package]
 name = "forky_cli_test"
-version = { workspace = true }
-edition = { workspace = true }
-authors = { workspace = true }
-documentation = { workspace = true }
-license = { workspace = true }
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+documentation.workspace = true
+license.workspace = true
 readme = "README.md"
-description = { workspace = true }
-repository = { workspace = true }
+description.workspace = true
+repository.workspace = true
 
 [[bin]]
 name = "forky"
@@ -15,36 +15,36 @@ path = "src/main.rs"
 
 # [dependencies]
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies] # specify os for rust analyzer
-anyhow = { workspace = true }
-extend = { workspace = true }
+anyhow.workspace = true
+extend.workspace = true
 
 ## async
-futures = { workspace = true }
-rayon = { workspace = true }
-tokio = { workspace = true }
+futures.workspace = true
+rayon.workspace = true
+tokio.workspace = true
 
 ## forky
-forky_core = { workspace = true }
-forky_fs = { workspace = true }
-forky_cli = { workspace = true }
+forky_core.workspace = true
+forky_fs.workspace = true
+forky_cli.workspace = true
 ## fs
-glob = { workspace = true }
+glob.workspace = true
 ## cli
-clap = { workspace = true }
-colorize = { workspace = true }
+clap.workspace = true
+colorize.workspace = true
 ## style
-cssparser = { workspace = true }
+cssparser.workspace = true
 
 ## serve
-axum = { workspace = true }
-axum-server = { workspace = true }
-hyper = { workspace = true }
-tower = { workspace = true }
-tower-http = { workspace = true }
-tower-livereload = { workspace = true }
+axum.workspace = true
+axum-server.workspace = true
+hyper.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+tower-livereload.workspace = true
 
 [dev-dependencies]
-sweet = { workspace = true }
+sweet.workspace = true
 
 [[example]]
 name = "test_forky_cli_test"
