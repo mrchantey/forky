@@ -26,12 +26,9 @@ bevy = { workspace = true, default-features = true }
 # wgpu.workspace = true
 
 ### Utility ###
-strum.workspace = true
-strum_macros.workspace = true
 extend.workspace = true
 anyhow.workspace = true
-petgraph.workspace = true
-bytemuck.workspace = true
+petgraph = { version = "0.6.4", features = ["serde-1"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 forky_web.workspace = true

@@ -50,14 +50,14 @@ jobs:
         override: true
         default: true
         # components: rustfmt, clippy
-    - name: 🔨 Install Wasm Target
+    - name: 🔨 Add wasm target
       run: rustup target add wasm32-unknown-unknown
-    - name: 🔨 Install Wasm Bindgen
-      uses: baptiste0928/cargo-install@v2
+        # components: rustfmt, clippy
+    - name: 🔨 Install wasm bindgen cli
+      run: which wasm-bindgen || cargo install wasm-bindgen-cli --version 0.2.99
+    - name: 🔨 Install Deno
+      uses: denoland/setup-deno@v2
       with:
-        crate: wasm-bindgen-cli
-        version: '0.2.88'
-    # - name: 🔨 Build Crates
-    #   run: just all build
+        deno-version: v2.x
     - name: 🔎 Test
       run: just test-all
