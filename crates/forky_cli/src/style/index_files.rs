@@ -26,7 +26,7 @@ fn remove_all_index_files() -> Result<()> {
 fn for_all_crates() -> Result<()> {
 	let dirs_with_css = directories_matching("**/src/**/*.css")
 		.iter()
-		.flat_map(|p| p.parents())
+		.flat_map(|p| p.dir_parts())
 		.filter(|p| !p.filestem_ends_with_underscore())
 		.collect::<HashSet<PathBuf>>();
 	// dirs_with_css

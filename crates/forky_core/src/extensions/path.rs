@@ -16,8 +16,7 @@ pub impl Path {
 		Ok(p)
 	}
 	fn to_forward_slash(&self) -> PathBuf {
-		Path::new(&self.to_str().unwrap_or_default().replace("\\", "/"))
-			.to_path_buf()
+		Path::new(&self.to_string_lossy().replace("\\", "/")).to_path_buf()
 	}
 	fn to_forward_slash_str(&self) -> String {
 		self.to_str().unwrap_or_default().replace("\\", "/")

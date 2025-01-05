@@ -10,7 +10,6 @@ members = [
 	"crates/forky_cli",
 	"crates/forky_cli/test",
 	"crates/forky_core",
-	"crates/forky_core/test",
 	# "crates/forky_esp",
 	"crates/forky_fs",
 	"crates/forky_fs/test",
@@ -45,8 +44,8 @@ forky_web_macros = { path = "./crates/forky_web/macros", version = "0.2.0-rc.10"
 
 ### game ###
 
-# sweet = { path = "../sweet", features = ["bevy"] }
-sweet = { version = "0.2", features = ["bevy"] }
+sweet = { path = "../sweet", features = ["bevy"] }
+# sweet = { version = "0.2", features = ["bevy"] }
 bevy = { version = "0.15", default-features = false }
 # bevy = { git = "https://github.com/bevyengine/bevy", rev = "0c959f77007c29eead7f902bddd3342a1ecbca20", default-features = false }
 
@@ -228,11 +227,6 @@ features = [
 	'History',
 	'Location',
 	'UrlSearchParams',
-	# Sensors
-	'DeviceOrientationEvent',
-	'DeviceMotionEvent',
-	'DeviceAcceleration',
-	'DeviceRotationRate',
 	# Sockets
 	'BinaryType',
 	'FileReader',
@@ -240,38 +234,4 @@ features = [
 	'MessageEvent',
 	'ProgressEvent',
 	'WebSocket',
-	# XR
-	'XrBoundedReferenceSpace',
-	'XrEye',
-	'XrFrame',
-	'XrHandedness',
-	'XrInputSource',
-	'XrInputSourceArray',
-	'XrInputSourceEvent',
-	'XrInputSourceEventInit',
-	'XrInputSourcesChangeEvent',
-	'XrJointPose',
-	'XrJointSpace',
-	'XrPose',
-	'XrReferenceSpace',
-	'XrReferenceSpaceEvent',
-	'XrReferenceSpaceEventInit',
-	'XrReferenceSpaceType',
-	'XrRenderState',
-	'XrRenderStateInit',
-	'XrRigidTransform',
-	'XrSession',
-	'XrSessionEvent',
-	'XrSessionEventInit',
-	'XrSessionInit',
-	'XrSessionMode',
-	'XrSpace',
-	'XrTargetRayMode',
-	'XrView',
-	'XrViewerPose',
-	'XrViewport',
-	'XrVisibilityState',
-	'XrWebGlLayer',
-	'XrWebGlLayerInit',
-	'XrSystem',
 ]

@@ -1,16 +1,6 @@
-use crate::prelude::*;
-
-pub type EventListenerUnit = Box<dyn Fn()>;
-pub type EventListenerVecUnit = Vec<EventListenerUnit>;
-pub type EventListenerVecSendUnit = ArcMut<EventListenerVecUnit>;
-
-pub type EventListener<T> = Box<dyn Fn(&T)>;
-pub type EventListenerVec<T> = Vec<EventListener<T>>;
-pub type EventListenerVecSend<T> = ArcMut<EventListenerVec<T>>;
-
 #[derive(Default)]
 pub struct ForkyEvent<T> {
-	pub listeners: Vec<Box<dyn Fn(&T)>>,
+	pub listeners: Vec<Box<dyn FnMut(&T)>>,
 }
 
 impl<T> ForkyEvent<T> {
@@ -20,14 +10,32 @@ impl<T> ForkyEvent<T> {
 		}
 	}
 
-	pub fn trigger(&self, val: &T) {
-		for listener in self.listeners.iter() {
+	pub fn trigger(&mut self, val: &T) {
+		for listener in self.listeners.iter_mut() {
 			listener(val);
 		}
 	}
-	pub fn add_listener(&mut self, listener: Box<dyn Fn(&T)>) {
-		self.listeners.push(listener);
+	pub fn add_listener(&mut self, listener: impl 'static + FnMut(&T)) {
+		self.listeners.push(Box::new(listener));
 	}
 
 	pub fn clear(&mut self) { self.listeners.clear(); }
+}
+
+
+#[cfg(test)]
+mod test {
+	use crate::prelude::*;
+	use sweet::prelude::*;
+
+	#[test]
+	fn works() {
+		let mut e = ForkyEvent::default();
+		let func = mock_bucket::<i32>();
+		let func2 = func.clone();
+		e.add_listener(move |val| func2(*val));
+		e.trigger(&3);
+
+		expect(&func).to_have_returned_with(3);
+	}
 }

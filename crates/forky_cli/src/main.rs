@@ -1,3 +1,4 @@
+#![cfg(not(target_arch = "wasm32"))]
 use ::forky_cli::prelude::*;
 use forky_fs::prelude::*;
 

@@ -1,5 +1,17 @@
 use extend::ext;
 
+#[ext]
+pub impl<T, E> Result<T, E> {
+	fn ok_or(self, func: impl FnOnce(E)) -> Option<T> {
+		match self {
+			Ok(value) => Some(value),
+			Err(err) => {
+				func(err);
+				None
+			}
+		}
+	}
+}
 // #[ext]
 // pub impl<T, E: Display> Result<T, E> {
 // Consume the error, log it and return None, otherwise return the value.
@@ -14,18 +26,6 @@ use extend::ext;
 // }
 // }
 
-#[ext]
-pub impl<T, E> Result<T, E> {
-	fn ok_or(self, func: impl FnOnce(E)) -> Option<T> {
-		match self {
-			Ok(value) => Some(value),
-			Err(err) => {
-				func(err);
-				None
-			}
-		}
-	}
-}
 
 // #[ext(name =ResultExtEDebug)]
 // pub impl<T, E: std::fmt::Debug> Result<T, E> {

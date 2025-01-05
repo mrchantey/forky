@@ -1,6 +1,4 @@
-use crate::prelude::*;
 use extend::ext;
-use std::fmt::Display;
 use std::slice::SliceIndex;
 
 #[ext(name = VecXOrd)]
@@ -10,15 +8,7 @@ pub impl<T: Ord> Vec<T> {
 		self
 	}
 }
-#[ext(name = VecXDisplay)]
-pub impl<T: Display> Vec<T> {
-	fn to_string(&self) -> String {
-		self.iter().fold(String::new(), |mut acc, curr| {
-			acc.push_string(&format!("{}", curr));
-			acc
-		})
-	}
-}
+
 #[ext(name = VecXDefault)]
 pub impl<T: Default + Clone> Vec<T> {
 	fn from_len(len: usize) -> Self { vec![T::default(); len] }
@@ -56,5 +46,29 @@ pub impl<T> Vec<T> {
 		} else {
 			false
 		}
+	}
+}
+
+
+
+#[cfg(test)]
+mod test {
+	use crate::prelude::*;
+	use sweet::prelude::*;
+
+	#[test]
+	fn works() {
+		let v = vec![0, 2, 1].sorted();
+		expect(v.len()).to_be(3);
+		expect(v[0]).to_be(0);
+		expect(v[1]).to_be(1);
+		expect(v[2]).to_be(2);
+	}
+
+	#[test]
+	fn first() {
+		let v = vec![0, 2, 1];
+		let v = v._first();
+		expect(*v).to_be(0);
 	}
 }
