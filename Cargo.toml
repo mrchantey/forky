@@ -6,13 +6,10 @@ members = [
 	# "crates/*"
 	# "crates/forky_ai",
 	"crates/forky_bevy",
-	"crates/forky_bevy/test",
 	"crates/forky_cli",
-	"crates/forky_cli/test",
 	"crates/forky_core",
 	# "crates/forky_esp",
 	"crates/forky_fs",
-	"crates/forky_fs/test",
 	"crates/forky_play",
 	"crates/forky_web",
 	"crates/forky_web/test",

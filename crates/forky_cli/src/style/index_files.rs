@@ -1,3 +1,4 @@
+use crate::utils::CliPathBufExt;
 use anyhow::Result;
 use forky_core::prelude::*;
 use forky_fs::utility::fs::directories_matching;

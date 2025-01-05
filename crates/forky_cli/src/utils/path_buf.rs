@@ -3,7 +3,7 @@ use forky_core::prelude::*;
 use std::path::Path;
 use std::path::PathBuf;
 
-#[ext]
+#[ext(name=CliPathBufExt)]
 pub impl PathBuf {
 	fn push_with(parent: &PathBuf, path: impl AsRef<Path>) -> Self {
 		let mut child = parent.clone();

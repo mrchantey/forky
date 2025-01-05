@@ -100,3 +100,30 @@ pub impl Vec3 {
 		)
 	}
 }
+
+
+#[cfg(test)]
+mod test {
+	use crate::prelude::*;
+	use bevy::prelude::*;
+	use sweet::prelude::*;
+
+	#[test]
+	pub fn works() {
+		for _ in 0..10 {
+			let val = Vec3::random_in_cube();
+			expect(val.length()).to_be_less_than(2.);
+			// println!("random_in_cube: {val}");
+		}
+		for _ in 0..10 {
+			let val = Vec3::random_on_sphere();
+			expect(val.length()).to_be_close_to(1.);
+			// println!("random_on_sphere: {val}");
+		}
+		for _ in 0..10 {
+			let val = Vec3::random_in_sphere();
+			expect(val.length()).to_be_less_than(1.);
+			// println!("random_in_sphere: {val}");
+		}
+	}
+}

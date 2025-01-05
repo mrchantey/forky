@@ -2473,14 +2473,6 @@ dependencies = [
  "forky_web",
  "js-sys",
  "rand",
-]
-
-[[package]]
-name = "forky_bevy_test"
-version = "0.2.0-rc.10"
-dependencies = [
- "bevy",
- "forky_bevy",
  "sweet",
 ]
 
@@ -2502,30 +2494,6 @@ dependencies = [
  "glob",
  "hyper",
  "rayon",
- "tokio",
- "tower",
- "tower-http",
- "tower-livereload",
-]
-
-[[package]]
-name = "forky_cli_test"
-version = "0.2.0-rc.10"
-dependencies = [
- "anyhow",
- "axum",
- "axum-server",
- "clap",
- "colorize",
- "cssparser",
- "extend",
- "forky_cli",
- "forky_core",
- "forky_fs",
- "futures",
- "glob",
- "hyper",
- "rayon",
  "sweet",
  "tokio",
  "tower",
@@ -2539,9 +2507,6 @@ version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
  "extend",
- "getrandom",
- "log",
- "num-traits",
  "rand",
  "sweet",
 ]
@@ -2562,15 +2527,8 @@ dependencies = [
  "notify",
  "notify-debouncer-full",
  "sha2",
- "tokio",
-]
-
-[[package]]
-name = "forky_fs_test"
-version = "0.2.0-rc.10"
-dependencies = [
- "forky_fs",
  "sweet",
+ "tokio",
 ]
 
 [[package]]

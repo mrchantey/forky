@@ -46,3 +46,27 @@ pub impl Quat {
 		Vec3::new(x, y, z)
 	}
 }
+
+
+#[cfg(test)]
+mod test {
+	use bevy::prelude::*;
+	use crate::prelude::*;
+	use sweet::prelude::*;
+
+	#[test]
+	fn works() {
+		let v = Quat::from_right();
+		expect(v.forward().x).to_be_close_to(1.);
+		let v = Quat::from_left();
+		expect(v.forward().x).to_be_close_to(-1.);
+		let v = Quat::from_up();
+		expect(v.forward().y).to_be_close_to(1.);
+		let v = Quat::from_down();
+		expect(v.forward().y).to_be_close_to(-1.);
+		let v = Quat::from_forward();
+		expect(v.forward().z).to_be_close_to(1.);
+		let v = Quat::from_back();
+		expect(v.forward().z).to_be_close_to(-1.);
+	}
+}

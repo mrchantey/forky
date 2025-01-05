@@ -16,3 +16,16 @@ pub impl App {
 		})
 	}
 }
+
+
+#[cfg(test)]
+mod test {
+	use crate::prelude::*;
+	use sweet::prelude::*;
+	#[test]
+	pub fn works() {
+			let app = AppRes::new();
+			let app = app.borrow_mut();
+			expect(app.world().contains_non_send::<AppRes>()).to_be_true();
+	}	
+}
