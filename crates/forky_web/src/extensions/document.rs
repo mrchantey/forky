@@ -121,3 +121,22 @@ pub impl Document {
 		Ok(el)
 	}
 }
+
+
+#[cfg(test)]
+mod test {
+	use crate::prelude::*;
+	// use sweet::prelude::*;
+	// use web_sys::window;
+	use web_sys::Document;
+
+	#[test]
+	#[ignore = "requires dom"]
+	fn works() {
+		let div = Document::x_create_div();
+		div.set_inner_html("hello world");
+		Document::x_append_child(&div);
+
+		// expect(window().unwrap()).to_contain_text("hello world")?;
+	}
+}

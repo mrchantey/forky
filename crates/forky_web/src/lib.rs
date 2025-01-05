@@ -1,5 +1,8 @@
+#![cfg_attr(test, feature(test, custom_test_frameworks))]
+#![cfg_attr(test, test_runner(sweet::test_runner))]
 #![allow(async_fn_in_trait)]
-pub use forky_web_macros::*;
+
+
 mod dom_utils;
 pub use self::dom_utils::*;
 mod logging;
@@ -15,5 +18,4 @@ pub mod prelude {
 	pub use crate::extensions::*;
 	pub use crate::logging::*;
 	pub use crate::net::*;
-	pub use forky_web_macros::*;
 }

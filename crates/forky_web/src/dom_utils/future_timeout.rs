@@ -42,3 +42,40 @@ where
 		Err(_) => Err(anyhow::anyhow!("Timeout")),
 	}
 }
+
+
+#[cfg(test)]
+mod test {
+	use crate::prelude::*;
+	use std::time::Duration;
+	use sweet::prelude::*;
+
+	#[sweet::test]
+	pub async fn works() -> Result<()> {
+		let a = future_timeout(
+			|| async {
+				wait_for_millis(400).await;
+				39
+			},
+			Duration::from_millis(500),
+		)
+		.await?;
+		expect(a).to_be(39);
+
+		Ok(())
+	}
+	#[sweet::test]
+	pub async fn times_out() -> Result<()> {
+
+		let err = future_timeout(
+			|| async {
+				wait_for_millis(600).await;
+			},
+			Duration::from_millis(500),
+		)
+		.await;
+		expect(err).to_be_err_str("Timeout");
+
+		Ok(())
+	}
+}

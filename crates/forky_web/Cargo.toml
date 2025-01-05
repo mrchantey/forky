@@ -13,20 +13,16 @@ repository.workspace = true
 default = []
 
 [dependencies]
-forky_web_macros.workspace = true
 forky_core.workspace = true
-log.workspace = true
 anyhow.workspace = true
 extend.workspace = true
-
-serde.workspace = true
-serde_json.workspace = true
-# rand.workspace=true
-# getrandom.workspace=true
-# num-traits.workspace=true
 
 js-sys.workspace = true
 wasm-bindgen.workspace = true
 wasm-bindgen-futures.workspace = true
 web-sys.workspace = true
 console_error_panic_hook.workspace = true
+
+
+[dev-dependencies]
+sweet.workspace = true

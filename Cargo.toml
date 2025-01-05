@@ -12,8 +12,6 @@ members = [
 	"crates/forky_fs",
 	"crates/forky_play",
 	"crates/forky_web",
-	"crates/forky_web/test",
-	"crates/forky_web/macros",
 ]
 
 [workspace.package]
@@ -52,8 +50,6 @@ bevy = { version = "0.15", default-features = false }
 # wgpu = { version = "0.19.1" }
 
 ### utility ###
-log = "0.4"
-pretty_env_logger = "0.4"
 anyhow = "1.0.75"
 time = "0.3.20"
 petgraph = { version = "0.6.4", features = ["serde-1"] }
@@ -61,7 +57,6 @@ bytemuck = "1.13.1"
 heck = "0.4.1"
 
 ## attributes ###
-num-traits = "0.2.15"
 derive_deref = "1.1.1"
 strum = "0.25.0"
 strum_macros = "0.25.0"
@@ -77,9 +72,6 @@ gag = "1.0.0"
 glob = "0.3.1"
 notify = "6.0.1"
 notify-debouncer-full = "0.2.0"
-serde = { version = "1.0.193", features = ["derive"] }
-serde_json = "1.0.108"
-ciborium = "0.2"
 
 ### math ###
 sha2 = "0.10.7"
@@ -109,9 +101,6 @@ quote = "1.0.21"
 rstml = "0.11.2"
 typed-builder = "0.18.0"
 
-### esp ###
-wasmi = "0.20.0"
-
 ### server ###
 axum = "0.6.19"
 hyper = { version = "0.14.27", features = ["full"] }
@@ -124,7 +113,7 @@ tower-livereload = "0.8.0"
 ### wasm ###
 console_log = "1.0"
 js-sys = "0.3.63"
-wasm-bindgen = "0.2.86"
+wasm-bindgen = "0.2.99"
 wasm-bindgen-futures = "0.4.36"
 console_error_panic_hook = "0.1.7"
 cssparser = "0.31.2"
@@ -164,14 +153,6 @@ features = [
 	'Document',
 	'Element',
 	'Window',
-	'HtmlIFrameElement',
-	'HtmlHeadElement',
-	'HtmlLinkElement',
-	'HtmlScriptElement',
-	'HtmlButtonElement',
-	'HtmlInputElement',
-	'HtmlDivElement',
-	'HtmlParagraphElement',
 	'ResizeObserver',
 	'ResizeObserverBoxOptions',
 	'ResizeObserverEntry',
@@ -190,19 +171,6 @@ features = [
 	'Navigator',
 	'Performance',
 	'WebGl2RenderingContext',
-	# Audio
-	'AudioContext',
-	'AudioDestinationNode',
-	'AudioNode',
-	'AudioParam',
-	'BiquadFilterNode',
-	'BiquadFilterOptions',
-	'BiquadFilterType',
-	'DelayNode',
-	'DelayOptions',
-	'GainNode',
-	'OscillatorNode',
-	'OscillatorType',
 	# Fetch
 	'Request',
 	'RequestInit',
@@ -217,6 +185,14 @@ features = [
 	'HtmlAnchorElement',
 	'HtmlCanvasElement',
 	'HtmlInputElement',
+	'HtmlIFrameElement',
+	'HtmlHeadElement',
+	'HtmlLinkElement',
+	'HtmlScriptElement',
+	'HtmlButtonElement',
+	'HtmlInputElement',
+	'HtmlDivElement',
+	'HtmlParagraphElement',
 	'File',
 	'FileList',
 	# Url

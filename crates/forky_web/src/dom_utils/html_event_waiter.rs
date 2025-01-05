@@ -107,3 +107,18 @@ pub fn timeout_reject(duration: Duration) -> Promise {
 			.unwrap();
 	})
 }
+
+
+
+#[cfg(test)]
+mod test {
+	use crate::prelude::*;
+	use sweet::prelude::*;
+
+	#[sweet::test]
+	#[ignore = "requires dom"]
+	async fn html_event_waiter() -> Result<()> {
+		HtmlEventWaiter::new("click").wait().await.anyhow()?;
+		Ok(())
+	}
+}

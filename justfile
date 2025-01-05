@@ -99,22 +99,19 @@ ci:
 
 # cargo run -p forky_play	--example test_forky_play	--features sweet/bevy -- --parallel
 test-all *args:
-	cargo run -p forky_bevy_test	--example test_forky_bevy_test						-- --parallel
-	cargo run -p forky_fs_test		--example test_forky_fs_test							-- --parallel
-	cargo run -p forky_core_test	--example test_forky_core_test						-- --parallel
-	cargo run -p forky_cli_test		--example test_forky_cli_test							-- --parallel
+	cargo test -p forky_core
+	cargo test -p forky_cli
+	cargo test -p forky_fs
+	cargo test -p forky_bevy
+	cargo test -p forky_core --target wasm32-unknown-unknown
+	cargo test -p forky_bevy --target wasm32-unknown-unknown
+	cargo test -p forky_web --target wasm32-unknown-unknown
 
 test crate *args:
-	RUST_BACKTRACE={{backtrace}} cargo run -p {{crate}} --example test_{{crate}} {{features}} -- {{args}}
+	RUST_BACKTRACE={{backtrace}} cargo test -p {{crate}} --lib {{features}} -- {{args}}
 
 test-w crate *args:
 	just watch just test {{crate}} -w {{args}}
-
-test-all-wasm *args:
-	just test-wasm forky_web_test {{args}}
-
-test-wasm crate *args:
-	sweet -p {{crate}} --example test_{{crate}}_wasm {{args}}
 
 doc-w crate *args:
   echo "Navigate to the crate, ie http://127.0.0.1:3000/sweet"
