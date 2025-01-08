@@ -2583,7 +2583,7 @@ dependencies = [
  "forky_cli",
  "forky_core",
  "forky_fs",
- "forky_server",
+ "forky_net",
  "forky_web",
 ]
 
@@ -2616,7 +2616,7 @@ dependencies = [
  "extend",
  "forky_core",
  "forky_fs",
- "forky_server",
+ "forky_net",
  "futures",
  "glob",
  "http",
@@ -2660,21 +2660,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "forky_play"
-version = "0.2.0-rc.10"
-dependencies = [
- "anyhow",
- "bevy",
- "extend",
- "forky_bevy",
- "forky_core",
- "forky_web",
- "petgraph 0.7.0",
- "sweet",
-]
-
-[[package]]
-name = "forky_server"
+name = "forky_net"
 version = "0.2.0-rc.10"
 dependencies = [
  "anyhow",
@@ -2690,6 +2676,20 @@ dependencies = [
  "sweet",
  "tokio",
  "tower 0.5.2",
+]
+
+[[package]]
+name = "forky_play"
+version = "0.2.0-rc.10"
+dependencies = [
+ "anyhow",
+ "bevy",
+ "extend",
+ "forky_bevy",
+ "forky_core",
+ "forky_web",
+ "petgraph 0.7.0",
+ "sweet",
 ]
 
 [[package]]

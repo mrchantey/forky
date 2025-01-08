@@ -103,7 +103,7 @@ test-all *args:
 	cargo test -p forky_cli
 	cargo test -p forky_fs
 	cargo test -p forky_bevy
-	cargo test -p forky_server
+	cargo test -p forky_net
 	cargo test -p forky_core --target wasm32-unknown-unknown
 	cargo test -p forky_bevy --target wasm32-unknown-unknown
 	cargo test -p forky_web --target wasm32-unknown-unknown

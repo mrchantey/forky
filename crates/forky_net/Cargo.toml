@@ -1,5 +1,5 @@
 [package]
-name = "forky_server"
+name = "forky_net"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -9,6 +9,9 @@ readme.workspace = true
 description.workspace = true
 repository.workspace = true
 
+
+[features]
+server = ["dep:axum", "dep:tower"]
 
 [dependencies]
 anyhow.workspace = true
@@ -20,10 +23,10 @@ http-body.workspace = true
 http-body-util.workspace = true
 reqwest.workspace = true
 bytes.workspace = true
-
-tower.workspace = true
-axum.workspace = true
 once_cell.workspace = true
+
+axum = { workspace = true, optional = true }
+tower = { workspace = true, optional = true }
 
 [dev-dependencies]
 tokio.workspace = true

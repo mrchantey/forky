@@ -35,7 +35,7 @@ impl ReqwestExt {
 		Ok(req)
 	}
 
-	fn from_http_request<T: Into<bytes::Bytes>>(
+	pub fn from_http_request<T: Into<bytes::Bytes>>(
 		req: http::Request<T>,
 	) -> reqwest::Request {
 		let (
