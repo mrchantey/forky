@@ -2688,6 +2688,8 @@ dependencies = [
  "once_cell",
  "reqwest",
  "sweet",
+ "tokio",
+ "tower 0.5.2",
 ]
 
 [[package]]

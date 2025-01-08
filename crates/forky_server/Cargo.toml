@@ -21,8 +21,10 @@ http-body-util.workspace = true
 reqwest.workspace = true
 bytes.workspace = true
 
+tower.workspace = true
 axum.workspace = true
 once_cell.workspace = true
 
 [dev-dependencies]
+tokio.workspace = true
 sweet.workspace = true

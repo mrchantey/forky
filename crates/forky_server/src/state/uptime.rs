@@ -11,11 +11,17 @@ static NUM_UPTIME_REQUESTS: AtomicUsize = AtomicUsize::new(0);
 ///	  fn from_ref(app_state: &AppState) -> Uptime { app_state.uptime.clone() }
 ///	}
 /// ```
-/// 
+///
 #[derive(Debug, Clone)]
 pub struct Uptime {
 	pub start: std::time::Instant,
 }
+impl Default for Uptime {
+	fn default() -> Self { Self::new() }
+}
+
+
+
 impl Uptime {
 	pub fn new() -> Self {
 		Self {
