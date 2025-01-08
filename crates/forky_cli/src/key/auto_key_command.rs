@@ -1,15 +1,14 @@
 use super::*;
 use anyhow::Result;
+use clap::Parser;
 use enigo::*;
-use forky_fs::prelude::*;
+
+/// automate keypresses
+#[derive(Parser)]
 pub struct AutoKeyCommand;
 
-
-impl Subcommand for AutoKeyCommand {
-	fn name(&self) -> &'static str { "key" }
-	fn about(&self) -> &'static str { "automate keypresses" }
-
-	fn run(&self, _args: &clap::ArgMatches) -> Result<()> {
+impl AutoKeyCommand {
+	pub fn run(self) -> Result<()> {
 		InputSequence::default()
 			// exit dock
 			.input(Key::Escape)

@@ -1,48 +1,55 @@
 use super::*;
 use anyhow::Result;
-use axum::http::Method;
 use axum::extract::Request;
+use axum::http::Method;
 use axum::response::Response;
 use axum::routing::get;
 use axum::Router;
+use clap::Parser;
 use forky_fs::prelude::*;
 use futures::Future;
-use tower_http::services::ServeFile;
 use std::pin::Pin;
 use std::sync::Arc;
 use std::thread::JoinHandle;
 use tower_http::cors::CorsLayer;
 use tower_http::services::ServeDir;
+use tower_http::services::ServeFile;
 use tower_livereload::LiveReloadLayer;
 
-#[derive(Debug, Clone)]
+/// Serve static files
+#[derive(Debug, Clone, Parser)]
 pub struct Server {
+	/// Directory to serve
+	#[arg(default_value = "./")]
 	pub dir: String,
-	pub address: Address,
+	/// Specify port
+	#[arg(long, default_value = "3000")]
+	port: String,
+	/// Specify host
+	#[arg(long, default_value = "0.0.0.0")]
+	host: String,
+	/// Run with https
+	#[arg(long)]
+	secure: bool,
+	// pub address: Address,
+	#[arg(long, default_value = "true")]
 	pub clear: bool,
 	pub quiet: bool,
-	pub index_fallback: bool,
-	pub any_origin: bool,
-	pub proxy: bool,
+	/// If a url is not found, do not fallback to index.html
+	#[arg(long)]
+	pub no_fallback: bool,
+	/// Add 'access-control-allow-origin: *' header
+	#[arg(long)]
+	any_origin: bool,
+	/// Adds a proxy served from /_proxy/*
+	#[arg(long)]
+	proxy: bool,
 	// pub proxies: Vec<String>,
 }
 
-impl Default for Server {
-	fn default() -> Self {
-		Self {
-			dir: "dist".to_string(),
-			address: Address::default(),
-			clear: true,
-			quiet: false,
-			index_fallback: true,
-			any_origin: false,
-			proxy: false,
-			// proxies:Vec::new(),
-		}
-	}
-}
-
 impl Server {
+	pub fn run(self) -> Result<()> { self.serve_with_default_reload() }
+
 	pub fn with_dir(mut self, dir: &str) -> Self {
 		self.dir = dir.to_string();
 		self
@@ -62,48 +69,56 @@ impl Server {
 	}
 
 	#[tokio::main]
-	#[rustfmt::skip]
 	pub async fn serve_with_options(
 		&self,
 		livereload: Option<LiveReloadLayer>,
 	) -> Result<()> {
 		self.print_start();
 
-		let mut router = Router::new()
-   	  .route_service("/__ping__", get(ping));
+		let mut router = Router::new().route_service("/__ping__", get(ping));
 
-		if self.index_fallback {
-			router = router.nest_service("/", ServeDir::new(self.dir.as_str()).fallback(ServeFile::new("index.html")));
-		}else{
+		if self.no_fallback {
 			router = router.nest_service("/", ServeDir::new(self.dir.as_str()));
+		} else {
+			router = router.nest_service(
+				"/",
+				ServeDir::new(self.dir.as_str())
+					.fallback(ServeFile::new("index.html")),
+			);
 		}
 		if let Some(livereload) = livereload {
 			router = router.layer(livereload);
 		}
-		if self.any_origin{
+		if self.any_origin {
 			let cors = CorsLayer::new()
-			.allow_methods([Method::GET, Method::POST])
-			.allow_origin(tower_http::cors::Any);
+				.allow_methods([Method::GET, Method::POST])
+				.allow_origin(tower_http::cors::Any);
 			router = router.layer(cors);
 		}
-		
-		if self.proxy{
+
+		if self.proxy {
 			let proxy = Arc::new(futures::lock::Mutex::new(Proxy::default()));
 			let proxy2 = proxy.clone();
-			router = router.nest_service("/_proxy_set_/", get(|req:Request| async move {
-				let mut proxy = proxy.lock().await;
-				proxy.handle_set(req)
-			}));
-			router = router.nest_service("/_proxy_/", get(|req:Request| async move {
-				let proxy = proxy2.lock().await;
-				proxy.handle(req).await
-			}));
+			router = router.nest_service(
+				"/_proxy_set_/",
+				get(|req: Request| async move {
+					let mut proxy = proxy.lock().await;
+					proxy.handle_set(req)
+				}),
+			);
+			router = router.nest_service(
+				"/_proxy_/",
+				get(|req: Request| async move {
+					let proxy = proxy2.lock().await;
+					proxy.handle(req).await
+				}),
+			);
 		}
 
-		if self.address.secure{
+		if self.secure {
 			self.serve_secure(router).await?;
-		}else{
-		self.serve_insecure(router).await?;
+		} else {
+			self.serve_insecure(router).await?;
 		}
 		Ok(())
 	}
@@ -157,8 +172,17 @@ impl Server {
 		let proxy = if self.proxy { "\nproxy: true" } else { "" };
 		println!(
 			"serving '{}' at {}{any_origin}{proxy}",
-			self.dir, self.address
+			self.dir,
+			self.address().unwrap(),
 		);
+	}
+	pub fn address(&self) -> Result<Address> {
+		Ok(Address {
+			host: Address::host_from_str(&self.host)?,
+			port: self.port.parse::<u16>()?,
+			secure: self.secure,
+			..Default::default()
+		})
 	}
 }
 

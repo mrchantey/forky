@@ -1,11 +1,43 @@
 use crate::utils::CliPathBufExt;
 use anyhow::Result;
+use clap::Parser;
 use forky_core::prelude::*;
 use forky_fs::prelude::*;
 use forky_fs::utility::fs::read_dir_recursive;
 use std::env;
 use std::fs;
 use std::path::PathBuf;
+
+/// generate mod files for your project
+#[derive(Parser)]
+#[command(name = "mod")]
+pub struct AutoModCommand;
+
+impl AutoModCommand {
+	pub fn run(self) -> anyhow::Result<()> {
+		watcher().watch(|_| run())
+		// .watch_log()
+	}
+
+
+	pub fn run_with_mutex(&self, mutex: ArcMut<()>) -> anyhow::Result<()> {
+		let mut watcher = watcher();
+		watcher.quiet = true;
+		watcher.with_mutex(mutex).watch(|_| run())
+	}
+}
+
+
+fn watcher() -> FsWatcher {
+	FsWatcher::default()
+		.with_watch("**/*.rs")
+		.with_ignore("{justfile,.gitignore,target,html}")
+		//i think you can remove all except target, im debouncing already
+		.with_ignore("**/*_g.rs")
+		.with_ignore("**/mod.rs")
+}
+
+
 
 const CRATE_FOLDERS: &'static [&str] =
 	&["src", "examples", "tests", "test", "macros/src", "cli/src"];

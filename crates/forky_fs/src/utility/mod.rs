@@ -1,4 +1,7 @@
 pub mod cli_args;
+pub mod command;
+#[allow(unused_imports)]
+pub use self::command::*;
 pub mod fs;
 pub mod fs_async_utils;
 #[allow(unused_imports)]

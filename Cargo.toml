@@ -60,7 +60,7 @@ bytes = "1"
 extend = "1"
 
 ### io ###
-clap = { version = "4", features = ["string"] }
+clap = { version = "4", features = ["string", "derive"] }
 colorize = "0.1"
 crossterm = "0.28"
 gag = "1"
