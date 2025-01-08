@@ -78,6 +78,10 @@ pub async fn cors(
 			header::ACCESS_CONTROL_MAX_AGE,
 			HeaderValue::from_static("60"), //60 seconds
 		);
+		res.headers_mut().insert(
+			header::ACCESS_CONTROL_ALLOW_HEADERS,
+			HeaderValue::from_static("content-type"),
+		);
 		res
 	} else {
 		next.run(req).await
