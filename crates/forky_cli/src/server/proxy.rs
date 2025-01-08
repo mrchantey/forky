@@ -3,7 +3,8 @@ use axum::body::Body;
 use axum::http::*;
 use extend::ext;
 use forky_core::prelude::*;
-use hyper::client::Client;
+use forky_server::prelude::REQWEST_CLIENT;
+use forky_server::utils::ReqwestExt;
 
 #[ext]
 pub impl Result<Response<Body>> {
@@ -153,15 +154,20 @@ pub async fn handle_proxy_request_from_url(
 	req: Request<Body>,
 	uri: &Uri,
 ) -> Result<Response<Body>> {
-	let client = Client::new();
-	let mut proxied_req = Request::new(Body::empty());
-	*proxied_req.uri_mut() = uri.clone();
-	*proxied_req.method_mut() = req.method().clone();
-	*proxied_req.headers_mut() = req.headers().clone();
-	//currently using absolute URIs, so remove the host header
-	proxied_req.headers_mut().remove("host");
-	// println!("PROXY REQUEST: {:?}",proxied_req);
-	let proxied_res = client.request(proxied_req).await?;
-	// println!("PROXY RESPONSE: {:?}",proxied_res);
-	Ok(proxied_res)
+	let mut reqwest_req =
+		ReqwestExt::from_http_request_collect_body(req).await?;
+	*reqwest_req.url_mut() = ReqwestExt::uri_to_url(uri.clone());
+
+	let reqwest_res = reqwest::RequestBuilder::from_parts(
+		REQWEST_CLIENT.clone(),
+		reqwest_req,
+	)
+	.send()
+	.await?;
+
+	let res = ReqwestExt::into_http_response(reqwest_res)
+		.await?
+		.map(|bytes| Body::from(bytes));
+
+	Ok(res)
 }

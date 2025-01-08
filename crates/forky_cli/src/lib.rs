@@ -1,3 +1,7 @@
+#![cfg_attr(test, feature(test, custom_test_frameworks))]
+#![cfg_attr(test, test_runner(sweet::test_runner))]
+
+
 // #![feature(never_type, never_type_fallback)]
 #![feature(let_chains)]
 pub mod auto_mod;

@@ -1,0 +1,28 @@
+[package]
+name = "forky_server"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+documentation.workspace = true
+license.workspace = true
+readme.workspace = true
+description.workspace = true
+repository.workspace = true
+
+
+[dependencies]
+anyhow.workspace = true
+extend.workspace = true
+forky_core.workspace = true
+
+http.workspace = true
+http-body.workspace = true
+http-body-util.workspace = true
+reqwest.workspace = true
+bytes.workspace = true
+
+axum.workspace = true
+once_cell.workspace = true
+
+[dev-dependencies]
+sweet.workspace = true

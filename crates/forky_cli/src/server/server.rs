@@ -1,13 +1,12 @@
 use super::*;
 use anyhow::Result;
 use axum::http::Method;
+use axum::extract::Request;
 use axum::response::Response;
 use axum::routing::get;
 use axum::Router;
 use forky_fs::prelude::*;
 use futures::Future;
-use hyper::Body;
-use hyper::Request;
 use tower_http::services::ServeFile;
 use std::pin::Pin;
 use std::sync::Arc;
@@ -91,11 +90,11 @@ impl Server {
 		if self.proxy{
 			let proxy = Arc::new(futures::lock::Mutex::new(Proxy::default()));
 			let proxy2 = proxy.clone();
-			router = router.nest_service("/_proxy_set_/", get(|req:Request<Body>| async move {
+			router = router.nest_service("/_proxy_set_/", get(|req:Request| async move {
 				let mut proxy = proxy.lock().await;
 				proxy.handle_set(req)
 			}));
-			router = router.nest_service("/_proxy_/", get(|req:Request<Body>| async move {
+			router = router.nest_service("/_proxy_/", get(|req:Request| async move {
 				let proxy = proxy2.lock().await;
 				proxy.handle(req).await
 			}));
@@ -163,7 +162,7 @@ impl Server {
 	}
 }
 
-async fn ping(req: Request<Body>) -> Response<String> {
+async fn ping(req: Request) -> Response<String> {
 	let body = format!("request was {:?}", req);
 	Response::new(body)
 }

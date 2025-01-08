@@ -1,7 +1,7 @@
 use anyhow::Result;
 use colorize::AnsiColor;
 use forky_core::prelude::*;
-use hyper::Uri;
+use http::Uri;
 use std::fmt::Display;
 
 #[derive(Debug, Clone, Copy)]

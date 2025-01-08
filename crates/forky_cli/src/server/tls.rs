@@ -1,20 +1,21 @@
 use super::*;
 use anyhow::Result;
-use axum::extract::Host;
 use axum::handler::HandlerWithoutStateExt;
 use axum::http::StatusCode;
 use axum::http::Uri;
 use axum::response::Redirect;
 use axum::BoxError;
 use axum::Router;
+use axum_extra::extract::Host;
 use axum_server::tls_rustls::RustlsConfig;
 use std::net::SocketAddr;
 
 impl Server {
 	pub async fn serve_insecure(&self, router: Router) -> Result<()> {
-		axum::Server::bind(&self.address.to_socket_addr())
-			.serve(router.into_make_service())
-			.await?;
+		let listener =
+			tokio::net::TcpListener::bind(&self.address.to_socket_addr())
+				.await?;
+		axum::serve(listener, router.into_make_service()).await?;
 		Ok(())
 	}
 
@@ -25,9 +26,13 @@ impl Server {
 		let config =
 			RustlsConfig::from_pem(cert.to_vec(), key.to_vec()).await?;
 
-		axum_server::bind_rustls(self.address.to_socket_addr_tls(), config)
-			.serve(router.into_make_service())
-			.await?;
+		axum_server::tls_rustls::bind_rustls(
+			self.address.to_socket_addr(),
+			config,
+		)
+		.serve(router.into_make_service())
+		.await
+		.unwrap();
 		Ok(())
 	}
 }
@@ -44,9 +49,9 @@ pub async fn redirect_http_to_https(ports: Address) -> Result<()> {
 	};
 
 	let addr = SocketAddr::from(([127, 0, 0, 1], ports.port));
-	axum::Server::bind(&addr)
-		.serve(redirect.into_make_service())
-		.await?;
+	let listener = tokio::net::TcpListener::bind(&addr).await?;
+
+	axum::serve(listener, redirect.into_make_service()).await?;
 	Ok(())
 }
 

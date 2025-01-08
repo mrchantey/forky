@@ -11,6 +11,7 @@ members = [
 	# "crates/forky_esp",
 	"crates/forky_fs",
 	"crates/forky_play",
+	"crates/forky_server",
 	"crates/forky_web",
 ]
 
@@ -34,6 +35,7 @@ forky_core = { path = "./crates/forky_core", version = "0.2.0-rc.10" }
 forky_fs = { path = "./crates/forky_fs", version = "0.2.0-rc.10" }
 forky_esp = { path = "./crates/forky_esp", version = "0.2.0-rc.10-rc.5" }
 forky_play = { path = "./crates/forky_play", version = "0.2.0-rc.10" }
+forky_server = { path = "./crates/forky_server", version = "0.2.0-rc.10" }
 forky_web = { path = "./crates/forky_web", version = "0.2.0-rc.10" }
 forky_web_macros = { path = "./crates/forky_web/macros", version = "0.2.0-rc.10" }
 
@@ -50,59 +52,66 @@ bevy = { version = "0.15", default-features = false }
 # wgpu = { version = "0.19.1" }
 
 ### utility ###
-anyhow = "1.0.75"
-time = "0.3.20"
-heck = "0.4.1"
+anyhow = "1"
+heck = "0.5"
+bytes = "1"
 
 ## attributes ###
-extend = "1.1.2"
+extend = "1"
 
 ### io ###
-clap = { version = "4.2", features = ["string"] }
-colorize = "0.1.0"
-crossterm = "0.25.0"
-gag = "1.0.0"
-glob = "0.3.1"
-notify = "6.0.1"
-notify-debouncer-full = "0.2.0"
+clap = { version = "4", features = ["string"] }
+colorize = "0.1"
+crossterm = "0.28"
+gag = "1"
+glob = "0.3"
+notify = "7"
+notify-debouncer-full = "0.4"
 
 ### math ###
-sha2 = "0.10.7"
-hex = "0.4.3"
-rand = { version = "0.8.5" }
+sha2 = "0.10"
+hex = "0.4"
+rand = "0.8"
 
 ### async ###
-futures = "0.3.28"
-futures-util = "0.3.28"
-tokio = { version = "1.27.0", features = [
+futures = "0.3"
+futures-util = "0.3"
+tokio = { version = "1", features = [
 	"macros",
 	"rt",
 	"rt-multi-thread",
 	"time",
 ] }
-tokio-stream = "0.1.14"
-rayon = "1.7"
+tokio-stream = "0.1"
+rayon = "1"
+once_cell = "1"
 
 ### macros ###
-proc-macro2 = "1.0.47"
-syn = { version = "2.0.*", features = ["full"] }
-quote = "1.0.21"
+proc-macro2 = "1"
+syn = { version = "2", features = ["full"] }
+quote = "1"
+
+### HTTP ###
+http = "1"
+http-body = "1"
+http-body-util = "0.1"
+reqwest = { version = "0.12", features = ["json"] }
 
 ### server ###
-axum = "0.6.19"
-hyper = { version = "0.14.27", features = ["full"] }
-axum-server = { version = "0.5.1", features = ["tls-rustls"] }
-tower = "0.4.13"
-tower-http = { version = "0.4.3", features = ["fs", "cors"] }
-tower-livereload = "0.8.0"
+axum = "0.8"
+axum-extra = "0.10"
+axum-server = { version = "0.7", features = ["tls-rustls"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["fs", "cors"] }
+tower-livereload = "0.9"
 
 
 ### wasm ###
-js-sys = "0.3.63"
+js-sys = "0.3"
 wasm-bindgen = "0.2.99"
-wasm-bindgen-futures = "0.4.36"
-console_error_panic_hook = "0.1.7"
-cssparser = "0.31.2"
+wasm-bindgen-futures = "0.4"
+console_error_panic_hook = "0.1"
+cssparser = "0.34"
 
 [package]
 name = "forky"
@@ -117,17 +126,19 @@ repository.workspace = true
 
 [features]
 default = []
-fs = ["dep:forky_fs"]
-web = ["dep:forky_web"]
-cli = ["dep:forky_cli"]
 bevy = ["dep:forky_bevy"]
+cli = ["dep:forky_cli"]
+fs = ["dep:forky_fs"]
+server = ["dep:forky_server"]
+web = ["dep:forky_web"]
 
 [dependencies]
 forky_core.workspace = true
-forky_fs = { workspace = true, optional = true }
-forky_web = { workspace = true, optional = true }
-forky_cli = { workspace = true, optional = true }
 forky_bevy = { workspace = true, optional = true }
+forky_cli = { workspace = true, optional = true }
+forky_fs = { workspace = true, optional = true }
+forky_server = { workspace = true, optional = true }
+forky_web = { workspace = true, optional = true }
 
 #https://rustwasm.github.io/wasm-bindgen/api/web_sys/
 #https://github.com/rustwasm/wasm-bindgen/blob/main/crates/web-sys/Cargo.toml

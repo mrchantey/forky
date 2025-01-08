@@ -1,7 +1,7 @@
 use crossterm::*;
 use std::io::stdout;
 use std::io::Write;
-
+use anyhow::Result;
 
 pub fn clear() { clear_terminal().unwrap(); }
 
