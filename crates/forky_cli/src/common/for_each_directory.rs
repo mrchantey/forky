@@ -31,8 +31,9 @@ impl ForEachDirectory {
 		for_each_dir(|path| {
 			let mut cmd = CommandExt::from_whitespace("git status --porcelain");
 			cmd.current_dir(path);
-			CommandExt::unwrap_output_empty(cmd)
-				.map_err(|_| anyhow::anyhow!("Unstaged changes"))
+			CommandExt::unwrap_output_empty(cmd).map_err(|_| {
+				anyhow::anyhow!("{}","Unstaged changes".to_string().red())
+			})
 		})
 	}
 }

@@ -64,7 +64,7 @@ pub async fn cors(
 			return (StatusCode::BAD_REQUEST, "Origin header not found")
 				.into_response();
 		}
-		(_, Some(origin)) => origin,
+		(false, Some(origin)) => origin,
 	};
 
 	if !state.origin_allowed(&origin) {
