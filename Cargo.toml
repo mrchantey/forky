@@ -41,7 +41,8 @@ forky_web_macros = { path = "./crates/forky_web/macros", version = "0.2.0-rc.10"
 
 ### game ###
 
-sweet = { path = "../sweet", features = ["bevy"] }
+sweet = { git = "https://github.com/mrchantey/sweet", features = ["bevy"] }
+# sweet = { path = "../sweet", features = ["bevy"] }
 # sweet = { version = "0.2", features = ["bevy"] }
 bevy = { version = "0.15", default-features = false }
 # bevy = { git = "https://github.com/bevyengine/bevy", rev = "0c959f77007c29eead7f902bddd3342a1ecbca20", default-features = false }
