@@ -18,7 +18,7 @@ use tower_livereload::LiveReloadLayer;
 
 /// Serve static files
 #[derive(Debug, Clone, Parser)]
-pub struct Server {
+pub struct Serve {
 	/// Directory to serve
 	#[arg(default_value = "./")]
 	pub dir: String,
@@ -34,6 +34,7 @@ pub struct Server {
 	// pub address: Address,
 	#[arg(long, default_value = "true")]
 	pub clear: bool,
+	#[arg(long)]
 	pub quiet: bool,
 	/// If a url is not found, do not fallback to index.html
 	#[arg(long)]
@@ -47,7 +48,7 @@ pub struct Server {
 	// pub proxies: Vec<String>,
 }
 
-impl Server {
+impl Serve {
 	pub fn run(self) -> Result<()> { self.serve_with_default_reload() }
 
 	pub fn with_dir(mut self, dir: &str) -> Self {
@@ -78,10 +79,9 @@ impl Server {
 		let mut router = Router::new().route_service("/__ping__", get(ping));
 
 		if self.no_fallback {
-			router = router.nest_service("/", ServeDir::new(self.dir.as_str()));
+			router = router.fallback_service(ServeDir::new(self.dir.as_str()));
 		} else {
-			router = router.nest_service(
-				"/",
+			router = router.fallback_service(
 				ServeDir::new(self.dir.as_str())
 					.fallback(ServeFile::new("index.html")),
 			);
@@ -99,15 +99,15 @@ impl Server {
 		if self.proxy {
 			let proxy = Arc::new(futures::lock::Mutex::new(Proxy::default()));
 			let proxy2 = proxy.clone();
-			router = router.nest_service(
-				"/_proxy_set_/",
+			router = router.route(
+				"/_proxy_set_/{*path}",
 				get(|req: Request| async move {
 					let mut proxy = proxy.lock().await;
 					proxy.handle_set(req)
 				}),
 			);
-			router = router.nest_service(
-				"/_proxy_/",
+			router = router.route(
+				"/_proxy_/{*path}",
 				get(|req: Request| async move {
 					let proxy = proxy2.lock().await;
 					proxy.handle(req).await

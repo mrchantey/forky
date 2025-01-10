@@ -3,8 +3,7 @@ use axum::body::Body;
 use axum::http::*;
 use extend::ext;
 use forky_core::prelude::*;
-use forky_net::prelude::REQWEST_CLIENT;
-use forky_net::utils::ReqwestExt;
+use forky_net::prelude::*;
 
 #[ext]
 pub impl Result<Response<Body>> {

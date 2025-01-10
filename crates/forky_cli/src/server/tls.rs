@@ -10,7 +10,7 @@ use axum_extra::extract::Host;
 use axum_server::tls_rustls::RustlsConfig;
 use std::net::SocketAddr;
 
-impl Server {
+impl Serve {
 	pub async fn serve_insecure(&self, router: Router) -> Result<()> {
 		let listener =
 			tokio::net::TcpListener::bind(&self.address()?.to_socket_addr())

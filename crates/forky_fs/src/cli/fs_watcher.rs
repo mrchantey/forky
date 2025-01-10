@@ -125,43 +125,44 @@ impl FsWatcher {
 		(start, last_run): &mut (Instant, Instant),
 		on_change: impl Fn(&str) -> Result<()>,
 	) -> Result<bool> {
-		let mut changed = false;
+		let res = res?;
+		if res.kind.is_access() {
+			return Ok(false);
+		}
+
 		let now = Instant::now();
 		let last_elapsed = now.duration_since(*last_run);
 		if last_elapsed < self.interval {
-			return Ok(changed);
+			return Ok(false);
 		}
 
-		match res {
-			Ok(e) => {
-				let _mutex = self.lock();
-				let last_run2 = last_run;
-				let start_elapsed = now.duration_since(*start).as_secs_f32();
-				e.paths
-					.iter()
-					.filter(|path| self.passes(&path))
-					.take(if self.once_per_tick { 1 } else { usize::MAX })
-					.map(|path| {
-						self.prep_terminal();
-						if !self.quiet {
-							println!(
-								"{:.2} - file changed: {}\n",
-								start_elapsed,
-								path.to_str().unwrap_or("")
-							)
-						}
-						on_change(path.to_str().ok()?)?;
-						// now after on_change in case its long
-						*last_run2 = Instant::now();
-						changed = true;
-						Ok(())
-					})
-					.collect::<Result<()>>()?;
-			}
-			Err(e) => eprintln!("watch error: {:?}", e),
-		}
+		let _mutex = self.lock();
+		let last_run2 = last_run;
+		let start_elapsed = now.duration_since(*start).as_secs_f32();
+		let mut changed = false;
+		res.paths
+			.iter()
+			.filter(|path| self.passes(&path))
+			.take(if self.once_per_tick { 1 } else { usize::MAX })
+			.map(|path| {
+				self.prep_terminal();
+				if !self.quiet {
+					println!(
+						"{:.2} - file changed: {}\n",
+						start_elapsed,
+						path.to_str().unwrap_or("")
+					)
+				}
+				on_change(path.to_str().ok()?)?;
+				// now after on_change in case its long
+				*last_run2 = Instant::now();
+				changed = true;
+				Ok(())
+			})
+			.collect::<Result<()>>()?;
 		Ok(changed)
 	}
+
 
 	pub fn block(&self) -> Result<()> {
 		let (_watcher, rx) = self.watcher()?;

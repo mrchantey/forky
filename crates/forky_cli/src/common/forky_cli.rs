@@ -15,7 +15,7 @@ enum Commands {
 	AutoKey(AutoKeyCommand),
 	Fed(ForEachDirectory),
 	Mod(AutoModCommand),
-	Server(Server),
+	Serve(Serve),
 	Watch(WatchCommand),
 }
 
@@ -25,7 +25,7 @@ impl ForkyCli {
 			Commands::AutoKey(cmd) => cmd.run(),
 			Commands::Fed(cmd) => cmd.run(),
 			Commands::Mod(cmd) => cmd.run(),
-			Commands::Server(cmd) => cmd.run(),
+			Commands::Serve(cmd) => cmd.run(),
 			Commands::Watch(cmd) => cmd.run(),
 		}
 	}

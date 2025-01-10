@@ -3,7 +3,7 @@
 
 #[cfg(test)]
 mod test {
-	use forky_cli::*;
+	use ::forky_cli::prelude::*;
 	use std::path::*;
 	use sweet::prelude::*;
 
@@ -14,7 +14,7 @@ mod test {
 		let path = Path::new("tests/test_dir");
 		// let path = Path::new("crates/forky_cli/tests/test_dir");
 
-		let txt = auto_mod::create_mod_text(&path.to_path_buf());
+		let txt = create_mod_text(&path.to_path_buf());
 		expect(txt.as_str()).to_be(EXPECTED);
 	}
 }

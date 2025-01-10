@@ -15,6 +15,11 @@ path = "src/main.rs"
 
 # [dependencies]
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies] # specify os for rust analyzer
+## forky
+forky_core.workspace = true
+forky_fs.workspace = true
+forky_net = { workspace = true, features = ["reqwest"] }
+
 anyhow.workspace = true
 extend.workspace = true
 
@@ -23,10 +28,6 @@ futures.workspace = true
 rayon.workspace = true
 tokio.workspace = true
 
-## forky
-forky_core.workspace = true
-forky_fs.workspace = true
-forky_net.workspace = true
 ## fs
 glob.workspace = true
 ## cli

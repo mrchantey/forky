@@ -11,7 +11,8 @@ repository.workspace = true
 
 
 [features]
-server = ["dep:axum", "dep:tower"]
+reqwest = ["dep:reqwest", "dep:http-body-util", "dep:once_cell"]
+axum = ["dep:axum", "dep:tower"]
 
 [dependencies]
 anyhow.workspace = true
@@ -20,10 +21,11 @@ forky_core.workspace = true
 
 http.workspace = true
 http-body.workspace = true
-http-body-util.workspace = true
-reqwest.workspace = true
 bytes.workspace = true
-once_cell.workspace = true
+
+reqwest = { workspace = true, optional = true }
+http-body-util = { workspace = true, optional = true }
+once_cell = { workspace = true, optional = true }
 
 axum = { workspace = true, optional = true }
 tower = { workspace = true, optional = true }
