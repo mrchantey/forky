@@ -3,7 +3,9 @@ use std::ffi::OsStr;
 
 #[ext]
 pub impl &str {
+	/// get the first char or default
 	fn first(&self) -> char { self.chars().next().unwrap_or_default() }
+	/// get the last char or default
 	fn last(&self) -> char { self.chars().last().unwrap_or_default() }
 }
 

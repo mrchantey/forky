@@ -123,7 +123,7 @@ impl FsWatcher {
 		&self,
 		res: Result<Event, Error>,
 		(start, last_run): &mut (Instant, Instant),
-		on_change: impl Fn(&str) -> Result<()>,
+		on_change: &mut impl FnMut(&str) -> Result<()>,
 	) -> Result<bool> {
 		let res = res?;
 		if res.kind.is_access() {
@@ -169,7 +169,7 @@ impl FsWatcher {
 		let mut timers = timers();
 
 		for res in rx {
-			if self.handle_rx(res, &mut timers, |_| Ok(()))? {
+			if self.handle_rx(res, &mut timers, &mut |_| Ok(()))? {
 				return Ok(());
 			}
 		}
@@ -180,7 +180,7 @@ impl FsWatcher {
 		let mut timers = timers();
 
 		while let Some(res) = rx.next().await {
-			if self.handle_rx(res, &mut timers, |_| Ok(()))? {
+			if self.handle_rx(res, &mut timers, &mut |_| Ok(()))? {
 				return Ok(());
 			}
 		}
@@ -188,33 +188,36 @@ impl FsWatcher {
 	}
 
 	// watch blocking
-	pub fn watch(&self, on_change: impl Fn(&str) -> Result<()>) -> Result<()> {
-		self.try_run_on_start(&on_change)?;
+	pub fn watch(
+		&self,
+		mut on_change: impl FnMut(&str) -> Result<()>,
+	) -> Result<()> {
+		self.try_run_on_start(&mut on_change)?;
 		let (_watcher, rx) = self.watcher()?;
 		let mut timers = timers();
 
 		for res in rx {
-			self.handle_rx(res, &mut timers, &on_change)?;
+			self.handle_rx(res, &mut timers, &mut on_change)?;
 		}
 		Ok(())
 	}
 	pub async fn watch_async(
 		&self,
-		on_change: impl Fn(&str) -> Result<()>,
+		mut on_change: impl FnMut(&str) -> Result<()>,
 	) -> Result<()> {
-		self.try_run_on_start(&on_change)?;
+		self.try_run_on_start(&mut on_change)?;
 		let (_watcher, mut rx) = self.watcher_async()?;
 		let mut timers = timers();
 
 		while let Some(res) = rx.next().await {
-			self.handle_rx(res, &mut timers, &on_change)?;
+			self.handle_rx(res, &mut timers, &mut on_change)?;
 		}
 		Ok(())
 	}
 
 	fn try_run_on_start(
 		&self,
-		on_change: impl Fn(&str) -> Result<()>,
+		on_change: &mut impl FnMut(&str) -> Result<()>,
 	) -> Result<()> {
 		if self.run_on_start {
 			let _mutex = self.lock();
