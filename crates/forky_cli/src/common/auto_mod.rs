@@ -29,6 +29,9 @@ fn parse_glob(s: &str) -> Result<Pattern> { Ok(Pattern::new(s)?) }
 
 impl AutoModCommand {
 	pub fn run(self) -> anyhow::Result<()> {
+		println!("running auto mod\n{:#?}", self);
+
+
 		watcher().watch(|_| self.run_inner())
 		// .watch_log()
 	}
@@ -75,9 +78,10 @@ impl AutoModCommand {
 	}
 
 	fn no_reexport(&self, path: &PathBuf) -> bool {
+		let path = path.to_forward_slash_str();
 		self.no_reexport
 			.iter()
-			.any(|pattern| pattern.matches(path.to_str().unwrap_or_default()))
+			.any(|pattern| pattern.matches(&path))
 	}
 
 	pub fn create_mod_text(&self, path: &PathBuf) -> String {
