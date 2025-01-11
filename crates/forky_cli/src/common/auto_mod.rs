@@ -25,7 +25,9 @@ pub struct AutoModCommand {
 	no_reexport: Vec<Pattern>,
 }
 
-fn parse_glob(s: &str) -> Result<Pattern> { Ok(Pattern::new(s)?) }
+fn parse_glob(s: &str) -> Result<Pattern> {
+	Ok(Pattern::new(&format!("*{s}*"))?)
+}
 
 impl AutoModCommand {
 	pub fn run(self) -> anyhow::Result<()> {
