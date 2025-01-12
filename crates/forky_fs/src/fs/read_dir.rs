@@ -147,34 +147,40 @@ mod test {
 	use crate::prelude::*;
 	use sweet::prelude::*;
 
-	const NUM_CRATES: usize = 8;
-
+	#[test]
+	fn fails() {
+		expect(
+			ReadDir::default()
+				.read(FsExt::test_dir().join("foo"))
+				.unwrap_err()
+				.to_string(),
+		)
+		.to_contain("test_dir/foo");
+	}
 	#[test]
 	fn dirs() {
-		expect(ReadDir::dirs("").unwrap_err().to_string())
-			.to_be("dir not found: ");
-		expect(ReadDir::dirs("./foobar").unwrap_err().to_string())
-			.to_be("dir not found: ./foobar");
 		expect(
-			ReadDir::dirs(FsExt::workspace_root().join("crates"))
-				.unwrap()
-				.len(),
+			ReadDir::dirs(FsExt::test_dir().join("foo"))
+				.unwrap_err()
+				.to_string(),
 		)
-		.to_be(NUM_CRATES);
+		.to_contain("test_dir/foo");
+		expect(ReadDir::dirs(FsExt::test_dir()).unwrap().len()).to_be(2);
 	}
 	#[test]
 	fn read_dir_recursive() {
-		expect(ReadDir::dirs_recursive("").unwrap_err().to_string())
-			.to_be("dir not found: ");
-		expect(
-			ReadDir::dirs_recursive(FsExt::workspace_root().join("crates"))
-				.unwrap()
-				.len(),
-		)
-		.to_be_greater_than(NUM_CRATES);
+		expect(ReadDir::dirs_recursive(FsExt::test_dir()).unwrap().len())
+			.to_be(2);
+	}
 
-		// let entries = ReadDir::dirs_recursive(from_root("crates")).unwrap();
+	#[test]
+	fn files() {
+		expect(ReadDir::files(FsExt::test_dir()).unwrap().len()).to_be(3);
+	}
 
-		// println!("hello {:#?}", entries);
+	#[test]
+	fn files_recursive() {
+		expect(ReadDir::files_recursive(FsExt::test_dir()).unwrap().len())
+			.to_be(3);
 	}
 }

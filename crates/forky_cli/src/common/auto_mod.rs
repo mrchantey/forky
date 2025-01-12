@@ -178,11 +178,11 @@ mod test {
 	fn works() {
 		const EXPECTED: &str = "pub mod included_dir;\npub mod included_file;\n#[allow(unused_imports)]\npub use self::included_file::*;\n";
 
-		let path = FsExt::workspace_root()
-			.join(Path::new("crates/forky_cli/tests/test_dir"));
-
 		let txt = AutoModCommand::default()
-			.create_mod_text(&path.to_path_buf())
+			.create_mod_text(
+				&FsExt::workspace_root()
+					.join(Path::new("crates/forky_fs/test_dir")),
+			)
 			.unwrap();
 		// let path = Path::new("crates/forky_cli/tests/test_dir");
 

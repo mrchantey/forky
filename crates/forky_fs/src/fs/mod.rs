@@ -13,3 +13,6 @@ pub use self::fs_macros::*;
 pub mod read_dir;
 #[allow(unused_imports)]
 pub use self::read_dir::*;
+pub mod read_file;
+#[allow(unused_imports)]
+pub use self::read_file::*;

@@ -1,7 +1,7 @@
 use crate::utils::CliPathExt;
 use anyhow::Result;
 use forky_core::prelude::*;
-use forky_fs::fs::ReadDir;
+use forky_fs::prelude::*;
 use glob::*;
 use std::collections::HashSet;
 use std::env;

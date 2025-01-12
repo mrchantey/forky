@@ -1,6 +1,7 @@
 use anyhow::Result;
 use cssparser::*;
 use forky_core::prelude::*;
+use forky_fs::fs::ReadFile;
 use glob::*;
 use std::collections::HashSet;
 use std::fs;
@@ -43,7 +44,7 @@ fn create_all() -> Result<()> {
 
 pub fn create_type_text(path: &PathBuf) -> String {
 	let path = path.to_str().unwrap();
-	let stylesheet = fs::read_to_string(path).expect("Expected to read file");
+	let stylesheet = ReadFile::to_string(path).unwrap();
 	let classes = get_classes(&stylesheet);
 	let file_name = Path::new(path).file_stem().unwrap();
 	let file_name = file_name.to_string_lossy();
