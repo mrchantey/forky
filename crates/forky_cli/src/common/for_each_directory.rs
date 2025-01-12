@@ -2,7 +2,7 @@ use anyhow::Result;
 use clap::Parser;
 use colorize::AnsiColor;
 use forky_fs::utility::CommandExt;
-use std::fs;
+use forky_fs::utility::FsExt;
 use std::path::PathBuf;
 
 /// Execute a command in each directory in the current directory
@@ -32,7 +32,7 @@ impl ForEachDirectory {
 			let mut cmd = CommandExt::from_whitespace("git status --porcelain");
 			cmd.current_dir(path);
 			CommandExt::unwrap_output_empty(cmd).map_err(|_| {
-				anyhow::anyhow!("{}","Unstaged changes".to_string().red())
+				anyhow::anyhow!("{}", "Unstaged changes".to_string().red())
 			})
 		})
 	}
@@ -63,8 +63,7 @@ fn for_each_dir(mut func: impl FnMut(&PathBuf) -> Result<()>) -> Result<()> {
 	let mut outcomes = Vec::<(PathBuf, Option<String>)>::new();
 
 	// Get all entries in current directory
-	for entry in fs::read_dir(current_dir)? {
-		let entry = entry?;
+	for entry in FsExt::read_dir(&current_dir)? {
 		let path = entry.path();
 
 		if path.is_dir() {

@@ -3,80 +3,71 @@ use anyhow::Result;
 use clap::Parser;
 use forky_core::prelude::*;
 use forky_fs::prelude::*;
-use forky_fs::utility::fs::read_dir_recursive;
 use glob::Pattern;
-use std::env;
 use std::fs;
 use std::path::PathBuf;
 
-const CRATE_FOLDERS: &'static [&str] =
-	&["src", "examples", "tests", "test", "macros/src", "cli/src"];
-const IGNORE_FOLDERS: &'static [&str] = &["src", "examples", "test", "tests"];
-const IGNORE_FILES: &'static [&str] = &["mod"];
-const CRATE_DIRS: &'static [&str] = &["src", "crates", "crates/forky"];
 
+/// These directories should not contain a mod file
+const IGNORE_ROOTS: &'static [&str] = &["src", "examples", "test", "tests"];
+const IGNORE_FILES: &'static [&str] = &["mod"];
 
 /// generate mod files for your project
 #[derive(Debug, Clone, Parser)]
 #[command(name = "mod")]
 pub struct AutoModCommand {
+	/// Default points of entry
+	#[arg(
+		value_parser = clap::value_parser!(PathBuf),
+		default_value = "src,macros,cli,crates",
+		value_delimiter = ',',
+)]
+	entry_dirs: Vec<PathBuf>,
 	/// Glob patterns where any match will still create a mod file but not reexport contents
 	#[arg(long,value_parser=parse_glob)]
 	no_reexport: Vec<Pattern>,
+	#[arg(
+		long,
+		value_parser=parse_glob,
+		default_value="*/target/**/*",
+		value_delimiter=','
+		)]
+	exclude_glob: Vec<Pattern>,
 }
 
 fn parse_glob(s: &str) -> Result<Pattern> {
 	Ok(Pattern::new(&format!("*{s}*"))?)
 }
 
+
+fn any_match(patterns: &[Pattern], path: &PathBuf) -> bool {
+	patterns.iter().any(|p| p.matches_path(path))
+}
+
 impl AutoModCommand {
 	pub fn run(self) -> anyhow::Result<()> {
 		println!("running auto mod\n{:#?}", self);
-
-
-		watcher().watch(|_| self.run_inner())
-		// .watch_log()
+		Self::watcher().watch(|_| self.run_inner())
 	}
 
-
 	pub fn run_with_mutex(&self, mutex: ArcMut<()>) -> anyhow::Result<()> {
-		let mut watcher = watcher();
+		let mut watcher = Self::watcher();
 		watcher.quiet = true;
 		watcher.with_mutex(mutex).watch(|_| self.run_inner())
 	}
 
 	pub fn run_inner(&self) -> Result<()> {
-		let _ = CRATE_DIRS
+		FsExt::read_dir_recursive_some(&self.entry_dirs)?
 			.into_iter()
-			.map(|dir| {
-				match fs::read_dir(dir) {
-					Ok(dirs) => dirs
-						.map(|e| e.unwrap().path())
-						.for_each(|p| self.run_for_crate(p)),
-					// what does this do?
-					_ => self.run_for_crate(env::current_dir()?),
-				}
-				Ok(())
-			})
-			.collect::<Result<Vec<()>>>()?;
-		terminal::show_cursor();
-		Ok(())
-	}
-
-	pub fn run_for_crate(&self, path: PathBuf) {
-		CRATE_FOLDERS
-			.iter()
-			.map(|s| PathBuf::push_with(&path, s))
-			.for_each(|p| self.run_for_crate_folder(p))
-	}
-
-	pub fn run_for_crate_folder(&self, path: PathBuf) {
-		read_dir_recursive(path)
-			.into_iter()
-			.filter(|p| !p.filename_included(IGNORE_FOLDERS))
+			.filter(|p| !any_match(&self.exclude_glob, p))
+			.filter(|p| !p.filename_included(IGNORE_ROOTS))
 			.filter(|p| !p.filestem_starts_with_underscore())
-			.map(|p| (self.create_mod_text(&p), p))
-			.for_each(|(c, p)| self.save_to_file(&p, c))
+			.map(|p| {
+				let text = self.create_mod_text(&p);
+				self.save_to_file(&p, text)
+			})
+			.collect::<FsResult<Vec<_>>>()?;
+		Ok(())
 	}
 
 	fn no_reexport(&self, path: &PathBuf) -> bool {
@@ -86,17 +77,14 @@ impl AutoModCommand {
 			.any(|pattern| pattern.matches(&path))
 	}
 
-	pub fn create_mod_text(&self, path: &PathBuf) -> String {
-		let mut filenames = fs::read_dir(&path)
-			.unwrap()
-			.map(|p| p.unwrap().path())
+	pub fn create_mod_text(&self, path: &PathBuf) -> FsResult<String> {
+		let mut filenames = FsExt::read_dir(&path)?
+			.into_iter()
 			.filter(|p| !p.filename_included(IGNORE_FILES))
 			.filter(|p| !p.filestem_starts_with_underscore())
 			.filter(|p| p.is_dir_or_extension("rs"))
 			.collect::<Vec<_>>();
 		filenames.sort();
-
-
 
 		let files_str: String = filenames
 					.into_iter()
@@ -115,7 +103,7 @@ impl AutoModCommand {
 		files_str
 	}
 
-	fn save_to_file(&self, path: &PathBuf, content: String) {
+	fn save_to_file(&self, path: &PathBuf, content: String) -> FsResult<()> {
 		// let file_name = "mod.rs";
 		let file_name = if path.file_name().str() == "src" {
 			"lib.rs"
@@ -126,14 +114,14 @@ impl AutoModCommand {
 		mod_path.push(file_name);
 		fs::write(&mod_path, content).unwrap();
 		println!("created mod file: {}", &mod_path.to_str().unwrap());
+		Ok(())
 	}
-}
-
-fn watcher() -> FsWatcher {
-	FsWatcher::default()
-		.with_watch("**/*.rs")
-		.with_ignore("{justfile,.gitignore,target,html}")
-		//i think you can remove all except target, im debouncing already
-		.with_ignore("**/*_g.rs")
-		.with_ignore("**/mod.rs")
+	fn watcher() -> FsWatcher {
+		FsWatcher::default()
+			.with_watch("**/*.rs")
+			.with_ignore("{justfile,.gitignore,target,html}")
+			//i think you can remove all except target, im debouncing already
+			.with_ignore("**/*_g.rs")
+			.with_ignore("**/mod.rs")
+	}
 }

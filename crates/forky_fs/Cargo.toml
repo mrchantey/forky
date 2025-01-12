@@ -15,6 +15,7 @@ forky_core.workspace = true
 ## utils
 glob.workspace = true
 anyhow.workspace = true
+thiserror.workspace = true
 extend.workspace = true
 sha2.workspace = true
 hex.workspace = true

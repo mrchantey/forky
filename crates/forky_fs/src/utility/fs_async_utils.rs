@@ -2,6 +2,7 @@ use std::ops::AsyncFn;
 use tokio::time::sleep;
 use tokio::time::Duration;
 
+#[deprecated = "i think this is deceptively tricky, use a library instead"]
 pub async fn retry_async<T, E>(
 	func: impl AsyncFn() -> Result<T, E>,
 	timeout: Duration,
