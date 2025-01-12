@@ -21,21 +21,26 @@ pub struct WatchCommand {
 	/// only run once instead of watching indefinitely
 	#[arg(long = "once")]
 	once: bool,
+
+	/// Use rusty defaults for watch and ignore
+	#[arg(long)]
+	rusty: bool,
 }
 
 impl WatchCommand {
 	pub fn run(&self) -> Result<()> {
 		let cmd = self.cmd.iter().map(|s| s.as_str()).collect::<Vec<_>>();
-		let watches = self
+		let mut watches = self
 			.watch
 			.as_ref()
 			.map(|w| w.iter().map(|s| s.as_str()).collect::<Vec<_>>())
 			.unwrap_or_default();
-		let ignores = self
+		let mut ignores = self
 			.ignore
 			.as_ref()
 			.map(|i| i.iter().map(|s| s.as_str()).collect::<Vec<_>>())
 			.unwrap_or_default();
+		self.try_append_rusty(&mut watches, &mut ignores);
 
 		let watcher = FsWatcher::default()
 			.with_watches(watches)
@@ -47,5 +52,19 @@ impl WatchCommand {
 		} else {
 			watcher.watch(|_| CommandExt::spawn_command_blocking(&cmd))
 		}
+	}
+
+	fn try_append_rusty(
+		&self,
+		watches: &mut Vec<&str>,
+		ignores: &mut Vec<&str>,
+	) {
+		if !self.rusty {
+			return;
+		}
+		watches.push("**/*.rs");
+		watches.push("**/*.ts");
+		ignores.push("{.git,target,html}/**");
+		ignores.push("**/mod.rs");
 	}
 }

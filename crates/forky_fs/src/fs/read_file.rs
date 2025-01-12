@@ -31,9 +31,16 @@ impl ReadFile {
 		bytes.hash(&mut hasher);
 		hasher.finish()
 	}
-	pub fn hash_string(s: &str) -> u64 {
-		let bytes = s.as_bytes();
+	pub fn hash_string(str: &str) -> u64 {
+		let bytes = str.as_bytes();
 		Self::hash_bytes(bytes)
+	}
+
+	pub fn exists(path: impl AsRef<Path>) -> bool {
+		match fs::exists(path) {
+			Ok(true) => true,
+			_ => false,
+		}
 	}
 
 	/// Write a file, ensuring the path exists

@@ -125,12 +125,7 @@ book:
 	cd docs && mdbook serve
 
 watch *command:
-	forky watch \
-	-w '**/*.rs' \
-	-i '{.git,target,html}/**' \
-	-i '**/mod.rs' \
-	-i '**/*_g.rs' \
-	-- {{command}}
+	forky watch --rusty	-- {{command}}
 ### PLAY ###
 
 vis-w crate example:
