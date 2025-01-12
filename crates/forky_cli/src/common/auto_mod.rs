@@ -13,7 +13,7 @@ const IGNORE_ROOTS: &'static [&str] = &["src", "examples", "test", "tests"];
 const IGNORE_FILES: &'static [&str] = &["mod"];
 
 /// generate mod files for your project
-#[derive(Debug, Clone, Parser)]
+#[derive(Debug, Default, Clone, Parser)]
 #[command(name = "mod")]
 pub struct AutoModCommand {
 	/// Default points of entry
@@ -63,7 +63,7 @@ impl AutoModCommand {
 			.filter(|p| !p.filename_included(IGNORE_ROOTS))
 			.filter(|p| !p.filestem_starts_with_underscore())
 			.map(|p| {
-				let text = self.create_mod_text(&p);
+				let text = self.create_mod_text(&p)?;
 				self.save_to_file(&p, text)
 			})
 			.collect::<FsResult<Vec<_>>>()?;
@@ -80,6 +80,7 @@ impl AutoModCommand {
 	pub fn create_mod_text(&self, path: &PathBuf) -> FsResult<String> {
 		let mut filenames = FsExt::read_dir(&path)?
 			.into_iter()
+			.map(|p| p.path())
 			.filter(|p| !p.filename_included(IGNORE_FILES))
 			.filter(|p| !p.filestem_starts_with_underscore())
 			.filter(|p| p.is_dir_or_extension("rs"))
@@ -100,7 +101,7 @@ impl AutoModCommand {
 					})
 					.collect();
 		// format!("#![allow(unused_imports)]\n{files_str}")
-		files_str
+		Ok(files_str)
 	}
 
 	fn save_to_file(&self, path: &PathBuf, content: String) -> FsResult<()> {

@@ -33,7 +33,7 @@ forky_bevy = { path = "./crates/forky_bevy", version = "0.2.0-rc.1" }
 forky_cli = { path = "./crates/forky_cli", version = "0.2.0-rc.1" }
 forky_core = { path = "./crates/forky_core", version = "0.2.0-rc.1" }
 forky_fs = { path = "./crates/forky_fs", version = "0.2.0-rc.1" }
-forky_esp = { path = "./crates/forky_esp", version = "0.2.0-rc.1-rc.5" }
+forky_esp = { path = "./crates/forky_esp", version = "0.2.0-rc.1" }
 forky_play = { path = "./crates/forky_play", version = "0.2.0-rc.1" }
 forky_net = { path = "./crates/forky_net", version = "0.2.0-rc.1" }
 forky_web = { path = "./crates/forky_web", version = "0.2.0-rc.1" }
@@ -41,8 +41,8 @@ forky_web_macros = { path = "./crates/forky_web/macros", version = "0.2.0-rc.1" 
 
 ### game ###
 
-sweet = { git = "https://github.com/mrchantey/sweet", features = ["bevy"] }
-# sweet = { path = "../sweet", features = ["bevy"] }
+# sweet = { git = "https://github.com/mrchantey/sweet", features = ["bevy"] }
+sweet = { path = "../sweet", features = ["bevy"] }
 # sweet = { version = "0.2", features = ["bevy"] }
 bevy = { version = "0.15", default-features = false }
 # bevy = { git = "https://github.com/bevyengine/bevy", rev = "0c959f77007c29eead7f902bddd3342a1ecbca20", default-features = false }

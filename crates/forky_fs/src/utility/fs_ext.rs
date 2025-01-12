@@ -44,21 +44,23 @@ impl FsExt {
 	/// Read dir returing children that may be an error
 	pub fn read_dir_raw(path: impl AsRef<Path>) -> FsResult<fs::ReadDir> {
 		let path = path.as_ref();
-		fs::read_dir(path).map_err(|e| FsError::from_io_with_path(path, e))
+		fs::read_dir(path).map_err(|e| FsError::from_io_with_dir(e, path))
 	}
 
 	/// read directory and return all sub directories, files are ignored
 	pub fn read_dir_recursive(
 		path: impl AsRef<Path>,
 	) -> FsResult<Vec<PathBuf>> {
+		FsError::assert_dir(&path)?;
 		let mut vec = Default::default();
-		Self::read_dir_recursive_inner(&mut vec, path.as_ref())?;
+		Self::read_dir_recursive_inner(&mut vec, &path)?;
 		Ok(vec)
 	}
 	fn read_dir_recursive_inner(
 		arr: &mut Vec<PathBuf>,
-		path: &Path,
+		path: impl AsRef<Path>,
 	) -> FsResult<()> {
+		let path = path.as_ref();
 		if !path.is_dir() {
 			return Ok(());
 		}
@@ -67,7 +69,7 @@ impl FsExt {
 			let child_path = child.path();
 			if child
 				.file_type()
-				.map_err(|e| FsError::from_io_with_path(&child_path, e))?
+				.map_err(|e| FsError::from_io_with_file(e, &child_path))?
 				.is_dir()
 			{
 				Self::read_dir_recursive_inner(arr, &child_path)?;
@@ -185,7 +187,22 @@ impl FsExt {
 
 #[cfg(test)]
 mod test {
+	use super::FsExt;
+	use sweet::prelude::*;
 
 	#[test]
-	fn works() {}
+	fn read_dir() {
+		expect(FsExt::read_dir("").unwrap_err().to_string())
+			.to_be("dir not found: ");
+		expect(FsExt::read_dir("./foobar").unwrap_err().to_string())
+			.to_be("dir not found: ./foobar");
+		expect(FsExt::read_dir("./src")).to_be_ok();
+	}
+	#[test]
+	fn read_dir_recursive() {
+		expect(FsExt::read_dir_recursive("").unwrap_err().to_string())
+			.to_be("dir not found: ");
+		expect(FsExt::read_dir_recursive("./src").unwrap().len())
+			.to_be_greater_than(0);
+	}
 }
