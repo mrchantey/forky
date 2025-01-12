@@ -59,7 +59,11 @@ impl AutoModCommand {
 	pub fn run_inner(&self) -> Result<()> {
 		FsExt::read_dir_recursive_some(&self.entry_dirs)?
 			.into_iter()
+			// dont create mod at entry dirs
+			.filter(|p| self.entry_dirs.iter().any(|d| d == p))
+			// ignore anything matching exclude_glob, ie target
 			.filter(|p| !any_match(&self.exclude_glob, p))
+			// ignore special roots like src
 			.filter(|p| !p.filename_included(IGNORE_ROOTS))
 			.filter(|p| !p.filestem_starts_with_underscore())
 			.map(|p| {
