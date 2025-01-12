@@ -5360,6 +5360,13 @@ dependencies = [
 name = "sweet"
 version = "0.3.0-rc.1"
 dependencies = [
+ "sweet_test",
+]
+
+[[package]]
+name = "sweet_test"
+version = "0.3.0-rc.1"
+dependencies = [
  "anyhow",
  "backtrace",
  "bevy",
@@ -5378,7 +5385,7 @@ dependencies = [
  "pin-project-lite",
  "pretty_env_logger",
  "rayon",
- "sweet_macros",
+ "sweet_test_macros",
  "thread_local",
  "tokio",
  "wasm-bindgen",
@@ -5387,7 +5394,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "sweet_macros"
+name = "sweet_test_macros"
 version = "0.3.0-rc.1"
 dependencies = [
  "anyhow",

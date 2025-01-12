@@ -36,19 +36,22 @@ pub struct AutoModCommand {
 	/// Glob patterns where any match will still create a mod file but not reexport contents
 	#[arg(long,value_parser=parse_glob)]
 	no_reexport: Vec<Pattern>,
-	/// Log to stdout instead of file
-	#[arg(long)]
-	dry: bool,
-	/// Log contents of files to stdout
-	#[arg(long)]
-	verbose: bool,
 	#[arg(
 		long,
 		value_parser=parse_glob,
 		default_value="*/target/**/*",
 		value_delimiter=','
-		)]
+	)]
 	exclude_glob: Vec<Pattern>,
+	/// Log to stdout instead of file
+	#[arg(short, long)]
+	dry: bool,
+	/// Minimal output
+	#[arg(short, long)]
+	quiet: bool,
+	/// Log contents of files to stdout
+	#[arg(short, long)]
+	verbose: bool,
 }
 
 fn parse_glob(s: &str) -> Result<Pattern> {
@@ -75,7 +78,7 @@ impl AutoModCommand {
 	}
 
 	pub fn run_inner(&self) -> Result<()> {
-		ReadDir {
+		let mod_files = ReadDir {
 			dirs: true,
 			recursive: true,
 			..Default::default()
@@ -94,9 +97,12 @@ impl AutoModCommand {
 		.filter(|p| !CliPathExt::filestem_starts_with_underscore(p))
 		.map(|p| {
 			let text = self.create_mod_text(&p)?;
-			self.save_to_file(&p, text)
+			self.save_to_file(&p, &text)?;
+			Ok((p, text))
 		})
 		.collect::<FsResult<Vec<_>>>()?;
+		self.print(mod_files);
+
 		Ok(())
 	}
 
@@ -134,17 +140,10 @@ impl AutoModCommand {
 		Ok(files_str)
 	}
 
-	fn save_to_file(&self, path: &PathBuf, content: String) -> FsResult<()> {
+	fn save_to_file(&self, path: &PathBuf, content: &str) -> FsResult<()> {
 		if self.dry {
-			println!("would create mod file: {}", path.to_str().unwrap(),);
 			return Ok(());
 		}
-		if self.verbose {
-			println!("creating mod file: {}", path.to_str().unwrap());
-			println!("{}", content);
-		}
-
-		// let file_name = "mod.rs";
 		let file_name = if path.file_name().str() == "src" {
 			"lib.rs"
 		} else {
@@ -153,7 +152,6 @@ impl AutoModCommand {
 		let mut mod_path = path.clone();
 		mod_path.push(file_name);
 		fs::write(&mod_path, content).unwrap();
-		println!("created mod file: {}", &mod_path.to_str().unwrap());
 		Ok(())
 	}
 	fn watcher() -> FsWatcher {
@@ -163,6 +161,20 @@ impl AutoModCommand {
 			//i think you can remove all except target, im debouncing already
 			.with_ignore("**/*_g.rs")
 			.with_ignore("**/mod.rs")
+	}
+	fn print(&self, mut files: Vec<(PathBuf, String)>) {
+		if self.quiet {
+			return;
+		}
+		files.sort_by(|a, b| a.0.cmp(&b.0));
+
+		for (path, content) in files {
+			let prefix = if self.dry { "would create" } else { "creating" };
+			println!("{} {}", prefix, path.to_str().unwrap(),);
+			if self.verbose {
+				println!("{}\n", content);
+			}
+		}
 	}
 }
 
