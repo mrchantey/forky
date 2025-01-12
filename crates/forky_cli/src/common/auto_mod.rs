@@ -30,6 +30,9 @@ pub struct AutoModCommand {
 	/// Log to stdout instead of file
 	#[arg(long)]
 	dry: bool,
+	/// Log contents of files to stdout
+	#[arg(long)]
+	verbose: bool,
 	#[arg(
 		long,
 		value_parser=parse_glob,
@@ -128,12 +131,12 @@ impl AutoModCommand {
 
 	fn save_to_file(&self, path: &PathBuf, content: String) -> FsResult<()> {
 		if self.dry {
-			println!(
-				"would create mod file: {}\n{}",
-				path.to_str().unwrap(),
-				content
-			);
+			println!("would create mod file: {}", path.to_str().unwrap(),);
 			return Ok(());
+		}
+		if self.verbose {
+			println!("creating mod file: {}", path.to_str().unwrap());
+			println!("{}", content);
 		}
 
 		// let file_name = "mod.rs";
