@@ -1,13 +1,7 @@
 use crate::prelude::*;
 use forky_core::prelude::PathExt;
-use std::collections::hash_map::DefaultHasher;
 use std::ffi::OsString;
 use std::fs;
-use std::fs::File;
-use std::hash::Hash;
-use std::hash::Hasher;
-use std::io;
-use std::io::prelude::*;
 use std::path::Path;
 use std::path::PathBuf;
 
@@ -38,6 +32,7 @@ impl FsExt {
 		Ok(())
 	}
 
+
 	// pub fn dir_contains(path: PathBuf, pattern: &str) -> bool {
 	// 	let pattern = Pattern::new(pattern).unwrap();
 	// 	glob::glob_with(
@@ -52,29 +47,6 @@ impl FsExt {
 	// 		.iter()
 	// 		.any(|p| pattern. p.to_str().unwrap().contains(pattern))
 	// }
-
-	pub fn hash_file(path: impl AsRef<Path>) -> io::Result<u64> {
-		let mut hasher = DefaultHasher::new();
-		let mut file = fs::File::open(path)?;
-
-		let mut buffer = Vec::new();
-		file.read_to_end(&mut buffer)?;
-		buffer.hash(&mut hasher);
-
-		let hash = hasher.finish();
-		Ok(hash)
-	}
-
-
-
-	pub fn write<P>(filename: P, data: &str) -> io::Result<()>
-	where
-		P: AsRef<Path>,
-	{
-		let mut file = File::create(filename)?;
-		file.write_all(data.as_bytes())?;
-		Ok(())
-	}
 
 	/// Return the closest ancestor (inclusive) that contains a `Cargo.lock` file
 	/// # Panics
