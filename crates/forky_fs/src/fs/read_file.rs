@@ -21,11 +21,19 @@ impl ReadFile {
 
 
 	pub fn hash_file(path: impl AsRef<Path>) -> FsResult<u64> {
-		let mut hasher = DefaultHasher::new();
-		let file = Self::to_bytes(path)?;
-		file.hash(&mut hasher);
-		let hash = hasher.finish();
+		let bytes = Self::to_bytes(path)?;
+		let hash = Self::hash_bytes(&bytes);
 		Ok(hash)
+	}
+
+	pub fn hash_bytes(bytes: &[u8]) -> u64 {
+		let mut hasher = DefaultHasher::new();
+		bytes.hash(&mut hasher);
+		hasher.finish()
+	}
+	pub fn hash_string(s: &str) -> u64 {
+		let bytes = s.as_bytes();
+		Self::hash_bytes(bytes)
 	}
 
 	/// Write a file, ensuring the path exists
@@ -75,5 +83,11 @@ mod test {
 			ReadFile::hash_file(FsExt::test_dir().join("included_file.rs"))
 				.unwrap();
 		expect(hash1).not().to_be(hash2);
+
+
+		let str =
+			ReadFile::to_string(FsExt::test_dir().join("mod.rs")).unwrap();
+		let hash3 = ReadFile::hash_string(&str);
+		expect(hash3).to_be(hash1);
 	}
 }
