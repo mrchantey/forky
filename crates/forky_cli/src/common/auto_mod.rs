@@ -75,23 +75,28 @@ impl AutoModCommand {
 	}
 
 	pub fn run_inner(&self) -> Result<()> {
-		FsExt::read_dir_recursive_some(&self.entry_dirs)?
-			.into_iter()
-			// dont create mod at entry dirs
-			.filter(|p| !self.entry_dirs.iter().any(|d| d == p))
-			// ignore anything matching exclude_glob, ie target
-			.filter(|p| !any_match(&self.exclude_glob, p))
-			// roots themselves should not have mod files
-			.filter(|p| !CliPathExt::filename_included(p, &self.rust_roots))
-			// only files in rust roots should have mod files
-			.filter(|p| CliPathExt::anscestors_includes(p, &self.rust_roots))
-			// ignore any dir that starts with an underscore
-			.filter(|p| !CliPathExt::filestem_starts_with_underscore(p))
-			.map(|p| {
-				let text = self.create_mod_text(&p)?;
-				self.save_to_file(&p, text)
-			})
-			.collect::<FsResult<Vec<_>>>()?;
+		ReadDir {
+			dirs: true,
+			recursive: true,
+			..Default::default()
+		}
+		.read_dirs_ok(&self.entry_dirs)?
+		.into_iter()
+		// dont create mod at entry dirs
+		.filter(|p| !self.entry_dirs.iter().any(|d| d == p))
+		// ignore anything matching exclude_glob, ie target
+		.filter(|p| !any_match(&self.exclude_glob, p))
+		// roots themselves should not have mod files
+		.filter(|p| !CliPathExt::filename_included(p, &self.rust_roots))
+		// only files in rust roots should have mod files
+		.filter(|p| CliPathExt::anscestors_includes(p, &self.rust_roots))
+		// ignore any dir that starts with an underscore
+		.filter(|p| !CliPathExt::filestem_starts_with_underscore(p))
+		.map(|p| {
+			let text = self.create_mod_text(&p)?;
+			self.save_to_file(&p, text)
+		})
+		.collect::<FsResult<Vec<_>>>()?;
 		Ok(())
 	}
 
@@ -103,9 +108,8 @@ impl AutoModCommand {
 	}
 
 	pub fn create_mod_text(&self, path: &Path) -> FsResult<String> {
-		let mut filenames = FsExt::read_dir(&path)?
+		let mut filenames = ReadDir::all(&path)?
 			.into_iter()
-			.map(|p| p.path())
 			.filter(|p| !CliPathExt::filename_included(p, IGNORE_FILES))
 			.filter(|p| !CliPathExt::filestem_starts_with_underscore(p))
 			.filter(|p| p.is_dir_or_extension("rs"))
@@ -159,5 +163,29 @@ impl AutoModCommand {
 			//i think you can remove all except target, im debouncing already
 			.with_ignore("**/*_g.rs")
 			.with_ignore("**/mod.rs")
+	}
+}
+
+
+#[cfg(test)]
+mod test {
+	use crate::common::AutoModCommand;
+	use forky_fs::fs::FsExt;
+	use std::path::*;
+	use sweet::prelude::*;
+
+	#[test]
+	fn works() {
+		const EXPECTED: &str = "pub mod included_dir;\npub mod included_file;\n#[allow(unused_imports)]\npub use self::included_file::*;\n";
+
+		let path = FsExt::workspace_root()
+			.join(Path::new("crates/forky_cli/tests/test_dir"));
+
+		let txt = AutoModCommand::default()
+			.create_mod_text(&path.to_path_buf())
+			.unwrap();
+		// let path = Path::new("crates/forky_cli/tests/test_dir");
+
+		expect(txt.as_str()).to_be(EXPECTED);
 	}
 }

@@ -12,6 +12,8 @@ pub enum FsError {
 	DirNotFound(String),
 	#[error("io error: {0}")]
 	Io(io::Error),
+	#[error("fs error: {0}")]
+	Other(String),
 }
 
 impl FsError {
@@ -63,5 +65,14 @@ impl FsError {
 impl From<io::Error> for FsError {
 	fn from(e: io::Error) -> Self { FsError::from_io(e) }
 }
+
+impl From<&str> for FsError {
+	fn from(e: &str) -> Self { FsError::Other(e.to_string()) }
+}
+
+impl From<anyhow::Error> for FsError {
+	fn from(e: anyhow::Error) -> Self { FsError::Other(e.to_string()) }
+}
+
 
 pub type FsResult<T> = std::result::Result<T, FsError>;

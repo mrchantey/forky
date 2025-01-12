@@ -1,8 +1,7 @@
 use anyhow::Result;
 use clap::Parser;
 use colorize::AnsiColor;
-use forky_fs::utility::CommandExt;
-use forky_fs::utility::FsExt;
+use forky_fs::prelude::*;
 use std::path::PathBuf;
 
 /// Execute a command in each directory in the current directory
@@ -63,17 +62,13 @@ fn for_each_dir(mut func: impl FnMut(&PathBuf) -> Result<()>) -> Result<()> {
 	let mut outcomes = Vec::<(PathBuf, Option<String>)>::new();
 
 	// Get all entries in current directory
-	for entry in FsExt::read_dir(&current_dir)? {
-		let path = entry.path();
-
-		if path.is_dir() {
-			match func(&path) {
-				Ok(_) => {
-					outcomes.push((path, None));
-				}
-				Err(err) => {
-					outcomes.push((path, Some(format!("{}", err))));
-				}
+	for entry in ReadDir::dirs(&current_dir)? {
+		match func(&entry) {
+			Ok(_) => {
+				outcomes.push((entry, None));
+			}
+			Err(err) => {
+				outcomes.push((entry, Some(format!("{}", err))));
 			}
 		}
 	}

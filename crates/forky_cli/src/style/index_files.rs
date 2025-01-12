@@ -1,7 +1,7 @@
 use crate::utils::CliPathExt;
 use anyhow::Result;
 use forky_core::prelude::*;
-use forky_fs::utility::FsExt;
+use forky_fs::fs::ReadDir;
 use glob::*;
 use std::collections::HashSet;
 use std::env;
@@ -24,18 +24,20 @@ fn remove_all_index_files() -> Result<()> {
 }
 
 fn for_all_crates() -> Result<()> {
-	let dirs_with_css = FsExt::directories_matching("**/src/**/*.css")
-		.iter()
+	let pattern = Pattern::new("**/src/**/*.css").unwrap();
+	let dirs_with_css = ReadDir::files_recursive("./")?
+		.into_iter()
+		.filter(|p| pattern.matches(&p.to_string_lossy()))
 		.flat_map(|p| p.dir_parts())
 		// .filter(|p| !p.filestem_ends_with_underscore())
 		.collect::<HashSet<PathBuf>>();
 	// dirs_with_css
 	// 	.iter()
 	// 	.for_each(|val| println!("css dir: {:?}", val));
-	match FsExt::read_dir("crates") {
+	match ReadDir::dirs("crates") {
 		Ok(dirs) => dirs
 			.into_iter()
-			.map(|p| for_crate(p.path(), &dirs_with_css))
+			.map(|p| for_crate(p, &dirs_with_css))
 			.collect::<Result<()>>()?,
 		_ => for_crate(env::current_dir()?, &dirs_with_css)?,
 	}
@@ -44,7 +46,7 @@ fn for_all_crates() -> Result<()> {
 
 fn for_crate(path: PathBuf, dirs_with_css: &HashSet<PathBuf>) -> Result<()> {
 	let path = CliPathExt::push_with(&path, "src");
-	FsExt::read_dir_recursive(path)?
+	ReadDir::dirs_recursive(path)?
 		.into_iter()
 		.filter(|p| dirs_with_css.contains(p))
 		//TODO filter by directories that contain any css
@@ -59,9 +61,8 @@ pub fn create_index_text(
 ) -> Result<String> {
 	let ignore_files = Pattern::new("**/*/index.css").unwrap();
 
-	let out = fs::read_dir(&path)
-		.unwrap()
-		.map(|p| p.unwrap().path())
+	let out = ReadDir::dirs(&path)?
+		.into_iter()
 		.filter(|p| !ignore_files.matches(p.to_str().unwrap()))
 		.filter(|p| p.is_dir_or_extension("css"))
 		.filter(|p| p.is_file() || dirs_with_css.contains(p))

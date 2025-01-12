@@ -108,11 +108,11 @@ test-all *args:
 	cargo test -p forky_bevy --target wasm32-unknown-unknown
 	cargo test -p forky_web --target wasm32-unknown-unknown
 
-test crate *args:
+test-ci crate *args:
 	RUST_BACKTRACE={{backtrace}} cargo test -p {{crate}} --lib {{features}} -- {{args}}
 
-test-w crate *args:
-	just watch just test {{crate}} -w {{args}}
+test crate *args:
+	just watch just test-ci {{crate}} -w {{args}}
 
 doc-w crate *args:
   echo "Navigate to the crate, ie http://127.0.0.1:3000/sweet"
