@@ -1,4 +1,4 @@
-use crate::utils::CliPathBufExt;
+use crate::utils::CliPathExt;
 use anyhow::Result;
 use forky_core::prelude::*;
 use forky_fs::utility::FsExt;
@@ -27,7 +27,7 @@ fn for_all_crates() -> Result<()> {
 	let dirs_with_css = FsExt::directories_matching("**/src/**/*.css")
 		.iter()
 		.flat_map(|p| p.dir_parts())
-		.filter(|p| !p.filestem_ends_with_underscore())
+		// .filter(|p| !p.filestem_ends_with_underscore())
 		.collect::<HashSet<PathBuf>>();
 	// dirs_with_css
 	// 	.iter()
@@ -43,7 +43,7 @@ fn for_all_crates() -> Result<()> {
 }
 
 fn for_crate(path: PathBuf, dirs_with_css: &HashSet<PathBuf>) -> Result<()> {
-	let path = PathBuf::push_with(&path, "src");
+	let path = CliPathExt::push_with(&path, "src");
 	FsExt::read_dir_recursive(path)?
 		.into_iter()
 		.filter(|p| dirs_with_css.contains(p))

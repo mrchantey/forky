@@ -1,14 +1,15 @@
-use crate::utils::CliPathBufExt;
+use crate::utils::CliPathExt;
 use anyhow::Result;
 use clap::Parser;
 use forky_core::prelude::*;
 use forky_fs::prelude::*;
 use glob::Pattern;
 use std::fs;
+use std::path::Path;
 use std::path::PathBuf;
 
 
-/// These directories should not contain a mod file
+/// These directories and their direct parents should not contain a mod file
 const IGNORE_ROOTS: &'static [&str] = &["src", "examples", "test", "tests"];
 const IGNORE_FILES: &'static [&str] = &["mod"];
 
@@ -26,6 +27,9 @@ pub struct AutoModCommand {
 	/// Glob patterns where any match will still create a mod file but not reexport contents
 	#[arg(long,value_parser=parse_glob)]
 	no_reexport: Vec<Pattern>,
+	/// Log to stdout instead of file
+	#[arg(long)]
+	dry: bool,
 	#[arg(
 		long,
 		value_parser=parse_glob,
@@ -46,8 +50,10 @@ fn any_match(patterns: &[Pattern], path: &PathBuf) -> bool {
 
 impl AutoModCommand {
 	pub fn run(self) -> anyhow::Result<()> {
-		println!("running auto mod\n{:#?}", self);
-		Self::watcher().watch(|_| self.run_inner())
+		Self::watcher().watch(|_| {
+			println!("running auto mod");
+			self.run_inner()
+		})
 	}
 
 	pub fn run_with_mutex(&self, mutex: ArcMut<()>) -> anyhow::Result<()> {
@@ -60,35 +66,47 @@ impl AutoModCommand {
 		FsExt::read_dir_recursive_some(&self.entry_dirs)?
 			.into_iter()
 			// dont create mod at entry dirs
-			.filter(|p| self.entry_dirs.iter().any(|d| d == p))
+			.filter(|p| !self.entry_dirs.iter().any(|d| d == p))
 			// ignore anything matching exclude_glob, ie target
 			.filter(|p| !any_match(&self.exclude_glob, p))
 			// ignore special roots like src
-			.filter(|p| !p.filename_included(IGNORE_ROOTS))
-			.filter(|p| !p.filestem_starts_with_underscore())
+			.filter(|p| !CliPathExt::filename_included(p, IGNORE_ROOTS))
+			// ignore any dir that starts with an underscore
+			.filter(|p| !CliPathExt::filestem_starts_with_underscore(p))
 			.map(|p| {
-				let text = self.create_mod_text(&p)?;
-				self.save_to_file(&p, text)
+				if let Some(text) = self.create_mod_text(&p)? {
+					self.save_to_file(&p, text)
+				} else {
+					Ok(())
+				}
 			})
 			.collect::<FsResult<Vec<_>>>()?;
 		Ok(())
 	}
 
-	fn no_reexport(&self, path: &PathBuf) -> bool {
-		let path = path.to_forward_slash_str();
+	fn no_reexport(&self, path: &Path) -> bool {
+		let path = PathExt::to_forward_slash_str(path);
 		self.no_reexport
 			.iter()
 			.any(|pattern| pattern.matches(&path))
 	}
 
-	pub fn create_mod_text(&self, path: &PathBuf) -> FsResult<String> {
+	pub fn create_mod_text(&self, path: &Path) -> FsResult<Option<String>> {
 		let mut filenames = FsExt::read_dir(&path)?
 			.into_iter()
 			.map(|p| p.path())
-			.filter(|p| !p.filename_included(IGNORE_FILES))
-			.filter(|p| !p.filestem_starts_with_underscore())
+			.filter(|p| !CliPathExt::filename_included(p, IGNORE_FILES))
+			.filter(|p| !CliPathExt::filestem_starts_with_underscore(p))
 			.filter(|p| p.is_dir_or_extension("rs"))
 			.collect::<Vec<_>>();
+
+		if filenames
+			.iter()
+			.any(|p| CliPathExt::filename_included(p, IGNORE_ROOTS))
+		{
+			return Ok(None);
+		}
+
 		filenames.sort();
 
 		let files_str: String = filenames
@@ -105,10 +123,19 @@ impl AutoModCommand {
 					})
 					.collect();
 		// format!("#![allow(unused_imports)]\n{files_str}")
-		Ok(files_str)
+		Ok(Some(files_str))
 	}
 
 	fn save_to_file(&self, path: &PathBuf, content: String) -> FsResult<()> {
+		if self.dry {
+			println!(
+				"would create mod file: {}\n{}",
+				path.to_str().unwrap(),
+				content
+			);
+			return Ok(());
+		}
+
 		// let file_name = "mod.rs";
 		let file_name = if path.file_name().str() == "src" {
 			"lib.rs"

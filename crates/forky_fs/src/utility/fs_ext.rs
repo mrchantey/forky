@@ -188,7 +188,23 @@ impl FsExt {
 #[cfg(test)]
 mod test {
 	use super::FsExt;
+	use std::path::Path;
+	use std::path::PathBuf;
 	use sweet::prelude::*;
+
+
+	const NUM_CRATES: usize = 8;
+
+	fn from_root(path: impl AsRef<Path>) -> PathBuf {
+		FsExt::project_root().unwrap().join(path)
+	}
+
+	#[test]
+	fn project_root() {
+		expect(FsExt::project_root()).to_be_ok();
+		expect(FsExt::project_root().unwrap().join("Cargo.lock").exists())
+			.to_be_true();
+	}
 
 	#[test]
 	fn read_dir() {
@@ -196,13 +212,22 @@ mod test {
 			.to_be("dir not found: ");
 		expect(FsExt::read_dir("./foobar").unwrap_err().to_string())
 			.to_be("dir not found: ./foobar");
-		expect(FsExt::read_dir("./src")).to_be_ok();
+		expect(FsExt::read_dir(from_root("crates")).unwrap().len())
+			.to_be(NUM_CRATES);
 	}
 	#[test]
 	fn read_dir_recursive() {
 		expect(FsExt::read_dir_recursive("").unwrap_err().to_string())
 			.to_be("dir not found: ");
-		expect(FsExt::read_dir_recursive("./src").unwrap().len())
-			.to_be_greater_than(0);
+		expect(
+			FsExt::read_dir_recursive(from_root("crates"))
+				.unwrap()
+				.len(),
+		)
+		.to_be_greater_than(NUM_CRATES);
+
+
+		let entries = FsExt::read_dir_recursive(from_root("crates")).unwrap();
+		println!("hello {:#?}", entries);
 	}
 }

@@ -86,7 +86,7 @@ impl FsWatcher {
 		self
 	}
 	pub fn passes(&self, path: &Path) -> bool {
-		let path = path.to_forward_slash_str();
+		let path = PathExt::to_forward_slash_str(path);
 		self.passes_watch(&path) && self.passes_ignore(&path)
 	}
 

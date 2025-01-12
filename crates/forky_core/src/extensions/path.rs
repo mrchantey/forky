@@ -1,24 +1,28 @@
 use anyhow::Result;
-use extend::ext;
 use std::path::Path;
 use std::path::PathBuf;
 
-#[ext]
-pub impl Path {
-	fn relative(&self) -> Result<&Path> {
+pub struct PathExt;
+
+impl PathExt {
+	pub fn relative(path: &impl AsRef<Path>) -> Result<&Path> {
 		let cwd = std::env::current_dir()?;
-		let p = self.strip_prefix(cwd)?;
+		let p = path.as_ref().strip_prefix(cwd)?;
 		Ok(p)
 	}
-	fn absolute(&self) -> Result<PathBuf> {
+	pub fn absolute(path: impl AsRef<Path>) -> Result<PathBuf> {
 		let cwd = std::env::current_dir()?;
-		let p = Path::join(&cwd, self);
+		let p = Path::join(&cwd, path);
 		Ok(p)
 	}
-	fn to_forward_slash(&self) -> PathBuf {
-		Path::new(&self.to_string_lossy().replace("\\", "/")).to_path_buf()
+	pub fn to_forward_slash(path: impl AsRef<Path>) -> PathBuf {
+		Path::new(&path.as_ref().to_string_lossy().replace("\\", "/"))
+			.to_path_buf()
 	}
-	fn to_forward_slash_str(&self) -> String {
-		self.to_str().unwrap_or_default().replace("\\", "/")
+	pub fn to_forward_slash_str(path: impl AsRef<Path>) -> String {
+		path.as_ref()
+			.to_str()
+			.unwrap_or_default()
+			.replace("\\", "/")
 	}
 }
