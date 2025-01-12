@@ -32,10 +32,10 @@ fn for_all_crates() -> Result<()> {
 	// dirs_with_css
 	// 	.iter()
 	// 	.for_each(|val| println!("css dir: {:?}", val));
-	match fs::read_dir("crates") {
+	match FsExt::read_dir("crates") {
 		Ok(dirs) => dirs
-			.map(|e| e.unwrap().path())
-			.map(|p| for_crate(p, &dirs_with_css))
+			.into_iter()
+			.map(|p| for_crate(p.path(), &dirs_with_css))
 			.collect::<Result<()>>()?,
 		_ => for_crate(env::current_dir()?, &dirs_with_css)?,
 	}
