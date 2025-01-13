@@ -2581,10 +2581,20 @@ version = "0.2.0-rc.1"
 dependencies = [
  "forky_bevy",
  "forky_cli",
- "forky_core",
- "forky_fs",
+ "forky_core 0.2.0-rc.1",
+ "forky_fs 0.2.0-rc.1",
  "forky_net",
- "forky_web",
+ "forky_web 0.2.0-rc.1",
+]
+
+[[package]]
+name = "forky"
+version = "0.2.0-rc.1"
+source = "git+https://github.com/mrchantey/forky#0447f279bde93834536bb23fe5b3751eb5471ea1"
+dependencies = [
+ "forky_core 0.2.0-rc.1 (git+https://github.com/mrchantey/forky)",
+ "forky_fs 0.2.0-rc.1 (git+https://github.com/mrchantey/forky)",
+ "forky_web 0.2.0-rc.1 (git+https://github.com/mrchantey/forky)",
 ]
 
 [[package]]
@@ -2594,8 +2604,8 @@ dependencies = [
  "anyhow",
  "bevy",
  "extend",
- "forky_core",
- "forky_web",
+ "forky_core 0.2.0-rc.1",
+ "forky_web 0.2.0-rc.1",
  "js-sys",
  "rand",
  "sweet",
@@ -2614,8 +2624,8 @@ dependencies = [
  "cssparser",
  "enigo",
  "extend",
- "forky_core",
- "forky_fs",
+ "forky_core 0.2.0-rc.1",
+ "forky_fs 0.2.0-rc.1",
  "forky_net",
  "futures",
  "glob",
@@ -2640,6 +2650,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "forky_core"
+version = "0.2.0-rc.1"
+source = "git+https://github.com/mrchantey/forky#0447f279bde93834536bb23fe5b3751eb5471ea1"
+dependencies = [
+ "anyhow",
+ "extend",
+ "rand",
+]
+
+[[package]]
 name = "forky_fs"
 version = "0.2.0-rc.1"
 dependencies = [
@@ -2647,7 +2667,7 @@ dependencies = [
  "clap",
  "crossterm",
  "extend",
- "forky_core",
+ "forky_core 0.2.0-rc.1",
  "futures",
  "gag",
  "glob",
@@ -2661,6 +2681,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "forky_fs"
+version = "0.2.0-rc.1"
+source = "git+https://github.com/mrchantey/forky#0447f279bde93834536bb23fe5b3751eb5471ea1"
+dependencies = [
+ "anyhow",
+ "clap",
+ "crossterm",
+ "extend",
+ "forky_core 0.2.0-rc.1 (git+https://github.com/mrchantey/forky)",
+ "futures",
+ "gag",
+ "glob",
+ "hex",
+ "notify",
+ "notify-debouncer-full",
+ "sha2",
+ "thiserror 2.0.11",
+ "tokio",
+]
+
+[[package]]
 name = "forky_net"
 version = "0.2.0-rc.1"
 dependencies = [
@@ -2668,7 +2709,7 @@ dependencies = [
  "axum",
  "bytes",
  "extend",
- "forky_core",
+ "forky_core 0.2.0-rc.1",
  "http",
  "http-body",
  "http-body-util",
@@ -2687,8 +2728,8 @@ dependencies = [
  "bevy",
  "extend",
  "forky_bevy",
- "forky_core",
- "forky_web",
+ "forky_core 0.2.0-rc.1",
+ "forky_web 0.2.0-rc.1",
  "petgraph 0.7.1",
  "sweet",
 ]
@@ -2700,9 +2741,24 @@ dependencies = [
  "anyhow",
  "console_error_panic_hook",
  "extend",
- "forky_core",
+ "forky_core 0.2.0-rc.1",
  "js-sys",
  "sweet",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
+name = "forky_web"
+version = "0.2.0-rc.1"
+source = "git+https://github.com/mrchantey/forky#0447f279bde93834536bb23fe5b3751eb5471ea1"
+dependencies = [
+ "anyhow",
+ "console_error_panic_hook",
+ "extend",
+ "forky_core 0.2.0-rc.1 (git+https://github.com/mrchantey/forky)",
+ "js-sys",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
@@ -5360,7 +5416,25 @@ dependencies = [
 name = "sweet"
 version = "0.3.0-rc.1"
 dependencies = [
+ "sweet_core",
  "sweet_test",
+]
+
+[[package]]
+name = "sweet_core"
+version = "0.3.0-rc.1"
+dependencies = [
+ "anyhow",
+ "console_error_panic_hook",
+ "console_log",
+ "forky 0.2.0-rc.1 (git+https://github.com/mrchantey/forky)",
+ "getrandom",
+ "js-sys",
+ "thiserror 2.0.11",
+ "tokio",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
 ]
 
 [[package]]
@@ -5376,7 +5450,7 @@ dependencies = [
  "console_log",
  "extend",
  "flume",
- "forky",
+ "forky 0.2.0-rc.1 (git+https://github.com/mrchantey/forky)",
  "futures",
  "getrandom",
  "glob",
@@ -5385,6 +5459,7 @@ dependencies = [
  "pin-project-lite",
  "pretty_env_logger",
  "rayon",
+ "sweet_core",
  "sweet_test_macros",
  "thread_local",
  "tokio",
