@@ -65,6 +65,6 @@ impl WatchCommand {
 		watches.push("**/*.rs");
 		watches.push("**/*.ts");
 		ignores.push("{.git,target,html}/**");
-		ignores.push("**/mod.rs");
+		// ignores.push("**/mod.rs");
 	}
 }

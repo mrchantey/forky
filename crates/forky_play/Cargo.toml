@@ -37,10 +37,6 @@ forky_web.workspace = true
 sweet.workspace = true
 # forky_fs = {workspace = true }
 
-[[example]]
-name = "test_forky_play"
-required-features = ["sweet/bevy"]
-path = "test/sweet.rs"
 # rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 
 

@@ -80,13 +80,13 @@ publish crate *args:
 	sleep 1
 
 publish-all *args:
-	just publish forky_core {{args}} 				| true
-	just publish forky_fs {{args}} 					| true
-	just publish forky_web_macros {{args}}	| true
-	just publish forky_web {{args}} 				| true
-	just publish forky_cli {{args}} 				| true
-	just publish forky_bevy {{args}} 				| true
-	just publish forky {{args}} 						| true
+	just publish forky_core  			{{args}}	| true
+	just publish forky_fs  				{{args}}	| true
+	just publish forky_net  			{{args}}	| true
+	just publish forky_web  			{{args}}	| true
+	just publish forky_cli  			{{args}}	| true
+	just publish forky_bevy  			{{args}}	| true
+	just publish forky  					{{args}}	| true
 #just publish forky_play 			| true
 # just publish forky_ai 				| true
 
