@@ -111,6 +111,7 @@ pub fn timeout_reject(duration: Duration) -> Promise {
 
 
 #[cfg(test)]
+#[cfg(target_arch = "wasm32")]
 mod test {
 	use crate::prelude::*;
 	use sweet::prelude::*;

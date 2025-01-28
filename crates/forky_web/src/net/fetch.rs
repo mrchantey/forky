@@ -15,6 +15,7 @@ pub async fn fetch(url: &str) -> Result<Response> {
 }
 
 #[cfg(test)]
+#[cfg(target_arch = "wasm32")]
 mod test {
 	use crate::prelude::*;
 	use sweet::prelude::*;

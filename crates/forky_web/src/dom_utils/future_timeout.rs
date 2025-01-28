@@ -45,6 +45,7 @@ where
 
 
 #[cfg(test)]
+#[cfg(target_arch = "wasm32")]
 mod test {
 	use crate::prelude::*;
 	use std::time::Duration;
